@@ -36,7 +36,11 @@ namespace NewISE.App_Start
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/font-awesome.min.css"));
 
+            bundles.Add(new ScriptBundle("~/Content/DataTablesJS").Include(
+                        "~/Content/DataTables/datatables.min.js"));
 
+            bundles.Add(new StyleBundle("~/Content/DataTablesCSS").Include(
+                "~/Content/DataTables/datatables.min.css"));
 
 
 
