@@ -42,6 +42,13 @@ namespace NewISE.App_Start
             bundles.Add(new StyleBundle("~/Content/DataTablesCSS").Include(
                 "~/Content/DataTables/datatables.min.css"));
 
+            bundles.Add(new StyleBundle("~/Content/css/select2CSS").Include(
+                "~/Content/css/select2.min.css"));
+
+            bundles.Add(new ScriptBundle("~/Scripts/select2").Include(
+                        "~/Scripts/select2.min.js",
+                        "~/Scripts/i18n/it.js"));
+
 
 
         }
