@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization;
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -8,9 +10,32 @@
 
     <title>@ViewBag.Title - ISE (Indennità sedi estere)</title>
 
+    @Styles.Render("~/Content/jqueryuiCSS")
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/DataTablesCSS")
+    @Styles.Render("~/Content/css/select2CSS")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/globalize")
+    @Scripts.Render("~/Content/DataTablesJS")
+    @Scripts.Render("~/Scripts/select2")
+    @Scripts.Render("~/bundles/jqueryBlock")
+
+    
+    <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
+    
+
+
 </head>
 <body>
-    <div>
+    <div id="RealeSimulazione" class="Contenitore">
+        @RenderSection("RealeSimulazione", false)
+    </div>
+    <div id="MenuIse" class="Contenitore">
+        @RenderSection("MenuIse", false)
+    </div>
+    <div id="CorpoPagina" class="Contenitore">
         @RenderBody()
     </div>
 </body>

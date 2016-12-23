@@ -20,6 +20,9 @@ namespace NewISE.App_Start
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                         "~/Scripts/moment*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryBlock").Include(
+                        "~/Scripts/jquery.blockUI.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/globalize").Include(
                         "~/Scripts/globalize.0.1.3/globalize.js*",
                         "~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"));
@@ -33,7 +36,7 @@ namespace NewISE.App_Start
                       "~/Content/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css",
                       "~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
                       "~/Content/font-awesome.min.css"));
 
             bundles.Add(new ScriptBundle("~/Content/DataTablesJS").Include(
