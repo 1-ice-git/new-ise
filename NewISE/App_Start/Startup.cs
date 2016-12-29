@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
 using Owin;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.AspNet.Identity;
+
+[assembly: OwinStartup(typeof(NewISE.App_Start.Startup))]
 
 namespace NewISE.App_Start
 {
@@ -11,6 +15,7 @@ namespace NewISE.App_Start
         {
             ConfigureMyAuthentication(app);
         }
+
 
         public void ConfigureMyAuthentication(IAppBuilder app)
 
@@ -49,6 +54,5 @@ namespace NewISE.App_Start
 
             //app.UseGoogleAuthentication();
         }
-
     }
 }
