@@ -22,78 +22,74 @@
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
 
-
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
     <link href="~/Content/cbavota-Gridiculous-998d44e/gridiculous.css" rel="stylesheet" />
-
 
     @{
         bool reale = true;
     }
 
-
     <script type="text/javascript">
         $(document).tooltip();
     </script>
-
 </head>
 <body>
-    <div id="intestazioneLayout" class="contenitore">
-
-
-        <div class="row">
-            <div class="col6">
-                <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" /></a>
-            </div>
-            <div class="end">
-                <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
-            </div>
+    <div id="intestazioneLayout" class="row">
+        <div class="col6">
+            <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" /></a>
         </div>
-
-
-    </div>
-    <div id="RealeSimulazione" class="contenitore intestazioneRealeSimulazione">
-        @*@RenderSection("RealeSimulazione", false)*@
-        <div class="row">
-            <div class="col3">
-                @if (reale)
-                {
-                    <span>Reale</span>
-                }
-                else
-                {
-                    <span>Simulazione</span>
-                }
-            </div>
-            <div class="end">
-                @if (reale)
-                {
-                    <span>Il sistema è in fase reale</span>
-                }
-                else
-                {
-                    <span>Il sistema è in fase simulazione</span>
-                }                
-            </div>
+        <div class="end">
+            <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
         </div>
     </div>
-    <div id="menuIse" class="contenitore">
+    <div id="RealeSimulazione" class="row">
+        <div class="col3">
+            @if (reale)
+            {
+                <span>Reale</span>
+            }
+            else
+            {
+                <span>Simulazione</span>
+            }
+        </div>
+        <div class="end">
+            @if (reale)
+            {
+                <span>Il sistema è in fase reale</span>
+            }
+            else
+            {
+                <span>Il sistema è in fase simulazione</span>
+            }
+        </div>
+    </div>
+    <div id="menuIse" class="row">
+        <div class="col4">
+            Utente:&nbsp;<span id="lblUtenteConnesso">Amministratore</span>
+        </div>
+        <div class="end">
+            <label>Dipendente</label> | <label>Parametri</label> | <label>Elaborazioni</label> | <label>Statistiche</label> | <label>Calendario</label> | <label>Notifiche</label> | <label>Utenze</label>
+        </div>
+    </div>
+    <div class="contenitore">
+        <div id="CorpoPagina" class="row">
+            <div class="col12">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <footer>
         <div class="row">
             <div class="col4">
-                Utente:
+                <img src="~/Immagini/Logo rit.jpg" alt="Logo Retitalia internazionale S.p.A." height="30px" />
             </div>
-            <div class="col8">
-
+            <div class="col4">
+            </div>
+            <div class="end">
             </div>
         </div>
-    </div>
-    <div id="sottoMenu" class="contenitore">
-        @RenderSection("subMenuIse", false)
-    </div>
-    <div id="CorpoPagina" class="contenitore">
-        @RenderBody()
-    </div>
-
+    </footer>
 </body>
 </html>
