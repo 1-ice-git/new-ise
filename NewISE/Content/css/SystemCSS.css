@@ -40,11 +40,13 @@ body {
     background-color: #00B04E;
     color: whitesmoke;
     height: 3%;
+    font-weight:bold;
 }
 
-#menuIse label:hover {
+#menuIse a:hover {
     background-color: #237069;
     cursor: pointer;
+
 }
 
 .contenitore {
