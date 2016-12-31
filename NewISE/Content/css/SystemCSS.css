@@ -40,13 +40,12 @@ body {
     background-color: #00B04E;
     color: whitesmoke;
     height: 3%;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 #menuIse a:hover {
     background-color: #237069;
     cursor: pointer;
-
 }
 
 .contenitore {
@@ -183,6 +182,17 @@ footer {
 .end {
     float: right !important;
     margin-right: 15px;
+}
+
+.DivSfondoBordo {
+    box-shadow: 10px 10px 5px #808080;
+}
+
+.border_radius {
+    border-radius: 10px 10px 10px 10px;
+    border: 0px inset;
+    background-color: gainsboro;
+    padding-bottom: 10px;
 }
 
 .margineDestro15px {

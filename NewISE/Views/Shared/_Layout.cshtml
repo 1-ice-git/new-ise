@@ -24,7 +24,7 @@
 
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
-    <link href="~/Content/cbavota-Gridiculous-998d44e/gridiculous.css" rel="stylesheet" />
+    <script src="~/Scripts/MyJs.js"></script>
 
     @{
         bool reale = true;
@@ -57,11 +57,11 @@
         <div class="end">
             @if (reale)
             {
-                <span>Il sistema è in fase reale</span>
+                <span>Il sistema è in modalità reale</span>
             }
             else
             {
-                <span>Il sistema è in fase simulazione</span>
+                <span>Il sistema è in modalità simulazione</span>
             }
         </div>
     </div>
@@ -91,5 +91,8 @@
             </div>
         </div>
     </footer>
+
+    @RenderSection("scripts", required: false)
+
 </body>
 </html>

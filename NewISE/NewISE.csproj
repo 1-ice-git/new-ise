@@ -195,6 +195,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\Logo ISE.png" />
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\logo_ITA_rgb %281%29.jpg" />
@@ -615,6 +616,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\MyJs.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Web.config" />
