@@ -198,6 +198,7 @@
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\Logo ISE.png" />
     <Content Include="Immagini\Logo rit.jpg" />
+    <Content Include="Immagini\LogOut.png" />
     <Content Include="Immagini\logo_ITA_rgb %281%29.jpg" />
     <Content Include="Scripts\globalize.0.1.3\cultures\globalize.culture.af-ZA.js" />
     <Content Include="Scripts\globalize.0.1.3\cultures\globalize.culture.af.js" />
