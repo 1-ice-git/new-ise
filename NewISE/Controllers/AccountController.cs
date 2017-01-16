@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using NewISE.Models;
 
 namespace NewISE.Controllers
 {
@@ -30,6 +31,15 @@ namespace NewISE.Controllers
             }
 
             return returnUrl;
+        }
+
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            AccountModel account = new AccountModel();
+            ViewBag.RetunUrl = returnUrl;
+
+            return View(account);
         }
 
 

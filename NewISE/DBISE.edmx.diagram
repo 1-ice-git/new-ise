@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="503e6b042c574c889b63ebfa680755fb" Name="Diagram1">
+        <EntityTypeShape EntityType="ModelDBISE.ACCESSI" Width="1.5" PointX="14.25" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="7.5" PointY="90.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.ALTRIDATIFAM" Width="1.5" PointX="6" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.ANTICIPI" Width="1.5" PointX="9.75" PointY="59.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.ATTIVITACRUD" Width="1.5" PointX="12" PointY="34.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.BIGLIETTI" Width="1.5" PointX="8.25" PointY="51.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.BIGLIETTI_DOCUMENTI" Width="1.5" PointX="3" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.COEFFICENTEFKM" Width="1.5" PointX="9.75" PointY="84" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.COEFFICENTEINDRICHIAMO" Width="1.5" PointX="10.5" PointY="87.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.COEFFICENTISEDE" Width="1.5" PointX="5.25" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.CONTABILITA" Width="1.5" PointX="9.75" PointY="77.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.DATIMAB" Width="1.5" PointX="5.25" PointY="71.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.DATIMAB_MABANNUALI" Width="1.5" PointX="13.5" PointY="71.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.DEFFASCIACHILOMETRICA" Width="1.5" PointX="0.75" PointY="72.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.DIPENDENTI" Width="1.5" PointX="7.75" PointY="94.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.DOCUMENTI" Width="1.5" PointX="0.75" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.ELAB_CONT" Width="1.5" PointX="13.75" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.FASCIACHILOMETRICA" Width="1.5" PointX="3" PointY="71.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.FASCKM_CFKM" Width="1.5" PointX="13" PointY="75.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.GRUPPIDOCUMENTI" Width="1.5" PointX="1.5" PointY="45.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDBASE_DIPENDENTI" Width="1.5" PointX="15" PointY="60.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDBASE_RID" Width="1.5" PointX="16.5" PointY="50" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITA" Width="1.5" PointX="5.25" PointY="40.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITA_COEFFISEDE" Width="1.5" PointX="7.5" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITA_INDBASE" Width="1.5" PointX="7.5" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITA_PERCDISAGIO" Width="1.5" PointX="10.5" PointY="40.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITA_TFR" Width="1.5" PointX="10.5" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITABASE" Width="1.5" PointX="5.25" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="9" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDENNITASISTEMAZIONE" Width="1.5" PointX="10.5" PointY="74" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.INDRIC_COEFINDRICH" Width="1.5" PointX="12.75" PointY="64.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.LIVELLI" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.LIVELLIDIPENDENTI" Width="1.5" PointX="10" PointY="95.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.LOGATTIVITA" Width="1.5" PointX="14.25" PointY="50" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAB_ALIQCONTR" Width="1.5" PointX="7.5" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAB_DATIMAB" Width="1.5" PointX="7.5" PointY="71.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAB_DOC" Width="1.5" PointX="3" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAB_TFR" Width="1.5" PointX="10.5" PointY="71.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGFAM_ALTRIDATIFAM" Width="1.5" PointX="8.25" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGFAM_MAGCON" Width="1.5" PointX="8.25" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGFAM_MAGFIG" Width="1.5" PointX="11.25" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGFAM_PENSCON" Width="1.5" PointX="11.25" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="5.25" PointY="67.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGGIORAZIONECONIUGE" Width="1.5" PointX="6" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGGIORAZIONEFIGLI" Width="1.5" PointX="9" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGGIORAZIONIANNUALI" Width="1.5" PointX="3" PointY="68.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="6" PointY="50.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.MF_IPS" Width="1.5" PointX="11.25" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.NORMACALCOLO" Width="1.5" PointX="3" PointY="62.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.NOTIFICARICHIESTAMAGFAM" Width="1.5" PointX="8.25" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.OA" Width="1.5" PointX="12" PointY="78" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PARENTELA" Width="1.5" PointX="3.75" PointY="36.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PASSAPORTI" Width="1.5" PointX="11.25" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PENSIONECONIUGE" Width="1.5" PointX="9" PointY="34.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PERCENTUALEDISAGIO" Width="1.875" PointX="8.25" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PERCENTUALEMAB" Width="1.5" PointX="5.25" PointY="75.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PERCMAB_MAB" Width="1.5" PointX="7.5" PointY="74.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PRIMASIST_ALIQCONTR" Width="1.5" PointX="9.75" PointY="63.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PRIMASIST_INDSIST" Width="1.5" PointX="12.75" PointY="61.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.PRIMASITEMAZIONE" Width="1.5" PointX="7.5" PointY="61.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.RATEMAB" Width="1.5" PointX="7.5" PointY="78.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.REGOLACALCOLO_RIDUZIONI" Width="1.5" PointX="14.5" PointY="57.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.REGOLECALCOLO" Width="1.5" PointX="5.25" PointY="62.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.RICHIAMO" Width="1.5" PointX="7.5" PointY="64.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.RIDUZIONI" Width="1.5" PointX="12.25" PointY="83.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.RUOLOACCESSO" Width="1.5" PointX="9.75" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.RUOLOUFFICIO" Width="1.5" PointX="0.75" PointY="55.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.SOSPENSIONE" Width="1.5" PointX="10.5" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.STATOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="57.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.STIPENDI" Width="1.5" PointX="17" PointY="53.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TFR" Width="1.5" PointX="8.25" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOALIQUOTECONTRIBUTIVE" Width="1.5" PointX="5.25" PointY="91.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPODOCUMENTI" Width="1.5" PointX="3.75" PointY="44.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOELABORAZIONE" Width="1.5" PointX="3" PointY="87.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOLIQUIDAZIONE" Width="1.5" PointX="5.25" PointY="85.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOLOGIACONIUGE" Width="1.5" PointX="3.75" PointY="26.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOLOGIAFIGLIO" Width="1.5" PointX="6.75" PointY="29.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOMOVIMENTO" Width="1.5" PointX="7.5" PointY="82.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOREGOLACALCOLO" Width="1.5" PointX="3" PointY="66" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOSOSPENSIONE" Width="1.5" PointX="8.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="60.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TIPOVOCE" Width="1.5" PointX="5.25" PointY="87.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASEFFETTISIST_COEFFIFKM" Width="1.5" PointX="12" PointY="68.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASFERIMENTO" Width="1.5" PointX="3" PointY="55.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASFERIMENTO_LIVDIP" Width="1.5" PointX="12.25" PointY="57.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASPEFFETTIRIEN_COEFFIFKM" Width="1.5" PointX="17.25" PointY="66.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASPEFFETTIRIENTRO_DOC" Width="1.5" PointX="6" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASPEFFETTISIST_DOC" Width="1.5" PointX="6" PointY="56.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASPORTOEFFETTIRIENTRO" Width="1.5" PointX="15" PointY="66.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.TRASPORTOEFFETTISIST" Width="1.5" PointX="9.75" PointY="68.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.UFFICI" Width="1.5" PointX="0.75" PointY="62.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.UFFICIO_TFR" Width="1.5" PointX="13.5" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.UTENTIAUTORIZZATI" Width="1.5" PointX="12" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.VALUTE" Width="1.5" PointX="6" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelDBISE.VOCI" Width="1.5" PointX="7.5" PointY="86" IsExpanded="true" />
+        <AssociationConnector Association="ModelDBISE.R_UL_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_AC_MAB_AC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_AC_PS_AC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TC_AC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_ADF_" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PS_A" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_AC_LA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_B_B_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_B_1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_D_B_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TD_B_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_CFKM_FKM_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_CFKM_TER_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_CFKM_TES_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_CIR_IR_CIR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_CS_I_CS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_UFFICI_COEFFICENTESEDE" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_C_AQ" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_C_E_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_RM_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TM_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_V_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_DMAB_DMAB_MABA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_DMAB_MAB_DMAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MABA_DM_MA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_DFKM_FC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_D_IB_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_DIP_LIVDIP" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_D_MAB_DOC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_D_TER_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_D_TES_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_E_C_S" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_E_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PS_E_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_R_E_C" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_FKM_FKM_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_U_FC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_GD_TDV" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IB_IB_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IB_IB_R" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_R_IB_R" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_I_CS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_I_IB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_I_PD" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_I_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_IR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_NRMF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_PS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_I_S" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_T_I" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IB_I_IB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PD_I_PD" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TFR_I_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_L_I" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IPS_MF_IPS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IS_PS_IS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TT_IS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IR_IR_CR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_L_PMAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_LIV_LIVDIP" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_LD_T_LD" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_T_LA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_UL_LA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_MAB_AC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_MAB_DMAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_MAB_DOC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TD_MAB_DOC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_MAB_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TFR_MAB_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_ADF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_MC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.RMC_MF_MC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_MF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_MF_1" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_PC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PC_MF_PC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_PM_MAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MAB_RMAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_T_MAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TC_MC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_MF_IPS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TF_MF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_U_MA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_NRMF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_MF_P" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_P_MF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_T_MF" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_NC_RC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_UFFICI_PERCDISAGIO" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PM_PM_MAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_U_PMAB" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PS_PS_AC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PS_PS_IS" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_PS_TE" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_R_RC_R" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_RC_RC_R" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TRC_RC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_IR_TER" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_RU_UA" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_R_T" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TS_S" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_ST_T" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_V_S" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TFR_U_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_VALUTE_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TD_TER_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TD_TES_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TE_TV" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TL_V" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TT_T" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TV_V" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TES_TES_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_T_T_LD" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_U_T" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TER_CFKM" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TER_TER_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TES_TES_D" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_TES_TER" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.R_U_U_TFR" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.DOCUMENTO_NORMACALCOLO" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.MAGFAM_DOC" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.PASSAPORTI_DOCUMENTI" ManuallyRouted="false" />
+        <AssociationConnector Association="ModelDBISE.TRASF_DOC" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
