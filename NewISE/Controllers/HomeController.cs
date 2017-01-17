@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace NewISE.Controllers
 {
-    [AllowAnonymous]
+    
     public class HomeController : Controller
     {
         // GET: Home

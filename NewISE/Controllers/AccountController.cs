@@ -27,7 +27,7 @@ namespace NewISE.Controllers
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
 
             {
-                return Url.Action("Home", "Home");
+                return Url.Action("Home", "Index");
             }
 
             return returnUrl;
@@ -42,7 +42,24 @@ namespace NewISE.Controllers
             return View(account);
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(AccountModel account, string returnUrl)
+        {
 
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+
+            return null;
+        }
 
 
 
