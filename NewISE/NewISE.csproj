@@ -742,6 +742,9 @@
     <Compile Include="INDRIC_COEFINDRICH.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Interfacce\Iemail.cs" />
+    <Compile Include="Interfacce\ModelloAllegatoMail.cs" />
+    <Compile Include="Interfacce\ModelloMsgMail.cs" />
     <Compile Include="LIVELLI.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
