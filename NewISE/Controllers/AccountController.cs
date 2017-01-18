@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using NewISE.Models;
 
 namespace NewISE.Controllers
 {
@@ -26,13 +27,39 @@ namespace NewISE.Controllers
             if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
 
             {
-                return Url.Action("Home", "Home");
+                return Url.Action("Home", "Index");
             }
 
             return returnUrl;
         }
 
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            AccountModel account = new AccountModel();
+            ViewBag.RetunUrl = returnUrl;
 
+            return View(account);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(AccountModel account, string returnUrl)
+        {
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                return View("Error");
+            }
+
+            return null;
+        }
 
 
 

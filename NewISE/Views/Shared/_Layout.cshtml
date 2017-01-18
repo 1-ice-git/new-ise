@@ -37,7 +37,7 @@
 <body>
     <div id="intestazioneLayout" class="row">
         <div class="col6">
-            <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" /></a>
+            <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
         </div>
         <div class="end">
             <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
@@ -65,10 +65,7 @@
             }
         </div>
     </div>
-    <div id="menuIse" class="row">
-        <div class="col2">
-
-        </div>
+    <div id="menuIse" class="row">        
         <div class="col4">
             Utente:&nbsp;<span id="lblUtenteConnesso">Amministratore</span>
         </div>
@@ -85,17 +82,23 @@
     </div>
     <footer>
         <div class="row">
-            <div class="col4">
-                <img src="~/Immagini/Logo rit.jpg" alt="Logo Retitalia internazionale S.p.A." height="30px" />
+            <div class="col2">
+                <a href="http://www.ritspa.it" target="_blank" title="Retitalia Internazionale S.p.A."><img src="~/Immagini/Logo rit.jpg" alt="Logo Retitalia internazionale S.p.A." height="25px" /></a>
             </div>
-            <div class="col4">
+            <div class="col8">
             </div>
-            <div class="end">
+            <div class="end">                
+                <a href="#"><img src="~/Immagini/LogOut.png" height="4%" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
             </div>
         </div>
     </footer>
 
     @RenderSection("scripts", required: false)
-
+    <script type="text/javascript">
+        function PosizioneFooter() {
+            var f = $("footer");
+            
+        }
+    </script>
 </body>
 </html>

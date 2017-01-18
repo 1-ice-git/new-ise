@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace NewISE.Controllers
 {
-    [AllowAnonymous]
+    
     public class HomeController : Controller
     {
         // GET: Home
@@ -14,7 +14,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
-
+        
         public ActionResult MsgUtente(int idUtente)
         {
             return null;
