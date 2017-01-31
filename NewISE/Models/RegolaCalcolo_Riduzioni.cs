@@ -23,7 +23,6 @@ namespace NewISE.Models
         [Display(Name = "Data Operazione ")]
         [DataType(DataType.Date)]
         public DateTime dataOperazione { get; set; }
-        
         public REGOLECALCOLO regoleCalcolo { get; set; }
         public RIDUZIONI riduzioni { get; set; }
     }
