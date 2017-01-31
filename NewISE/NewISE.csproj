@@ -743,6 +743,8 @@
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfacce\Iemail.cs" />
+    <Compile Include="Interfacce\Modelli\Destinatario.cs" />
+    <Compile Include="Interfacce\Modelli\Mittente.cs" />
     <Compile Include="Interfacce\ModelloAllegatoMail.cs" />
     <Compile Include="Interfacce\ModelloMsgMail.cs" />
     <Compile Include="LIVELLI.cs">
@@ -797,8 +799,21 @@
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\AttivitaCRUDModel.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\dtObj\dtInsLog.cs" />
+    <Compile Include="Models\dtObj\dtInsReadNormaCalcolo.cs" />
+    <Compile Include="Models\dtObj\dtRegoleCalcolo.cs" />
+    <Compile Include="Models\dtObj\dtTrasferimento.cs" />
+    <Compile Include="Models\LogAttivitaModel.cs" />
+    <Compile Include="Models\NormaCalcoloModel.cs" />
+    <Compile Include="Models\RegolaCalcolo_Riduzioni.cs" />
+    <Compile Include="Models\RegoleCalcoloModel.cs" />
+    <Compile Include="Models\RiduzioniModel.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
+    <Compile Include="Models\TipoRegolaCalcoloModel.cs" />
+    <Compile Include="Models\TrasferimentoModel.cs" />
+    <Compile Include="Models\UtentiAutorizzatiModel.cs" />
     <Compile Include="NORMACALCOLO.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
@@ -808,6 +823,7 @@
     <Compile Include="OA.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="OggettiISe\InvioEmail.cs" />
     <Compile Include="PARENTELA.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>

@@ -50,7 +50,10 @@ namespace NewISE.Controllers
 
             try
             {
+                LogAttivitaModel lam = new LogAttivitaModel();
+                //lam = dtLogAttivita.getLog();
 
+                var s = lam.attivitaCrudM.descrizioneAttivita;
             }
             catch (Exception ex)
             {
