@@ -10,17 +10,20 @@ namespace NewISE.Models
     public class RegolaCalcolo_Riduzioni
     {
         [Key]
-        public long idRegola { get; set; }
+
         [Required]
         [Display(Name = "Id Regola")]
-        public long idRiduzioni { get; set; }
+        public long idRegola { get; set; }
+
         [Required]
         [Display(Name = "Id Riduzioni")]
-        public DateTime dataOperazione { get; set; }
+        public long idRiduzioni { get; set; }
+
         [Required]
         [Display(Name = "Data Operazione ")]
         [DataType(DataType.Date)]
-
+        public DateTime dataOperazione { get; set; }
+        
         public REGOLECALCOLO regoleCalcolo { get; set; }
         public RIDUZIONI riduzioni { get; set; }
     }
