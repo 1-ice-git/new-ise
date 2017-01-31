@@ -9,52 +9,58 @@ namespace NewISE.Models
     public class TrasferimentoModel
     {
         [Key]
-        public long idTrasferimento { get; set; }
+
         [Required(ErrorMessage = "ID Trasferimento richiesto")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
+        public long idTrasferimento { get; set; }
 
-        public long idTipoTrasferimento { get; set; }
         [Required(ErrorMessage = "ID TipoTrasferimento richiesto")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
+        public long idTipoTrasferimento { get; set; }
 
-        public long idUfficio { get; set; }
         [Required(ErrorMessage = "ID Ufficio richiesto")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
+        public long idUfficio { get; set; }
 
-        public long idStatoTrasferimento{ get; set; }
         [Required(ErrorMessage = "ID StatoTrasferimento richiesto")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
+        public long idStatoTrasferimento{ get; set; }
 
-        public long idRuolo { get; set; }
         [Required(ErrorMessage = "ID Ruolo")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
+        public long idRuolo { get; set; }
 
-        public DateTime dataPartenza { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data di partenza")]
+        public DateTime dataPartenza { get; set; }
 
-        public DateTime dataRientro { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data di rientro")]
+        public DateTime dataRientro { get; set; }
 
-        public string coan { get; set; }
         [Required]
         [StringLength(10)]
         [Display(Name = "COAN")]
+        public string coan { get; set; }
 
-        public string protocolloLettera { get; set; }
         [Required]
         [StringLength(10)]
         [Display(Name = "Protocollo Lettera")]
+        public string protocolloLettera { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
         public DateTime dataLettera { get; set; }
+
+        [Required]
         public int annullato { get; set; }
         public LogAttivitaModel logAttivita { get; set; }
 
