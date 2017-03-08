@@ -104,6 +104,10 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -641,6 +645,7 @@
     <Content Include="Scripts\MyJs.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -798,7 +803,13 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\loginModel.cs" />
+    <Compile Include="Models\ModelRest\CDCModelRest.cs" />
+    <Compile Include="Models\ModelRest\DipendenteRest.cs" />
+    <Compile Include="Models\ModelRest\LivelloModelRest.cs" />
+    <Compile Include="Models\ModelRest\RetDipendenteJson.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
+    <Compile Include="Models\UtenteAutorizzatoModel.cs" />
     <Compile Include="NORMACALCOLO.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
@@ -970,7 +981,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

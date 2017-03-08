@@ -19,9 +19,7 @@ body {
     overflow: auto;
     margin: auto auto auto auto;
     width: 1200px;
-    height:100%;
-    
-    
+    height: 100%;
 }
 
 #intestazioneLayout {
@@ -45,13 +43,13 @@ body {
     font-weight: bold;
 }
 
-#menuIse a:hover {
-    background-color: #237069;
-    cursor: pointer;
-}
+    #menuIse a:hover {
+        background-color: #237069;
+        cursor: pointer;
+    }
 
 .contenitore {
-    height:calc(100% - 200px);
+    height: calc(100% - 200px);
     /*overflow-x: hidden;
     overflow-y: auto;*/
     margin-left: auto;
@@ -69,17 +67,15 @@ body {
     padding-top: 2px;
     margin-top: 2px;
     position:fixed;
-
-    
 }*/
 footer {
-   left:5px;
-   right:5px;
-   bottom:10px;
-   height:60px;
-   width:100%;
-   border-top: ridge;
-   border-top-color: #00B04E;
+    left: 5px;
+    right: 5px;
+    bottom: 10px;
+    height: 60px;
+    width: 100%;
+    border-top: ridge;
+    border-top-color: #00B04E;
 }
 
 .row {
@@ -88,10 +84,10 @@ footer {
     clear: both;
 }
 
-.row .row {
-    width: auto;
-    margin: 0 -20px;
-}
+    .row .row {
+        width: auto;
+        margin: 0 -20px;
+    }
 
 .col1 {
     width: 8.33%;
@@ -209,4 +205,60 @@ footer {
 
 .margineDestro15px {
     margin-right: 15px;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.text-danger {
+    color: #a94442;
+}
+
+.hide {
+    display: none !important;
+}
+
+.show {
+    display: block !important;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: lightgray;
+    font-weight: bold;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: lightgray;
+    font-weight: bold;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: lightgray;
+    font-weight: bold;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: lightgray;
+    font-weight: bold;
+}
+
+.DivSfondoBordo {
+    box-shadow: 10px 10px 5px #808080;
+}
+
+.border_radius {
+    border-radius: 10px 10px 10px 10px;
+    border: 0px inset;
+    background-color: gainsboro;
+    padding-bottom: 10px;
 }

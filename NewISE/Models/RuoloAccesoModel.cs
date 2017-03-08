@@ -9,7 +9,7 @@ namespace NewISE.Models
     public class RuoloAccesoModel
     {
         [Key]
-        public long idRuoloAccesso { get; set; }
+        public decimal idRuoloAccesso { get; set; }
         [Required(ErrorMessage ="La descrizione del ruolo è richiesta.")]
         [StringLength(100, ErrorMessage ="Il campo accetta un massimo di 100 caratteri.")]
         [DataType(DataType.Text)]

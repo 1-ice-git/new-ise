@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization;
+@using System.Security.Claims;
 
 <!DOCTYPE html>
 
@@ -28,6 +29,48 @@
 
     @{
         bool reale = false;
+
+
+        ClaimsPrincipal currentClaimsPrincipal = ClaimsPrincipal.Current;
+        AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+        decimal idUtente = 0;
+        string nome = string.Empty;
+        string cognome = string.Empty;
+        string matricola = string.Empty;
+        string nominativo = string.Empty;
+
+
+        if (currentClaimsPrincipal.Identity.IsAuthenticated)
+        {
+            foreach (Claim claim in currentClaimsPrincipal.Claims)
+            {
+                if (claim.Type == ClaimTypes.NameIdentifier)
+                {
+                    idUtente = Convert.ToDecimal(claim.Value);
+                }
+                else if (claim.Type == ClaimTypes.Name)
+                {
+                    nome = claim.Value;
+                }
+                else if (claim.Type == ClaimTypes.Surname)
+                {
+                    cognome = claim.Value;
+                }
+                else if (claim.Type == ClaimTypes.GivenName)
+                {
+                    matricola = claim.Value;
+                }
+            }
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(cognome) && !string.IsNullOrWhiteSpace(nome))
+        {
+            nominativo = cognome + " " + nome + " (" + matricola + ")";
+        }
+        
+
+
     }
 
     <script type="text/javascript">
@@ -65,9 +108,16 @@
             }
         </div>
     </div>
-    <div id="menuIse" class="row">        
+    <div id="menuIse" class="row">
         <div class="col4">
-            Utente:&nbsp;<span id="lblUtenteConnesso">Amministratore</span>
+            @if (nominativo == string.Empty)
+            {
+                <span>Utente: </span><span>Anonimo</span>
+            }
+            else
+            {
+                <span>Utente: </span><span>@nominativo</span>
+            }
         </div>
         <div class="end">
             <a>Dipendente</a> | <a>Parametri</a> | <a>Elaborazioni</a> | <a>Statistiche</a> | <a>Calendario</a> | <a>Notifiche</a> | <a>Utenze</a>
@@ -87,8 +137,8 @@
             </div>
             <div class="col8">
             </div>
-            <div class="end">                
-                <a href="#"><img src="~/Immagini/LogOut.png" height="4%" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
+            <div class="end">
+                <a onclick="Blocca();" href="@Url.RouteUrl("Logout")"><img src="~/Immagini/LogOut.png" height="4%" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
             </div>
         </div>
     </footer>
@@ -97,8 +147,9 @@
     <script type="text/javascript">
         function PosizioneFooter() {
             var f = $("footer");
-            
+
         }
     </script>
 </body>
+
 </html>

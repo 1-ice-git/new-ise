@@ -28,9 +28,7 @@ namespace NewISE.Models
         public string eMail { get; set; }
         [Required(ErrorMessage ="Il ruolo è richiesto.")]
         public long idRuoloUtente { get; set; }
-        [DefaultValue(false)]
-        [Display(Name = "Ricordati di me", AutoGenerateField = false, AutoGenerateFilter = false)]
-        public bool ricordati { get; set; }
+        
 
         public RuoloAccesoModel ruoloAccesso { get; set; }
         
