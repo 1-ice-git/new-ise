@@ -17,6 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DIPENDENTI()
         {
+            this.CDC_DIPENDENTI = new HashSet<CDC_DIPENDENTI>();
             this.INDBASE_DIPENDENTI = new HashSet<INDBASE_DIPENDENTI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
         }
@@ -25,7 +26,6 @@ namespace NewISE
         public int MATRICOLA { get; set; }
         public string NOME { get; set; }
         public string COGNOME { get; set; }
-        public string CDC { get; set; }
         public System.DateTime DATAASSUNZIONE { get; set; }
         public Nullable<System.DateTime> DATACESSAZIONE { get; set; }
         public string INDIRIZZO { get; set; }
@@ -37,6 +37,8 @@ namespace NewISE
         public string FAX { get; set; }
         public decimal ABILITATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CDC_DIPENDENTI> CDC_DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDBASE_DIPENDENTI> INDBASE_DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

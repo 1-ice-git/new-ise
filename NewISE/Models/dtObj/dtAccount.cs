@@ -24,7 +24,7 @@ namespace NewISE.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
                 {
                     if (db.UTENTIAUTORIZZATI.Where(a=>a.UTENTE == matricola).Count()>0)
                     {
@@ -44,11 +44,12 @@ namespace NewISE.Models.dtObj
         public UtenteAutorizzatoModel PrelevaUtenteLoggato(string matricola)
         {
             UtenteAutorizzatoModel ac = new UtenteAutorizzatoModel();
-
+            
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
                 {
+                    
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 
                     ac.idutenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
@@ -70,10 +71,7 @@ namespace NewISE.Models.dtObj
 
                 throw ex;
             }
-
-
-
-            return ac;
+            
         }
 
 

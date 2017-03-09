@@ -13,10 +13,10 @@ namespace NewISE
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EntitiesDBISE : DbContext
+    public partial class EntitiesDBISEPRO : DbContext
     {
-        public EntitiesDBISE()
-            : base("name=EntitiesDBISE")
+        public EntitiesDBISEPRO()
+            : base("name=EntitiesDBISEPRO")
         {
         }
     
@@ -32,6 +32,9 @@ namespace NewISE
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
         public virtual DbSet<BIGLIETTI_DOCUMENTI> BIGLIETTI_DOCUMENTI { get; set; }
+        public virtual DbSet<CDC> CDC { get; set; }
+        public virtual DbSet<CDC_DIPENDENTI> CDC_DIPENDENTI { get; set; }
+        public virtual DbSet<CDC_TRASF> CDC_TRASF { get; set; }
         public virtual DbSet<COEFFICENTEFKM> COEFFICENTEFKM { get; set; }
         public virtual DbSet<COEFFICENTEINDRICHIAMO> COEFFICENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICENTISEDE> COEFFICENTISEDE { get; set; }

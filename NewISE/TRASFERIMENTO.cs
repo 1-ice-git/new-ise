@@ -17,6 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASFERIMENTO()
         {
+            this.CDC_TRASF = new HashSet<CDC_TRASF>();
             this.INDENNITA = new HashSet<INDENNITA>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
@@ -37,6 +38,8 @@ namespace NewISE
         public Nullable<System.DateTime> DATALETTERA { get; set; }
         public decimal ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CDC_TRASF> CDC_TRASF { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

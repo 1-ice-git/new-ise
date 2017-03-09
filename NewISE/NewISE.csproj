@@ -196,8 +196,8 @@
     <Content Include="Content\jquery-ui-1.12.1.custom\LICENSE.txt" />
     <Content Include="DBISE.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DBISE.Context.cs</LastGenOutput>
       <DependentUpon>DBISE.edmx</DependentUpon>
+      <LastGenOutput>DBISE.Context.cs</LastGenOutput>
     </Content>
     <Content Include="DBISE.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -669,6 +669,15 @@
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="CDC.cs">
+      <DependentUpon>DBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CDC_DIPENDENTI.cs">
+      <DependentUpon>DBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CDC_TRASF.cs">
+      <DependentUpon>DBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="COEFFICENTEFKM.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
@@ -687,10 +696,20 @@
     <Compile Include="DATIMAB_MABANNUALI.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBISE.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBISE.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBISE.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBISE.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="DEFFASCIACHILOMETRICA.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
@@ -960,16 +979,6 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="DBISE.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBISE.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBISE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBISE.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
