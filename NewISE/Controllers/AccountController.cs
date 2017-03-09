@@ -151,7 +151,10 @@ namespace NewISE.Controllers
             return RedirectToAction("Login");
         }
 
-
+        public ActionResult InviaPassword()
+        {
+            return View();
+        }
         
 
 

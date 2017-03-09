@@ -1,5 +1,7 @@
 ﻿@using System.Web.Optimization;
 @using System.Security.Claims;
+@using NewISE.Models;
+@using NewISE.Models.Tools;
 
 <!DOCTYPE html>
 
@@ -29,46 +31,47 @@
 
     @{
         bool reale = false;
-
-
-        ClaimsPrincipal currentClaimsPrincipal = ClaimsPrincipal.Current;
+        AccountModel ac = new AccountModel();
         AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-        decimal idUtente = 0;
-        string nome = string.Empty;
-        string cognome = string.Empty;
-        string matricola = string.Empty;
         string nominativo = string.Empty;
 
+        ac = Utility.UtenteAutorizzato();
 
-        if (currentClaimsPrincipal.Identity.IsAuthenticated)
+
+        if (ac!=null && ac.idUtenteAutorizzato>0)
         {
-            foreach (Claim claim in currentClaimsPrincipal.Claims)
-            {
-                if (claim.Type == ClaimTypes.NameIdentifier)
-                {
-                    idUtente = Convert.ToDecimal(claim.Value);
-                }
-                else if (claim.Type == ClaimTypes.Name)
-                {
-                    nome = claim.Value;
-                }
-                else if (claim.Type == ClaimTypes.Surname)
-                {
-                    cognome = claim.Value;
-                }
-                else if (claim.Type == ClaimTypes.GivenName)
-                {
-                    matricola = claim.Value;
-                }
-            }
+            nominativo = ac.nominativo + " (" + ac.utente + ")";
         }
 
+        //if (currentClaimsPrincipal.Identity.IsAuthenticated)
+        //{
+        //    foreach (Claim claim in currentClaimsPrincipal.Claims)
+        //    {
+        //        if (claim.Type == ClaimTypes.NameIdentifier)
+        //        {
+        //            idUtente = Convert.ToDecimal(claim.Value);
+        //        }
+        //        else if (claim.Type == ClaimTypes.Name)
+        //        {
+        //            nome = claim.Value;
+        //        }
+        //        else if (claim.Type == ClaimTypes.Surname)
+        //        {
+        //            cognome = claim.Value;
+        //        }
+        //        else if (claim.Type == ClaimTypes.GivenName)
+        //        {
+        //            matricola = claim.Value;
+        //        }
+        //    }
+        //}
 
-        if (!string.IsNullOrWhiteSpace(cognome) && !string.IsNullOrWhiteSpace(nome))
-        {
-            nominativo = cognome + " " + nome + " (" + matricola + ")";
-        }
-        
+
+        //if (!string.IsNullOrWhiteSpace(cognome) && !string.IsNullOrWhiteSpace(nome))
+        //{
+        //    nominativo = cognome + " " + nome + " (" + matricola + ")";
+        //}
+
 
 
     }

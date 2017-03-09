@@ -830,6 +830,7 @@
     <Compile Include="Models\ModelRest\RetDipendenteJson.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
+    <Compile Include="Models\Tools\Utility.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
     <Compile Include="NORMACALCOLO.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
@@ -972,7 +973,6 @@
     <Compile Include="VOCI.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
-    <Content Include="App_Code\Utility.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -983,7 +983,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -1001,6 +1000,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
