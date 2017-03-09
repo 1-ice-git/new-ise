@@ -3921,8 +3921,8 @@
           <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITACRUD" Relationship="Self.R_AC_LA" FromRole="LOGATTIVITA" ToRole="ATTIVITACRUD" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="Self.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />

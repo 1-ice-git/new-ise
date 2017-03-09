@@ -41,7 +41,7 @@
         <EntityTypeShape EntityType="ModelISEPRO.INDRIC_COEFINDRICH" Width="1.5" PointX="12.75" PointY="86.875" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.LIVELLI" Width="1.5" PointX="3.75" PointY="100.625" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.LIVELLIDIPENDENTI" Width="1.5" PointX="6" PointY="97.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ModelISEPRO.LOGATTIVITA" Width="1.5" PointX="11.25" PointY="62.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelISEPRO.LOGATTIVITA" Width="1.75" PointX="11.25" PointY="62.5" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.MAB_ALIQCONTR" Width="1.5" PointX="7.5" PointY="77.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.MAB_DATIMAB" Width="1.5" PointX="10.5" PointY="75.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.MAB_DOC" Width="1.5" PointX="3" PointY="50" IsExpanded="true" />
