@@ -22,14 +22,14 @@ namespace NewISE.Models.Tools
                 MailMessage messaggio = new MailMessage();
                 string NomeMittente = string.Empty;
 
-                if (msgMail.mittente == null || msgMail.mittente.EmailMittente == string.Empty)
+                if (msgMail.mittente == null || !string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
                 {
                     NomeMittente = "ISE";
                     messaggio.From = new MailAddress("ise@ice.it", "ISE");
                 }
                 else
                 {
-                    //TODO: chiamata sul DB per ricavare il nome del mittente (Nome Cognome), filtrato in base all'indirizzo email.
+                    
                     messaggio.From = new MailAddress(msgMail.mittente.EmailMittente, msgMail.mittente.Nominativo);
                 }
 
@@ -42,16 +42,24 @@ namespace NewISE.Models.Tools
                 messaggio.Subject = msgMail.oggetto;
                 messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
 
-                //// Code to send Single attachments
-                FileStream fs = new FileStream(@"C:\Users\UTENTE\Downloads\CPME79-00-AF-01-01(Analisi Funzionale).pdf", FileMode.Open, FileAccess.Read);
-                Attachment a = new Attachment(fs, "CPME79-00-AF-01-01(Analisi Funzionale).pdf", MediaTypeNames.Application.Octet);
-                messaggio.Attachments.Add(a);
+                if (msgMail.allegato!= null && msgMail.allegato.Count>0)
+                {
+                    foreach (var item in msgMail.allegato)
+                    {
+                        Stream fs = item.allegato;
+                        Attachment allegato = new Attachment(fs, item.nomeFile);
+                        messaggio.Attachments.Add(allegato);
+                    }
+                }
+                //FileStream fs = new FileStream(@"C:\Users\UTENTE\Downloads\CPME79-00-AF-01-01(Analisi Funzionale).pdf", FileMode.Open, FileAccess.Read);
+                //Attachment a = new Attachment(fs, "CPME79-00-AF-01-01(Analisi Funzionale).pdf", MediaTypeNames.Application.Octet);
+                
 
                 //// Code to send Multiple attachments
                 //messaggio.Attachments.Add(new Attachment(@"C:\..\..\Fante.txt"));
                 //messaggio.Attachments.Add(new Attachment(@"D:\abc-xyz\UseFull-Links\How to send an Email using C# – complete features.txt"));
 
-                messaggio.Priority = MailPriority.High;
+                messaggio.Priority = msgMail.priorita;
 
                 // Gestire campo vuoto del Body
                 //messaggio.Body = @"Il mio messaggio di testo <b>in formato html</b>";
@@ -61,8 +69,9 @@ namespace NewISE.Models.Tools
 
                 SmtpClient server = new SmtpClient();
 
-                // 
-                server.Host = "massivemail.ice.it";
+                string host = System.Configuration.ConfigurationManager.AppSettings["HostMail"];
+
+                server.Host = host;
                 //server.Port = 587; //465
                 server.EnableSsl = false;
                 server.Credentials = CredentialCache.DefaultNetworkCredentials;
@@ -74,8 +83,9 @@ namespace NewISE.Models.Tools
             }
             catch (SmtpException e)
             {
-                Console.WriteLine("Errore: wwwww", e.StatusCode);
+                //Console.WriteLine("Errore: wwwww", e.StatusCode);
                 //Log error here
+
                 return false;
             }
 
