@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using NewISE.Models;
+using NewISE.Models.Config;
+using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj;
 using NewISE.Models.ModelRest;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
@@ -46,6 +49,7 @@ namespace NewISE.Controllers
         {
             RetDipendenteJson rj = new RetDipendenteJson();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+            sAdmin sad = new sAdmin();
 
             try
             {
@@ -54,6 +58,74 @@ namespace NewISE.Controllers
                     ViewBag.ModelStateCount = 1;
                     ModelState.AddModelError("", "L'username e la password sono obbligatori.");
                     return View(account);
+                }
+
+                using (Config cfg = new Config())
+                {
+                    sad = cfg.SuperAmministratore();
+                    if (sad.s_admin.Count > 0)
+                    {
+                        var lutsa = sad.s_admin.Where(a => a.username == account.username);
+
+                        if (lutsa.Count() > 0)
+                        {
+                            var utsa = lutsa.First();
+
+                            if (utsa != null)
+                            {
+                                if (utsa.username == account.username)
+                                {
+                                    if (utsa.password == account.password)
+                                    {
+                                        using (dtAccount dta = new dtAccount())
+                                        {
+                                            if (dta.VerificaAccesso(account.username))
+                                            {
+                                                UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                                                uam = dta.PrelevaUtenteLoggato(account.username);
+
+                                                Claim[] identityClaims = new Claim[]
+                                                {
+                                                new Claim(ClaimTypes.NameIdentifier, uam.idutenteAutorizzato.ToString()),
+                                                new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
+                                                new Claim(ClaimTypes.GivenName, utsa.username),
+                                                new Claim(ClaimTypes.Name, utsa.nome),
+                                                new Claim(ClaimTypes.Surname, utsa.cognome),
+                                                new Claim(ClaimTypes.PostalCode, ""),
+                                                new Claim(ClaimTypes.Country, ""),
+                                                new Claim(ClaimTypes.StateOrProvince, ""),
+                                                new Claim(ClaimTypes.StreetAddress, ""),
+                                                new Claim(ClaimTypes.Email, utsa.email),
+                                                };
+
+                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+
+                                                Authentication.SignIn(new AuthenticationProperties
+                                                {
+                                                    IsPersistent = account.ricordati
+                                                }, identity);
+                                                //"/Home/Home"
+                                                return Redirect(GetRedirectUrl(returnUrl));
+                                            }
+                                            else
+                                            {
+                                                ViewBag.ModelStateCount = 1;
+                                                ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                                return View(account);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ViewBag.ModelStateCount = 1;
+                                        ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                        return View(account);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 var client = new RestSharp.RestClient("http://128.1.50.97:82");
@@ -78,11 +150,9 @@ namespace NewISE.Controllers
                             {
                                 if (dta.VerificaAccesso(account.username))
                                 {
-
                                     UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
 
                                     uam = dta.PrelevaUtenteLoggato(account.username);
-
 
                                     Claim[] identityClaims = new Claim[]
                                     {
@@ -96,15 +166,13 @@ namespace NewISE.Controllers
                                         new Claim(ClaimTypes.StateOrProvince, retDip.items.provincia),
                                         new Claim(ClaimTypes.StreetAddress, retDip.items.indirizzo),
                                         new Claim(ClaimTypes.Email, retDip.items.email),
-                                        
-
                                     };
 
                                     ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
                                     Authentication.SignIn(new AuthenticationProperties
                                     {
-                                        IsPersistent = account.ricordati                                        
+                                        IsPersistent = account.ricordati
                                     }, identity);
                                     //"/Home/Home"
                                     return Redirect(GetRedirectUrl(returnUrl));
@@ -140,8 +208,6 @@ namespace NewISE.Controllers
             {
                 return View("Error");
             }
-
-            
         }
 
         public ActionResult Logout()
@@ -155,9 +221,5 @@ namespace NewISE.Controllers
         {
             return View();
         }
-        
-
-
-
     }
 }
