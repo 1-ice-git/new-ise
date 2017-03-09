@@ -822,7 +822,10 @@
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\AttivitaCRUDModel.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\dtObj\dtInsLog.cs" />
+    <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
     <Compile Include="Models\ModelRest\CDCModelRest.cs" />
     <Compile Include="Models\ModelRest\DipendenteRest.cs" />
@@ -831,7 +834,9 @@
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\Utility.cs" />
+    <Compile Include="Models\TrasferimentoModel.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
+    <Compile Include="Models\UtentiAutorizzatiModel.cs" />
     <Compile Include="NORMACALCOLO.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>

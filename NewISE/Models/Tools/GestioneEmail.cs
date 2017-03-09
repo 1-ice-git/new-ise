@@ -84,7 +84,7 @@ namespace NewISE.Models.Tools
             catch (SmtpException e)
             {
                 //Console.WriteLine("Errore: wwwww", e.StatusCode);
-                //Log error here
+                // pLog.descAttivitaSvolta;
 
                 return false;
             }
