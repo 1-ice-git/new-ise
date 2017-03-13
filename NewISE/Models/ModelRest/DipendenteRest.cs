@@ -8,6 +8,7 @@ namespace NewISE.Models.ModelRest
     public class DipendenteRest
     {
         public string matricola { get; set; }
+        public string password { get; set; }
         public string cognome { get; set; }
         public string nome { get; set; }
         public string cdf { get; set; }

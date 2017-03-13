@@ -1,16 +1,22 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
 using NewISE.Models;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj;
 using NewISE.Models.ModelRest;
+using NewISE.Models.Tools;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Collections;
+using System.Collections.Generic;
+
 
 namespace NewISE.Controllers
 {
@@ -210,6 +216,7 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Logout()
         {
             Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -217,9 +224,101 @@ namespace NewISE.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult InviaPassword()
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult InviamiPassword()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InviamiPassword(string matricola)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+            DipendenteRest dr = new DipendenteRest();
+            Destinatario d = new Destinatario();
+            sAdmin sad = new sAdmin();
+            string password = string.Empty;
+            List<Destinatario> ld = new List<Destinatario>();
+
+            try
+            {
+                using (Config cfg = new Config())
+                {
+                    sad = cfg.SuperAmministratore();
+                    if (sad.s_admin.Count > 0)
+                    {
+                        var lutsa = sad.s_admin.Where(a => a.username == matricola);
+                        if (lutsa.Count() > 0)
+                        {
+                            var utsa = lutsa.First();
+                            if (utsa != null)
+                            {
+                                d.Nominativo = utsa.cognome + " " + utsa.nome;
+                                d.EmailDestinatario = utsa.email;
+                                password = utsa.password;
+                            }
+                        }
+                        else
+                        {
+                            using (dtDipendentiRest dtdr = new dtDipendentiRest())
+                            {
+                                dr = dtdr.GetDipendenteRest(matricola);
+                            }
+
+                            if (string.IsNullOrWhiteSpace(dr.email))
+                            {
+                                ModelState.AddModelError("", "Non è presente nessuna E-mail per la matricola passata.");
+                                return View();
+                            }
+
+                            d.Nominativo = dr.nominativo;
+                            d.EmailDestinatario = dr.email;
+                            password = dr.password;
+                        }
+                    }
+                }
+
+                ld.Add(d);
+
+                string corpoMsg = @"<h1><strong>ISE (Indennita Sede Estera)</strong></h1>
+                                    <h3>Sono state richieste le credenziali&nbsp;per l'utente <strong>{0} ({1}).</strong></h3>
+                                    <ul style='list-style-type: square;'>
+                                    <li>Username:<strong>{2};</strong></li>
+                                    <li>Password: <strong>{3}</strong></li>
+                                    </ul>
+                                    <hr />
+                                    <div style='text-align: right;'>
+                                    <p><span style='text-decoration: underline;'>{4} - {5}</span></p>
+                                    </div>
+                                    <p>&nbsp;</p>";
+
+                corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password, DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
+
+                using (GestioneEmail gem = new GestioneEmail())
+                {
+                    msg.oggetto = "ISE - Password personale";
+                    msg.corpoMsg = corpoMsg;
+                    msg.priorita = System.Net.Mail.MailPriority.High;
+                    msg.destinatario = ld;
+
+                    if (!gem.sendMail(msg))
+                    {
+                        ModelState.AddModelError("", "Errore nell'invio dell'E-mail.");
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
     }
 }
