@@ -1,0 +1,24 @@
+﻿{
+  "s_admin": [
+    {
+      "username": "yoravas",
+      "password": "aspnet",
+      "nome": "Mauro",
+      "cognome": "Arduini",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "fantomas",
+      "password": "ise",
+      "nome": "Daniele",
+      "cognome": "Fantini",
+      "email": "daniele.fantini@ritspa.it"
+    }
+  ]
+
+
+
+
+
+
+}

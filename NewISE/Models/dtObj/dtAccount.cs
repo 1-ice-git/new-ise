@@ -48,8 +48,7 @@ namespace NewISE.Models.dtObj
             try
             {
                 using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
-                {
-                    
+                {                    
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 
                     ac.idutenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
@@ -60,8 +59,6 @@ namespace NewISE.Models.dtObj
                         idRuoloAccesso = ua.RUOLOACCESSO.IDRUOLOACCESSO,
                         descRuoloAccesso = ua.RUOLOACCESSO.DESCRUOLO
                     };
-
-
                 }
 
                 return ac;
@@ -73,6 +70,8 @@ namespace NewISE.Models.dtObj
             }
             
         }
+
+        
 
 
     }

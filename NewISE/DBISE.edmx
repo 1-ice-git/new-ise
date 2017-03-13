@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ModelISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -388,8 +388,8 @@
           <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="clob" Nullable="false" />
-          <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" Nullable="false" />
-          <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" />
+          <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="MAB_ALIQCONTR">
           <Key>
@@ -3448,8 +3448,7 @@
             <End Role="MAGFAM_MAGCON" EntitySet="MAGFAM_MAGCON" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ModelISEPRO" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3921,8 +3920,8 @@
           <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITACRUD" Relationship="Self.R_AC_LA" FromRole="LOGATTIVITA" ToRole="ATTIVITACRUD" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="Self.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />

@@ -1,13 +1,22 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
 using NewISE.Models;
+using NewISE.Models.Config;
+using NewISE.Models.Config.s_admin;
 using NewISE.Models.dtObj;
 using NewISE.Models.ModelRest;
+using NewISE.Models.Tools;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using System.Collections;
+using System.Collections.Generic;
+
 
 namespace NewISE.Controllers
 {
@@ -46,6 +55,7 @@ namespace NewISE.Controllers
         {
             RetDipendenteJson rj = new RetDipendenteJson();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+            sAdmin sad = new sAdmin();
 
             try
             {
@@ -54,6 +64,74 @@ namespace NewISE.Controllers
                     ViewBag.ModelStateCount = 1;
                     ModelState.AddModelError("", "L'username e la password sono obbligatori.");
                     return View(account);
+                }
+
+                using (Config cfg = new Config())
+                {
+                    sad = cfg.SuperAmministratore();
+                    if (sad.s_admin.Count > 0)
+                    {
+                        var lutsa = sad.s_admin.Where(a => a.username == account.username);
+
+                        if (lutsa.Count() > 0)
+                        {
+                            var utsa = lutsa.First();
+
+                            if (utsa != null)
+                            {
+                                if (utsa.username == account.username)
+                                {
+                                    if (utsa.password == account.password)
+                                    {
+                                        using (dtAccount dta = new dtAccount())
+                                        {
+                                            if (dta.VerificaAccesso(account.username))
+                                            {
+                                                UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                                                uam = dta.PrelevaUtenteLoggato(account.username);
+
+                                                Claim[] identityClaims = new Claim[]
+                                                {
+                                                new Claim(ClaimTypes.NameIdentifier, uam.idutenteAutorizzato.ToString()),
+                                                new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
+                                                new Claim(ClaimTypes.GivenName, utsa.username),
+                                                new Claim(ClaimTypes.Name, utsa.nome),
+                                                new Claim(ClaimTypes.Surname, utsa.cognome),
+                                                new Claim(ClaimTypes.PostalCode, ""),
+                                                new Claim(ClaimTypes.Country, ""),
+                                                new Claim(ClaimTypes.StateOrProvince, ""),
+                                                new Claim(ClaimTypes.StreetAddress, ""),
+                                                new Claim(ClaimTypes.Email, utsa.email),
+                                                };
+
+                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+
+                                                Authentication.SignIn(new AuthenticationProperties
+                                                {
+                                                    IsPersistent = account.ricordati
+                                                }, identity);
+                                                //"/Home/Home"
+                                                return Redirect(GetRedirectUrl(returnUrl));
+                                            }
+                                            else
+                                            {
+                                                ViewBag.ModelStateCount = 1;
+                                                ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                                return View(account);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        ViewBag.ModelStateCount = 1;
+                                        ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                        return View(account);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 var client = new RestSharp.RestClient("http://128.1.50.97:82");
@@ -78,11 +156,9 @@ namespace NewISE.Controllers
                             {
                                 if (dta.VerificaAccesso(account.username))
                                 {
-
                                     UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
 
                                     uam = dta.PrelevaUtenteLoggato(account.username);
-
 
                                     Claim[] identityClaims = new Claim[]
                                     {
@@ -96,15 +172,13 @@ namespace NewISE.Controllers
                                         new Claim(ClaimTypes.StateOrProvince, retDip.items.provincia),
                                         new Claim(ClaimTypes.StreetAddress, retDip.items.indirizzo),
                                         new Claim(ClaimTypes.Email, retDip.items.email),
-                                        
-
                                     };
 
                                     ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
                                     Authentication.SignIn(new AuthenticationProperties
                                     {
-                                        IsPersistent = account.ricordati                                        
+                                        IsPersistent = account.ricordati
                                     }, identity);
                                     //"/Home/Home"
                                     return Redirect(GetRedirectUrl(returnUrl));
@@ -140,10 +214,9 @@ namespace NewISE.Controllers
             {
                 return View("Error");
             }
-
-            
         }
 
+        [HttpGet]
         public ActionResult Logout()
         {
             Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
@@ -151,13 +224,101 @@ namespace NewISE.Controllers
             return RedirectToAction("Login");
         }
 
-        public ActionResult InviaPassword()
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult InviamiPassword()
         {
             return View();
         }
-        
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InviamiPassword(string matricola)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+            DipendenteRest dr = new DipendenteRest();
+            Destinatario d = new Destinatario();
+            sAdmin sad = new sAdmin();
+            string password = string.Empty;
+            List<Destinatario> ld = new List<Destinatario>();
 
+            try
+            {
+                using (Config cfg = new Config())
+                {
+                    sad = cfg.SuperAmministratore();
+                    if (sad.s_admin.Count > 0)
+                    {
+                        var lutsa = sad.s_admin.Where(a => a.username == matricola);
+                        if (lutsa.Count() > 0)
+                        {
+                            var utsa = lutsa.First();
+                            if (utsa != null)
+                            {
+                                d.Nominativo = utsa.cognome + " " + utsa.nome;
+                                d.EmailDestinatario = utsa.email;
+                                password = utsa.password;
+                            }
+                        }
+                        else
+                        {
+                            using (dtDipendentiRest dtdr = new dtDipendentiRest())
+                            {
+                                dr = dtdr.GetDipendenteRest(matricola);
+                            }
 
+                            if (string.IsNullOrWhiteSpace(dr.email))
+                            {
+                                ModelState.AddModelError("", "Non è presente nessuna E-mail per la matricola passata.");
+                                return View();
+                            }
+
+                            d.Nominativo = dr.nominativo;
+                            d.EmailDestinatario = dr.email;
+                            password = dr.password;
+                        }
+                    }
+                }
+
+                ld.Add(d);
+
+                string corpoMsg = @"<h1><strong>ISE (Indennita Sede Estera)</strong></h1>
+                                    <h3>Sono state richieste le credenziali&nbsp;per l'utente <strong>{0} ({1}).</strong></h3>
+                                    <ul style='list-style-type: square;'>
+                                    <li>Username:<strong>{2};</strong></li>
+                                    <li>Password: <strong>{3}</strong></li>
+                                    </ul>
+                                    <hr />
+                                    <div style='text-align: right;'>
+                                    <p><span style='text-decoration: underline;'>{4} - {5}</span></p>
+                                    </div>
+                                    <p>&nbsp;</p>";
+
+                corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password, DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
+
+                using (GestioneEmail gem = new GestioneEmail())
+                {
+                    msg.oggetto = "ISE - Password personale";
+                    msg.corpoMsg = corpoMsg;
+                    msg.priorita = System.Net.Mail.MailPriority.High;
+                    msg.destinatario = ld;
+
+                    if (!gem.sendMail(msg))
+                    {
+                        ModelState.AddModelError("", "Errore nell'invio dell'E-mail.");
+                        return View();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
     }
 }
