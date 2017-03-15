@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Parametri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Areas/Parametri/Contenuti/CSS/Parametri.css" rel="stylesheet" />
+
+
+<div class="row" id="divRiga1" >
+    <div class="col12 div_row1_col" >
+        <div class="form-group">
+            @Html.Label("lblParametro", "Seleziona Tabella", new { @class = "control-label" })
+            <div id="divCombo" >
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();" })
+                </div>
+
+                @Html.ValidationMessage("idParametro", "", new { @class = "text-danger" })
+            </div>
+            <div id="divChk" >
+                <label>Escludi annullati</label>
+                <input type="checkbox" id="escludiAnnullati" checked="checked" value="Escludi" onclick="prelevaPartiaViewParametri();"/>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div id="divContentpartial" class="row">
+    <div id="divPViewParametri" class="col12">
+    </div>
+    
+</div>
+
+<div id="dialog-message" title="Attenzione!!!" class="DisplayNone">
+	<div>
+		<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+		<strong><span id="msgDialog"></span></strong>
+	</div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#idParametro").select2({
+                placeholder: "Seleziona il Parametro",
+                allowClear: true,
+                language: "it"
+            });
+
+            //$("#idParametro").click(function () {
+            //    debugger;
+            //    prelevaPartiaViewParametri();
+            //});
+
+            //$("form").submit(function () {
+            //    if ($("form").valid()) {
+            //        Blocca();
+            //    }
+
+            //});
+        });
+
+        function prelevaPartiaViewParametri() {
+            //debugger;
+            var rotta = "";
+
+            var tabParam = parseInt($("#idParametro").select2('val'));
+            var chk = true;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = false;
+            }
+
+            if (isNaN(tabParam)) {
+                //AlertDialog("Selezionare una tabella dei parametri.");
+                $("#divPViewParametri").empty();
+                return false;
+            }
+            switch (tabParam) {
+                case 0://indennita di base
+                    rotta = "/Parametri/Parametri/IndennitaBase";
+                    break;
+                case 1:
+
+                    break;
+
+                default:
+
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { escludiAnnullati: chk },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = error.err;
+                    AlertDialogCRI(errorThrow);
+                }
+
+            });
+
+        }
+    </script>
+}

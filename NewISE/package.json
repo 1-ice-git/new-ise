@@ -1,0 +1,9 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "devDependencies": {
+    "datatables.net": "^1.10.13",
+    "install": "^0.8.7",
+    "npm": "^4.4.1"
+  }
+}
