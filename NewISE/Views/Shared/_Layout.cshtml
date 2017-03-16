@@ -131,6 +131,9 @@
 
     <script type="text/javascript">
         $(document).tooltip();
+        $("input[type=submit]").button();
+        $("input[type=button]").button();
+
     </script>
 </head>
 <body>
@@ -204,7 +207,7 @@
 
         function AltezzaCentro() {
             //debugger;
-            var mFoo = jQuery("#Footer");
+            var mFoo = jQuery("footer");
             //var AltezzaBoby = $(document.body).height();
             var AltezzaFooter = mFoo.outerHeight();
             //var AltezzaDocumento = $(document).height();
@@ -233,7 +236,7 @@
                 winHeight = document.body.clientHeight;
             }
 
-            var Altezzacentro = (((((winHeight - RealeSimulazione) - intestazioneLayout) - menuIse)) - AltezzaFooter) - 35;
+            var Altezzacentro = (((((winHeight - intestazioneLayout) - RealeSimulazione) - menuIse)) - AltezzaFooter);
 
             $("#contenitore").height(Altezzacentro);
 

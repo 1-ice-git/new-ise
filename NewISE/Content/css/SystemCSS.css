@@ -42,6 +42,7 @@ body {
     height: 25px;
     font-weight: bold;
 }
+
     #menuIse a:hover {
         background-color: #237069;
         cursor: pointer;
@@ -57,7 +58,6 @@ body {
     border-top-color: #00B04E;
 }
 
-
 footer {
     left: 5px;
     right: 5px;
@@ -72,8 +72,8 @@ footer {
     width: 100%;
     margin-bottom: 5px;
     clear: both;
-    padding-left:3px;
-    padding-right:3px;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
     .row .row {
@@ -261,6 +261,3 @@ footer {
     background-color: #00B04E;
 }
 
-.DisplayNone{
-    display:none;
-}

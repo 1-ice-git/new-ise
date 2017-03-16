@@ -22,8 +22,9 @@ namespace NewISE.Areas.Parametri
 
             context.MapRoute(
                 "Parametri",
-                "Parametri/Parametri/Index"                
+                "Parametri/Parametri/Index"
             );
+            
         }
     }
 }

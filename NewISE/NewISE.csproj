@@ -1193,7 +1193,6 @@
     <Content Include="Models\Config\s_admin\s_admin.json" />
     <Content Include="Areas\Parametri\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Parametri\Index.cshtml" />
-    <Content Include="Areas\Parametri\Views\Parametri\IndennitaBase.cshtml" />
     <Content Include="package.json" />
     <Content Include="Content\jquery-ui-1.12.1.custom\package.json" />
     <Content Include="Content\DataTables-1.10.13\Contributing.md" />
@@ -1224,7 +1223,8 @@
     <Content Include="Content\DataTables-1.10.13\media\images\Sorting icons.psd" />
     <Content Include="Content\DataTables-1.10.13\Readme.md" />
     <Content Include="Content\DataTables-1.10.13\Italian.json" />
-    <Content Include="Areas\Parametri\Views\Parametri\NuovaIndennitaBase.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndennitaBase\IndennitaBase.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndennitaBase\NuovaIndennitaBase.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1309,6 +1309,7 @@
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParametriController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamIndennitaBaseController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndennitaBase.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtLivelli.cs" />
     <Compile Include="Areas\Parametri\Models\IndennitaBaseModel.cs" />

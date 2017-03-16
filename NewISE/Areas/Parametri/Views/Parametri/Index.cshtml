@@ -32,7 +32,7 @@
     
 </div>
 
-<div id="dialog-message" title="Attenzione!!!" class="DisplayNone">
+<div id="dialog-message" title="Attenzione!!!" class="hide">
 	<div>
 		<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
 		<strong><span id="msgDialog"></span></strong>
@@ -50,18 +50,7 @@
                 allowClear: true,
                 language: "it"
             });
-
-            //$("#idParametro").click(function () {
-            //    debugger;
-            //    prelevaPartiaViewParametri();
-            //});
-
-            //$("form").submit(function () {
-            //    if ($("form").valid()) {
-            //        Blocca();
-            //    }
-
-            //});
+           
         });
 
         function prelevaPartiaViewParametri() {
@@ -81,7 +70,7 @@
             }
             switch (tabParam) {
                 case 0://indennita di base
-                    rotta = "/Parametri/Parametri/IndennitaBase";
+                    rotta = "/Parametri/ParamIndennitaBase/IndennitaBase";
                     break;
                 case 1:
 
@@ -94,7 +83,7 @@
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { escludiAnnullati: chk },
+                data: {escludiAnnullati: chk },
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
@@ -116,13 +105,16 @@
                     //                $("#Centro").getNiceScroll().resize();
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = error.err;
-                    AlertDialogCRI(errorThrow);
+                    debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
                 }
 
             });
 
         }
+
+        
+
     </script>
 }
