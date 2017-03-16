@@ -1,0 +1,213 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.IndennitaBaseModel>
+
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+}
+
+<p>
+    <a id="btnInsNuovaInd" href="#" onclick="NuovaIndennitaDiBase();">Inserisci Indennita di Base</a>
+</p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblLivello0", "Seleziona Livello", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();" })
+            </div>
+        </div>
+    </div>
+</p>
+<table id="tbIndBase" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valoreResponsabile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.valore)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td style="text-align:center;">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idIndennitaBase }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idIndennitaBase }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idIndennitaBase })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idLivello").select2({
+        placeholder: "Seleziona il livello",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaInd").button();
+
+    function PrelevaPVIndBase() {
+        debugger;
+        rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
+
+        var idLivello = parseInt($("#idLivello").select2('val'));
+        var chk = true;
+
+        if (isNaN(idLivello)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaIndennitaDiBase() {
+        debugger;
+
+        var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
+        var idLivello = parseInt($("#idLivello").select2('val'));
+        var chk = true;
+
+        if (isNaN(idLivello)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un livello per procedere.");
+            return false;
+        }
+
+        
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+</script>

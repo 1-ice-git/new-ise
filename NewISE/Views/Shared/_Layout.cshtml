@@ -13,17 +13,74 @@
 
     <title>@ViewBag.Title - ISE (Indennità sede estera)</title>
 
-    @Styles.Render("~/Content/jqueryuiCSS")
+    <script src="~/Scripts/jquery-2.2.4.min.js"></script>
+
+    <link href="~/Content/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+    <script src="~/Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <link href="~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/jqueryuiCSS")*@
     @Styles.Render("~/Content/font-awesome")
-    @Styles.Render("~/Content/DataTablesCSS")
     @Styles.Render("~/Content/css/select2CSS")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/jqueryui")*@
     @Scripts.Render("~/bundles/moment")
     @Scripts.Render("~/bundles/globalize")
-    @Scripts.Render("~/Content/DataTablesJS")
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
+
+    <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/AutoFill/css/autoFill.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/AutoFill/css/autoFill.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/Buttons/css/buttons.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/Buttons/css/buttons.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/ColReorder/css/colReorder.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/ColReorder/css/colReorder.jqueryui.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/FixedColumns/css/fixedColumns.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/FixedColumns/css/fixedColumns.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/FixedHeader/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/FixedHeader/css/fixedHeader.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/KeyTable/css/keyTable.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/KeyTable/css/keyTable.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/RowReorder/css/rowReorder.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/RowReorder/css/rowReorder.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/Scroller/css/scroller.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/Scroller/css/scroller.jqueryui.min.css" rel="stylesheet" />
+
+    <link href="~/Content/DataTables-1.10.13/extensions/Select/css/select.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables-1.10.13/extensions/Select/css/select.jqueryui.min.css" rel="stylesheet" />
+
+    <script src="~/Content/DataTables-1.10.13/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Content/DataTables-1.10.13/media/js/dataTables.jqueryui.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/AutoFill/js/dataTables.autoFill.min.js"></script>
+    <script src="~/Content/DataTables-1.10.13/extensions/AutoFill/js/autoFill.jqueryui.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/DataTables-1.10.13/extensions/Buttons/js/buttons.jqueryui.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/KeyTable/js/dataTables.keyTable.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/RowReorder/js/dataTables.rowReorder.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/Scroller/js/dataTables.scroller.min.js"></script>
+
+    <script src="~/Content/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js"></script>
 
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
@@ -37,8 +94,7 @@
 
         ac = Utility.UtenteAutorizzato();
 
-
-        if (ac!=null && ac.idUtenteAutorizzato>0)
+        if (ac != null && ac.idUtenteAutorizzato > 0)
         {
             nominativo = ac.nominativo + " (" + ac.utente + ")";
         }
@@ -66,18 +122,18 @@
         //    }
         //}
 
-
         //if (!string.IsNullOrWhiteSpace(cognome) && !string.IsNullOrWhiteSpace(nome))
         //{
         //    nominativo = cognome + " " + nome + " (" + matricola + ")";
         //}
 
-
-
     }
 
     <script type="text/javascript">
         $(document).tooltip();
+        $("input[type=submit]").button();
+        $("input[type=button]").button();
+
     </script>
 </head>
 <body>
@@ -123,15 +179,11 @@
             }
         </div>
         <div class="end">
-            <a>Dipendente</a> | <a>Parametri</a> | <a>Elaborazioni</a> | <a>Statistiche</a> | <a>Calendario</a> | <a>Notifiche</a> | <a>Utenze</a>
+            <a>Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a>Elaborazioni</a> | <a>Statistiche</a> | <a>Calendario</a> | <a>Notifiche</a> | <a>Utenze</a>
         </div>
     </div>
     <div class="contenitore">
-        <div id="CorpoPagina" class="row">
-            <div class="col12">
-                @RenderBody()
-            </div>
-        </div>
+        @RenderBody()
     </div>
     <footer>
         <div class="row">
@@ -141,7 +193,7 @@
             <div class="col8">
             </div>
             <div class="end">
-                <a onclick="Blocca();" href="@Url.RouteUrl("Logout")"><img src="~/Immagini/LogOut.png" height="4%" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
+                <a onclick="Blocca();" href="@Url.RouteUrl("Logout")"><img src="~/Immagini/LogOut.png" height="40" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
             </div>
         </div>
     </footer>
@@ -152,7 +204,92 @@
             var f = $("footer");
 
         }
+
+        function AltezzaCentro() {
+            //debugger;
+            var mFoo = jQuery("footer");
+            //var AltezzaBoby = $(document.body).height();
+            var AltezzaFooter = mFoo.outerHeight();
+            //var AltezzaDocumento = $(document).height();
+            //var AltezzaScreen = window.screen.availHeight;
+            var intestazioneLayout = $("#intestazioneLayout").height();
+            //var AltezzabarraExplorer = AltezzaBoby - AltezzaBoby;
+            //var AltezzaWindows = $(window).height();
+            var RealeSimulazione = $("#RealeSimulazione").height();
+
+            var menuIse = $("#menuIse").height();
+
+            //var AltezzaIntestazioneCentro = $("#IntestazioneCentro").height();
+
+            var winWidth = 0, winHeight = 0;
+            if (typeof (window.innerWidth) == 'number') {
+                //Non-IE
+                winWidth = window.innerWidth;
+                winHeight = window.innerHeight;
+            } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+                //IE 6+ in 'standards compliant mode'
+                winWidth = document.documentElement.clientWidth;
+                winHeight = document.documentElement.clientHeight;
+            } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+                //IE 4 compatible
+                winWidth = document.body.clientWidth;
+                winHeight = document.body.clientHeight;
+            }
+
+            var Altezzacentro = (((((winHeight - intestazioneLayout) - RealeSimulazione) - menuIse)) - AltezzaFooter);
+
+            $("#contenitore").height(Altezzacentro);
+
+            //$("#CorpoPagina").height(winHeight - 50);
+            return Altezzacentro;
+
+        }
+
+        $(window).resize(function () {
+            AltezzaCentro();
+        });
+
+        $(window).load(function () {
+            AltezzaCentro();
+        });
+
+        $(window).focus(function () {
+            AltezzaCentro();
+        });
+        $(document.body).focus(function () {
+            AltezzaCentro();
+        });
+        $("#Centro").focus(function () {
+            AltezzaCentro();
+
+        });
+
+        function AlertDialog(msg) {
+            $("#msgDialog").empty();
+            $("#msgDialog").html(msg);
+            $("#dialog-message").dialog({
+                resizable: false,
+                autoOpen: true,
+                height: 200,
+                width: 500,
+                modal: true,
+                show: {
+                    effect: "shake",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "clip",
+                    duration: 1000
+                },
+                buttons: {
+                    "OK": function () {
+
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+        }
     </script>
 </body>
-
 </html>

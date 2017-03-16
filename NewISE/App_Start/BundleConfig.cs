@@ -37,13 +37,9 @@ namespace NewISE.App_Start
                       "~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
-                      "~/Content/font-awesome.min.css"));
+                      "~/Content/font-awesome.min.css"));         
 
-            bundles.Add(new ScriptBundle("~/Content/DataTablesJS").Include(
-                        "~/Content/DataTables/datatables.min.js"));
-
-            bundles.Add(new StyleBundle("~/Content/DataTablesCSS").Include(
-                "~/Content/DataTables/datatables.min.css"));
+            
 
             bundles.Add(new StyleBundle("~/Content/css/select2CSS").Include(
                 "~/Content/css/select2.min.css"));

@@ -58,16 +58,6 @@ body {
     border-top-color: #00B04E;
 }
 
-/*footer {
-    height: 60px;
-    margin-left: auto;
-    margin-right: auto;
-    border-top: ridge;
-    border-top-color: #00B04E;
-    padding-top: 2px;
-    margin-top: 2px;
-    position:fixed;
-}*/
 footer {
     left: 5px;
     right: 5px;
@@ -82,6 +72,8 @@ footer {
     width: 100%;
     margin-bottom: 5px;
     clear: both;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
     .row .row {
@@ -262,3 +254,10 @@ footer {
     background-color: gainsboro;
     padding-bottom: 10px;
 }
+
+.btn_link {
+    text-decoration: none;
+    color: white;
+    background-color: #00B04E;
+}
+
