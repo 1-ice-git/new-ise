@@ -1,7 +1,9 @@
-﻿
+﻿using NewISE.Interfacce.Modelli;
+using System;
 using System.Collections.Generic;
-using NewISE.Interfacce.Modelli;
-
+using System.Linq;
+using System.Net.Mail;
+using System.Web;
 
 namespace NewISE.Interfacce
 {
@@ -12,5 +14,7 @@ namespace NewISE.Interfacce
         public IList<Destinatario> destinatario { get; set; }
         public string corpoMsg { get; set; } = "";
         public IList<ModelloAllegatoMail> allegato { get; set; } = null;
+        public MailPriority priorita { get; set; } = MailPriority.Normal;
+
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ModelDBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -78,6 +78,33 @@
           <Property Name="IDBIGLIETTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CDC">
+          <Key>
+            <PropertyRef Name="IDCDC" />
+          </Key>
+          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CODICECDC" Type="char" MaxLength="4" Nullable="false" />
+          <Property Name="DESCRIZIONECDC" Type="varchar2" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CDC_DIPENDENTI">
+          <Key>
+            <PropertyRef Name="ID_CDC_DIPENDENTI" />
+          </Key>
+          <Property Name="ID_CDC_DIPENDENTI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CDC_TRASF">
+          <Key>
+            <PropertyRef Name="ID_CDC_TRASF" />
+          </Key>
+          <Property Name="ID_CDC_TRASF" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="COEFFICENTEFKM">
           <Key>
@@ -167,7 +194,6 @@
           <Property Name="MATRICOLA" Type="number" Precision="6" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
-          <Property Name="CDC" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="DATAASSUNZIONE" Type="date" Nullable="false" />
           <Property Name="DATACESSAZIONE" Type="date" />
           <Property Name="INDIRIZZO" Type="varchar2" MaxLength="100" />
@@ -360,11 +386,10 @@
           <Property Name="IDUTENTELOGGATO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="UTENTE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="clob" Nullable="false" />
-          <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" Nullable="false" />
-          <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TABELLACOINVOLTA" Type="varchar2" MaxLength="60" />
+          <Property Name="IDTABELLACOINVOLTA" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="MAB_ALIQCONTR">
           <Key>
@@ -1057,6 +1082,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_CDC_CDCDIP">
+          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CDC">
+              <PropertyRef Name="IDCDC" />
+            </Principal>
+            <Dependent Role="CDC_DIPENDENTI">
+              <PropertyRef Name="IDCDC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_CDC_CDCTRASF">
+          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CDC">
+              <PropertyRef Name="IDCDC" />
+            </Principal>
+            <Dependent Role="CDC_TRASF">
+              <PropertyRef Name="IDCDC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_CFKM_FKM_CFKM">
           <End Role="COEFFICENTEFKM" Type="Self.COEFFICENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1250,6 +1303,20 @@
             </Principal>
             <Dependent Role="FASCIACHILOMETRICA">
               <PropertyRef Name="IDDEFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_CDCDIP">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="CDC_DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2487,6 +2554,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TRASF_CDCTRASF">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="CDC_TRASF">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TRC_RC">
           <End Role="TIPOREGOLACALCOLO" Type="Self.TIPOREGOLACALCOLO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2739,7 +2820,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ModelDBISEStoreContainer">
+        <EntityContainer Name="ModelISEPROStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISEPRO" store:Type="Tables" />
@@ -2747,6 +2828,9 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CDC" EntityType="Self.CDC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CDC_DIPENDENTI" EntityType="Self.CDC_DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CDC_TRASF" EntityType="Self.CDC_TRASF" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTEFKM" EntityType="Self.COEFFICENTEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="Self.COEFFICENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTISEDE" EntityType="Self.COEFFICENTISEDE" Schema="ISEPRO" store:Type="Tables" />
@@ -2867,6 +2951,14 @@
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
+          <AssociationSet Name="R_CDC_CDCDIP" Association="Self.R_CDC_CDCDIP">
+            <End Role="CDC" EntitySet="CDC" />
+            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_CDC_CDCTRASF" Association="Self.R_CDC_CDCTRASF">
+            <End Role="CDC" EntitySet="CDC" />
+            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
+          </AssociationSet>
           <AssociationSet Name="R_CFKM_FKM_CFKM" Association="Self.R_CFKM_FKM_CFKM">
             <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
             <End Role="FASCKM_CFKM" EntitySet="FASCKM_CFKM" />
@@ -2922,6 +3014,10 @@
           <AssociationSet Name="R_DFKM_FC" Association="Self.R_DFKM_FC">
             <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
+          </AssociationSet>
+          <AssociationSet Name="R_DIP_CDCDIP" Association="Self.R_DIP_CDCDIP">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
           </AssociationSet>
           <AssociationSet Name="R_DIP_LIVDIP" Association="Self.R_DIP_LIVDIP">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -3275,6 +3371,10 @@
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
           </AssociationSet>
+          <AssociationSet Name="R_TRASF_CDCTRASF" Association="Self.R_TRASF_CDCTRASF">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
+          </AssociationSet>
           <AssociationSet Name="R_TRC_RC" Association="Self.R_TRC_RC">
             <End Role="TIPOREGOLACALCOLO" EntitySet="TIPOREGOLACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
@@ -3348,11 +3448,10 @@
             <End Role="MAGFAM_MAGCON" EntitySet="MAGFAM_MAGCON" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ModelDBISE" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ModelISEPRO" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -3438,6 +3537,39 @@
           <NavigationProperty Name="BIGLIETTI" Relationship="Self.R_B_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="BIGLIETTI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="TIPODOCUMENTI" />
+        </EntityType>
+        <EntityType Name="CDC">
+          <Key>
+            <PropertyRef Name="IDCDC" />
+          </Key>
+          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CODICECDC" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DESCRIZIONECDC" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CDC_DIPENDENTI" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC" ToRole="CDC_DIPENDENTI" />
+          <NavigationProperty Name="CDC_TRASF" Relationship="Self.R_CDC_CDCTRASF" FromRole="CDC" ToRole="CDC_TRASF" />
+        </EntityType>
+        <EntityType Name="CDC_DIPENDENTI">
+          <Key>
+            <PropertyRef Name="ID_CDC_DIPENDENTI" />
+          </Key>
+          <Property Name="ID_CDC_DIPENDENTI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="CDC" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="DIPENDENTI" />
+        </EntityType>
+        <EntityType Name="CDC_TRASF">
+          <Key>
+            <PropertyRef Name="ID_CDC_TRASF" />
+          </Key>
+          <Property Name="ID_CDC_TRASF" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCTRASF" FromRole="CDC_TRASF" ToRole="CDC" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_TRASF_CDCTRASF" FromRole="CDC_TRASF" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="COEFFICENTEFKM">
           <Key>
@@ -3543,7 +3675,6 @@
           <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
           <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="COGNOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CDC" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DATAASSUNZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DATACESSAZIONE" Type="DateTime" />
           <Property Name="INDIRIZZO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -3554,6 +3685,7 @@
           <Property Name="TELEFONO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ABILITATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CDC_DIPENDENTI" Relationship="Self.R_DIP_CDCDIP" FromRole="DIPENDENTI" ToRole="CDC_DIPENDENTI" />
           <NavigationProperty Name="INDBASE_DIPENDENTI" Relationship="Self.R_D_IB_D" FromRole="DIPENDENTI" ToRole="INDBASE_DIPENDENTI" />
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
         </EntityType>
@@ -3786,11 +3918,10 @@
           <Property Name="IDUTENTELOGGATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="UTENTE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="DESCATTIVITASVOLTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TABELLACOINVOLTA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="IDTABELLACOINVOLTA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITACRUD" Relationship="Self.R_AC_LA" FromRole="LOGATTIVITA" ToRole="ATTIVITACRUD" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_LA" FromRole="LOGATTIVITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="Self.R_UL_LA" FromRole="LOGATTIVITA" ToRole="UTENTIAUTORIZZATI" />
@@ -4382,6 +4513,7 @@
           <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DATALETTERA" Type="DateTime" />
           <Property Name="ANNULLATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CDC_TRASF" Relationship="Self.R_TRASF_CDCTRASF" FromRole="TRASFERIMENTO" ToRole="CDC_TRASF" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
@@ -4672,6 +4804,62 @@
             </Principal>
             <Dependent Role="BIGLIETTI_DOCUMENTI">
               <PropertyRef Name="IDTIPODOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_CDC_CDCDIP">
+          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CDC">
+              <PropertyRef Name="IDCDC" />
+            </Principal>
+            <Dependent Role="CDC_DIPENDENTI">
+              <PropertyRef Name="IDCDC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_CDC_CDCTRASF">
+          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CDC">
+              <PropertyRef Name="IDCDC" />
+            </Principal>
+            <Dependent Role="CDC_TRASF">
+              <PropertyRef Name="IDCDC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_CDCDIP">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="CDC_DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TRASF_CDCTRASF">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="CDC_TRASF">
+              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6205,7 +6393,7 @@
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="EntitiesDBISE" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="EntitiesDBISEPRO" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" />
@@ -6213,6 +6401,9 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" />
+          <EntitySet Name="CDC" EntityType="Self.CDC" />
+          <EntitySet Name="CDC_DIPENDENTI" EntityType="Self.CDC_DIPENDENTI" />
+          <EntitySet Name="CDC_TRASF" EntityType="Self.CDC_TRASF" />
           <EntitySet Name="COEFFICENTEFKM" EntityType="Self.COEFFICENTEFKM" />
           <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="Self.COEFFICENTEINDRICHIAMO" />
           <EntitySet Name="COEFFICENTISEDE" EntityType="Self.COEFFICENTISEDE" />
@@ -6344,6 +6535,22 @@
           <AssociationSet Name="R_TD_B_D" Association="Self.R_TD_B_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_CDC_CDCDIP" Association="Self.R_CDC_CDCDIP">
+            <End Role="CDC" EntitySet="CDC" />
+            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_CDC_CDCTRASF" Association="Self.R_CDC_CDCTRASF">
+            <End Role="CDC" EntitySet="CDC" />
+            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
+          </AssociationSet>
+          <AssociationSet Name="R_DIP_CDCDIP" Association="Self.R_DIP_CDCDIP">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TRASF_CDCTRASF" Association="Self.R_TRASF_CDCTRASF">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
           </AssociationSet>
           <AssociationSet Name="R_CFKM_FKM_CFKM" Association="Self.R_CFKM_FKM_CFKM">
             <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
@@ -6799,9 +7006,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelDBISEStoreContainer" CdmEntityContainer="EntitiesDBISE">
+        <EntityContainerMapping StorageEntityContainer="ModelISEPROStoreContainer" CdmEntityContainer="EntitiesDBISEPRO">
           <EntitySetMapping Name="ACCESSI">
-            <EntityTypeMapping TypeName="ModelDBISE.ACCESSI">
+            <EntityTypeMapping TypeName="ModelISEPRO.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
                 <ScalarProperty Name="IDACCESSO" ColumnName="IDACCESSO" />
                 <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
@@ -6811,7 +7018,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ALIQUOTECONTRIBUTIVE">
-            <EntityTypeMapping TypeName="ModelDBISE.ALIQUOTECONTRIBUTIVE">
+            <EntityTypeMapping TypeName="ModelISEPRO.ALIQUOTECONTRIBUTIVE">
               <MappingFragment StoreEntitySet="ALIQUOTECONTRIBUTIVE">
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="IDTIPOCONTRIBUTO" ColumnName="IDTIPOCONTRIBUTO" />
@@ -6823,7 +7030,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ALTRIDATIFAM">
-            <EntityTypeMapping TypeName="ModelDBISE.ALTRIDATIFAM">
+            <EntityTypeMapping TypeName="ModelISEPRO.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
                 <ScalarProperty Name="DATANASCITA" ColumnName="DATANASCITA" />
@@ -6842,7 +7049,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ANTICIPI">
-            <EntityTypeMapping TypeName="ModelDBISE.ANTICIPI">
+            <EntityTypeMapping TypeName="ModelISEPRO.ANTICIPI">
               <MappingFragment StoreEntitySet="ANTICIPI">
                 <ScalarProperty Name="IDANTICIPO" ColumnName="IDANTICIPO" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -6853,7 +7060,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ATTIVITACRUD">
-            <EntityTypeMapping TypeName="ModelDBISE.ATTIVITACRUD">
+            <EntityTypeMapping TypeName="ModelISEPRO.ATTIVITACRUD">
               <MappingFragment StoreEntitySet="ATTIVITACRUD">
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
                 <ScalarProperty Name="DESCRIZIONEATTIVITA" ColumnName="DESCRIZIONEATTIVITA" />
@@ -6861,7 +7068,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BIGLIETTI">
-            <EntityTypeMapping TypeName="ModelDBISE.BIGLIETTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.BIGLIETTI">
               <MappingFragment StoreEntitySet="BIGLIETTI">
                 <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -6872,7 +7079,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BIGLIETTI_DOCUMENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.BIGLIETTI_DOCUMENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.BIGLIETTI_DOCUMENTI">
               <MappingFragment StoreEntitySet="BIGLIETTI_DOCUMENTI">
                 <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -6880,8 +7087,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CDC">
+            <EntityTypeMapping TypeName="ModelISEPRO.CDC">
+              <MappingFragment StoreEntitySet="CDC">
+                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
+                <ScalarProperty Name="CODICECDC" ColumnName="CODICECDC" />
+                <ScalarProperty Name="DESCRIZIONECDC" ColumnName="DESCRIZIONECDC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CDC_DIPENDENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.CDC_DIPENDENTI">
+              <MappingFragment StoreEntitySet="CDC_DIPENDENTI">
+                <ScalarProperty Name="ID_CDC_DIPENDENTI" ColumnName="ID_CDC_DIPENDENTI" />
+                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CDC_TRASF">
+            <EntityTypeMapping TypeName="ModelISEPRO.CDC_TRASF">
+              <MappingFragment StoreEntitySet="CDC_TRASF">
+                <ScalarProperty Name="ID_CDC_TRASF" ColumnName="ID_CDC_TRASF" />
+                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTEFKM">
-            <EntityTypeMapping TypeName="ModelDBISE.COEFFICENTEFKM">
+            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTEFKM">
               <MappingFragment StoreEntitySet="COEFFICENTEFKM">
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -6892,7 +7129,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTEINDRICHIAMO">
-            <EntityTypeMapping TypeName="ModelDBISE.COEFFICENTEINDRICHIAMO">
+            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTEINDRICHIAMO">
               <MappingFragment StoreEntitySet="COEFFICENTEINDRICHIAMO">
                 <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -6904,7 +7141,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTISEDE">
-            <EntityTypeMapping TypeName="ModelDBISE.COEFFICENTISEDE">
+            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTISEDE">
               <MappingFragment StoreEntitySet="COEFFICENTISEDE">
                 <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -6916,7 +7153,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CONTABILITA">
-            <EntityTypeMapping TypeName="ModelDBISE.CONTABILITA">
+            <EntityTypeMapping TypeName="ModelISEPRO.CONTABILITA">
               <MappingFragment StoreEntitySet="CONTABILITA">
                 <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
                 <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
@@ -6936,7 +7173,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DATIMAB">
-            <EntityTypeMapping TypeName="ModelDBISE.DATIMAB">
+            <EntityTypeMapping TypeName="ModelISEPRO.DATIMAB">
               <MappingFragment StoreEntitySet="DATIMAB">
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
                 <ScalarProperty Name="CANONE" ColumnName="CANONE" />
@@ -6950,7 +7187,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DATIMAB_MABANNUALI">
-            <EntityTypeMapping TypeName="ModelDBISE.DATIMAB_MABANNUALI">
+            <EntityTypeMapping TypeName="ModelISEPRO.DATIMAB_MABANNUALI">
               <MappingFragment StoreEntitySet="DATIMAB_MABANNUALI">
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
                 <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
@@ -6959,7 +7196,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DEFFASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="ModelDBISE.DEFFASCIACHILOMETRICA">
+            <EntityTypeMapping TypeName="ModelISEPRO.DEFFASCIACHILOMETRICA">
               <MappingFragment StoreEntitySet="DEFFASCIACHILOMETRICA">
                 <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
                 <ScalarProperty Name="KM" ColumnName="KM" />
@@ -6967,13 +7204,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DIPENDENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.DIPENDENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
                 <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
-                <ScalarProperty Name="CDC" ColumnName="CDC" />
                 <ScalarProperty Name="DATAASSUNZIONE" ColumnName="DATAASSUNZIONE" />
                 <ScalarProperty Name="DATACESSAZIONE" ColumnName="DATACESSAZIONE" />
                 <ScalarProperty Name="INDIRIZZO" ColumnName="INDIRIZZO" />
@@ -6988,7 +7224,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DOCUMENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.DOCUMENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.DOCUMENTI">
               <MappingFragment StoreEntitySet="DOCUMENTI">
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
                 <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
@@ -6998,7 +7234,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ELAB_CONT">
-            <EntityTypeMapping TypeName="ModelDBISE.ELAB_CONT">
+            <EntityTypeMapping TypeName="ModelISEPRO.ELAB_CONT">
               <MappingFragment StoreEntitySet="ELAB_CONT">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
@@ -7006,7 +7242,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="ModelDBISE.FASCIACHILOMETRICA">
+            <EntityTypeMapping TypeName="ModelISEPRO.FASCIACHILOMETRICA">
               <MappingFragment StoreEntitySet="FASCIACHILOMETRICA">
                 <ScalarProperty Name="IDFASCIAKM" ColumnName="IDFASCIAKM" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7018,7 +7254,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FASCKM_CFKM">
-            <EntityTypeMapping TypeName="ModelDBISE.FASCKM_CFKM">
+            <EntityTypeMapping TypeName="ModelISEPRO.FASCKM_CFKM">
               <MappingFragment StoreEntitySet="FASCKM_CFKM">
                 <ScalarProperty Name="IDFASCIAKM" ColumnName="IDFASCIAKM" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7027,7 +7263,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GRUPPIDOCUMENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.GRUPPIDOCUMENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.GRUPPIDOCUMENTI">
               <MappingFragment StoreEntitySet="GRUPPIDOCUMENTI">
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
                 <ScalarProperty Name="DESCGRUPPO" ColumnName="DESCGRUPPO" />
@@ -7035,7 +7271,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDBASE_DIPENDENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.INDBASE_DIPENDENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDBASE_DIPENDENTI">
               <MappingFragment StoreEntitySet="INDBASE_DIPENDENTI">
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
@@ -7044,7 +7280,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDBASE_RID">
-            <EntityTypeMapping TypeName="ModelDBISE.INDBASE_RID">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDBASE_RID">
               <MappingFragment StoreEntitySet="INDBASE_RID">
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
@@ -7053,7 +7289,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITA">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA">
               <MappingFragment StoreEntitySet="INDENNITA">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -7061,7 +7297,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_COEFFISEDE">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITA_COEFFISEDE">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_COEFFISEDE">
               <MappingFragment StoreEntitySet="INDENNITA_COEFFISEDE">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
@@ -7070,7 +7306,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_INDBASE">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITA_INDBASE">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_INDBASE">
               <MappingFragment StoreEntitySet="INDENNITA_INDBASE">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
@@ -7079,7 +7315,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_PERCDISAGIO">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITA_PERCDISAGIO">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_PERCDISAGIO">
               <MappingFragment StoreEntitySet="INDENNITA_PERCDISAGIO">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
@@ -7088,7 +7324,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_TFR">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITA_TFR">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_TFR">
               <MappingFragment StoreEntitySet="INDENNITA_TFR">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -7097,7 +7333,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITABASE">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITABASE">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITABASE">
               <MappingFragment StoreEntitySet="INDENNITABASE">
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
@@ -7110,7 +7346,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITAPRIMOSEGRETARIO">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITAPRIMOSEGRETARIO">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITAPRIMOSEGRETARIO">
               <MappingFragment StoreEntitySet="INDENNITAPRIMOSEGRETARIO">
                 <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7121,7 +7357,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITASISTEMAZIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.INDENNITASISTEMAZIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITASISTEMAZIONE">
               <MappingFragment StoreEntitySet="INDENNITASISTEMAZIONE">
                 <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
@@ -7133,7 +7369,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDRIC_COEFINDRICH">
-            <EntityTypeMapping TypeName="ModelDBISE.INDRIC_COEFINDRICH">
+            <EntityTypeMapping TypeName="ModelISEPRO.INDRIC_COEFINDRICH">
               <MappingFragment StoreEntitySet="INDRIC_COEFINDRICH">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
@@ -7142,7 +7378,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LIVELLI">
-            <EntityTypeMapping TypeName="ModelDBISE.LIVELLI">
+            <EntityTypeMapping TypeName="ModelISEPRO.LIVELLI">
               <MappingFragment StoreEntitySet="LIVELLI">
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="LIVELLO" ColumnName="LIVELLO" />
@@ -7150,7 +7386,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LIVELLIDIPENDENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.LIVELLIDIPENDENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.LIVELLIDIPENDENTI">
               <MappingFragment StoreEntitySet="LIVELLIDIPENDENTI">
                 <ScalarProperty Name="IDLIVELLODIPENDENTE" ColumnName="IDLIVELLODIPENDENTE" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
@@ -7162,13 +7398,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LOGATTIVITA">
-            <EntityTypeMapping TypeName="ModelDBISE.LOGATTIVITA">
+            <EntityTypeMapping TypeName="ModelISEPRO.LOGATTIVITA">
               <MappingFragment StoreEntitySet="LOGATTIVITA">
                 <ScalarProperty Name="IDLOG" ColumnName="IDLOG" />
                 <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
-                <ScalarProperty Name="UTENTE" ColumnName="UTENTE" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="DESCATTIVITASVOLTA" ColumnName="DESCATTIVITASVOLTA" />
                 <ScalarProperty Name="TABELLACOINVOLTA" ColumnName="TABELLACOINVOLTA" />
@@ -7177,7 +7412,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_ALIQCONTR">
-            <EntityTypeMapping TypeName="ModelDBISE.MAB_ALIQCONTR">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAB_ALIQCONTR">
               <MappingFragment StoreEntitySet="MAB_ALIQCONTR">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
@@ -7186,7 +7421,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_DATIMAB">
-            <EntityTypeMapping TypeName="ModelDBISE.MAB_DATIMAB">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAB_DATIMAB">
               <MappingFragment StoreEntitySet="MAB_DATIMAB">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
@@ -7195,7 +7430,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_DOC">
-            <EntityTypeMapping TypeName="ModelDBISE.MAB_DOC">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAB_DOC">
               <MappingFragment StoreEntitySet="MAB_DOC">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7204,7 +7439,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_TFR">
-            <EntityTypeMapping TypeName="ModelDBISE.MAB_TFR">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAB_TFR">
               <MappingFragment StoreEntitySet="MAB_TFR">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -7213,7 +7448,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_ALTRIDATIFAM">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGFAM_ALTRIDATIFAM">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="MAGFAM_ALTRIDATIFAM">
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
@@ -7222,7 +7457,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_MAGCON">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGFAM_MAGCON">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_MAGCON">
               <MappingFragment StoreEntitySet="MAGFAM_MAGCON">
                 <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7231,7 +7466,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_MAGFIG">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGFAM_MAGFIG">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_MAGFIG">
               <MappingFragment StoreEntitySet="MAGFAM_MAGFIG">
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7240,7 +7475,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_PENSCON">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGFAM_PENSCON">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_PENSCON">
               <MappingFragment StoreEntitySet="MAGFAM_PENSCON">
                 <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7249,7 +7484,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONEABITAZIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGGIORAZIONEABITAZIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONEABITAZIONE">
               <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -7259,7 +7494,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONECONIUGE">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGGIORAZIONECONIUGE">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONECONIUGE">
               <MappingFragment StoreEntitySet="MAGGIORAZIONECONIUGE">
                 <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
                 <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
@@ -7271,7 +7506,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONEFIGLI">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGGIORAZIONEFIGLI">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONEFIGLI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONEFIGLI">
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
@@ -7283,7 +7518,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONIANNUALI">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGGIORAZIONIANNUALI">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONIANNUALI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONIANNUALI">
                 <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7295,7 +7530,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONIFAMILIARI">
-            <EntityTypeMapping TypeName="ModelDBISE.MAGGIORAZIONIFAMILIARI">
+            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONIFAMILIARI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONIFAMILIARI">
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -7309,7 +7544,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MF_IPS">
-            <EntityTypeMapping TypeName="ModelDBISE.MF_IPS">
+            <EntityTypeMapping TypeName="ModelISEPRO.MF_IPS">
               <MappingFragment StoreEntitySet="MF_IPS">
                 <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
@@ -7318,7 +7553,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NORMACALCOLO">
-            <EntityTypeMapping TypeName="ModelDBISE.NORMACALCOLO">
+            <EntityTypeMapping TypeName="ModelISEPRO.NORMACALCOLO">
               <MappingFragment StoreEntitySet="NORMACALCOLO">
                 <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
                 <ScalarProperty Name="RIFERIMENTONORMATIVO" ColumnName="RIFERIMENTONORMATIVO" />
@@ -7326,7 +7561,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NOTIFICARICHIESTAMAGFAM">
-            <EntityTypeMapping TypeName="ModelDBISE.NOTIFICARICHIESTAMAGFAM">
+            <EntityTypeMapping TypeName="ModelISEPRO.NOTIFICARICHIESTAMAGFAM">
               <MappingFragment StoreEntitySet="NOTIFICARICHIESTAMAGFAM">
                 <ScalarProperty Name="IDNOTRICMAGFAM" ColumnName="IDNOTRICMAGFAM" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7338,7 +7573,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OA">
-            <EntityTypeMapping TypeName="ModelDBISE.OA">
+            <EntityTypeMapping TypeName="ModelISEPRO.OA">
               <MappingFragment StoreEntitySet="OA">
                 <ScalarProperty Name="CTB_ID_RECORD" ColumnName="CTB_ID_RECORD" />
                 <ScalarProperty Name="CTB_MATRICOLA" ColumnName="CTB_MATRICOLA" />
@@ -7359,7 +7594,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PARENTELA">
-            <EntityTypeMapping TypeName="ModelDBISE.PARENTELA">
+            <EntityTypeMapping TypeName="ModelISEPRO.PARENTELA">
               <MappingFragment StoreEntitySet="PARENTELA">
                 <ScalarProperty Name="IDPARENTELA" ColumnName="IDPARENTELA" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7367,7 +7602,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PASSAPORTI">
-            <EntityTypeMapping TypeName="ModelDBISE.PASSAPORTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.PASSAPORTI">
               <MappingFragment StoreEntitySet="PASSAPORTI">
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7377,7 +7612,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PENSIONECONIUGE">
-            <EntityTypeMapping TypeName="ModelDBISE.PENSIONECONIUGE">
+            <EntityTypeMapping TypeName="ModelISEPRO.PENSIONECONIUGE">
               <MappingFragment StoreEntitySet="PENSIONECONIUGE">
                 <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
                 <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
@@ -7388,7 +7623,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEDISAGIO">
-            <EntityTypeMapping TypeName="ModelDBISE.PERCENTUALEDISAGIO">
+            <EntityTypeMapping TypeName="ModelISEPRO.PERCENTUALEDISAGIO">
               <MappingFragment StoreEntitySet="PERCENTUALEDISAGIO">
                 <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7400,7 +7635,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEMAB">
-            <EntityTypeMapping TypeName="ModelDBISE.PERCENTUALEMAB">
+            <EntityTypeMapping TypeName="ModelISEPRO.PERCENTUALEMAB">
               <MappingFragment StoreEntitySet="PERCENTUALEMAB">
                 <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7413,7 +7648,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCMAB_MAB">
-            <EntityTypeMapping TypeName="ModelDBISE.PERCMAB_MAB">
+            <EntityTypeMapping TypeName="ModelISEPRO.PERCMAB_MAB">
               <MappingFragment StoreEntitySet="PERCMAB_MAB">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
@@ -7422,7 +7657,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASIST_ALIQCONTR">
-            <EntityTypeMapping TypeName="ModelDBISE.PRIMASIST_ALIQCONTR">
+            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASIST_ALIQCONTR">
               <MappingFragment StoreEntitySet="PRIMASIST_ALIQCONTR">
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7431,7 +7666,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASIST_INDSIST">
-            <EntityTypeMapping TypeName="ModelDBISE.PRIMASIST_INDSIST">
+            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASIST_INDSIST">
               <MappingFragment StoreEntitySet="PRIMASIST_INDSIST">
                 <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7440,14 +7675,14 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASITEMAZIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.PRIMASITEMAZIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASITEMAZIONE">
               <MappingFragment StoreEntitySet="PRIMASITEMAZIONE">
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RATEMAB">
-            <EntityTypeMapping TypeName="ModelDBISE.RATEMAB">
+            <EntityTypeMapping TypeName="ModelISEPRO.RATEMAB">
               <MappingFragment StoreEntitySet="RATEMAB">
                 <ScalarProperty Name="IDRATEMAB" ColumnName="IDRATEMAB" />
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
@@ -7461,7 +7696,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="REGOLACALCOLO_RIDUZIONI">
-            <EntityTypeMapping TypeName="ModelDBISE.REGOLACALCOLO_RIDUZIONI">
+            <EntityTypeMapping TypeName="ModelISEPRO.REGOLACALCOLO_RIDUZIONI">
               <MappingFragment StoreEntitySet="REGOLACALCOLO_RIDUZIONI">
                 <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
@@ -7470,7 +7705,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="REGOLECALCOLO">
-            <EntityTypeMapping TypeName="ModelDBISE.REGOLECALCOLO">
+            <EntityTypeMapping TypeName="ModelISEPRO.REGOLECALCOLO">
               <MappingFragment StoreEntitySet="REGOLECALCOLO">
                 <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
@@ -7483,7 +7718,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RICHIAMO">
-            <EntityTypeMapping TypeName="ModelDBISE.RICHIAMO">
+            <EntityTypeMapping TypeName="ModelISEPRO.RICHIAMO">
               <MappingFragment StoreEntitySet="RICHIAMO">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
@@ -7491,7 +7726,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RIDUZIONI">
-            <EntityTypeMapping TypeName="ModelDBISE.RIDUZIONI">
+            <EntityTypeMapping TypeName="ModelISEPRO.RIDUZIONI">
               <MappingFragment StoreEntitySet="RIDUZIONI">
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7502,7 +7737,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RUOLOACCESSO">
-            <EntityTypeMapping TypeName="ModelDBISE.RUOLOACCESSO">
+            <EntityTypeMapping TypeName="ModelISEPRO.RUOLOACCESSO">
               <MappingFragment StoreEntitySet="RUOLOACCESSO">
                 <ScalarProperty Name="IDRUOLOACCESSO" ColumnName="IDRUOLOACCESSO" />
                 <ScalarProperty Name="DESCRUOLO" ColumnName="DESCRUOLO" />
@@ -7510,7 +7745,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RUOLOUFFICIO">
-            <EntityTypeMapping TypeName="ModelDBISE.RUOLOUFFICIO">
+            <EntityTypeMapping TypeName="ModelISEPRO.RUOLOUFFICIO">
               <MappingFragment StoreEntitySet="RUOLOUFFICIO">
                 <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
                 <ScalarProperty Name="DESCRUOLO" ColumnName="DESCRUOLO" />
@@ -7518,7 +7753,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SOSPENSIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.SOSPENSIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.SOSPENSIONE">
               <MappingFragment StoreEntitySet="SOSPENSIONE">
                 <ScalarProperty Name="IDSOSPENSIONE" ColumnName="IDSOSPENSIONE" />
                 <ScalarProperty Name="IDTIPOSOSPENSIONE" ColumnName="IDTIPOSOSPENSIONE" />
@@ -7531,7 +7766,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="STATOTRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelDBISE.STATOTRASFERIMENTO">
+            <EntityTypeMapping TypeName="ModelISEPRO.STATOTRASFERIMENTO">
               <MappingFragment StoreEntitySet="STATOTRASFERIMENTO">
                 <ScalarProperty Name="IDSTATOTRASFERIMENTO" ColumnName="IDSTATOTRASFERIMENTO" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7539,7 +7774,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="STIPENDI">
-            <EntityTypeMapping TypeName="ModelDBISE.STIPENDI">
+            <EntityTypeMapping TypeName="ModelISEPRO.STIPENDI">
               <MappingFragment StoreEntitySet="STIPENDI">
                 <ScalarProperty Name="IDELABORAZIONEMENSILE" ColumnName="IDELABORAZIONEMENSILE" />
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
@@ -7559,7 +7794,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TFR">
-            <EntityTypeMapping TypeName="ModelDBISE.TFR">
+            <EntityTypeMapping TypeName="ModelISEPRO.TFR">
               <MappingFragment StoreEntitySet="TFR">
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
                 <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
@@ -7571,7 +7806,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOALIQUOTECONTRIBUTIVE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOALIQUOTECONTRIBUTIVE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOALIQUOTECONTRIBUTIVE">
               <MappingFragment StoreEntitySet="TIPOALIQUOTECONTRIBUTIVE">
                 <ScalarProperty Name="IDTIPOALIQCONTR" ColumnName="IDTIPOALIQCONTR" />
                 <ScalarProperty Name="CODICE" ColumnName="CODICE" />
@@ -7580,7 +7815,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPODOCUMENTI">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPODOCUMENTI">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPODOCUMENTI">
               <MappingFragment StoreEntitySet="TIPODOCUMENTI">
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
@@ -7589,7 +7824,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOELABORAZIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOELABORAZIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOELABORAZIONE">
               <MappingFragment StoreEntitySet="TIPOELABORAZIONE">
                 <ScalarProperty Name="IDTIPOELABOPRAZIONE" ColumnName="IDTIPOELABOPRAZIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7597,7 +7832,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLIQUIDAZIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOLIQUIDAZIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLIQUIDAZIONE">
               <MappingFragment StoreEntitySet="TIPOLIQUIDAZIONE">
                 <ScalarProperty Name="IDTIPOLIQUIDAZIONE" ColumnName="IDTIPOLIQUIDAZIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7605,7 +7840,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLOGIACONIUGE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOLOGIACONIUGE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLOGIACONIUGE">
               <MappingFragment StoreEntitySet="TIPOLOGIACONIUGE">
                 <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
                 <ScalarProperty Name="TIPOLOGIACONIUGE1" ColumnName="TIPOLOGIACONIUGE" />
@@ -7613,7 +7848,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLOGIAFIGLIO">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOLOGIAFIGLIO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLOGIAFIGLIO">
               <MappingFragment StoreEntitySet="TIPOLOGIAFIGLIO">
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
                 <ScalarProperty Name="TIPOLOGIAFIGLIO1" ColumnName="TIPOLOGIAFIGLIO" />
@@ -7621,7 +7856,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOMOVIMENTO">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOMOVIMENTO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOMOVIMENTO">
               <MappingFragment StoreEntitySet="TIPOMOVIMENTO">
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
                 <ScalarProperty Name="TIPOMOVIMENTO1" ColumnName="TIPOMOVIMENTO" />
@@ -7630,7 +7865,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOREGOLACALCOLO">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOREGOLACALCOLO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOREGOLACALCOLO">
               <MappingFragment StoreEntitySet="TIPOREGOLACALCOLO">
                 <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
                 <ScalarProperty Name="DESCRIZIONEREGOLA" ColumnName="DESCRIZIONEREGOLA" />
@@ -7638,7 +7873,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOSOSPENSIONE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOSOSPENSIONE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOSOSPENSIONE">
               <MappingFragment StoreEntitySet="TIPOSOSPENSIONE">
                 <ScalarProperty Name="IDTIPOSOSPENSIONE" ColumnName="IDTIPOSOSPENSIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7646,7 +7881,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOTRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOTRASFERIMENTO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOTRASFERIMENTO">
               <MappingFragment StoreEntitySet="TIPOTRASFERIMENTO">
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
                 <ScalarProperty Name="TIPOTRASFERIMENTO1" ColumnName="TIPOTRASFERIMENTO" />
@@ -7654,7 +7889,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOVOCE">
-            <EntityTypeMapping TypeName="ModelDBISE.TIPOVOCE">
+            <EntityTypeMapping TypeName="ModelISEPRO.TIPOVOCE">
               <MappingFragment StoreEntitySet="TIPOVOCE">
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />
                 <ScalarProperty Name="IDTIPOELABOPRAZIONE" ColumnName="IDTIPOELABOPRAZIONE" />
@@ -7663,7 +7898,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASEFFETTISIST_COEFFIFKM">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASEFFETTISIST_COEFFIFKM">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASEFFETTISIST_COEFFIFKM">
               <MappingFragment StoreEntitySet="TRASEFFETTISIST_COEFFIFKM">
                 <ScalarProperty Name="IDTRASPORTOEFFETTI" ColumnName="IDTRASPORTOEFFETTI" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7672,7 +7907,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASFERIMENTO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASFERIMENTO">
               <MappingFragment StoreEntitySet="TRASFERIMENTO">
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
@@ -7689,7 +7924,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASFERIMENTO_LIVDIP">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASFERIMENTO_LIVDIP">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASFERIMENTO_LIVDIP">
               <MappingFragment StoreEntitySet="TRASFERIMENTO_LIVDIP">
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDLIVELLODIPENDENTE" ColumnName="IDLIVELLODIPENDENTE" />
@@ -7698,7 +7933,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTIRIEN_COEFFIFKM">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASPEFFETTIRIEN_COEFFIFKM">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTIRIEN_COEFFIFKM">
               <MappingFragment StoreEntitySet="TRASPEFFETTIRIEN_COEFFIFKM">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7707,7 +7942,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTIRIENTRO_DOC">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASPEFFETTIRIENTRO_DOC">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTIRIENTRO_DOC">
               <MappingFragment StoreEntitySet="TRASPEFFETTIRIENTRO_DOC">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7716,7 +7951,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTISIST_DOC">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASPEFFETTISIST_DOC">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTISIST_DOC">
               <MappingFragment StoreEntitySet="TRASPEFFETTISIST_DOC">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7725,7 +7960,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTIRIENTRO">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASPORTOEFFETTIRIENTRO">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASPORTOEFFETTIRIENTRO">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTIRIENTRO">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
@@ -7733,7 +7968,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTISIST">
-            <EntityTypeMapping TypeName="ModelDBISE.TRASPORTOEFFETTISIST">
+            <EntityTypeMapping TypeName="ModelISEPRO.TRASPORTOEFFETTISIST">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTISIST">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7741,7 +7976,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UFFICI">
-            <EntityTypeMapping TypeName="ModelDBISE.UFFICI">
+            <EntityTypeMapping TypeName="ModelISEPRO.UFFICI">
               <MappingFragment StoreEntitySet="UFFICI">
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
                 <ScalarProperty Name="CODICEUFFICIO" ColumnName="CODICEUFFICIO" />
@@ -7750,7 +7985,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UFFICIO_TFR">
-            <EntityTypeMapping TypeName="ModelDBISE.UFFICIO_TFR">
+            <EntityTypeMapping TypeName="ModelISEPRO.UFFICIO_TFR">
               <MappingFragment StoreEntitySet="UFFICIO_TFR">
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -7759,7 +7994,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UTENTIAUTORIZZATI">
-            <EntityTypeMapping TypeName="ModelDBISE.UTENTIAUTORIZZATI">
+            <EntityTypeMapping TypeName="ModelISEPRO.UTENTIAUTORIZZATI">
               <MappingFragment StoreEntitySet="UTENTIAUTORIZZATI">
                 <ScalarProperty Name="IDUTENTEAUTORIZZATO" ColumnName="IDUTENTEAUTORIZZATO" />
                 <ScalarProperty Name="IDRUOLOUTENTE" ColumnName="IDRUOLOUTENTE" />
@@ -7768,7 +8003,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VALUTE">
-            <EntityTypeMapping TypeName="ModelDBISE.VALUTE">
+            <EntityTypeMapping TypeName="ModelISEPRO.VALUTE">
               <MappingFragment StoreEntitySet="VALUTE">
                 <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
                 <ScalarProperty Name="DESCRIZIONEVALUTA" ColumnName="DESCRIZIONEVALUTA" />
@@ -7777,7 +8012,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VOCI">
-            <EntityTypeMapping TypeName="ModelDBISE.VOCI">
+            <EntityTypeMapping TypeName="ModelISEPRO.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
                 <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="IDTIPOLIQUIDAZIONE" ColumnName="IDTIPOLIQUIDAZIONE" />
@@ -7787,7 +8022,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="ModelDBISE.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
+          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="ModelISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -7795,7 +8030,7 @@
               <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="MAGFAM_DOC" TypeName="ModelDBISE.MAGFAM_DOC" StoreEntitySet="MAGFAM_DOC">
+          <AssociationSetMapping Name="MAGFAM_DOC" TypeName="ModelISEPRO.MAGFAM_DOC" StoreEntitySet="MAGFAM_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -7803,7 +8038,7 @@
               <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="ModelDBISE.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
+          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="ModelISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -7811,7 +8046,7 @@
               <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TRASF_DOC" TypeName="ModelDBISE.TRASF_DOC" StoreEntitySet="TRASF_DOC">
+          <AssociationSetMapping Name="TRASF_DOC" TypeName="ModelISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>

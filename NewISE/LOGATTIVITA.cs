@@ -18,11 +18,10 @@ namespace NewISE
         public decimal IDUTENTELOGGATO { get; set; }
         public Nullable<decimal> IDTRASFERIMENTO { get; set; }
         public decimal IDATTIVITACRUD { get; set; }
-        public string UTENTE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public string DESCATTIVITASVOLTA { get; set; }
         public string TABELLACOINVOLTA { get; set; }
-        public decimal IDTABELLACOINVOLTA { get; set; }
+        public Nullable<decimal> IDTABELLACOINVOLTA { get; set; }
     
         public virtual ATTIVITACRUD ATTIVITACRUD { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }

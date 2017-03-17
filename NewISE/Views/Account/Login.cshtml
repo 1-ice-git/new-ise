@@ -1,31 +1,70 @@
-﻿@model NewISE.Models.AccountModel
+﻿@model NewISE.Models.loginModel
+
+@using System.Web.Optimization;
 
 <link href="~/Content/css/login.css" rel="stylesheet" />
 
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
     string returnUrl = (string)ViewBag.RetunUrl;
     int CountError = 0;
     if (ViewBag.ModelStateCount != null)
     {
         CountError = (int)ViewBag.ModelStateCount;
+
     }
 }
 
 <div class="login-page">
     <div class="form">
-        <form class="login-form" action="/Account/Login" method="post">
+        <form id="frmLogin" class="login-form" action="/Account/Login" method="post">
             @Html.AntiForgeryToken()
-            <input name="eMail" type="text" placeholder="e-mail" />
-            <input name="password" type="password" placeholder="password" />
+            <input type="hidden" value="@returnUrl" name="returnUrl"  />
+
+            <div id="Alert" class="alert alert-danger hide">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            </div>
+
+            @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder="Matricola" } })
+            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder="Password" } })
+            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
             <button>login</button>
             <p>
                 <label>
                     @Html.EditorFor(model => model.ricordati)Ricordati di me
                 </label>
             </p>
-            <p class="message">Dimenticata la password? <a href="#">Inviami la password</a></p>
+            <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
         </form>
     </div>
 </div>
+
+
+
+@section scripts
+{
+    
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            if (parseInt('@CountError') > 0) {
+                $("#Alert").removeClass("hide");
+                $("#Alert").css("show");
+            }
+
+            $("form").submit(function () {
+                if ($("form").valid()) {
+                    Blocca();
+                }
+
+            });
+
+        });
+
+    </script>
+}
+

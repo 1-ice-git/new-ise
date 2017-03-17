@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 using System.Linq;
 using System.Web;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace NewISE.Models
 {
@@ -11,16 +12,16 @@ namespace NewISE.Models
     {
         [Key]
         [Required(ErrorMessage = "Id Log richiesto")]
-        public long idLog { get; set; }
+        public decimal idLog { get; set; }
 
         [Required(ErrorMessage = "Id Utente Loggato richiesto")]
-        public long idUtenteLoggato { get; set; }
+        public decimal idUtenteLoggato { get; set; }
 
         [Required(ErrorMessage = "Id Trasferimento richiesto")]
-        public long idTrasferimento { get; set; }
+        public decimal? idTrasferimento { get; set; } = null;
 
         [Required(ErrorMessage = "Id Attivita Crud richiesto")]
-        public long idAttivitaCrud { get; set; }
+        public decimal idAttivitaCrud { get; set; }
 
         [Required(ErrorMessage = "Descrizione utente richiesta")]
         [StringLength(30, ErrorMessage = "Il campo accetta un massimo di 30 caratteri.")]
@@ -40,16 +41,16 @@ namespace NewISE.Models
         [StringLength(60, ErrorMessage = "Il campo accetta un massimo di 60 caratteri.")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = true, Description = "Tabella coinvolta", Name = "Tabella coinvolta")]
-        public string tabellaCoinvolta { get; set; }
-        
+        public string tabellaCoinvolta { get; set; } = null;
 
-        public long idTabellaCoinvolta { get; set; }
+        public decimal? idTabellaCoinvolta { get; set; } = null;
+
         [Required(ErrorMessage = "idTabellaCoinvolta")]
 
-        public AttivitaCRUDModel attivitaCrudM { get; set; }
+       // public AttivitaCRUDModel attivitaCrudM { get; set; }
 
-        public virtual TrasferimentoModel TRASFERIMENTO { get; set; }
-        
+        //public virtual TrasferimentoModel TRASFERIMENTO { get; set; }
+
         public string LogAttivitaIse
         {
             get

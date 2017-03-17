@@ -22,6 +22,11 @@ namespace NewISE
                 name: "Home",
                 url: "Home/Index"                
             );
+
+            routes.MapRoute(
+                name: "Logout",
+                url: "Account/Logout"
+            );
         }
     }
 }

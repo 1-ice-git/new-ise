@@ -8,31 +8,38 @@ namespace NewISE.Models.dtObj
     public class dtInsLog : IDisposable
     {
 
-        
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
-        
 
-        public void InsLogAttivita(LogAttivitaModel pLog)
+
+        public static void InsLogAttivita(LogAttivitaModel pLog)
         {
 
             try
             {
                 LOGATTIVITA la = new LOGATTIVITA();
-                
-                using (EntitiesDBISE db = new EntitiesDBISE())
+
+                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
                 {
+
+                    la.IDLOG = pLog.idLog;
                     la.IDUTENTELOGGATO = pLog.idUtenteLoggato;
                     la.IDTRASFERIMENTO = pLog.idTrasferimento;
                     la.IDATTIVITACRUD = pLog.idAttivitaCrud;
-                    la.UTENTE = pLog.utente;
                     la.DATAOPERAZIONE = pLog.dataOperazione;
                     la.DESCATTIVITASVOLTA = pLog.descAttivitaSvolta;
                     la.TABELLACOINVOLTA = pLog.tabellaCoinvolta;
-                    la.IDTABELLACOINVOLTA = pLog.idTabellaCoinvolta;
-
+                    if (pLog.idTabellaCoinvolta.HasValue)
+                    {
+                        la.IDTABELLACOINVOLTA = pLog.idTabellaCoinvolta.Value;
+                    }
+                    else
+                    {
+                        //la.IDTABELLACOINVOLTA = DBNull.Value;
+                    }
                     db.LOGATTIVITA.Add(la);
 
                     db.SaveChanges();
@@ -45,19 +52,17 @@ namespace NewISE.Models.dtObj
 
                 throw ex;
             }
-            
-
         }
 
         // read-only instance property
         public string ReadLogAttivita;
-        public string LogAttivitaIse  
+        public string LogAttivitaIse
         {
             get
             {
                 return ReadLogAttivita;
             }
         }
-       
+
     }
 }

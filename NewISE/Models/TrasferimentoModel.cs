@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace NewISE.Models
 {
     public class TrasferimentoModel
@@ -28,7 +29,7 @@ namespace NewISE.Models
         [Required(ErrorMessage = "ID StatoTrasferimento richiesto")]
         [DataType(DataType.Text)]
         [Display(Name = "Descrizione")]
-        public long idStatoTrasferimento{ get; set; }
+        public long idStatoTrasferimento { get; set; }
 
         [Required(ErrorMessage = "ID Ruolo")]
         [DataType(DataType.Text)]
@@ -62,8 +63,6 @@ namespace NewISE.Models
 
         [Required]
         public int annullato { get; set; }
-        public LogAttivitaModel logAttivita { get; set; }
-
         public string Trasferimento
         {
             get

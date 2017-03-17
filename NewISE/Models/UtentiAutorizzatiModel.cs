@@ -21,7 +21,6 @@ namespace NewISE.Models
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = true, Description = "Descrizione dell'utente", Name = "Utente")]
         public string utente { get; set; }
-        
 
         public LogAttivitaModel logattivita { get; set; }
 
