@@ -16,37 +16,42 @@
 
     }
 }
+<div class="row">
+    <div class="col-xs-12">
+        <div class="login-page">
+            <div class="form">
+                <form id="frmLogin" class="login-form" action="/Account/Login" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="@returnUrl" name="returnUrl" />
 
-<div class="login-page">
-    <div class="form">
-        <form id="frmLogin" class="login-form" action="/Account/Login" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" value="@returnUrl" name="returnUrl"  />
+                    <div id="Alert" class="alert alert-danger hide">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </div>
 
-            <div id="Alert" class="alert alert-danger hide">
-                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Matricola" } })
+                    @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                    <button>login</button>
+                    <p>
+                        <div style="display:inline-block; vertical-align:middle;">
+                            <label>Ricordati di me </label>                        
+                        </div>
+                        <div style="display:inline-block; ">
+                            @Html.EditorFor(model => model.ricordati)
+                        </div>
+                        
+                    </p>
+                    <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
+                </form>
             </div>
-
-            @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder="Matricola" } })
-            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
-            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder="Password" } })
-            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-            <button>login</button>
-            <p>
-                <label>
-                    @Html.EditorFor(model => model.ricordati)Ricordati di me
-                </label>
-            </p>
-            <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
-        </form>
+        </div>
     </div>
 </div>
 
-
-
 @section scripts
 {
-    
+
     @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
@@ -64,7 +69,5 @@
             });
 
         });
-
     </script>
 }
-

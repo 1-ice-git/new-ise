@@ -5,11 +5,11 @@
 }
 
 html {
-    height: 99%;
+    /*height: 99%;
     width: 99% !important;
     margin-left: auto;
     margin-right: auto;
-    overflow: auto;
+    overflow: auto;*/
 }
 
 body {
@@ -117,6 +117,12 @@ footer {
     text-decoration: none;
     color: white;
     background-color: #00B04E;
+}
+
+.btn_link:hover{
+    color:mintcream;
+    background-color:cadetblue;
+    text-decoration: none;
 }
 
 /*.form-horizontal{
