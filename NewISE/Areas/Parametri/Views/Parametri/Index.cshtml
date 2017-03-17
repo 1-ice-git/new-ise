@@ -3,40 +3,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Areas/Parametri/Contenuti/CSS/Parametri.css" rel="stylesheet" />
+@*<link href="~/Areas/Parametri/Contenuti/CSS/Parametri.css" rel="stylesheet" />*@
 
 
-<div class="row" id="divRiga1" >
-    <div class="col12 div_row1_col" >
+<div class="form-horizontal" id="divRiga1">
+    
         <div class="form-group">
             @Html.Label("lblParametro", "Seleziona Tabella", new { @class = "control-label" })
-            <div id="divCombo" >
+            <div id="divCombo">
                 <div class="select2-container select2-container--classic">
                     @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();" })
                 </div>
 
                 @Html.ValidationMessage("idParametro", "", new { @class = "text-danger" })
             </div>
-            <div id="divChk" >
-                <label>Escludi annullati</label>
-                <input type="checkbox" id="escludiAnnullati" checked="checked" value="Escludi" onclick="prelevaPartiaViewParametri();"/>
-            </div>
-        </div>
-    </div>
-    
+            
+        </div>    
+
 </div>
 
 <div id="divContentpartial" class="row">
-    <div id="divPViewParametri" class="col12">
+    <div id="divPViewParametri" class="col-xs-12">
     </div>
-    
 </div>
 
 <div id="dialog-message" title="Attenzione!!!" class="hide">
-	<div>
-		<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
-		<strong><span id="msgDialog"></span></strong>
-	</div>
+    <div>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        <strong><span id="msgDialog"></span></strong>
+    </div>
 </div>
 
 @section Scripts {
@@ -50,7 +45,7 @@
                 allowClear: true,
                 language: "it"
             });
-           
+
         });
 
         function prelevaPartiaViewParametri() {
@@ -83,7 +78,7 @@
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: {escludiAnnullati: chk },
+                data: { escludiAnnullati: chk },
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
@@ -105,7 +100,7 @@
                     //                $("#Centro").getNiceScroll().resize();
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
-                    debugger;
+                    //debugger;
                     var msg = errorThrow.err;
                     AlertDialog(msg);
                 }
@@ -114,7 +109,7 @@
 
         }
 
-        
+
 
     </script>
 }
