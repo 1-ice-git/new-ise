@@ -1307,6 +1307,9 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\fontawesome-webfont.woff" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\FontAwesome.otf" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
+    <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1390,12 +1393,17 @@
     <Compile Include="ANTICIPI.cs">
       <DependentUpon>DBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParametriController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndennitaBaseController.cs" />
+    <Compile Include="Areas\Parametri\Models\CoefficientiSedeModel.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtCoefficientiSede.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndennitaBase.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtLivelli.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
     <Compile Include="Areas\Parametri\Models\IndennitaBaseModel.cs" />
     <Compile Include="Areas\Parametri\Models\LivelloModel.cs" />
+    <Compile Include="Areas\Parametri\Models\UfficiModel.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="ATTIVITACRUD.cs">
       <DependentUpon>DBISE.tt</DependentUpon>

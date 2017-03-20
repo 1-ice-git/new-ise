@@ -36,6 +36,6 @@ namespace NewISE.Areas.Parametri.Models
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
-
+        public UfficiModel DescrizioneUfficio { get; set; }
     }
 }

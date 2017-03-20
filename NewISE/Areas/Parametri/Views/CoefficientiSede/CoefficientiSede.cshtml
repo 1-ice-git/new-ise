@@ -1,10 +1,27 @@
 ﻿@model IEnumerable<NewISE.Areas.Parametri.Models.CoefficientiSedeModel>
 
 
+@{
+        bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+}
+
+
 
 <p>
-    <a id="btnInsNuovCoeff" href="#" onclick="NuovaIndennitaDiBase();">Inserisci Coefficiente di Sede</a>
+    <a id="btnInsNuovoCoeff" href="#" onclick="NuovoCoefficienteDiSede();">Inserisci Coefficiente di Sede</a>
 </p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblLivello0", "Seleziona Ufficio", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoefficienteSede();" })
+            </div>
+        </div>
+    </div>
+</p>
+
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
@@ -31,8 +48,9 @@
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
             <th></th>
+        </tr>
     </thead>
-    </tr>
+    
     <tbody>
         @foreach (var item in Model)
         {
@@ -92,36 +110,36 @@
         }
     });
 
-    $("#idLivello").select2({
-        placeholder: "Seleziona il coefficiente",
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'Ufficio",
         allowClear: true,
         language: "it",
         width: '150'
 
     });
 
-    $("#btnInsNuovCoeff").button();
+    $("#btnInsNuovoCoeff").button();
 
-    function PrelevaPVIndBase() {
-        debugger;
-        rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
+    function PrelevaPVCoefficienteSede() {
+        //debugger;
+        rotta = "/Parametri/ParamIndennitaBase/CoefficienteSedeLivello";
 
-        var idLivello = parseInt($("#idLivello").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
-        if (isNaN(idLivello)) {
+        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
+        if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }*@
+        }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -152,25 +170,23 @@
 
     }
 
-    function NuovaIndennitaDiBase() {
-        debugger;
+    function NuovoCoefficienteDiSede() {
+        //debugger;
 
-        var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
-        var idLivello = parseInt($("#idLivello").select2('val'));
+        var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
-        if (isNaN(idLivello)) {
+        if (isNaN(idUfficio)) {
             //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un livello per procedere.");
+            AlertDialog("Selezionare un ufficio per procedere.");
             return false;
         }
-
-
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello },
+            data: { idUfficio: idUfficio },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -192,7 +208,7 @@
                 //                $("#Centro").getNiceScroll().resize();
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                debugger;
+                //debugger;
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
@@ -201,3 +217,7 @@
 
     }
 </script>
+
+
+
+
