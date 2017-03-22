@@ -239,8 +239,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         }
 
                         libNew.Add(ibNew);
-                                              
-
                         
 
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).Distinct().ToList();
