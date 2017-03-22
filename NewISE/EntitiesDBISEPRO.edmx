@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -46,12 +46,15 @@
         <EntityType Name="ANTICIPI">
           <Key>
             <PropertyRef Name="IDANTICIPO" />
+            <PropertyRef Name="IDINDESTERA" />
           </Key>
           <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDINDESTERA" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDINDESTERA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTOANTICIPO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ATTIVITACRUD">
           <Key>
@@ -112,7 +115,7 @@
           </Key>
           <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="COEFFICENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -122,7 +125,7 @@
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="COEFFICENTERICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTEINDBASE" Type="number" Precision="10" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -134,19 +137,21 @@
           <Property Name="IDCOEFFICENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="VALORECOEFFICENTE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TIPOVOCE" Type="varchar2" MaxLength="3" Nullable="false" />
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNOELABORAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESEELABORAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNORIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -154,8 +159,8 @@
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="FLAGINVIOFLUSSI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="date" />
+          <Property Name="FLAGINVIOOA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINVIOOA" Type="date" />
         </EntityType>
         <EntityType Name="DATIMAB">
           <Key>
@@ -224,11 +229,14 @@
         </EntityType>
         <EntityType Name="ELAB_CONT">
           <Key>
+            <PropertyRef Name="IDELABCONT" />
             <PropertyRef Name="IDINDENNITA" />
-            <PropertyRef Name="IDCONTABILITA" />
           </Key>
+          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="FASCIACHILOMETRICA">
           <Key>
@@ -238,7 +246,7 @@
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FASCKM_CFKM">
@@ -395,37 +403,45 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDALIQCONTR" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAB_DATIMAB">
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDDATIMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDATIMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAB_DOC">
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDDOCUMENTO" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAB_TFR">
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDTFR" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAGFAM_ALTRIDATIFAM">
           <Key>
@@ -474,9 +490,10 @@
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
             <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
         </EntityType>
@@ -506,10 +523,10 @@
           <Key>
             <PropertyRef Name="IDMAGANNUALI" />
           </Key>
-          <Property Name="IDMAGANNUALI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGANNUALI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="ANNUALITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -558,6 +575,9 @@
             <PropertyRef Name="CTB_ID_RECORD" />
           </Key>
           <Property Name="CTB_ID_RECORD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" />
           <Property Name="CTB_MATRICOLA" Type="number" Precision="4" Scale="0" Nullable="false" />
           <Property Name="CTB_QUALIFICA" Type="varchar2" MaxLength="6" Nullable="false" />
           <Property Name="CTB_COD_SEDE" Type="varchar2" MaxLength="4" Nullable="false" />
@@ -614,7 +634,7 @@
           <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -626,7 +646,7 @@
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="char" MaxLength="20" />
+          <Property Name="DATAFINEVALIDITA" Type="char" MaxLength="20" Nullable="false" />
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -634,10 +654,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDPERCMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PRIMASIST_ALIQCONTR">
           <Key>
@@ -666,9 +688,12 @@
         <EntityType Name="RATEMAB">
           <Key>
             <PropertyRef Name="IDRATEMAB" />
+            <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORATA" Type="date" Nullable="false" />
           <Property Name="DATAFINERATA" Type="date" Nullable="false" />
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -750,11 +775,14 @@
         <EntityType Name="STIPENDI">
           <Key>
             <PropertyRef Name="IDELABORAZIONEMENSILE" />
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDELABORAZIONEMENSILE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESEELABORAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNOELABORAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESERIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -762,9 +790,23 @@
           <Property Name="GIORNI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="FLAGINVIOFLUSSI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="date" />
+          <Property Name="DATAINVIOFLUSSI" Type="date" Nullable="false" />
           <Property Name="BLOCCAINVIOFLIE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINVIOGEPE" Type="char" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TEORICI">
+          <Key>
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
+          </Key>
+          <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
         </EntityType>
         <EntityType Name="TFR">
           <Key>
@@ -984,6 +1026,22 @@
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
+        <Association Name="R_A_T">
+          <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTICIPI">
+              <PropertyRef Name="IDINDESTERA" />
+              <PropertyRef Name="IDANTICIPO" />
+            </Principal>
+            <Dependent Role="ELAB_CONT">
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDANTICIPO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_AC_LA">
           <End Role="ATTIVITACRUD" Type="Self.ATTIVITACRUD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1055,30 +1113,22 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_C_AQ">
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="1">
+          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="OA" Type="Self.OA" Multiplicity="0..1" />
+          <End Role="OA" Type="Self.OA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CONTABILITA">
               <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Principal>
             <Dependent Role="OA">
               <PropertyRef Name="CTB_ID_RECORD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_C_E_C">
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CONTABILITA">
-              <PropertyRef Name="IDCONTABILITA" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1376,19 +1426,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_E_C_S">
+        <Association Name="R_EC_T">
           <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ELAB_CONT">
               <PropertyRef Name="IDINDENNITA" />
-              <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Principal>
-            <Dependent Role="STIPENDI">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDINDENNITA" />
-              <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1500,6 +1550,20 @@
               <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="RICHIAMO">
+              <PropertyRef Name="IDINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_I_MAB">
+          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INDENNITA">
+              <PropertyRef Name="IDINDENNITA" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
@@ -1708,9 +1772,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_ALIQCONTR">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1722,9 +1788,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_DATIMAB">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1736,9 +1804,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_DOC">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1750,9 +1820,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_TFR">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1764,9 +1836,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="PERCMAB_MAB">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1778,9 +1852,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="RATEMAB">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2037,7 +2113,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_PS_A">
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="0..1">
+          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="*" />
@@ -2176,17 +2252,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_RM_C">
+        <Association Name="R_RMAB_EC">
           <End Role="RATEMAB" Type="Self.RATEMAB" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
+          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RATEMAB">
               <PropertyRef Name="IDRATEMAB" />
+              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
-            <Dependent Role="CONTABILITA">
+            <Dependent Role="ELAB_CONT">
               <PropertyRef Name="IDRATEMAB" />
+              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2218,6 +2298,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_C">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
+            </Principal>
+            <Dependent Role="CONTABILITA">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_I">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2246,20 +2344,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_MAB">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_MF">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2271,6 +2355,22 @@
             </Principal>
             <Dependent Role="MAGGIORAZIONIFAMILIARI">
               <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_S">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1" />
+          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
+            </Principal>
+            <Dependent Role="STIPENDI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2540,16 +2640,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TM_C">
+        <Association Name="R_TM_T">
           <End Role="TIPOMOVIMENTO" Type="Self.TIPOMOVIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TIPOMOVIMENTO">
               <PropertyRef Name="IDTIPOMOVIMENTO" />
             </Principal>
-            <Dependent Role="CONTABILITA">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDTIPOMOVIMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -2764,30 +2864,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_V_C">
+        <Association Name="R_V_T">
           <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VOCI">
               <PropertyRef Name="IDVOCI" />
             </Principal>
-            <Dependent Role="CONTABILITA">
-              <PropertyRef Name="IDVOCI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_V_S">
-          <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VOCI">
-              <PropertyRef Name="IDVOCI" />
-            </Principal>
-            <Dependent Role="STIPENDI">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDVOCI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2820,7 +2906,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ModelISEPROStoreContainer">
+        <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISEPRO" store:Type="Tables" />
@@ -2897,6 +2983,7 @@
           <EntitySet Name="SOSPENSIONE" EntityType="Self.SOSPENSIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="Self.STATOTRASFERIMENTO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="STIPENDI" EntityType="Self.STIPENDI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
@@ -2923,6 +3010,10 @@
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="Self.UTENTIAUTORIZZATI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="VALUTE" EntityType="Self.VALUTE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="VOCI" EntityType="Self.VOCI" Schema="ISEPRO" store:Type="Tables" />
+          <AssociationSet Name="R_A_T" Association="Self.R_A_T">
+            <End Role="ANTICIPI" EntitySet="ANTICIPI" />
+            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
+          </AssociationSet>
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
@@ -2946,10 +3037,6 @@
           <AssociationSet Name="R_C_AQ" Association="Self.R_C_AQ">
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
-          </AssociationSet>
-          <AssociationSet Name="R_C_E_C" Association="Self.R_C_E_C">
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_CDC_CDCDIP" Association="Self.R_CDC_CDCDIP">
             <End Role="CDC" EntitySet="CDC" />
@@ -3035,9 +3122,9 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="PASSAPORTI_DOCUMENTI" EntitySet="PASSAPORTI_DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_E_C_S" Association="Self.R_E_C_S">
+          <AssociationSet Name="R_EC_T" Association="Self.R_EC_T">
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-            <End Role="STIPENDI" EntitySet="STIPENDI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_FKM_FKM_CFKM" Association="Self.R_FKM_FKM_CFKM">
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
@@ -3070,6 +3157,10 @@
           <AssociationSet Name="R_I_IR" Association="Self.R_I_IR">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="R_I_MAB" Association="Self.R_I_MAB">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_I_NRMF" Association="Self.R_I_NRMF">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -3263,9 +3354,9 @@
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="REGOLACALCOLO_RIDUZIONI" EntitySet="REGOLACALCOLO_RIDUZIONI" />
           </AssociationSet>
-          <AssociationSet Name="R_RM_C" Association="Self.R_RM_C">
+          <AssociationSet Name="R_RMAB_EC" Association="Self.R_RMAB_EC">
             <End Role="RATEMAB" EntitySet="RATEMAB" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
+            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_RU_UA" Association="Self.R_RU_UA">
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
@@ -3275,6 +3366,10 @@
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
+          <AssociationSet Name="R_T_C" Association="Self.R_T_C">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
+          </AssociationSet>
           <AssociationSet Name="R_T_I" Association="Self.R_T_I">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -3283,13 +3378,13 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
-          <AssociationSet Name="R_T_MAB" Association="Self.R_T_MAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_T_MF" Association="Self.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_S" Association="Self.R_T_S">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="STIPENDI" EntitySet="STIPENDI" />
           </AssociationSet>
           <AssociationSet Name="R_T_T_D" Association="Self.R_T_T_D">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3367,9 +3462,9 @@
             <End Role="TIPOLIQUIDAZIONE" EntitySet="TIPOLIQUIDAZIONE" />
             <End Role="VOCI" EntitySet="VOCI" />
           </AssociationSet>
-          <AssociationSet Name="R_TM_C" Association="Self.R_TM_C">
+          <AssociationSet Name="R_TM_T" Association="Self.R_TM_T">
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_CDCTRASF" Association="Self.R_TRASF_CDCTRASF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3431,13 +3526,9 @@
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
-          <AssociationSet Name="R_V_C" Association="Self.R_V_C">
+          <AssociationSet Name="R_V_T" Association="Self.R_V_T">
             <End Role="VOCI" EntitySet="VOCI" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_V_S" Association="Self.R_V_S">
-            <End Role="VOCI" EntitySet="VOCI" />
-            <End Role="STIPENDI" EntitySet="STIPENDI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_VALUTE_TFR" Association="Self.R_VALUTE_TFR">
             <End Role="VALUTE" EntitySet="VALUTE" />
@@ -3448,10 +3539,11 @@
             <End Role="MAGFAM_MAGCON" EntitySet="MAGFAM_MAGCON" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ModelISEPRO" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DBISE" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -3498,12 +3590,16 @@
         <EntityType Name="ANTICIPI">
           <Key>
             <PropertyRef Name="IDANTICIPO" />
+            <PropertyRef Name="IDINDESTERA" />
           </Key>
           <Property Name="IDANTICIPO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTOANTICIPO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_A_T" FromRole="ANTICIPI" ToRole="ELAB_CONT" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_PS_A" FromRole="ANTICIPI" ToRole="PRIMASITEMAZIONE" />
         </EntityType>
         <EntityType Name="ATTIVITACRUD">
@@ -3577,7 +3673,7 @@
           </Key>
           <Property Name="IDCFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="COEFFICENTEKM" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FASCKM_CFKM" Relationship="Self.R_CFKM_FKM_CFKM" FromRole="COEFFICENTEFKM" ToRole="FASCKM_CFKM" />
@@ -3590,7 +3686,7 @@
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="COEFFICENTERICHIAMO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="COEFFICENTEINDBASE" Type="Decimal" Precision="10" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
@@ -3603,7 +3699,7 @@
           <Property Name="IDCOEFFICENTESEDE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="VALORECOEFFICENTE" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="INDENNITA_COEFFISEDE" Relationship="Self.R_CS_I_CS" FromRole="COEFFICENTISEDE" ToRole="INDENNITA_COEFFISEDE" />
@@ -3612,12 +3708,14 @@
         <EntityType Name="CONTABILITA">
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="TIPOVOCE" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDTEORICI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABCONT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNOELABORAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESEELABORAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNORIFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3625,13 +3723,10 @@
           <Property Name="GIORNI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="FLAGINVIOFLUSSI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="DateTime" />
+          <Property Name="FLAGINVIOOA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINVIOOA" Type="DateTime" />
           <NavigationProperty Name="OA" Relationship="Self.R_C_AQ" FromRole="CONTABILITA" ToRole="OA" />
-          <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_C_E_C" FromRole="CONTABILITA" ToRole="ELAB_CONT" />
-          <NavigationProperty Name="RATEMAB" Relationship="Self.R_RM_C" FromRole="CONTABILITA" ToRole="RATEMAB" />
-          <NavigationProperty Name="TIPOMOVIMENTO" Relationship="Self.R_TM_C" FromRole="CONTABILITA" ToRole="TIPOMOVIMENTO" />
-          <NavigationProperty Name="VOCI" Relationship="Self.R_V_C" FromRole="CONTABILITA" ToRole="VOCI" />
+          <NavigationProperty Name="TEORICI" Relationship="Self.R_T_C" FromRole="CONTABILITA" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="DATIMAB">
           <Key>
@@ -3708,16 +3803,20 @@
         </EntityType>
         <EntityType Name="ELAB_CONT">
           <Key>
+            <PropertyRef Name="IDELABCONT" />
             <PropertyRef Name="IDINDENNITA" />
-            <PropertyRef Name="IDCONTABILITA" />
           </Key>
+          <Property Name="IDELABCONT" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="CONTABILITA" Relationship="Self.R_C_E_C" FromRole="ELAB_CONT" ToRole="CONTABILITA" />
-          <NavigationProperty Name="STIPENDI" Relationship="Self.R_E_C_S" FromRole="ELAB_CONT" ToRole="STIPENDI" />
+          <Property Name="IDANTICIPO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ANTICIPI" Relationship="Self.R_A_T" FromRole="ELAB_CONT" ToRole="ANTICIPI" />
+          <NavigationProperty Name="TEORICI" Relationship="Self.R_EC_T" FromRole="ELAB_CONT" ToRole="TEORICI" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_E_C" FromRole="ELAB_CONT" ToRole="INDENNITA" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_PS_E_C" FromRole="ELAB_CONT" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_R_E_C" FromRole="ELAB_CONT" ToRole="RICHIAMO" />
+          <NavigationProperty Name="RATEMAB" Relationship="Self.R_RMAB_EC" FromRole="ELAB_CONT" ToRole="RATEMAB" />
         </EntityType>
         <EntityType Name="FASCIACHILOMETRICA">
           <Key>
@@ -3727,7 +3826,7 @@
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDEFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="Self.R_DFKM_FC" FromRole="FASCIACHILOMETRICA" ToRole="DEFFASCIACHILOMETRICA" />
           <NavigationProperty Name="FASCKM_CFKM" Relationship="Self.R_FKM_FKM_CFKM" FromRole="FASCIACHILOMETRICA" ToRole="FASCKM_CFKM" />
@@ -3786,6 +3885,7 @@
           <NavigationProperty Name="INDENNITA_PERCDISAGIO" Relationship="Self.R_I_I_PD" FromRole="INDENNITA" ToRole="INDENNITA_PERCDISAGIO" />
           <NavigationProperty Name="INDENNITA_TFR" Relationship="Self.R_I_I_TFR" FromRole="INDENNITA" ToRole="INDENNITA_TFR" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_I_IR" FromRole="INDENNITA" ToRole="RICHIAMO" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_I_MAB" FromRole="INDENNITA" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="NOTIFICARICHIESTAMAGFAM" Relationship="Self.R_I_NRMF" FromRole="INDENNITA" ToRole="NOTIFICARICHIESTAMAGFAM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_I_PS" FromRole="INDENNITA" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="Self.R_I_S" FromRole="INDENNITA" ToRole="SOSPENSIONE" />
@@ -3930,10 +4030,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDALIQCONTR" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDALIQCONTR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="Self.R_AC_MAB_AC" FromRole="MAB_ALIQCONTR" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_AC" FromRole="MAB_ALIQCONTR" ToRole="MAGGIORAZIONEABITAZIONE" />
         </EntityType>
@@ -3941,10 +4043,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDDATIMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDATIMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="DATIMAB" Relationship="Self.R_DMAB_MAB_DMAB" FromRole="MAB_DATIMAB" ToRole="DATIMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_DMAB" FromRole="MAB_DATIMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
         </EntityType>
@@ -3952,10 +4056,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDDOCUMENTO" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_MAB_DOC" FromRole="MAB_DOC" ToRole="DOCUMENTI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_DOC" FromRole="MAB_DOC" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_MAB_DOC" FromRole="MAB_DOC" ToRole="TIPODOCUMENTI" />
@@ -3964,10 +4070,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDTFR" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTFR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_TFR" FromRole="MAB_TFR" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="TFR" Relationship="Self.R_TFR_MAB_TFR" FromRole="MAB_TFR" ToRole="TFR" />
         </EntityType>
@@ -4018,18 +4126,19 @@
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
             <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="INDENNITA" />
           <NavigationProperty Name="MAB_ALIQCONTR" Relationship="Self.R_MAB_MAB_AC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_ALIQCONTR" />
           <NavigationProperty Name="MAB_DATIMAB" Relationship="Self.R_MAB_MAB_DMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_DATIMAB" />
           <NavigationProperty Name="MAB_DOC" Relationship="Self.R_MAB_MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_DOC" />
           <NavigationProperty Name="MAB_TFR" Relationship="Self.R_MAB_MAB_TFR" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_TFR" />
           <NavigationProperty Name="PERCMAB_MAB" Relationship="Self.R_MAB_PM_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCMAB_MAB" />
           <NavigationProperty Name="RATEMAB" Relationship="Self.R_MAB_RMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RATEMAB" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONECONIUGE">
           <Key>
@@ -4062,10 +4171,10 @@
           <Key>
             <PropertyRef Name="IDMAGANNUALI" />
           </Key>
-          <Property Name="IDMAGANNUALI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGANNUALI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="ANNUALITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DATIMAB_MABANNUALI" Relationship="Self.R_MABA_DM_MA" FromRole="MAGGIORAZIONIANNUALI" ToRole="DATIMAB_MABANNUALI" />
@@ -4099,7 +4208,7 @@
             <PropertyRef Name="IDINDPRIMOSEGR" />
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="Self.R_IPS_MF_IPS" FromRole="MF_IPS" ToRole="INDENNITAPRIMOSEGRETARIO" />
@@ -4131,7 +4240,10 @@
           <Key>
             <PropertyRef Name="CTB_ID_RECORD" />
           </Key>
-          <Property Name="CTB_ID_RECORD" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CTB_ID_RECORD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTEORICI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDELABCONT" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="CTB_MATRICOLA" Type="Int16" Nullable="false" />
           <Property Name="CTB_QUALIFICA" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CTB_COD_SEDE" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
@@ -4185,7 +4297,7 @@
           <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="PERCENTUALE" Type="Decimal" Precision="11" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="INDENNITA_PERCDISAGIO" Relationship="Self.R_PD_I_PD" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA_PERCDISAGIO" />
@@ -4199,7 +4311,7 @@
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="DATAFINEVALIDITA" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="PERCENTUALE" Type="Decimal" Precision="11" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="Self.R_L_PMAB" FromRole="PERCENTUALEMAB" ToRole="LIVELLI" />
@@ -4210,10 +4322,12 @@
           <Key>
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDPERCMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPERCMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_PM_MAB" FromRole="PERCMAB_MAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="Self.R_PM_PM_MAB" FromRole="PERCMAB_MAB" ToRole="PERCENTUALEMAB" />
         </EntityType>
@@ -4243,7 +4357,7 @@
           <Key>
             <PropertyRef Name="IDINDESTERA" />
           </Key>
-          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="ANTICIPI" Relationship="Self.R_PS_A" FromRole="PRIMASITEMAZIONE" ToRole="ANTICIPI" />
           <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_PS_E_C" FromRole="PRIMASITEMAZIONE" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_PS" FromRole="PRIMASITEMAZIONE" ToRole="INDENNITA" />
@@ -4254,16 +4368,19 @@
         <EntityType Name="RATEMAB">
           <Key>
             <PropertyRef Name="IDRATEMAB" />
+            <PropertyRef Name="IDMAB" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORATA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINERATA" Type="DateTime" Nullable="false" />
           <Property Name="GIORNI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTOGIORNO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="CONTABILITA" Relationship="Self.R_RM_C" FromRole="RATEMAB" ToRole="CONTABILITA" />
+          <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_RMAB_EC" FromRole="RATEMAB" ToRole="ELAB_CONT" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_RMAB" FromRole="RATEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
         </EntityType>
         <EntityType Name="REGOLACALCOLO_RIDUZIONI">
@@ -4296,7 +4413,7 @@
           <Key>
             <PropertyRef Name="IDINDENNITA" />
           </Key>
-          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_R_E_C" FromRole="RICHIAMO" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_IR" FromRole="RICHIAMO" ToRole="INDENNITA" />
@@ -4356,11 +4473,14 @@
         <EntityType Name="STIPENDI">
           <Key>
             <PropertyRef Name="IDELABORAZIONEMENSILE" />
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
           </Key>
           <Property Name="IDELABORAZIONEMENSILE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTEORICI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABCONT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESEELABORAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ANNOELABORAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="MESERIFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -4368,11 +4488,29 @@
           <Property Name="GIORNI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="FLAGINVIOFLUSSI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINVIOFLUSSI" Type="DateTime" />
+          <Property Name="DATAINVIOFLUSSI" Type="DateTime" Nullable="false" />
           <Property Name="BLOCCAINVIOFLIE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_E_C_S" FromRole="STIPENDI" ToRole="ELAB_CONT" />
-          <NavigationProperty Name="VOCI" Relationship="Self.R_V_S" FromRole="STIPENDI" ToRole="VOCI" />
+          <Property Name="DATAINVIOGEPE" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="TEORICI" Relationship="Self.R_T_S" FromRole="STIPENDI" ToRole="TEORICI" />
+        </EntityType>
+        <EntityType Name="TEORICI">
+          <Key>
+            <PropertyRef Name="IDTEORICI" />
+            <PropertyRef Name="IDELABCONT" />
+            <PropertyRef Name="IDINDENNITA" />
+          </Key>
+          <Property Name="IDTEORICI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDELABCONT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="IMPORTO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
+          <NavigationProperty Name="CONTABILITA" Relationship="Self.R_T_C" FromRole="TEORICI" ToRole="CONTABILITA" />
+          <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_EC_T" FromRole="TEORICI" ToRole="ELAB_CONT" />
+          <NavigationProperty Name="STIPENDI" Relationship="Self.R_T_S" FromRole="TEORICI" ToRole="STIPENDI" />
+          <NavigationProperty Name="TIPOMOVIMENTO" Relationship="Self.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
+          <NavigationProperty Name="VOCI" Relationship="Self.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
         </EntityType>
         <EntityType Name="TFR">
           <Key>
@@ -4450,7 +4588,7 @@
           <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TIPOMOVIMENTO1" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCMOVIMENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CONTABILITA" Relationship="Self.R_TM_C" FromRole="TIPOMOVIMENTO" ToRole="CONTABILITA" />
+          <NavigationProperty Name="TEORICI" Relationship="Self.R_TM_T" FromRole="TIPOMOVIMENTO" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="TIPOREGOLACALCOLO">
           <Key>
@@ -4516,7 +4654,6 @@
           <NavigationProperty Name="CDC_TRASF" Relationship="Self.R_TRASF_CDCTRASF" FromRole="TRASFERIMENTO" ToRole="CDC_TRASF" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="Self.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="Self.R_R_T" FromRole="TRASFERIMENTO" ToRole="RUOLOUFFICIO" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="Self.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
@@ -4648,8 +4785,7 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CONTABILITA" Relationship="Self.R_V_C" FromRole="VOCI" ToRole="CONTABILITA" />
-          <NavigationProperty Name="STIPENDI" Relationship="Self.R_V_S" FromRole="VOCI" ToRole="STIPENDI" />
+          <NavigationProperty Name="TEORICI" Relationship="Self.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="Self.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
           <NavigationProperty Name="TIPOVOCE" Relationship="Self.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
         </EntityType>
@@ -4723,8 +4859,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_A_T">
+          <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ANTICIPI">
+              <PropertyRef Name="IDINDESTERA" />
+              <PropertyRef Name="IDANTICIPO" />
+            </Principal>
+            <Dependent Role="ELAB_CONT">
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDANTICIPO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_PS_A">
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="0..1">
+          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="*" />
@@ -4948,72 +5100,40 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_C_AQ">
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="1">
+          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="OA" Type="Self.OA" Multiplicity="0..1" />
+          <End Role="OA" Type="Self.OA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CONTABILITA">
               <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Principal>
             <Dependent Role="OA">
               <PropertyRef Name="CTB_ID_RECORD" />
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_C_E_C">
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CONTABILITA">
-              <PropertyRef Name="IDCONTABILITA" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDCONTABILITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RM_C">
-          <End Role="RATEMAB" Type="Self.RATEMAB" Multiplicity="0..1">
+        <Association Name="R_T_C">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RATEMAB">
-              <PropertyRef Name="IDRATEMAB" />
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Principal>
             <Dependent Role="CONTABILITA">
-              <PropertyRef Name="IDRATEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TM_C">
-          <End Role="TIPOMOVIMENTO" Type="Self.TIPOMOVIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOMOVIMENTO">
-              <PropertyRef Name="IDTIPOMOVIMENTO" />
-            </Principal>
-            <Dependent Role="CONTABILITA">
-              <PropertyRef Name="IDTIPOMOVIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_V_C">
-          <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CONTABILITA" Type="Self.CONTABILITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VOCI">
-              <PropertyRef Name="IDVOCI" />
-            </Principal>
-            <Dependent Role="CONTABILITA">
-              <PropertyRef Name="IDVOCI" />
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5143,19 +5263,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_E_C_S">
+        <Association Name="R_EC_T">
           <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ELAB_CONT">
               <PropertyRef Name="IDINDENNITA" />
-              <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Principal>
-            <Dependent Role="STIPENDI">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDINDENNITA" />
-              <PropertyRef Name="IDCONTABILITA" />
+              <PropertyRef Name="IDELABCONT" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5197,6 +5317,24 @@
               <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="ELAB_CONT">
+              <PropertyRef Name="IDINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RMAB_EC">
+          <End Role="RATEMAB" Type="Self.RATEMAB" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RATEMAB">
+              <PropertyRef Name="IDRATEMAB" />
+              <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
+            </Principal>
+            <Dependent Role="ELAB_CONT">
+              <PropertyRef Name="IDRATEMAB" />
+              <PropertyRef Name="IDMAB" />
               <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
@@ -5351,6 +5489,20 @@
               <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="RICHIAMO">
+              <PropertyRef Name="IDINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_I_MAB">
+          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="INDENNITA">
+              <PropertyRef Name="IDINDENNITA" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
@@ -5601,9 +5753,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_ALIQCONTR">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5615,9 +5769,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_DATIMAB">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5629,9 +5785,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_DOC">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5657,9 +5815,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="MAB_TFR">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5783,9 +5943,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="PERCMAB_MAB">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5797,23 +5959,11 @@
           <ReferentialConstraint>
             <Principal Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDMAB" />
+              <PropertyRef Name="IDINDENNITA" />
             </Principal>
             <Dependent Role="RATEMAB">
               <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MAB">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
+              <PropertyRef Name="IDINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6139,16 +6289,46 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_V_S">
+        <Association Name="R_T_S">
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1" />
+          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
+            </Principal>
+            <Dependent Role="STIPENDI">
+              <PropertyRef Name="IDTEORICI" />
+              <PropertyRef Name="IDINDENNITA" />
+              <PropertyRef Name="IDELABCONT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TM_T">
+          <End Role="TIPOMOVIMENTO" Type="Self.TIPOMOVIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOMOVIMENTO">
+              <PropertyRef Name="IDTIPOMOVIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTIPOMOVIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_T">
           <End Role="VOCI" Type="Self.VOCI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="VOCI">
               <PropertyRef Name="IDVOCI" />
             </Principal>
-            <Dependent Role="STIPENDI">
+            <Dependent Role="TEORICI">
               <PropertyRef Name="IDVOCI" />
             </Dependent>
           </ReferentialConstraint>
@@ -6393,7 +6573,7 @@
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="EntitiesDBISEPRO" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="EntitiesDBISE" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" />
@@ -6467,6 +6647,7 @@
           <EntitySet Name="SOSPENSIONE" EntityType="Self.SOSPENSIONE" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="Self.STATOTRASFERIMENTO" />
           <EntitySet Name="STIPENDI" EntityType="Self.STIPENDI" />
+          <EntitySet Name="TEORICI" EntityType="Self.TEORICI" />
           <EntitySet Name="TFR" EntityType="Self.TFR" />
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" />
@@ -6511,6 +6692,10 @@
           <AssociationSet Name="R_ADF_" Association="Self.R_ADF_">
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
             <End Role="MAGFAM_ALTRIDATIFAM" EntitySet="MAGFAM_ALTRIDATIFAM" />
+          </AssociationSet>
+          <AssociationSet Name="R_A_T" Association="Self.R_A_T">
+            <End Role="ANTICIPI" EntitySet="ANTICIPI" />
+            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_PS_A" Association="Self.R_PS_A">
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
@@ -6580,20 +6765,8 @@
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
           </AssociationSet>
-          <AssociationSet Name="R_C_E_C" Association="Self.R_C_E_C">
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-          </AssociationSet>
-          <AssociationSet Name="R_RM_C" Association="Self.R_RM_C">
-            <End Role="RATEMAB" EntitySet="RATEMAB" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_TM_C" Association="Self.R_TM_C">
-            <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_V_C" Association="Self.R_V_C">
-            <End Role="VOCI" EntitySet="VOCI" />
+          <AssociationSet Name="R_T_C" Association="Self.R_T_C">
+            <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
           </AssociationSet>
           <AssociationSet Name="R_DMAB_DMAB_MABA" Association="Self.R_DMAB_DMAB_MABA">
@@ -6632,9 +6805,9 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
           </AssociationSet>
-          <AssociationSet Name="R_E_C_S" Association="Self.R_E_C_S">
+          <AssociationSet Name="R_EC_T" Association="Self.R_EC_T">
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-            <End Role="STIPENDI" EntitySet="STIPENDI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_I_E_C" Association="Self.R_I_E_C">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -6646,6 +6819,10 @@
           </AssociationSet>
           <AssociationSet Name="R_R_E_C" Association="Self.R_R_E_C">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
+          </AssociationSet>
+          <AssociationSet Name="R_RMAB_EC" Association="Self.R_RMAB_EC">
+            <End Role="RATEMAB" EntitySet="RATEMAB" />
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_FKM_FKM_CFKM" Association="Self.R_FKM_FKM_CFKM">
@@ -6691,6 +6868,10 @@
           <AssociationSet Name="R_I_IR" Association="Self.R_I_IR">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="R_I_MAB" Association="Self.R_I_MAB">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_I_NRMF" Association="Self.R_I_NRMF">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -6820,10 +7001,6 @@
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="RATEMAB" EntitySet="RATEMAB" />
           </AssociationSet>
-          <AssociationSet Name="R_T_MAB" Association="Self.R_T_MAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_TC_MC" Association="Self.R_TC_MC">
             <End Role="TIPOLOGIACONIUGE" EntitySet="TIPOLOGIACONIUGE" />
             <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
@@ -6916,9 +7093,17 @@
             <End Role="STATOTRASFERIMENTO" EntitySet="STATOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="R_V_S" Association="Self.R_V_S">
-            <End Role="VOCI" EntitySet="VOCI" />
+          <AssociationSet Name="R_T_S" Association="Self.R_T_S">
+            <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="STIPENDI" EntitySet="STIPENDI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TM_T" Association="Self.R_TM_T">
+            <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_T" Association="Self.R_V_T">
+            <End Role="VOCI" EntitySet="VOCI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_TFR_U_TFR" Association="Self.R_TFR_U_TFR">
             <End Role="TFR" EntitySet="TFR" />
@@ -7006,9 +7191,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelISEPROStoreContainer" CdmEntityContainer="EntitiesDBISEPRO">
+        <EntityContainerMapping StorageEntityContainer="DBISEStoreContainer" CdmEntityContainer="EntitiesDBISE">
           <EntitySetMapping Name="ACCESSI">
-            <EntityTypeMapping TypeName="ModelISEPRO.ACCESSI">
+            <EntityTypeMapping TypeName="DBISE.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
                 <ScalarProperty Name="IDACCESSO" ColumnName="IDACCESSO" />
                 <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
@@ -7018,7 +7203,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ALIQUOTECONTRIBUTIVE">
-            <EntityTypeMapping TypeName="ModelISEPRO.ALIQUOTECONTRIBUTIVE">
+            <EntityTypeMapping TypeName="DBISE.ALIQUOTECONTRIBUTIVE">
               <MappingFragment StoreEntitySet="ALIQUOTECONTRIBUTIVE">
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="IDTIPOCONTRIBUTO" ColumnName="IDTIPOCONTRIBUTO" />
@@ -7030,7 +7215,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ALTRIDATIFAM">
-            <EntityTypeMapping TypeName="ModelISEPRO.ALTRIDATIFAM">
+            <EntityTypeMapping TypeName="DBISE.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
                 <ScalarProperty Name="DATANASCITA" ColumnName="DATANASCITA" />
@@ -7049,18 +7234,20 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ANTICIPI">
-            <EntityTypeMapping TypeName="ModelISEPRO.ANTICIPI">
+            <EntityTypeMapping TypeName="DBISE.ANTICIPI">
               <MappingFragment StoreEntitySet="ANTICIPI">
                 <ScalarProperty Name="IDANTICIPO" ColumnName="IDANTICIPO" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
                 <ScalarProperty Name="IMPORTOANTICIPO" ColumnName="IMPORTOANTICIPO" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
+                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ATTIVITACRUD">
-            <EntityTypeMapping TypeName="ModelISEPRO.ATTIVITACRUD">
+            <EntityTypeMapping TypeName="DBISE.ATTIVITACRUD">
               <MappingFragment StoreEntitySet="ATTIVITACRUD">
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
                 <ScalarProperty Name="DESCRIZIONEATTIVITA" ColumnName="DESCRIZIONEATTIVITA" />
@@ -7068,7 +7255,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BIGLIETTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.BIGLIETTI">
+            <EntityTypeMapping TypeName="DBISE.BIGLIETTI">
               <MappingFragment StoreEntitySet="BIGLIETTI">
                 <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7079,7 +7266,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BIGLIETTI_DOCUMENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.BIGLIETTI_DOCUMENTI">
+            <EntityTypeMapping TypeName="DBISE.BIGLIETTI_DOCUMENTI">
               <MappingFragment StoreEntitySet="BIGLIETTI_DOCUMENTI">
                 <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7088,7 +7275,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CDC">
-            <EntityTypeMapping TypeName="ModelISEPRO.CDC">
+            <EntityTypeMapping TypeName="DBISE.CDC">
               <MappingFragment StoreEntitySet="CDC">
                 <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
                 <ScalarProperty Name="CODICECDC" ColumnName="CODICECDC" />
@@ -7097,7 +7284,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CDC_DIPENDENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.CDC_DIPENDENTI">
+            <EntityTypeMapping TypeName="DBISE.CDC_DIPENDENTI">
               <MappingFragment StoreEntitySet="CDC_DIPENDENTI">
                 <ScalarProperty Name="ID_CDC_DIPENDENTI" ColumnName="ID_CDC_DIPENDENTI" />
                 <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
@@ -7109,7 +7296,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CDC_TRASF">
-            <EntityTypeMapping TypeName="ModelISEPRO.CDC_TRASF">
+            <EntityTypeMapping TypeName="DBISE.CDC_TRASF">
               <MappingFragment StoreEntitySet="CDC_TRASF">
                 <ScalarProperty Name="ID_CDC_TRASF" ColumnName="ID_CDC_TRASF" />
                 <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
@@ -7118,7 +7305,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTEFKM">
-            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTEFKM">
+            <EntityTypeMapping TypeName="DBISE.COEFFICENTEFKM">
               <MappingFragment StoreEntitySet="COEFFICENTEFKM">
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7129,7 +7316,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTEINDRICHIAMO">
-            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTEINDRICHIAMO">
+            <EntityTypeMapping TypeName="DBISE.COEFFICENTEINDRICHIAMO">
               <MappingFragment StoreEntitySet="COEFFICENTEINDRICHIAMO">
                 <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7141,7 +7328,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="COEFFICENTISEDE">
-            <EntityTypeMapping TypeName="ModelISEPRO.COEFFICENTISEDE">
+            <EntityTypeMapping TypeName="DBISE.COEFFICENTISEDE">
               <MappingFragment StoreEntitySet="COEFFICENTISEDE">
                 <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7153,13 +7340,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CONTABILITA">
-            <EntityTypeMapping TypeName="ModelISEPRO.CONTABILITA">
+            <EntityTypeMapping TypeName="DBISE.CONTABILITA">
               <MappingFragment StoreEntitySet="CONTABILITA">
                 <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
-                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
-                <ScalarProperty Name="IDRATEMAB" ColumnName="IDRATEMAB" />
-                <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
-                <ScalarProperty Name="TIPOVOCE" ColumnName="TIPOVOCE" />
+                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="ANNOELABORAZIONE" ColumnName="ANNOELABORAZIONE" />
                 <ScalarProperty Name="MESEELABORAZIONE" ColumnName="MESEELABORAZIONE" />
                 <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
@@ -7167,13 +7353,13 @@
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="FLAGINVIOFLUSSI" ColumnName="FLAGINVIOFLUSSI" />
-                <ScalarProperty Name="DATAINVIOFLUSSI" ColumnName="DATAINVIOFLUSSI" />
+                <ScalarProperty Name="FLAGINVIOOA" ColumnName="FLAGINVIOOA" />
+                <ScalarProperty Name="DATAINVIOOA" ColumnName="DATAINVIOOA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DATIMAB">
-            <EntityTypeMapping TypeName="ModelISEPRO.DATIMAB">
+            <EntityTypeMapping TypeName="DBISE.DATIMAB">
               <MappingFragment StoreEntitySet="DATIMAB">
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
                 <ScalarProperty Name="CANONE" ColumnName="CANONE" />
@@ -7187,7 +7373,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DATIMAB_MABANNUALI">
-            <EntityTypeMapping TypeName="ModelISEPRO.DATIMAB_MABANNUALI">
+            <EntityTypeMapping TypeName="DBISE.DATIMAB_MABANNUALI">
               <MappingFragment StoreEntitySet="DATIMAB_MABANNUALI">
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
                 <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
@@ -7196,7 +7382,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DEFFASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="ModelISEPRO.DEFFASCIACHILOMETRICA">
+            <EntityTypeMapping TypeName="DBISE.DEFFASCIACHILOMETRICA">
               <MappingFragment StoreEntitySet="DEFFASCIACHILOMETRICA">
                 <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
                 <ScalarProperty Name="KM" ColumnName="KM" />
@@ -7204,7 +7390,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DIPENDENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.DIPENDENTI">
+            <EntityTypeMapping TypeName="DBISE.DIPENDENTI">
               <MappingFragment StoreEntitySet="DIPENDENTI">
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
@@ -7224,7 +7410,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DOCUMENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.DOCUMENTI">
+            <EntityTypeMapping TypeName="DBISE.DOCUMENTI">
               <MappingFragment StoreEntitySet="DOCUMENTI">
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
                 <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
@@ -7234,15 +7420,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ELAB_CONT">
-            <EntityTypeMapping TypeName="ModelISEPRO.ELAB_CONT">
+            <EntityTypeMapping TypeName="DBISE.ELAB_CONT">
               <MappingFragment StoreEntitySet="ELAB_CONT">
+                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
-                <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
+                <ScalarProperty Name="IDANTICIPO" ColumnName="IDANTICIPO" />
+                <ScalarProperty Name="IDRATEMAB" ColumnName="IDRATEMAB" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="ModelISEPRO.FASCIACHILOMETRICA">
+            <EntityTypeMapping TypeName="DBISE.FASCIACHILOMETRICA">
               <MappingFragment StoreEntitySet="FASCIACHILOMETRICA">
                 <ScalarProperty Name="IDFASCIAKM" ColumnName="IDFASCIAKM" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7254,7 +7443,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FASCKM_CFKM">
-            <EntityTypeMapping TypeName="ModelISEPRO.FASCKM_CFKM">
+            <EntityTypeMapping TypeName="DBISE.FASCKM_CFKM">
               <MappingFragment StoreEntitySet="FASCKM_CFKM">
                 <ScalarProperty Name="IDFASCIAKM" ColumnName="IDFASCIAKM" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7263,7 +7452,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GRUPPIDOCUMENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.GRUPPIDOCUMENTI">
+            <EntityTypeMapping TypeName="DBISE.GRUPPIDOCUMENTI">
               <MappingFragment StoreEntitySet="GRUPPIDOCUMENTI">
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
                 <ScalarProperty Name="DESCGRUPPO" ColumnName="DESCGRUPPO" />
@@ -7271,7 +7460,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDBASE_DIPENDENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDBASE_DIPENDENTI">
+            <EntityTypeMapping TypeName="DBISE.INDBASE_DIPENDENTI">
               <MappingFragment StoreEntitySet="INDBASE_DIPENDENTI">
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
@@ -7280,7 +7469,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDBASE_RID">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDBASE_RID">
+            <EntityTypeMapping TypeName="DBISE.INDBASE_RID">
               <MappingFragment StoreEntitySet="INDBASE_RID">
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
@@ -7289,7 +7478,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA">
+            <EntityTypeMapping TypeName="DBISE.INDENNITA">
               <MappingFragment StoreEntitySet="INDENNITA">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -7297,7 +7486,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_COEFFISEDE">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_COEFFISEDE">
+            <EntityTypeMapping TypeName="DBISE.INDENNITA_COEFFISEDE">
               <MappingFragment StoreEntitySet="INDENNITA_COEFFISEDE">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
@@ -7306,7 +7495,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_INDBASE">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_INDBASE">
+            <EntityTypeMapping TypeName="DBISE.INDENNITA_INDBASE">
               <MappingFragment StoreEntitySet="INDENNITA_INDBASE">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
@@ -7315,7 +7504,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_PERCDISAGIO">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_PERCDISAGIO">
+            <EntityTypeMapping TypeName="DBISE.INDENNITA_PERCDISAGIO">
               <MappingFragment StoreEntitySet="INDENNITA_PERCDISAGIO">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
@@ -7324,7 +7513,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITA_TFR">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITA_TFR">
+            <EntityTypeMapping TypeName="DBISE.INDENNITA_TFR">
               <MappingFragment StoreEntitySet="INDENNITA_TFR">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -7333,12 +7522,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITABASE">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITABASE">
+            <EntityTypeMapping TypeName="DBISE.INDENNITABASE">
               <MappingFragment StoreEntitySet="INDENNITABASE">
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="VALORE" ColumnName="VALORE" />
                 <ScalarProperty Name="VALORERESP" ColumnName="VALORERESP" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
@@ -7346,7 +7535,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITAPRIMOSEGRETARIO">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITAPRIMOSEGRETARIO">
+            <EntityTypeMapping TypeName="DBISE.INDENNITAPRIMOSEGRETARIO">
               <MappingFragment StoreEntitySet="INDENNITAPRIMOSEGRETARIO">
                 <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7357,7 +7546,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDENNITASISTEMAZIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDENNITASISTEMAZIONE">
+            <EntityTypeMapping TypeName="DBISE.INDENNITASISTEMAZIONE">
               <MappingFragment StoreEntitySet="INDENNITASISTEMAZIONE">
                 <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
@@ -7369,7 +7558,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="INDRIC_COEFINDRICH">
-            <EntityTypeMapping TypeName="ModelISEPRO.INDRIC_COEFINDRICH">
+            <EntityTypeMapping TypeName="DBISE.INDRIC_COEFINDRICH">
               <MappingFragment StoreEntitySet="INDRIC_COEFINDRICH">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
@@ -7378,7 +7567,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LIVELLI">
-            <EntityTypeMapping TypeName="ModelISEPRO.LIVELLI">
+            <EntityTypeMapping TypeName="DBISE.LIVELLI">
               <MappingFragment StoreEntitySet="LIVELLI">
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="LIVELLO" ColumnName="LIVELLO" />
@@ -7386,7 +7575,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LIVELLIDIPENDENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.LIVELLIDIPENDENTI">
+            <EntityTypeMapping TypeName="DBISE.LIVELLIDIPENDENTI">
               <MappingFragment StoreEntitySet="LIVELLIDIPENDENTI">
                 <ScalarProperty Name="IDLIVELLODIPENDENTE" ColumnName="IDLIVELLODIPENDENTE" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
@@ -7398,7 +7587,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LOGATTIVITA">
-            <EntityTypeMapping TypeName="ModelISEPRO.LOGATTIVITA">
+            <EntityTypeMapping TypeName="DBISE.LOGATTIVITA">
               <MappingFragment StoreEntitySet="LOGATTIVITA">
                 <ScalarProperty Name="IDLOG" ColumnName="IDLOG" />
                 <ScalarProperty Name="IDUTENTELOGGATO" ColumnName="IDUTENTELOGGATO" />
@@ -7412,43 +7601,47 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_ALIQCONTR">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAB_ALIQCONTR">
+            <EntityTypeMapping TypeName="DBISE.MAB_ALIQCONTR">
               <MappingFragment StoreEntitySet="MAB_ALIQCONTR">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_DATIMAB">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAB_DATIMAB">
+            <EntityTypeMapping TypeName="DBISE.MAB_DATIMAB">
               <MappingFragment StoreEntitySet="MAB_DATIMAB">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDDATIMAB" ColumnName="IDDATIMAB" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_DOC">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAB_DOC">
+            <EntityTypeMapping TypeName="DBISE.MAB_DOC">
               <MappingFragment StoreEntitySet="MAB_DOC">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAB_TFR">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAB_TFR">
+            <EntityTypeMapping TypeName="DBISE.MAB_TFR">
               <MappingFragment StoreEntitySet="MAB_TFR">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_ALTRIDATIFAM">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_ALTRIDATIFAM">
+            <EntityTypeMapping TypeName="DBISE.MAGFAM_ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="MAGFAM_ALTRIDATIFAM">
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
@@ -7457,7 +7650,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_MAGCON">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_MAGCON">
+            <EntityTypeMapping TypeName="DBISE.MAGFAM_MAGCON">
               <MappingFragment StoreEntitySet="MAGFAM_MAGCON">
                 <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7466,7 +7659,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_MAGFIG">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_MAGFIG">
+            <EntityTypeMapping TypeName="DBISE.MAGFAM_MAGFIG">
               <MappingFragment StoreEntitySet="MAGFAM_MAGFIG">
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7475,7 +7668,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGFAM_PENSCON">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGFAM_PENSCON">
+            <EntityTypeMapping TypeName="DBISE.MAGFAM_PENSCON">
               <MappingFragment StoreEntitySet="MAGFAM_PENSCON">
                 <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7484,17 +7677,17 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONEABITAZIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONEABITAZIONE">
+            <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONEABITAZIONE">
               <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONECONIUGE">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONECONIUGE">
+            <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONECONIUGE">
               <MappingFragment StoreEntitySet="MAGGIORAZIONECONIUGE">
                 <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
                 <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
@@ -7506,7 +7699,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONEFIGLI">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONEFIGLI">
+            <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONEFIGLI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONEFIGLI">
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
@@ -7518,7 +7711,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONIANNUALI">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONIANNUALI">
+            <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONIANNUALI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONIANNUALI">
                 <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7530,7 +7723,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONIFAMILIARI">
-            <EntityTypeMapping TypeName="ModelISEPRO.MAGGIORAZIONIFAMILIARI">
+            <EntityTypeMapping TypeName="DBISE.MAGGIORAZIONIFAMILIARI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONIFAMILIARI">
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -7544,7 +7737,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MF_IPS">
-            <EntityTypeMapping TypeName="ModelISEPRO.MF_IPS">
+            <EntityTypeMapping TypeName="DBISE.MF_IPS">
               <MappingFragment StoreEntitySet="MF_IPS">
                 <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
                 <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
@@ -7553,7 +7746,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NORMACALCOLO">
-            <EntityTypeMapping TypeName="ModelISEPRO.NORMACALCOLO">
+            <EntityTypeMapping TypeName="DBISE.NORMACALCOLO">
               <MappingFragment StoreEntitySet="NORMACALCOLO">
                 <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
                 <ScalarProperty Name="RIFERIMENTONORMATIVO" ColumnName="RIFERIMENTONORMATIVO" />
@@ -7561,7 +7754,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NOTIFICARICHIESTAMAGFAM">
-            <EntityTypeMapping TypeName="ModelISEPRO.NOTIFICARICHIESTAMAGFAM">
+            <EntityTypeMapping TypeName="DBISE.NOTIFICARICHIESTAMAGFAM">
               <MappingFragment StoreEntitySet="NOTIFICARICHIESTAMAGFAM">
                 <ScalarProperty Name="IDNOTRICMAGFAM" ColumnName="IDNOTRICMAGFAM" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7573,9 +7766,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OA">
-            <EntityTypeMapping TypeName="ModelISEPRO.OA">
+            <EntityTypeMapping TypeName="DBISE.OA">
               <MappingFragment StoreEntitySet="OA">
                 <ScalarProperty Name="CTB_ID_RECORD" ColumnName="CTB_ID_RECORD" />
+                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="CTB_MATRICOLA" ColumnName="CTB_MATRICOLA" />
                 <ScalarProperty Name="CTB_QUALIFICA" ColumnName="CTB_QUALIFICA" />
                 <ScalarProperty Name="CTB_COD_SEDE" ColumnName="CTB_COD_SEDE" />
@@ -7594,7 +7790,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PARENTELA">
-            <EntityTypeMapping TypeName="ModelISEPRO.PARENTELA">
+            <EntityTypeMapping TypeName="DBISE.PARENTELA">
               <MappingFragment StoreEntitySet="PARENTELA">
                 <ScalarProperty Name="IDPARENTELA" ColumnName="IDPARENTELA" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7602,7 +7798,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PASSAPORTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.PASSAPORTI">
+            <EntityTypeMapping TypeName="DBISE.PASSAPORTI">
               <MappingFragment StoreEntitySet="PASSAPORTI">
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
@@ -7612,7 +7808,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PENSIONECONIUGE">
-            <EntityTypeMapping TypeName="ModelISEPRO.PENSIONECONIUGE">
+            <EntityTypeMapping TypeName="DBISE.PENSIONECONIUGE">
               <MappingFragment StoreEntitySet="PENSIONECONIUGE">
                 <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
                 <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
@@ -7623,7 +7819,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEDISAGIO">
-            <EntityTypeMapping TypeName="ModelISEPRO.PERCENTUALEDISAGIO">
+            <EntityTypeMapping TypeName="DBISE.PERCENTUALEDISAGIO">
               <MappingFragment StoreEntitySet="PERCENTUALEDISAGIO">
                 <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7635,7 +7831,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEMAB">
-            <EntityTypeMapping TypeName="ModelISEPRO.PERCENTUALEMAB">
+            <EntityTypeMapping TypeName="DBISE.PERCENTUALEMAB">
               <MappingFragment StoreEntitySet="PERCENTUALEMAB">
                 <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -7648,16 +7844,17 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PERCMAB_MAB">
-            <EntityTypeMapping TypeName="ModelISEPRO.PERCMAB_MAB">
+            <EntityTypeMapping TypeName="DBISE.PERCMAB_MAB">
               <MappingFragment StoreEntitySet="PERCMAB_MAB">
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASIST_ALIQCONTR">
-            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASIST_ALIQCONTR">
+            <EntityTypeMapping TypeName="DBISE.PRIMASIST_ALIQCONTR">
               <MappingFragment StoreEntitySet="PRIMASIST_ALIQCONTR">
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7666,7 +7863,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASIST_INDSIST">
-            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASIST_INDSIST">
+            <EntityTypeMapping TypeName="DBISE.PRIMASIST_INDSIST">
               <MappingFragment StoreEntitySet="PRIMASIST_INDSIST">
                 <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7675,17 +7872,18 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PRIMASITEMAZIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.PRIMASITEMAZIONE">
+            <EntityTypeMapping TypeName="DBISE.PRIMASITEMAZIONE">
               <MappingFragment StoreEntitySet="PRIMASITEMAZIONE">
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RATEMAB">
-            <EntityTypeMapping TypeName="ModelISEPRO.RATEMAB">
+            <EntityTypeMapping TypeName="DBISE.RATEMAB">
               <MappingFragment StoreEntitySet="RATEMAB">
                 <ScalarProperty Name="IDRATEMAB" ColumnName="IDRATEMAB" />
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="DATAINIZIORATA" ColumnName="DATAINIZIORATA" />
                 <ScalarProperty Name="DATAFINERATA" ColumnName="DATAFINERATA" />
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
@@ -7696,7 +7894,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="REGOLACALCOLO_RIDUZIONI">
-            <EntityTypeMapping TypeName="ModelISEPRO.REGOLACALCOLO_RIDUZIONI">
+            <EntityTypeMapping TypeName="DBISE.REGOLACALCOLO_RIDUZIONI">
               <MappingFragment StoreEntitySet="REGOLACALCOLO_RIDUZIONI">
                 <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
@@ -7705,7 +7903,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="REGOLECALCOLO">
-            <EntityTypeMapping TypeName="ModelISEPRO.REGOLECALCOLO">
+            <EntityTypeMapping TypeName="DBISE.REGOLECALCOLO">
               <MappingFragment StoreEntitySet="REGOLECALCOLO">
                 <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
@@ -7718,7 +7916,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RICHIAMO">
-            <EntityTypeMapping TypeName="ModelISEPRO.RICHIAMO">
+            <EntityTypeMapping TypeName="DBISE.RICHIAMO">
               <MappingFragment StoreEntitySet="RICHIAMO">
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
@@ -7726,7 +7924,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RIDUZIONI">
-            <EntityTypeMapping TypeName="ModelISEPRO.RIDUZIONI">
+            <EntityTypeMapping TypeName="DBISE.RIDUZIONI">
               <MappingFragment StoreEntitySet="RIDUZIONI">
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
@@ -7737,7 +7935,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RUOLOACCESSO">
-            <EntityTypeMapping TypeName="ModelISEPRO.RUOLOACCESSO">
+            <EntityTypeMapping TypeName="DBISE.RUOLOACCESSO">
               <MappingFragment StoreEntitySet="RUOLOACCESSO">
                 <ScalarProperty Name="IDRUOLOACCESSO" ColumnName="IDRUOLOACCESSO" />
                 <ScalarProperty Name="DESCRUOLO" ColumnName="DESCRUOLO" />
@@ -7745,7 +7943,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RUOLOUFFICIO">
-            <EntityTypeMapping TypeName="ModelISEPRO.RUOLOUFFICIO">
+            <EntityTypeMapping TypeName="DBISE.RUOLOUFFICIO">
               <MappingFragment StoreEntitySet="RUOLOUFFICIO">
                 <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
                 <ScalarProperty Name="DESCRUOLO" ColumnName="DESCRUOLO" />
@@ -7753,7 +7951,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SOSPENSIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.SOSPENSIONE">
+            <EntityTypeMapping TypeName="DBISE.SOSPENSIONE">
               <MappingFragment StoreEntitySet="SOSPENSIONE">
                 <ScalarProperty Name="IDSOSPENSIONE" ColumnName="IDSOSPENSIONE" />
                 <ScalarProperty Name="IDTIPOSOSPENSIONE" ColumnName="IDTIPOSOSPENSIONE" />
@@ -7766,7 +7964,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="STATOTRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelISEPRO.STATOTRASFERIMENTO">
+            <EntityTypeMapping TypeName="DBISE.STATOTRASFERIMENTO">
               <MappingFragment StoreEntitySet="STATOTRASFERIMENTO">
                 <ScalarProperty Name="IDSTATOTRASFERIMENTO" ColumnName="IDSTATOTRASFERIMENTO" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7774,12 +7972,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="STIPENDI">
-            <EntityTypeMapping TypeName="ModelISEPRO.STIPENDI">
+            <EntityTypeMapping TypeName="DBISE.STIPENDI">
               <MappingFragment StoreEntitySet="STIPENDI">
                 <ScalarProperty Name="IDELABORAZIONEMENSILE" ColumnName="IDELABORAZIONEMENSILE" />
+                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
-                <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
-                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="MESEELABORAZIONE" ColumnName="MESEELABORAZIONE" />
                 <ScalarProperty Name="ANNOELABORAZIONE" ColumnName="ANNOELABORAZIONE" />
                 <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
@@ -7787,14 +7985,27 @@
                 <ScalarProperty Name="GIORNI" ColumnName="GIORNI" />
                 <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="FLAGINVIOFLUSSI" ColumnName="FLAGINVIOFLUSSI" />
                 <ScalarProperty Name="DATAINVIOFLUSSI" ColumnName="DATAINVIOFLUSSI" />
                 <ScalarProperty Name="BLOCCAINVIOFLIE" ColumnName="BLOCCAINVIOFLIE" />
+                <ScalarProperty Name="DATAINVIOGEPE" ColumnName="DATAINVIOGEPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TEORICI">
+            <EntityTypeMapping TypeName="DBISE.TEORICI">
+              <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
+                <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
+                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
+                <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
+                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TFR">
-            <EntityTypeMapping TypeName="ModelISEPRO.TFR">
+            <EntityTypeMapping TypeName="DBISE.TFR">
               <MappingFragment StoreEntitySet="TFR">
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
                 <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
@@ -7806,7 +8017,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOALIQUOTECONTRIBUTIVE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOALIQUOTECONTRIBUTIVE">
+            <EntityTypeMapping TypeName="DBISE.TIPOALIQUOTECONTRIBUTIVE">
               <MappingFragment StoreEntitySet="TIPOALIQUOTECONTRIBUTIVE">
                 <ScalarProperty Name="IDTIPOALIQCONTR" ColumnName="IDTIPOALIQCONTR" />
                 <ScalarProperty Name="CODICE" ColumnName="CODICE" />
@@ -7815,7 +8026,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPODOCUMENTI">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPODOCUMENTI">
+            <EntityTypeMapping TypeName="DBISE.TIPODOCUMENTI">
               <MappingFragment StoreEntitySet="TIPODOCUMENTI">
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
@@ -7824,7 +8035,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOELABORAZIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOELABORAZIONE">
+            <EntityTypeMapping TypeName="DBISE.TIPOELABORAZIONE">
               <MappingFragment StoreEntitySet="TIPOELABORAZIONE">
                 <ScalarProperty Name="IDTIPOELABOPRAZIONE" ColumnName="IDTIPOELABOPRAZIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7832,7 +8043,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLIQUIDAZIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLIQUIDAZIONE">
+            <EntityTypeMapping TypeName="DBISE.TIPOLIQUIDAZIONE">
               <MappingFragment StoreEntitySet="TIPOLIQUIDAZIONE">
                 <ScalarProperty Name="IDTIPOLIQUIDAZIONE" ColumnName="IDTIPOLIQUIDAZIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7840,7 +8051,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLOGIACONIUGE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLOGIACONIUGE">
+            <EntityTypeMapping TypeName="DBISE.TIPOLOGIACONIUGE">
               <MappingFragment StoreEntitySet="TIPOLOGIACONIUGE">
                 <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
                 <ScalarProperty Name="TIPOLOGIACONIUGE1" ColumnName="TIPOLOGIACONIUGE" />
@@ -7848,7 +8059,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOLOGIAFIGLIO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOLOGIAFIGLIO">
+            <EntityTypeMapping TypeName="DBISE.TIPOLOGIAFIGLIO">
               <MappingFragment StoreEntitySet="TIPOLOGIAFIGLIO">
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
                 <ScalarProperty Name="TIPOLOGIAFIGLIO1" ColumnName="TIPOLOGIAFIGLIO" />
@@ -7856,7 +8067,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOMOVIMENTO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOMOVIMENTO">
+            <EntityTypeMapping TypeName="DBISE.TIPOMOVIMENTO">
               <MappingFragment StoreEntitySet="TIPOMOVIMENTO">
                 <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
                 <ScalarProperty Name="TIPOMOVIMENTO1" ColumnName="TIPOMOVIMENTO" />
@@ -7865,7 +8076,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOREGOLACALCOLO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOREGOLACALCOLO">
+            <EntityTypeMapping TypeName="DBISE.TIPOREGOLACALCOLO">
               <MappingFragment StoreEntitySet="TIPOREGOLACALCOLO">
                 <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
                 <ScalarProperty Name="DESCRIZIONEREGOLA" ColumnName="DESCRIZIONEREGOLA" />
@@ -7873,7 +8084,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOSOSPENSIONE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOSOSPENSIONE">
+            <EntityTypeMapping TypeName="DBISE.TIPOSOSPENSIONE">
               <MappingFragment StoreEntitySet="TIPOSOSPENSIONE">
                 <ScalarProperty Name="IDTIPOSOSPENSIONE" ColumnName="IDTIPOSOSPENSIONE" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
@@ -7881,7 +8092,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOTRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOTRASFERIMENTO">
+            <EntityTypeMapping TypeName="DBISE.TIPOTRASFERIMENTO">
               <MappingFragment StoreEntitySet="TIPOTRASFERIMENTO">
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
                 <ScalarProperty Name="TIPOTRASFERIMENTO1" ColumnName="TIPOTRASFERIMENTO" />
@@ -7889,7 +8100,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TIPOVOCE">
-            <EntityTypeMapping TypeName="ModelISEPRO.TIPOVOCE">
+            <EntityTypeMapping TypeName="DBISE.TIPOVOCE">
               <MappingFragment StoreEntitySet="TIPOVOCE">
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />
                 <ScalarProperty Name="IDTIPOELABOPRAZIONE" ColumnName="IDTIPOELABOPRAZIONE" />
@@ -7898,7 +8109,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASEFFETTISIST_COEFFIFKM">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASEFFETTISIST_COEFFIFKM">
+            <EntityTypeMapping TypeName="DBISE.TRASEFFETTISIST_COEFFIFKM">
               <MappingFragment StoreEntitySet="TRASEFFETTISIST_COEFFIFKM">
                 <ScalarProperty Name="IDTRASPORTOEFFETTI" ColumnName="IDTRASPORTOEFFETTI" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7907,7 +8118,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASFERIMENTO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASFERIMENTO">
+            <EntityTypeMapping TypeName="DBISE.TRASFERIMENTO">
               <MappingFragment StoreEntitySet="TRASFERIMENTO">
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
@@ -7924,7 +8135,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASFERIMENTO_LIVDIP">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASFERIMENTO_LIVDIP">
+            <EntityTypeMapping TypeName="DBISE.TRASFERIMENTO_LIVDIP">
               <MappingFragment StoreEntitySet="TRASFERIMENTO_LIVDIP">
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDLIVELLODIPENDENTE" ColumnName="IDLIVELLODIPENDENTE" />
@@ -7933,7 +8144,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTIRIEN_COEFFIFKM">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTIRIEN_COEFFIFKM">
+            <EntityTypeMapping TypeName="DBISE.TRASPEFFETTIRIEN_COEFFIFKM">
               <MappingFragment StoreEntitySet="TRASPEFFETTIRIEN_COEFFIFKM">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -7942,7 +8153,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTIRIENTRO_DOC">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTIRIENTRO_DOC">
+            <EntityTypeMapping TypeName="DBISE.TRASPEFFETTIRIENTRO_DOC">
               <MappingFragment StoreEntitySet="TRASPEFFETTIRIENTRO_DOC">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7951,7 +8162,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPEFFETTISIST_DOC">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASPEFFETTISIST_DOC">
+            <EntityTypeMapping TypeName="DBISE.TRASPEFFETTISIST_DOC">
               <MappingFragment StoreEntitySet="TRASPEFFETTISIST_DOC">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7960,7 +8171,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTIRIENTRO">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASPORTOEFFETTIRIENTRO">
+            <EntityTypeMapping TypeName="DBISE.TRASPORTOEFFETTIRIENTRO">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTIRIENTRO">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDINDENNITA" ColumnName="IDINDENNITA" />
@@ -7968,7 +8179,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTISIST">
-            <EntityTypeMapping TypeName="ModelISEPRO.TRASPORTOEFFETTISIST">
+            <EntityTypeMapping TypeName="DBISE.TRASPORTOEFFETTISIST">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTISIST">
                 <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
                 <ScalarProperty Name="IDINDESTERA" ColumnName="IDINDESTERA" />
@@ -7976,7 +8187,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UFFICI">
-            <EntityTypeMapping TypeName="ModelISEPRO.UFFICI">
+            <EntityTypeMapping TypeName="DBISE.UFFICI">
               <MappingFragment StoreEntitySet="UFFICI">
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
                 <ScalarProperty Name="CODICEUFFICIO" ColumnName="CODICEUFFICIO" />
@@ -7985,7 +8196,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UFFICIO_TFR">
-            <EntityTypeMapping TypeName="ModelISEPRO.UFFICIO_TFR">
+            <EntityTypeMapping TypeName="DBISE.UFFICIO_TFR">
               <MappingFragment StoreEntitySet="UFFICIO_TFR">
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -7994,7 +8205,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UTENTIAUTORIZZATI">
-            <EntityTypeMapping TypeName="ModelISEPRO.UTENTIAUTORIZZATI">
+            <EntityTypeMapping TypeName="DBISE.UTENTIAUTORIZZATI">
               <MappingFragment StoreEntitySet="UTENTIAUTORIZZATI">
                 <ScalarProperty Name="IDUTENTEAUTORIZZATO" ColumnName="IDUTENTEAUTORIZZATO" />
                 <ScalarProperty Name="IDRUOLOUTENTE" ColumnName="IDRUOLOUTENTE" />
@@ -8003,7 +8214,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VALUTE">
-            <EntityTypeMapping TypeName="ModelISEPRO.VALUTE">
+            <EntityTypeMapping TypeName="DBISE.VALUTE">
               <MappingFragment StoreEntitySet="VALUTE">
                 <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
                 <ScalarProperty Name="DESCRIZIONEVALUTA" ColumnName="DESCRIZIONEVALUTA" />
@@ -8012,7 +8223,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="VOCI">
-            <EntityTypeMapping TypeName="ModelISEPRO.VOCI">
+            <EntityTypeMapping TypeName="DBISE.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
                 <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
                 <ScalarProperty Name="IDTIPOLIQUIDAZIONE" ColumnName="IDTIPOLIQUIDAZIONE" />
@@ -8022,7 +8233,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="ModelISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
+          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISE.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -8030,7 +8241,7 @@
               <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="MAGFAM_DOC" TypeName="ModelISEPRO.MAGFAM_DOC" StoreEntitySet="MAGFAM_DOC">
+          <AssociationSetMapping Name="MAGFAM_DOC" TypeName="DBISE.MAGFAM_DOC" StoreEntitySet="MAGFAM_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -8038,7 +8249,7 @@
               <ScalarProperty Name="IDMAGFAM" ColumnName="IDMAGFAM" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="ModelISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
+          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="DBISE.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
@@ -8046,7 +8257,7 @@
               <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TRASF_DOC" TypeName="ModelISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
+          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISE.TRASF_DOC" StoreEntitySet="TRASF_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>

@@ -13,10 +13,10 @@ namespace NewISE
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EntitiesDBISEPRO : DbContext
+    public partial class EntitiesDBISE : DbContext
     {
-        public EntitiesDBISEPRO()
-            : base("name=EntitiesDBISEPRO")
+        public EntitiesDBISE()
+            : base("name=EntitiesDBISE")
         {
         }
     
@@ -98,6 +98,7 @@ namespace NewISE
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
         public virtual DbSet<STIPENDI> STIPENDI { get; set; }
+        public virtual DbSet<TEORICI> TEORICI { get; set; }
         public virtual DbSet<TFR> TFR { get; set; }
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }

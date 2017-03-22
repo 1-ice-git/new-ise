@@ -120,7 +120,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaIndennitaBase(decimal idLivello)
+        public ActionResult NuovaIndennitaBase(decimal idLivello, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
             //IndennitaBaseModel ibm = new IndennitaBaseModel();
@@ -132,7 +132,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetLivelli(idLivello);
                     ViewBag.Livello = lm;                   
                 }
-
+                ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
             }
             catch (Exception ex)
@@ -153,7 +153,31 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtIndennitaBase dtib = new dtIndennitaBase())
                     {
-                        dtib.SetIndennitaDiBase(ibm);
+
+                        if (!dtib.EsistonoMovimentiPrima(ibm))
+                        {
+                            if (!dtib.EsistonoMovimentiSuccessivi(ibm))
+                            {
+                                dtib.SetIndennitaDiBase(ibm);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Imposibile inserire un parametro di indennità di base precedente al primo parametro presente nel database.");
+                                using (dtLivelli dtl = new dtLivelli())
+                                {
+                                    var lm = dtl.GetLivelli(ibm.idLivello);
+                                    ViewBag.Livello = lm;
+                                }
+
+                                return PartialView("NuovaIndennitaBase", ibm);
+                            }
+                        }
+                        else
+                        {
+                            dtib.SetIndennitaDiBase(ibm);
+                        }
+
+                        
                     }
 
                     return RedirectToAction("IndennitaBase", new { escludiAnnullati = ibm.annullato, idLivello = ibm.idLivello });

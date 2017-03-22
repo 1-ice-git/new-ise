@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div id="dialog-message" title="Attenzione!!!" class="hide">
+<div id="dialog-message" title="Attenzione!!!" style="display:none;">
     <div>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
         <strong><span id="msgDialog"></span></strong>
@@ -61,6 +61,9 @@
             var tabParam = parseInt($("#idParametro").select2('val'));
             var chk = true;
             if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+            else {
                 chk = false;
             }
 

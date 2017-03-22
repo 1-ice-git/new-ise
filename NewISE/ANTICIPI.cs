@@ -14,12 +14,22 @@ namespace NewISE
     
     public partial class ANTICIPI
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ANTICIPI()
+        {
+            this.ELAB_CONT = new HashSet<ELAB_CONT>();
+        }
+    
         public decimal IDANTICIPO { get; set; }
-        public Nullable<decimal> IDINDESTERA { get; set; }
+        public decimal IDINDESTERA { get; set; }
         public decimal IMPORTOANTICIPO { get; set; }
         public decimal NOTIFICARICHIESTA { get; set; }
         public decimal PRATICACONCLUSA { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
     }
 }

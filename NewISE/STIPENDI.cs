@@ -15,9 +15,9 @@ namespace NewISE
     public partial class STIPENDI
     {
         public decimal IDELABORAZIONEMENSILE { get; set; }
+        public decimal IDTEORICI { get; set; }
+        public decimal IDELABCONT { get; set; }
         public decimal IDINDENNITA { get; set; }
-        public decimal IDCONTABILITA { get; set; }
-        public decimal IDVOCI { get; set; }
         public decimal MESEELABORAZIONE { get; set; }
         public decimal ANNOELABORAZIONE { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
@@ -25,11 +25,10 @@ namespace NewISE
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
-        public decimal FLAGINVIOFLUSSI { get; set; }
-        public Nullable<System.DateTime> DATAINVIOFLUSSI { get; set; }
+        public System.DateTime DATAINVIOFLUSSI { get; set; }
         public decimal BLOCCAINVIOFLIE { get; set; }
+        public string DATAINVIOGEPE { get; set; }
     
-        public virtual ELAB_CONT ELAB_CONT { get; set; }
-        public virtual VOCI VOCI { get; set; }
+        public virtual TEORICI TEORICI { get; set; }
     }
 }

@@ -13,7 +13,7 @@
         @Html.Label("lblLivello0", "Seleziona Livello", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();" })
+                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();", @onClick = "PrelevaPVIndBase();" })
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina indennità di base?">
+<div id="dialog-confirm" title="Elimina indennità di base?" class="hide">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di base?</p>
 </div>
 
@@ -167,6 +167,7 @@
 
         var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
         var idLivello = parseInt($("#idLivello").select2('val'));
+        var chk = false;
 
         if (isNaN(idLivello)) {
             //$("#divPViewParametri").empty();
@@ -174,10 +175,14 @@
             return false;
         }
 
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello },
+            data: { idLivello: idLivello, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
