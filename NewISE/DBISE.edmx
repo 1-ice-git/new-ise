@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="IDACCESSO" />
           </Key>
-          <Property Name="IDACCESSO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDACCESSO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUTENTELOGGATO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAACCESSO" Type="date" Nullable="false" />
           <Property Name="GUID" Type="varchar2" MaxLength="50" Nullable="false" />
@@ -18,7 +18,7 @@
           <Key>
             <PropertyRef Name="IDALIQCONTR" />
           </Key>
-          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOCONTRIBUTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
@@ -29,7 +29,7 @@
           <Key>
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
-          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATANASCITA" Type="date" Nullable="false" />
           <Property Name="COMUNENASCITA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="PROVINCIANASCITA" Type="varchar2" MaxLength="60" Nullable="false" />
@@ -47,7 +47,7 @@
           <Key>
             <PropertyRef Name="IDANTICIPO" />
           </Key>
-          <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDINDESTERA" Type="number" Precision="38" Scale="0" />
           <Property Name="IMPORTOANTICIPO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -57,14 +57,14 @@
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
           </Key>
-          <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEATTIVITA" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="BIGLIETTI">
           <Key>
             <PropertyRef Name="IDBIGLIETTO" />
           </Key>
-          <Property Name="IDBIGLIETTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDBIGLIETTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PERSONALE" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -83,7 +83,7 @@
           <Key>
             <PropertyRef Name="IDCDC" />
           </Key>
-          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODICECDC" Type="char" MaxLength="4" Nullable="false" />
           <Property Name="DESCRIZIONECDC" Type="varchar2" MaxLength="150" Nullable="false" />
         </EntityType>
@@ -91,7 +91,7 @@
           <Key>
             <PropertyRef Name="ID_CDC_DIPENDENTI" />
           </Key>
-          <Property Name="ID_CDC_DIPENDENTI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_CDC_DIPENDENTI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
@@ -102,7 +102,7 @@
           <Key>
             <PropertyRef Name="ID_CDC_TRASF" />
           </Key>
-          <Property Name="ID_CDC_TRASF" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_CDC_TRASF" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
@@ -110,7 +110,7 @@
           <Key>
             <PropertyRef Name="IDCFKM" />
           </Key>
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
           <Property Name="COEFFICENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -120,7 +120,7 @@
           <Key>
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
           </Key>
-          <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
           <Property Name="COEFFICENTERICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -131,7 +131,7 @@
           <Key>
             <PropertyRef Name="IDCOEFFICENTESEDE" />
           </Key>
-          <Property Name="IDCOEFFICENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCOEFFICENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
@@ -142,7 +142,7 @@
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
           </Key>
-          <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" />
           <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -161,7 +161,7 @@
           <Key>
             <PropertyRef Name="IDDATIMAB" />
           </Key>
-          <Property Name="IDDATIMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDATIMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANTICIPOANNUALE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CONDIVISO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -183,14 +183,14 @@
           <Key>
             <PropertyRef Name="IDDEFKM" />
           </Key>
-          <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="KM" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="DIPENDENTI">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
           </Key>
-          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MATRICOLA" Type="number" Precision="6" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -209,7 +209,7 @@
           <Key>
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
-          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NOMEDOCUMENTO" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="ESTENSIONE" Type="varchar2" MaxLength="5" Nullable="false" />
           <Property Name="FILEDOCUMENTO" Type="blob" Nullable="false" />
@@ -234,7 +234,7 @@
           <Key>
             <PropertyRef Name="IDFASCIAKM" />
           </Key>
-          <Property Name="IDFASCIAKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFASCIAKM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
@@ -254,7 +254,7 @@
           <Key>
             <PropertyRef Name="IDGRUPPODOC" />
           </Key>
-          <Property Name="IDGRUPPODOC" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDGRUPPODOC" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCGRUPPO" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="INDBASE_DIPENDENTI">
@@ -279,7 +279,7 @@
           <Key>
             <PropertyRef Name="IDINDENNITA" />
           </Key>
-          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="INDENNITA_COEFFISEDE">
@@ -322,10 +322,10 @@
           <Key>
             <PropertyRef Name="IDINDENNITABASE" />
           </Key>
-          <Property Name="IDINDENNITABASE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITABASE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="VALORE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="VALORERESP" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -334,7 +334,7 @@
           <Key>
             <PropertyRef Name="IDINDPRIMOSEGR" />
           </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
           <Property Name="INDENNITA" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -344,7 +344,7 @@
           <Key>
             <PropertyRef Name="IDINDSIST" />
           </Key>
-          <Property Name="IDINDSIST" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDSIST" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="char" MaxLength="20" />
@@ -364,14 +364,14 @@
           <Key>
             <PropertyRef Name="IDLIVELLO" />
           </Key>
-          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LIVELLO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="LIVELLIDIPENDENTI">
           <Key>
             <PropertyRef Name="IDLIVELLODIPENDENTE" />
           </Key>
-          <Property Name="IDLIVELLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
@@ -382,7 +382,7 @@
           <Key>
             <PropertyRef Name="IDLOG" />
           </Key>
-          <Property Name="IDLOG" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLOG" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUTENTELOGGATO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -475,7 +475,7 @@
           <Key>
             <PropertyRef Name="IDMAB" />
           </Key>
-          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -484,7 +484,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
           </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
@@ -495,7 +495,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="char" MaxLength="20" />
@@ -517,7 +517,7 @@
           <Key>
             <PropertyRef Name="IDMAGFAM" />
           </Key>
-          <Property Name="IDMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPARENTELA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -539,14 +539,14 @@
           <Key>
             <PropertyRef Name="IDNORMACALCOLO" />
           </Key>
-          <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RIFERIMENTONORMATIVO" Type="varchar2" MaxLength="1000" Nullable="false" />
         </EntityType>
         <EntityType Name="NOTIFICARICHIESTAMAGFAM">
           <Key>
             <PropertyRef Name="IDNOTRICMAGFAM" />
           </Key>
-          <Property Name="IDNOTRICMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDNOTRICMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="number" Precision="38" Scale="0" />
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -577,14 +577,14 @@
           <Key>
             <PropertyRef Name="IDPARENTELA" />
           </Key>
-          <Property Name="IDPARENTELA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPARENTELA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="PASSAPORTI">
           <Key>
             <PropertyRef Name="IDPASSAPORTO" />
           </Key>
-          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -601,7 +601,7 @@
           <Key>
             <PropertyRef Name="IDPENSIONECONIUGE" />
           </Key>
-          <Property Name="IDPENSIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPENSIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IMPORTOPENSIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
@@ -611,7 +611,7 @@
           <Key>
             <PropertyRef Name="IDPERCENTUALEDISAGIO" />
           </Key>
-          <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
@@ -622,7 +622,7 @@
           <Key>
             <PropertyRef Name="IDPERCMAB" />
           </Key>
-          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
@@ -667,7 +667,7 @@
           <Key>
             <PropertyRef Name="IDRATEMAB" />
           </Key>
-          <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRATEMAB" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORATA" Type="date" Nullable="false" />
           <Property Name="DATAFINERATA" Type="date" Nullable="false" />
@@ -689,7 +689,7 @@
           <Key>
             <PropertyRef Name="IDREGOLA" />
           </Key>
-          <Property Name="IDREGOLA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDREGOLA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOREGOLACALCOLO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" />
           <Property Name="FORMULAREGOLACALCOLO" Type="varchar2" MaxLength="1000" Nullable="false" />
@@ -708,7 +708,7 @@
           <Key>
             <PropertyRef Name="IDRIDUZIONI" />
           </Key>
-          <Property Name="IDRIDUZIONI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRIDUZIONI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" />
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
@@ -718,21 +718,21 @@
           <Key>
             <PropertyRef Name="IDRUOLOACCESSO" />
           </Key>
-          <Property Name="IDRUOLOACCESSO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLOACCESSO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRUOLO" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="RUOLOUFFICIO">
           <Key>
             <PropertyRef Name="IDRUOLO" />
           </Key>
-          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRUOLO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="SOSPENSIONE">
           <Key>
             <PropertyRef Name="IDSOSPENSIONE" />
           </Key>
-          <Property Name="IDSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIO" Type="date" Nullable="false" />
@@ -744,14 +744,14 @@
           <Key>
             <PropertyRef Name="IDSTATOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="STIPENDI">
           <Key>
             <PropertyRef Name="IDELABORAZIONEMENSILE" />
           </Key>
-          <Property Name="IDELABORAZIONEMENSILE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABORAZIONEMENSILE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDCONTABILITA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -770,7 +770,7 @@
           <Key>
             <PropertyRef Name="IDTFR" />
           </Key>
-          <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TASSOCAMBIO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
@@ -781,7 +781,7 @@
           <Key>
             <PropertyRef Name="IDTIPOALIQCONTR" />
           </Key>
-          <Property Name="IDTIPOALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODICE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -789,7 +789,7 @@
           <Key>
             <PropertyRef Name="IDTIPODOCUMENTO" />
           </Key>
-          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDGRUPPODOC" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -797,35 +797,35 @@
           <Key>
             <PropertyRef Name="IDTIPOELABOPRAZIONE" />
           </Key>
-          <Property Name="IDTIPOELABOPRAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOELABOPRAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLIQUIDAZIONE">
           <Key>
             <PropertyRef Name="IDTIPOLIQUIDAZIONE" />
           </Key>
-          <Property Name="IDTIPOLIQUIDAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLIQUIDAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIACONIUGE">
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
           </Key>
-          <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLOGIACONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="TIPOLOGIACONIUGE" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLOGIAFIGLIO">
           <Key>
             <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
           </Key>
-          <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLOGIAFIGLIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="TIPOLOGIAFIGLIO" Type="varchar2" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOMOVIMENTO">
           <Key>
             <PropertyRef Name="IDTIPOMOVIMENTO" />
           </Key>
-          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="TIPOMOVIMENTO" Type="varchar2" MaxLength="1" Nullable="false" />
           <Property Name="DESCMOVIMENTO" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -833,28 +833,28 @@
           <Key>
             <PropertyRef Name="IDTIPOREGOLACALCOLO" />
           </Key>
-          <Property Name="IDTIPOREGOLACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOREGOLACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEREGOLA" Type="varchar2" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOSOSPENSIONE">
           <Key>
             <PropertyRef Name="IDTIPOSOSPENSIONE" />
           </Key>
-          <Property Name="IDTIPOSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOSOSPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOTRASFERIMENTO">
           <Key>
             <PropertyRef Name="IDTIPOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="TIPOTRASFERIMENTO" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOVOCE">
           <Key>
             <PropertyRef Name="IDTIPOVOCE" />
           </Key>
-          <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOELABOPRAZIONE" Type="number" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
@@ -879,7 +879,7 @@
           <Key>
             <PropertyRef Name="IDTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -938,14 +938,14 @@
           <Key>
             <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
           </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASPORTOEFFETTISIST" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDINDESTERA" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="UFFICI">
           <Key>
             <PropertyRef Name="IDUFFICIO" />
           </Key>
-          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODICEUFFICIO" Type="varchar2" MaxLength="4" Nullable="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -962,7 +962,7 @@
           <Key>
             <PropertyRef Name="IDUTENTEAUTORIZZATO" />
           </Key>
-          <Property Name="IDUTENTEAUTORIZZATO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDUTENTEAUTORIZZATO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDRUOLOUTENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="UTENTE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -970,7 +970,7 @@
           <Key>
             <PropertyRef Name="IDVALUTA" />
           </Key>
-          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEVALUTA" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="VALUTAUFFICIALE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
@@ -978,7 +978,7 @@
           <Key>
             <PropertyRef Name="IDVOCI" />
           </Key>
-          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLIQUIDAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
@@ -3456,7 +3456,7 @@
           <Key>
             <PropertyRef Name="IDACCESSO" />
           </Key>
-          <Property Name="IDACCESSO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDACCESSO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUTENTELOGGATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAACCESSO" Type="DateTime" Nullable="false" />
           <Property Name="GUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3466,7 +3466,7 @@
           <Key>
             <PropertyRef Name="IDALIQCONTR" />
           </Key>
-          <Property Name="IDALIQCONTR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALIQCONTR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOCONTRIBUTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
@@ -3480,7 +3480,7 @@
           <Key>
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
-          <Property Name="IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALTRIDATIFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATANASCITA" Type="DateTime" Nullable="false" />
           <Property Name="COMUNENASCITA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PROVINCIANASCITA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3499,7 +3499,7 @@
           <Key>
             <PropertyRef Name="IDANTICIPO" />
           </Key>
-          <Property Name="IDANTICIPO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDANTICIPO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IMPORTOANTICIPO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3510,7 +3510,7 @@
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
           </Key>
-          <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEATTIVITA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_AC_LA" FromRole="ATTIVITACRUD" ToRole="LOGATTIVITA" />
         </EntityType>
@@ -3518,7 +3518,7 @@
           <Key>
             <PropertyRef Name="IDBIGLIETTO" />
           </Key>
-          <Property Name="IDBIGLIETTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDBIGLIETTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PERSONALE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3542,7 +3542,7 @@
           <Key>
             <PropertyRef Name="IDCDC" />
           </Key>
-          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODICECDC" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="DESCRIZIONECDC" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="CDC_DIPENDENTI" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC" ToRole="CDC_DIPENDENTI" />
@@ -3552,7 +3552,7 @@
           <Key>
             <PropertyRef Name="ID_CDC_DIPENDENTI" />
           </Key>
-          <Property Name="ID_CDC_DIPENDENTI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_CDC_DIPENDENTI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
@@ -3565,7 +3565,7 @@
           <Key>
             <PropertyRef Name="ID_CDC_TRASF" />
           </Key>
-          <Property Name="ID_CDC_TRASF" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID_CDC_TRASF" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCTRASF" FromRole="CDC_TRASF" ToRole="CDC" />
@@ -3575,7 +3575,7 @@
           <Key>
             <PropertyRef Name="IDCFKM" />
           </Key>
-          <Property Name="IDCFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
           <Property Name="COEFFICENTEKM" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
@@ -3588,7 +3588,7 @@
           <Key>
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
           </Key>
-          <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
           <Property Name="COEFFICENTERICHIAMO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
@@ -3600,7 +3600,7 @@
           <Key>
             <PropertyRef Name="IDCOEFFICENTESEDE" />
           </Key>
-          <Property Name="IDCOEFFICENTESEDE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCOEFFICENTESEDE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
@@ -3613,7 +3613,7 @@
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
           </Key>
-          <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3637,7 +3637,7 @@
           <Key>
             <PropertyRef Name="IDDATIMAB" />
           </Key>
-          <Property Name="IDDATIMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDATIMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CANONE" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANTICIPOANNUALE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CONDIVISO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3663,7 +3663,7 @@
           <Key>
             <PropertyRef Name="IDDEFKM" />
           </Key>
-          <Property Name="IDDEFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDEFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="KM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="FASCIACHILOMETRICA" Relationship="Self.R_DFKM_FC" FromRole="DEFFASCIACHILOMETRICA" ToRole="FASCIACHILOMETRICA" />
         </EntityType>
@@ -3671,7 +3671,7 @@
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
           </Key>
-          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
           <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="COGNOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
@@ -3693,7 +3693,7 @@
           <Key>
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NOMEDOCUMENTO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ESTENSIONE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FILEDOCUMENTO" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
@@ -3723,7 +3723,7 @@
           <Key>
             <PropertyRef Name="IDFASCIAKM" />
           </Key>
-          <Property Name="IDFASCIAKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFASCIAKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDEFKM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
@@ -3748,7 +3748,7 @@
           <Key>
             <PropertyRef Name="IDGRUPPODOC" />
           </Key>
-          <Property Name="IDGRUPPODOC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDGRUPPODOC" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCGRUPPO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_GD_TDV" FromRole="GRUPPIDOCUMENTI" ToRole="TIPODOCUMENTI" />
         </EntityType>
@@ -3778,7 +3778,7 @@
           <Key>
             <PropertyRef Name="IDINDENNITA" />
           </Key>
-          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_I_E_C" FromRole="INDENNITA" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA_COEFFISEDE" Relationship="Self.R_I_I_CS" FromRole="INDENNITA" ToRole="INDENNITA_COEFFISEDE" />
@@ -3839,10 +3839,10 @@
           <Key>
             <PropertyRef Name="IDINDENNITABASE" />
           </Key>
-          <Property Name="IDINDENNITABASE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITABASE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="VALORE" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="VALORERESP" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
@@ -3855,7 +3855,7 @@
           <Key>
             <PropertyRef Name="IDINDPRIMOSEGR" />
           </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
           <Property Name="INDENNITA" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
@@ -3866,7 +3866,7 @@
           <Key>
             <PropertyRef Name="IDINDSIST" />
           </Key>
-          <Property Name="IDINDSIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDSIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
@@ -3890,7 +3890,7 @@
           <Key>
             <PropertyRef Name="IDLIVELLO" />
           </Key>
-          <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LIVELLO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="INDENNITABASE" Relationship="Self.R_L_I" FromRole="LIVELLI" ToRole="INDENNITABASE" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="Self.R_L_PMAB" FromRole="LIVELLI" ToRole="PERCENTUALEMAB" />
@@ -3900,7 +3900,7 @@
           <Key>
             <PropertyRef Name="IDLIVELLODIPENDENTE" />
           </Key>
-          <Property Name="IDLIVELLODIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLIVELLODIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
@@ -3914,7 +3914,7 @@
           <Key>
             <PropertyRef Name="IDLOG" />
           </Key>
-          <Property Name="IDLOG" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDLOG" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUTENTELOGGATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDATTIVITACRUD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -3953,7 +3953,7 @@
             <PropertyRef Name="IDMAB" />
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
-          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_MAB_DOC" FromRole="MAB_DOC" ToRole="DOCUMENTI" />
@@ -4019,7 +4019,7 @@
           <Key>
             <PropertyRef Name="IDMAB" />
           </Key>
-          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
@@ -4035,7 +4035,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
           </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
@@ -4048,7 +4048,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
@@ -4075,7 +4075,7 @@
           <Key>
             <PropertyRef Name="IDMAGFAM" />
           </Key>
-          <Property Name="IDMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPARENTELA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
@@ -4099,7 +4099,7 @@
             <PropertyRef Name="IDINDPRIMOSEGR" />
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="Self.R_IPS_MF_IPS" FromRole="MF_IPS" ToRole="INDENNITAPRIMOSEGRETARIO" />
@@ -4109,7 +4109,7 @@
           <Key>
             <PropertyRef Name="IDNORMACALCOLO" />
           </Key>
-          <Property Name="IDNORMACALCOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDNORMACALCOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RIFERIMENTONORMATIVO" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="Self.R_NC_RC" FromRole="NORMACALCOLO" ToRole="REGOLECALCOLO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.DOCUMENTO_NORMACALCOLO" FromRole="NORMACALCOLO" ToRole="DOCUMENTI" />
@@ -4118,7 +4118,7 @@
           <Key>
             <PropertyRef Name="IDNOTRICMAGFAM" />
           </Key>
-          <Property Name="IDNOTRICMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDNOTRICMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -4131,7 +4131,7 @@
           <Key>
             <PropertyRef Name="CTB_ID_RECORD" />
           </Key>
-          <Property Name="CTB_ID_RECORD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CTB_ID_RECORD" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CTB_MATRICOLA" Type="Int16" Nullable="false" />
           <Property Name="CTB_QUALIFICA" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CTB_COD_SEDE" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
@@ -4152,7 +4152,7 @@
           <Key>
             <PropertyRef Name="IDPARENTELA" />
           </Key>
-          <Property Name="IDPARENTELA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPARENTELA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="Self.R_P_MF" FromRole="PARENTELA" ToRole="MAGGIORAZIONIFAMILIARI" />
         </EntityType>
@@ -4160,7 +4160,7 @@
           <Key>
             <PropertyRef Name="IDPASSAPORTO" />
           </Key>
-          <Property Name="IDPASSAPORTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPASSAPORTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -4171,7 +4171,7 @@
           <Key>
             <PropertyRef Name="IDPENSIONECONIUGE" />
           </Key>
-          <Property Name="IDPENSIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPENSIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IMPORTOPENSIONE" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
@@ -4182,7 +4182,7 @@
           <Key>
             <PropertyRef Name="IDPERCENTUALEDISAGIO" />
           </Key>
-          <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
@@ -4195,7 +4195,7 @@
           <Key>
             <PropertyRef Name="IDPERCMAB" />
           </Key>
-          <Property Name="IDPERCMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
@@ -4243,7 +4243,7 @@
           <Key>
             <PropertyRef Name="IDINDESTERA" />
           </Key>
-          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="ANTICIPI" Relationship="Self.R_PS_A" FromRole="PRIMASITEMAZIONE" ToRole="ANTICIPI" />
           <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_PS_E_C" FromRole="PRIMASITEMAZIONE" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_PS" FromRole="PRIMASITEMAZIONE" ToRole="INDENNITA" />
@@ -4255,7 +4255,7 @@
           <Key>
             <PropertyRef Name="IDRATEMAB" />
           </Key>
-          <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRATEMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIORATA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINERATA" Type="DateTime" Nullable="false" />
@@ -4281,7 +4281,7 @@
           <Key>
             <PropertyRef Name="IDREGOLA" />
           </Key>
-          <Property Name="IDREGOLA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDREGOLA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDNORMACALCOLO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="FORMULAREGOLACALCOLO" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
@@ -4296,7 +4296,7 @@
           <Key>
             <PropertyRef Name="IDINDENNITA" />
           </Key>
-          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ELAB_CONT" Relationship="Self.R_R_E_C" FromRole="RICHIAMO" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_I_IR" FromRole="RICHIAMO" ToRole="INDENNITA" />
@@ -4307,7 +4307,7 @@
           <Key>
             <PropertyRef Name="IDRIDUZIONI" />
           </Key>
-          <Property Name="IDRIDUZIONI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRIDUZIONI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" />
           <Property Name="PERCENTUALE" Type="Decimal" Precision="11" Scale="8" Nullable="false" />
@@ -4319,7 +4319,7 @@
           <Key>
             <PropertyRef Name="IDRUOLOACCESSO" />
           </Key>
-          <Property Name="IDRUOLOACCESSO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLOACCESSO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRUOLO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="Self.R_RU_UA" FromRole="RUOLOACCESSO" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
@@ -4327,7 +4327,7 @@
           <Key>
             <PropertyRef Name="IDRUOLO" />
           </Key>
-          <Property Name="IDRUOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRUOLO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_R_T" FromRole="RUOLOUFFICIO" ToRole="TRASFERIMENTO" />
         </EntityType>
@@ -4335,7 +4335,7 @@
           <Key>
             <PropertyRef Name="IDSOSPENSIONE" />
           </Key>
-          <Property Name="IDSOSPENSIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSOSPENSIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
@@ -4349,7 +4349,7 @@
           <Key>
             <PropertyRef Name="IDSTATOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_ST_T" FromRole="STATOTRASFERIMENTO" ToRole="TRASFERIMENTO" />
         </EntityType>
@@ -4357,7 +4357,7 @@
           <Key>
             <PropertyRef Name="IDELABORAZIONEMENSILE" />
           </Key>
-          <Property Name="IDELABORAZIONEMENSILE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDELABORAZIONEMENSILE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDCONTABILITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -4378,7 +4378,7 @@
           <Key>
             <PropertyRef Name="IDTFR" />
           </Key>
-          <Property Name="IDTFR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTFR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDVALUTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="TASSOCAMBIO" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
@@ -4393,7 +4393,7 @@
           <Key>
             <PropertyRef Name="IDTIPOALIQCONTR" />
           </Key>
-          <Property Name="IDTIPOALIQCONTR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOALIQCONTR" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODICE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="Self.R_TC_AC" FromRole="TIPOALIQUOTECONTRIBUTIVE" ToRole="ALIQUOTECONTRIBUTIVE" />
@@ -4402,7 +4402,7 @@
           <Key>
             <PropertyRef Name="IDTIPODOCUMENTO" />
           </Key>
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDGRUPPODOC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="TIPODOCUMENTI" ToRole="BIGLIETTI_DOCUMENTI" />
@@ -4415,7 +4415,7 @@
           <Key>
             <PropertyRef Name="IDTIPOELABOPRAZIONE" />
           </Key>
-          <Property Name="IDTIPOELABOPRAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOELABOPRAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TIPOVOCE" Relationship="Self.R_TE_TV" FromRole="TIPOELABORAZIONE" ToRole="TIPOVOCE" />
         </EntityType>
@@ -4423,7 +4423,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLIQUIDAZIONE" />
           </Key>
-          <Property Name="IDTIPOLIQUIDAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLIQUIDAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="VOCI" Relationship="Self.R_TL_V" FromRole="TIPOLIQUIDAZIONE" ToRole="VOCI" />
         </EntityType>
@@ -4431,7 +4431,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
           </Key>
-          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TIPOLOGIACONIUGE1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.R_TC_MC" FromRole="TIPOLOGIACONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
         </EntityType>
@@ -4439,7 +4439,7 @@
           <Key>
             <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
           </Key>
-          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TIPOLOGIAFIGLIO1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.R_TF_MF" FromRole="TIPOLOGIAFIGLIO" ToRole="MAGGIORAZIONEFIGLI" />
         </EntityType>
@@ -4447,7 +4447,7 @@
           <Key>
             <PropertyRef Name="IDTIPOMOVIMENTO" />
           </Key>
-          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TIPOMOVIMENTO1" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCMOVIMENTO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="CONTABILITA" Relationship="Self.R_TM_C" FromRole="TIPOMOVIMENTO" ToRole="CONTABILITA" />
@@ -4456,7 +4456,7 @@
           <Key>
             <PropertyRef Name="IDTIPOREGOLACALCOLO" />
           </Key>
-          <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOREGOLACALCOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEREGOLA" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="Self.R_TRC_RC" FromRole="TIPOREGOLACALCOLO" ToRole="REGOLECALCOLO" />
         </EntityType>
@@ -4464,7 +4464,7 @@
           <Key>
             <PropertyRef Name="IDTIPOSOSPENSIONE" />
           </Key>
-          <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOSOSPENSIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="Self.R_TS_S" FromRole="TIPOSOSPENSIONE" ToRole="SOSPENSIONE" />
         </EntityType>
@@ -4472,7 +4472,7 @@
           <Key>
             <PropertyRef Name="IDTIPOTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TIPOTRASFERIMENTO1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="Self.R_TT_IS" FromRole="TIPOTRASFERIMENTO" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_TT_T" FromRole="TIPOTRASFERIMENTO" ToRole="TRASFERIMENTO" />
@@ -4481,7 +4481,7 @@
           <Key>
             <PropertyRef Name="IDTIPOVOCE" />
           </Key>
-          <Property Name="IDTIPOVOCE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOVOCE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOELABOPRAZIONE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TIPOELABORAZIONE" Relationship="Self.R_TE_TV" FromRole="TIPOVOCE" ToRole="TIPOELABORAZIONE" />
@@ -4502,7 +4502,7 @@
           <Key>
             <PropertyRef Name="IDTRASFERIMENTO" />
           </Key>
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -4552,7 +4552,7 @@
             <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="DOCUMENTI" />
@@ -4575,7 +4575,7 @@
           <Key>
             <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
           </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_IR_TER" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="RICHIAMO" />
           <NavigationProperty Name="TRASPEFFETTIRIEN_COEFFIFKM" Relationship="Self.R_TER_CFKM" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="TRASPEFFETTIRIEN_COEFFIFKM" />
@@ -4586,7 +4586,7 @@
           <Key>
             <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
           </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDINDESTERA" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_PS_TE" FromRole="TRASPORTOEFFETTISIST" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="TRASEFFETTISIST_COEFFIFKM" Relationship="Self.R_TES_TES_CFKM" FromRole="TRASPORTOEFFETTISIST" ToRole="TRASEFFETTISIST_COEFFIFKM" />
@@ -4597,7 +4597,7 @@
           <Key>
             <PropertyRef Name="IDUFFICIO" />
           </Key>
-          <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODICEUFFICIO" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="COEFFICENTISEDE" Relationship="Self.R_UFFICI_COEFFICENTESEDE" FromRole="UFFICI" ToRole="COEFFICENTISEDE" />
@@ -4623,7 +4623,7 @@
           <Key>
             <PropertyRef Name="IDUTENTEAUTORIZZATO" />
           </Key>
-          <Property Name="IDUTENTEAUTORIZZATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDUTENTEAUTORIZZATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDRUOLOUTENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="UTENTE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ACCESSI" Relationship="Self.R_UL_C" FromRole="UTENTIAUTORIZZATI" ToRole="ACCESSI" />
@@ -4634,7 +4634,7 @@
           <Key>
             <PropertyRef Name="IDVALUTA" />
           </Key>
-          <Property Name="IDVALUTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVALUTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEVALUTA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="VALUTAUFFICIALE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="TFR" Relationship="Self.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
@@ -4643,7 +4643,7 @@
           <Key>
             <PropertyRef Name="IDVOCI" />
           </Key>
-          <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDVOCI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTIPOLIQUIDAZIONE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPOVOCE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
@@ -7335,10 +7335,10 @@
           <EntitySetMapping Name="INDENNITABASE">
             <EntityTypeMapping TypeName="ModelISEPRO.INDENNITABASE">
               <MappingFragment StoreEntitySet="INDENNITABASE">
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="VALORE" ColumnName="VALORE" />
                 <ScalarProperty Name="VALORERESP" ColumnName="VALORERESP" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />

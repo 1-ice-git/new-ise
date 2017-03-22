@@ -9,9 +9,9 @@ namespace NewISE.Areas.Parametri.Controllers
 {
     public class ParamIndennitaBaseController : Controller
     {
-        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult IndennitaBase(bool escludiAnnullati)
+        public ActionResult IndennitaBase(bool escludiAnnullati, decimal idLivello = 0)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
@@ -31,7 +31,15 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Text = t.DescLivello,
                                  Value = t.idLivello.ToString()
                              }).ToList();
-                        r.First().Selected = true;
+
+                        if (idLivello == 0)
+                        {
+                            r.First().Selected = true;
+                        }
+                        else
+                        {
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                        }
                     }
 
                     ViewBag.LivelliList = r;
@@ -132,5 +140,63 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial");
             }
         }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm)
+        {
+            var r = new List<SelectListItem>();
+            
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (dtIndennitaBase dtib = new dtIndennitaBase())
+                    {
+                        dtib.SetIndennitaDiBase(ibm);
+                    }
+
+                    return RedirectToAction("IndennitaBase", new { escludiAnnullati = ibm.annullato, idLivello = ibm.idLivello });
+                }
+                else
+                {
+                    using (dtLivelli dtl = new dtLivelli())
+                    {
+                        var lm = dtl.GetLivelli(ibm.idLivello);
+                        ViewBag.Livello = lm;
+                    }
+
+                    return PartialView("NuovaIndennitaBase", ibm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult EliminaIndennitaBase(bool escludiAnnullati, decimal idLivello, decimal idIndBase)
+        {
+
+            try
+            {
+                using (dtIndennitaBase dtib=new dtIndennitaBase())
+                {
+                    dtib.DelIndennitaDiBase(idIndBase);
+                }
+
+                return RedirectToAction("IndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = idLivello });
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
+
+            
+        }
+
     }
 }
