@@ -12,26 +12,29 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class ELAB_CONT
+    public partial class TEORICI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ELAB_CONT()
+        public TEORICI()
         {
-            this.TEORICI = new HashSet<TEORICI>();
+            this.CONTABILITA = new HashSet<CONTABILITA>();
+            this.STIPENDI = new HashSet<STIPENDI>();
         }
     
+        public decimal IDTEORICI { get; set; }
         public decimal IDELABCONT { get; set; }
         public decimal IDINDENNITA { get; set; }
-        public Nullable<decimal> IDANTICIPO { get; set; }
-        public Nullable<decimal> IDRATEMAB { get; set; }
-        public Nullable<decimal> IDMAB { get; set; }
+        public decimal IDVOCI { get; set; }
+        public decimal IDTIPOMOVIMENTO { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IMPORTO { get; set; }
     
-        public virtual ANTICIPI ANTICIPI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
-        public virtual INDENNITA INDENNITA { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        public virtual RICHIAMO RICHIAMO { get; set; }
-        public virtual RATEMAB RATEMAB { get; set; }
+        public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
+        public virtual ELAB_CONT ELAB_CONT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<STIPENDI> STIPENDI { get; set; }
+        public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
+        public virtual VOCI VOCI { get; set; }
     }
 }

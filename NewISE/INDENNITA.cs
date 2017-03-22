@@ -22,6 +22,7 @@ namespace NewISE
             this.INDENNITA_INDBASE = new HashSet<INDENNITA_INDBASE>();
             this.INDENNITA_PERCDISAGIO = new HashSet<INDENNITA_PERCDISAGIO>();
             this.INDENNITA_TFR = new HashSet<INDENNITA_TFR>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.NOTIFICARICHIESTAMAGFAM = new HashSet<NOTIFICARICHIESTAMAGFAM>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
         }
@@ -40,6 +41,8 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA_TFR> INDENNITA_TFR { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }

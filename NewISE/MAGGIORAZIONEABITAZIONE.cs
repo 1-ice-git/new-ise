@@ -26,10 +26,11 @@ namespace NewISE
         }
     
         public decimal IDMAB { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
+        public decimal IDINDENNITA { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
     
+        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -42,6 +43,5 @@ namespace NewISE
         public virtual ICollection<PERCMAB_MAB> PERCMAB_MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RATEMAB> RATEMAB { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

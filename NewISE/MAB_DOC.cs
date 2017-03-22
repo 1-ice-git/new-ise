@@ -17,6 +17,7 @@ namespace NewISE
         public decimal IDMAB { get; set; }
         public decimal IDDOCUMENTO { get; set; }
         public decimal IDTIPODOCUMENTO { get; set; }
+        public decimal IDINDENNITA { get; set; }
     
         public virtual DOCUMENTI DOCUMENTI { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }

@@ -22,7 +22,7 @@ namespace NewISE
     
         public decimal IDCOEFINDRICHIAMO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal COEFFICENTERICHIAMO { get; set; }
         public decimal COEFFICENTEINDBASE { get; set; }
         public bool ANNULLATO { get; set; }

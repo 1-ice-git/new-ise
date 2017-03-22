@@ -24,7 +24,7 @@ namespace NewISE.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     if (db.UTENTIAUTORIZZATI.Where(a=>a.UTENTE == matricola).Count()>0)
                     {
@@ -47,7 +47,7 @@ namespace NewISE.Models.dtObj
             
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {                    
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 

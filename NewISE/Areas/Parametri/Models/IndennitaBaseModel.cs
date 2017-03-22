@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Models
         [Display(Name = "Data fin. validità")]
         [DataType(DataType.DateTime, ErrorMessage ="la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
-        public DateTime dataFineValidita { get; set; }
+        public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name ="Valore")]
         [DataType(DataType.Currency)]

@@ -51,7 +51,7 @@ namespace NewISE.Models.Tools
 
                 if (ac.idRuoloUtente > 0)
                 {
-                    using (EntitiesDBISEPRO db=new EntitiesDBISEPRO())
+                    using (EntitiesDBISE db = new EntitiesDBISE())
                     {
                         RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
                         if (ruolo!=null)

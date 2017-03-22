@@ -23,7 +23,7 @@ namespace NewISE
         public decimal IDMAGANNUALI { get; set; }
         public Nullable<decimal> IDUFFICIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal ANNUALITA { get; set; }
         public bool ANNULLATO { get; set; }
     

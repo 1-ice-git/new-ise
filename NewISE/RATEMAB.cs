@@ -17,11 +17,12 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RATEMAB()
         {
-            this.CONTABILITA = new HashSet<CONTABILITA>();
+            this.ELAB_CONT = new HashSet<ELAB_CONT>();
         }
     
         public decimal IDRATEMAB { get; set; }
         public decimal IDMAB { get; set; }
+        public decimal IDINDENNITA { get; set; }
         public System.DateTime DATAINIZIORATA { get; set; }
         public System.DateTime DATAFINERATA { get; set; }
         public decimal GIORNI { get; set; }
@@ -30,7 +31,7 @@ namespace NewISE
         public decimal ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
+        public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

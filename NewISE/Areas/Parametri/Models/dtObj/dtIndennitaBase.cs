@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Reflection;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -20,7 +18,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.INDENNITABASE.ToList();
 
@@ -30,7 +28,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -56,7 +54,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello).ToList();
 
@@ -66,7 +64,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -92,7 +90,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.INDENNITABASE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -102,7 +100,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -128,7 +126,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -138,7 +136,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -158,31 +156,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-
-
-        public static EntityObject Clone(EntityObject entity)
-        {
-            var type = entity.GetType();
-            var clone = Activator.CreateInstance(type);
-
-            foreach (var property in type.GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.SetProperty))
-            {
-                if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(EntityReference<>)) continue;
-                if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(EntityCollection<>)) continue;
-                if (property.PropertyType.IsSubclassOf(typeof(EntityObject))) continue;
-
-                if (property.CanWrite)
-                {
-                    property.SetValue(clone, property.GetValue(entity, null), null);
-                }
-            }
-
-            return (EntityObject)clone;
-        }
-
-
-
-
         public void SetIndennitaDiBase(IndennitaBaseModel ibm)
         {
             List<INDENNITABASE> libNew = new List<INDENNITABASE>();
@@ -191,22 +164,51 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             INDENNITABASE ibPrecedente = new INDENNITABASE();
 
-            
             List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
 
-            using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+            using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 try
                 {
-                    ibNew = new INDENNITABASE()
+                    if (ibm.dataFineValidita.HasValue)
                     {
-                        IDLIVELLO = ibm.idLivello,
-                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                        DATAFINEVALIDITA = ibm.dataFineValidita,
-                        VALORE = ibm.valore,
-                        VALORERESP = ibm.valoreResponsabile,
-                        ANNULLATO = ibm.annullato
-                    };
+                        if (EsistonoMovimentiSuccessivi(ibm))
+                        {
+                            ibNew = new INDENNITABASE()
+                            {
+                                IDLIVELLO = ibm.idLivello,
+                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
+                                VALORE = ibm.valore,
+                                VALORERESP = ibm.valoreResponsabile,
+                                ANNULLATO = ibm.annullato
+                            };
+                        }
+                        else
+                        {
+                            ibNew = new INDENNITABASE()
+                            {
+                                IDLIVELLO = ibm.idLivello,
+                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                VALORE = ibm.valore,
+                                VALORERESP = ibm.valoreResponsabile,
+                                ANNULLATO = ibm.annullato
+                            };
+                        }
+                    }
+                    else
+                    {
+                        ibNew = new INDENNITABASE()
+                        {
+                            IDLIVELLO = ibm.idLivello,
+                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            VALORE = ibm.valore,
+                            VALORERESP = ibm.valoreResponsabile,
+                            ANNULLATO = ibm.annullato
+                        };
+                    }
 
                     db.Database.BeginTransaction();
 
@@ -217,7 +219,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     recordInteressati.ForEach(a => a.ANNULLATO = true);
                     db.SaveChanges();
-                    
 
                     if (recordInteressati.Count > 0)
                     {
@@ -225,26 +226,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             INDENNITABASE ib = new INDENNITABASE()
                             {
+                                IDINDENNITABASE = item.IDINDENNITABASE,
                                 IDLIVELLO = item.IDLIVELLO,
                                 ANNULLATO = false,
                                 DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                 DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                 VALORE = item.VALORE,
                                 VALORERESP = item.VALORERESP,
-
                             };
 
                             libNew.Add(ib);
-
                         }
 
                         libNew.Add(ibNew);
+                                              
 
-                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                         
+
+                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).Distinct().ToList();
+
                         for (int i = 0; i < libNew.Count; i++)
                         {
-                            INDENNITABASE ib = libNew[i];   
+                            INDENNITABASE ib = libNew[i];
                             if ((i + 1) < libNew.Count)
                             {
                                 ib.DATAFINEVALIDITA = libNew[i + 1].DATAINIZIOVALIDITA.AddDays(-1);
@@ -253,11 +256,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.INDENNITABASE.Add(ib);
                         }
                         db.SaveChanges();
-
-                    }                    
+                    }
+                    else
+                    {
+                        db.INDENNITABASE.Add(ibNew);
+                        db.SaveChanges();
+                    }
 
                     db.Database.CurrentTransaction.Commit();
-                    
                 }
                 catch (Exception ex)
                 {
@@ -267,15 +273,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        //public bool VerificaElaborazioneIndennitabase(decimal idIndbase)
-        //{
-        //    using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
-        //    {
-        //        var n = db.INDENNITABASE.Where(a => a.IDINDENNITABASE == idIndbase && a.ANNULLATO == false)
-        //                   .First().INDENNITA_INDBASE.Where(a => a.IDINDENNITABASE == idIndbase).First().INDENNITA.ELAB_CONT;
+        public bool EsistonoMovimentiSuccessivi(IndennitaBaseModel ibm)
+        {
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                if (ibm.dataFineValidita.HasValue)
+                {
+                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value).Count() > 0 ? true : false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
-        //    }
-        //}
+        public bool EsistonoMovimentiPrima(IndennitaBaseModel ibm)
+        {
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
+            }
+        }
 
         public void DelIndennitaDiBase(decimal idIndbase)
         {
@@ -283,7 +302,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             INDENNITABASE successivaIB = new INDENNITABASE();
             INDENNITABASE delIB = new INDENNITABASE();
 
-            using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+            using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 var lib = db.INDENNITABASE.Where(a => a.IDINDENNITABASE == idIndbase);
 

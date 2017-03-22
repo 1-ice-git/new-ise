@@ -17,8 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VOCI()
         {
-            this.CONTABILITA = new HashSet<CONTABILITA>();
-            this.STIPENDI = new HashSet<STIPENDI>();
+            this.TEORICI = new HashSet<TEORICI>();
         }
     
         public decimal IDVOCI { get; set; }
@@ -28,9 +27,7 @@ namespace NewISE
         public string DESCRIZIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<STIPENDI> STIPENDI { get; set; }
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TIPOLIQUIDAZIONE TIPOLIQUIDAZIONE { get; set; }
         public virtual TIPOVOCE TIPOVOCE { get; set; }
     }

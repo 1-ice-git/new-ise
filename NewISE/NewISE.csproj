@@ -877,15 +877,15 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.mousewheel.min.js" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.css" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.min.js" />
-    <Content Include="DBISE.Context.tt">
+    <Content Include="EntitiesDBISEPRO.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBISE.edmx</DependentUpon>
-      <LastGenOutput>DBISE.Context.cs</LastGenOutput>
+      <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
+      <LastGenOutput>EntitiesDBISEPRO.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DBISE.tt">
+    <Content Include="EntitiesDBISEPRO.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBISE.edmx</DependentUpon>
-      <LastGenOutput>DBISE.cs</LastGenOutput>
+      <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
+      <LastGenOutput>EntitiesDBISEPRO.cs</LastGenOutput>
     </Content>
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1259,13 +1259,6 @@
     <Content Include="Scripts\globalize.0.1.3\cultures\globalize.culture.zu.js" />
     <Content Include="Scripts\globalize.0.1.3\cultures\globalize.cultures.js" />
     <Content Include="Scripts\globalize.0.1.3\globalize.js" />
-    <EntityDeploy Include="DBISE.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBISE.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="DBISE.edmx.diagram">
-      <DependentUpon>DBISE.edmx</DependentUpon>
-    </Content>
     <Content Include="Models\Config\s_admin\s_admin.json" />
     <Content Include="Areas\Parametri\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Parametri\Index.cshtml" />
@@ -1314,7 +1307,13 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\fontawesome-webfont.woff" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\FontAwesome.otf" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
-    <Content Include="ClassDiagram1.cd" />
+    <EntityDeploy Include="EntitiesDBISEPRO.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EntitiesDBISEPRO.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="EntitiesDBISEPRO.edmx.diagram">
+      <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1387,16 +1386,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACCESSI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="ALIQUOTECONTRIBUTIVE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="ALTRIDATIFAM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="ANTICIPI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParametriController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndennitaBaseController.cs" />
@@ -1406,109 +1405,109 @@
     <Compile Include="Areas\Parametri\Models\LivelloModel.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="ATTIVITACRUD.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="BIGLIETTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CDC.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CDC_DIPENDENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CDC_TRASF.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="COEFFICENTEFKM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="COEFFICENTEINDRICHIAMO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="COEFFICENTISEDE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CONTABILITA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="DATIMAB.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="DATIMAB_MABANNUALI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBISE.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBISE.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBISE.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBISE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBISE.edmx</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="DEFFASCIACHILOMETRICA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="DIPENDENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="DOCUMENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="ELAB_CONT.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntitiesDBISEPRO.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesDBISEPRO.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntitiesDBISEPRO.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntitiesDBISEPRO.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
     </Compile>
     <Compile Include="FASCIACHILOMETRICA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="FASCKM_CFKM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="GRUPPIDOCUMENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDBASE_DIPENDENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDBASE_RID.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITABASE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITAPRIMOSEGRETARIO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITASISTEMAZIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA_COEFFISEDE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA_INDBASE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA_PERCDISAGIO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA_TFR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDRIC_COEFINDRICH.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfacce\Iemail.cs" />
     <Compile Include="Interfacce\Modelli\Destinatario.cs" />
@@ -1516,55 +1515,55 @@
     <Compile Include="Interfacce\ModelloAllegatoMail.cs" />
     <Compile Include="Interfacce\ModelloMsgMail.cs" />
     <Compile Include="LIVELLI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="LIVELLIDIPENDENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="LOGATTIVITA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAB_ALIQCONTR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAB_DATIMAB.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAB_DOC.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAB_TFR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGFAM_ALTRIDATIFAM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGFAM_MAGCON.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGFAM_MAGFIG.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGFAM_PENSCON.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONEABITAZIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONECONIUGE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONEFIGLI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONIANNUALI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONIFAMILIARI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MF_IPS.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\Config\Config.cs" />
@@ -1581,147 +1580,6 @@
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\Utility.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
-    <Compile Include="NORMACALCOLO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NOTIFICARICHIESTAMAGFAM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="OA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PARENTELA.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PASSAPORTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PENSIONECONIUGE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PERCENTUALEDISAGIO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PERCENTUALEMAB.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PERCMAB_MAB.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PRIMASIST_ALIQCONTR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PRIMASIST_INDSIST.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PRIMASITEMAZIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RATEMAB.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="REGOLACALCOLO_RIDUZIONI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="REGOLECALCOLO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RICHIAMO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RIDUZIONI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RUOLOACCESSO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RUOLOUFFICIO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SOSPENSIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="STATOTRASFERIMENTO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="STIPENDI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TFR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOALIQUOTECONTRIBUTIVE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPODOCUMENTI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOELABORAZIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOLIQUIDAZIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOLOGIACONIUGE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOLOGIAFIGLIO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOMOVIMENTO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOREGOLACALCOLO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOSOSPENSIONE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOTRASFERIMENTO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TIPOVOCE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASEFFETTISIST_COEFFIFKM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASFERIMENTO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASFERIMENTO_LIVDIP.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASPEFFETTIRIENTRO_DOC.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASPEFFETTIRIEN_COEFFIFKM.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASPEFFETTISIST_DOC.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASPORTOEFFETTIRIENTRO.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASPORTOEFFETTISIST.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UFFICI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UFFICIO_TFR.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UTENTIAUTORIZZATI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VALUTE.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VOCI.cs">
-      <DependentUpon>DBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -1731,7 +1589,151 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="NORMACALCOLO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NOTIFICARICHIESTAMAGFAM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PARENTELA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PASSAPORTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PENSIONECONIUGE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PERCENTUALEDISAGIO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PERCENTUALEMAB.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PERCMAB_MAB.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRIMASIST_ALIQCONTR.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRIMASIST_INDSIST.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRIMASITEMAZIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RATEMAB.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="REGOLACALCOLO_RIDUZIONI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="REGOLECALCOLO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RICHIAMO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RIDUZIONI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUOLOACCESSO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUOLOUFFICIO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SOSPENSIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="STATOTRASFERIMENTO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="STIPENDI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TEORICI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TFR.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOALIQUOTECONTRIBUTIVE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPODOCUMENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOELABORAZIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOLIQUIDAZIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOLOGIACONIUGE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOLOGIAFIGLIO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOMOVIMENTO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOREGOLACALCOLO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOSOSPENSIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOTRASFERIMENTO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TIPOVOCE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASEFFETTISIST_COEFFIFKM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASFERIMENTO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASFERIMENTO_LIVDIP.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASPEFFETTIRIENTRO_DOC.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASPEFFETTIRIEN_COEFFIFKM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASPEFFETTISIST_DOC.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASPORTOEFFETTIRIENTRO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TRASPORTOEFFETTISIST.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UFFICI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UFFICIO_TFR.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UTENTIAUTORIZZATI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VALUTE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VOCI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

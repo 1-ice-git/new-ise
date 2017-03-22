@@ -17,7 +17,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var ll = db.LIVELLI.ToList();
 
@@ -43,7 +43,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var liv = db.LIVELLI.Find(idLivello);
 

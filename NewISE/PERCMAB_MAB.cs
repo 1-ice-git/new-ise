@@ -17,6 +17,7 @@ namespace NewISE
         public decimal IDMAB { get; set; }
         public decimal IDPERCMAB { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDINDENNITA { get; set; }
     
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
