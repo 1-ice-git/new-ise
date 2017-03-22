@@ -1,0 +1,64 @@
+﻿@model NewISE.PERCENTUALEDISAGIO
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PERCENTUALEDISAGIO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DATAINIZIOVALIDITA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATAINIZIOVALIDITA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DATAFINEVALIDITA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DATAFINEVALIDITA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERCENTUALE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERCENTUALE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ANNULLATO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ANNULLATO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UFFICI.CODICEUFFICIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UFFICI.CODICEUFFICIO)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

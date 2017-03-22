@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Areas.Parametri.Models.CoefficientiSedeModel>
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.PercentualeDisagioModel>
+
 
 
 @{
@@ -8,7 +9,7 @@
 
 
 <p>
-    <a id="btnInsNuovoCoeff" href="#" onclick="NuovoCoefficienteDiSede();">Inserisci Coefficiente di Sede</a>
+    <a id="btnInsNuovaPerc" href="#" onclick="NuovaPercentualeDisagio();">Inserisci Percentuale di Disagio</a>
 </p>
 
 <p>
@@ -16,7 +17,7 @@
         @Html.Label("lblLivello0", "Seleziona Ufficio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoefficienteSede();" })
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercentualeDisagio();" })
             </div>
         </div>
     </div>
@@ -24,58 +25,56 @@
 
 
 <p>
-    @*@Html.ActionLink("Create New", "Create")*@
+    @Html.ActionLink("Create New", "Create")
 </p>
-<table id="tbIndBase" class="display" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio.descrizioneUfficio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataFineValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.valoreCoefficiente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.annullato)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescrizioneUfficio.descrizioneUfficio)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.valoreCoefficiente)
-                </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.annullato)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idCoefficientiSede }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idCoefficientiSede }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idCoefficientiSede })
-                </td>
-            </tr>
-        }
-    </tbody>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idPercentualeDisagio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataInizioValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataFineValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.percentuale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.annullato)
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idPercentualeDisagio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataInizioValidita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataFineValidita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.percentuale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.annullato)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idPercentualeDisagio }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idPercentualeDisagio }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idPercentualeDisagio })
+        </td>
+    </tr>
+}
+
 </table>
+
 
 <script type="text/javascript">
     $('.display').DataTable({
@@ -112,9 +111,9 @@
 
     });
 
-    $("#btnInsNuovoCoeff").button();
+    $("#btnInsNuovaPerc").button();
 
-    function PrelevaPVCoefficienteSede() {
+    function PrelevaPVPercentualeDisagio() {
         //debugger;
         rotta = "/Parametri/ParamIndennitaBase/CoefficienteSedeLivello";
 
@@ -164,10 +163,10 @@
 
     }
 
-    function NuovoCoefficienteDiSede() {
+    function NuovaPercentualeDisagio() {
         //debugger;
 
-        var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
+        var rotta = "/Parametri/ParamPercDisagio/NuovaPercentualeDisagio";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
@@ -211,7 +210,3 @@
 
     }
 </script>
-
-
-
-
