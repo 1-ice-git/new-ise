@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0e6324bb3d0c46d5b09e7babe2d23279" Name="Diagram1">
-        <EntityTypeShape EntityType="ModelISEPRO.ACCESSI" Width="1.5" PointX="11.25" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelISEPRO.ACCESSI" Width="1.5" PointX="13.25" PointY="33.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="7.5" PointY="114" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.ALTRIDATIFAM" Width="1.5" PointX="6" PointY="43.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.ANTICIPI" Width="1.5" PointX="9.75" PointY="81.875" IsExpanded="true" />
@@ -100,7 +100,7 @@
         <EntityTypeShape EntityType="ModelISEPRO.TRASPORTOEFFETTISIST" Width="1.5" PointX="9.75" PointY="90.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.UFFICI" Width="1.5" PointX="0.75" PointY="64.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.UFFICIO_TFR" Width="1.5" PointX="15.5" PointY="83.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ModelISEPRO.UTENTIAUTORIZZATI" Width="1.5" PointX="9" PointY="33.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ModelISEPRO.UTENTIAUTORIZZATI" Width="2" PointX="9.5" PointY="33.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.VALUTE" Width="1.5" PointX="6" PointY="102" IsExpanded="true" />
         <EntityTypeShape EntityType="ModelISEPRO.VOCI" Width="1.5" PointX="7.5" PointY="108.875" IsExpanded="true" />
         <AssociationConnector Association="ModelISEPRO.R_UL_C" ManuallyRouted="false" />

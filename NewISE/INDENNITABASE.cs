@@ -25,7 +25,7 @@ namespace NewISE
         public decimal IDINDENNITABASE { get; set; }
         public decimal IDLIVELLO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal VALORE { get; set; }
         public decimal VALORERESP { get; set; }
         public bool ANNULLATO { get; set; }
