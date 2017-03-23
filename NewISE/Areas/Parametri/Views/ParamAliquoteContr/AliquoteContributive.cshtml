@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<NewISE.Areas.Parametri.Models.AliquoteContributiveModel>
 
+
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a id="btnInsNuovaAliquote" href="#" onclick="NuoveAliquoteContributive();">Inserisci Nuove Aliquote Contributive</a>
 </p>
+
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
 <table class="table">
     <tr>
         <th>
@@ -58,3 +64,137 @@
 }
 
 </table>
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'Ufficio",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaAliquote").button();
+
+    function PrelevaPVCoefficienteSede() {
+        //debugger;
+        rotta = "/Parametri/ParamIndennitaBase/CoefficienteSedeLivello";
+
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuoveAliquoteContributive() {
+        //debugger;
+
+        var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un ufficio per procedere.");
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+</script>

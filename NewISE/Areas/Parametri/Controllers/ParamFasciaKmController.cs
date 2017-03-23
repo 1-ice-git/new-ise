@@ -19,6 +19,8 @@ namespace NewISE.Areas.Parametri.Controllers
             try
             {
 
+
+
             }
             catch (Exception)
             {
