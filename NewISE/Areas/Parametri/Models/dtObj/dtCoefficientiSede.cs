@@ -18,7 +18,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.COEFFICENTISEDE.ToList();
 
@@ -55,7 +55,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.COEFFICENTISEDE.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
@@ -92,7 +92,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.COEFFICENTISEDE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -129,7 +129,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISEPRO db = new EntitiesDBISEPRO())
+                using (EntitiesDBISE db = new EntitiesDBISE())
                 {
                     var lib = db.COEFFICENTISEDE.Where(a => a.IDCOEFFICENTESEDE == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 

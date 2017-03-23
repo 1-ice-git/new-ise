@@ -1,0 +1,60 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.AliquoteContributiveModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idAliqContr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idAliqContr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descrizione)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataInizioValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataFineValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.aliquota)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.annullato)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idAliqContr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.idAliqContr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descrizione)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataInizioValidita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.aliquota)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.annullato)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idAliqContr }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idAliqContr }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idAliqContr })
+        </td>
+    </tr>
+}
+
+</table>

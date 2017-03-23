@@ -7,24 +7,28 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamMaggAnnualiController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: Parametri/ParamMaggAnnuali/MaggiorazioniAnnuali
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult MaggiorazioniAnnuali()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+
             try
             {
+
+
 
             }
             catch (Exception)
             {
 
-                return PartialView("ErrorPartial");
+                throw;
             }
+
             return PartialView(libm);
         }
     }

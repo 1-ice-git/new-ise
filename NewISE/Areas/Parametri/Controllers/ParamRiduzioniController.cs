@@ -7,15 +7,16 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamRiduzioniController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: /Parametri/ParamRiduzioni/Riduzioni
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult Riduzioni()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+
             try
             {
 
@@ -25,6 +26,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 return PartialView("ErrorPartial");
             }
+
             return PartialView(libm);
         }
     }

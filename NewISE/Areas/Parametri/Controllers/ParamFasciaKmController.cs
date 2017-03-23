@@ -7,15 +7,15 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamFasciaKmController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: Parametri/ParamFasciaKm/FasciaKm
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult FasciaKm()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<FasciaChilometricaModel> libm = new List<FasciaChilometricaModel>();
             try
             {
 

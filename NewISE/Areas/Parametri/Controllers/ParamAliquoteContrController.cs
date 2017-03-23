@@ -7,25 +7,26 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamAliquoteContrController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: Parametri/ParamAliquoteContr/AliquoteContributive
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult AliquoteContributive()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
             try
             {
 
             }
             catch (Exception)
             {
-
                 return PartialView("ErrorPartial");
             }
             return PartialView(libm);
         }
+
+
     }
 }

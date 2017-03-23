@@ -1310,7 +1310,6 @@
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
     <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CreaNuovoCoefficienteSede.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamPercDisagio\Index.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\PercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\NuovaPercentualeDisagio.cshtml" />
     <EntityDeploy Include="EntitiesDBISEPRO.edmx">
@@ -1320,6 +1319,18 @@
     <Content Include="EntitiesDBISEPRO.edmx.diagram">
       <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Parametri\Views\ParamRiduzioni\Riduzioni.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValute\ParametriValute.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\PrimoSegretario.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndRichiamo\IndennitaRichiamo.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndSistemaz\IndennitaSistemazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamAliquoteContr\AliquoteContributive.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamCoeffFasciaKm\CoefficienteFasciaKm.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\MaggiorazioniAnnuali.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\PercentualeMaggAbitazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggFigli\MaggiorazioneFigli.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamFasciaKm\FasciaKm.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggConiuge\MaggiorazioneConiuge.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1388,7 +1399,9 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Template\HtmlPage1.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACCESSI.cs">
@@ -1404,20 +1417,60 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParametriController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamFasciaKmController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamIndennitaBaseController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamIndRichiamoController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamIndSistemazController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamMaggAnnualiController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamMaggConiugeController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamMaggFigliController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamPercDisagioController.cs" />
-    <Compile Include="Areas\Parametri\Controllers\PercentualeDisagioController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamPercMaggAbitazController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamPrimoIndSegrController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamRiduzioniController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamValuteController.cs" />
+    <Compile Include="Areas\Parametri\Models\AliquoteContributiveModel.cs" />
+    <Compile Include="Areas\Parametri\Models\CoeffFasciaKmModel.cs" />
     <Compile Include="Areas\Parametri\Models\CoefficientiSedeModel.cs" />
+    <Compile Include="Areas\Parametri\Models\DefFasciaKmModel.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtAliquoteContr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtCoeffFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCoefficientiSede.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndennitaBase.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtIndPrimaSistemaz.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtIndPrimoSegr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtIndRichiamo.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtLivelli.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtMaggAnnuali.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtMaggConiuge.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtMaggFigli.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercentualeDisagio.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtPercMaggAbitazione.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
+    <Compile Include="Areas\Parametri\Models\FasciaChilometricaModel.cs" />
     <Compile Include="Areas\Parametri\Models\IndennitaBaseModel.cs" />
+    <Compile Include="Areas\Parametri\Models\IndennitaPrimoSegretModel.cs" />
+    <Compile Include="Areas\Parametri\Models\IndennitaRichiamoModel.cs" />
+    <Compile Include="Areas\Parametri\Models\IndennitaSistemazioneModel.cs" />
     <Compile Include="Areas\Parametri\Models\LivelloModel.cs" />
+    <Compile Include="Areas\Parametri\Models\MaggiorazioneConiugeModel.cs" />
+    <Compile Include="Areas\Parametri\Models\MaggiorazioneFigliModel.cs" />
+    <Compile Include="Areas\Parametri\Models\MaggiorazioniAnnualiModel.cs" />
     <Compile Include="Areas\Parametri\Models\PercentualeDisagioModel.cs" />
+    <Compile Include="Areas\Parametri\Models\PercMaggAbitazModel.cs" />
+    <Compile Include="Areas\Parametri\Models\RiduzioniModel.cs" />
+    <Compile Include="Areas\Parametri\Models\TipoAliquoteContributiveModel.cs" />
+    <Compile Include="Areas\Parametri\Models\TipologiaConiugeModel.cs" />
+    <Compile Include="Areas\Parametri\Models\TipologiaFiglioModel.cs" />
+    <Compile Include="Areas\Parametri\Models\TipoTrasferimentoModel.cs" />
     <Compile Include="Areas\Parametri\Models\UfficiModel.cs" />
+    <Compile Include="Areas\Parametri\Models\ValuteModel.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="ATTIVITACRUD.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>

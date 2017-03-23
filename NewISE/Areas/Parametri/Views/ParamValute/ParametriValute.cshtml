@@ -1,0 +1,39 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.ValuteModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idValuta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.descrizione)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.valuta)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idValuta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.descrizione)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.valuta)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idValuta }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idValuta }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idValuta })
+        </td>
+    </tr>
+}
+
+</table>

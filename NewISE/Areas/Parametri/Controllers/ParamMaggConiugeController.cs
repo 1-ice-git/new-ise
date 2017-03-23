@@ -7,23 +7,26 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamMaggConiugeController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: Parametri/ParamMaggConiuge/MaggiorazioneConiuge
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult MaggiorazioneConiuge()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<MaggiorazioneConiugeModel> libm = new List<MaggiorazioneConiugeModel>();
+
             try
             {
+
+
 
             }
             catch (Exception)
             {
 
-                return PartialView("ErrorPartial");
+                throw;
             }
             return PartialView(libm);
         }

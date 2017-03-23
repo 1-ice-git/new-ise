@@ -5,21 +5,19 @@ using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace NewISE.Areas.Parametri.Models
 {
-    public class PercentualeDisagioModel
+    public class MaggiorazioneConiugeModel
     {
         [Key]
         [Display(Name = "ID")]
-        public decimal idPercentualeDisagio { get; set; }
-        public decimal? idUfficio { get; set; }
+        public decimal idMaggiorazioneConiuge { get; set; }
+        public decimal idTipologiaConiuge { get; set; }
         public DateTime dataInizioValidita { get; set; }
         public DateTime? dataFineValidita { get; set; }
-        public decimal percentuale { get; set; }
+        public decimal percentualeConiuge { get; set; }
         public bool annullato { get; set; } = false;
-
-        public UfficiModel DescrizioneUfficio { get; set; }
-
+        
+        public TipologiaConiugeModel tipologiaConiuge { get; set; }
     }
 }

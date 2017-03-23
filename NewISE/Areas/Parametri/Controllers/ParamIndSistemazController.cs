@@ -7,23 +7,26 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamPercDisagioController : Controller
+    public class ParamIndSistemazController : Controller
     {
-        // GET: /Parametri/ParamPercDisagio/PercentualeDisagio
+        // GET: Parametri/ParamIndSistemaz/IndennitaSistemazione
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeDisagio()
+        public ActionResult IndennitaSistemazione()
         {
-            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
+            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
+
             try
-            {
+            {       
+
+
 
             }
             catch (Exception)
             {
 
-                return PartialView("ErrorPartial");
+                throw;
             }
             return PartialView(libm);
         }

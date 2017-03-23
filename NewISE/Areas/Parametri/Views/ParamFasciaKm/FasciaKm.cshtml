@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Areas.Parametri.Models.PercentualeDisagioModel>
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.FasciaChilometricaModel>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -6,22 +6,22 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.idPercentualeDisagio)
+            @Html.DisplayNameFor(model => model.idDefFasciaKm)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.idFasciaKm)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.idUfficio)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.percentuale)
+            @Html.DisplayNameFor(model => model.km)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.dataInizioValidita)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.dataFineValidita)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DescrizioneUfficio)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.annullato)
@@ -32,13 +32,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.idPercentualeDisagio)
+            @Html.DisplayFor(modelItem => item.idDefFasciaKm)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.idFasciaKm)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.idUfficio)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.percentuale)
+            @Html.DisplayFor(modelItem => item.km)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -47,15 +50,12 @@
             @Html.DisplayFor(modelItem => item.dataFineValidita)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DescrizioneUfficio)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.annullato)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idPercentualeDisagio }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idPercentualeDisagio }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idPercentualeDisagio })
+            @Html.ActionLink("Edit", "Edit", new { id=item.idDefFasciaKm }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idDefFasciaKm }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idDefFasciaKm })
         </td>
     </tr>
 }

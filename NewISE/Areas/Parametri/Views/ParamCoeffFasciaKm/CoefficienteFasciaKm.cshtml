@@ -1,0 +1,51 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.CoeffFasciaKmModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.idCfKm)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataInizioValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataFineValidita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.coefficente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.annullato)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.idCfKm)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataInizioValidita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataFineValidita)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.coefficente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.annullato)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idCfKm }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idCfKm }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idCfKm })
+        </td>
+    </tr>
+}
+
+</table>
