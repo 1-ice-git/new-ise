@@ -12,7 +12,7 @@
         @Html.Label("lblParametro", "Seleziona Tabella", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();" })
+                @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();", @onclick = "prelevaPartiaViewParametri();"  })
             </div>
             @Html.ValidationMessage("idParametro", "", new { @class = "text-danger" })
         </div>

@@ -898,6 +898,7 @@
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\Eliminazione.png" />
+    <Content Include="Immagini\EliminazioneDisable.png" />
     <Content Include="Immagini\Logo ISE.png" />
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\LogOut.png" />

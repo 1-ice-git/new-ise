@@ -35,6 +35,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         if (idLivello == 0)
                         {
                             r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
@@ -50,11 +51,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListIndennitaBase(llm.First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListIndennitaBase(llm.First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListIndennitaBase(idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -143,7 +144,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm)
+        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool  escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
             
@@ -154,33 +155,34 @@ namespace NewISE.Areas.Parametri.Controllers
                     using (dtIndennitaBase dtib = new dtIndennitaBase())
                     {
 
-                        if (!dtib.EsistonoMovimentiPrima(ibm))
-                        {
-                            if (!dtib.EsistonoMovimentiSuccessivi(ibm))
-                            {
-                                dtib.SetIndennitaDiBase(ibm);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Imposibile inserire un parametro di indennità di base precedente al primo parametro presente nel database.");
-                                using (dtLivelli dtl = new dtLivelli())
-                                {
-                                    var lm = dtl.GetLivelli(ibm.idLivello);
-                                    ViewBag.Livello = lm;
-                                }
+                        //if (!dtib.EsistonoMovimentiPrimaUguale(ibm))
+                        //{
+                        //    if (!dtib.EsistonoMovimentiSuccessiviUguale(ibm))
+                        //    {
+                        //        dtib.SetIndennitaDiBase(ibm);
+                        //    }
+                        //    else
+                        //    {
+                        //        ModelState.AddModelError("", "Imposibile inserire un parametro di indennità di base precedente al primo parametro presente nel database.");
+                        //        using (dtLivelli dtl = new dtLivelli())
+                        //        {
+                        //            var lm = dtl.GetLivelli(ibm.idLivello);
+                        //            ViewBag.Livello = lm;
+                        //        }
 
-                                return PartialView("NuovaIndennitaBase", ibm);
-                            }
-                        }
-                        else
-                        {
-                            dtib.SetIndennitaDiBase(ibm);
-                        }
+                        //        return PartialView("NuovaIndennitaBase", ibm);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    dtib.SetIndennitaDiBase(ibm);
+                        //}
 
                         
+                        dtib.SetIndennitaDiBase(ibm);
                     }
 
-                    return RedirectToAction("IndennitaBase", new { escludiAnnullati = ibm.annullato, idLivello = ibm.idLivello });
+                    return RedirectToAction("IndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
                 }
                 else
                 {
@@ -221,6 +223,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
             
         }
+
+
 
     }
 }
