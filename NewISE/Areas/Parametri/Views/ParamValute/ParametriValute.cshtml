@@ -1,39 +1,132 @@
 ﻿@model IEnumerable<NewISE.Areas.Parametri.Models.ValuteModel>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a id="btnInsNuovaMagg" href="#" onclick="NuoveValute();">Inserisci Valute</a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.idValuta)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.descrizione)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.valuta)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.idValuta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.descrizione)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.valuta)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idValuta }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idValuta }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idValuta })
-        </td>
-    </tr>
-}
-
+<table id="tbValute" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.idValuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th></th>
+        </tr>
+</thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idValuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descrizione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idValuta }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idValuta }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idValuta })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+
+    $("#idLivello").select2({
+        placeholder: "Seleziona il ",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaMagg").button();
+
+    function NuoveValute() {
+        //debugger;
+
+        var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
+        var idLivello = parseInt($("#idLivello").select2('val'));
+        var chk = false;
+
+        if (isNaN(idLivello)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un livello per procedere.");
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+</script>

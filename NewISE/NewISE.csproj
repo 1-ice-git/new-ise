@@ -1331,6 +1331,7 @@
     <Content Include="Areas\Parametri\Views\ParamMaggFigli\MaggiorazioneFigli.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamFasciaKm\FasciaKm.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\MaggiorazioneConiuge.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\NuovaMaggiorazioneAnnuale.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />

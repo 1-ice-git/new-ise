@@ -1,51 +1,91 @@
 ﻿@model IEnumerable<NewISE.Areas.Parametri.Models.IndennitaPrimoSegretModel>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a id="btnInsNuovaIndPrimoSegr" href="#" onclick="NuovoMaggiorazioneAnnuale();">Inserisci Indennità Primo Segretario</a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.idIndPrimoSegr)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.indennita)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataInizioValidita)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dataFineValidita)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.annullato)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.idIndPrimoSegr)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.indennita)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataInizioValidita)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dataFineValidita)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.annullato)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idIndPrimoSegr }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idIndPrimoSegr }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idIndPrimoSegr })
-        </td>
-    </tr>
-}
-
+<table id="tbPrimoSegretario" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.idIndPrimoSegr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.indennita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th></th>
+        </tr>
+</thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idIndPrimoSegr)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.indennita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idIndPrimoSegr }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idIndPrimoSegr }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idIndPrimoSegr })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+    $("#idLivello").select2({
+        placeholder: "Seleziona il ",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaIndPrimoSegr").button();
+
+</script>

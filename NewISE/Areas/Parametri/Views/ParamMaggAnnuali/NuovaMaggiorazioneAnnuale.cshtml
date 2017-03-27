@@ -1,0 +1,144 @@
+﻿@model NewISE.Areas.Parametri.Models.MaggiorazioniAnnualiModel
+@using NewISE.Areas.Parametri.Models;
+
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@{
+
+    UfficiModel lm = (UfficiModel)ViewBag.idUfficio;
+    //string descrizioneUfficio = lm.descrizioneUfficio;
+    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idUfficio = lm.idUfficio;
+
+}
+
+
+@using (Ajax.BeginForm("", "ParamMaggAnnuali", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.idUfficio)
+
+        <div class="form-group">
+            <div class="col-xs-2 text-right">
+                <label>Livello </label>
+            </div>
+            <div class="col-xs-10">
+                <div class="panel panel-default">
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@idUfficio</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.annualita, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.annualita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.annualita, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.annullato, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.annullato, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.annullato, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Inserisci" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-10">
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle maggiorazioni annuali.</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#dataInizioValidita').datepicker({
+        inline: true,
+    });
+    $('#dataFineValidita').datepicker({
+        inline: true,
+    });
+
+    function TornaElencoIb() {
+        rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
+
+        var idUfficio = parseFloat('@idUfficio');
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+</script>
