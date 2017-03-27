@@ -1,0 +1,105 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.PercMaggAbitazModel>
+
+<p>
+    <a id="btnInsNuovaPercMaggAbitaz" href="#" onclick="NuovoMaggiorazioneAnnuale();">Inserisci Percentuale Maggiorazione Abitazione</a>
+</p>
+<table id="tbPercMaggAbitaz" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.idPercMabAbitaz)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idUfficio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Livello)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.percentuale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th></th>
+        </tr>
+</thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idPercMabAbitaz)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idUfficio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Livello)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.percentuale)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idPercMabAbitaz }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idPercMabAbitaz }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idPercMabAbitaz })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+    
+
+    $("#idLivello").select2({
+        placeholder: "Seleziona il ",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaPercMaggAbitaz").button();
+</script>

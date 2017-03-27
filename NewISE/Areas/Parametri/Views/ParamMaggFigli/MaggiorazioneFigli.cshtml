@@ -1,0 +1,105 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.MaggiorazioneFigliModel>
+
+<p>
+    <a id="btnInsNuovaMaggFigli" href="#" onclick="NuovoMaggiorazioneAnnuale();">Inserisci Maggiorazioni Figli</a>
+</p>
+<table id="tbMaggFigli" class="display" cellspacing="0">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.idMaggiorazioneFigli)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idTipologiaFiglio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.percentualeFigli)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipologiaFiglio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th></th>
+        </tr>
+</thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idMaggiorazioneFigli)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idTipologiaFiglio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.percentualeFigli)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipologiaFiglio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idMaggiorazioneFigli }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idMaggiorazioneFigli }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idMaggiorazioneFigli })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idLivello").select2({
+        placeholder: "Seleziona il ",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaMaggFigli").button();
+
+</script>

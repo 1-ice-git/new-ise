@@ -7,35 +7,33 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models
 {
-    public class IndennitaBaseModel
+    public class MaggiorazioniAnnualiModel
     {
         [Key]
-        [Display(Name ="ID")]
-        public decimal idIndennitaBase { get; set; }
-        [Required(ErrorMessage = "Il livello è richiesto.")]
-        public decimal idLivello { get; set; }
+        [Display(Name = "ID")]
+        public decimal idMagAnnuali { get; set; }
+        [Required(ErrorMessage = "ID Ufficio richiesto.")]
+        public decimal? idUfficio { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fin. validità")]
-        [DataType(DataType.DateTime, ErrorMessage ="la data non è valida.")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
-        [Required(ErrorMessage = "Il valore è richiesto.")]
-        [Display(Name ="Valore")]
+        [Required(ErrorMessage = "Il campo Annualità è richiesta.")]
+        [Display(Name = "Valore")]
         [DataType(DataType.Currency)]
-        public decimal valore { get; set; }
-        [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
-        [Display(Name = "Valore resp.")]
-        [DataType(DataType.Currency)]
-        public decimal valoreResponsabile { get; set; }
+        public decimal annualita { get; set; }
+
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-       
-        public LivelloModel Livello { get; set; }
+        public UfficiModel DescrizioneUfficio { get; set; }
+
     }
 }

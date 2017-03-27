@@ -1,0 +1,217 @@
+﻿@model IEnumerable<NewISE.Areas.Parametri.Models.CoefficientiSedeModel>
+
+
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+}
+
+
+
+<p>
+    <a id="btnInsNuovoCoeff" href="#" onclick="NuovoCoefficienteDiSede();">Inserisci Coefficiente di Sede</a>
+</p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblLivello0", "Seleziona Ufficio", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoefficienteSede();" })
+            </div>
+        </div>
+    </div>
+</p>
+
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table id="tbCoeffSede" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DescrizioneUfficio.descrizioneUfficio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valoreCoefficiente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescrizioneUfficio.descrizioneUfficio)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.valoreCoefficiente)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.idCoefficientiSede }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.idCoefficientiSede }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.idCoefficientiSede })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'Ufficio",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovoCoeff").button();
+
+    function PrelevaPVCoefficienteSede() {
+        //debugger;
+        rotta = "/Parametri/ParamIndennitaBase/CoefficienteSedeLivello";
+
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovoCoefficienteDiSede() {
+        //debugger;
+
+        var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un ufficio per procedere.");
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+</script>
+
+
+
+
