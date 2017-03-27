@@ -3,6 +3,7 @@
 <p>
     <a id="btnInsNuovaMagg" href="#" onclick="NuoveValute();">Inserisci Valute</a>
 </p>
+
 <table id="tbValute" class="display" cellspacing="0">
     <thead>
         <tr>
@@ -78,55 +79,6 @@
 
     $("#btnInsNuovaMagg").button();
 
-    function NuoveValute() {
-        //debugger;
-
-        var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
-        var idLivello = parseInt($("#idLivello").select2('val'));
-        var chk = false;
-
-        if (isNaN(idLivello)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un livello per procedere.");
-            return false;
-        }
-
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divPViewParametri").empty();
-                $("#divPViewParametri").html(result);
-
-                //RicercaDocumenti();
-
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-
-        });
-
-    }
+    
 
 </script>

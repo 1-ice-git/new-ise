@@ -13,7 +13,7 @@ namespace NewISE.Areas.Parametri.Models
         [Display(Name = "ID")]
         public decimal idValuta { get; set; }
         public string descrizione { get; set; }
-        public string valuta { get; set; }
-
+        public bool valuta { get; set; } = false;
+        
     }
 }

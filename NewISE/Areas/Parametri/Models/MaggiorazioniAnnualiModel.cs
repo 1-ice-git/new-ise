@@ -18,7 +18,6 @@ namespace NewISE.Areas.Parametri.Models
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
-
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fin. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

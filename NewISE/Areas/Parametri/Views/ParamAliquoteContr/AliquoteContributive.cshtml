@@ -51,10 +51,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idAliqContr }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idAliqContr }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idAliqContr })
+                <td style="text-align:center;">
+                    <a href="#" onclick=""><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                 </td>
             </tr>
         }
@@ -89,7 +87,7 @@
     });
 
     $("#idLivello").select2({
-        placeholder: "Seleziona il livello",
+        placeholder: "Seleziona il ...??",
         allowClear: true,
         language: "it",
         width: '150'

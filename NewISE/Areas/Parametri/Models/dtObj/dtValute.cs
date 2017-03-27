@@ -11,5 +11,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
+
+
+       
+
+
+
     }
 }
