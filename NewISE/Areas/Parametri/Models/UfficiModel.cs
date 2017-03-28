@@ -16,7 +16,7 @@ namespace NewISE.Areas.Parametri.Models
         public string codiceUfficio { get; set; }
         [Required(ErrorMessage = "La descrizione ufficio è richiesta.")]
         [StringLength(30, ErrorMessage = "Per la descrizione dell'ufficio sono ammessi massimo 50 caratteri.")]
-        [Display(Name = "DescrizioneUfficio")]
-        public string descrizioneUfficio { get; set; }
+        [Display(Name = "Descrizione")]
+        public string DescUfficio { get; set; }
     }
 }

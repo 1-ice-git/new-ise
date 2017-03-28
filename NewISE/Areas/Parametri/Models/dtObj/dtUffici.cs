@@ -26,7 +26,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                            select new UfficiModel()
                            {
                                idUfficio = e.IDUFFICIO,
-                               descrizioneUfficio = e.DESCRIZIONEUFFICIO
+                               DescUfficio = e.DESCRIZIONEUFFICIO
                            }).ToList();
                 }
 
@@ -51,7 +51,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new UfficiModel()
                     {
                         idUfficio = liv.IDUFFICIO,
-                        descrizioneUfficio = liv.DESCRIZIONEUFFICIO
+                        DescUfficio = liv.DESCRIZIONEUFFICIO
                     };
                 }
 

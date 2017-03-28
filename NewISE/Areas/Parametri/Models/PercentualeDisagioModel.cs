@@ -14,7 +14,7 @@ namespace NewISE.Areas.Parametri.Models
         [Display(Name = "ID")]
         public decimal idPercentualeDisagio { get; set; }
         [Required(ErrorMessage = "ID Ufficio richiesto.")]
-        public decimal? idUfficio { get; set; }
+        public decimal idUfficio { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -34,6 +34,6 @@ namespace NewISE.Areas.Parametri.Models
         public bool annullato { get; set; } = false;
 
         public UfficiModel DescrizioneUfficio { get; set; }
-        
+
     }
 }

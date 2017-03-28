@@ -34,7 +34,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DescrizioneUfficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    descrizioneUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
 
@@ -71,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DescrizioneUfficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    descrizioneUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
 
@@ -108,7 +108,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DescrizioneUfficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    descrizioneUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
 
@@ -145,7 +145,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DescrizioneUfficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    descrizioneUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }

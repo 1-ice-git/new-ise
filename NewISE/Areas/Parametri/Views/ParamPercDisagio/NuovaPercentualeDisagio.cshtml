@@ -1,36 +1,38 @@
 ﻿@model NewISE.Areas.Parametri.Models.PercentualeDisagioModel
 @using NewISE.Areas.Parametri.Models;
-@*@{
-    UfficiModel lm = (UfficiModel)ViewBag.DescrizioneUfficio;
-}*@
 
 @Scripts.Render("~/bundles/jqueryval")
 
-
 @{
-
-    //UfficiModel lm = (UfficiModel)ViewBag.DescrizioneUfficio;
-    //string descrizioneUfficio = lm.descrizioneUfficio;
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    //decimal idUfficio = lm.idUfficio;
-
+    UfficiModel lm = (UfficiModel)ViewBag.Descrizione;
+    string descrizioneUfficio = lm.DescUfficio;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idUfficio = lm.idUfficio;
 }
 
-@using (Html.BeginForm())
+@using (Ajax.BeginForm("InserisciIndennitaBase", "ParamPercDisagio", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>PERCENTUALEDISAGIO</h4>
+
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.idPercentualeDisagio)
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.idUfficio)
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.idUfficio, "IDUFFICIO", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.DropDownList("IDUFFICIO", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })*@
+            <div class="col-xs-2 text-right">
+                <label>Ufficio </label>
+            </div>
+            <div class="col-xs-10">
+                <div class="panel panel-default">
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio</label>
+                </div>
             </div>
         </div>
 
@@ -58,28 +60,79 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.annullato, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.annullato)
-                    @Html.ValidationMessageFor(model => model.annullato, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Inserisci" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-10">
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuali di disagio.</a>
+    </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    $('#dataInizioValidita').datepicker({
+        inline: true,
+    });
+    $('#dataFineValidita').datepicker({
+        inline: true,
+    });
+
+    function TornaElencoIb() {
+        rotta = "/Parametri/ParamPercDisagio/PercentualeDisagioLivello";
+
+        var idUfficio = parseFloat('@idUfficio');
+        var chk = true;
+
+        if (isNaN(idUfficio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
+
+
+
+</script>

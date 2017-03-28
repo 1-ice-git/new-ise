@@ -24,13 +24,7 @@
 
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio.descrizioneUfficio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idUfficio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.percentuale)
+                @Html.DisplayNameFor(model => model.DescrizioneUfficio.DescUfficio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -39,7 +33,7 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio)
+                @Html.DisplayNameFor(model => model.percentuale)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -52,13 +46,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.DescrizioneUfficio.descrizioneUfficio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idUfficio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.percentuale)
+                    @Html.DisplayNameFor(model => model.DescrizioneUfficio.DescUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -67,13 +55,13 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DescrizioneUfficio)
+                    @Html.DisplayFor(modelItem => item.percentuale)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                @*<td style="text-align:center;">
-                    @using (dtIndennitaBase dtib = new dtIndennitaBase())
+                <td style="text-align:center;">
+                    @*@using (dtIndennitaBase dtib = new dtIndennitaBase())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -83,17 +71,17 @@
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
-                    }
+                    }*@
 
-
-                </td>*@
+                        aaaaa
+                </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div id="dialog-confirm" title="Elimina indennità di base?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di base?</p>
+<div id="dialog-confirm" title="Elimina percentuale di disagio?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della percentuale di disagio?</p>
 </div>
 
 <script type="text/javascript">
@@ -124,7 +112,7 @@
     });
 
     $("#idUfficio").select2({
-        placeholder: "Seleziona l' Ufficio ",
+        placeholder: "Seleziona l'Ufficio ",
         allowClear: true,
         language: "it",
         width: '150'
