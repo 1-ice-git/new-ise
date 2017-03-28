@@ -51,7 +51,7 @@ namespace NewISE.Models.dtObj
                 {                    
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 
-                    ac.idutenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
+                    ac.idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
                     ac.idRuoloUtente = ua.IDRUOLOUTENTE;
                     ac.matricola = ua.UTENTE;
                     ac.ruoloAccesso = new RuoloAccesoModel()

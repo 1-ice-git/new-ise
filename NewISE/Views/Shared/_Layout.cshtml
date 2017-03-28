@@ -22,14 +22,11 @@
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
 
-    
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
     <script src="~/Content/jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47/assets/js/jquery-ui-1.10.0.custom.min.js"></script>
     <link href="~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" rel="stylesheet" />
     <script src="~/Scripts/datepicker-it.js"></script>
-
-    
 
     <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
@@ -84,7 +81,6 @@
 
     <script src="~/Content/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js"></script>
 
-
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
     <link href="~/Content/css/OverrideBootstrap.css" rel="stylesheet" />
@@ -138,60 +134,58 @@
         $(document).tooltip();
         $("input[type=submit]").button();
         $("input[type=button]").button();
-
     </script>
 </head>
 <body>
-    
+
     <div>
 
-    
-    <div id="intestazioneLayout" class="row">
-        <div class="col-xs-6">
-            <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
+        <div id="intestazioneLayout" class="row">
+            <div class="col-xs-6">
+                <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
+            </div>
+            <div class="col-lg-6 text-right">
+                <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
+            </div>
         </div>
-        <div class="col-lg-6 text-right">
-            <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
+        <div id="RealeSimulazione" class="row">
+            <div class="col-xs-3">
+                @if (reale)
+            {
+                    <span>Reale</span>
+                }
+                else
+                {
+                    <span>Simulazione</span>
+                }
+            </div>
+            <div class="col-xs-9 text-right">
+                @if (reale)
+            {
+                    <span>Il sistema è in modalità reale</span>
+                }
+                else
+                {
+                    <span>Il sistema è in modalità simulazione</span>
+                }
+            </div>
+        </div>
+        <div id="menuIse" class="row">
+            <div class="col-xs-4">
+                @if (nominativo == string.Empty)
+            {
+                    <span>Utente: </span><span>Anonimo</span>
+                }
+                else
+                {
+                    <span>Utente: </span><span>@nominativo</span>
+                }
+            </div>
+            <div class="col-xs-8 text-right ">
+                <a class="btn_link">Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a class="btn_link">Elaborazioni</a> | <a class="btn_link">Statistiche</a> | <a class="btn_link">Calendario</a> | <a class="btn_link">Notifiche</a> | <a class="btn_link">Utenze</a>
+            </div>
         </div>
     </div>
-    <div id="RealeSimulazione" class="row">
-        <div class="col-xs-3">
-            @if (reale)
-            {
-                <span>Reale</span>
-            }
-            else
-            {
-                <span>Simulazione</span>
-            }
-        </div>
-        <div class="col-xs-9 text-right">
-            @if (reale)
-            {
-                <span>Il sistema è in modalità reale</span>
-            }
-            else
-            {
-                <span>Il sistema è in modalità simulazione</span>
-            }
-        </div>
-    </div>
-    <div id="menuIse" class="row">
-        <div class="col-xs-4">
-            @if (nominativo == string.Empty)
-            {
-                <span>Utente: </span><span>Anonimo</span>
-            }
-            else
-            {
-                <span>Utente: </span><span>@nominativo</span>
-            }
-        </div>
-        <div class="col-xs-8 text-right ">
-            <a class="btn_link">Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a class="btn_link">Elaborazioni</a> | <a class="btn_link">Statistiche</a> | <a class="btn_link">Calendario</a> | <a class="btn_link">Notifiche</a> | <a class="btn_link">Utenze</a>
-        </div>
-    </div>
-     </div>   
     <div class="container">
         @RenderBody()
     </div>
@@ -210,6 +204,8 @@
 
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
+       
+
         function PosizioneFooter() {
             var f = $("footer");
 

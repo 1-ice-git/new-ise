@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Models.dtObj.objB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -329,6 +330,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         
                     }
                     db.SaveChanges();
+
+                    using (objLogAttivita log=new objLogAttivita())
+                    {
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "INDENNITABASE", ibNew.IDINDENNITABASE);
+                    }
+                    
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -427,6 +434,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         }
 
                         db.SaveChanges();
+
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "INDENNITABASE", idIndbase);
+                        }
+
 
                         db.Database.CurrentTransaction.Commit();
                     }
