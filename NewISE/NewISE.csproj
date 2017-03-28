@@ -1506,7 +1506,6 @@
     <Compile Include="CONTABILITA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="DATIMAB.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1645,6 +1644,8 @@
     <Compile Include="Models\Config\s_admin\utente_sAdmin.cs" />
     <Compile Include="Models\dtObj\dtDipendentiRest.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
     <Compile Include="Models\ModelRest\CDCModelRest.cs" />
@@ -1654,6 +1655,7 @@
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\Utility.cs" />
+    <Compile Include="Models\TrasferimentoModel.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

@@ -3,75 +3,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel;
 
 namespace NewISE.Models
 {
     public class TrasferimentoModel
     {
-        [Key]
-
-        [Required(ErrorMessage = "ID Trasferimento richiesto")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Descrizione")]
+        [Key]        
         public long idTrasferimento { get; set; }
 
-        [Required(ErrorMessage = "ID TipoTrasferimento richiesto")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Descrizione")]
+        [Required(ErrorMessage = "Tipo trasferimento richiesto")]        
         public long idTipoTrasferimento { get; set; }
 
-        [Required(ErrorMessage = "ID Ufficio richiesto")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Descrizione")]
+        [Required(ErrorMessage = "Ufficio richiesto")]
         public long idUfficio { get; set; }
 
-        [Required(ErrorMessage = "ID StatoTrasferimento richiesto")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Descrizione")]
+        [Required(ErrorMessage = "Stato trasferimento richiesto")]
         public long idStatoTrasferimento { get; set; }
 
-        [Required(ErrorMessage = "ID Ruolo")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Descrizione")]
+        [Required(ErrorMessage = "Ruolo richiesto.")]
         public long idRuolo { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data di partenza")]
+        [Required(ErrorMessage = "la data di partenza è richiesta.")]
         public DateTime dataPartenza { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data di rientro")]
-        public DateTime dataRientro { get; set; }
+        public DateTime? dataRientro { get; set; }
 
-        [Required]
-        [StringLength(10)]
+        
+        [StringLength(10, ErrorMessage = "per ilo COAN sono richiesti un massimo di 10 caratteri.")]
         [Display(Name = "COAN")]
+        [DataType(DataType.Text)]
         public string coan { get; set; }
 
-        [Required]
-        [StringLength(10)]
+        
+        [StringLength(100, ErrorMessage = "per il protocollo lettera sono richiesti un massimo di 100 caratteri.")]
         [Display(Name = "Protocollo Lettera")]
+        [DataType(DataType.Text)]
         public string protocolloLettera { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Lettera")]
-        public DateTime dataLettera { get; set; }
+        public DateTime? dataLettera { get; set; }
 
-        [Required]
-        public int annullato { get; set; }
-        public string Trasferimento
-        {
-            get
-            {
-                return dataPartenza + ", " + dataRientro + ", " + protocolloLettera;
-            }
-        }
+        [Required(ErrorMessage ="Il flag annullato è richiesto.")]
+        [DefaultValue(false)]
+        public bool annullato { get; set; }
+       
 
-        public virtual LogAttivitaModel LOGATTIVITA { get; set; }
+        
 
     }
 }
