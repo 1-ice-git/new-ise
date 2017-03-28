@@ -16,7 +16,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Collections;
 using System.Collections.Generic;
-
+using NewISE.Models.dtObj.objB;
 
 namespace NewISE.Controllers
 {
@@ -112,7 +112,10 @@ namespace NewISE.Controllers
                                                     IsPersistent = account.ricordati
                                                 }, identity);
 
-                                                
+                                                using (objAccesso accesso = new objAccesso())
+                                                {
+                                                    accesso.Accesso(uam.idUtenteAutorizzato);
+                                                }
 
                                                 //"/Home/Home"
                                                 return Redirect(GetRedirectUrl(returnUrl));
@@ -183,6 +186,12 @@ namespace NewISE.Controllers
                                     {
                                         IsPersistent = account.ricordati
                                     }, identity);
+
+                                    using (objAccesso accesso = new objAccesso())
+                                    {
+                                        accesso.Accesso(uam.idUtenteAutorizzato);
+                                    }
+
                                     //"/Home/Home"
                                     return Redirect(GetRedirectUrl(returnUrl));
                                 }

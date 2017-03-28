@@ -1637,14 +1637,17 @@
     <Compile Include="MF_IPS.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessoModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AttivitaCRUDModel.cs" />
     <Compile Include="Models\Config\Config.cs" />
     <Compile Include="Models\Config\s_admin\sAdmin.cs" />
     <Compile Include="Models\Config\s_admin\utente_sAdmin.cs" />
+    <Compile Include="Models\dtObj\dtAccesso.cs" />
     <Compile Include="Models\dtObj\dtDipendentiRest.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
