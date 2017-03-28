@@ -14,7 +14,7 @@ namespace NewISE.Models
         public decimal idLog { get; set; }
 
         [Required(ErrorMessage = "Id Utente Loggato richiesto")]
-        public decimal idUtenteLoggato { get; set; }
+        public decimal idUtenteLoggato { get; set; }        
         
         public decimal? idTrasferimento { get; set; } = null;
 
@@ -27,29 +27,18 @@ namespace NewISE.Models
         public DateTime dataOperazione { get; set; }
 
         [Required(ErrorMessage = "Descrizione Attività Svolta")]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Attività svolta")]
         public string descAttivitaSvolta { get; set; }
 
-        [Required(ErrorMessage = "Tabella coinvolta")]
+        
         [StringLength(60, ErrorMessage = "Il campo accetta un massimo di 60 caratteri.")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = true, Description = "Tabella coinvolta", Name = "Tabella coinvolta")]
         public string tabellaCoinvolta { get; set; } = null;
 
         public decimal? idTabellaCoinvolta { get; set; } = null;
-
-        [Required(ErrorMessage = "idTabellaCoinvolta")]
-
-       // public AttivitaCRUDModel attivitaCrudM { get; set; }
-
-        //public virtual TrasferimentoModel TRASFERIMENTO { get; set; }
-
-        public string LogAttivitaIse
-        {
-            get
-            {
-                return idLog + ", " + descAttivitaSvolta;
-            }
-        }
+       
 
     }
 }
