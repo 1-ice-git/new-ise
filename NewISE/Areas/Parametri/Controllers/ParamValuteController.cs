@@ -1,8 +1,8 @@
 ﻿using NewISE.Areas.Parametri.Models;
+using NewISE.Areas.Parametri.Models.dtObj;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
@@ -13,7 +13,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult ParametriValute()
+        public ActionResult Valute()
         {
             List<ValuteModel> libm = new List<ValuteModel>();
 
@@ -30,4 +30,8 @@ namespace NewISE.Areas.Parametri.Controllers
             return PartialView(libm);
         }
     }
+
+
+
+
 }

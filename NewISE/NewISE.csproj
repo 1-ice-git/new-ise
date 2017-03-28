@@ -1323,7 +1323,7 @@
       <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Parametri\Views\ParamRiduzioni\Riduzioni.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamValute\ParametriValute.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValute\Valute.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\PrimoSegretario.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamIndRichiamo\IndennitaRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamIndSistemaz\IndennitaSistemazione.cshtml" />
