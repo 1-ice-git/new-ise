@@ -1311,7 +1311,6 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\FontAwesome.otf" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
-    <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CreaNuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\PercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\NuovaPercentualeDisagio.cshtml" />
@@ -1335,6 +1334,7 @@
     <Content Include="Areas\Parametri\Views\ParamFasciaKm\FasciaKm.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\MaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\NuovaMaggiorazioneAnnuale.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\web.config" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
@@ -1420,6 +1420,9 @@
     <Compile Include="ANTICIPI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\LivelliDipendentiModel.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1835,6 +1838,8 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Dipendenti\Controllers\" />
+    <Folder Include="Areas\Dipendenti\Views\Shared\" />
     <Folder Include="Areas\Parametri\Views\Shared\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>

@@ -4004,7 +4004,7 @@
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="Self.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
