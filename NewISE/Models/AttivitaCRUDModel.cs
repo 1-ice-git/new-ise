@@ -8,8 +8,6 @@ namespace NewISE.Models
     public class AttivitaCRUDModel
     {
         [Key]
-
-        [Required(ErrorMessage = "Id Log richiesto")]
         public long idAttivitaCrud { get; set; }
 
         [Required(ErrorMessage = "Descrizione richiesta.")]

@@ -191,7 +191,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
                     }
-
+                    ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaBase", ibm);
                 }
             }

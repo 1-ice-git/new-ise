@@ -903,6 +903,8 @@
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\LogOut.png" />
     <Content Include="Immagini\logo_ITA_rgb %281%29.jpg" />
+    <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\datepicker-it.js" />
@@ -1504,6 +1506,7 @@
     <Compile Include="CONTABILITA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="DATIMAB.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1636,11 +1639,13 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\AttivitaCRUDModel.cs" />
     <Compile Include="Models\Config\Config.cs" />
     <Compile Include="Models\Config\s_admin\sAdmin.cs" />
     <Compile Include="Models\Config\s_admin\utente_sAdmin.cs" />
     <Compile Include="Models\dtObj\dtDipendentiRest.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
     <Compile Include="Models\ModelRest\CDCModelRest.cs" />
     <Compile Include="Models\ModelRest\DipendenteRest.cs" />
@@ -1826,6 +1831,7 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Parametri\Views\Shared\" />
+    <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
