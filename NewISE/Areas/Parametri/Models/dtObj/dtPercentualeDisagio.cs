@@ -63,7 +63,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                //idUfficio = e.IDUFFICIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -98,9 +98,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                //idUfficio = e.IDUFFICIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 DescrizioneUfficio = new UfficiModel()
@@ -133,9 +133,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                //idUfficio = e.IDUFFICIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 DescrizioneUfficio = new UfficiModel()
@@ -151,6 +151,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ibm"></param>
+        public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
+        {
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDPERCENTUALEDISAGIO == ibm.idPercentualeDisagio).Count() > 0 ? true : false;
             }
         }
 

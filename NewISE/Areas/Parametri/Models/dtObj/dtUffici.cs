@@ -37,7 +37,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public UfficiModel GetUffici(decimal idUfficio)
         {
             UfficiModel lm = new UfficiModel();

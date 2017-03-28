@@ -46,7 +46,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayNameFor(model => model.DescrizioneUfficio.DescUfficio)
+                    @Html.DisplayFor(model => item.DescrizioneUfficio.DescUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -61,19 +61,18 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @*@using (dtIndennitaBase dtib = new dtIndennitaBase())
+                    @using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaIndbase(@item.idPercentualeDisagio );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
-                    }*@
-
-                        aaaaa
+                    }
+                  
                 </td>
             </tr>
         }

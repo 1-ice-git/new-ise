@@ -126,14 +126,13 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaPercentualeDisagio(decimal idUfficio, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-            //IndennitaBaseModel ibm = new IndennitaBaseModel();
 
             try
             {
                 using (dtUffici dtl = new dtUffici())
                 {
                     var lm = dtl.GetUffici(idUfficio);
-                    ViewBag.Livello = lm;
+                    ViewBag.Descrizione = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
@@ -142,6 +141,63 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 return PartialView("ErrorPartial");
             }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult InserisciPercentualeDisagio(PercentualeDisagioModel ibm, bool escludiAnnullati = true)
+        {
+            var r = new List<SelectListItem>();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                    {
+                        //dtib.SetIndennitaDiBase(ibm);
+                    }
+
+                    return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
+                }
+                else
+                {
+                    using (dtUffici dtl = new dtUffici())
+                    {
+                        var lm = dtl.GetUffici(ibm.idUfficio);
+                        ViewBag.Descrizione = lm;
+                    }
+                    ViewBag.escludiAnnullati = escludiAnnullati;
+                    return PartialView("NuovaPercentualeDisagio", ibm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult EliminaPercentualeDisagio(bool escludiAnnullati, decimal idUfficio, decimal idPercDisagio)
+        {
+
+            try
+            {
+                using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                {
+                   // dtib.DelIndennitaDiBase(idPercDisagio);
+                }
+
+                return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
+
+
         }
 
     }
