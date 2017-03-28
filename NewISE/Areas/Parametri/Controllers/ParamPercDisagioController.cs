@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
                     {
-                        //dtib.SetIndennitaDiBase(ibm);
+                        dtib.SetPercentualeDisagio(ibm);
                     }
 
                     return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
@@ -186,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
                 {
-                   // dtib.DelIndennitaDiBase(idPercDisagio);
+                   dtib.DelPercentualeDisagio(idPercDisagio);
                 }
 
                 return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
