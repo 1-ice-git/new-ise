@@ -93,7 +93,7 @@ namespace NewISE.Controllers
 
                                                 Claim[] identityClaims = new Claim[]
                                                 {
-                                                new Claim(ClaimTypes.NameIdentifier, uam.idutenteAutorizzato.ToString()),
+                                                new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
                                                 new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
                                                 new Claim(ClaimTypes.GivenName, utsa.username),
                                                 new Claim(ClaimTypes.Name, utsa.nome),
@@ -111,6 +111,9 @@ namespace NewISE.Controllers
                                                 {
                                                     IsPersistent = account.ricordati
                                                 }, identity);
+
+                                                
+
                                                 //"/Home/Home"
                                                 return Redirect(GetRedirectUrl(returnUrl));
                                             }
@@ -162,7 +165,7 @@ namespace NewISE.Controllers
 
                                     Claim[] identityClaims = new Claim[]
                                     {
-                                        new Claim(ClaimTypes.NameIdentifier, uam.idutenteAutorizzato.ToString()),
+                                        new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
                                         new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
                                         new Claim(ClaimTypes.GivenName, retDip.items.matricola),
                                         new Claim(ClaimTypes.Name, retDip.items.nome),
