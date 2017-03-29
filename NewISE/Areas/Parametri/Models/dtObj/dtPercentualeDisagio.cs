@@ -178,7 +178,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ibNew = new PERCENTUALEDISAGIO()
                             {
                                 IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                                IDUFFICIO = ibm.idUfficio,
+                                //IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
@@ -191,7 +191,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ibNew = new PERCENTUALEDISAGIO()
                             {
                                 IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                                IDUFFICIO = ibm.idUfficio,
+                                //IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
@@ -205,7 +205,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         ibNew = new PERCENTUALEDISAGIO()
                         {
                             IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                            IDUFFICIO = ibm.idUfficio,
+                            //IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALE = ibm.percentuale,
@@ -235,7 +235,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        //IDUFFICIO = item.IDUFFICIO,
+                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = ibm.percentuale,
@@ -250,7 +251,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        //IDUFFICIO = item.IDUFFICIO,
+                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = ibm.percentuale,
@@ -259,7 +261,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        //IDUFFICIO = item.IDUFFICIO,
+                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -282,7 +285,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        //IDUFFICIO = item.IDUFFICIO,
+                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -302,7 +306,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        //IDUFFICIO = item.IDUFFICIO,
+                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
