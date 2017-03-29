@@ -28,7 +28,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                //idUfficio = e.IDUFFICIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -48,7 +48,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -84,7 +83,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -119,7 +117,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -172,186 +169,185 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-            //    try
-            //    {
-            //        if (ibm.dataFineValidita.HasValue)
-            //        {
-            //            if (EsistonoMovimentiSuccessiviUguale(ibm))
-            //            {
-            //                ibNew = new PERCENTUALEDISAGIO()
-            //                {
-            //                    IDLIVELLO = ibm.idLivello,
-            //                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-            //                    DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-            //                    VALORE = ibm.valore,
-            //                    VALORERESP = ibm.valoreResponsabile,
-            //                    ANNULLATO = ibm.annullato
-            //                };
-            //            }
-            //            else
-            //            {
-            //                ibNew = new PERCENTUALEDISAGIO()
-            //                {
-            //                    IDLIVELLO = ibm.idLivello,
-            //                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-            //                    DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-            //                    VALORE = ibm.valore,
-            //                    VALORERESP = ibm.valoreResponsabile,
-            //                    ANNULLATO = ibm.annullato
-            //                };
-            //            }
-            //        }
-            //        else
-            //        {
-            //            ibNew = new INDENNITABASE()
-            //            {
-            //                IDLIVELLO = ibm.idLivello,
-            //                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-            //                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-            //                VALORE = ibm.valore,
-            //                VALORERESP = ibm.valoreResponsabile,
-            //                ANNULLATO = ibm.annullato
-            //            };
-            //        }
+                try
+                {
+                    if (ibm.dataFineValidita.HasValue)
+                    {
+                        if (EsistonoMovimentiSuccessiviUguale(ibm))
+                        {
+                            ibNew = new PERCENTUALEDISAGIO()
+                            {
+                                IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
+                                IDUFFICIO = ibm.idUfficio,
+                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                PERCENTUALE = ibm.percentuale,
+                                ANNULLATO = ibm.annullato
+                                
+                            };
+                        }
+                        else
+                        {
+                            ibNew = new PERCENTUALEDISAGIO()
+                            {
+                                IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
+                                IDUFFICIO = ibm.idUfficio,
+                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                PERCENTUALE = ibm.percentuale,
+                                ANNULLATO = ibm.annullato
+                                
+                            };
+                        }
+                    }
+                    else
+                    {
+                        ibNew = new PERCENTUALEDISAGIO()
+                        {
+                            IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
+                            IDUFFICIO = ibm.idUfficio,
+                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            PERCENTUALE = ibm.percentuale,
+                            ANNULLATO = ibm.annullato
+                            
+                        };
+                    }
 
-            //        db.Database.BeginTransaction();
+                    db.Database.BeginTransaction();
 
-            //        var recordInteressati = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibNew.IDLIVELLO)
-            //                                                .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
-            //                                                .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-            //                                                .ToList();
+                    var recordInteressati = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
+                                                            .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
+                                                            .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                                            .ToList();
 
-            //        recordInteressati.ForEach(a => a.ANNULLATO = true);
-            //        //db.SaveChanges();
+                    recordInteressati.ForEach(a => a.ANNULLATO = true);
+                    //db.SaveChanges();
 
-            //        if (recordInteressati.Count > 0)
-            //        {
-            //            foreach (var item in recordInteressati)
-            //            {
+                    if (recordInteressati.Count > 0)
+                    {
+                        foreach (var item in recordInteressati)
+                        {
 
-            //                if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
-            //                {
-            //                    if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        var ibOld1 = new INDENNITABASE()
-            //                        {
-            //                            IDLIVELLO = item.IDLIVELLO,
-            //                            DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-            //                            DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-            //                            VALORE = item.VALORE,
-            //                            VALORERESP = item.VALORERESP,
-            //                            ANNULLATO = false
-            //                        };
+                            if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
+                            {
+                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                {
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALE = ibm.percentuale,
+                                        ANNULLATO = ibm.annullato
+                                        
+                                    };
 
-            //                        libNew.Add(ibOld1);
+                                    libNew.Add(ibOld1);
 
-            //                    }
-            //                    else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        var ibOld1 = new INDENNITABASE()
-            //                        {
-            //                            IDLIVELLO = item.IDLIVELLO,
-            //                            DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-            //                            DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-            //                            VALORE = item.VALORE,
-            //                            VALORERESP = item.VALORERESP,
-            //                            ANNULLATO = false
-            //                        };
+                                }
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                {
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALE = ibm.percentuale,
+                                        ANNULLATO = false
+                                    };
 
-            //                        var ibOld2 = new INDENNITABASE()
-            //                        {
-            //                            IDLIVELLO = item.IDLIVELLO,
-            //                            DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
-            //                            DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-            //                            VALORE = item.VALORE,
-            //                            VALORERESP = item.VALORERESP,
-            //                            ANNULLATO = false
-            //                        };
+                                    var ibOld2 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        ANNULLATO = false
+                                    };
 
-            //                        libNew.Add(ibOld1);
-            //                        libNew.Add(ibOld2);
+                                    libNew.Add(ibOld1);
+                                    libNew.Add(ibOld2);
 
-            //                    }
+                                }
 
-            //                }
-            //                else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
-            //                {
-            //                    if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        //Non preleva il record old
-            //                    }
-            //                    else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        var ibOld1 = new INDENNITABASE()
-            //                        {
-            //                            IDLIVELLO = item.IDLIVELLO,
-            //                            DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-            //                            DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-            //                            VALORE = item.VALORE,
-            //                            VALORERESP = item.VALORERESP,
-            //                            ANNULLATO = false
-            //                        };
+                            }
+                            else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
+                            {
+                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                {
+                                    //Non preleva il record old
+                                }
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                {
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        ANNULLATO = false
+                                    };
 
-            //                        libNew.Add(ibOld1);
-            //                    }
-            //                }
-            //                else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
-            //                {
-            //                    if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        //Non preleva il record old
-            //                    }
-            //                    else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-            //                    {
-            //                        var ibOld1 = new INDENNITABASE()
-            //                        {
-            //                            IDLIVELLO = item.IDLIVELLO,
-            //                            DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-            //                            DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-            //                            VALORE = item.VALORE,
-            //                            VALORERESP = item.VALORERESP,
-            //                            ANNULLATO = false
-            //                        };
+                                    libNew.Add(ibOld1);
+                                }
+                            }
+                            else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
+                            {
+                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                {
+                                    //Non preleva il record old
+                                }
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                {
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
+                                    {
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        ANNULLATO = false
+                                    };
 
-            //                        libNew.Add(ibOld1);
-            //                    }
-            //                }
-            //            }
+                                    libNew.Add(ibOld1);
+                                }
+                            }
+                        }
 
-            //            libNew.Add(ibNew);
-            //            libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                        libNew.Add(ibNew);
+                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-            //            db.PERCENTUALEDISAGIO.AddRange(libNew);
-            //        }
-            //        else
-            //        {
-            //            db.PERCENTUALEDISAGIO.Add(ibNew);
+                        db.PERCENTUALEDISAGIO.AddRange(libNew);
+                    }
+                    else
+                    {
+                        db.PERCENTUALEDISAGIO.Add(ibNew);
 
-            //        }
-            //        db.SaveChanges();
+                    }
+                    db.SaveChanges();
 
-            //        using (objLogAttivita log = new objLogAttivita())
-            //        {
-            //            log.Log(enumAttivita.Inserimento, "Inserimento parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
-            //        }
+                    using (objLogAttivita log = new objLogAttivita())
+                    {
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
+                    }
 
-            //        db.Database.CurrentTransaction.Commit();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        db.Database.CurrentTransaction.Rollback();
-            //        throw ex;
-            //    }
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
             }
         }
         public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDPERCENTUALEDISAGIO == ibm.idPercentualeDisagio).Count() > 0 ? true : false;
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                
             }
         }
-
         public bool EsistonoMovimentiSuccessivi(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -395,53 +391,52 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                //try
-                //{
-                //    db.Database.BeginTransaction();
+                try
+                {
+                    db.Database.BeginTransaction();
 
-                //    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDPERCENTUALEDISAGIO == idIndbase);
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDPERCENTUALEDISAGIO == idPercDisagio);
 
-                //    if (lib.Count() > 0)
-                //    {
-                //        delIB = lib.First();
-                //        delIB.ANNULLATO = true;
+                    if (lib.Count() > 0)
+                    {
+                        delIB = lib.First();
+                        delIB.ANNULLATO = true;
 
-                //        var lprecIB = db.PERCENTUALEDISAGIO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEDISAGIO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
-                //        if (lprecIB.Count > 0)
-                //        {
-                //            precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
-                //            precedenteIB.ANNULLATO = true;
+                        if (lprecIB.Count > 0)
+                        {
+                            precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
+                            precedenteIB.ANNULLATO = true;
 
-                //            var ibOld1 = new INDENNITABASE()
-                //            {
-                //                IDLIVELLO = precedenteIB.IDLIVELLO,
-                //                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
-                //                DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                //                VALORE = precedenteIB.VALORE,
-                //                VALORERESP = precedenteIB.VALORERESP,
-                //                ANNULLATO = false
-                //            };
+                            var ibOld1 = new PERCENTUALEDISAGIO()
+                            {
+                                IDUFFICIO = precedenteIB.IDUFFICIO,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
+                                PERCENTUALE = delIB.PERCENTUALE,
+                                ANNULLATO = false
+                            };
 
-                //            db.INDENNITABASE.Add(ibOld1);
-                //        }
+                            db.PERCENTUALEDISAGIO.Add(ibOld1);
+                        }
 
-                //        db.SaveChanges();
+                        db.SaveChanges();
 
-                //        using (objLogAttivita log = new objLogAttivita())
-                //        {
-                //            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEDISAGIO", idIndbase);
-                //        }
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", idPercDisagio);
+                        }
 
 
-                //        db.Database.CurrentTransaction.Commit();
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    db.Database.CurrentTransaction.Rollback();
-                //    throw ex;
-                //}
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
 
             }
 

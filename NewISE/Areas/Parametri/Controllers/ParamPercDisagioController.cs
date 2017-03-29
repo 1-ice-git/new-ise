@@ -181,7 +181,6 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaPercentualeDisagio(bool escludiAnnullati, decimal idUfficio, decimal idPercDisagio)
         {
-
             try
             {
                 using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
