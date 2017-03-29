@@ -1421,7 +1421,11 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
+    <Compile Include="Areas\Dipendenti\Models\CDCDipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\CDCModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtCDC.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
     <Compile Include="Areas\Dipendenti\Models\LivelliDipendentiModel.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />

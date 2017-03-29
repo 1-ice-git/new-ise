@@ -3652,7 +3652,7 @@
           <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="CDC" />
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="DIPENDENTI" />

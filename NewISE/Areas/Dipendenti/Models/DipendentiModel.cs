@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Areas.Dipendenti.Models.DtObj;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace NewISE.Areas.Dipendenti.Models
         [Required(ErrorMessage = "La matricola è richiesta.")]
         [Display(Name = "Matricola")]
         [Range(1, 999999, ErrorMessage = "Sono consentiti valori da 1 a 999999")]
+        [CustomValidation(typeof(dtDipendenti), "MatricolaUnivoca", ErrorMessage = "La matricola inserita è già presente, inserirne un altra.")]
         public int matricola { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [DataType(DataType.Text)]
@@ -52,6 +54,7 @@ namespace NewISE.Areas.Dipendenti.Models
         [EmailAddress(ErrorMessage = "L'e-mail non è valida.")]
         [StringLength(50, ErrorMessage = "Il campo e-mail accetta un massimo di 50 caratteri.")]
         [Display(Name = "E-mail")]
+        [CustomValidation(typeof(dtDipendenti), "EmailUnivoca", ErrorMessage = "L'E-mail inserita è già presente, inserirne un altra.")]
         public string email { get; set; }
         [DataType(DataType.Text)]
         [StringLength(30, ErrorMessage = "Il campo telefono accetta un massimo di 30 caratteri.")]
@@ -75,6 +78,8 @@ namespace NewISE.Areas.Dipendenti.Models
         }
 
         public IList<LivelliDipendentiModel> LivelloDipendenti { get; set; }
+
+        public IList<CDCDipendentiModel> CdcDipendenti { get; set; }
 
     }
 }
