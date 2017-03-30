@@ -14,6 +14,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
+
         public IList<PercentualeDisagioModel> getListPercentualeDisagio()
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -27,6 +28,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeDisagioModel()
                             {
+                                
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
                                 idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
@@ -48,6 +50,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
+
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -56,7 +59,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                  
                     var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
                     libm = (from e in lib
@@ -83,6 +85,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
+
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -117,6 +120,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
+
         public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
         {
             List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
@@ -156,7 +160,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        /// 
         public void SetPercentualeDisagio(PercentualeDisagioModel ibm)
         {
             List<PERCENTUALEDISAGIO> libNew = new List<PERCENTUALEDISAGIO>();
@@ -177,26 +180,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new PERCENTUALEDISAGIO()
                             {
-                                IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                                //IDUFFICIO = ibm.idUfficio,
+                                
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
-                                
                             };
                         }
                         else
                         {
                             ibNew = new PERCENTUALEDISAGIO()
                             {
-                                IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                                //IDUFFICIO = ibm.idUfficio,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
-                                
                             };
                         }
                     }
@@ -204,13 +204,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new PERCENTUALEDISAGIO()
                         {
-                            IDPERCENTUALEDISAGIO = ibm.idPercentualeDisagio,
-                            //IDUFFICIO = ibm.idUfficio,
+                            IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
-                            
                         };
                     }
 
@@ -235,13 +233,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        //IDUFFICIO = item.IDUFFICIO,
-                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALE = ibm.percentuale,
-                                        ANNULLATO = ibm.annullato
-                                        
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        ANNULLATO = false
                                     };
 
                                     libNew.Add(ibOld1);
@@ -251,18 +247,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        //IDUFFICIO = item.IDUFFICIO,
-                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALE = ibm.percentuale,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
                                     var ibOld2 = new PERCENTUALEDISAGIO()
                                     {
-                                        //IDUFFICIO = item.IDUFFICIO,
-                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -285,8 +279,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        //IDUFFICIO = item.IDUFFICIO,
-                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -306,8 +299,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        //IDUFFICIO = item.IDUFFICIO,
-                                        IDPERCENTUALEDISAGIO = item.IDPERCENTUALEDISAGIO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -333,7 +325,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -345,14 +337,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
+
         public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
-                
             }
         }
+
         public bool EsistonoMovimentiSuccessivi(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -367,6 +360,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
+
         public bool EsistonoMovimentiSuccessiviUguale(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -381,6 +375,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
+
         public bool EsistonoMovimentiPrimaUguale(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -388,6 +383,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
+
         public void DelPercentualeDisagio(decimal idPercDisagio)
         {
             PERCENTUALEDISAGIO precedenteIB = new PERCENTUALEDISAGIO();
@@ -417,9 +413,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             var ibOld1 = new PERCENTUALEDISAGIO()
                             {
                                 IDUFFICIO = precedenteIB.IDUFFICIO,
+                                
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                PERCENTUALE = delIB.PERCENTUALE,
+                                PERCENTUALE = precedenteIB.PERCENTUALE,
+                                
                                 ANNULLATO = false
                             };
 
@@ -430,7 +428,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", idPercDisagio);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEDISAGIO", idPercDisagio);
                         }
 
 
@@ -446,6 +444,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+
 
     }
 }
