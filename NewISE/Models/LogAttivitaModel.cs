@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Areas.Dipendenti.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models
@@ -37,6 +38,6 @@ namespace NewISE.Models
 
         public AttivitaCRUDModel attivitaCrud { get; set; }
 
-        public TrasferimentoModel trasferimento { get; set; }
+        public TrasferimntoModel trasferimento { get; set; }
     }
 }

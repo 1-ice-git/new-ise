@@ -24,7 +24,7 @@ namespace NewISE
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDLIVELLO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }

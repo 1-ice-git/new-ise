@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Dipendenti";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row">
+    <div class="col-xs-5">
+        <div id="ContenitoreDipendentiGepe">
+            @Html.Action("DipendentiGepe", "Dipendenti")
+        </div>
+    </div>
+    <div class="col-xs-7">
+        <div id="ContenitoreDatiTrasf">
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        
+    </script>
+}
