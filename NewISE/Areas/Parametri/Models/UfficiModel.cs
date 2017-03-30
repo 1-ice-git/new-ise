@@ -13,6 +13,7 @@ namespace NewISE.Areas.Parametri.Models
         [Required(ErrorMessage = "Il codice ufficio è richiesto.")]
         [StringLength(30, ErrorMessage = "Per il codice ufficio sono ammessi massimo 4 caratteri.")]
         [Display(Name = "CodiceUfficio")]
+        [DataType(DataType.Text)]
         public string codiceUfficio { get; set; }
         [Required(ErrorMessage = "La descrizione ufficio è richiesta.")]
         [StringLength(30, ErrorMessage = "Per la descrizione dell'ufficio sono ammessi massimo 50 caratteri.")]
