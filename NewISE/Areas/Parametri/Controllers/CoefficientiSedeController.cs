@@ -145,7 +145,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCoefficientiSede(PercentualeDisagioModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciCoefficientiSede(CoefficientiSedeModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -153,9 +153,9 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                    using (dtCoefficientiSede dtib = new dtCoefficientiSede())
                     {
-                        dtib.SetPercentualeDisagio(ibm);
+                        dtib.SetCoefficientiSede(ibm);
                     }
 
                     return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
@@ -168,7 +168,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.Descrizione = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    return PartialView("NuovaPercentualeDisagio", ibm);
+                    return PartialView("NuovoCoefficienteSede", ibm);
                 }
             }
             catch (Exception ex)

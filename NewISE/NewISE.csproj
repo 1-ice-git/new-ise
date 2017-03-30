@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -1312,7 +1312,6 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
     <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Parametri\Views\CoefficientiSede\CreaNuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\PercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\NuovaPercentualeDisagio.cshtml" />
     <EntityDeploy Include="EntitiesDBISEPRO.edmx">
@@ -1335,7 +1334,16 @@
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\MaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\NuovaMaggiorazioneAnnuale.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\MaggiorazioniAnnuali.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\Dipendenti\DipendentiGepe.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\Dipendenti\Index.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\web.config" />
+    <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
     <Content Include="Scripts\i18n\az.js" />
@@ -1420,6 +1428,19 @@
     <Compile Include="ANTICIPI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
+    <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
+    <Compile Include="Areas\Dipendenti\Models\CDCDipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\CDCModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtCDC.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtRuoloUfficio.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtStatoTrasferimento.cs" />
+    <Compile Include="Areas\Dipendenti\Models\LivelliDipendentiModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\RuoloUfficioModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\StatoTrasferimentoModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\TrasferimntoModel.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1655,10 +1676,10 @@
     <Compile Include="Models\ModelRest\DipendenteRest.cs" />
     <Compile Include="Models\ModelRest\LivelloModelRest.cs" />
     <Compile Include="Models\ModelRest\RetDipendenteJson.cs" />
+    <Compile Include="Models\ModelRest\RetDipendentiJson.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\Utility.cs" />
-    <Compile Include="Models\TrasferimentoModel.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -1835,7 +1856,8 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Parametri\Views\Shared\" />
+    <Folder Include="Areas\Dipendenti\Content\" />
+    <Folder Include="Areas\Dipendenti\Views\Shared\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
@@ -1869,7 +1891,8 @@
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText></ErrorText>
+      <ErrorText>
+      </ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />

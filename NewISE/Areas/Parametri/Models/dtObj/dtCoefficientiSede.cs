@@ -320,7 +320,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "COEFFICENTISEDE", ibNew.IDCOEFFICENTESEDE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di sede.", "COEFFICENTISEDE", ibNew.IDCOEFFICENTESEDE);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -424,7 +424,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "COEFFICENTISEDE", idCoefficientiSede);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro del coefficiente di sede.", "COEFFICENTISEDE", idCoefficientiSede);
                         }
 
 

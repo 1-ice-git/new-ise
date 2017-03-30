@@ -5,7 +5,7 @@
 }
 
 <p>
-    <a id="btnInsCoeffSede" href="#" onclick="NuovoCoefficienteSede();">Inserisci Coefficiente Sede</a>
+    <a id="btnInsCoeffSede" href="#" onclick="NuovoCoefficienteSede();">Inserisci Coefficienti Sede</a>
 </p>
 
 <p>
@@ -13,7 +13,7 @@
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffSede();", @onClick = "PrelevaPVCoeffSede();" })
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoefficientiSede();", @onClick = "PrelevaPVCoefficientiSede();" })
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                     }
-
+                    
                 </td>
             </tr>
         }
@@ -80,7 +80,7 @@
 </table>
 
 <div id="dialog-confirm" title="Elimina coefficiente di sede?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del coefficiente di sede?</p>
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del coefficente di sede?</p>
 </div>
 
 <script type="text/javascript">
@@ -120,9 +120,9 @@
 
     $("#btnInsCoeffSede").button();
 
-    function PrelevaPVCoeffSede() {
+    function PrelevaPVCoefficientiSede() {
         //debugger;
-        rotta = "/Parametri/ParamPercDisagio/PercentualeDisagioLivello";
+        rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
@@ -172,8 +172,9 @@
 
     function NuovoCoefficienteSede() {
         //debugger;
-
+       
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
+
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = false;
 
@@ -221,10 +222,10 @@
 
     }
 
-    function EliminaCoefficenteSede(id) {
+    function EliminaPercdisagio(id) {
         //debugger;
-        var rotta = "/Parametri/CoefficientiSede/EliminaCoefficenteSede";
-
+        var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
+        
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
@@ -248,7 +249,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idUfficio: idUfficio, idPercDisagio: id },
+                            data: { escludiAnnullati: chk, idUfficio: idUfficio, idCoefficienteSede: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

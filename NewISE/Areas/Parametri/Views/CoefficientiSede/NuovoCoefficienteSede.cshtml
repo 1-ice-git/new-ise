@@ -14,7 +14,7 @@
     decimal idUfficio = lm.idUfficio;
 }
 
-@using (Ajax.BeginForm("InserisciCoefficienteSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciCoefficientiSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -75,7 +75,7 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco dei Coefficienti di Sede </a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco dei Coefficienti di Sede.</a>
     </div>
 </div>
 
@@ -125,7 +125,7 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
+        rotta = "/Parametri//CoefficientiSede/CoefficientiSedeLivello";
         
 
         var idUfficio = parseFloat('@idUfficio');
