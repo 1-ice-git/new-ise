@@ -1312,7 +1312,7 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
     <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Parametri\Views\CoefficientiSede\CreaNuovoCoefficienteSede.cshtml" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\PercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\NuovaPercentualeDisagio.cshtml" />
     <EntityDeploy Include="EntitiesDBISEPRO.edmx">
