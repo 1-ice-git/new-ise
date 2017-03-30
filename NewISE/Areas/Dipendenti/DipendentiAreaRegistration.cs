@@ -19,6 +19,11 @@ namespace NewISE.Areas.Dipendenti
                 "Dipendenti/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
+
+            context.MapRoute(
+                "Dipendenti",
+                "Dipendenti/Dipendenti/Index"
+            );
         }
     }
 }
