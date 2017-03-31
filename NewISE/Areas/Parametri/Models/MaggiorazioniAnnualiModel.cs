@@ -28,8 +28,8 @@ namespace NewISE.Areas.Parametri.Models
         public DateTime? dataFineValidita { get; set; }
 
         [Required(ErrorMessage = "Il campo Annualità è richiesta.")]
-        [Display(Name = "Valore")]
-        [DataType(DataType.Currency)]
+        [Display(Name = "Maggiorazione Annuale")]
+        [DisplayFormat()]
         public decimal annualita { get; set; }
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]

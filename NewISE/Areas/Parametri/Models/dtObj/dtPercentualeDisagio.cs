@@ -414,8 +414,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDUFFICIO = precedenteIB.IDUFFICIO,
                                 
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
+                                //DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = precedenteIB.PERCENTUALE,
                                 
                                 ANNULLATO = false
