@@ -126,16 +126,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaMaggiorazioneAnnuale(decimal idUfficio, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
-            //var r = new SelectList(new[]
-            //{
-            //    new { ID = "0", Name = "NO" },
-            //    new { ID = "1", Name = "SI" },
-                
-            //},
-            //    "ID", "Name", 1);
-
-            
+           
 
             try
             {
@@ -147,7 +138,6 @@ namespace NewISE.Areas.Parametri.Controllers
 
 
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                //ViewData["list"] = r;
                 return PartialView();
 
 

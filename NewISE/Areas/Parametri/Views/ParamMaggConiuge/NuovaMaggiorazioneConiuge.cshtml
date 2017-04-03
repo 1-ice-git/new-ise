@@ -1,4 +1,4 @@
-﻿@model NewISE.Areas.Parametri.Models.MaggiorazioniAnnualiModel
+﻿@model NewISE.Areas.Parametri.Models.MaggiorazioneConiugeModel
 @using NewISE.Areas.Parametri.Models;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -8,13 +8,15 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-    UfficiModel lm = (UfficiModel)ViewBag.Descrizione;
-    string descrizioneUfficio = lm.DescUfficio;
+
+    TipologiaConiugeModel lm = (TipologiaConiugeModel)ViewBag.Coniuge;
+    string percentualeConiuge = lm.tipologiaConiuge;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idUfficio = lm.idUfficio;
+    decimal idTipologiaConiuge = lm.idTipologiaConiuge;
+
 }
 
-@using (Ajax.BeginForm("InserisciMaggiorazioneAnnuale", "ParamMaggAnnuali", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -26,16 +28,16 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idUfficio)
+        @Html.HiddenFor(model => model.idTipologiaConiuge)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
-                <label>Ufficio </label>
+                <label>Livello </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@percentualeConiuge</label>
                 </div>
             </div>
         </div>
@@ -56,18 +58,15 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.annualita, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group ">
+            @Html.LabelFor(model => model.percentualeConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.annualita, new { htmlAttributes = new { @class = "form-control" } })*@
-
-                @Html.DropDownListFor(model => model.annualita, new[] { new SelectListItem { Text = "SI", Value = "1" }, new SelectListItem { Text = "NO", Value = "0" } }, new { @class = "form-control" })
-
-                @*@Html.DropDownListFor(model => model.annualita, new SelectList("r", ViewData["list"] as SelectList) , new { @class = "form-control" })*@
-                @Html.ValidationMessageFor(model => model.annualita, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.percentualeConiuge, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.percentualeConiuge, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -79,19 +78,26 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle maggiorazioni annuali.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle maggiorazioni coniuge.</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#percentuale").autoNumeric('init',
+    $("#percentualeConiuge").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
 	    aSign: ''
 	});
+
+    //$("#valoreResponsabile").autoNumeric('init',
+	//{
+	//    aSep: '.',
+	//    aDec: ',',
+	//    aSign: ''
+	//});
 
     $('form').submit(function () {
         //debugger;
@@ -129,12 +135,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamMaggAnnuali/MaggiorazioneAnnualeLivello";
+        rotta = "/Parametri/ParamMaggConiuge/MaggiorazioneConiugeLivello";
 
-        var idUfficio = parseFloat('@idUfficio');
+        var idTipologiaConiuge = parseFloat('@idTipologiaConiuge');
         var chk = true;
 
-        if (isNaN(idUfficio)) {
+        if (isNaN(idTipologiaConiuge)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -146,7 +152,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idTipologiaConiuge: idTipologiaConiuge, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -175,5 +181,4 @@
 
         });
     }
-
 </script>

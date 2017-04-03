@@ -29,7 +29,7 @@ namespace NewISE.Areas.Parametri.Models
 
         [Required(ErrorMessage = "Il campo Annualità è richiesta.")]
         [Display(Name = "Maggiorazione Annuale")]
-        [DisplayFormat()]
+        [DataType(DataType.Text)]
         public decimal annualita { get; set; }
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]

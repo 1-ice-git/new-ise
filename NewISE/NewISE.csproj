@@ -1339,6 +1339,7 @@
     <Content Include="Areas\Dipendenti\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1476,6 +1477,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercentualeDisagio.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercMaggAbitazione.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtRiduzioni.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaConiuge.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
     <Compile Include="Areas\Parametri\Models\FasciaChilometricaModel.cs" />
