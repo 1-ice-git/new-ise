@@ -12,9 +12,6 @@
         <EntityTypeShape EntityType="DBISE.ATTIVITACRUD" Width="1.5" PointX="9" PointY="46.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.BIGLIETTI" Width="1.5" PointX="8.25" PointY="55.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.BIGLIETTI_DOCUMENTI" Width="1.5" PointX="3" PointY="55.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISE.CDC" Width="1.5" PointX="3" PointY="70" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISE.CDC_DIPENDENTI" Width="1.5" PointX="12" PointY="49.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISE.CDC_TRASF" Width="1.5" PointX="5.25" PointY="64" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.COEFFICENTEFKM" Width="1.5" PointX="9.75" PointY="108.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.COEFFICENTEINDRICHIAMO" Width="1.5" PointX="10.5" PointY="104.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.COEFFICENTISEDE" Width="1.5" PointX="5.25" PointY="71.375" IsExpanded="true" />
@@ -93,7 +90,6 @@
         <EntityTypeShape EntityType="DBISE.TIPOVOCE" Width="1.5" PointX="10.75" PointY="115" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.TRASEFFETTISIST_COEFFIFKM" Width="1.5" PointX="12" PointY="101.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.TRASFERIMENTO" Width="1.5" PointX="3" PointY="59.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISE.TRASFERIMENTO_LIVDIP" Width="1.5" PointX="8.25" PointY="62" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIEN_COEFFIFKM" Width="1.5" PointX="17.25" PointY="98.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIENTRO_DOC" Width="1.5" PointX="6" PointY="50.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.TRASPEFFETTISIST_DOC" Width="1.5" PointX="6" PointY="60.875" IsExpanded="true" />
@@ -116,10 +112,6 @@
         <AssociationConnector Association="DBISE.R_MF_B_1" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_D_B_D" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_TD_B_D" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_CDC_CDCDIP" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_CDC_CDCTRASF" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_DIP_CDCDIP" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_TRASF_CDCTRASF" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_CFKM_FKM_CFKM" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_CFKM_TER_CFKM" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_CFKM_TES_CFKM" ManuallyRouted="false" />
@@ -168,7 +160,6 @@
         <AssociationConnector Association="DBISE.R_IR_IR_CR" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_L_PMAB" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_LIV_LIVDIP" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_LD_T_LD" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_T_LA" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_UL_LA" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_MAB_MAB_AC" ManuallyRouted="false" />
@@ -221,7 +212,6 @@
         <AssociationConnector Association="DBISE.R_TT_T" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_TV_V" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_TES_TES_CFKM" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISE.R_T_T_LD" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_U_T" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_TER_CFKM" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.R_TER_TER_D" ManuallyRouted="false" />
@@ -232,6 +222,7 @@
         <AssociationConnector Association="DBISE.MAGFAM_DOC" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.PASSAPORTI_DOCUMENTI" ManuallyRouted="false" />
         <AssociationConnector Association="DBISE.TRASF_DOC" ManuallyRouted="false" />
+        <AssociationConnector Association="DBISE.R_DIP_TRASF" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

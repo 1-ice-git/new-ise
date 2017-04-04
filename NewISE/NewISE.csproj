@@ -1423,17 +1423,17 @@
     </Compile>
     <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
-    <Compile Include="Areas\Dipendenti\Models\CDCDipendentiModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\CDCModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DipendentiModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtCDC.cs" />
+    <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
+    <Compile Include="Models\DBModel\CDCModel.cs" />
+    <Compile Include="Models\DBModel\CDC_TRASFModel.cs" />
+    <Compile Include="Models\DBModel\DipendentiModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtRuoloUfficio.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtStatoTrasferimento.cs" />
-    <Compile Include="Areas\Dipendenti\Models\LivelliDipendentiModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\RuoloUfficioModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\StatoTrasferimentoModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\TrasferimntoModel.cs" />
+    <Compile Include="Models\DBModel\LivelliDipendentiModel.cs" />
+    <Compile Include="Models\DBModel\RuoloUfficioModel.cs" />
+    <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\TrasferimntoModel.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1450,10 +1450,10 @@
     <Compile Include="Areas\Parametri\Controllers\ParamPrimoIndSegrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamRiduzioniController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValuteController.cs" />
-    <Compile Include="Areas\Parametri\Models\AliquoteContributiveModel.cs" />
-    <Compile Include="Areas\Parametri\Models\CoeffFasciaKmModel.cs" />
-    <Compile Include="Areas\Parametri\Models\CoefficientiSedeModel.cs" />
-    <Compile Include="Areas\Parametri\Models\DefFasciaKmModel.cs" />
+    <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
+    <Compile Include="Models\DBModel\CoeffFasciaKmModel.cs" />
+    <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
+    <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtAliquoteContr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCoeffFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtCoefficientiSede.cs" />
@@ -1471,24 +1471,24 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
-    <Compile Include="Areas\Parametri\Models\FasciaChilometricaModel.cs" />
-    <Compile Include="Areas\Parametri\Models\IndennitaBaseModel.cs" />
-    <Compile Include="Areas\Parametri\Models\IndennitaPrimoSegretModel.cs" />
-    <Compile Include="Areas\Parametri\Models\IndennitaRichiamoModel.cs" />
-    <Compile Include="Areas\Parametri\Models\IndennitaSistemazioneModel.cs" />
-    <Compile Include="Areas\Parametri\Models\LivelloModel.cs" />
-    <Compile Include="Areas\Parametri\Models\MaggiorazioneConiugeModel.cs" />
-    <Compile Include="Areas\Parametri\Models\MaggiorazioneFigliModel.cs" />
-    <Compile Include="Areas\Parametri\Models\MaggiorazioniAnnualiModel.cs" />
-    <Compile Include="Areas\Parametri\Models\PercentualeDisagioModel.cs" />
-    <Compile Include="Areas\Parametri\Models\PercMaggAbitazModel.cs" />
-    <Compile Include="Areas\Parametri\Models\RiduzioniModel.cs" />
-    <Compile Include="Areas\Parametri\Models\TipoAliquoteContributiveModel.cs" />
-    <Compile Include="Areas\Parametri\Models\TipologiaConiugeModel.cs" />
-    <Compile Include="Areas\Parametri\Models\TipologiaFiglioModel.cs" />
-    <Compile Include="Areas\Parametri\Models\TipoTrasferimentoModel.cs" />
-    <Compile Include="Areas\Parametri\Models\UfficiModel.cs" />
-    <Compile Include="Areas\Parametri\Models\ValuteModel.cs" />
+    <Compile Include="Models\DBModel\FasciaChilometricaModel.cs" />
+    <Compile Include="Models\DBModel\IndennitaBaseModel.cs" />
+    <Compile Include="Models\DBModel\IndennitaPrimoSegretModel.cs" />
+    <Compile Include="Models\DBModel\IndennitaRichiamoModel.cs" />
+    <Compile Include="Models\DBModel\IndennitaSistemazioneModel.cs" />
+    <Compile Include="Models\DBModel\LivelloModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioneConiugeModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioneFigliModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioniAnnualiModel.cs" />
+    <Compile Include="Models\DBModel\PercentualeDisagioModel.cs" />
+    <Compile Include="Models\DBModel\PercMaggAbitazModel.cs" />
+    <Compile Include="Models\DBModel\RiduzioniModel.cs" />
+    <Compile Include="Models\DBModel\TipoAliquoteContributiveModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaConiugeModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaFiglioModel.cs" />
+    <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\UfficiModel.cs" />
+    <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="ATTIVITACRUD.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
@@ -1497,15 +1497,6 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CDC.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CDC_DIPENDENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CDC_TRASF.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="COEFFICENTEFKM.cs">
@@ -1793,9 +1784,6 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="TRASFERIMENTO.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TRASFERIMENTO_LIVDIP.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="TRASPEFFETTIRIENTRO_DOC.cs">

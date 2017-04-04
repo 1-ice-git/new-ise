@@ -1,4 +1,5 @@
 ﻿using NewISE.Areas.Dipendenti.Models;
+using NewISE.Models.DBModel;
 using System;
 using System.ComponentModel.DataAnnotations;
 

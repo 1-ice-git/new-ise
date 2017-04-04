@@ -32,9 +32,6 @@ namespace NewISE
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
         public virtual DbSet<BIGLIETTI_DOCUMENTI> BIGLIETTI_DOCUMENTI { get; set; }
-        public virtual DbSet<CDC> CDC { get; set; }
-        public virtual DbSet<CDC_DIPENDENTI> CDC_DIPENDENTI { get; set; }
-        public virtual DbSet<CDC_TRASF> CDC_TRASF { get; set; }
         public virtual DbSet<COEFFICENTEFKM> COEFFICENTEFKM { get; set; }
         public virtual DbSet<COEFFICENTEINDRICHIAMO> COEFFICENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICENTISEDE> COEFFICENTISEDE { get; set; }
@@ -113,7 +110,6 @@ namespace NewISE
         public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
         public virtual DbSet<TRASEFFETTISIST_COEFFIFKM> TRASEFFETTISIST_COEFFIFKM { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
-        public virtual DbSet<TRASFERIMENTO_LIVDIP> TRASFERIMENTO_LIVDIP { get; set; }
         public virtual DbSet<TRASPEFFETTIRIEN_COEFFIFKM> TRASPEFFETTIRIEN_COEFFIFKM { get; set; }
         public virtual DbSet<TRASPEFFETTIRIENTRO_DOC> TRASPEFFETTIRIENTRO_DOC { get; set; }
         public virtual DbSet<TRASPEFFETTISIST_DOC> TRASPEFFETTISIST_DOC { get; set; }
