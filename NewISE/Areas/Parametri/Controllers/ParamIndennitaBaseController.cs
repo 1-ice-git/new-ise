@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

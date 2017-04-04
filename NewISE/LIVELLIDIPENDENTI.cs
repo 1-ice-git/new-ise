@@ -14,12 +14,6 @@ namespace NewISE
     
     public partial class LIVELLIDIPENDENTI
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LIVELLIDIPENDENTI()
-        {
-            this.TRASFERIMENTO_LIVDIP = new HashSet<TRASFERIMENTO_LIVDIP>();
-        }
-    
         public decimal IDLIVELLODIPENDENTE { get; set; }
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDLIVELLO { get; set; }
@@ -29,7 +23,5 @@ namespace NewISE
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO_LIVDIP> TRASFERIMENTO_LIVDIP { get; set; }
     }
 }

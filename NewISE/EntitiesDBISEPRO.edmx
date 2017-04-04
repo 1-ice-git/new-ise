@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBISE.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -81,33 +81,6 @@
           <Property Name="IDBIGLIETTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CDC">
-          <Key>
-            <PropertyRef Name="IDCDC" />
-          </Key>
-          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CODICECDC" Type="char" MaxLength="4" Nullable="false" />
-          <Property Name="DESCRIZIONECDC" Type="varchar2" MaxLength="150" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CDC_DIPENDENTI">
-          <Key>
-            <PropertyRef Name="ID_CDC_DIPENDENTI" />
-          </Key>
-          <Property Name="ID_CDC_DIPENDENTI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CDC_TRASF">
-          <Key>
-            <PropertyRef Name="ID_CDC_TRASF" />
-          </Key>
-          <Property Name="ID_CDC_TRASF" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDCDC" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="COEFFICENTEFKM">
           <Key>
@@ -383,7 +356,7 @@
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVELLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
@@ -932,15 +905,7 @@
           <Property Name="PROTOCOLLOLETTERA" Type="varchar2" MaxLength="100" />
           <Property Name="DATALETTERA" Type="date" />
           <Property Name="ANNULLATO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TRASFERIMENTO_LIVDIP">
-          <Key>
-            <PropertyRef Name="IDTRASFERIMENTO" />
-            <PropertyRef Name="IDLIVELLODIPENDENTE" />
-          </Key>
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <Key>
@@ -1129,34 +1094,6 @@
               <PropertyRef Name="IDTEORICI" />
               <PropertyRef Name="IDINDENNITA" />
               <PropertyRef Name="IDELABCONT" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CDC_CDCDIP">
-          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CDC">
-              <PropertyRef Name="IDCDC" />
-            </Principal>
-            <Dependent Role="CDC_DIPENDENTI">
-              <PropertyRef Name="IDCDC" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CDC_CDCTRASF">
-          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CDC">
-              <PropertyRef Name="IDCDC" />
-            </Principal>
-            <Dependent Role="CDC_TRASF">
-              <PropertyRef Name="IDCDC" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1356,20 +1293,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_DIP_CDCDIP">
-          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="CDC_DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_DIP_LIVDIP">
           <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1380,6 +1303,20 @@
               <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="LIVELLIDIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_TRASF">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
               <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
@@ -1733,20 +1670,6 @@
             </Principal>
             <Dependent Role="PERCENTUALEMAB">
               <PropertyRef Name="IDLIVELLO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_LD_T_LD">
-          <End Role="LIVELLIDIPENDENTI" Type="Self.LIVELLIDIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASFERIMENTO_LIVDIP" Type="Self.TRASFERIMENTO_LIVDIP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LIVELLIDIPENDENTI">
-              <PropertyRef Name="IDLIVELLODIPENDENTE" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO_LIVDIP">
-              <PropertyRef Name="IDLIVELLODIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2388,20 +2311,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_T_LD">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASFERIMENTO_LIVDIP" Type="Self.TRASFERIMENTO_LIVDIP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO_LIVDIP">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TC_AC">
           <End Role="TIPOALIQUOTECONTRIBUTIVE" Type="Self.TIPOALIQUOTECONTRIBUTIVE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2654,20 +2563,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TRASF_CDCTRASF">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="CDC_TRASF">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TRC_RC">
           <End Role="TIPOREGOLACALCOLO" Type="Self.TIPOREGOLACALCOLO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -2914,9 +2809,6 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="CDC" EntityType="Self.CDC" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="CDC_DIPENDENTI" EntityType="Self.CDC_DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="CDC_TRASF" EntityType="Self.CDC_TRASF" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTEFKM" EntityType="Self.COEFFICENTEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="Self.COEFFICENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICENTISEDE" EntityType="Self.COEFFICENTISEDE" Schema="ISEPRO" store:Type="Tables" />
@@ -2999,7 +2891,6 @@
           <EntitySet Name="TRASEFFETTISIST_COEFFIFKM" EntityType="Self.TRASEFFETTISIST_COEFFIFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASF_DOC" EntityType="Self.TRASF_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="TRASFERIMENTO_LIVDIP" EntityType="Self.TRASFERIMENTO_LIVDIP" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASPEFFETTIRIEN_COEFFIFKM" EntityType="Self.TRASPEFFETTIRIEN_COEFFIFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASPEFFETTIRIENTRO_DOC" EntityType="Self.TRASPEFFETTIRIENTRO_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASPEFFETTISIST_DOC" EntityType="Self.TRASPEFFETTISIST_DOC" Schema="ISEPRO" store:Type="Tables" />
@@ -3037,14 +2928,6 @@
           <AssociationSet Name="R_C_AQ" Association="Self.R_C_AQ">
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
-          </AssociationSet>
-          <AssociationSet Name="R_CDC_CDCDIP" Association="Self.R_CDC_CDCDIP">
-            <End Role="CDC" EntitySet="CDC" />
-            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_CDC_CDCTRASF" Association="Self.R_CDC_CDCTRASF">
-            <End Role="CDC" EntitySet="CDC" />
-            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
           </AssociationSet>
           <AssociationSet Name="R_CFKM_FKM_CFKM" Association="Self.R_CFKM_FKM_CFKM">
             <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
@@ -3102,13 +2985,13 @@
             <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
           </AssociationSet>
-          <AssociationSet Name="R_DIP_CDCDIP" Association="Self.R_DIP_CDCDIP">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
-          </AssociationSet>
           <AssociationSet Name="R_DIP_LIVDIP" Association="Self.R_DIP_LIVDIP">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_DIP_TRASF" Association="Self.R_DIP_TRASF">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
           <AssociationSet Name="R_DMAB_DMAB_MABA" Association="Self.R_DMAB_DMAB_MABA">
             <End Role="DATIMAB" EntitySet="DATIMAB" />
@@ -3209,10 +3092,6 @@
           <AssociationSet Name="R_L_PMAB" Association="Self.R_L_PMAB">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_LD_T_LD" Association="Self.R_LD_T_LD">
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-            <End Role="TRASFERIMENTO_LIVDIP" EntitySet="TRASFERIMENTO_LIVDIP" />
           </AssociationSet>
           <AssociationSet Name="R_LIV_LIVDIP" Association="Self.R_LIV_LIVDIP">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
@@ -3390,10 +3269,6 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="TRASF_DOC" EntitySet="TRASF_DOC" />
           </AssociationSet>
-          <AssociationSet Name="R_T_T_LD" Association="Self.R_T_T_LD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="TRASFERIMENTO_LIVDIP" EntitySet="TRASFERIMENTO_LIVDIP" />
-          </AssociationSet>
           <AssociationSet Name="R_TC_AC" Association="Self.R_TC_AC">
             <End Role="TIPOALIQUOTECONTRIBUTIVE" EntitySet="TIPOALIQUOTECONTRIBUTIVE" />
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -3466,10 +3341,6 @@
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
-          <AssociationSet Name="R_TRASF_CDCTRASF" Association="Self.R_TRASF_CDCTRASF">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
-          </AssociationSet>
           <AssociationSet Name="R_TRC_RC" Association="Self.R_TRC_RC">
             <End Role="TIPOREGOLACALCOLO" EntitySet="TIPOREGOLACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
@@ -3539,8 +3410,7 @@
             <End Role="MAGFAM_MAGCON" EntitySet="MAGFAM_MAGCON" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBISE" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3633,39 +3503,6 @@
           <NavigationProperty Name="BIGLIETTI" Relationship="Self.R_B_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="BIGLIETTI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="TIPODOCUMENTI" />
-        </EntityType>
-        <EntityType Name="CDC">
-          <Key>
-            <PropertyRef Name="IDCDC" />
-          </Key>
-          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CODICECDC" Type="String" MaxLength="4" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="DESCRIZIONECDC" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CDC_DIPENDENTI" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC" ToRole="CDC_DIPENDENTI" />
-          <NavigationProperty Name="CDC_TRASF" Relationship="Self.R_CDC_CDCTRASF" FromRole="CDC" ToRole="CDC_TRASF" />
-        </EntityType>
-        <EntityType Name="CDC_DIPENDENTI">
-          <Key>
-            <PropertyRef Name="ID_CDC_DIPENDENTI" />
-          </Key>
-          <Property Name="ID_CDC_DIPENDENTI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="CDC" />
-          <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_CDCDIP" FromRole="CDC_DIPENDENTI" ToRole="DIPENDENTI" />
-        </EntityType>
-        <EntityType Name="CDC_TRASF">
-          <Key>
-            <PropertyRef Name="ID_CDC_TRASF" />
-          </Key>
-          <Property Name="ID_CDC_TRASF" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDCDC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="CDC" Relationship="Self.R_CDC_CDCTRASF" FromRole="CDC_TRASF" ToRole="CDC" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_TRASF_CDCTRASF" FromRole="CDC_TRASF" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="COEFFICENTEFKM">
           <Key>
@@ -3780,9 +3617,9 @@
           <Property Name="TELEFONO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="ABILITATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="CDC_DIPENDENTI" Relationship="Self.R_DIP_CDCDIP" FromRole="DIPENDENTI" ToRole="CDC_DIPENDENTI" />
           <NavigationProperty Name="INDBASE_DIPENDENTI" Relationship="Self.R_D_IB_D" FromRole="DIPENDENTI" ToRole="INDBASE_DIPENDENTI" />
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="DOCUMENTI">
           <Key>
@@ -4008,7 +3845,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="Self.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
-          <NavigationProperty Name="TRASFERIMENTO_LIVDIP" Relationship="Self.R_LD_T_LD" FromRole="LIVELLIDIPENDENTI" ToRole="TRASFERIMENTO_LIVDIP" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
           <Key>
@@ -4651,27 +4487,16 @@
           <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DATALETTERA" Type="DateTime" />
           <Property Name="ANNULLATO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="CDC_TRASF" Relationship="Self.R_TRASF_CDCTRASF" FromRole="TRASFERIMENTO" ToRole="CDC_TRASF" />
           <NavigationProperty Name="INDENNITA" Relationship="Self.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="Self.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="Self.R_R_T" FromRole="TRASFERIMENTO" ToRole="RUOLOUFFICIO" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="Self.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="Self.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
-          <NavigationProperty Name="TRASFERIMENTO_LIVDIP" Relationship="Self.R_T_T_LD" FromRole="TRASFERIMENTO" ToRole="TRASFERIMENTO_LIVDIP" />
           <NavigationProperty Name="UFFICI" Relationship="Self.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="Self.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="TRASFERIMENTO_LIVDIP">
-          <Key>
-            <PropertyRef Name="IDTRASFERIMENTO" />
-            <PropertyRef Name="IDLIVELLODIPENDENTE" />
-          </Key>
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDLIVELLODIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.R_LD_T_LD" FromRole="TRASFERIMENTO_LIVDIP" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_T_LD" FromRole="TRASFERIMENTO_LIVDIP" ToRole="TRASFERIMENTO" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISE.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <Key>
@@ -4956,62 +4781,6 @@
             </Principal>
             <Dependent Role="BIGLIETTI_DOCUMENTI">
               <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CDC_CDCDIP">
-          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CDC">
-              <PropertyRef Name="IDCDC" />
-            </Principal>
-            <Dependent Role="CDC_DIPENDENTI">
-              <PropertyRef Name="IDCDC" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CDC_CDCTRASF">
-          <End Role="CDC" Type="Self.CDC" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CDC">
-              <PropertyRef Name="IDCDC" />
-            </Principal>
-            <Dependent Role="CDC_TRASF">
-              <PropertyRef Name="IDCDC" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_DIP_CDCDIP">
-          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_DIPENDENTI" Type="Self.CDC_DIPENDENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="CDC_DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TRASF_CDCTRASF">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="CDC_TRASF" Type="Self.CDC_TRASF" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="CDC_TRASF">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5700,20 +5469,6 @@
             </Principal>
             <Dependent Role="LIVELLIDIPENDENTI">
               <PropertyRef Name="IDLIVELLO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_LD_T_LD">
-          <End Role="LIVELLIDIPENDENTI" Type="Self.LIVELLIDIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASFERIMENTO_LIVDIP" Type="Self.TRASFERIMENTO_LIVDIP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LIVELLIDIPENDENTI">
-              <PropertyRef Name="IDLIVELLODIPENDENTE" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO_LIVDIP">
-              <PropertyRef Name="IDLIVELLODIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6459,20 +6214,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_T_LD">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASFERIMENTO_LIVDIP" Type="Self.TRASFERIMENTO_LIVDIP" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO_LIVDIP">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_U_T">
           <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6581,9 +6322,6 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" />
-          <EntitySet Name="CDC" EntityType="Self.CDC" />
-          <EntitySet Name="CDC_DIPENDENTI" EntityType="Self.CDC_DIPENDENTI" />
-          <EntitySet Name="CDC_TRASF" EntityType="Self.CDC_TRASF" />
           <EntitySet Name="COEFFICENTEFKM" EntityType="Self.COEFFICENTEFKM" />
           <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="Self.COEFFICENTEINDRICHIAMO" />
           <EntitySet Name="COEFFICENTISEDE" EntityType="Self.COEFFICENTISEDE" />
@@ -6662,7 +6400,6 @@
           <EntitySet Name="TIPOVOCE" EntityType="Self.TIPOVOCE" />
           <EntitySet Name="TRASEFFETTISIST_COEFFIFKM" EntityType="Self.TRASEFFETTISIST_COEFFIFKM" />
           <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" />
-          <EntitySet Name="TRASFERIMENTO_LIVDIP" EntityType="Self.TRASFERIMENTO_LIVDIP" />
           <EntitySet Name="TRASPEFFETTIRIEN_COEFFIFKM" EntityType="Self.TRASPEFFETTIRIEN_COEFFIFKM" />
           <EntitySet Name="TRASPEFFETTIRIENTRO_DOC" EntityType="Self.TRASPEFFETTIRIENTRO_DOC" />
           <EntitySet Name="TRASPEFFETTISIST_DOC" EntityType="Self.TRASPEFFETTISIST_DOC" />
@@ -6720,22 +6457,6 @@
           <AssociationSet Name="R_TD_B_D" Association="Self.R_TD_B_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_CDC_CDCDIP" Association="Self.R_CDC_CDCDIP">
-            <End Role="CDC" EntitySet="CDC" />
-            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_CDC_CDCTRASF" Association="Self.R_CDC_CDCTRASF">
-            <End Role="CDC" EntitySet="CDC" />
-            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
-          </AssociationSet>
-          <AssociationSet Name="R_DIP_CDCDIP" Association="Self.R_DIP_CDCDIP">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="CDC_DIPENDENTI" EntitySet="CDC_DIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TRASF_CDCTRASF" Association="Self.R_TRASF_CDCTRASF">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="CDC_TRASF" EntitySet="CDC_TRASF" />
           </AssociationSet>
           <AssociationSet Name="R_CFKM_FKM_CFKM" Association="Self.R_CFKM_FKM_CFKM">
             <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
@@ -6928,10 +6649,6 @@
           <AssociationSet Name="R_LIV_LIVDIP" Association="Self.R_LIV_LIVDIP">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_LD_T_LD" Association="Self.R_LD_T_LD">
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-            <End Role="TRASFERIMENTO_LIVDIP" EntitySet="TRASFERIMENTO_LIVDIP" />
           </AssociationSet>
           <AssociationSet Name="R_T_LA" Association="Self.R_T_LA">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -7141,10 +6858,6 @@
             <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
             <End Role="TRASEFFETTISIST_COEFFIFKM" EntitySet="TRASEFFETTISIST_COEFFIFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_T_T_LD" Association="Self.R_T_T_LD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="TRASFERIMENTO_LIVDIP" EntitySet="TRASFERIMENTO_LIVDIP" />
-          </AssociationSet>
           <AssociationSet Name="R_U_T" Association="Self.R_U_T">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -7185,7 +6898,25 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
+          <AssociationSet Name="R_DIP_TRASF" Association="DBISE.R_DIP_TRASF">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="R_DIP_TRASF">
+          <End Type="DBISE.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7271,36 +7002,6 @@
                 <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CDC">
-            <EntityTypeMapping TypeName="DBISE.CDC">
-              <MappingFragment StoreEntitySet="CDC">
-                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
-                <ScalarProperty Name="CODICECDC" ColumnName="CODICECDC" />
-                <ScalarProperty Name="DESCRIZIONECDC" ColumnName="DESCRIZIONECDC" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CDC_DIPENDENTI">
-            <EntityTypeMapping TypeName="DBISE.CDC_DIPENDENTI">
-              <MappingFragment StoreEntitySet="CDC_DIPENDENTI">
-                <ScalarProperty Name="ID_CDC_DIPENDENTI" ColumnName="ID_CDC_DIPENDENTI" />
-                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
-                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CDC_TRASF">
-            <EntityTypeMapping TypeName="DBISE.CDC_TRASF">
-              <MappingFragment StoreEntitySet="CDC_TRASF">
-                <ScalarProperty Name="ID_CDC_TRASF" ColumnName="ID_CDC_TRASF" />
-                <ScalarProperty Name="IDCDC" ColumnName="IDCDC" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8120,6 +7821,7 @@
           <EntitySetMapping Name="TRASFERIMENTO">
             <EntityTypeMapping TypeName="DBISE.TRASFERIMENTO">
               <MappingFragment StoreEntitySet="TRASFERIMENTO">
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -8131,15 +7833,6 @@
                 <ScalarProperty Name="PROTOCOLLOLETTERA" ColumnName="PROTOCOLLOLETTERA" />
                 <ScalarProperty Name="DATALETTERA" ColumnName="DATALETTERA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TRASFERIMENTO_LIVDIP">
-            <EntityTypeMapping TypeName="DBISE.TRASFERIMENTO_LIVDIP">
-              <MappingFragment StoreEntitySet="TRASFERIMENTO_LIVDIP">
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDLIVELLODIPENDENTE" ColumnName="IDLIVELLODIPENDENTE" />
-                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

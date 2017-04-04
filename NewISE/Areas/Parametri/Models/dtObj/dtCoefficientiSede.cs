@@ -1,4 +1,4 @@
-﻿using NewISE.Models.dtObj.objB;
+﻿using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

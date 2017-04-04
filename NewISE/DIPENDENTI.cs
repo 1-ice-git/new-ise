@@ -17,9 +17,9 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DIPENDENTI()
         {
-            this.CDC_DIPENDENTI = new HashSet<CDC_DIPENDENTI>();
             this.INDBASE_DIPENDENTI = new HashSet<INDBASE_DIPENDENTI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
         public decimal IDDIPENDENTE { get; set; }
@@ -38,10 +38,10 @@ namespace NewISE
         public decimal ABILITATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CDC_DIPENDENTI> CDC_DIPENDENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDBASE_DIPENDENTI> INDBASE_DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

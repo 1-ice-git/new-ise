@@ -17,11 +17,9 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASFERIMENTO()
         {
-            this.CDC_TRASF = new HashSet<CDC_TRASF>();
             this.INDENNITA = new HashSet<INDENNITA>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
-            this.TRASFERIMENTO_LIVDIP = new HashSet<TRASFERIMENTO_LIVDIP>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
@@ -36,9 +34,8 @@ namespace NewISE
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }
         public decimal ANNULLATO { get; set; }
+        public decimal IDDIPENDENTE { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CDC_TRASF> CDC_TRASF { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -48,10 +45,9 @@ namespace NewISE
         public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO_LIVDIP> TRASFERIMENTO_LIVDIP { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DIPENDENTI DIPENDENTI { get; set; }
     }
 }
