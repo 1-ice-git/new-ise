@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.PercentualeDisagioModel
+﻿@model NewISE.Models.DBModel.CoefficientiSedeModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -14,7 +14,7 @@
     decimal idUfficio = lm.idUfficio;
 }
 
-@using (Ajax.BeginForm("InserisciPercentualeDisagio", "ParamPercDisagio", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciCoefficientiSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -57,10 +57,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.percentuale, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.valoreCoefficiente, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.percentuale, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.percentuale, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.valoreCoefficiente, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.valoreCoefficiente, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -75,7 +75,7 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuali di disagio.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco dei Coefficienti di Sede.</a>
     </div>
 </div>
 
@@ -125,7 +125,8 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamPercDisagio/PercentualeDisagioLivello";
+        rotta = "/Parametri//CoefficientiSede/CoefficientiSedeLivello";
+        
 
         var idUfficio = parseFloat('@idUfficio');
         var chk = true;

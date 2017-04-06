@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
-        [Display(Name = "Valore")]
+        [Display(Name = "Coefficiente")]
         [DataType(DataType.Currency)]
         public decimal valoreCoefficiente { get; set; }
 

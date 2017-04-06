@@ -10,6 +10,10 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTipologiaConiuge { get; set; }
+
+        [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
+        [StringLength(30, ErrorMessage = "Per la tipologia del coniuge sono ammessi massimo ......")]
+        [Display(Name = "Coniuge")]
         public string tipologiaConiuge { get; set; }
     }
 }

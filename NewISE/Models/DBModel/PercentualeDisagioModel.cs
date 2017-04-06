@@ -25,7 +25,7 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La percentuale è richiesta.")]
-        [Display(Name = "Percentuale")]
+        [Display(Name = "Percentuale Disagio")]
         [DataType(DataType.Currency)]
         public decimal percentuale { get; set; }
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
