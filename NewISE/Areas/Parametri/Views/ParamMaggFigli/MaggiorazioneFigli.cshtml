@@ -1,19 +1,28 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.MaggiorazioneFigliModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
-<p>
-    <a id="btnInsNuovaMaggFigli" href="#" onclick="NuovoMaggiorazioneAnnuale();">Inserisci Maggiorazioni Figli</a>
-</p>
-<table id="tbMaggFigli" class="display" cellspacing="0">
-    <thead>
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 
+}
+
+<p>
+    <a id="btnInsNuovaMaggFigli" href="#" onclick="NuovaMaggiorazioneFigli();">Inserisci Maggiorazione Figli</a>
+</p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblTipologiaFiglio0", "Seleziona Tipologia Figlio", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idTipologiaFiglio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVMaggFiglio();", @onClick = "PrelevaPVMaggFiglio();" })
+            </div>
+        </div>
+    </div>
+</p>
+<table id="tbIndBase" class="display" cellspacing="0">
+    <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.idMaggiorazioneFigli)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idTipologiaFiglio)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -24,48 +33,51 @@
                 @Html.DisplayNameFor(model => model.percentualeFigli)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tipologiaFiglio)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
             <th></th>
         </tr>
-</thead>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idMaggiorazioneFigli)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idTipologiaFiglio)
-                </td>
-                <td>
+
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                <td>
+                <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.percentualeFigli)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipologiaFiglio)
-                </td>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idMaggiorazioneFigli }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idMaggiorazioneFigli }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idMaggiorazioneFigli })
+                <td style="text-align:center;">
+                    @using (dtMaggFigli dtib = new dtMaggFigli())
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idMaggiorazioneFigli );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                    }
+
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div id="dialog-confirm" title="Elimina maggiorazione figlio?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della maggiorazione figlio?</p>
+</div>
+
 <script type="text/javascript">
     $('.display').DataTable({
         "language": {
@@ -93,8 +105,8 @@
         }
     });
 
-    $("#idLivello").select2({
-        placeholder: "Seleziona il ",
+    $("#idTipologiaFiglio").select2({
+        placeholder: "Seleziona la Tipologia Figlio ",
         allowClear: true,
         language: "it",
         width: '150'
@@ -103,4 +115,174 @@
 
     $("#btnInsNuovaMaggFigli").button();
 
+    function PrelevaPVMaggFiglio() {
+        //debugger;
+        rotta = "/Parametri/ParamMaggFigli/MaggiorazioneFiglioLivello";
+
+        var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idTipologiaFiglio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipologiaFiglio: idTipologiaFiglio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaMaggiorazioneFiglio() {
+        //debugger;
+
+        var rotta = "/Parametri/ParamMaggFigli/NuovaMaggiorazioneFiglio";
+        var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
+        var chk = false;
+
+        if (isNaN(idTipologiaFiglio)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare la tipologia figlio per procedere.");
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipologiaFiglio: idTipologiaFiglio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaMaggiorazioneFiglio(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamMaggFigli/EliminaMaggiorazioneFiglio";
+
+        var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
+        var chk = true;
+
+        if (isNaN(idTipologiaFiglio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idTipologiaFiglio: idTipologiaFiglio, idMaggFiglio: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
 </script>

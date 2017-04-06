@@ -12,9 +12,26 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idCfKm { get; set; }
+
+        [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
+        [Display(Name = "Data ini. validità")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataInizioValidita { get; set; }
+
+        [Display(Name = "Data fin. validità")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
+
+        [Required(ErrorMessage = "Il coefficiente è richiesto.")]
+        [Display(Name = "Coefficiente")]
+        [DataType(DataType.Text)]
         public decimal coefficente { get; set; }
+
+        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
+        [Display(Name = "Annullato")]
+        [DefaultValue(false)]
         public bool annullato { get; set; } = false;
     }
 }
