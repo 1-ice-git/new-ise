@@ -22,7 +22,7 @@ namespace NewISE
         }
     
         public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public decimal IDINDENNITA { get; set; }
+        public Nullable<decimal> IDRICHIAMO { get; set; }
     
         public virtual RICHIAMO RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

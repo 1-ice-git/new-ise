@@ -15,7 +15,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Descrizione")]
         [StringLength(30, ErrorMessage = "Per la descrione sono richiesti un massimo di 30 caratteri.")]
         [DataType(DataType.Text)]
-        [CustomValidation(typeof(dtRuoloUfficio), "DescrizioneRuoloUfficioUnivoca", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
+        [CustomValidation(typeof(dtDipRuoloUfficio), "DescrizioneRuoloUfficioUnivoca", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
         public string DescrizioneRuolo { get; set; }
     }
 }

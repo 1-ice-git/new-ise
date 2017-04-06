@@ -16,8 +16,6 @@ namespace NewISE
     {
         public decimal IDELABORAZIONEMENSILE { get; set; }
         public decimal IDTEORICI { get; set; }
-        public decimal IDELABCONT { get; set; }
-        public decimal IDINDENNITA { get; set; }
         public decimal MESEELABORAZIONE { get; set; }
         public decimal ANNOELABORAZIONE { get; set; }
         public decimal MESERIFERIMENTO { get; set; }
@@ -28,6 +26,7 @@ namespace NewISE
         public System.DateTime DATAINVIOFLUSSI { get; set; }
         public decimal BLOCCAINVIOFLIE { get; set; }
         public string DATAINVIOGEPE { get; set; }
+        public bool ANNULLATO { get; set; }
     
         public virtual TEORICI TEORICI { get; set; }
     }

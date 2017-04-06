@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PERCENTUALEDISAGIO()
         {
-            this.INDENNITA_PERCDISAGIO = new HashSet<INDENNITA_PERCDISAGIO>();
+            this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDPERCENTUALEDISAGIO { get; set; }
@@ -28,7 +28,7 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA_PERCDISAGIO> INDENNITA_PERCDISAGIO { get; set; }
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         public virtual UFFICI UFFICI { get; set; }
     }
 }

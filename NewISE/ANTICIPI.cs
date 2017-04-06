@@ -21,7 +21,7 @@ namespace NewISE
         }
     
         public decimal IDANTICIPO { get; set; }
-        public decimal IDINDESTERA { get; set; }
+        public decimal IDPRIMASISTEMAZIONE { get; set; }
         public decimal IMPORTOANTICIPO { get; set; }
         public decimal NOTIFICARICHIESTA { get; set; }
         public decimal PRATICACONCLUSA { get; set; }

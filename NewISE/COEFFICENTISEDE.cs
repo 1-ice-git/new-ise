@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COEFFICENTISEDE()
         {
-            this.INDENNITA_COEFFISEDE = new HashSet<INDENNITA_COEFFISEDE>();
+            this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDCOEFFICENTESEDE { get; set; }
@@ -28,7 +28,7 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA_COEFFISEDE> INDENNITA_COEFFISEDE { get; set; }
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         public virtual UFFICI UFFICI { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace NewISE
         public decimal IDALIQCONTR { get; set; }
         public decimal IDTIPOCONTRIBUTO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal ALIQUOTA { get; set; }
         public bool ANNULLATO { get; set; }
     

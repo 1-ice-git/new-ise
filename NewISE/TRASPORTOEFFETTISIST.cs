@@ -17,16 +17,15 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASPORTOEFFETTISIST()
         {
-            this.TRASEFFETTISIST_COEFFIFKM = new HashSet<TRASEFFETTISIST_COEFFIFKM>();
             this.TRASPEFFETTISIST_DOC = new HashSet<TRASPEFFETTISIST_DOC>();
         }
     
         public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public Nullable<decimal> IDINDESTERA { get; set; }
+        public decimal IDCFKM { get; set; }
+        public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
     
+        public virtual COEFFICENTEFKM COEFFICENTEFKM { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASEFFETTISIST_COEFFIFKM> TRASEFFETTISIST_COEFFIFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPEFFETTISIST_DOC> TRASPEFFETTISIST_DOC { get; set; }
         public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }

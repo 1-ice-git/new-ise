@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COEFFICENTEINDRICHIAMO()
         {
-            this.INDRIC_COEFINDRICH = new HashSet<INDRIC_COEFINDRICH>();
+            this.RICHIAMO = new HashSet<RICHIAMO>();
         }
     
         public decimal IDCOEFINDRICHIAMO { get; set; }
@@ -28,6 +28,6 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDRIC_COEFINDRICH> INDRIC_COEFINDRICH { get; set; }
+        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
     }
 }

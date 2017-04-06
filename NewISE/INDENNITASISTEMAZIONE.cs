@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITASISTEMAZIONE()
         {
-            this.PRIMASIST_INDSIST = new HashSet<PRIMASIST_INDSIST>();
+            this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
         }
     
         public decimal IDINDSIST { get; set; }
@@ -28,7 +28,7 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRIMASIST_INDSIST> PRIMASIST_INDSIST { get; set; }
+        public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
     }
 }

@@ -81,5 +81,7 @@ namespace NewISE.Models.DBModel
 
         public IList<CDCDipendentiModel> CdcDipendenti { get; set; }
 
+
+
     }
 }

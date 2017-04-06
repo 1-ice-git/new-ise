@@ -12,25 +12,28 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class PERCENTUALEMAB
+    public partial class VARIAZIONIRATEMAB
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PERCENTUALEMAB()
+        public VARIAZIONIRATEMAB()
         {
-            this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
+            this.ELAB_CONT = new HashSet<ELAB_CONT>();
         }
     
+        public decimal IDVARIAZIONERATAMAB { get; set; }
+        public decimal IDRATEMAB { get; set; }
         public decimal IDPERCMAB { get; set; }
-        public decimal IDUFFICIO { get; set; }
-        public decimal IDLIVELLO { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public string DATAFINEVALIDITA { get; set; }
-        public decimal PERCENTUALE { get; set; }
+        public decimal IDTFR { get; set; }
+        public System.DateTime DATAINIZIOVARIAZIONE { get; set; }
+        public System.DateTime DATAFINEVARIAZIONE { get; set; }
+        public decimal CANONE { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual LIVELLI LIVELLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
-        public virtual UFFICI UFFICI { get; set; }
+        public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
+        public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
+        public virtual RATEMAB RATEMAB { get; set; }
+        public virtual TFR TFR { get; set; }
     }
 }

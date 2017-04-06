@@ -8,22 +8,25 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class TrasferimntoModel
+    public class TrasferimentoModel
     {
         [Key]
-        public long idTrasferimento { get; set; }
+        public decimal idTrasferimento { get; set; }
 
         [Required(ErrorMessage = "Tipo trasferimento richiesto")]
-        public long idTipoTrasferimento { get; set; }
+        public decimal idTipoTrasferimento { get; set; }
 
         [Required(ErrorMessage = "Ufficio richiesto")]
-        public long idUfficio { get; set; }
+        public decimal idUfficio { get; set; }
 
         [Required(ErrorMessage = "Stato trasferimento richiesto")]
-        public long idStatoTrasferimento { get; set; }
+        public decimal idStatoTrasferimento { get; set; }
 
-        [Required(ErrorMessage = "Ruolo richiesto.")]
-        public long idRuolo { get; set; }
+        [Required(ErrorMessage = "Ruolo richiesto")]
+        public decimal idRuolo { get; set; }
+
+        [Required(ErrorMessage = "dipendente richiesto")]
+        public decimal idDipendente { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -66,6 +69,8 @@ namespace NewISE.Models.DBModel
 
         public TipoTrasferimentoModel TipoTrasferimento { get; set; }
 
+        public DipendentiModel Dipendente { get; set; }
 
+        public IList<IndennitaModel> lIndennita { get; set; }
     }
 }

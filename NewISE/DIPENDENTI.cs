@@ -17,7 +17,6 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DIPENDENTI()
         {
-            this.INDBASE_DIPENDENTI = new HashSet<INDBASE_DIPENDENTI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
@@ -35,10 +34,8 @@ namespace NewISE
         public string EMAIL { get; set; }
         public string TELEFONO { get; set; }
         public string FAX { get; set; }
-        public decimal ABILITATO { get; set; }
+        public bool ABILITATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDBASE_DIPENDENTI> INDBASE_DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -37,5 +37,8 @@ namespace NewISE.Models.DBModel
         public bool annullato { get; set; } = false;
        
         public LivelloModel Livello { get; set; }
+
+        public IList<RiduzioniModel> Riduzioni { get; set; }
+
     }
 }

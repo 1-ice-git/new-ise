@@ -7,35 +7,35 @@ using System.Web;
 
 namespace NewISE.Areas.Dipendenti.Models.DtObj
 {
-    public class dtRuoloUfficio : IDisposable
+    public class dtDipStatoTrasferimento : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public static ValidationResult DescrizioneRuoloUfficioUnivoca(string v, ValidationContext context)
+        public static ValidationResult DescrizioneStatoTrasferimentoUnivoco(string v, ValidationContext context)
         {
-            var dNew = context.ObjectInstance as RuoloUfficioModel;
+            var dNew = context.ObjectInstance as StatoTrasferimentoModel;
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 //Prelevo il record interessato dalla verifica.
-                var vli = db.RUOLOUFFICIO.Where(a => a.IDRUOLO == dNew.idRuoloUfficio);
+                var vli = db.STATOTRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == dNew.idStatoTrasferimento);
                 if (vli != null && vli.Count() > 0)
                 {
                     
-                    if (vli.First().DESCRUOLO == dNew.DescrizioneRuolo)
+                    if (vli.First().DESCRIZIONE == dNew.descrizioneStatoTrasferimento)
                     {
                         return ValidationResult.Success;
                     }
                 }
 
-                var li = db.RUOLOUFFICIO.Where(a => a.DESCRUOLO == dNew.DescrizioneRuolo);
+                var li = db.STATOTRASFERIMENTO.Where(a => a.DESCRIZIONE == dNew.descrizioneStatoTrasferimento);
                 if (li != null && li.Count() > 0)
                 {
                     var i = li.First();
 
-                    if (i.DESCRUOLO == dNew.DescrizioneRuolo)
+                    if (i.DESCRIZIONE == dNew.descrizioneStatoTrasferimento)
                     {
                         return new ValidationResult("La descrizione inserita è già presente, inserirne un altra.");
                     }
@@ -50,5 +50,8 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                 }
             }
         }
+
+
+
     }
 }

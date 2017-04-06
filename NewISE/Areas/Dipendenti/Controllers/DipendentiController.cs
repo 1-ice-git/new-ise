@@ -112,12 +112,14 @@ namespace NewISE.Areas.Dipendenti.Controllers
             return PartialView(dr);
         }
 
-        public ActionResult StatoTrasferimento(string matricola)
+        public ActionResult InfoTrasferimento(string matricola)
         {
+            dipInfoTrasferimento dit = new dipInfoTrasferimento();
 
+            
+            
 
-
-            return PartialView();
+            return PartialView(dit);
         }
 
     }

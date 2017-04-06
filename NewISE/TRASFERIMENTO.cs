@@ -28,14 +28,15 @@ namespace NewISE
         public decimal IDUFFICIO { get; set; }
         public decimal IDSTATOTRASFERIMENTO { get; set; }
         public decimal IDRUOLO { get; set; }
+        public decimal IDDIPENDENTE { get; set; }
         public System.DateTime DATAPARTENZA { get; set; }
         public Nullable<System.DateTime> DATARIENTRO { get; set; }
         public string COAN { get; set; }
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }
-        public decimal ANNULLATO { get; set; }
-        public decimal IDDIPENDENTE { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        public virtual DIPENDENTI DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -48,6 +49,5 @@ namespace NewISE
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual DIPENDENTI DIPENDENTI { get; set; }
     }
 }

@@ -39,6 +39,6 @@ namespace NewISE.Models
 
         public AttivitaCRUDModel attivitaCrud { get; set; }
 
-        public TrasferimntoModel trasferimento { get; set; }
+        public TrasferimentoModel trasferimento { get; set; }
     }
 }

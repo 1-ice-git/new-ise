@@ -20,15 +20,14 @@ namespace NewISE
             this.MAB_ALIQCONTR = new HashSet<MAB_ALIQCONTR>();
             this.MAB_DATIMAB = new HashSet<MAB_DATIMAB>();
             this.MAB_DOC = new HashSet<MAB_DOC>();
-            this.MAB_TFR = new HashSet<MAB_TFR>();
-            this.PERCMAB_MAB = new HashSet<PERCMAB_MAB>();
             this.RATEMAB = new HashSet<RATEMAB>();
         }
     
         public decimal IDMAB { get; set; }
         public decimal IDINDENNITA { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAINIZIOMAB { get; set; }
+        public Nullable<System.DateTime> DATAFINEMAB { get; set; }
+        public bool ANNULLATO { get; set; }
     
         public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -37,10 +36,6 @@ namespace NewISE
         public virtual ICollection<MAB_DATIMAB> MAB_DATIMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_TFR> MAB_TFR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCMAB_MAB> PERCMAB_MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RATEMAB> RATEMAB { get; set; }
     }
