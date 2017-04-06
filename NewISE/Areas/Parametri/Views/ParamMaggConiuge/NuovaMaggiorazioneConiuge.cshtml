@@ -10,7 +10,7 @@
 @{
 
     TipologiaConiugeModel lm = (TipologiaConiugeModel)ViewBag.Coniuge;
-    string percentualeConiuge = lm.tipologiaConiuge;
+    string tipologiaConiuge = lm.tipologiaConiuge;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idTipologiaConiuge = lm.idTipologiaConiuge;
 
@@ -37,7 +37,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@percentualeConiuge</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaConiuge</label>
                 </div>
             </div>
         </div>

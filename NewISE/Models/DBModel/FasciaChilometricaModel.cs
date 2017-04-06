@@ -29,7 +29,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-
+        public UfficiModel DescrizioneUfficio { get; set; }
         public DefFasciaKmModel km { get; set; }
     }
 }

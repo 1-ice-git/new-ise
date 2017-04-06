@@ -12,7 +12,7 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idAliqContr { get; set; }
-        [Required(ErrorMessage = "Il contributo è richiesto.")]
+        [Required(ErrorMessage = "Il tipo contributo è richiesto.")]
         public decimal idTipoContributo { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data inizio validità")]

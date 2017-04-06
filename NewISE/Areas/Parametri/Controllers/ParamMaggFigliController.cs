@@ -134,7 +134,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                 {
                     var lm = dtl.GetTipologiaFiglio(idTipologiaFiglio);
-                    ViewBag.Coniuge = lm;
+                    ViewBag.Figlio = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
@@ -160,14 +160,14 @@ namespace NewISE.Areas.Parametri.Controllers
                         dtib.SetMaggiorazioneFiglio(ibm);
                     }
 
-                    return RedirectToAction("MaggiorazioneFiglio", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = ibm.idTipologiaFiglio });
+                    return RedirectToAction("MaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = ibm.idTipologiaFiglio });
                 }
                 else
                 {
                     using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                     {
                         var lm = dtl.GetTipologiaFiglio(ibm.idTipologiaFiglio);
-                        ViewBag.Livello = lm;
+                        ViewBag.Figlio = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaMaggiorazioneFiglio", ibm);
@@ -191,7 +191,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     dtib.DelMaggiorazioneFiglio(idMaggFiglio);
                 }
 
-                return RedirectToAction("MaggiorazioneFiglio", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = idTipologiaFiglio });
+                return RedirectToAction("MaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = idTipologiaFiglio });
             }
             catch (Exception ex)
             {

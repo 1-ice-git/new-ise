@@ -1341,6 +1341,9 @@
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggFigli\NuovaMaggiorazioneFiglio.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndSistemaz\NuovaIndennitaSistemazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamAliquoteContr\NuovaAliquotaContributiva.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamRiduzioni\NuoveRiduzioni.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1434,6 +1437,8 @@
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimento.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtIndSist.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipoAliquoteContributive.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
