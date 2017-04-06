@@ -42,6 +42,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                             dtDatiParametri = DateTime.Now.Date;
                         }
 
+                        
 
 
 

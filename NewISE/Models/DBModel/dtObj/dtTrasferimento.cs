@@ -79,6 +79,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 telefono = t.DIPENDENTI.TELEFONO,
                                 fax = t.DIPENDENTI.FAX,
                                 abilitato = t.DIPENDENTI.ABILITATO
+                            },
+                            lIndennita = new List<IndennitaModel>()
+                            {
+
                             }
                         
                             

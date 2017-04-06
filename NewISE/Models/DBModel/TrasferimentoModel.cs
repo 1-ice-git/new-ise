@@ -71,6 +71,6 @@ namespace NewISE.Models.DBModel
 
         public DipendentiModel Dipendente { get; set; }
 
-        public IndennitaModel Indennita { get; set; }
+        public IList<IndennitaModel> lIndennita { get; set; }
     }
 }
