@@ -23,7 +23,6 @@ namespace NewISE
     
         public decimal IDTEORICI { get; set; }
         public decimal IDELABCONT { get; set; }
-        public decimal IDINDENNITA { get; set; }
         public decimal IDVOCI { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }

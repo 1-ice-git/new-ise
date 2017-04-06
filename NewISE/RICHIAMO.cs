@@ -18,18 +18,19 @@ namespace NewISE
         public RICHIAMO()
         {
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
-            this.INDRIC_COEFINDRICH = new HashSet<INDRIC_COEFINDRICH>();
             this.TRASPORTOEFFETTIRIENTRO = new HashSet<TRASPORTOEFFETTIRIENTRO>();
         }
     
+        public decimal IDRICHIAMO { get; set; }
         public decimal IDINDENNITA { get; set; }
+        public decimal IDCOEFINDRICHIAMO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
+        public bool RICALCOLATO { get; set; }
     
+        public virtual COEFFICENTEINDRICHIAMO COEFFICENTEINDRICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDRIC_COEFINDRICH> INDRIC_COEFINDRICH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTIRIENTRO> TRASPORTOEFFETTIRIENTRO { get; set; }
     }

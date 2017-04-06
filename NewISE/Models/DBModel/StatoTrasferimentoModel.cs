@@ -7,6 +7,14 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
+    public enum EnumStatoTraferimento
+    {
+        Attivo = 1,
+        Da_Attivare = 2,
+        Non_Trasferito = 3,
+        Terminato = 4
+    }
+
     public class StatoTrasferimentoModel
     {
         [Key]
@@ -15,7 +23,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Descrizione")]
         [StringLength(50, ErrorMessage = "Per la descrione sono richiesti un massimo di 50 caratteri.")]
         [DataType(DataType.Text)]
-        [CustomValidation(typeof(dtStatoTrasferimento), "DescrizioneStatoTrasferimentoUnivoco", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
+        [CustomValidation(typeof(dtDipStatoTrasferimento), "DescrizioneStatoTrasferimentoUnivoco", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
         public string descrizioneStatoTrasferimento { get; set; }
     }
 }

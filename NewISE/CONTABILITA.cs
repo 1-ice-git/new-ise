@@ -14,16 +14,8 @@ namespace NewISE
     
     public partial class CONTABILITA
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CONTABILITA()
-        {
-            this.OA = new HashSet<OA>();
-        }
-    
         public decimal IDCONTABILITA { get; set; }
         public decimal IDTEORICI { get; set; }
-        public decimal IDELABCONT { get; set; }
-        public decimal IDINDENNITA { get; set; }
         public decimal ANNOELABORAZIONE { get; set; }
         public decimal MESEELABORAZIONE { get; set; }
         public decimal ANNORIFERIMENTO { get; set; }
@@ -33,9 +25,9 @@ namespace NewISE
         public System.DateTime DATAOPERAZIONE { get; set; }
         public decimal FLAGINVIOOA { get; set; }
         public Nullable<System.DateTime> DATAINVIOOA { get; set; }
+        public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OA> OA { get; set; }
+        public virtual OA OA { get; set; }
         public virtual TEORICI TEORICI { get; set; }
     }
 }

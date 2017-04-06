@@ -45,24 +45,17 @@ namespace NewISE
         public virtual DbSet<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
         public virtual DbSet<FASCKM_CFKM> FASCKM_CFKM { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
-        public virtual DbSet<INDBASE_DIPENDENTI> INDBASE_DIPENDENTI { get; set; }
         public virtual DbSet<INDBASE_RID> INDBASE_RID { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
-        public virtual DbSet<INDENNITA_COEFFISEDE> INDENNITA_COEFFISEDE { get; set; }
-        public virtual DbSet<INDENNITA_INDBASE> INDENNITA_INDBASE { get; set; }
-        public virtual DbSet<INDENNITA_PERCDISAGIO> INDENNITA_PERCDISAGIO { get; set; }
-        public virtual DbSet<INDENNITA_TFR> INDENNITA_TFR { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        public virtual DbSet<INDRIC_COEFINDRICH> INDRIC_COEFINDRICH { get; set; }
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAB_DATIMAB> MAB_DATIMAB { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
-        public virtual DbSet<MAB_TFR> MAB_TFR { get; set; }
         public virtual DbSet<MAGFAM_ALTRIDATIFAM> MAGFAM_ALTRIDATIFAM { get; set; }
         public virtual DbSet<MAGFAM_MAGCON> MAGFAM_MAGCON { get; set; }
         public virtual DbSet<MAGFAM_MAGFIG> MAGFAM_MAGFIG { get; set; }
@@ -81,9 +74,7 @@ namespace NewISE
         public virtual DbSet<PENSIONECONIUGE> PENSIONECONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
-        public virtual DbSet<PERCMAB_MAB> PERCMAB_MAB { get; set; }
         public virtual DbSet<PRIMASIST_ALIQCONTR> PRIMASIST_ALIQCONTR { get; set; }
-        public virtual DbSet<PRIMASIST_INDSIST> PRIMASIST_INDSIST { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual DbSet<RATEMAB> RATEMAB { get; set; }
         public virtual DbSet<REGOLACALCOLO_RIDUZIONI> REGOLACALCOLO_RIDUZIONI { get; set; }
@@ -108,7 +99,6 @@ namespace NewISE
         public virtual DbSet<TIPOSOSPENSIONE> TIPOSOSPENSIONE { get; set; }
         public virtual DbSet<TIPOTRASFERIMENTO> TIPOTRASFERIMENTO { get; set; }
         public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
-        public virtual DbSet<TRASEFFETTISIST_COEFFIFKM> TRASEFFETTISIST_COEFFIFKM { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<TRASPEFFETTIRIEN_COEFFIFKM> TRASPEFFETTIRIEN_COEFFIFKM { get; set; }
         public virtual DbSet<TRASPEFFETTIRIENTRO_DOC> TRASPEFFETTIRIENTRO_DOC { get; set; }
@@ -119,6 +109,7 @@ namespace NewISE
         public virtual DbSet<UFFICIO_TFR> UFFICIO_TFR { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
+        public virtual DbSet<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
     }
 }

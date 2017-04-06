@@ -14,7 +14,6 @@ namespace NewISE
     
     public partial class LIVELLIDIPENDENTI
     {
-        public decimal IDLIVELLODIPENDENTE { get; set; }
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDLIVELLO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }

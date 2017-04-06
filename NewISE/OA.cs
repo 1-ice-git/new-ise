@@ -15,9 +15,6 @@ namespace NewISE
     public partial class OA
     {
         public decimal CTB_ID_RECORD { get; set; }
-        public Nullable<decimal> IDTEORICI { get; set; }
-        public Nullable<decimal> IDELABCONT { get; set; }
-        public Nullable<decimal> IDINDENNITA { get; set; }
         public short CTB_MATRICOLA { get; set; }
         public string CTB_QUALIFICA { get; set; }
         public string CTB_COD_SEDE { get; set; }

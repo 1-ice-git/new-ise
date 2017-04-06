@@ -24,7 +24,7 @@ namespace NewISE
         public decimal IDMAGGIORAZIONEFIGLI { get; set; }
         public decimal IDTIPOLOGIAFIGLIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public string DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALEFIGLI { get; set; }
         public bool ANNULLATO { get; set; }
     

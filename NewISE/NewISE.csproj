@@ -1423,17 +1423,132 @@
     </Compile>
     <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
+    <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimento.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
+    <Compile Include="ATTIVITACRUD.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BIGLIETTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BIGLIETTI_DOCUMENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COEFFICENTEFKM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COEFFICENTEINDRICHIAMO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="COEFFICENTISEDE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CONTABILITA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DATIMAB.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DATIMAB_MABANNUALI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DEFFASCIACHILOMETRICA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DIPENDENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DOCUMENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ELAB_CONT.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FASCIACHILOMETRICA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FASCKM_CFKM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GRUPPIDOCUMENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INDBASE_RID.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INDENNITA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INDENNITABASE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INDENNITAPRIMOSEGRETARIO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INDENNITASISTEMAZIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LIVELLI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LIVELLIDIPENDENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LOGATTIVITA.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAB_ALIQCONTR.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAB_DATIMAB.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAB_DOC.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGFAM_ALTRIDATIFAM.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGFAM_MAGCON.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGFAM_MAGFIG.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGFAM_PENSCON.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGGIORAZIONEABITAZIONE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGGIORAZIONECONIUGE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGGIORAZIONEFIGLI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGGIORAZIONIANNUALI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MAGGIORAZIONIFAMILIARI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MF_IPS.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
     <Compile Include="Models\DBModel\CDCModel.cs" />
     <Compile Include="Models\DBModel\CDC_TRASFModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtRuoloUfficio.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtStatoTrasferimento.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipRuoloUfficio.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipStatoTrasferimento.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
+    <Compile Include="Models\DBModel\IndennitaModel.cs" />
     <Compile Include="Models\DBModel\LivelliDipendentiModel.cs" />
     <Compile Include="Models\DBModel\RuoloUfficioModel.cs" />
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
-    <Compile Include="Models\DBModel\TrasferimntoModel.cs" />
+    <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1490,45 +1605,6 @@
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
-    <Compile Include="ATTIVITACRUD.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BIGLIETTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BIGLIETTI_DOCUMENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="COEFFICENTEFKM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="COEFFICENTEINDRICHIAMO.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="COEFFICENTISEDE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CONTABILITA.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DATIMAB.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DATIMAB_MABANNUALI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DEFFASCIACHILOMETRICA.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DIPENDENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DOCUMENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ELAB_CONT.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntitiesDBISEPRO.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1544,104 +1620,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
     </Compile>
-    <Compile Include="FASCIACHILOMETRICA.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FASCKM_CFKM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GRUPPIDOCUMENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDBASE_DIPENDENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDBASE_RID.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITA.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITABASE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITAPRIMOSEGRETARIO.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITASISTEMAZIONE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITA_COEFFISEDE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITA_INDBASE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITA_PERCDISAGIO.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDENNITA_TFR.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDRIC_COEFINDRICH.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="Interfacce\Iemail.cs" />
     <Compile Include="Interfacce\Modelli\Destinatario.cs" />
     <Compile Include="Interfacce\Modelli\Mittente.cs" />
     <Compile Include="Interfacce\ModelloAllegatoMail.cs" />
     <Compile Include="Interfacce\ModelloMsgMail.cs" />
-    <Compile Include="LIVELLI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LIVELLIDIPENDENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="LOGATTIVITA.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAB_ALIQCONTR.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAB_DATIMAB.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAB_DOC.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAB_TFR.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_ALTRIDATIFAM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_MAGCON.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_MAGFIG.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_PENSCON.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGGIORAZIONEABITAZIONE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGGIORAZIONECONIUGE.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGGIORAZIONEFIGLI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGGIORAZIONIANNUALI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGGIORAZIONIFAMILIARI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MF_IPS.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\AccessoModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\AttivitaCRUDModel.cs" />
@@ -1652,6 +1635,7 @@
     <Compile Include="Models\dtObj\dtDipendentiRest.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Models\dtObj\objB\CalcoloIndennita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
@@ -1698,13 +1682,7 @@
     <Compile Include="PERCENTUALEMAB.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="PERCMAB_MAB.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="PRIMASIST_ALIQCONTR.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PRIMASIST_INDSIST.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="PRIMASITEMAZIONE.cs">
@@ -1780,9 +1758,6 @@
     <Compile Include="TIPOVOCE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="TRASEFFETTISIST_COEFFIFKM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="TRASFERIMENTO.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1811,6 +1786,9 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="VALUTE.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VARIAZIONIRATEMAB.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="VOCI.cs">

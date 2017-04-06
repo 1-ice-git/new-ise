@@ -20,21 +20,23 @@ namespace NewISE
             this.ANTICIPI = new HashSet<ANTICIPI>();
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
             this.PRIMASIST_ALIQCONTR = new HashSet<PRIMASIST_ALIQCONTR>();
-            this.PRIMASIST_INDSIST = new HashSet<PRIMASIST_INDSIST>();
             this.TRASPORTOEFFETTISIST = new HashSet<TRASPORTOEFFETTISIST>();
         }
     
+        public decimal IDPRIMASISTEMAZIONE { get; set; }
         public decimal IDINDESTERA { get; set; }
+        public decimal IDINDSIST { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
+        public bool RICALCOLATA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPI> ANTICIPI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
+        public virtual INDENNITASISTEMAZIONE INDENNITASISTEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASIST_ALIQCONTR> PRIMASIST_ALIQCONTR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRIMASIST_INDSIST> PRIMASIST_INDSIST { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
     }

@@ -23,7 +23,7 @@ namespace NewISE
         public decimal IDMAGGIORAZIONECONIUGE { get; set; }
         public decimal IDTIPOLOGIACONIUGE { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALECONIUGE { get; set; }
         public bool ANNULLATO { get; set; }
     

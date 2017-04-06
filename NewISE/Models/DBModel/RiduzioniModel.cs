@@ -16,5 +16,7 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         public decimal percentuale { get; set; }
         public bool annullato { get; set; } = false;
+
+        
     }
 }

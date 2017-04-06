@@ -17,24 +17,24 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TFR()
         {
-            this.INDENNITA_TFR = new HashSet<INDENNITA_TFR>();
-            this.MAB_TFR = new HashSet<MAB_TFR>();
+            this.INDENNITA = new HashSet<INDENNITA>();
             this.UFFICIO_TFR = new HashSet<UFFICIO_TFR>();
+            this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
         }
     
         public decimal IDTFR { get; set; }
         public decimal IDVALUTA { get; set; }
         public decimal TASSOCAMBIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA_TFR> INDENNITA_TFR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_TFR> MAB_TFR { get; set; }
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UFFICIO_TFR> UFFICIO_TFR { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual VALUTE VALUTE { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace NewISE
     public partial class PRIMASIST_ALIQCONTR
     {
         public decimal IDALIQCONTR { get; set; }
-        public decimal IDINDESTERA { get; set; }
+        public decimal IDPRIMASISTEMAZIONE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
     
         public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
