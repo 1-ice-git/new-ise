@@ -1590,6 +1590,7 @@
     <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
     <Compile Include="EntitiesDBISEPRO.Context.cs">
       <AutoGen>True</AutoGen>

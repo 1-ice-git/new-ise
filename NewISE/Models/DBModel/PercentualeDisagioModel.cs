@@ -26,14 +26,14 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Disagio")]
-        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal percentuale { get; set; }
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
-        public UfficiModel DescrizioneUfficio { get; set; }
+        public UfficiModel Ufficio { get; set; }
 
     }
 }

@@ -274,7 +274,7 @@
           </Key>
           <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="INDENNITA" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -618,7 +618,7 @@
           </Key>
           <Property Name="IDRIDUZIONI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
