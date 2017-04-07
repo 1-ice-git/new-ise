@@ -32,9 +32,13 @@ namespace NewISE.Models.DBModel
         
         public bool Annullato { get; set; } = false;
 
+
+
         public TrasferimentoModel Trasferimento { get; set; }
 
         public IndennitaBaseModel IndennitaBase { get; set; }
+
+
 
         
 

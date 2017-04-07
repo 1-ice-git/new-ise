@@ -1633,6 +1633,7 @@
     <Compile Include="Models\DBModel\RiduzioniModel.cs" />
     <Compile Include="Models\DBModel\RuoloUfficioModel.cs" />
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\TFRModel.cs" />
     <Compile Include="Models\DBModel\TipoAliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\TipologiaConiugeModel.cs" />
     <Compile Include="Models\DBModel\TipologiaFiglioModel.cs" />
