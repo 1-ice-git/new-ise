@@ -22,7 +22,7 @@ namespace NewISE
     
         public decimal IDINDPRIMOSEGR { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
         public decimal INDENNITA { get; set; }
         public bool ANNULLATO { get; set; }
     
