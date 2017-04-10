@@ -42,7 +42,7 @@ namespace NewISE.Models.dtObj.objB
                 try
                 {
                     var ld = db.DIPENDENTI.Where(a => a.ABILITATO == true && a.MATRICOLA == matricola);
-                    if (d.Count() == 1)
+                    if (ld.Count() == 1)
                     {
                         var lt = ld.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false && (a.DATAPARTENZA <= dataDecorrenza && a.DATARIENTRO >= dataDecorrenza));
                         if (lt.Count() == 1)
@@ -64,7 +64,7 @@ namespace NewISE.Models.dtObj.objB
                             {
                                 //TODO: creare una funzione per la creazione di un log su file.
 
-                                throw new Exception("Errore nella funzione per il calcolo dell'indennita di base."
+                                throw new Exception("Errore nella funzione per il calcolo dell'indennita di base.");
                             }
                         }
                         else

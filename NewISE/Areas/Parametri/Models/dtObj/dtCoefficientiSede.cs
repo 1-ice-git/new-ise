@@ -32,8 +32,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valoreCoefficiente = e.VALORECOEFFICENTE,
-                                DescrizioneUfficio = new UfficiModel()
+                                valore = e.VALORECOEFFICENTE,
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -67,8 +67,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valoreCoefficiente = e.VALORECOEFFICENTE,
-                                DescrizioneUfficio = new UfficiModel()
+                                valore = e.VALORECOEFFICENTE,
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -101,8 +101,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valoreCoefficiente = e.VALORECOEFFICENTE,
-                                DescrizioneUfficio = new UfficiModel()
+                                valore = e.VALORECOEFFICENTE,
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -135,8 +135,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valoreCoefficiente = e.VALORECOEFFICENTE,
-                                DescrizioneUfficio = new UfficiModel()
+                                valore = e.VALORECOEFFICENTE,
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -180,7 +180,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                VALORECOEFFICENTE = ibm.valoreCoefficiente,
+                                VALORECOEFFICENTE = ibm.valore,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -191,7 +191,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                VALORECOEFFICENTE = ibm.valoreCoefficiente,
+                                VALORECOEFFICENTE = ibm.valore,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -203,7 +203,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            VALORECOEFFICENTE = ibm.valoreCoefficiente,
+                            VALORECOEFFICENTE = ibm.valore,
                             ANNULLATO = ibm.annullato
                         };
                     }
