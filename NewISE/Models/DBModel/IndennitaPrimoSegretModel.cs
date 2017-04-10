@@ -28,5 +28,6 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
         
-    }
+        
+}
 }

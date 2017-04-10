@@ -5,15 +5,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtIndSist : IDisposable
+    public class dtPrimoSegr
     {
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
-
-
-
     }
 }

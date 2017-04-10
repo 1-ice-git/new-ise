@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.AliquoteContributiveModel
+﻿@model NewISE.Models.DBModel.PercMaggAbitazModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -9,14 +9,18 @@
 
 @{
 
-    TipoAliquoteContributiveModel lm = (TipoAliquoteContributiveModel)ViewBag.descrizione;
-    string descrizione= lm.descrizione;
+    LivelloModel lm = (LivelloModel)ViewBag.Livello;
+    string descrizioneLivello = lm.DescLivello;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipoAliqContr = lm.idTipoAliqContr;
+    decimal idLivello = lm.idLivello;
 
+    UfficiModel lm1 = (UfficiModel)ViewBag.Descrizione;
+    string descrizioneUfficio = lm1.DescUfficio;
+
+    decimal idUfficio = lm1.idUfficio;
 }
 
-@using (Ajax.BeginForm("InserisciAliquotaContributiva", "ParamAliquoteContr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciPercentualeMaggiorazioneAbitazione", "ParamPercMaggAbitaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,7 +32,8 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idAliqContr)
+        @Html.HiddenFor(model => model.idLivello)
+        @Html.HiddenFor(model => model.idUfficio)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
@@ -37,7 +42,18 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneLivello</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-2 text-right">
+                <label>Ufficio </label>
+            </div>
+            <div class="col-xs-10">
+                <div class="panel panel-default">
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio</label>
                 </div>
             </div>
         </div>
@@ -59,12 +75,14 @@
         </div>
 
         <div class="form-group ">
-            @Html.LabelFor(model => model.aliquota, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.percentuale, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.aliquota, new { htmlAttributes = new { @class = "form-control number" } })
-                @Html.ValidationMessageFor(model => model.aliquota, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.percentuale, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.percentuale, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -76,14 +94,14 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle aliquote contributive.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuale maggiorazioni abitazioni .</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#aliquota").autoNumeric('init',
+    $("#percentuale").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
@@ -126,12 +144,18 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamAliquoteContr/AliquoteLivello";
+        rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggAbitazioneLivello";
 
-        var idAliqContr = parseFloat('@idAliqContr');
+        var idLivello = parseFloat('@idLivello');
+        var idUfficio = parseFloat('@idUfficio');
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idLivello)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -143,7 +167,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAliqContr: idAliqContr, escludiAnnullati: chk },
+            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

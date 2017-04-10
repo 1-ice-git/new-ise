@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.AliquoteContributiveModel
+﻿@model NewISE.Models.DBModel.IndennitaPrimoSegretModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -9,14 +9,14 @@
 
 @{
 
-    TipoAliquoteContributiveModel lm = (TipoAliquoteContributiveModel)ViewBag.descrizione;
-    string descrizione= lm.descrizione;
+    IndennitaPrimoSegretModel lm = (IndennitaPrimoSegretModel)ViewBag.idIndPrimoSegr;
+    decimal descrizioneprimosegr = lm.idIndPrimoSegr;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipoAliqContr = lm.idTipoAliqContr;
+    decimal idIndPrimoSegr = lm.idIndPrimoSegr;
 
 }
 
-@using (Ajax.BeginForm("InserisciAliquotaContributiva", "ParamAliquoteContr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciIndennitaPrimoSegretario", "ParamPrimoIndSegr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,16 +28,16 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idAliqContr)
+        @Html.HiddenFor(model => model.idIndPrimoSegr)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
-                <label>Livello </label>
+                <label>Indennità primo Segretario </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneprimosegr</label>
                 </div>
             </div>
         </div>
@@ -59,10 +59,10 @@
         </div>
 
         <div class="form-group ">
-            @Html.LabelFor(model => model.aliquota, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.indennita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.aliquota, new { htmlAttributes = new { @class = "form-control number" } })
-                @Html.ValidationMessageFor(model => model.aliquota, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.indennita, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.indennita, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -76,14 +76,14 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle aliquote contributive.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle indennità di primo segretario .</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#aliquota").autoNumeric('init',
+    $("#indennita").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
@@ -126,12 +126,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamAliquoteContr/AliquoteLivello";
-
-        var idAliqContr = parseFloat('@idAliqContr');
+        rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
+        
+        var idIndPrimoSegr = parseFloat('@idIndPrimoSegr');
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idIndPrimoSegr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -143,7 +143,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAliqContr: idAliqContr, escludiAnnullati: chk },
+            data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

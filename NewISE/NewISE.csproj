@@ -1344,6 +1344,10 @@
     <Content Include="Areas\Parametri\Views\ParamIndSistemaz\NuovaIndennitaSistemazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamAliquoteContr\NuovaAliquotaContributiva.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamRiduzioni\NuoveRiduzioni.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamFasciaKm\NuovaFasciaKm.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\NuovaIndennitaPrimoSegretario.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndRichiamo\NuovaIndennitaRichiamo.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1438,6 +1442,7 @@
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimento.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndSist.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipoAliquoteContributive.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
