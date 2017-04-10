@@ -1,70 +1,178 @@
-﻿@model NewISE.INDENNITASISTEMAZIONE
+﻿@model NewISE.Models.DBModel.IndennitaSistemazioneModel
+@using NewISE.Models.DBModel;
 
+<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
-@using (Html.BeginForm())
+@Scripts.Render("~/bundles/jqueryval")
+
+@{
+
+    
+    TipoTrasferimentoModel lm = (TipoTrasferimentoModel)ViewBag.tipologiaTrasferimento;
+    string tipologiaTrasferimento = lm.tipologiaTrasferimento;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idTipoTrasferimento = lm.idTipoTrasferimento;
+
+}
+
+@using (Ajax.BeginForm("InserisciIndennitaSistemazione", "ParamIndSist", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>INDENNITASISTEMAZIONE</h4>
+
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.IDINDSIST)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IDTIPOTRASFERIMENTO, "IDTIPOTRASFERIMENTO", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("IDTIPOTRASFERIMENTO", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.IDTIPOTRASFERIMENTO, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
+        @Html.HiddenFor(model => model.idTipoTrasferimento)
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DATAINIZIOVALIDITA, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DATAINIZIOVALIDITA, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DATAINIZIOVALIDITA, "", new { @class = "text-danger" })
+            <div class="col-xs-2 text-right">
+                <label>Livello </label>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DATAFINEVALIDITA, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DATAFINEVALIDITA, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DATAFINEVALIDITA, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.COEFFICENTE, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.COEFFICENTE, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.COEFFICENTE, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ANNULLATO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.ANNULLATO)
-                    @Html.ValidationMessageFor(model => model.ANNULLATO, "", new { @class = "text-danger" })
+            <div class="col-xs-10">
+                <div class="panel panel-default">
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaTrasferimento</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group ">
+            @Html.LabelFor(model => model.coefficiente, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.coefficiente, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.coefficiente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Inserisci" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="row">
+    <div class="col-xs-offset-2 col-xs-10">
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle indennità di sistemazione.</a>
+    </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    Globalize.culture("it-IT");
+
+    $("#coefficiente").autoNumeric('init',
+	{
+	    aSep: '.',
+	    aDec: ',',
+	    aSign: ''
+	});
+
+
+
+    $('form').submit(function () {
+        //debugger;
+        var form = $(this);
+        $('input.number').each(function (i) {
+            //debugger;
+            var self = $(this);
+            try {
+                var v = self.autoNumeric('get');
+                //self.autoNumeric('destroy');
+                var n = v.replace(".", ",");
+                self.val(n);
+            } catch (err) {
+                console.log("Non è un campo autonumeric: " + self.attr("name"));
+            }
+        });
+        return true;
+    });
+
+    $.validator.methods.range = function (value, element, param) {
+        var globalizedValue = value.replace(",", ".");
+        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
+    };
+
+    $.validator.methods.number = function (value, element) {
+        //debugger;
+        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+    };
+
+    $('#dataInizioValidita').datepicker({
+        inline: true,
+    });
+    $('#dataFineValidita').datepicker({
+        inline: true,
+    });
+
+    function TornaElencoIb() {
+        rotta = "/Parametri/ParamIndSist/IndennitaSistemazioneLivello";
+
+        var idLivello = parseFloat('@idTipoTrasferimento');
+        var chk = true;
+
+        if (isNaN(idLivello)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+</script>

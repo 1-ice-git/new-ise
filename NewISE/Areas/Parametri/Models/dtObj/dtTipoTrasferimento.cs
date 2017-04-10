@@ -6,28 +6,30 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtTipoAliquoteContributive : IDisposable
+    public class dtTipoTrasferimento : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<TipoAliquoteContributiveModel> GetTipoAliquote()
+
+        public IList<TipoTrasferimentoModel> GetTrasferimenti()
         {
-            List<TipoAliquoteContributiveModel> llm = new List<TipoAliquoteContributiveModel>();
+            List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var ll = db.TIPOALIQUOTECONTRIBUTIVE.ToList();
+                    var ll = db.TIPOTRASFERIMENTO.ToList();
 
                     llm = (from e in ll
-                           select new TipoAliquoteContributiveModel()
+                           select new TipoTrasferimentoModel()
                            {
-                               codice = e.CODICE,
-                               idTipoAliqContr = e.IDTIPOALIQCONTR,
+                               idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
+                               tipologiaTrasferimento = e.TIPOTRASFERIMENTO1
+                               
                            }).ToList();
                 }
 
@@ -39,21 +41,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public TipoAliquoteContributiveModel GetTipoAliquote(decimal idAliqContr)
+        public TipoTrasferimentoModel GetTrasferimenti(decimal idTipoTrasferimento)
         {
-            TipoAliquoteContributiveModel lm = new TipoAliquoteContributiveModel();
+            TipoTrasferimentoModel lm = new TipoTrasferimentoModel();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idAliqContr);
+                    var liv = db.TIPOTRASFERIMENTO.Find(idTipoTrasferimento);
 
-                    lm = new TipoAliquoteContributiveModel()
+                    lm = new TipoTrasferimentoModel()
                     {
                         
-                        codice =liv.CODICE,
-                        idTipoAliqContr = liv.IDTIPOALIQCONTR
+                        idTipoTrasferimento = liv.IDTIPOTRASFERIMENTO,
+                        tipologiaTrasferimento = liv.TIPOTRASFERIMENTO1
                         
                     };
                 }
@@ -65,6 +67,5 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
     }
 }
