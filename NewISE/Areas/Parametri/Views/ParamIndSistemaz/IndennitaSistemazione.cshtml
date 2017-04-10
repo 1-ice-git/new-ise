@@ -35,6 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.coefficiente)
             </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -57,7 +58,7 @@
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.coefficiente)
                 </td>
-               
+              
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
@@ -66,7 +67,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndennitaSistemazione(@item.idIndSist );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaIndSist(@item.idIndSist );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -222,7 +223,7 @@
 
     }
 
-    function EliminaIndSistemazione(id) {
+    function EliminaIndSist(id) {
         //debugger;
         var rotta = "/Parametri/ParamIndSist/EliminaIndennitaSistemazione";
 
