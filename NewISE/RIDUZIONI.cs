@@ -23,7 +23,7 @@ namespace NewISE
     
         public decimal IDRIDUZIONI { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALE { get; set; }
         public bool ANNULLATO { get; set; }
     
