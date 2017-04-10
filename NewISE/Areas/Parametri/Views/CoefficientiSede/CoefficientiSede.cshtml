@@ -65,7 +65,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaPercdisagio(@item.idCoefficientiSede );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -121,7 +121,7 @@
     $("#btnInsCoeffSede").button();
 
     function PrelevaPVCoefficientiSede() {
-        //debugger;
+        debugger;
         rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
@@ -171,7 +171,7 @@
     }
 
     function NuovoCoefficienteSede() {
-        //debugger;
+        debugger;
        
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
 
@@ -222,8 +222,8 @@
 
     }
 
-    function EliminaPercdisagio(id) {
-        //debugger;
+    function EliminaCoefficientiSede(id) {
+        debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
         
         var idUfficio = parseInt($("#idUfficio").select2('val'));

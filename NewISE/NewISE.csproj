@@ -1348,6 +1348,7 @@
     <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\NuovaIndennitaPrimoSegretario.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamIndRichiamo\NuovaIndennitaRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

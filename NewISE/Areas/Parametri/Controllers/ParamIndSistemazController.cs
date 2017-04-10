@@ -191,7 +191,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     dtib.DelIndennitaSistemazione(idIndSist);
                 }
 
-                return RedirectToAction("Indennitasistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = idTipoTrasferimento });
+                return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = idTipoTrasferimento });
             }
             catch (Exception ex)
             {

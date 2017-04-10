@@ -13,9 +13,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
 
 
-       
-
-
 
     }
 }

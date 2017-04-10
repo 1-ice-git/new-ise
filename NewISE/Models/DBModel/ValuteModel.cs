@@ -15,10 +15,10 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il campo descrizione è richiesto.")]
         [Display(Name = "Descrizione")]
         
-        public string descrizione { get; set; }
+        public string descrizioneValuta { get; set; }
         [Required(ErrorMessage = "Il campo valuta è richiesto.")]
         [Display(Name = "Valuta")]
-        public decimal valuta { get; set; } 
+        public decimal valutaUfficiale { get; set; } 
         
     }
 }
