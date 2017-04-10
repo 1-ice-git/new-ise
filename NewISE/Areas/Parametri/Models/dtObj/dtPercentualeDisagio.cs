@@ -36,7 +36,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -71,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -106,7 +106,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
@@ -141,7 +141,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
                                     DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO

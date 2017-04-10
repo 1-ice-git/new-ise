@@ -28,14 +28,14 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente")]
-        [DataType(DataType.Currency)]
-        public decimal valoreCoefficiente { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal valore { get; set; }
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
-        public UfficiModel DescrizioneUfficio { get; set; }
+        public UfficiModel Ufficio { get; set; }
     }
 }

@@ -1602,6 +1602,7 @@
     <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
     <Compile Include="EntitiesDBISEPRO.Context.cs">
       <AutoGen>True</AutoGen>
@@ -1645,6 +1646,7 @@
     <Compile Include="Models\DBModel\RiduzioniModel.cs" />
     <Compile Include="Models\DBModel\RuoloUfficioModel.cs" />
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\TFRModel.cs" />
     <Compile Include="Models\DBModel\TipoAliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\TipologiaConiugeModel.cs" />
     <Compile Include="Models\DBModel\TipologiaFiglioModel.cs" />

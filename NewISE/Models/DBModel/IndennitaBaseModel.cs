@@ -25,7 +25,7 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name ="Valore")]
-        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Valore resp.")]

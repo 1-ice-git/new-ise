@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -29,12 +30,24 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFine { get; set; }
-        
-        public bool Annullato { get; set; } = false;
+        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
+        [Display(Name = "Annullato")]
+        [DefaultValue(false)]
+        public bool annullato { get; set; } = false;
+
+
 
         public TrasferimentoModel Trasferimento { get; set; }
 
         public IndennitaBaseModel IndennitaBase { get; set; }
+
+        public TFRModel TFR { get; set; }
+
+        public PercentualeDisagioModel PercentualeDisagio { get; set; }
+
+        public CoefficientiSedeModel CoefficenteSede { get; set; }
+
+
 
         
 
