@@ -21,7 +21,7 @@ namespace NewISE
         }
     
         public decimal IDTIPOVOCE { get; set; }
-        public Nullable<decimal> IDTIPOELABOPRAZIONE { get; set; }
+        public decimal IDTIPOELABOPRAZIONE { get; set; }
         public string DESCRIZIONE { get; set; }
     
         public virtual TIPOELABORAZIONE TIPOELABORAZIONE { get; set; }

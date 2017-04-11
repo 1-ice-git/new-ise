@@ -17,21 +17,20 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEFIGLI()
         {
-            this.MAGFAM_MAGFIG = new HashSet<MAGFAM_MAGFIG>();
-            this.MF_IPS = new HashSet<MF_IPS>();
+            this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
         }
     
         public decimal IDMAGGIORAZIONEFIGLI { get; set; }
         public decimal IDTIPOLOGIAFIGLIO { get; set; }
+        public decimal IDINDPRIMOSEGR { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALEFIGLI { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual INDENNITAPRIMOSEGRETARIO INDENNITAPRIMOSEGRETARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_MAGFIG> MAGFAM_MAGFIG { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MF_IPS> MF_IPS { get; set; }
+        public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
     }
 }

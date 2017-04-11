@@ -23,7 +23,7 @@ namespace NewISE
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
-            this.UFFICIO_TFR = new HashSet<UFFICIO_TFR>();
+            this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
         }
     
         public decimal IDUFFICIO { get; set; }
@@ -43,6 +43,6 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UFFICIO_TFR> UFFICIO_TFR { get; set; }
+        public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
     }
 }

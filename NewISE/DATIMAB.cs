@@ -17,22 +17,23 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DATIMAB()
         {
-            this.DATIMAB_MABANNUALI = new HashSet<DATIMAB_MABANNUALI>();
-            this.MAB_DATIMAB = new HashSet<MAB_DATIMAB>();
+            this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
         }
     
         public decimal IDDATIMAB { get; set; }
-        public decimal CANONE { get; set; }
+        public decimal IDMAB { get; set; }
+        public Nullable<decimal> IDMAGANNUALI { get; set; }
         public decimal ANTICIPOANNUALE { get; set; }
         public decimal CONDIVISO { get; set; }
         public decimal PAGATOCONDIVISO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public Nullable<System.DateTime> DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DATIMAB_MABANNUALI> DATIMAB_MABANNUALI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_DATIMAB> MAB_DATIMAB { get; set; }
+        public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
+        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
     }
 }

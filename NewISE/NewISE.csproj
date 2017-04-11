@@ -51,6 +51,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.Functions, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Functions.1.3.1\lib\net46\EntityFramework.Functions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -1340,6 +1344,7 @@
     <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1431,7 +1436,7 @@
     </Compile>
     <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
-    <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimento.cs" />
+    <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
@@ -1468,6 +1473,9 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipRuoloUfficio.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipStatoTrasferimento.cs" />
     <Compile Include="ATTIVITACRUD.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1492,9 +1500,6 @@
     <Compile Include="DATIMAB.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="DATIMAB_MABANNUALI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="DEFFASCIACHILOMETRICA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1510,13 +1515,7 @@
     <Compile Include="FASCIACHILOMETRICA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="FASCKM_CFKM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="GRUPPIDOCUMENTI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="INDBASE_RID.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="INDENNITA.cs">
@@ -1543,22 +1542,7 @@
     <Compile Include="MAB_ALIQCONTR.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="MAB_DATIMAB.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="MAB_DOC.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_ALTRIDATIFAM.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_MAGCON.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_MAGFIG.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MAGFAM_PENSCON.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="MAGGIORAZIONEABITAZIONE.cs">
@@ -1576,12 +1560,6 @@
     <Compile Include="MAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="MF_IPS.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipRuoloUfficio.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipStatoTrasferimento.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
     <Compile Include="Models\DBModel\CDCModel.cs" />
@@ -1700,12 +1678,6 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RATEMAB.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="REGOLACALCOLO_RIDUZIONI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="REGOLECALCOLO.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1790,10 +1762,10 @@
     <Compile Include="UFFICI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="UFFICIO_TFR.cs">
+    <Compile Include="UTENTIAUTORIZZATI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="UTENTIAUTORIZZATI.cs">
+    <Compile Include="VALUTAUFFICIO.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="VALUTE.cs">

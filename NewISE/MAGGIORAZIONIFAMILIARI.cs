@@ -17,11 +17,8 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONIFAMILIARI()
         {
+            this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.BIGLIETTI = new HashSet<BIGLIETTI>();
-            this.MAGFAM_ALTRIDATIFAM = new HashSet<MAGFAM_ALTRIDATIFAM>();
-            this.MAGFAM_MAGCON = new HashSet<MAGFAM_MAGCON>();
-            this.MAGFAM_MAGFIG = new HashSet<MAGFAM_MAGFIG>();
-            this.MAGFAM_PENSCON = new HashSet<MAGFAM_PENSCON>();
             this.NOTIFICARICHIESTAMAGFAM = new HashSet<NOTIFICARICHIESTAMAGFAM>();
             this.PASSAPORTI = new HashSet<PASSAPORTI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
@@ -30,6 +27,9 @@ namespace NewISE
         public decimal IDMAGFAM { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDPARENTELA { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONECONIUGE { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONEFIGLI { get; set; }
+        public Nullable<decimal> IDPENSIONECONIUGE { get; set; }
         public string NOME { get; set; }
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
@@ -37,20 +37,17 @@ namespace NewISE
         public Nullable<System.DateTime> DATAFINE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BIGLIETTI> BIGLIETTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_ALTRIDATIFAM> MAGFAM_ALTRIDATIFAM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_MAGCON> MAGFAM_MAGCON { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_MAGFIG> MAGFAM_MAGFIG { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_PENSCON> MAGFAM_PENSCON { get; set; }
+        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual PARENTELA PARENTELA { get; set; }
+        public virtual PENSIONECONIUGE PENSIONECONIUGE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }

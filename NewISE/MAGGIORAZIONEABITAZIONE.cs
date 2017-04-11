@@ -17,26 +17,20 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEABITAZIONE()
         {
-            this.MAB_ALIQCONTR = new HashSet<MAB_ALIQCONTR>();
-            this.MAB_DATIMAB = new HashSet<MAB_DATIMAB>();
+            this.DATIMAB = new HashSet<DATIMAB>();
             this.MAB_DOC = new HashSet<MAB_DOC>();
-            this.RATEMAB = new HashSet<RATEMAB>();
         }
     
         public decimal IDMAB { get; set; }
-        public decimal IDINDENNITA { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINIZIOMAB { get; set; }
-        public Nullable<System.DateTime> DATAFINEMAB { get; set; }
+        public System.DateTime DATAFINEMAB { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_DATIMAB> MAB_DATIMAB { get; set; }
+        public virtual ICollection<DATIMAB> DATIMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RATEMAB> RATEMAB { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

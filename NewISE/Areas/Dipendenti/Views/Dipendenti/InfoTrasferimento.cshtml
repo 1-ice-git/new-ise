@@ -1,0 +1,55 @@
+﻿@model NewISE.Areas.Dipendenti.Models.dipInfoTrasferimentoModel
+@using NewISE.Models.DBModel;
+
+@{ 
+    string statoTrasferimento = Model.statoTrasferimento.ToString();
+}
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("lblStatoTrasferimento", "stato Trasferimento", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="statoTrasferimento" name="statoTrasferimento" type="text" value="@statoTrasferimento" class="form-control" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblCdcDestinazione", "CDC destinazione", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-3">
+            <input id="CDCDestinazione" name="CDCDestinazione" type="text" value="@Model.CDCDestinazione" class="form-control" readonly/>
+        </div>
+        @Html.Label("lblDecorrenza", "Decorrenza", new { @class = "control-label col-xs-2" })
+        <div class="col-xs-3">
+            <input id="Decorrenza" name="Decorrenza" type="text" value="@Model.Decorrenza" class="form-control" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblRuolo", "Ruolo", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="DescrizioneRuolo" name="DescrizioneRuolo" type="text" value="@Model.RuoloUfficio.DescrizioneRuolo" class="form-control" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblIndbase", "Indennità Base", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="indennitaBase" name="indennitaBase" type="text" value="@Model.indennitaBase.ToString("N2")" class="form-control text-right" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblIndennitaservizio", "Indennità Servizio", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="indennitaServizio" name="indennitaServizio" type="text" value="@Model.indennitaServizio.ToString("N2")" class="form-control text-right" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblMaggiorazioniFamiliari", "Maggiorazioni Familiari", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="maggiorazioniFamiliari" name="maggiorazioniFamiliari" type="text" value="@Model.maggiorazioniFamiliari.ToString("N2")" class="form-control text-right" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblIndennitaPersonale", "Indennità Personale", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="indennitaPersonale" name="indennitaPersonale" type="text" value="@Model.indennitaPersonale.ToString("N2")" class="form-control text-right" readonly/>
+        </div>
+    </div>
+</div>

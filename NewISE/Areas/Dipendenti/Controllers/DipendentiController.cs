@@ -1,4 +1,5 @@
 ﻿using NewISE.Areas.Dipendenti.Models;
+using NewISE.Areas.Dipendenti.Models.DtObj;
 using NewISE.Models;
 using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Areas.Dipendenti.Controllers
 {
@@ -102,6 +104,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
                 ViewBag.ListDipendentiGepeMatricola = rMatricola;
                 ViewBag.ListDipendentiGepeNominativo = rNominativo;
                 ViewBag.Amministratore = admin;
+                ViewBag.Matricola = dr.matricola;
 
             }
             catch (Exception ex)
@@ -114,9 +117,27 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
         public ActionResult InfoTrasferimento(string matricola)
         {
-            dipInfoTrasferimento dit = new dipInfoTrasferimento();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
-            
+            try
+            {
+                using (dtDipTrasferimento dtdt=new dtDipTrasferimento())
+                {
+                    dit = dtdt.GetInfoTrasferimento(matricola);
+
+                    if (dit.CDCDestinazione == string.Empty)
+                    {
+                        dit.statoTrasferimento = EnumStatoTraferimento.Non_Trasferito;
+                        dit.UfficioDestinazione = new UfficiModel();
+                        dit.RuoloUfficio = new RuoloUfficioModel();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
             
 
             return PartialView(dit);

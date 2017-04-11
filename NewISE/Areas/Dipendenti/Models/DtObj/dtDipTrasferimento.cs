@@ -14,9 +14,9 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
             GC.SuppressFinalize(this);
         }
 
-        public dipInfoTrasferimento GetInfoTrasferimento(int matricola)
+        public dipInfoTrasferimentoModel GetInfoTrasferimento(string matricola)
         {
-            dipInfoTrasferimento dit = new dipInfoTrasferimento();
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             TrasferimentoModel tm = new TrasferimentoModel();
             DateTime dtDatiParametri;
             

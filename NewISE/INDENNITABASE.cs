@@ -17,12 +17,12 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITABASE()
         {
-            this.INDBASE_RID = new HashSet<INDBASE_RID>();
             this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDINDENNITABASE { get; set; }
         public decimal IDLIVELLO { get; set; }
+        public decimal IDRIDUZIONI { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal VALORE { get; set; }
@@ -30,9 +30,8 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDBASE_RID> INDBASE_RID { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
+        public virtual RIDUZIONI RIDUZIONI { get; set; }
     }
 }

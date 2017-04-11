@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITAPRIMOSEGRETARIO()
         {
-            this.MF_IPS = new HashSet<MF_IPS>();
+            this.MAGGIORAZIONEFIGLI = new HashSet<MAGGIORAZIONEFIGLI>();
         }
     
         public decimal IDINDPRIMOSEGR { get; set; }
@@ -27,6 +27,6 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MF_IPS> MF_IPS { get; set; }
+        public virtual ICollection<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
     }
 }

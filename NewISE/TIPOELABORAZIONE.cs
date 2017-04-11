@@ -20,7 +20,7 @@ namespace NewISE
             this.TIPOVOCE = new HashSet<TIPOVOCE>();
         }
     
-        public decimal IDTIPOELABOPRAZIONE { get; set; }
+        public decimal IDTIPOELABORAZIONE { get; set; }
         public string DESCRIZIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

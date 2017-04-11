@@ -12,13 +12,15 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class MAGFAM_MAGFIG
+    public partial class VALUTAUFFICIO
     {
-        public decimal IDMAGGIORAZIONEFIGLI { get; set; }
-        public decimal IDMAGFAM { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDVALUTA { get; set; }
+        public decimal IDUFFICIO { get; set; }
+        public System.DateTime DATAINIZIOVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public bool ANNULLATO { get; set; }
     
-        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
-        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
+        public virtual VALUTE VALUTE { get; set; }
     }
 }

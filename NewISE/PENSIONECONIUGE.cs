@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PENSIONECONIUGE()
         {
-            this.MAGFAM_PENSCON = new HashSet<MAGFAM_PENSCON>();
+            this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
         }
     
         public decimal IDPENSIONECONIUGE { get; set; }
@@ -27,6 +27,6 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_PENSCON> MAGFAM_PENSCON { get; set; }
+        public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,9 +12,11 @@ namespace NewISE.Models.DBModel
     public class LivelliDipendentiModel
     {
         [Key]
-        public decimal idLivelloDipendente { get; set; }
+        [Column(Order = 1)]
         [Required(ErrorMessage = "Il dipendente è richiesto.")]
         public decimal idDipendente { get; set; }
+        [Key]
+        [Column(Order = 2)]
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]

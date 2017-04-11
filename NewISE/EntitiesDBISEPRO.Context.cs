@@ -12,6 +12,8 @@ namespace NewISE
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class EntitiesDBISE : DbContext
     {
@@ -37,15 +39,12 @@ namespace NewISE
         public virtual DbSet<COEFFICENTISEDE> COEFFICENTISEDE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DATIMAB> DATIMAB { get; set; }
-        public virtual DbSet<DATIMAB_MABANNUALI> DATIMAB_MABANNUALI { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual DbSet<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
-        public virtual DbSet<FASCKM_CFKM> FASCKM_CFKM { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
-        public virtual DbSet<INDBASE_RID> INDBASE_RID { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
@@ -54,18 +53,12 @@ namespace NewISE
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
-        public virtual DbSet<MAB_DATIMAB> MAB_DATIMAB { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
-        public virtual DbSet<MAGFAM_ALTRIDATIFAM> MAGFAM_ALTRIDATIFAM { get; set; }
-        public virtual DbSet<MAGFAM_MAGCON> MAGFAM_MAGCON { get; set; }
-        public virtual DbSet<MAGFAM_MAGFIG> MAGFAM_MAGFIG { get; set; }
-        public virtual DbSet<MAGFAM_PENSCON> MAGFAM_PENSCON { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
         public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual DbSet<MF_IPS> MF_IPS { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         public virtual DbSet<OA> OA { get; set; }
@@ -76,8 +69,6 @@ namespace NewISE
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PRIMASIST_ALIQCONTR> PRIMASIST_ALIQCONTR { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
-        public virtual DbSet<RATEMAB> RATEMAB { get; set; }
-        public virtual DbSet<REGOLACALCOLO_RIDUZIONI> REGOLACALCOLO_RIDUZIONI { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
@@ -106,10 +97,23 @@ namespace NewISE
         public virtual DbSet<TRASPORTOEFFETTIRIENTRO> TRASPORTOEFFETTIRIENTRO { get; set; }
         public virtual DbSet<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
         public virtual DbSet<UFFICI> UFFICI { get; set; }
-        public virtual DbSet<UFFICIO_TFR> UFFICIO_TFR { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
+        public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+    
+        public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI)
+        {
+            var v_VDATAParameter = v_VDATA.HasValue ?
+                new ObjectParameter("V_VDATA", v_VDATA) :
+                new ObjectParameter("V_VDATA", typeof(System.DateTime));
+    
+            var v_VDIPParameter = v_VDIP.HasValue ?
+                new ObjectParameter("V_VDIP", v_VDIP) :
+                new ObjectParameter("V_VDIP", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CALCOLIINDENNITA", v_VDATAParameter, v_VDIPParameter, iNDBASE, iNDSERVIZIO, mAGGIORAZIONECONIUGE, mAGGIORAZIONEFIGLI);
+        }
     }
 }
