@@ -11,13 +11,13 @@
 
     LivelloModel lm = (LivelloModel)ViewBag.Livello;
     string descrizioneLivello = lm.DescLivello;
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idLivello = lm.idLivello;
 
     UfficiModel lm1 = (UfficiModel)ViewBag.Descrizione;
     string descrizioneUfficio = lm1.DescUfficio;
-
     decimal idUfficio = lm1.idUfficio;
+
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 }
 
 @using (Ajax.BeginForm("InserisciPercentualeMaggiorazioneAbitazione", "ParamPercMaggAbitaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))

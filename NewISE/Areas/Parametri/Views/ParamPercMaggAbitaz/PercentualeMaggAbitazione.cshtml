@@ -15,7 +15,7 @@
         @Html.Label("lblLivello0", "Seleziona Livello", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
+                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitazLivello();", @onClick = "PrelevaPVPercMaggAbitazLivello();" })
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitazUfficio();", @onClick = "PrelevaPVPercMaggAbitazUfficio();" })
             </div>
         </div>
     </div>
@@ -133,18 +133,74 @@
 
     $("#btnInsNuovaPercMaggAbitaz").button();
 
-    function ParamPercMaggAbitaz() {
-        //debugger;
+    function PrelevaPVPercMaggAbitazLivello() {
+        debugger;
         rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        //var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
             return false;
         }
+
+        //if (isNaN(idUfficio)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function PrelevaPVPercMaggAbitazUfficio() {
+        debugger;
+        rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneUfficio";
+
+        //var idLivello = parseInt($("#idLivello").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        var chk = true;
+
+        //if (isNaN(idLivello)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
@@ -158,7 +214,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idUfficio: idUfficio, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -190,9 +246,9 @@
     }
 
     function NuovaPercentualeMaggiorazioneAbitazione() {
-        //debugger;
+        debugger;
 
-        var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercMaggAbitazione";
+        var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercentualeMaggAbitazione";
         var idLivello = parseInt($("#idLivello").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = false;

@@ -231,7 +231,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         VALORECOEFFICENTE = item.VALORECOEFFICENTE,
                                         ANNULLATO = false
                                     };
@@ -245,7 +245,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         VALORECOEFFICENTE = item.VALORECOEFFICENTE,
                                         ANNULLATO = false
                                     };
@@ -253,7 +253,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld2 = new COEFFICENTISEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORECOEFFICENTE = item.VALORECOEFFICENTE,
                                         ANNULLATO = false
@@ -276,7 +276,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new COEFFICENTISEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORECOEFFICENTE = item.VALORECOEFFICENTE,
                                         ANNULLATO = false
@@ -296,7 +296,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new COEFFICENTISEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORECOEFFICENTE = item.VALORECOEFFICENTE,
                                         ANNULLATO = false

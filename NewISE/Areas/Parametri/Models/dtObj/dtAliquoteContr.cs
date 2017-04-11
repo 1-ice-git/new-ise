@@ -264,7 +264,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         
                                         IDALIQCONTR = item.IDALIQCONTR,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         ALIQUOTA = item.ALIQUOTA,
                                         ANNULLATO = false
@@ -288,7 +288,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         
                                         IDALIQCONTR = item.IDALIQCONTR,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         ALIQUOTA = item.ALIQUOTA,
                                         ANNULLATO = false
@@ -309,7 +309,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         
                                         IDALIQCONTR = item.IDALIQCONTR,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         ALIQUOTA =item.ALIQUOTA,
                                         ANNULLATO = false

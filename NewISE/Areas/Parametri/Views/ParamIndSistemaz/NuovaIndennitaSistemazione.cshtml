@@ -129,12 +129,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamIndSist/IndennitaSistemazioneLivello";
+        rotta = "/Parametri/ParamIndSistemaz/IndennitaSistemazioneLivello";
 
-        var idLivello = parseFloat('@idTipoTrasferimento');
+        var idTipoTrasferimento = parseFloat('@idTipoTrasferimento');
         var chk = true;
 
-        if (isNaN(idLivello)) {
+        if (isNaN(idTipoTrasferimento)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -146,7 +146,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
+            data: { idTipoTrasferimento: idTipoTrasferimento, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

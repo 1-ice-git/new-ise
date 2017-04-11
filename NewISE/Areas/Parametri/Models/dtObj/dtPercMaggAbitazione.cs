@@ -74,7 +74,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Livello = new LivelloModel()
@@ -115,7 +115,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Livello = new LivelloModel()
@@ -156,7 +156,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idUfficio = e.IDUFFICIO,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Livello = new LivelloModel()
@@ -206,7 +206,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                //DATAFINEVALIDITA = ibm.dataFineValidita.Value,
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
@@ -217,7 +217,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                //DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
@@ -229,7 +229,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDLIVELLO = ibm.idLivello,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            //DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
                         };
@@ -259,7 +259,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         IDLIVELLO = item.IDLIVELLO,
                                         IDUFFICIO =item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        //DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
@@ -273,7 +273,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        //DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
@@ -282,7 +282,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
-                                        //DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
@@ -305,7 +305,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
-                                        //DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
@@ -325,7 +325,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
-                                        //DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
