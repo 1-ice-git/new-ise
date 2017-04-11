@@ -44,7 +44,7 @@
         <EntityTypeShape EntityType="DBISE.PASSAPORTI" Width="1.5" PointX="13.5" PointY="34.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.PENSIONECONIUGE" Width="1.5" PointX="6" PointY="52.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.PERCENTUALEDISAGIO" Width="1.5" PointX="9.75" PointY="46.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISE.PERCENTUALEMAB" Width="1.5" PointX="14.5" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBISE.PERCENTUALEMAB" Width="2.375" PointX="14.5" PointY="58.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.PRIMASIST_ALIQCONTR" Width="1.5" PointX="22.5" PointY="54" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.PRIMASITEMAZIONE" Width="1.5" PointX="17.25" PointY="50.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISE.REGOLECALCOLO" Width="1.5" PointX="5.25" PointY="59.75" IsExpanded="true" />
