@@ -21,8 +21,6 @@ namespace NewISE.Models.DBModel.dtObj
                 using (EntitiesDBISE db=new EntitiesDBISE())
                 {
                     
-                    
-
                     var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr);
 
                     if (ldp != null && ldp.Count() > 0)
