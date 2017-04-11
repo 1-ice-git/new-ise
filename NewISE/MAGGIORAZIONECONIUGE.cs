@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONECONIUGE()
         {
-            this.MAGFAM_MAGCON = new HashSet<MAGFAM_MAGCON>();
+            this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
         }
     
         public decimal IDMAGGIORAZIONECONIUGE { get; set; }
@@ -28,7 +28,7 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_MAGCON> MAGFAM_MAGCON { get; set; }
+        public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
     }
 }

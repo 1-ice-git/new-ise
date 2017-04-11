@@ -18,22 +18,27 @@ namespace NewISE
         public VARIAZIONIRATEMAB()
         {
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
+            this.MAB_ALIQCONTR = new HashSet<MAB_ALIQCONTR>();
         }
     
         public decimal IDVARIAZIONERATAMAB { get; set; }
-        public decimal IDRATEMAB { get; set; }
         public decimal IDPERCMAB { get; set; }
         public decimal IDTFR { get; set; }
+        public decimal IDDATIMAB { get; set; }
+        public decimal IDINDENNITA { get; set; }
+        public decimal CANONE { get; set; }
         public System.DateTime DATAINIZIOVARIAZIONE { get; set; }
         public System.DateTime DATAFINEVARIAZIONE { get; set; }
-        public decimal CANONE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual DATIMAB DATIMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
+        public virtual INDENNITA INDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
-        public virtual RATEMAB RATEMAB { get; set; }
         public virtual TFR TFR { get; set; }
     }
 }

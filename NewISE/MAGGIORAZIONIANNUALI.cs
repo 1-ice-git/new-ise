@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONIANNUALI()
         {
-            this.DATIMAB_MABANNUALI = new HashSet<DATIMAB_MABANNUALI>();
+            this.DATIMAB = new HashSet<DATIMAB>();
         }
     
         public decimal IDMAGANNUALI { get; set; }
@@ -28,7 +28,7 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DATIMAB_MABANNUALI> DATIMAB_MABANNUALI { get; set; }
+        public virtual ICollection<DATIMAB> DATIMAB { get; set; }
         public virtual UFFICI UFFICI { get; set; }
     }
 }

@@ -17,19 +17,18 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RIDUZIONI()
         {
-            this.INDBASE_RID = new HashSet<INDBASE_RID>();
-            this.REGOLACALCOLO_RIDUZIONI = new HashSet<REGOLACALCOLO_RIDUZIONI>();
+            this.INDENNITABASE = new HashSet<INDENNITABASE>();
         }
     
         public decimal IDRIDUZIONI { get; set; }
+        public decimal IDREGOLA { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALE { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDBASE_RID> INDBASE_RID { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<REGOLACALCOLO_RIDUZIONI> REGOLACALCOLO_RIDUZIONI { get; set; }
+        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
     }
 }

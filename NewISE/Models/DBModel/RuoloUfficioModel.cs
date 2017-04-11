@@ -12,7 +12,7 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idRuoloUfficio { get; set; }
         [Required(ErrorMessage = "La descrizione è richiesta.")]
-        [Display(Name = "Descrizione")]
+        [Display(Name = "Desc. Ruolo")]
         [StringLength(30, ErrorMessage = "Per la descrione sono richiesti un massimo di 30 caratteri.")]
         [DataType(DataType.Text)]
         [CustomValidation(typeof(dtDipRuoloUfficio), "DescrizioneRuoloUfficioUnivoca", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]

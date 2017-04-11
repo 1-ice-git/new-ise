@@ -19,10 +19,10 @@ namespace NewISE
         {
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.NOTIFICARICHIESTAMAGFAM = new HashSet<NOTIFICARICHIESTAMAGFAM>();
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
+            this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
         }
     
         public decimal IDINDENNITA { get; set; }
@@ -41,13 +41,13 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual INDENNITABASE INDENNITABASE { get; set; }
         public virtual PERCENTUALEDISAGIO PERCENTUALEDISAGIO { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }

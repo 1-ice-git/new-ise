@@ -18,7 +18,6 @@ namespace NewISE
         public TFR()
         {
             this.INDENNITA = new HashSet<INDENNITA>();
-            this.UFFICIO_TFR = new HashSet<UFFICIO_TFR>();
             this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
         }
     
@@ -31,8 +30,6 @@ namespace NewISE
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UFFICIO_TFR> UFFICIO_TFR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual VALUTE VALUTE { get; set; }

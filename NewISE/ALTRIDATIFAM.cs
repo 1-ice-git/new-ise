@@ -14,13 +14,8 @@ namespace NewISE
     
     public partial class ALTRIDATIFAM
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ALTRIDATIFAM()
-        {
-            this.MAGFAM_ALTRIDATIFAM = new HashSet<MAGFAM_ALTRIDATIFAM>();
-        }
-    
         public decimal IDALTRIDATIFAM { get; set; }
+        public decimal IDMAGFAM { get; set; }
         public System.DateTime DATANASCITA { get; set; }
         public string COMUNENASCITA { get; set; }
         public string PROVINCIANASCITA { get; set; }
@@ -34,7 +29,6 @@ namespace NewISE
         public decimal STUDENTE { get; set; }
         public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGFAM_ALTRIDATIFAM> MAGFAM_ALTRIDATIFAM { get; set; }
+        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
     }
 }

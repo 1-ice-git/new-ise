@@ -14,11 +14,11 @@ namespace NewISE
     
     public partial class MAB_ALIQCONTR
     {
-        public decimal IDMAB { get; set; }
         public decimal IDALIQCONTR { get; set; }
+        public decimal IDVARIAZIONERATAMAB { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
     
         public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual VARIAZIONIRATEMAB VARIAZIONIRATEMAB { get; set; }
     }
 }

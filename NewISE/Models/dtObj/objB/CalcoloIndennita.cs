@@ -53,7 +53,7 @@ namespace NewISE.Models.dtObj.objB
                                 var i = li.First();
                                 decimal percentualeRiduzione = 0;
 
-                                var ir = i.INDENNITABASE.INDBASE_RID;
+                                //var ir = i.INDENNITABASE.INDBASE_RID;
 
                                 
 
