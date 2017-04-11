@@ -5,43 +5,40 @@
     string matricola = ViewBag.Matricola;
 }
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="form-horizontal">
-            <div class="form-group">
-                @Html.Label("lblMatricola", "Matricola", new { @class = "control-label col-xs-3" })
-                <div id="divCombo" class="col-xs-9">
-                    <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeMatricola as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
-                    </div>
+<div id="divControlliDipendenti">
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.Label("lblMatricola", "Matricola", new { @class = "control-label col-xs-3" })
+            <div id="divCombo" class="col-xs-9">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeMatricola as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
                 </div>
             </div>
-            <div class="form-group">
-                @Html.Label("lblNominativo", "Nominativo", new { @class = "control-label col-xs-3" })
-                <div id="divCombo2" class="col-xs-9">
-                    <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "listNominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
-                    </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("lblNominativo", "Nominativo", new { @class = "control-label col-xs-3" })
+            <div id="divCombo2" class="col-xs-9">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "listNominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
                 </div>
             </div>
-            <div class="form-group">
-
-                <label for="dataAssunzione" class="col-xs-3 control-label">Data assunz.</label>
-                <div class="col-xs-9">
-                    <input id="dataAssunzione" name="dataAssunzione" type="datetime" value="@Model.dataAssunzione.ToShortDateString()" class="form-control" readonly />
-                </div>
+        </div>
+        <div class="form-group">
+            <label for="dataAssunzione" class="col-xs-3 control-label">Data assunz.</label>
+            <div class="col-xs-9">
+                <input id="dataAssunzione" name="dataAssunzione" type="datetime" value="@Model.dataAssunzione.ToShortDateString()" class="form-control" readonly />
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.livello.livello, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
-                    <input id="livello" name="livello" type="text" value="@Model.livello.livello" class="form-control" readonly />
-                </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.livello.livello, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                <input id="livello" name="livello" type="text" value="@Model.livello.livello" class="form-control" readonly />
             </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.cdc.cdc, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
-                    <input id="cdc" name="cdc" type="text" value="@Model.cdc.cdc" class="form-control" readonly />
-                </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.cdc.cdc, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                <input id="cdc" name="cdc" type="text" value="@Model.cdc.cdc" class="form-control" readonly />
             </div>
         </div>
     </div>
@@ -108,41 +105,41 @@
     }
 
     function InfoTrasferimento(matricola) {
-                //debugger;
-                var rotta = "/Dipendenti/Dipendenti/InfoTrasferimento";
-                if (matricola != "") {
-                    $.ajax({
-                        type: "POST",
-                        url: rotta,
-                        data: { matricola: matricola },
-                        dataType: 'html',
-                        beforeSend: function () {
-                            //debugger;
-                            //VerificaAutenticazione();
-                            //$("#DialogNewDoc").dialog("destroy");
-                            //$("#divEffettoLoadAutNoDoc").show("slow");
-                            //$("#ContenitoreDipendentiGepe").empty();
-                        },
-                        success: function (result) {
-                            //debugger;
-                            //$("#divEffettoLoadAutNoDoc").hide("slow");
-                            $("#ContenitoreDatiTrasf").empty();
-                            $("#ContenitoreDatiTrasf").html(result);
+        //debugger;
+        var rotta = "/Dipendenti/Dipendenti/InfoTrasferimento";
+        if (matricola != "") {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                    //$("#ContenitoreDipendentiGepe").empty();
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#ContenitoreDatiTrasf").empty();
+                    $("#ContenitoreDatiTrasf").html(result);
 
-                            //RicercaDocumenti();
+                    //RicercaDocumenti();
 
-                        },
-                        complete: function () {
-                            //$("#divEffettoLoadAutNoDoc").hide("slow");
-                            //                $("#Centro").getNiceScroll().resize();
-                        },
-                        error: function (jqXHR, textStatus, errorThrow) {
-                            //debugger;
-                            var msg = errorThrow.err;
-                            AlertDialog(msg);
-                        }
-
-                    });
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
                 }
-            }
+
+            });
+        }
+    }
 </script>
