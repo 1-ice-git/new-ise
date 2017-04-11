@@ -25,11 +25,11 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name ="Valore")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Valore resp.")]
-        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
         public decimal valoreResponsabile { get; set; }
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
