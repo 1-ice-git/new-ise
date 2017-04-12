@@ -1,0 +1,42 @@
+﻿@model NewISE.Models.DBModel.TrasferimentoModel
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("lblTipoTrasferimento", "Tipo Trasferimento", new { @class = "control-label col-xs-3" })
+        <div id="divCombo" class="col-xs-9">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblDestinazione", "Destinazione", new { @class = "control-label col-xs-3" })
+        <div id="divCombo" class="col-xs-9">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblDecorrenza", "Decorrenza", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-8">
+            <input id="dataPartenza" name="dataPartenza" type="datetime" value="" class="form-control" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblRuolo", "Ruolo", new { @class = "control-label col-xs-3" })
+        <div id="divCombo" class="col-xs-9">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idRuolo", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblTipologiaCoan", "Tipologia Co.An.", new { @class = "control-label col-xs-3" })
+        <div id="divCombo" class="col-xs-9">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+            </div>
+        </div>
+    </div>
+</div>

@@ -1346,6 +1346,7 @@
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1436,6 +1437,7 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
+    <Compile Include="Areas\Dipendenti\Controllers\TrasferimentoController.cs" />
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
@@ -1801,6 +1803,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dipendenti\Views\Shared\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\Trasferimento\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
