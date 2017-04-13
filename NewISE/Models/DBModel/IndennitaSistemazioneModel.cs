@@ -36,6 +36,7 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
-        public TipoTrasferimentoModel tipologiaTrasferimento { get; set; }
+        public TipoTrasferimentoModel Trasferimento { get; set; }
+
     }
 }

@@ -8,13 +8,10 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-
-    
-    TipoTrasferimentoModel lm = (TipoTrasferimentoModel)ViewBag.tipologiaTrasferimento;
+    TipoTrasferimentoModel lm = (TipoTrasferimentoModel)ViewBag.Trasferimento;
     string tipologiaTrasferimento = lm.tipologiaTrasferimento;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idTipoTrasferimento = lm.idTipoTrasferimento;
-
 }
 
 @using (Ajax.BeginForm("InserisciIndennitaSistemazione", "ParamIndSistemaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
@@ -90,8 +87,6 @@
 	    aDec: ',',
 	    aSign: ''
 	});
-
-
 
     $('form').submit(function () {
         //debugger;

@@ -35,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                tipologiaTrasferimento = new TipoTrasferimentoModel()
+                                Trasferimento = new TipoTrasferimentoModel()
                                 {
                                     
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
@@ -73,7 +73,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                tipologiaTrasferimento = new TipoTrasferimentoModel()
+                                Trasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                     tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
@@ -109,7 +109,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                tipologiaTrasferimento = new TipoTrasferimentoModel()
+                                Trasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                     tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
@@ -144,7 +144,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                tipologiaTrasferimento = new TipoTrasferimentoModel()
+                                Trasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                     tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()

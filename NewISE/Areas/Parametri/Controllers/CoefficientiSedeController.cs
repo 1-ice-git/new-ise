@@ -180,13 +180,13 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoefficientiSede(bool escludiAnnullati, decimal idUfficio, decimal idPercDisagio)
+        public ActionResult EliminaCoefficienteSede(bool escludiAnnullati, decimal idUfficio, decimal idCoefficientiSede)
         {
             try
             {
                 using (dtCoefficientiSede dtib = new dtCoefficientiSede())
                 {
-                    dtib.DelCoefficientiSede(idPercDisagio);
+                    dtib.DelCoefficientiSede(idCoefficientiSede);
                 }
 
                 return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });

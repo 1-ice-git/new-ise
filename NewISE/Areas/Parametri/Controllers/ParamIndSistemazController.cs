@@ -133,7 +133,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
                 {
                     var lm = dtl.GetTrasferimenti(idTipoTrasferimento);
-                    ViewBag.tipologiatrasferimento = lm;
+                    ViewBag.Trasferimento = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
@@ -167,7 +167,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
                     {
                         var lm = dtl.GetTrasferimenti(ibm.idTipoTrasferimento);
-                        ViewBag.tipologiatrasferimento = lm;
+                        ViewBag.Trasferimento = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaSistemazione", ibm);

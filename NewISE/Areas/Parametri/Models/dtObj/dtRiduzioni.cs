@@ -391,10 +391,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public void DelRiduzioni(decimal idIndbase)
+        public void DelRiduzioni(decimal idRiduzioni)
         {
-            INDENNITABASE precedenteIB = new INDENNITABASE();
-            INDENNITABASE delIB = new INDENNITABASE();
+            RIDUZIONI precedenteIB = new RIDUZIONI();
+            RIDUZIONI delIB = new RIDUZIONI();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -403,38 +403,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.INDENNITABASE.Where(a => a.IDINDENNITABASE == idIndbase);
+                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.RIDUZIONI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new INDENNITABASE()
+                            var ibOld1 = new RIDUZIONI()
                             {
-                                IDLIVELLO = precedenteIB.IDLIVELLO,
+                                
+                                IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                VALORE = precedenteIB.VALORE,
-                                VALORERESP = precedenteIB.VALORERESP,
+                                PERCENTUALE = precedenteIB.PERCENTUALE,
+                                
                                 ANNULLATO = false
                             };
 
-                            db.INDENNITABASE.Add(ibOld1);
+                            db.RIDUZIONI.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "INDENNITABASE", idIndbase);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di riduzioni.", "RIDUZIONI", idRiduzioni);
                         }
 
 

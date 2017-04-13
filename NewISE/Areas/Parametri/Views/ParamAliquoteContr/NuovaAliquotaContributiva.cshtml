@@ -128,10 +128,10 @@
     function TornaElencoIb() {
         rotta = "/Parametri/ParamAliquoteContr/AliquoteLivello";
 
-        var idAliqContr = parseFloat('@idAliqContr');
+        var idTipoAliqContr = parseFloat('@idTipoAliqContr');
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idTipoAliqContr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -143,7 +143,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAliqContr: idAliqContr, escludiAnnullati: chk },
+            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

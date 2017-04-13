@@ -7,7 +7,7 @@
 }
 
 <p>
-    <a id="btnInsNuovaAliquota" href="#" onclick="NuovaAliquota();">Inserisci Aliquota</a>
+    <a id="btnInsNuovaAliquota" href="#" onclick="NuoveAliquote();">Inserisci Aliquota</a>
 </p>
 
 <p>
@@ -15,7 +15,7 @@
         @Html.Label("lblAliquota0", "Seleziona Aliquota ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("IdTipoContributo", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
+                @Html.DropDownList("idTipoAliqContr", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idAliqContr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaAliquota(@item.idAliqContr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -105,7 +105,7 @@
         }
     });
 
-    $("#IdAliqContr").select2({
+    $("#idTipoAliqContr").select2({
         placeholder: "Seleziona l' Aliquota ",
         allowClear: true,
         language: "it",
@@ -119,10 +119,10 @@
         //debugger;
         rotta = "/Parametri/ParamAliquoteContr/AliquoteLivello";
 
-        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
+        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idTipoAliqContr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -134,7 +134,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAliqContr: idAliqContr, escludiAnnullati: chk },
+            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -169,10 +169,10 @@
         //debugger;
 
         var rotta = "/Parametri/ParamAliquoteContr/NuoveAliquote";
-        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
+        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
         var chk = false;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idTipoAliqContr)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un livello per procedere.");
             return false;
@@ -185,7 +185,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAliqContr: idAliqContr, escludiAnnullati: chk },
+            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -220,10 +220,10 @@
         //debugger;
         var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquota";
 
-        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
+        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idTipoAliqContr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -243,7 +243,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idAliqContr: idAliqContr, idTipoAliqContr: id },
+                            data: { escludiAnnullati: chk, idTipoAliqContr: idTipoAliqContr, idAliqContr: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;
