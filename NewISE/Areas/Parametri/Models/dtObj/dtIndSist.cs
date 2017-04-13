@@ -228,6 +228,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
 
+                                                            
+
                     recordInteressati.ForEach(a => a.ANNULLATO = true);
                     //db.SaveChanges();
 
@@ -244,7 +246,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICENTE = item.COEFFICENTE,
                                         ANNULLATO = false
                                     };
@@ -258,7 +260,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICENTE = item.COEFFICENTE,
                                         ANNULLATO = false
                                     };
@@ -266,7 +268,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld2 = new INDENNITASISTEMAZIONE()
                                     {
                                         IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICENTE = item.COEFFICENTE,
                                         ANNULLATO = false
@@ -289,7 +291,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
                                         IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICENTE = item.COEFFICENTE,
                                         ANNULLATO = false
@@ -309,7 +311,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
                                         IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICENTE = item.COEFFICENTE,
                                         ANNULLATO = false
