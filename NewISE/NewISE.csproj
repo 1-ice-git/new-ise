@@ -1617,6 +1617,7 @@
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TFRModel.cs" />
     <Compile Include="Models\DBModel\TipoAliquoteContributiveModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaCoanModel.cs" />
     <Compile Include="Models\DBModel\TipologiaConiugeModel.cs" />
     <Compile Include="Models\DBModel\TipologiaFiglioModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
