@@ -44,8 +44,7 @@ namespace NewISE.Models.DBModel
 
         [StringLength(10, ErrorMessage = "per ilo COAN sono richiesti un massimo di 10 caratteri.")]
         [Display(Name = "CO.AN.")]
-        [DataType(DataType.Text)]
-        [CustomValidation(typeof(dtDipendenti), "MatricolaUnivoca", ErrorMessage = "La matricola inserita è già presente, inserirne un altra.")]
+        [DataType(DataType.Text)]        
         public string coan { get; set; }
 
 

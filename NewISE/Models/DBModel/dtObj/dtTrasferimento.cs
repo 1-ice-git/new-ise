@@ -100,7 +100,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
                                     tipologiaTrasferimento = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                 },
-                                ufficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = t.UFFICI.IDUFFICIO,
                                     codiceUfficio = t.UFFICI.CODICEUFFICIO,
