@@ -30,12 +30,12 @@ namespace NewISE
         public decimal IDINDENNITABASE { get; set; }
         public decimal IDTFR { get; set; }
         public decimal IDPERCENTUALEDISAGIO { get; set; }
-        public decimal IDCOEFFICENTESEDE { get; set; }
+        public decimal IDCOEFFICIENTESEDE { get; set; }
         public System.DateTime DATAINIZIO { get; set; }
         public System.DateTime DATAFINE { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual COEFFICENTISEDE COEFFICENTISEDE { get; set; }
+        public virtual COEFFICIENTESEDE COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

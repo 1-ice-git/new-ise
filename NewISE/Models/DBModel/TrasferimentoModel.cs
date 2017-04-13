@@ -25,9 +25,11 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Ruolo richiesto")]
         public decimal idRuolo { get; set; }
 
-        [Required(ErrorMessage = "dipendente richiesto")]
+        [Required(ErrorMessage = "Dipendente richiesto")]
         public decimal idDipendente { get; set; }
 
+        [Required(ErrorMessage = "Tipo CO.AN richiesto")]
+        public decimal idTipoCoan { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data di partenza")]
@@ -41,8 +43,8 @@ namespace NewISE.Models.DBModel
 
 
         [StringLength(10, ErrorMessage = "per ilo COAN sono richiesti un massimo di 10 caratteri.")]
-        [Display(Name = "COAN")]
-        [DataType(DataType.Text)]
+        [Display(Name = "CO.AN.")]
+        [DataType(DataType.Text)]        
         public string coan { get; set; }
 
 
@@ -65,11 +67,13 @@ namespace NewISE.Models.DBModel
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
-        public UfficiModel ufficio { get; set; }
+        public UfficiModel Ufficio { get; set; }
 
         public TipoTrasferimentoModel TipoTrasferimento { get; set; }
 
         public DipendentiModel Dipendente { get; set; }
+
+        public TipologiaCoanModel TipoCoan { get; set; }
 
         public IList<IndennitaModel> lIndennita { get; set; }
     }

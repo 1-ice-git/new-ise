@@ -18,7 +18,7 @@ namespace NewISE
         public decimal IDCFKM { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
     
-        public virtual COEFFICENTEFKM COEFFICENTEFKM { get; set; }
+        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
         public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }
     }
 }
