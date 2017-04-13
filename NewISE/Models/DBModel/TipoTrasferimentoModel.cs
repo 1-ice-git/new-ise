@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La tipologia del trasferimento è richiesta.")]
         [Display(Name = "Trasferimento")]
-        public string tipologiaTrasferimento { get; set; }
+        public string descTipoTrasf { get; set; }
 
     }
 }

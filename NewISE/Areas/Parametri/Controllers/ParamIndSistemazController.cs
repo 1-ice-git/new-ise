@@ -24,14 +24,14 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
                 {
-                    llm = dtl.GetTrasferimenti().OrderBy(a => a.tipologiaTrasferimento).ToList();
+                    llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.tipologiaTrasferimento,
+                                 Text = t.descTipoTrasf,
                                  Value = t.idTipoTrasferimento.ToString()
                              }).ToList();
 
@@ -84,14 +84,14 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
                 {
-                    llm = dtl.GetTrasferimenti().OrderBy(a => a.tipologiaTrasferimento).ToList();
+                    llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.tipologiaTrasferimento,
+                                 Text = t.descTipoTrasf,
                                  Value = t.idTipoTrasferimento.ToString()
                              }).ToList();
                         r.Where(a => a.Value == idTipoTrasferimento.ToString()).First().Selected = true;

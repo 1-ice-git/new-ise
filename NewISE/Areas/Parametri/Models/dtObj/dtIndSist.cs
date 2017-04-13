@@ -35,11 +35,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                Trasferimento = new TipoTrasferimentoModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
                                     
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                                    tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
                                     
                                 }
                             }).ToList();
@@ -73,10 +73,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                Trasferimento = new TipoTrasferimentoModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                                    tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
                                 }
                             }).ToList();
                 }
@@ -109,10 +109,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                Trasferimento = new TipoTrasferimentoModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                                    tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
                                 }
                             }).ToList();
                 }
@@ -144,10 +144,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICENTE,
                                 annullato = e.ANNULLATO,
-                                Trasferimento = new TipoTrasferimentoModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-                                    idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                                    tipologiaTrasferimento = e.TIPOTRASFERIMENTO.ToString()
+                                    idTipoTrasferimento = e.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                 }
                             }).ToList();
                 }

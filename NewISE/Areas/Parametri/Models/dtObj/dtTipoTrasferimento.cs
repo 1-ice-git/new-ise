@@ -28,7 +28,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                            select new TipoTrasferimentoModel()
                            {
                                idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                               tipologiaTrasferimento = e.TIPOTRASFERIMENTO1
+                               descTipoTrasf = e.TIPOTRASFERIMENTO1
                                
                            }).ToList();
                 }
@@ -55,7 +55,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         
                         idTipoTrasferimento = liv.IDTIPOTRASFERIMENTO,
-                        tipologiaTrasferimento = liv.TIPOTRASFERIMENTO1
+                        descTipoTrasf = liv.TIPOTRASFERIMENTO1
                         
                     };
                 }
