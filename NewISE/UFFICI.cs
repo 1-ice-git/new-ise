@@ -17,7 +17,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UFFICI()
         {
-            this.COEFFICENTISEDE = new HashSet<COEFFICENTISEDE>();
+            this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
             this.FASCIACHILOMETRICA = new HashSet<FASCIACHILOMETRICA>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
@@ -31,7 +31,7 @@ namespace NewISE
         public string DESCRIZIONEUFFICIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICENTISEDE> COEFFICENTISEDE { get; set; }
+        public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

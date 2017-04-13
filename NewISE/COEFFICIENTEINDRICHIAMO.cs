@@ -12,27 +12,22 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class COEFFICENTEFKM
+    public partial class COEFFICIENTEINDRICHIAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public COEFFICENTEFKM()
+        public COEFFICIENTEINDRICHIAMO()
         {
-            this.TRASPEFFETTIRIEN_COEFFIFKM = new HashSet<TRASPEFFETTIRIEN_COEFFIFKM>();
-            this.FASCIACHILOMETRICA = new HashSet<FASCIACHILOMETRICA>();
-            this.TRASPORTOEFFETTISIST = new HashSet<TRASPORTOEFFETTISIST>();
+            this.RICHIAMO = new HashSet<RICHIAMO>();
         }
     
-        public decimal IDCFKM { get; set; }
+        public decimal IDCOEFINDRICHIAMO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal COEFFICENTEKM { get; set; }
+        public decimal COEFFICIENTERICHIAMO { get; set; }
+        public decimal COEFFICIENTEINDBASE { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPEFFETTIRIEN_COEFFIFKM> TRASPEFFETTIRIEN_COEFFIFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
+        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
     }
 }

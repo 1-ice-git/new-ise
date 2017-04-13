@@ -1488,13 +1488,13 @@
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTEFKM.cs">
+    <Compile Include="COEFFICIENTEFKM.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTEINDRICHIAMO.cs">
+    <Compile Include="COEFFICIENTEINDRICHIAMO.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTISEDE.cs">
+    <Compile Include="COEFFICIENTESEDE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CONTABILITA.cs">

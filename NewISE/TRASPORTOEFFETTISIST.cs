@@ -24,7 +24,7 @@ namespace NewISE
         public decimal IDCFKM { get; set; }
         public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
     
-        public virtual COEFFICENTEFKM COEFFICENTEFKM { get; set; }
+        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPEFFETTISIST_DOC> TRASPEFFETTISIST_DOC { get; set; }

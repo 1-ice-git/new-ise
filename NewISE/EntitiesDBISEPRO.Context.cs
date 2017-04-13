@@ -34,9 +34,9 @@ namespace NewISE
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
         public virtual DbSet<BIGLIETTI_DOCUMENTI> BIGLIETTI_DOCUMENTI { get; set; }
-        public virtual DbSet<COEFFICENTEFKM> COEFFICENTEFKM { get; set; }
-        public virtual DbSet<COEFFICENTEINDRICHIAMO> COEFFICENTEINDRICHIAMO { get; set; }
-        public virtual DbSet<COEFFICENTISEDE> COEFFICENTISEDE { get; set; }
+        public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
+        public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
+        public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DATIMAB> DATIMAB { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
@@ -103,7 +103,7 @@ namespace NewISE
         public virtual DbSet<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
     
-        public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI)
+        public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI, ObjectParameter iNDPERSONALE, ObjectParameter iNDANTSISTLORDA, ObjectParameter iNDSISTLORDA)
         {
             var v_VDATAParameter = v_VDATA.HasValue ?
                 new ObjectParameter("V_VDATA", v_VDATA) :
@@ -113,7 +113,50 @@ namespace NewISE
                 new ObjectParameter("V_VDIP", v_VDIP) :
                 new ObjectParameter("V_VDIP", typeof(decimal));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CALCOLIINDENNITA", v_VDATAParameter, v_VDIPParameter, iNDBASE, iNDSERVIZIO, mAGGIORAZIONECONIUGE, mAGGIORAZIONEFIGLI);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CALCOLIINDENNITA", v_VDATAParameter, v_VDIPParameter, iNDBASE, iNDSERVIZIO, mAGGIORAZIONECONIUGE, mAGGIORAZIONEFIGLI, iNDPERSONALE, iNDANTSISTLORDA, iNDSISTLORDA);
+        }
+    
+        public virtual int NETTIZZA_INDENNITA(Nullable<System.DateTime> vDATA, Nullable<decimal> vDIP, Nullable<decimal> vIMPORTO, ObjectParameter aLIQUOTA_PREV, ObjectParameter aLIQUOTA_FISC, ObjectParameter iMPORTO_NETTO)
+        {
+            var vDATAParameter = vDATA.HasValue ?
+                new ObjectParameter("VDATA", vDATA) :
+                new ObjectParameter("VDATA", typeof(System.DateTime));
+    
+            var vDIPParameter = vDIP.HasValue ?
+                new ObjectParameter("VDIP", vDIP) :
+                new ObjectParameter("VDIP", typeof(decimal));
+    
+            var vIMPORTOParameter = vIMPORTO.HasValue ?
+                new ObjectParameter("VIMPORTO", vIMPORTO) :
+                new ObjectParameter("VIMPORTO", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("NETTIZZA_INDENNITA", vDATAParameter, vDIPParameter, vIMPORTOParameter, aLIQUOTA_PREV, aLIQUOTA_FISC, iMPORTO_NETTO);
+        }
+    
+        public virtual int PROC_IND_BASE(Nullable<System.DateTime> vDATA, Nullable<decimal> vDIP, ObjectParameter rEGOLA_CALCOLO, ObjectParameter lIVELLO, ObjectParameter rESPONSABILE, ObjectParameter pERCENTUALE_RIDUZIONE, ObjectParameter iNDENNITA_BASE_TEORICA, ObjectParameter iNDENNITA_BASE)
+        {
+            var vDATAParameter = vDATA.HasValue ?
+                new ObjectParameter("VDATA", vDATA) :
+                new ObjectParameter("VDATA", typeof(System.DateTime));
+    
+            var vDIPParameter = vDIP.HasValue ?
+                new ObjectParameter("VDIP", vDIP) :
+                new ObjectParameter("VDIP", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PROC_IND_BASE", vDATAParameter, vDIPParameter, rEGOLA_CALCOLO, lIVELLO, rESPONSABILE, pERCENTUALE_RIDUZIONE, iNDENNITA_BASE_TEORICA, iNDENNITA_BASE);
+        }
+    
+        public virtual int PROC_IND_SERVIZIO(Nullable<System.DateTime> vDATA, Nullable<decimal> vDIP, ObjectParameter rEGOLA_CALCOLO, ObjectParameter uFFICIO, ObjectParameter iNDENNITA_BASE, ObjectParameter cOEFFICIENTE_SEDE, ObjectParameter pERCENTUALE_DISAGIO, ObjectParameter iNDENNITA_SERVIZIO_TEORICA, ObjectParameter pERCENTUALE_RIDUZIONE, ObjectParameter iNDENNITA_SERVIZIO)
+        {
+            var vDATAParameter = vDATA.HasValue ?
+                new ObjectParameter("VDATA", vDATA) :
+                new ObjectParameter("VDATA", typeof(System.DateTime));
+    
+            var vDIPParameter = vDIP.HasValue ?
+                new ObjectParameter("VDIP", vDIP) :
+                new ObjectParameter("VDIP", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PROC_IND_SERVIZIO", vDATAParameter, vDIPParameter, rEGOLA_CALCOLO, uFFICIO, iNDENNITA_BASE, cOEFFICIENTE_SEDE, pERCENTUALE_DISAGIO, iNDENNITA_SERVIZIO_TEORICA, pERCENTUALE_RIDUZIONE, iNDENNITA_SERVIZIO);
         }
     }
 }

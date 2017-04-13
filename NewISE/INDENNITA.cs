@@ -35,7 +35,6 @@ namespace NewISE
         public System.DateTime DATAFINE { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual COEFFICENTISEDE COEFFICENTISEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

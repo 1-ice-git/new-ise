@@ -12,22 +12,15 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class COEFFICENTEINDRICHIAMO
+    public partial class COEFFICIENTESEDE
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public COEFFICENTEINDRICHIAMO()
-        {
-            this.RICHIAMO = new HashSet<RICHIAMO>();
-        }
-    
-        public decimal IDCOEFINDRICHIAMO { get; set; }
+        public decimal IDCOEFFICIENTESEDE { get; set; }
+        public decimal IDUFFICIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal COEFFICENTERICHIAMO { get; set; }
-        public decimal COEFFICENTEINDBASE { get; set; }
+        public decimal VALORECOEFFICIENTE { get; set; }
         public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
     }
 }
