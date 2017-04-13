@@ -1355,6 +1355,7 @@
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
+    <Content Include="Areas\Dipendenti\Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -1445,6 +1446,7 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
+    <Compile Include="Areas\Dipendenti\Controllers\TrasferimentoController.cs" />
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
@@ -1500,13 +1502,13 @@
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTEFKM.cs">
+    <Compile Include="COEFFICIENTEFKM.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTEINDRICHIAMO.cs">
+    <Compile Include="COEFFICIENTEINDRICHIAMO.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="COEFFICENTISEDE.cs">
+    <Compile Include="COEFFICIENTESEDE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="CONTABILITA.cs">
@@ -1629,6 +1631,7 @@
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TFRModel.cs" />
     <Compile Include="Models\DBModel\TipoAliquoteContributiveModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaCoanModel.cs" />
     <Compile Include="Models\DBModel\TipologiaConiugeModel.cs" />
     <Compile Include="Models\DBModel\TipologiaFiglioModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
@@ -1735,6 +1738,9 @@
     <Compile Include="TIPOLIQUIDAZIONE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="TIPOLOGIACOAN.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
     <Compile Include="TIPOLOGIACONIUGE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1815,6 +1821,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dipendenti\Views\Shared\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\Trasferimento\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

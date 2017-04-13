@@ -22,17 +22,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.COEFFICENTISEDE.ToList();
+                    var lib = db.COEFFICIENTESEDE.ToList();
 
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
                                 
-                                idCoefficientiSede = e.IDCOEFFICENTESEDE,
+                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICENTE,
+                                valore = e.VALORECOEFFICIENTE,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -57,17 +57,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.COEFFICENTISEDE.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
 
-                                idCoefficientiSede = e.IDCOEFFICENTESEDE,
+                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICENTE,
+                                valore = e.VALORECOEFFICIENTE,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -92,16 +92,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.COEFFICENTISEDE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
-                                idCoefficientiSede = e.IDCOEFFICENTESEDE,
+                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICENTE,
+                                valore = e.VALORECOEFFICIENTE,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -126,16 +126,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.COEFFICENTISEDE.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
-                                idCoefficientiSede = e.IDCOEFFICENTESEDE,
+                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICENTE,
+                                valore = e.VALORECOEFFICIENTE,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -158,13 +158,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// <param name="ibm"></param>
         public void SetCoefficientiSede(CoefficientiSedeModel ibm)
         {
-            List<COEFFICENTISEDE> libNew = new List<COEFFICENTISEDE>();
+            List<COEFFICIENTESEDE> libNew = new List<COEFFICIENTESEDE>();
 
-            COEFFICENTISEDE ibNew = new COEFFICENTISEDE();
+            COEFFICIENTESEDE ibNew = new COEFFICIENTESEDE();
 
-            COEFFICENTISEDE ibPrecedente = new COEFFICENTISEDE();
+            COEFFICIENTESEDE ibPrecedente = new COEFFICIENTESEDE();
 
-            List<COEFFICENTISEDE> lArchivioIB = new List<COEFFICENTISEDE>();
+            List<COEFFICIENTESEDE> lArchivioIB = new List<COEFFICIENTESEDE>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -174,43 +174,43 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new COEFFICENTISEDE()
+                            ibNew = new COEFFICIENTESEDE()
                             {
 
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                VALORECOEFFICENTE = ibm.valore,
+                                VALORECOEFFICIENTE = ibm.valore,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new COEFFICENTISEDE()
+                            ibNew = new COEFFICIENTESEDE()
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                VALORECOEFFICENTE = ibm.valore,
+                                VALORECOEFFICIENTE = ibm.valore,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new COEFFICENTISEDE()
+                        ibNew = new COEFFICIENTESEDE()
                         {
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            VALORECOEFFICENTE = ibm.valore,
+                            VALORECOEFFICIENTE = ibm.valore,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.COEFFICENTISEDE.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
+                    var recordInteressati = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -227,12 +227,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICENTISEDE()
+                                    var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        VALORECOEFFICENTE = item.VALORECOEFFICENTE,
+                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
 
@@ -241,21 +241,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICENTISEDE()
+                                    var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        VALORECOEFFICENTE = item.VALORECOEFFICENTE,
+                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new COEFFICENTISEDE()
+                                    var ibOld2 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICENTE = item.VALORECOEFFICENTE,
+                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
 
@@ -273,12 +273,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICENTISEDE()
+                                    var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICENTE = item.VALORECOEFFICENTE,
+                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
 
@@ -293,12 +293,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICENTISEDE()
+                                    var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICENTE = item.VALORECOEFFICENTE,
+                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
 
@@ -310,18 +310,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.COEFFICENTISEDE.AddRange(libNew);
+                        db.COEFFICIENTESEDE.AddRange(libNew);
                     }
                     else
                     {
-                        db.COEFFICENTISEDE.Add(ibNew);
+                        db.COEFFICIENTESEDE.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di sede.", "COEFFICENTISEDE", ibNew.IDCOEFFICENTESEDE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di sede.", "COEFFICENTISEDE", ibNew.IDCOEFFICIENTESEDE);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -338,7 +338,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.COEFFICENTISEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
@@ -348,7 +348,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICENTISEDE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -363,7 +363,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICENTISEDE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -376,14 +376,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.COEFFICENTISEDE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
         public void DelCoefficientiSede(decimal idCoefficientiSede)
         {
-            COEFFICENTISEDE precedenteIB = new COEFFICENTISEDE();
-            COEFFICENTISEDE delIB = new COEFFICENTISEDE();
+            COEFFICIENTESEDE precedenteIB = new COEFFICIENTESEDE();
+            COEFFICIENTESEDE delIB = new COEFFICIENTESEDE();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -392,33 +392,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.COEFFICENTISEDE.Where(a => a.IDCOEFFICENTESEDE == idCoefficientiSede);
+                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDCOEFFICIENTESEDE == idCoefficientiSede);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.COEFFICENTISEDE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.COEFFICIENTESEDE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new COEFFICENTISEDE()
+                            var ibOld1 = new COEFFICIENTESEDE()
                             {
                                 IDUFFICIO = precedenteIB.IDUFFICIO,
 
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                VALORECOEFFICENTE = precedenteIB.VALORECOEFFICENTE,
+                                VALORECOEFFICIENTE = precedenteIB.VALORECOEFFICIENTE,
                                 
 
                                 ANNULLATO = false
                             };
 
-                            db.COEFFICENTISEDE.Add(ibOld1);
+                            db.COEFFICIENTESEDE.Add(ibOld1);
                         }
 
                         db.SaveChanges();

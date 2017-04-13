@@ -20,7 +20,7 @@ namespace NewISE
         public decimal IDCFKM { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual COEFFICENTEFKM COEFFICENTEFKM { get; set; }
+        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
         public virtual DEFFASCIACHILOMETRICA DEFFASCIACHILOMETRICA { get; set; }
         public virtual UFFICI UFFICI { get; set; }
     }

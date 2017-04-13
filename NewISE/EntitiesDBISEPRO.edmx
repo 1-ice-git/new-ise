@@ -82,36 +82,36 @@
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="COEFFICENTEFKM">
+        <EntityType Name="COEFFICIENTEFKM">
           <Key>
             <PropertyRef Name="IDCFKM" />
           </Key>
           <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="COEFFICENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="COEFFICIENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="COEFFICENTEINDRICHIAMO">
+        <EntityType Name="COEFFICIENTEINDRICHIAMO">
           <Key>
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="COEFFICENTERICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="COEFFICENTEINDBASE" Type="number" Precision="10" Scale="8" Nullable="false" />
+          <Property Name="COEFFICIENTERICHIAMO" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="COEFFICIENTEINDBASE" Type="number" Precision="10" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="COEFFICENTISEDE">
+        <EntityType Name="COEFFICIENTESEDE">
           <Key>
-            <PropertyRef Name="IDCOEFFICENTESEDE" />
+            <PropertyRef Name="IDCOEFFICIENTESEDE" />
           </Key>
-          <Property Name="IDCOEFFICENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDCOEFFICIENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="VALORECOEFFICENTE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="VALORECOEFFICIENTE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONTABILITA">
@@ -226,7 +226,7 @@
           <Property Name="IDINDENNITABASE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCOEFFICENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCOEFFICIENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIO" Type="date" Nullable="false" />
           <Property Name="DATAFINE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -632,6 +632,13 @@
           <Property Name="IDTIPOLIQUIDAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="TIPOLOGIACOAN">
+          <Key>
+            <PropertyRef Name="IDTIPOCOAN" />
+          </Key>
+          <Property Name="IDTIPOCOAN" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="30" Nullable="false" />
+        </EntityType>
         <EntityType Name="TIPOLOGIACONIUGE">
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
@@ -701,6 +708,7 @@
           <Property Name="IDSTATOTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTIPOCOAN" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAPARTENZA" Type="date" Nullable="false" />
           <Property Name="DATARIENTRO" Type="date" />
           <Property Name="COAN" Type="varchar2" MaxLength="10" />
@@ -895,12 +903,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_CFKM_TER_CFKM">
-          <End Role="COEFFICENTEFKM" Type="Self.COEFFICENTEFKM" Multiplicity="1">
+          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="TRASPEFFETTIRIEN_COEFFIFKM" Type="Self.TRASPEFFETTIRIEN_COEFFIFKM" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="TRASPEFFETTIRIEN_COEFFIFKM">
@@ -909,12 +917,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFFFKM_FKM">
-          <End Role="COEFFICENTEFKM" Type="Self.COEFFICENTEFKM" Multiplicity="1">
+          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="FASCIACHILOMETRICA" Type="Self.FASCIACHILOMETRICA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="FASCIACHILOMETRICA">
@@ -923,12 +931,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFFRICHIAMO_RICHIAMO">
-          <End Role="COEFFICENTEINDRICHIAMO" Type="Self.COEFFICENTEINDRICHIAMO" Multiplicity="1">
+          <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEINDRICHIAMO">
+            <Principal Role="COEFFICIENTEINDRICHIAMO">
               <PropertyRef Name="IDCOEFINDRICHIAMO" />
             </Principal>
             <Dependent Role="RICHIAMO">
@@ -937,12 +945,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFKM_TRASPEFFSIST">
-          <End Role="COEFFICENTEFKM" Type="Self.COEFFICENTEFKM" Multiplicity="1">
+          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="TRASPORTOEFFETTISIST" Type="Self.TRASPORTOEFFETTISIST" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="TRASPORTOEFFETTISIST">
@@ -951,16 +959,16 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFSEDE_INDENNITA">
-          <End Role="COEFFICENTISEDE" Type="Self.COEFFICENTISEDE" Multiplicity="1">
+          <End Role="COEFFICIENTESEDE" Type="Self.COEFFICIENTESEDE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTISEDE">
-              <PropertyRef Name="IDCOEFFICENTESEDE" />
+            <Principal Role="COEFFICIENTESEDE">
+              <PropertyRef Name="IDCOEFFICIENTESEDE" />
             </Principal>
             <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDCOEFFICENTESEDE" />
+              <PropertyRef Name="IDCOEFFICIENTESEDE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1998,6 +2006,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TIPCOAN_TRASF">
+          <End Role="TIPOLOGIACOAN" Type="Self.TIPOLOGIACOAN" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOLOGIACOAN">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TL_V">
           <End Role="TIPOLIQUIDAZIONE" Type="Self.TIPOLIQUIDAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2180,16 +2202,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_UFFICI_COEFFICENTESEDE">
+        <Association Name="R_UFFICI_COEFFICIENTESEDE">
           <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="COEFFICENTISEDE" Type="Self.COEFFICENTISEDE" Multiplicity="*" />
+          <End Role="COEFFICIENTESEDE" Type="Self.COEFFICIENTESEDE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UFFICI">
               <PropertyRef Name="IDUFFICIO" />
             </Principal>
-            <Dependent Role="COEFFICENTISEDE">
+            <Dependent Role="COEFFICIENTESEDE">
               <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
@@ -2306,6 +2328,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ALIQUOTA_ISE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+          <Parameter Name="IMPORTO" Type="number" Mode="In" />
+        </Function>
         <Function Name="CALCOLIINDENNITA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="V_VDATA" Type="date" Mode="In" />
           <Parameter Name="V_VDIP" Type="number" Mode="In" />
@@ -2313,12 +2339,40 @@
           <Parameter Name="INDSERVIZIO" Type="number" Mode="Out" />
           <Parameter Name="MAGGIORAZIONECONIUGE" Type="number" Mode="Out" />
           <Parameter Name="MAGGIORAZIONEFIGLI" Type="number" Mode="Out" />
+          <Parameter Name="INDPERSONALE" Type="number" Mode="Out" />
+          <Parameter Name="INDANTSISTLORDA" Type="number" Mode="Out" />
+          <Parameter Name="INDSISTLORDA" Type="number" Mode="Out" />
+        </Function>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <Function Name="IND_ANT_SIST_LORDA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
         </Function>
         <Function Name="IND_BASE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
         </Function>
+        <Function Name="IND_PERSONALE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+        </Function>
         <Function Name="IND_SERVIZIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+        </Function>
+        <Function Name="IND_SIST_LORDA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
         </Function>
@@ -2330,6 +2384,38 @@
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
         </Function>
+        <Function Name="NETTIZZA_INDENNITA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+          <Parameter Name="VIMPORTO" Type="number" Mode="In" />
+          <Parameter Name="ALIQUOTA_PREV" Type="number" Mode="Out" />
+          <Parameter Name="ALIQUOTA_FISC" Type="number" Mode="Out" />
+          <Parameter Name="IMPORTO_NETTO" Type="number" Mode="Out" />
+        </Function>
+        <Function Name="PROC_IND_BASE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+          <Parameter Name="REGOLA_CALCOLO" Type="varchar2" Mode="Out" />
+          <Parameter Name="LIVELLO" Type="varchar2" Mode="Out" />
+          <Parameter Name="RESPONSABILE" Type="varchar2" Mode="Out" />
+          <Parameter Name="PERCENTUALE_RIDUZIONE" Type="number" Mode="Out" />
+          <Parameter Name="INDENNITA_BASE_TEORICA" Type="number" Mode="Out" />
+          <Parameter Name="INDENNITA_BASE" Type="number" Mode="Out" />
+        </Function>
+        <Function Name="PROC_IND_SERVIZIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
+          <Parameter Name="VDATA" Type="date" Mode="In" />
+          <Parameter Name="VDIP" Type="number" Mode="In" />
+          <Parameter Name="REGOLA_CALCOLO" Type="varchar2" Mode="Out" />
+          <Parameter Name="UFFICIO" Type="varchar2" Mode="Out" />
+          <Parameter Name="INDENNITA_BASE" Type="number" Mode="Out" />
+          <Parameter Name="COEFFICIENTE_SEDE" Type="number" Mode="Out" />
+          <Parameter Name="PERCENTUALE_DISAGIO" Type="number" Mode="Out" />
+          <Parameter Name="INDENNITA_SERVIZIO_TEORICA" Type="number" Mode="Out" />
+          <Parameter Name="PERCENTUALE_RIDUZIONE" Type="number" Mode="Out" />
+          <Parameter Name="INDENNITA_SERVIZIO" Type="number" Mode="Out" />
+        </Function>
+        
+        
         <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
@@ -2338,9 +2424,9 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="COEFFICENTEFKM" EntityType="Self.COEFFICENTEFKM" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="Self.COEFFICENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="COEFFICENTISEDE" EntityType="Self.COEFFICENTISEDE" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="COEFFICIENTEFKM" EntityType="Self.COEFFICIENTEFKM" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="COEFFICIENTESEDE" EntityType="Self.COEFFICIENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DATIMAB" EntityType="Self.DATIMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="Self.DEFFASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
@@ -2390,6 +2476,7 @@
           <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOELABORAZIONE" EntityType="Self.TIPOELABORAZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="Self.TIPOLIQUIDAZIONE" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIACOAN" EntityType="Self.TIPOLOGIACOAN" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOLOGIACONIUGE" EntityType="Self.TIPOLOGIACONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOLOGIAFIGLIO" EntityType="Self.TIPOLOGIAFIGLIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOMOVIMENTO" EntityType="Self.TIPOMOVIMENTO" Schema="ISEPRO" store:Type="Tables" />
@@ -2435,23 +2522,23 @@
             <End Role="OA" EntitySet="OA" />
           </AssociationSet>
           <AssociationSet Name="R_CFKM_TER_CFKM" Association="Self.R_CFKM_TER_CFKM">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPEFFETTIRIEN_COEFFIFKM" EntitySet="TRASPEFFETTIRIEN_COEFFIFKM" />
           </AssociationSet>
           <AssociationSet Name="R_COEFFFKM_FKM" Association="Self.R_COEFFFKM_FKM">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_COEFFRICHIAMO_RICHIAMO" Association="Self.R_COEFFRICHIAMO_RICHIAMO">
-            <End Role="COEFFICENTEINDRICHIAMO" EntitySet="COEFFICENTEINDRICHIAMO" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="R_COEFKM_TRASPEFFSIST" Association="Self.R_COEFKM_TRASPEFFSIST">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
           </AssociationSet>
           <AssociationSet Name="R_COEFSEDE_INDENNITA" Association="Self.R_COEFSEDE_INDENNITA">
-            <End Role="COEFFICENTISEDE" EntitySet="COEFFICENTISEDE" />
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
           <AssociationSet Name="R_D_B_D" Association="Self.R_D_B_D">
@@ -2750,6 +2837,10 @@
             <End Role="TFR" EntitySet="TFR" />
             <End Role="VARIAZIONIRATEMAB" EntitySet="VARIAZIONIRATEMAB" />
           </AssociationSet>
+          <AssociationSet Name="R_TIPCOAN_TRASF" Association="Self.R_TIPCOAN_TRASF">
+            <End Role="TIPOLOGIACOAN" EntitySet="TIPOLOGIACOAN" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
           <AssociationSet Name="R_TL_V" Association="Self.R_TL_V">
             <End Role="TIPOLIQUIDAZIONE" EntitySet="TIPOLIQUIDAZIONE" />
             <End Role="VOCI" EntitySet="VOCI" />
@@ -2802,9 +2893,9 @@
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <AssociationSet Name="R_UFFICI_COEFFICENTESEDE" Association="Self.R_UFFICI_COEFFICENTESEDE">
+          <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="Self.R_UFFICI_COEFFICIENTESEDE">
             <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="COEFFICENTISEDE" EntitySet="COEFFICENTISEDE" />
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
           </AssociationSet>
           <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="Self.R_UFFICI_PERCDISAGIO">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -2844,6 +2935,47 @@
     <edmx:ConceptualModels>
       <Schema Namespace="DBISE" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="EntitiesDBISE" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="CALCOLIINDENNITA">
+            <Parameter Name="V_VDATA" Mode="In" Type="DateTime" />
+            <Parameter Name="V_VDIP" Mode="In" Type="Decimal" />
+            <Parameter Name="INDBASE" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDSERVIZIO" Mode="Out" Type="Decimal" />
+            <Parameter Name="MAGGIORAZIONECONIUGE" Mode="Out" Type="Decimal" />
+            <Parameter Name="MAGGIORAZIONEFIGLI" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDPERSONALE" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDANTSISTLORDA" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDSISTLORDA" Mode="Out" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="NETTIZZA_INDENNITA">
+            <Parameter Name="VDATA" Mode="In" Type="DateTime" />
+            <Parameter Name="VDIP" Mode="In" Type="Decimal" />
+            <Parameter Name="VIMPORTO" Mode="In" Type="Decimal" />
+            <Parameter Name="ALIQUOTA_PREV" Mode="Out" Type="Decimal" />
+            <Parameter Name="ALIQUOTA_FISC" Mode="Out" Type="Decimal" />
+            <Parameter Name="IMPORTO_NETTO" Mode="Out" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="PROC_IND_BASE">
+            <Parameter Name="VDATA" Mode="In" Type="DateTime" />
+            <Parameter Name="VDIP" Mode="In" Type="Decimal" />
+            <Parameter Name="REGOLA_CALCOLO" Mode="Out" Type="String" />
+            <Parameter Name="LIVELLO" Mode="Out" Type="String" />
+            <Parameter Name="RESPONSABILE" Mode="Out" Type="String" />
+            <Parameter Name="PERCENTUALE_RIDUZIONE" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDENNITA_BASE_TEORICA" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDENNITA_BASE" Mode="Out" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="PROC_IND_SERVIZIO">
+            <Parameter Name="VDATA" Mode="In" Type="DateTime" />
+            <Parameter Name="VDIP" Mode="In" Type="Decimal" />
+            <Parameter Name="REGOLA_CALCOLO" Mode="Out" Type="String" />
+            <Parameter Name="UFFICIO" Mode="Out" Type="String" />
+            <Parameter Name="INDENNITA_BASE" Mode="Out" Type="Decimal" />
+            <Parameter Name="COEFFICIENTE_SEDE" Mode="Out" Type="Decimal" />
+            <Parameter Name="PERCENTUALE_DISAGIO" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDENNITA_SERVIZIO_TEORICA" Mode="Out" Type="Decimal" />
+            <Parameter Name="PERCENTUALE_RIDUZIONE" Mode="Out" Type="Decimal" />
+            <Parameter Name="INDENNITA_SERVIZIO" Mode="Out" Type="Decimal" />
+          </FunctionImport>
           <EntitySet Name="ACCESSI" EntityType="DBISE.ACCESSI" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISE.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="DBISE.ALTRIDATIFAM" />
@@ -2851,9 +2983,9 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="DBISE.ATTIVITACRUD" />
           <EntitySet Name="BIGLIETTI" EntityType="DBISE.BIGLIETTI" />
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="DBISE.BIGLIETTI_DOCUMENTI" />
-          <EntitySet Name="COEFFICENTEFKM" EntityType="DBISE.COEFFICENTEFKM" />
-          <EntitySet Name="COEFFICENTEINDRICHIAMO" EntityType="DBISE.COEFFICENTEINDRICHIAMO" />
-          <EntitySet Name="COEFFICENTISEDE" EntityType="DBISE.COEFFICENTISEDE" />
+          <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISE.COEFFICIENTEFKM" />
+          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="DBISE.COEFFICIENTEINDRICHIAMO" />
+          <EntitySet Name="COEFFICIENTESEDE" EntityType="DBISE.COEFFICIENTESEDE" />
           <EntitySet Name="CONTABILITA" EntityType="DBISE.CONTABILITA" />
           <EntitySet Name="DATIMAB" EntityType="DBISE.DATIMAB" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISE.DEFFASCIACHILOMETRICA" />
@@ -2900,6 +3032,7 @@
           <EntitySet Name="TIPODOCUMENTI" EntityType="DBISE.TIPODOCUMENTI" />
           <EntitySet Name="TIPOELABORAZIONE" EntityType="DBISE.TIPOELABORAZIONE" />
           <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="DBISE.TIPOLIQUIDAZIONE" />
+          <EntitySet Name="TIPOLOGIACOAN" EntityType="DBISE.TIPOLOGIACOAN" />
           <EntitySet Name="TIPOLOGIACONIUGE" EntityType="DBISE.TIPOLOGIACONIUGE" />
           <EntitySet Name="TIPOLOGIAFIGLIO" EntityType="DBISE.TIPOLOGIAFIGLIO" />
           <EntitySet Name="TIPOMOVIMENTO" EntityType="DBISE.TIPOMOVIMENTO" />
@@ -2968,28 +3101,28 @@
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
           </AssociationSet>
           <AssociationSet Name="R_CFKM_TER_CFKM" Association="DBISE.R_CFKM_TER_CFKM">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPEFFETTIRIEN_COEFFIFKM" EntitySet="TRASPEFFETTIRIEN_COEFFIFKM" />
           </AssociationSet>
           <AssociationSet Name="R_COEFFFKM_FKM" Association="DBISE.R_COEFFFKM_FKM">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_COEFKM_TRASPEFFSIST" Association="DBISE.R_COEFKM_TRASPEFFSIST">
-            <End Role="COEFFICENTEFKM" EntitySet="COEFFICENTEFKM" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
           </AssociationSet>
           <AssociationSet Name="R_COEFFRICHIAMO_RICHIAMO" Association="DBISE.R_COEFFRICHIAMO_RICHIAMO">
-            <End Role="COEFFICENTEINDRICHIAMO" EntitySet="COEFFICENTEINDRICHIAMO" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="R_COEFSEDE_INDENNITA" Association="DBISE.R_COEFSEDE_INDENNITA">
-            <End Role="COEFFICENTISEDE" EntitySet="COEFFICENTISEDE" />
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
-          <AssociationSet Name="R_UFFICI_COEFFICENTESEDE" Association="DBISE.R_UFFICI_COEFFICENTESEDE">
+          <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISE.R_UFFICI_COEFFICIENTESEDE">
             <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="COEFFICENTISEDE" EntitySet="COEFFICENTISEDE" />
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
           </AssociationSet>
           <AssociationSet Name="R_C_AQ" Association="DBISE.R_C_AQ">
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
@@ -3279,6 +3412,10 @@
             <End Role="TIPOLIQUIDAZIONE" EntitySet="TIPOLIQUIDAZIONE" />
             <End Role="VOCI" EntitySet="VOCI" />
           </AssociationSet>
+          <AssociationSet Name="R_TIPCOAN_TRASF" Association="DBISE.R_TIPCOAN_TRASF">
+            <End Role="TIPOLOGIACOAN" EntitySet="TIPOLOGIACOAN" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
           <AssociationSet Name="R_TT_T" Association="DBISE.R_TT_T">
             <End Role="TIPOTRASFERIMENTO" EntitySet="TIPOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3331,15 +3468,7 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <FunctionImport Name="CALCOLIINDENNITA">
-            <Parameter Name="V_VDATA" Mode="In" Type="DateTime" />
-            <Parameter Name="V_VDIP" Mode="In" Type="Decimal" />
-            <Parameter Name="INDBASE" Mode="Out" Type="Decimal" />
-            <Parameter Name="INDSERVIZIO" Mode="Out" Type="Decimal" />
-            <Parameter Name="MAGGIORAZIONECONIUGE" Mode="Out" Type="Decimal" />
-            <Parameter Name="MAGGIORAZIONEFIGLI" Mode="Out" Type="Decimal" />
-          </FunctionImport>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -3430,43 +3559,43 @@
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISE.R_TD_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="TIPODOCUMENTI" />
         </EntityType>
-        <EntityType Name="COEFFICENTEFKM">
+        <EntityType Name="COEFFICIENTEFKM">
           <Key>
             <PropertyRef Name="IDCFKM" />
           </Key>
           <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="COEFFICENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TRASPEFFETTIRIEN_COEFFIFKM" Relationship="DBISE.R_CFKM_TER_CFKM" FromRole="COEFFICENTEFKM" ToRole="TRASPEFFETTIRIEN_COEFFIFKM" />
-          <NavigationProperty Name="FASCIACHILOMETRICA" Relationship="DBISE.R_COEFFFKM_FKM" FromRole="COEFFICENTEFKM" ToRole="FASCIACHILOMETRICA" />
-          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISE.R_COEFKM_TRASPEFFSIST" FromRole="COEFFICENTEFKM" ToRole="TRASPORTOEFFETTISIST" />
+          <NavigationProperty Name="TRASPEFFETTIRIEN_COEFFIFKM" Relationship="DBISE.R_CFKM_TER_CFKM" FromRole="COEFFICIENTEFKM" ToRole="TRASPEFFETTIRIEN_COEFFIFKM" />
+          <NavigationProperty Name="FASCIACHILOMETRICA" Relationship="DBISE.R_COEFFFKM_FKM" FromRole="COEFFICIENTEFKM" ToRole="FASCIACHILOMETRICA" />
+          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISE.R_COEFKM_TRASPEFFSIST" FromRole="COEFFICIENTEFKM" ToRole="TRASPORTOEFFETTISIST" />
         </EntityType>
-        <EntityType Name="COEFFICENTEINDRICHIAMO">
+        <EntityType Name="COEFFICIENTEINDRICHIAMO">
           <Key>
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="COEFFICENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="COEFFICENTEINDBASE" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="COEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="COEFFICIENTEINDBASE" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISE.R_COEFFRICHIAMO_RICHIAMO" FromRole="COEFFICENTEINDRICHIAMO" ToRole="RICHIAMO" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISE.R_COEFFRICHIAMO_RICHIAMO" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RICHIAMO" />
         </EntityType>
-        <EntityType Name="COEFFICENTISEDE">
+        <EntityType Name="COEFFICIENTESEDE">
           <Key>
-            <PropertyRef Name="IDCOEFFICENTESEDE" />
+            <PropertyRef Name="IDCOEFFICIENTESEDE" />
           </Key>
-          <Property Name="IDCOEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDCOEFFICIENTESEDE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="VALORECOEFFICENTE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="VALORECOEFFICIENTE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_COEFSEDE_INDENNITA" FromRole="COEFFICENTISEDE" ToRole="INDENNITA" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_COEFFICENTESEDE" FromRole="COEFFICENTISEDE" ToRole="UFFICI" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_COEFSEDE_INDENNITA" FromRole="COEFFICIENTESEDE" ToRole="INDENNITA" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_COEFFICIENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -3577,7 +3706,7 @@
           <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICENTEFKM" Relationship="DBISE.R_COEFFFKM_FKM" FromRole="FASCIACHILOMETRICA" ToRole="COEFFICENTEFKM" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISE.R_COEFFFKM_FKM" FromRole="FASCIACHILOMETRICA" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISE.R_DFKM_FC" FromRole="FASCIACHILOMETRICA" ToRole="DEFFASCIACHILOMETRICA" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_U_FC" FromRole="FASCIACHILOMETRICA" ToRole="UFFICI" />
         </EntityType>
@@ -3598,11 +3727,11 @@
           <Property Name="IDINDENNITABASE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDTFR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDCOEFFICENTESEDE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDCOEFFICIENTESEDE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICENTISEDE" Relationship="DBISE.R_COEFSEDE_INDENNITA" FromRole="INDENNITA" ToRole="COEFFICENTISEDE" />
+          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISE.R_COEFSEDE_INDENNITA" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
           <NavigationProperty Name="ELAB_CONT" Relationship="DBISE.R_I_E_C" FromRole="INDENNITA" ToRole="ELAB_CONT" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISE.R_I_IR" FromRole="INDENNITA" ToRole="RICHIAMO" />
           <NavigationProperty Name="NOTIFICARICHIESTAMAGFAM" Relationship="DBISE.R_I_NRMF" FromRole="INDENNITA" ToRole="NOTIFICARICHIESTAMAGFAM" />
@@ -3948,7 +4077,7 @@
           <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <Property Name="RICALCOLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICENTEINDRICHIAMO" Relationship="DBISE.R_COEFFRICHIAMO_RICHIAMO" FromRole="RICHIAMO" ToRole="COEFFICENTEINDRICHIAMO" />
+          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISE.R_COEFFRICHIAMO_RICHIAMO" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
           <NavigationProperty Name="ELAB_CONT" Relationship="DBISE.R_R_E_C" FromRole="RICHIAMO" ToRole="ELAB_CONT" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_I_IR" FromRole="RICHIAMO" ToRole="INDENNITA" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISE.R_IR_TER" FromRole="RICHIAMO" ToRole="TRASPORTOEFFETTIRIENTRO" />
@@ -4091,6 +4220,14 @@
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="VOCI" Relationship="DBISE.R_TL_V" FromRole="TIPOLIQUIDAZIONE" ToRole="VOCI" />
         </EntityType>
+        <EntityType Name="TIPOLOGIACOAN">
+          <Key>
+            <PropertyRef Name="IDTIPOCOAN" />
+          </Key>
+          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_TIPCOAN_TRASF" FromRole="TIPOLOGIACOAN" ToRole="TRASFERIMENTO" />
+        </EntityType>
         <EntityType Name="TIPOLOGIACONIUGE">
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
@@ -4161,6 +4298,7 @@
           <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" />
           <Property Name="DATARIENTRO" Type="DateTime" />
           <Property Name="COAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
@@ -4174,6 +4312,7 @@
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISE.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISE.R_R_T" FromRole="TRASFERIMENTO" ToRole="RUOLOUFFICIO" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISE.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
+          <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISE.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISE.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
@@ -4186,7 +4325,7 @@
           <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="COEFFICENTEFKM" Relationship="DBISE.R_CFKM_TER_CFKM" FromRole="TRASPEFFETTIRIEN_COEFFIFKM" ToRole="COEFFICENTEFKM" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISE.R_CFKM_TER_CFKM" FromRole="TRASPEFFETTIRIEN_COEFFIFKM" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISE.R_TER_CFKM" FromRole="TRASPEFFETTIRIEN_COEFFIFKM" ToRole="TRASPORTOEFFETTIRIENTRO" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIENTRO_DOC">
@@ -4231,7 +4370,7 @@
           <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="COEFFICENTEFKM" Relationship="DBISE.R_COEFKM_TRASPEFFSIST" FromRole="TRASPORTOEFFETTISIST" ToRole="COEFFICENTEFKM" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISE.R_COEFKM_TRASPEFFSIST" FromRole="TRASPORTOEFFETTISIST" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.R_PS_TE" FromRole="TRASPORTOEFFETTISIST" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="DBISE.R_TES_TES_D" FromRole="TRASPORTOEFFETTISIST" ToRole="TRASPEFFETTISIST_DOC" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISE.R_TES_TER" FromRole="TRASPORTOEFFETTISIST" ToRole="TRASPORTOEFFETTIRIENTRO" />
@@ -4243,7 +4382,7 @@
           <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CODICEUFFICIO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="COEFFICENTISEDE" Relationship="DBISE.R_UFFICI_COEFFICENTESEDE" FromRole="UFFICI" ToRole="COEFFICENTISEDE" />
+          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISE.R_UFFICI_COEFFICIENTESEDE" FromRole="UFFICI" ToRole="COEFFICIENTESEDE" />
           <NavigationProperty Name="FASCIACHILOMETRICA" Relationship="DBISE.R_U_FC" FromRole="UFFICI" ToRole="FASCIACHILOMETRICA" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.R_U_MA" FromRole="UFFICI" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
@@ -4488,12 +4627,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_CFKM_TER_CFKM">
-          <End Type="DBISE.COEFFICENTEFKM" Role="COEFFICENTEFKM" Multiplicity="1">
+          <End Type="DBISE.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.TRASPEFFETTIRIEN_COEFFIFKM" Role="TRASPEFFETTIRIEN_COEFFIFKM" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="TRASPEFFETTIRIEN_COEFFIFKM">
@@ -4502,12 +4641,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFFFKM_FKM">
-          <End Type="DBISE.COEFFICENTEFKM" Role="COEFFICENTEFKM" Multiplicity="1">
+          <End Type="DBISE.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.FASCIACHILOMETRICA" Role="FASCIACHILOMETRICA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="FASCIACHILOMETRICA">
@@ -4516,12 +4655,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFKM_TRASPEFFSIST">
-          <End Type="DBISE.COEFFICENTEFKM" Role="COEFFICENTEFKM" Multiplicity="1">
+          <End Type="DBISE.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.TRASPORTOEFFETTISIST" Role="TRASPORTOEFFETTISIST" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEFKM">
+            <Principal Role="COEFFICIENTEFKM">
               <PropertyRef Name="IDCFKM" />
             </Principal>
             <Dependent Role="TRASPORTOEFFETTISIST">
@@ -4530,12 +4669,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFFRICHIAMO_RICHIAMO">
-          <End Type="DBISE.COEFFICENTEINDRICHIAMO" Role="COEFFICENTEINDRICHIAMO" Multiplicity="1">
+          <End Type="DBISE.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTEINDRICHIAMO">
+            <Principal Role="COEFFICIENTEINDRICHIAMO">
               <PropertyRef Name="IDCOEFINDRICHIAMO" />
             </Principal>
             <Dependent Role="RICHIAMO">
@@ -4544,29 +4683,29 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_COEFSEDE_INDENNITA">
-          <End Type="DBISE.COEFFICENTISEDE" Role="COEFFICENTISEDE" Multiplicity="1">
+          <End Type="DBISE.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="COEFFICENTISEDE">
-              <PropertyRef Name="IDCOEFFICENTESEDE" />
+            <Principal Role="COEFFICIENTESEDE">
+              <PropertyRef Name="IDCOEFFICIENTESEDE" />
             </Principal>
             <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDCOEFFICENTESEDE" />
+              <PropertyRef Name="IDCOEFFICIENTESEDE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_UFFICI_COEFFICENTESEDE">
+        <Association Name="R_UFFICI_COEFFICIENTESEDE">
           <End Type="DBISE.UFFICI" Role="UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Type="DBISE.COEFFICENTISEDE" Role="COEFFICENTISEDE" Multiplicity="*" />
+          <End Type="DBISE.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UFFICI">
               <PropertyRef Name="IDUFFICIO" />
             </Principal>
-            <Dependent Role="COEFFICENTISEDE">
+            <Dependent Role="COEFFICIENTESEDE">
               <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
@@ -5577,6 +5716,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TIPCOAN_TRASF">
+          <End Type="DBISE.TIPOLOGIACOAN" Role="TIPOLOGIACOAN" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOLOGIACOAN">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TT_T">
           <End Type="DBISE.TIPOTRASFERIMENTO" Role="TIPOTRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5725,6 +5878,10 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DBISEStoreContainer" CdmEntityContainer="EntitiesDBISE">
+          <FunctionImportMapping FunctionImportName="CALCOLIINDENNITA" FunctionName="DBISE.Store.CALCOLIINDENNITA" />
+          <FunctionImportMapping FunctionImportName="NETTIZZA_INDENNITA" FunctionName="DBISE.Store.NETTIZZA_INDENNITA" />
+          <FunctionImportMapping FunctionImportName="PROC_IND_BASE" FunctionName="DBISE.Store.PROC_IND_BASE" />
+          <FunctionImportMapping FunctionImportName="PROC_IND_SERVIZIO" FunctionName="DBISE.Store.PROC_IND_SERVIZIO" />
           <EntitySetMapping Name="ACCESSI">
             <EntityTypeMapping TypeName="DBISE.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
@@ -5808,38 +5965,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="COEFFICENTEFKM">
-            <EntityTypeMapping TypeName="DBISE.COEFFICENTEFKM">
-              <MappingFragment StoreEntitySet="COEFFICENTEFKM">
+          <EntitySetMapping Name="COEFFICIENTEFKM">
+            <EntityTypeMapping TypeName="DBISE.COEFFICIENTEFKM">
+              <MappingFragment StoreEntitySet="COEFFICIENTEFKM">
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="COEFFICENTEKM" ColumnName="COEFFICENTEKM" />
+                <ScalarProperty Name="COEFFICIENTEKM" ColumnName="COEFFICIENTEKM" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="COEFFICENTEINDRICHIAMO">
-            <EntityTypeMapping TypeName="DBISE.COEFFICENTEINDRICHIAMO">
-              <MappingFragment StoreEntitySet="COEFFICENTEINDRICHIAMO">
+          <EntitySetMapping Name="COEFFICIENTEINDRICHIAMO">
+            <EntityTypeMapping TypeName="DBISE.COEFFICIENTEINDRICHIAMO">
+              <MappingFragment StoreEntitySet="COEFFICIENTEINDRICHIAMO">
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="COEFFICENTEINDBASE" ColumnName="COEFFICENTEINDBASE" />
-                <ScalarProperty Name="COEFFICENTERICHIAMO" ColumnName="COEFFICENTERICHIAMO" />
+                <ScalarProperty Name="COEFFICIENTEINDBASE" ColumnName="COEFFICIENTEINDBASE" />
+                <ScalarProperty Name="COEFFICIENTERICHIAMO" ColumnName="COEFFICIENTERICHIAMO" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="COEFFICENTISEDE">
-            <EntityTypeMapping TypeName="DBISE.COEFFICENTISEDE">
-              <MappingFragment StoreEntitySet="COEFFICENTISEDE">
+          <EntitySetMapping Name="COEFFICIENTESEDE">
+            <EntityTypeMapping TypeName="DBISE.COEFFICIENTESEDE">
+              <MappingFragment StoreEntitySet="COEFFICIENTESEDE">
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="VALORECOEFFICENTE" ColumnName="VALORECOEFFICENTE" />
+                <ScalarProperty Name="VALORECOEFFICIENTE" ColumnName="VALORECOEFFICIENTE" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-                <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
+                <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5952,7 +6109,7 @@
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
                 <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
-                <ScalarProperty Name="IDCOEFFICENTESEDE" ColumnName="IDCOEFFICENTESEDE" />
+                <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
                 <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
                 <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
                 <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
@@ -6199,9 +6356,9 @@
           <EntitySetMapping Name="PERCENTUALEMAB">
             <EntityTypeMapping TypeName="DBISE.PERCENTUALEMAB">
               <MappingFragment StoreEntitySet="PERCENTUALEMAB">
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDLIVELLO" ColumnName="IDLIVELLO" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
@@ -6379,6 +6536,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TIPOLOGIACOAN">
+            <EntityTypeMapping TypeName="DBISE.TIPOLOGIACOAN">
+              <MappingFragment StoreEntitySet="TIPOLOGIACOAN">
+                <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
+                <ScalarProperty Name="IDTIPOCOAN" ColumnName="IDTIPOCOAN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TIPOLOGIACONIUGE">
             <EntityTypeMapping TypeName="DBISE.TIPOLOGIACONIUGE">
               <MappingFragment StoreEntitySet="TIPOLOGIACONIUGE">
@@ -6446,6 +6611,7 @@
                 <ScalarProperty Name="COAN" ColumnName="COAN" />
                 <ScalarProperty Name="DATARIENTRO" ColumnName="DATARIENTRO" />
                 <ScalarProperty Name="DATAPARTENZA" ColumnName="DATAPARTENZA" />
+                <ScalarProperty Name="IDTIPOCOAN" ColumnName="IDTIPOCOAN" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
                 <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
                 <ScalarProperty Name="IDSTATOTRASFERIMENTO" ColumnName="IDSTATOTRASFERIMENTO" />
@@ -6596,8 +6762,7 @@
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="CALCOLIINDENNITA" FunctionName="DBISE.Store.CALCOLIINDENNITA" />
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -33,7 +33,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idIndennitaBase = i.IDINDENNITABASE,
                             idTFR = i.IDTFR,
                             idPercentualeDisagio = i.IDPERCENTUALEDISAGIO,
-                            idCoefficenteSede = i.IDCOEFFICENTESEDE,
+                            idCoefficenteSede = i.IDCOEFFICIENTESEDE,
                             dataInizio = i.DATAINIZIO,
                             dataFine = i.DATAFINE,
                             annullato = i.ANNULLATO,

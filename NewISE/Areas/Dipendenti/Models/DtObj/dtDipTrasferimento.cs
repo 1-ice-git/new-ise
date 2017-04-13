@@ -29,7 +29,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                     if (tm != null && tm.idTrasferimento > 0)
                     {
                         dit.statoTrasferimento = (EnumStatoTraferimento)tm.idStatoTrasferimento;
-                        dit.UfficioDestinazione = tm.ufficio;
+                        dit.UfficioDestinazione = tm.Ufficio;
                         dit.Decorrenza = tm.dataPartenza;
                         dit.RuoloUfficio = tm.RuoloUfficio;
 

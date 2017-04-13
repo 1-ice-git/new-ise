@@ -12,22 +12,18 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class TRASPORTOEFFETTISIST
+    public partial class TIPOLOGIACOAN
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TRASPORTOEFFETTISIST()
+        public TIPOLOGIACOAN()
         {
-            this.TRASPEFFETTISIST_DOC = new HashSet<TRASPEFFETTISIST_DOC>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
-        public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public decimal IDCFKM { get; set; }
-        public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDTIPOCOAN { get; set; }
+        public string DESCRIZIONE { get; set; }
     
-        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPEFFETTISIST_DOC> TRASPEFFETTISIST_DOC { get; set; }
-        public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

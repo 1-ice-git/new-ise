@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,6 +11,45 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
+        {
+            var dNew = context.ObjectInstance as DipendentiModel;
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                //Prelevo il record interessato dalla verifica.
+                var vli = db.DIPENDENTI.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
+                if (vli != null && vli.Count() > 0)
+                {
+                    //Se il record interessato ha la stessa matricola, vuol dire che la modifica
+                    //effettuata non ha bisogno di verificare l'univocità della matricola.
+                    if (vli.First().MATRICOLA == dNew.matricola)
+                    {
+                        return ValidationResult.Success;
+                    }
+                }
+
+                var li = db.DIPENDENTI.Where(a => a.MATRICOLA == dNew.matricola);
+                if (li != null && li.Count() > 0)
+                {
+                    var i = li.First();
+
+                    if (i.MATRICOLA == dNew.matricola)
+                    {
+                        return new ValidationResult("La matricola inserita è già presente, inserirne un altra.");
+                    }
+                    else
+                    {
+                        return ValidationResult.Success;
+                    }
+                }
+                else
+                {
+                    return ValidationResult.Success;
+                }
+
+            }
         }
 
         public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola)
@@ -60,7 +100,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
                                     tipologiaTrasferimento = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                 },
-                                ufficio = new UfficiModel()
+                                Ufficio = new UfficiModel()
                                 {
                                     idUfficio = t.UFFICI.IDUFFICIO,
                                     codiceUfficio = t.UFFICI.CODICEUFFICIO,
