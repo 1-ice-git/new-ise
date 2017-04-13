@@ -30,6 +30,7 @@ namespace NewISE
         public decimal IDSTATOTRASFERIMENTO { get; set; }
         public decimal IDRUOLO { get; set; }
         public decimal IDDIPENDENTE { get; set; }
+        public decimal IDTIPOCOAN { get; set; }
         public System.DateTime DATAPARTENZA { get; set; }
         public Nullable<System.DateTime> DATARIENTRO { get; set; }
         public string COAN { get; set; }
@@ -48,6 +49,7 @@ namespace NewISE
         public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
+        public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

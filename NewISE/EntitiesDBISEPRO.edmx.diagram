@@ -4,82 +4,83 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3fb934f8e15249519a25c1f509a0c3e8" Name="Diagram1" ZoomLevel="66">
-        <EntityTypeShape EntityType="DBISE.ACCESSI" Width="1.5" PointX="8.25" PointY="8" />
-        <EntityTypeShape EntityType="DBISE.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="14.25" PointY="24.25" />
-        <EntityTypeShape EntityType="DBISE.ALTRIDATIFAM" Width="1.5" PointX="10.5" PointY="32.25" />
-        <EntityTypeShape EntityType="DBISE.ANTICIPI" Width="1.5" PointX="16.5" PointY="55.5" />
-        <EntityTypeShape EntityType="DBISE.ATTIVITACRUD" Width="1.5" PointX="6" PointY="11.5" />
-        <EntityTypeShape EntityType="DBISE.BIGLIETTI" Width="1.5" PointX="10.5" PointY="39.875" />
-        <EntityTypeShape EntityType="DBISE.BIGLIETTI_DOCUMENTI" Width="1.5" PointX="6" PointY="34.75" />
-        <EntityTypeShape EntityType="DBISE.COEFFICIENTEFKM" Width="1.5" PointX="17.25" PointY="35.875" />
-        <EntityTypeShape EntityType="DBISE.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="15" PointY="30.875" />
-        <EntityTypeShape EntityType="DBISE.COEFFICIENTESEDE" Width="1.5" PointX="9.75" PointY="53.5" />
-        <EntityTypeShape EntityType="DBISE.CONTABILITA" Width="1.5" PointX="24" PointY="48.5" />
-        <EntityTypeShape EntityType="DBISE.DATIMAB" Width="1.5" PointX="7.5" PointY="41" />
-        <EntityTypeShape EntityType="DBISE.DEFFASCIACHILOMETRICA" Width="1.5" PointX="17.25" PointY="32.75" />
-        <EntityTypeShape EntityType="DBISE.DIPENDENTI" Width="1.5" PointX="0.75" PointY="29.125" />
+      <Diagram DiagramId="3fb934f8e15249519a25c1f509a0c3e8" Name="Diagram1" ZoomLevel="54">
+        <EntityTypeShape EntityType="DBISE.ACCESSI" Width="1.5" PointX="8.25" PointY="64.625" />
+        <EntityTypeShape EntityType="DBISE.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="17.25" PointY="32.625" />
+        <EntityTypeShape EntityType="DBISE.ALTRIDATIFAM" Width="1.5" PointX="8.25" PointY="38.375" />
+        <EntityTypeShape EntityType="DBISE.ANTICIPI" Width="1.5" PointX="16.5" PointY="56.375" />
+        <EntityTypeShape EntityType="DBISE.ATTIVITACRUD" Width="1.5" PointX="6" PointY="47.5" />
+        <EntityTypeShape EntityType="DBISE.BIGLIETTI" Width="1.5" PointX="8.25" PointY="35.25" />
+        <EntityTypeShape EntityType="DBISE.BIGLIETTI_DOCUMENTI" Width="1.5" PointX="6" PointY="39.75" />
+        <EntityTypeShape EntityType="DBISE.COEFFICIENTEFKM" Width="1.5" PointX="17.25" PointY="60.625" />
+        <EntityTypeShape EntityType="DBISE.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="15" PointY="36.375" />
+        <EntityTypeShape EntityType="DBISE.COEFFICIENTESEDE" Width="1.5" PointX="9.75" PointY="26.125" />
+        <EntityTypeShape EntityType="DBISE.CONTABILITA" Width="1.5" PointX="24" PointY="45.875" />
+        <EntityTypeShape EntityType="DBISE.DATIMAB" Width="1.5" PointX="10.5" PointY="42.875" />
+        <EntityTypeShape EntityType="DBISE.DEFFASCIACHILOMETRICA" Width="1.5" PointX="20.25" PointY="38.75" />
+        <EntityTypeShape EntityType="DBISE.DIPENDENTI" Width="1.5" PointX="0.75" PointY="45.5" />
         <EntityTypeShape EntityType="DBISE.DOCUMENTI" Width="1.5" PointX="0.75" PointY="34.125" />
-        <EntityTypeShape EntityType="DBISE.ELAB_CONT" Width="1.5" PointX="19.5" PointY="46.5" />
-        <EntityTypeShape EntityType="DBISE.FASCIACHILOMETRICA" Width="1.5" PointX="19.5" PointY="39.25" />
-        <EntityTypeShape EntityType="DBISE.GRUPPIDOCUMENTI" Width="1.5" PointX="1.5" PointY="11.5" />
-        <EntityTypeShape EntityType="DBISE.INDENNITA" Width="1.5" PointX="12" PointY="45.625" />
-        <EntityTypeShape EntityType="DBISE.INDENNITABASE" Width="1.5" PointX="9.75" PointY="59.75" />
-        <EntityTypeShape EntityType="DBISE.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="3.75" PointY="13.875" />
-        <EntityTypeShape EntityType="DBISE.INDENNITASISTEMAZIONE" Width="1.5" PointX="12" PointY="28.5" />
-        <EntityTypeShape EntityType="DBISE.LIVELLI" Width="1.5" PointX="7.5" PointY="57.125" />
-        <EntityTypeShape EntityType="DBISE.LIVELLIDIPENDENTI" Width="1.5" PointX="19.75" PointY="35.875" />
-        <EntityTypeShape EntityType="DBISE.LOGATTIVITA" Width="1.5" PointX="8.25" PointY="29.25" />
-        <EntityTypeShape EntityType="DBISE.MAB_ALIQCONTR" Width="1.5" PointX="16.5" PointY="39.75" />
-        <EntityTypeShape EntityType="DBISE.MAB_DOC" Width="1.5" PointX="6" PointY="31.75" />
-        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="5.25" PointY="41.5" />
-        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONECONIUGE" Width="1.5" PointX="6" PointY="26.25" />
-        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONEFIGLI" Width="1.5" PointX="6" PointY="14.625" />
-        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONIANNUALI" Width="1.5" PointX="5.25" PointY="45.5" />
-        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="8.25" PointY="33.25" />
-        <EntityTypeShape EntityType="DBISE.NORMACALCOLO" Width="1.5" PointX="3" PointY="60.375" />
-        <EntityTypeShape EntityType="DBISE.NOTIFICARICHIESTAMAGFAM" Width="1.5" PointX="14.25" PointY="39.5" />
-        <EntityTypeShape EntityType="DBISE.OA" Width="1.5" PointX="26.25" PointY="48.25" />
-        <EntityTypeShape EntityType="DBISE.PARENTELA" Width="1.5" PointX="6" PointY="23.5" />
-        <EntityTypeShape EntityType="DBISE.PASSAPORTI" Width="1.5" PointX="13.5" PointY="34.75" />
-        <EntityTypeShape EntityType="DBISE.PENSIONECONIUGE" Width="1.5" PointX="6" PointY="19.875" />
-        <EntityTypeShape EntityType="DBISE.PERCENTUALEDISAGIO" Width="1.5" PointX="9.75" PointY="46.375" />
-        <EntityTypeShape EntityType="DBISE.PERCENTUALEMAB" Width="1.5" PointX="12" PointY="51.25" />
-        <EntityTypeShape EntityType="DBISE.PRIMASIST_ALIQCONTR" Width="1.5" PointX="16.5" PointY="51" />
-        <EntityTypeShape EntityType="DBISE.PRIMASITEMAZIONE" Width="1.5" PointX="14.25" PointY="49.375" />
-        <EntityTypeShape EntityType="DBISE.REGOLECALCOLO" Width="1.5" PointX="5.25" PointY="59.75" />
-        <EntityTypeShape EntityType="DBISE.RICHIAMO" Width="1.5" PointX="17.25" PointY="42.625" />
-        <EntityTypeShape EntityType="DBISE.RIDUZIONI" Width="1.5" PointX="7.5" PointY="60" />
-        <EntityTypeShape EntityType="DBISE.RUOLOACCESSO" Width="1.5" PointX="3.75" PointY="8.125" />
-        <EntityTypeShape EntityType="DBISE.RUOLOUFFICIO" Width="1.5" PointX="0.75" PointY="39" />
-        <EntityTypeShape EntityType="DBISE.SOSPENSIONE" Width="1.5" PointX="17.25" PointY="46.625" />
-        <EntityTypeShape EntityType="DBISE.STATOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="41.375" />
-        <EntityTypeShape EntityType="DBISE.STIPENDI" Width="1.5" PointX="24" PointY="43.875" />
-        <EntityTypeShape EntityType="DBISE.TEORICI" Width="1.5" PointX="21.75" PointY="46.5" />
-        <EntityTypeShape EntityType="DBISE.TFR" Width="1.5" PointX="9.75" PointY="49.875" />
-        <EntityTypeShape EntityType="DBISE.TIPOALIQUOTECONTRIBUTIVE" Width="1.5" PointX="12" PointY="24.75" />
-        <EntityTypeShape EntityType="DBISE.TIPODOCUMENTI" Width="1.5" PointX="0.75" PointY="14" />
+        <EntityTypeShape EntityType="DBISE.ELAB_CONT" Width="1.5" PointX="19.5" PointY="48.25" />
+        <EntityTypeShape EntityType="DBISE.FASCIACHILOMETRICA" Width="1.5" PointX="22.5" PointY="42.375" />
+        <EntityTypeShape EntityType="DBISE.GRUPPIDOCUMENTI" Width="1.5" PointX="1.5" PointY="10.125" />
+        <EntityTypeShape EntityType="DBISE.INDENNITA" Width="1.5" PointX="12" PointY="48.125" />
+        <EntityTypeShape EntityType="DBISE.INDENNITABASE" Width="1.5" PointX="9.75" PointY="60.125" />
+        <EntityTypeShape EntityType="DBISE.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="1.5" PointY="27.625" />
+        <EntityTypeShape EntityType="DBISE.INDENNITASISTEMAZIONE" Width="1.5" PointX="12" PointY="54.375" />
+        <EntityTypeShape EntityType="DBISE.LIVELLI" Width="1.5" PointX="7.5" PointY="57.5" />
+        <EntityTypeShape EntityType="DBISE.LIVELLIDIPENDENTI" Width="1.5" PointX="9.75" PointY="55.375" />
+        <EntityTypeShape EntityType="DBISE.LOGATTIVITA" Width="1.5" PointX="8.25" PointY="43.25" />
+        <EntityTypeShape EntityType="DBISE.MAB_ALIQCONTR" Width="1.5" PointX="19.5" PointY="45" />
+        <EntityTypeShape EntityType="DBISE.MAB_DOC" Width="1.5" PointX="3" PointY="34.75" />
+        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="5.25" PointY="43.375" />
+        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONECONIUGE" Width="1.5" PointX="3.75" PointY="21.5" />
+        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONEFIGLI" Width="1.5" PointX="3.75" PointY="26" />
+        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONIANNUALI" Width="1.5" PointX="8.25" PointY="22.375" />
+        <EntityTypeShape EntityType="DBISE.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="6" PointY="33.25" />
+        <EntityTypeShape EntityType="DBISE.NORMACALCOLO" Width="1.5" PointX="3" PointY="60.75" />
+        <EntityTypeShape EntityType="DBISE.NOTIFICARICHIESTAMAGFAM" Width="1.5" PointX="14.25" PointY="41.875" />
+        <EntityTypeShape EntityType="DBISE.OA" Width="1.5" PointX="26.25" PointY="45.625" />
+        <EntityTypeShape EntityType="DBISE.PARENTELA" Width="1.5" PointX="3.75" PointY="46.875" />
+        <EntityTypeShape EntityType="DBISE.PASSAPORTI" Width="1.5" PointX="8.25" PointY="31.75" />
+        <EntityTypeShape EntityType="DBISE.PENSIONECONIUGE" Width="1.5" PointX="3.75" PointY="49.125" />
+        <EntityTypeShape EntityType="DBISE.PERCENTUALEDISAGIO" Width="1.5" PointX="9.75" PointY="47.625" />
+        <EntityTypeShape EntityType="DBISE.PERCENTUALEMAB" Width="1.5" PointX="15" PointY="45.5" />
+        <EntityTypeShape EntityType="DBISE.PRIMASIST_ALIQCONTR" Width="1.5" PointX="19.5" PointY="58.625" />
+        <EntityTypeShape EntityType="DBISE.PRIMASITEMAZIONE" Width="1.5" PointX="14.25" PointY="53" />
+        <EntityTypeShape EntityType="DBISE.REGOLECALCOLO" Width="1.5" PointX="5.25" PointY="60.125" />
+        <EntityTypeShape EntityType="DBISE.RICHIAMO" Width="1.5" PointX="17.25" PointY="51.25" />
+        <EntityTypeShape EntityType="DBISE.RIDUZIONI" Width="1.5" PointX="7.5" PointY="60.375" />
+        <EntityTypeShape EntityType="DBISE.RUOLOACCESSO" Width="1.5" PointX="3.75" PointY="54.875" />
+        <EntityTypeShape EntityType="DBISE.RUOLOUFFICIO" Width="1.5" PointX="0.75" PointY="31" />
+        <EntityTypeShape EntityType="DBISE.SOSPENSIONE" Width="1.5" PointX="14.25" PointY="49.25" />
+        <EntityTypeShape EntityType="DBISE.STATOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="40.875" />
+        <EntityTypeShape EntityType="DBISE.STIPENDI" Width="1.5" PointX="24" PointY="50.5" />
+        <EntityTypeShape EntityType="DBISE.TEORICI" Width="1.5" PointX="21.75" PointY="48.375" />
+        <EntityTypeShape EntityType="DBISE.TFR" Width="1.5" PointX="9.75" PointY="51" />
+        <EntityTypeShape EntityType="DBISE.TIPOALIQUOTECONTRIBUTIVE" Width="1.5" PointX="15" PointY="33.125" />
+        <EntityTypeShape EntityType="DBISE.TIPODOCUMENTI" Width="1.5" PointX="3.75" PointY="9.625" />
         <EntityTypeShape EntityType="DBISE.TIPOELABORAZIONE" Width="1.5" PointX="15" PointY="64.25" />
-        <EntityTypeShape EntityType="DBISE.TIPOLIQUIDAZIONE" Width="1.5" PointX="17.25" PointY="61.625" />
-        <EntityTypeShape EntityType="DBISE.TIPOLOGIACONIUGE" Width="1.5" PointX="3.75" PointY="26.75" />
-        <EntityTypeShape EntityType="DBISE.TIPOLOGIAFIGLIO" Width="1.5" PointX="3.75" PointY="16.75" />
-        <EntityTypeShape EntityType="DBISE.TIPOMOVIMENTO" Width="1.5" PointX="19.5" PointY="54.75" />
-        <EntityTypeShape EntityType="DBISE.TIPOREGOLACALCOLO" Width="1.5" PointX="3" PointY="57.5" />
-        <EntityTypeShape EntityType="DBISE.TIPOSOSPENSIONE" Width="1.5" PointX="15" PointY="59.25" />
-        <EntityTypeShape EntityType="DBISE.TIPOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="43.625" />
+        <EntityTypeShape EntityType="DBISE.TIPOLIQUIDAZIONE" Width="1.5" PointX="17.25" PointY="66.75" />
+        <EntityTypeShape EntityType="DBISE.TIPOLOGIACOAN" Width="1.5" PointX="0.75" PointY="43.25" />
+        <EntityTypeShape EntityType="DBISE.TIPOLOGIACONIUGE" Width="1.5" PointX="1.5" PointY="22" />
+        <EntityTypeShape EntityType="DBISE.TIPOLOGIAFIGLIO" Width="1.5" PointX="1.5" PointY="25.25" />
+        <EntityTypeShape EntityType="DBISE.TIPOMOVIMENTO" Width="1.5" PointX="19.5" PointY="41.5" />
+        <EntityTypeShape EntityType="DBISE.TIPOREGOLACALCOLO" Width="1.5" PointX="3" PointY="57.875" />
+        <EntityTypeShape EntityType="DBISE.TIPOSOSPENSIONE" Width="1.5" PointX="12" PointY="57.75" />
+        <EntityTypeShape EntityType="DBISE.TIPOTRASFERIMENTO" Width="1.5" PointX="0.75" PointY="38.25" />
         <EntityTypeShape EntityType="DBISE.TIPOVOCE" Width="1.5" PointX="17.25" PointY="64" />
-        <EntityTypeShape EntityType="DBISE.TRASFERIMENTO" Width="1.5" PointX="3" PointY="33.125" />
-        <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIEN_COEFFIFKM" Width="1.5" PointX="21.75" PointY="43" />
-        <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIENTRO_DOC" Width="1.5" PointX="6" PointY="37.75" />
-        <EntityTypeShape EntityType="DBISE.TRASPEFFETTISIST_DOC" Width="1.5" PointX="3" PointY="29.75" />
-        <EntityTypeShape EntityType="DBISE.TRASPORTOEFFETTIRIENTRO" Width="1.5" PointX="19.5" PointY="42.875" />
-        <EntityTypeShape EntityType="DBISE.TRASPORTOEFFETTISIST" Width="1.5" PointX="19.5" PointY="50.875" />
-        <EntityTypeShape EntityType="DBISE.UFFICI" Width="1.5" PointX="7.5" PointY="46.25" />
-        <EntityTypeShape EntityType="DBISE.UTENTIAUTORIZZATI" Width="1.5" PointX="6" PointY="7.875" />
-        <EntityTypeShape EntityType="DBISE.VALUTAUFFICIO" Width="1.5" PointX="9.75" PointY="43" />
-        <EntityTypeShape EntityType="DBISE.VALUTE" Width="1.5" PointX="7.5" PointY="50.25" />
-        <EntityTypeShape EntityType="DBISE.VARIAZIONIRATEMAB" Width="1.5" PointX="14.25" PointY="43.625" />
-        <EntityTypeShape EntityType="DBISE.VOCI" Width="1.5" PointX="19.5" PointY="62.5" />
+        <EntityTypeShape EntityType="DBISE.TRASFERIMENTO" Width="1.5" PointX="3" PointY="38" />
+        <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIEN_COEFFIFKM" Width="1.5" PointX="21.75" PointY="52.625" />
+        <EntityTypeShape EntityType="DBISE.TRASPEFFETTIRIENTRO_DOC" Width="1.5" PointX="6" PointY="29.75" />
+        <EntityTypeShape EntityType="DBISE.TRASPEFFETTISIST_DOC" Width="1.5" PointX="3" PointY="31.75" />
+        <EntityTypeShape EntityType="DBISE.TRASPORTOEFFETTIRIENTRO" Width="1.5" PointX="19.5" PointY="52.5" />
+        <EntityTypeShape EntityType="DBISE.TRASPORTOEFFETTISIST" Width="1.5" PointX="19.5" PointY="55.375" />
+        <EntityTypeShape EntityType="DBISE.UFFICI" Width="1.5" PointX="7.5" PointY="26" />
+        <EntityTypeShape EntityType="DBISE.UTENTIAUTORIZZATI" Width="1.5" PointX="6" PointY="54.5" />
+        <EntityTypeShape EntityType="DBISE.VALUTAUFFICIO" Width="1.5" PointX="10.75" PointY="38.5" />
+        <EntityTypeShape EntityType="DBISE.VALUTE" Width="1.5" PointX="7.5" PointY="51.375" />
+        <EntityTypeShape EntityType="DBISE.VARIAZIONIRATEMAB" Width="1.5" PointX="17.25" PointY="45.875" />
+        <EntityTypeShape EntityType="DBISE.VOCI" Width="1.5" PointX="19.5" PointY="65" />
         <AssociationConnector Association="DBISE.R_UL_C" />
         <AssociationConnector Association="DBISE.R_AC_MAB_AC" />
         <AssociationConnector Association="DBISE.R_AC_PS_AC" />
@@ -96,7 +97,8 @@
         <AssociationConnector Association="DBISE.R_COEFFFKM_FKM" />
         <AssociationConnector Association="DBISE.R_COEFKM_TRASPEFFSIST" />
         <AssociationConnector Association="DBISE.R_COEFFRICHIAMO_RICHIAMO" />
-        <AssociationConnector Association="DBISE.R_UFFICI_COEFFICENTESEDE" />
+        <AssociationConnector Association="DBISE.R_COEFSEDE_INDENNITA" />
+        <AssociationConnector Association="DBISE.R_UFFICI_COEFFICIENTESEDE" />
         <AssociationConnector Association="DBISE.R_C_AQ" />
         <AssociationConnector Association="DBISE.R_T_C" />
         <AssociationConnector Association="DBISE.R_DATIMAB_VARRATEMAB" />
@@ -169,6 +171,7 @@
         <AssociationConnector Association="DBISE.R_TD_TES_D" />
         <AssociationConnector Association="DBISE.R_TE_TV" />
         <AssociationConnector Association="DBISE.R_TL_V" />
+        <AssociationConnector Association="DBISE.R_TIPCOAN_TRASF" />
         <AssociationConnector Association="DBISE.R_TT_T" />
         <AssociationConnector Association="DBISE.R_TV_V" />
         <AssociationConnector Association="DBISE.R_U_T" />

@@ -83,6 +83,7 @@ namespace NewISE
         public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
         public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
         public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
+        public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
         public virtual DbSet<TIPOMOVIMENTO> TIPOMOVIMENTO { get; set; }

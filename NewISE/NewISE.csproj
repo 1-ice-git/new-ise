@@ -1723,6 +1723,9 @@
     <Compile Include="TIPOLIQUIDAZIONE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="TIPOLOGIACOAN.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
     <Compile Include="TIPOLOGIACONIUGE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>

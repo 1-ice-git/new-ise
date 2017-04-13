@@ -12,23 +12,18 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class COEFFICIENTESEDE
+    public partial class TIPOLOGIACOAN
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public COEFFICIENTESEDE()
+        public TIPOLOGIACOAN()
         {
-            this.INDENNITA = new HashSet<INDENNITA>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
-        public decimal IDCOEFFICIENTESEDE { get; set; }
-        public decimal IDUFFICIO { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal VALORECOEFFICIENTE { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDTIPOCOAN { get; set; }
+        public string DESCRIZIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
-        public virtual UFFICI UFFICI { get; set; }
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }
