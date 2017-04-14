@@ -10,7 +10,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
     public class TrasferimentoController : Controller
     {
         // GET: Dipendenti/Trasferimento
-        public ActionResult NuovoTrasferimento()
+        public ActionResult NuovoTrasferimento(string matricola)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
 

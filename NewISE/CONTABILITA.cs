@@ -22,9 +22,9 @@ namespace NewISE
         public decimal MESERIFERIMENTO { get; set; }
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
-        public decimal FLAGINVIOOA { get; set; }
         public Nullable<System.DateTime> DATAINVIOOA { get; set; }
+        public decimal FLAGINVIOOA { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual OA OA { get; set; }

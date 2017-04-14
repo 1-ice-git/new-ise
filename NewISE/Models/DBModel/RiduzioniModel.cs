@@ -25,9 +25,13 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Percentuale")]
         [DataType(DataType.Text)]
         public decimal percentuale { get; set; }
-        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
-        [Display(Name = "Annullato")]
-        [DefaultValue(false)]
+
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime dataAggiornamento { get; set; }
+
         public bool annullato { get; set; } = false;
 
         

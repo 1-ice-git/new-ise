@@ -33,6 +33,7 @@ namespace NewISE
         public decimal IDCOEFFICIENTESEDE { get; set; }
         public System.DateTime DATAINIZIO { get; set; }
         public System.DateTime DATAFINE { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual COEFFICIENTESEDE COEFFICIENTESEDE { get; set; }

@@ -6,6 +6,8 @@
 
 }
 
+<input type="hidden" id="hMatricola" value=""/>
+
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
         <div id="ContenitoreDipendentiGepe">
@@ -19,9 +21,9 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="tabIntestazione" class="nav nav-tabs nav-justified" ">
+        <div id="tabIntestazione" class="nav nav-tabs nav-justified">
             <ul id="tabsGestioneTrasferimento" class="nav nav-tabs tabs-destro">
-                <li><a href="#tabNuovoTrasferimento" data-toggle="tab">Nuovo Trasferimento</a></li>
+                <li><a href="#tabNuovoTrasferimento" data-toggle="tab" onclick="NuovoTrasferimento();">Nuovo Trasferimento</a></li>
                 <li><a href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
                 <li><a href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
                 <li><a href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
@@ -33,15 +35,15 @@
             </ul>
         </div>
         <div id="tabContenuti" class="tab-content">
-            <div class="tab-pane active" id="tabNuovoTrasferimento">Prova1</div>
-            <div class="tab-pane" id="tabGestioneTrasferimento">Prova2</div>
-            <div class="tab-pane" id="tabMaggiorazioneFamiliare">Prova3</div>
-            <div class="tab-pane" id="tabMaggiorazioneAbitazione">Prova4</div>
-            <div class="tab-pane" id="tabCongediPermessi">Prova5</div>
-            <div class="tab-pane" id="tabSospensione">Prova6</div>
-            <div class="tab-pane" id="tabRichiamo">Prova7</div>
-            <div class="tab-pane" id="tabIndennita">Prova8</div>
-            <div class="tab-pane" id="RiepilogoVoci">Prova9</div>
+            <div class="tab-pane active" id="tabNuovoTrasferimento"></div>
+            <div class="tab-pane" id="tabGestioneTrasferimento"></div>
+            <div class="tab-pane" id="tabMaggiorazioneFamiliare"></div>
+            <div class="tab-pane" id="tabMaggiorazioneAbitazione"></div>
+            <div class="tab-pane" id="tabCongediPermessi"></div>
+            <div class="tab-pane" id="tabSospensione"></div>
+            <div class="tab-pane" id="tabRichiamo"></div>
+            <div class="tab-pane" id="tabIndennita"></div>
+            <div class="tab-pane" id="RiepilogoVoci"></div>
         </div>
     </div>
 </div>
@@ -52,5 +54,45 @@
         jQuery(document).ready(function ($) {
             $('#tabsGestioneTrasferimento').tab();
         });
+
+        function NuovoTrasferimento() {
+            //debugger;
+
+            var matricola = $("#hMatricola").val();
+            rotta = "/Dipendenti/Trasferimento/NuovoTrasferimento";
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#tabNuovoTrasferimento").empty();
+                    $("#tabNuovoTrasferimento").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
     </script>
 }
