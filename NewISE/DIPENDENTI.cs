@@ -35,6 +35,7 @@ namespace NewISE
         public string TELEFONO { get; set; }
         public string FAX { get; set; }
         public bool ABILITATO { get; set; }
+        public System.DateTime DATAINIZIORICALCOLI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }

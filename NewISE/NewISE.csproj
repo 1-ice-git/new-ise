@@ -92,8 +92,8 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
@@ -170,6 +170,22 @@
   <ItemGroup>
     <Content Include="Areas\Dipendenti\Content\Dipendenti.css" />
     <Content Include="Areas\Parametri\Contenuti\CSS\Parametri.css" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\bootstrap-checkbox.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\bootstrap-checkbox.min.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\es.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\es.min.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\it.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\pt.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\pt.min.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\ru.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\ru.min.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\tr.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\dist\js\i18n\tr.min.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\bootstrap-checkbox.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\es.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\pt.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\ru.js" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\tr.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -1347,11 +1363,11 @@
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Trasferimento\NuovoTrasferimento.cshtml" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\composer.json" />
+    <Content Include="Componenti\bootstrap-checkbox-1.4.0\LICENSE" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
     <Content Include="Scripts\i18n\ar.js" />
     <Content Include="Scripts\i18n\az.js" />
@@ -1513,9 +1529,6 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="ELAB_CONT.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FASCIACHILOMETRICA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="GRUPPIDOCUMENTI.cs">

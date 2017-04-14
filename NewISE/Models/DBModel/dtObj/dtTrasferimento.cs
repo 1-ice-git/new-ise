@@ -6,6 +6,12 @@ using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
+    public enum TipologiaCoan
+    {
+        Servizi_Istituzionali = 1,
+        Servizi_Promozionali = 2
+    }
+
     public class dtTrasferimento : IDisposable
     {
         public void Dispose()
@@ -15,41 +21,30 @@ namespace NewISE.Models.DBModel.dtObj
 
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
-            var dNew = context.ObjectInstance as DipendentiModel;
-            using (EntitiesDBISE db = new EntitiesDBISE())
+
+            ValidationResult vr = ValidationResult.Success;
+
+            var tr = context.ObjectInstance as TrasferimentoModel;
+
+            
+            if (tr.idTipoCoan == Convert.ToDecimal(TipologiaCoan.Servizi_Promozionali))
             {
-                //Prelevo il record interessato dalla verifica.
-                var vli = db.DIPENDENTI.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
-                if (vli != null && vli.Count() > 0)
+                if (tr.coan != string.Empty && tr.coan.Length == 10)
                 {
-                    //Se il record interessato ha la stessa matricola, vuol dire che la modifica
-                    //effettuata non ha bisogno di verificare l'univocità della matricola.
-                    if (vli.First().MATRICOLA == dNew.matricola)
-                    {
-                        return ValidationResult.Success;
-                    }
-                }
-
-                var li = db.DIPENDENTI.Where(a => a.MATRICOLA == dNew.matricola);
-                if (li != null && li.Count() > 0)
-                {
-                    var i = li.First();
-
-                    if (i.MATRICOLA == dNew.matricola)
-                    {
-                        return new ValidationResult("La matricola inserita è già presente, inserirne un altra.");
-                    }
-                    else
-                    {
-                        return ValidationResult.Success;
-                    }
+                    vr= ValidationResult.Success;
                 }
                 else
                 {
-                    return ValidationResult.Success;
+                    vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
                 }
-
             }
+            else if (tr.idTipoCoan == Convert.ToDecimal(TipologiaCoan.Servizi_Istituzionali))
+            {
+                vr = ValidationResult.Success;
+            }
+
+            return vr;
+            
         }
 
         public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola)
@@ -84,6 +79,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 coan = t.COAN,
                                 protocolloLettera = t.PROTOCOLLOLETTERA,
                                 dataLettera = t.DATALETTERA,
+                                dataAggiornamento = t.DATAAGGIORNAMENTO,
                                 annullato = t.ANNULLATO,
                                 RuoloUfficio = new RuoloUfficioModel()
                                 {
@@ -121,7 +117,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     email = t.DIPENDENTI.EMAIL,
                                     telefono = t.DIPENDENTI.TELEFONO,
                                     fax = t.DIPENDENTI.FAX,
-                                    abilitato = t.DIPENDENTI.ABILITATO
+                                    abilitato = t.DIPENDENTI.ABILITATO,
+                                    dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
                                 }
 
 

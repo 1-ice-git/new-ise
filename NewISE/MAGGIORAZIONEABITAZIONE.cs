@@ -25,6 +25,7 @@ namespace NewISE
         public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINIZIOMAB { get; set; }
         public System.DateTime DATAFINEMAB { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

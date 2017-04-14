@@ -25,8 +25,9 @@ namespace NewISE
         public decimal IDELABCONT { get; set; }
         public decimal IDVOCI { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
         public decimal IMPORTO { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
+        public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }

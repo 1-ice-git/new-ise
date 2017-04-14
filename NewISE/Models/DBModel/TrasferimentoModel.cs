@@ -1,4 +1,5 @@
 ﻿using NewISE.Areas.Parametri.Models;
+using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,15 +43,17 @@ namespace NewISE.Models.DBModel
         public DateTime? dataRientro { get; set; }
 
 
-        [StringLength(10, ErrorMessage = "per ilo COAN sono richiesti un massimo di 10 caratteri.")]
+        [StringLength(10, ErrorMessage = "Per il COAN sono richiesti 10 caratteri.")]
         [Display(Name = "CO.AN.")]
-        [DataType(DataType.Text)]        
+        [DataType(DataType.Text)]
+        [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredCoan", ErrorMessage = "")]
         public string coan { get; set; }
 
 
         [StringLength(100, ErrorMessage = "per il protocollo lettera sono richiesti un massimo di 100 caratteri.")]
         [Display(Name = "Protocollo Lettera")]
         [DataType(DataType.Text)]
+        [Required(ErrorMessage = "Il protocollo è richiesto.")]
         public string protocolloLettera { get; set; }
 
         [DataType(DataType.Date)]
@@ -58,8 +61,15 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Lettera")]
         public DateTime? dataLettera { get; set; }
 
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime dataAggiornamento { get; set; }
+
         [Required(ErrorMessage = "Il flag annullato è richiesto.")]
         [DefaultValue(false)]
+        [Display(AutoGenerateField = false)]
         public bool annullato { get; set; }
 
 

@@ -30,6 +30,13 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFine { get; set; }
+
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime dataAggiornamento { get; set; }
+
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]

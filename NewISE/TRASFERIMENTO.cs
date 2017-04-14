@@ -36,6 +36,7 @@ namespace NewISE
         public string COAN { get; set; }
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }

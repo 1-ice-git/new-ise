@@ -18,21 +18,24 @@ namespace NewISE
         public COEFFICIENTEFKM()
         {
             this.TRASPEFFETTIRIEN_COEFFIFKM = new HashSet<TRASPEFFETTIRIEN_COEFFIFKM>();
-            this.FASCIACHILOMETRICA = new HashSet<FASCIACHILOMETRICA>();
             this.TRASPORTOEFFETTISIST = new HashSet<TRASPORTOEFFETTISIST>();
+            this.UFFICI = new HashSet<UFFICI>();
         }
     
         public decimal IDCFKM { get; set; }
+        public decimal IDDEFKM { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal COEFFICIENTEKM { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPEFFETTIRIEN_COEFFIFKM> TRASPEFFETTIRIEN_COEFFIFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
+        public virtual DEFFASCIACHILOMETRICA DEFFASCIACHILOMETRICA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UFFICI> UFFICI { get; set; }
     }
 }
