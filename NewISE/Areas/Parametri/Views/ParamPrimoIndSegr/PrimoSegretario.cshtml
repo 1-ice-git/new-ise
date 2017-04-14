@@ -33,6 +33,9 @@
                 @Html.DisplayNameFor(model => model.indennita)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
             <th></th>
@@ -50,6 +53,9 @@
                 </td>
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.indennita)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)

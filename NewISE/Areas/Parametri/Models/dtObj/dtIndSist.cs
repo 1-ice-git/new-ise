@@ -194,7 +194,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTE = ibm.coefficiente,
-                                DATAAGGIORNAMENTO = System.DateTime.Now,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }

@@ -24,7 +24,7 @@
 
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ufficio)
+                @Html.DisplayNameFor(model => model.Ufficio.DescUfficio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -34,6 +34,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.valore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -46,7 +49,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => item.Ufficio)
+                    @Html.DisplayFor(model => item.Ufficio.DescUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -56,6 +59,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.valore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
@@ -121,7 +127,7 @@
     $("#btnInsCoeffSede").button();
 
     function PrelevaPVCoefficientiSede() {
-        debugger;
+        //debugger;
         rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
@@ -171,7 +177,7 @@
     }
 
     function NuovoCoefficienteSede() {
-        debugger;
+        //debugger;
        
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
 
@@ -223,7 +229,7 @@
     }
 
     function EliminaCoefficientiSede(id) {
-        debugger;
+        //debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
         
         var idUfficio = parseInt($("#idUfficio").select2('val'));
