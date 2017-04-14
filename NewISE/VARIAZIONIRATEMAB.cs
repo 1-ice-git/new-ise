@@ -29,7 +29,7 @@ namespace NewISE
         public decimal CANONE { get; set; }
         public System.DateTime DATAINIZIOVARIAZIONE { get; set; }
         public System.DateTime DATAFINEVARIAZIONE { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual DATIMAB DATIMAB { get; set; }

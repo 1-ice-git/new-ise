@@ -19,7 +19,7 @@ namespace NewISE
         public decimal IDINDENNITA { get; set; }
         public System.DateTime DATAINIZIO { get; set; }
         public System.DateTime DATAFINE { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual INDENNITA INDENNITA { get; set; }

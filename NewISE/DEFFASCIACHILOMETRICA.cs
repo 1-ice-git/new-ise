@@ -17,13 +17,13 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DEFFASCIACHILOMETRICA()
         {
-            this.FASCIACHILOMETRICA = new HashSet<FASCIACHILOMETRICA>();
+            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
         }
     
         public decimal IDDEFKM { get; set; }
         public string KM { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
+        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
     }
 }

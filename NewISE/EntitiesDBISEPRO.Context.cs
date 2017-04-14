@@ -43,7 +43,6 @@ namespace NewISE
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
-        public virtual DbSet<FASCIACHILOMETRICA> FASCIACHILOMETRICA { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }

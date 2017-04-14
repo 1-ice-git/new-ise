@@ -22,10 +22,10 @@ namespace NewISE
         public decimal ANNORIFERIMENTO { get; set; }
         public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
         public System.DateTime DATAINVIOFLUSSI { get; set; }
         public decimal BLOCCAINVIOFLIE { get; set; }
         public string DATAINVIOGEPE { get; set; }
+        public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual TEORICI TEORICI { get; set; }

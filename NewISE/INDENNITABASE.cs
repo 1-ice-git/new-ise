@@ -27,6 +27,7 @@ namespace NewISE
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal VALORE { get; set; }
         public decimal VALORERESP { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
