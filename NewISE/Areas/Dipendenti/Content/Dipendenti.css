@@ -7,6 +7,7 @@
     padding-top: 10px;
     padding-right:10px;
 }
+
 #tabIntestazione{
     border:1px solid #237069;
     padding-top: 2px;
@@ -15,6 +16,8 @@
     border-left:1px solid #237069;
     border-right:1px solid #237069;
     border-bottom:1px solid #237069;
+    border-top: none;
+    border-top-color: transparent !important;
 }
 .nav-tabs {
   border-bottom: 1px solid #ddd;
@@ -77,4 +80,9 @@
 }
 .tab-content > .active {
   display: block;
+}
+
+#divControlliNuovoTrasf{
+    padding-top:5px;
+    padding-right:5px;
 }

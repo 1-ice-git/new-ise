@@ -1,60 +1,140 @@
 ﻿@model NewISE.Models.DBModel.TrasferimentoModel
 
-<div class="form-horizontal">
-    <div class="row">
-        <div class="col-xs-offset-2 col-xs-10">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div id="divCombo" class="col-xs-10">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
-            </div>
-            @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div id="divCombo" class="col-xs-10">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
-            </div>
-            @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div class="col-xs-10">
-            <input id="dataPartenza" name="dataPartenza" type="datetime" value="" class="form-control" />
-        </div>
-        @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.idRuolo, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div id="divCombo" class="col-xs-10">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idRuolo", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
-            </div>
-            @Html.ValidationMessageFor(model => model.idRuolo, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div id="divCombo" class="col-xs-10">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
-            </div>
-            @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-        <div class="col-xs-10">
-            <input id="dataPartenza" name="dataPartenza" type="datetime" value="" class="form-control" />
-        </div>
-        @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
-    </div>
-</div>
+@using (Html.BeginForm("", "", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div id="divControlliNuovoTrasf">
+        <div class="form-horizontal">
 
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
+                <div id="divCombo" class="col-xs-10">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
+                <div id="divCombo" class="col-xs-10">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.idRuolo, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
+                <div id="divCombo" class="col-xs-10">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idRuolo", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idRuolo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
+                <div id="divCombo" class="col-xs-10">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.protocolloLettera, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.protocolloLettera, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.protocolloLettera, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataLettera, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.CheckBox("chkAllegaDoc", true, new { @class = "checkbox" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <input type="submit" value="Inserisci" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+    $('#chkAllegaDoc').checkboxpicker();
+
+    $("#idTipoTrasferimento").select2({
+        placeholder: "Seleziona il tipo trasferimento",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'ufficio",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#idRuolo").select2({
+        placeholder: "Seleziona il ruolo",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#idTipoCoan").select2({
+        placeholder: "Seleziona la tipologia del coan",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
