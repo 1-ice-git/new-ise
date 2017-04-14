@@ -16,6 +16,13 @@ namespace NewISE.Models.DBModel
         public DateTime dataInizioValidita { get; set; }
         public DateTime? dataFineValidita { get; set; }
         public decimal aliquota { get; set; }
+
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime dataAggiornamento { get; set; }
+
         public bool annullato { get; set; } = false;
         public TipoAliquoteContributiveModel descrizione { get; set; }
     }

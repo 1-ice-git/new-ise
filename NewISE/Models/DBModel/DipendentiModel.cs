@@ -63,7 +63,13 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.Text)]
         [StringLength(30, ErrorMessage = "Il campo fax accetta un massimo di 30 caratteri.")]
         [Display(Name = "Fax")]
-        public string fax { get; set; }       
+        public string fax { get; set; }
+
+        [Required(ErrorMessage = "La data d'inizio ricalcoli è richiesta.")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Data assunzione")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
+        public DateTime? dataInizioRicalcoli { get; set; }  
         
         [Display(Name = "Abilitato")]
         public bool abilitato { get; set; }

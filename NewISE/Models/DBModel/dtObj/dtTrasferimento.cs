@@ -79,6 +79,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 coan = t.COAN,
                                 protocolloLettera = t.PROTOCOLLOLETTERA,
                                 dataLettera = t.DATALETTERA,
+                                dataAggiornamento = t.DATAAGGIORNAMENTO,
                                 annullato = t.ANNULLATO,
                                 RuoloUfficio = new RuoloUfficioModel()
                                 {
@@ -116,7 +117,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     email = t.DIPENDENTI.EMAIL,
                                     telefono = t.DIPENDENTI.TELEFONO,
                                     fax = t.DIPENDENTI.FAX,
-                                    abilitato = t.DIPENDENTI.ABILITATO
+                                    abilitato = t.DIPENDENTI.ABILITATO,
+                                    dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
                                 }
 
 

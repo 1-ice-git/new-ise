@@ -36,6 +36,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idCoefficenteSede = i.IDCOEFFICIENTESEDE,
                             dataInizio = i.DATAINIZIO,
                             dataFine = i.DATAFINE,
+                            dataAggiornamento = i.DATAAGGIORNAMENTO,
                             annullato = i.ANNULLATO,
                             IndennitaBase = new IndennitaBaseModel()
                             {
@@ -45,6 +46,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataFineValidita = i.INDENNITABASE.DATAFINEVALIDITA,
                                 valore = i.INDENNITABASE.VALORE,
                                 valoreResponsabile = i.INDENNITABASE.VALORERESP,
+                                dataAggiornamento = i.INDENNITABASE.DATAAGGIORNAMENTO,
                                 annullato = i.ANNULLATO,
                                 Livello = new LivelloModel()
                                 {

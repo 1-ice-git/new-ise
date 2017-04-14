@@ -31,6 +31,13 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Valore resp.")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
         public decimal valoreResponsabile { get; set; }
+
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Lettera")]
+        public DateTime dataAggiornamento { get; set; }
+
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
