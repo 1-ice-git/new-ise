@@ -35,7 +35,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.coefficiente)
             </th>
-           
+            <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -58,7 +60,9 @@
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.coefficiente)
                 </td>
-              
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
@@ -124,7 +128,7 @@
 
     function PrelevaPVIndSist() {
         //debugger;
-        rotta = "/Parametri/ParamIndSist/IndennitaSistemazioneLivello";
+        rotta = "/Parametri/ParamIndSistemaz/IndennitaSistemazioneLivello";
 
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
         var chk = true;
