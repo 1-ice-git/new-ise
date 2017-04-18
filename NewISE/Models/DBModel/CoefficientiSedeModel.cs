@@ -28,7 +28,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
         public decimal valore { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

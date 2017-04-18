@@ -186,11 +186,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new MAGGIORAZIONEFIGLI()
                             {
-                                
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -198,11 +198,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new MAGGIORAZIONEFIGLI()
                             {
-                                
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -211,11 +211,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new MAGGIORAZIONEFIGLI()
                         {
-                            
                             IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALEFIGLI = ibm.percentualeFigli,
+                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -246,6 +246,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -261,16 +262,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
                                     var ibOld2 = new MAGGIORAZIONEFIGLI()
                                     {
-
+                                        
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -290,11 +293,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
-                                        
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -311,11 +314,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
-
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
