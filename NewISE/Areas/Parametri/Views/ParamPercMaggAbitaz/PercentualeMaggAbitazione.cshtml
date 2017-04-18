@@ -7,7 +7,7 @@
 }
 
 <p>
-    <a id="btnInsNuovaPercMaggAbitaz" href="#" onclick="NuovaPercMaggAbitaz();">Inserisci Percentuale Maggiorazione Abitazione</a>
+    <a id="btnInsNuovaPercMaggAbitaz" href="#" onclick="NuovaPercentualeMaggAbitaz();">Inserisci Percentuale Maggiorazione Abitazione</a>
 </p>
 
 <p>
@@ -20,20 +20,12 @@
         </div>
     </div>
 </p>
-<p>
-    <div class="form-group">
-        @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
-        <div id="divCombo">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
-            </div>
-        </div>
-    </div>
-</p>
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
-           
+            <th>
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -42,6 +34,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.percentuale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.percentualeResponsabile)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
@@ -56,7 +51,9 @@
         @foreach (var item in Model)
         {
             <tr>
-                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -67,7 +64,7 @@
                     @Html.DisplayFor(modelItem => item.percentuale)
                 </td>
                 <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                    @Html.DisplayFor(modelItem => item.percentualeResponsabile)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
@@ -77,7 +74,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaPercMaggAbitazione(@item.idPercMabAbitaz );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -91,68 +88,55 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina percentuale maggiorazione abitazione?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della percentuale maggiorazione abitazione?</p>
+<div id="dialog-confirm" title="Elimina percentuale Maggiorazione Abitazione?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della maggiorazione abitazione?</p>
 </div>
 
 <script type="text/javascript">
-    $('.display').DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        }
-    });
+    //$('.display').DataTable({
+    //    "language": {
+    //        "sEmptyTable": "Nessun dato presente nella tabella",
+    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+    //        "sInfoPostFix": "",
+    //        "sInfoThousands": ".",
+    //        "sLengthMenu": "Visualizza _MENU_ elementi",
+    //        "sLoadingRecords": "Caricamento...",
+    //        "sProcessing": "Elaborazione...",
+    //        "sSearch": "Cerca:",
+    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+    //        "oPaginate": {
+    //            "sFirst": "Inizio",
+    //            "sPrevious": "Precedente",
+    //            "sNext": "Successivo",
+    //            "sLast": "Fine"
+    //        },
+    //        "oAria": {
+    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    //        }
+    //    }
+    //});
 
     $("#idLivello").select2({
         placeholder: "Seleziona il livello",
         allowClear: true,
         language: "it",
         width: '150'
-    });
-
-    $("#idUfficio").select2({
-         placeholder: "Seleziona l'Ufficio ",
-         allowClear: true,
-         language: "it",
-         width: '150'
 
     });
 
     $("#btnInsNuovaPercMaggAbitaz").button();
 
     function PrelevaPVPercMaggAbitaz() {
-        debugger;
-        rotta = "/Parametri/ParamPercMaggAbitaz/PercMaggAbitazioneLivelloUfficio";
+        //debugger;
+        rotta = "/Parametri/ParamPercMaggAbitaz/MaggiorazioneAbitazioneLivello";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
         if (isNaN(idLivello)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -164,7 +148,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idLivello: idLivello, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -195,13 +179,11 @@
 
     }
 
-
-    function NuovaPercentualeMaggiorazioneAbitazione() {
+    function NuovaPercentualeMaggAbitaz() {
         debugger;
 
-        var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercentualeMaggAbitazione";
+        var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercentualeMaggiorazioneAbitazione";
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = false;
 
         if (isNaN(idLivello)) {
@@ -210,12 +192,6 @@
             return false;
         }
 
-        if (isNaN(idUfficio)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un ufficio per procedere.");
-            return false;
-        }
-
         if ('@escludiAnnullati' == 'true') {
             chk = false;
         }
@@ -223,7 +199,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idLivello: idLivello, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -254,20 +230,14 @@
 
     }
 
-    function EliminaPercMaggAbitazione(id) {
+    function EliminaMaggiorazioneAbitazione(id) {
         //debugger;
-        var rotta = "/Parametri/ParamPercMaggAbitaz/EliminaPercentualeMaggAbitazione";
+        var rotta = "/Parametri/ParamPercMaggAbitaz/EliminaMaggiorazioneAbitazione";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
         if (isNaN(idLivello)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -287,7 +257,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idLivello: idLivello, idUfficio: idUfficio, idPercMab: id },
+                            data: { escludiAnnullati: chk, idLivello: idLivello, idIndBase: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

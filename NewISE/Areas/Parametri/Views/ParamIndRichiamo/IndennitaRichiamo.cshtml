@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaRichiamoModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.CoefficienteRichiamoModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -24,22 +24,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Livello.DescLivello)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valore)
+                @Html.DisplayNameFor(model => model.coefficienteRichiamo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valoreResponsabile)
+                @Html.DisplayNameFor(model => model.coefficienteIndBase)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valoreResponsabile)
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -52,19 +49,22 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
-                </td>
-                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.valore)
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                    @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.coefficienteIndBase)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
@@ -74,7 +74,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaIndennitaRichiamo(@item.idCoefIndRichiamo );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -88,8 +88,8 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina indennità di base?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di base?</p>
+<div id="dialog-confirm" title="Elimina indennità di richiamo?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di richiamo?</p>
 </div>
 
 <script type="text/javascript">

@@ -11,16 +11,12 @@
 
     LivelloModel lm = (LivelloModel)ViewBag.Livello;
     string descrizioneLivello = lm.DescLivello;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idLivello = lm.idLivello;
 
-    UfficiModel lm1 = (UfficiModel)ViewBag.Descrizione;
-    string descrizioneUfficio = lm1.DescUfficio;
-    decimal idUfficio = lm1.idUfficio;
-
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 }
 
-@using (Ajax.BeginForm("InserisciPercentualeMaggiorazioneAbitazione", "ParamPercMaggAbitaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciMaggiorazioneAbitazione", "ParamPercMaggAbitaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -33,7 +29,6 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idLivello)
-        @Html.HiddenFor(model => model.idUfficio)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
@@ -43,17 +38,6 @@
             <div class="col-xs-10">
                 <div class="panel panel-default">
                     <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneLivello</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-xs-2 text-right">
-                <label>Ufficio </label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio</label>
                 </div>
             </div>
         </div>
@@ -82,7 +66,13 @@
             </div>
         </div>
 
-        
+        <div class="form-group">
+            @Html.LabelFor(model => model.percentualeResponsabile, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.percentualeResponsabile, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.percentualeResponsabile, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -94,7 +84,7 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuale maggiorazioni abitazioni .</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuali maggiorazioni abitazioni.</a>
     </div>
 </div>
 
@@ -102,6 +92,13 @@
     Globalize.culture("it-IT");
 
     $("#percentuale").autoNumeric('init',
+	{
+	    aSep: '.',
+	    aDec: ',',
+	    aSign: ''
+	});
+
+    $("#percentualeResponsabile").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
@@ -144,18 +141,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggAbitazioneLivello";
+        rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";
 
         var idLivello = parseFloat('@idLivello');
-        var idUfficio = parseFloat('@idUfficio');
         var chk = true;
 
         if (isNaN(idLivello)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -167,7 +158,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idLivello: idLivello, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

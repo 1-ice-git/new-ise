@@ -122,8 +122,8 @@
     $("#btnInsNuovaAliquota").button();
 
     function PrelevaPVAliquota() {
-        //debugger;
-        rotta = "/Parametri/ParamAliquoteContr/AliquoteLivello";
+        debugger;
+        rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
 
         var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
         var chk = true;
@@ -174,7 +174,7 @@
     function NuoveAliquote() {
         //debugger;
 
-        var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquoteContributive";
+        var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
         var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
         var chk = false;
 

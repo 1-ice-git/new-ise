@@ -126,7 +126,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaAliquoteContributive(decimal idTipoAliqContr, bool escludiAnnullati)
+        public ActionResult NuovaAliquotaContributiva(decimal idTipoAliqContr, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
            

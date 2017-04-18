@@ -1359,7 +1359,6 @@
     <Content Include="Areas\Dipendenti\Views\Dipendenti\Index.cshtml" />
     <Content Include="Areas\Dipendenti\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggFigli\NuovaMaggiorazioneFiglio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamIndSistemaz\NuovaIndennitaSistemazione.cshtml" />
@@ -1375,6 +1374,8 @@
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\composer.json" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\LICENSE" />
+    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1595,6 +1596,7 @@
     <Compile Include="Models\DBModel\CDCModel.cs" />
     <Compile Include="Models\DBModel\CDC_TRASFModel.cs" />
     <Compile Include="Models\DBModel\CoeffFasciaKmModel.cs" />
+    <Compile Include="Models\DBModel\CoefficienteRichiamoModel.cs" />
     <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
