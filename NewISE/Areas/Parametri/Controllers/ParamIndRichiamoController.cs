@@ -27,7 +27,9 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 return PartialView("ErrorPartial");
             }
+
             return PartialView(libm);
+           
         }
     }
 }

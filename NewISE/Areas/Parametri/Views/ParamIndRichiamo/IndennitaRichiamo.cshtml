@@ -55,9 +55,6 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
                 </td>
                 <td style="text-align:right;">
@@ -74,7 +71,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndennitaRichiamo(@item.idCoefIndRichiamo );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaIndbase(@item.idCoefIndRichiamo );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -88,8 +85,8 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina indennità di richiamo?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di richiamo?</p>
+<div id="dialog-confirm" title="Elimina indennità di base?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di base?</p>
 </div>
 
 <script type="text/javascript">

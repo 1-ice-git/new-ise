@@ -44,7 +44,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(decimal idIndPrimoSegr)
         {
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
@@ -75,7 +74,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(bool escludiAnnullati = false)
         {
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
@@ -111,7 +109,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(decimal idIndPrimoSegr, bool escludiAnnullati = false)
         {
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
@@ -445,7 +442,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-
         public IList<IndennitaPrimoSegretModel> getIndennitaPrimoSegretario()
         {
             List<IndennitaPrimoSegretModel> llm = new List<IndennitaPrimoSegretModel>();
@@ -473,7 +469,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IndennitaPrimoSegretModel getIndennitaPrimoSegretario(decimal idIndPrimoSegr)
         {
             IndennitaPrimoSegretModel lm = new IndennitaPrimoSegretModel();

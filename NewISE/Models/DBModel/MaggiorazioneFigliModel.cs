@@ -12,8 +12,12 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idMaggiorazioneFigli { get; set; }
-        [Required(ErrorMessage = "ID Tipologia figli.")]
+
+        [Required(ErrorMessage = "ID Tipologia figlio.")]
         public decimal idTipologiaFiglio { get; set; }
+
+        [Required(ErrorMessage = "ID Indennità primo segretario.")]
+        public decimal idIndennitaPrimoSegretario { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]

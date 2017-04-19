@@ -20,6 +20,16 @@
         </div>
     </div>
 </p>
+<p>
+    <div class="form-group">
+        @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
+            </div>
+        </div>
+    </div>
+</p>
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>

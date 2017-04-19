@@ -186,7 +186,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new MAGGIORAZIONEFIGLI()
                             {
+                                IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
+                                IDINDPRIMOSEGR =ibm.idIndennitaPrimoSegretario,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -198,7 +200,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new MAGGIORAZIONEFIGLI()
                             {
+                                IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
+                                IDINDPRIMOSEGR = ibm.idIndennitaPrimoSegretario,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -211,7 +215,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new MAGGIORAZIONEFIGLI()
                         {
+                            IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
                             IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
+                            IDINDPRIMOSEGR = ibm.idIndennitaPrimoSegretario,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -241,8 +247,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
-                                        
-                                        IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
+                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -257,8 +264,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
-                                        
+                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -268,8 +276,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new MAGGIORAZIONEFIGLI()
                                     {
-                                        
+                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -293,7 +302,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
+                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -314,7 +325,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new MAGGIORAZIONEFIGLI()
                                     {
+                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -430,11 +443,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new MAGGIORAZIONEFIGLI()
                             {
-                                
+                                IDMAGGIORAZIONEFIGLI = precedenteIB.IDMAGGIORAZIONEFIGLI,
                                 IDTIPOLOGIAFIGLIO = precedenteIB.IDTIPOLOGIAFIGLIO,
+                                IDINDPRIMOSEGR = precedenteIB.IDINDPRIMOSEGR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 PERCENTUALEFIGLI = precedenteIB.PERCENTUALEFIGLI,
+                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
 
