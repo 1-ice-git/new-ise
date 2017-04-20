@@ -29,7 +29,6 @@ namespace NewISE
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual MAGFAM_ALTRIDATI MAGFAM_ALTRIDATI { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
         public virtual FIGLI FIGLI { get; set; }
     }

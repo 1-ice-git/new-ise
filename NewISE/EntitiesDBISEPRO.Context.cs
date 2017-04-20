@@ -54,7 +54,6 @@ namespace NewISE
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
-        public virtual DbSet<MAGFAM_ALTRIDATI> MAGFAM_ALTRIDATI { get; set; }
         public virtual DbSet<MAGFAM_DOC> MAGFAM_DOC { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }

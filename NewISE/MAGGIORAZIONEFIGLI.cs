@@ -19,6 +19,7 @@ namespace NewISE
         {
             this.FIGLI = new HashSet<FIGLI>();
             this.INDENNITA = new HashSet<INDENNITA>();
+            this.MAGFAM_DOC = new HashSet<MAGFAM_DOC>();
         }
     
         public decimal IDMAGGIORAZIONEFIGLI { get; set; }
@@ -37,5 +38,7 @@ namespace NewISE
         public virtual INDENNITAPRIMOSEGRETARIO INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual PERCENTUALEMAGFIGLI PERCENTUALEMAGFIGLI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGFAM_DOC> MAGFAM_DOC { get; set; }
     }
 }

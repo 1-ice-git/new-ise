@@ -32,7 +32,6 @@
         <EntityTypeShape EntityType="DBISE.LOGATTIVITA" Width="1.5" PointX="11.25" PointY="37.25" />
         <EntityTypeShape EntityType="DBISE.MAB_ALIQCONTR" Width="1.5" PointX="5.25" PointY="1.5" />
         <EntityTypeShape EntityType="DBISE.MAB_DOC" Width="1.5" PointX="6" PointY="29.625" />
-        <EntityTypeShape EntityType="DBISE.MAGFAM_ALTRIDATI" Width="1.5" PointX="21" PointY="30.625" />
         <EntityTypeShape EntityType="DBISE.MAGFAM_DOC" Width="1.5" PointX="3" PointY="54.625" />
         <EntityTypeShape EntityType="DBISE.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="11.25" PointY="31.5" />
         <EntityTypeShape EntityType="DBISE.MAGGIORAZIONECONIUGE" Width="1.5" PointX="14.25" PointY="32" />
@@ -84,7 +83,6 @@
         <AssociationConnector Association="DBISE.R_UL_C" />
         <AssociationConnector Association="DBISE.R_AC_MAB_AC" />
         <AssociationConnector Association="DBISE.R_TC_AC" />
-        <AssociationConnector Association="DBISE.R_ALTRIDATI_MFAD" />
         <AssociationConnector Association="DBISE.R_C_ADF" />
         <AssociationConnector Association="DBISE.R_F_ADF" />
         <AssociationConnector Association="DBISE.R_A_T" />
@@ -181,6 +179,8 @@
         <AssociationConnector Association="DBISE.IND_RC" />
         <AssociationConnector Association="DBISE.PASSAPORTI_DOCUMENTI" />
         <AssociationConnector Association="DBISE.TRASF_DOC" />
+        <AssociationConnector Association="DBISE.R_MC_MFD" />
+        <AssociationConnector Association="DBISE.R_MF_MFD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

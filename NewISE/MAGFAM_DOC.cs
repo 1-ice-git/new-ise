@@ -15,7 +15,11 @@ namespace NewISE
     public partial class MAGFAM_DOC
     {
         public decimal IDDOCUMENTO { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONECONIUGE { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONEFIGLI { get; set; }
     
         public virtual DOCUMENTI DOCUMENTI { get; set; }
+        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
     }
 }

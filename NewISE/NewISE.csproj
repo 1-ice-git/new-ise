@@ -1636,9 +1636,6 @@
     <Compile Include="MAB_DOC.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="MAGFAM_ALTRIDATI.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="MAGFAM_DOC.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
