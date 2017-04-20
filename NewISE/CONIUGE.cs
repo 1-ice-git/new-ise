@@ -12,18 +12,22 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class PARENTELA
+    public partial class CONIUGE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PARENTELA()
+        public CONIUGE()
         {
-            this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
+            this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
         }
     
-        public decimal IDPARENTELA { get; set; }
-        public string DESCRIZIONE { get; set; }
+        public decimal IDCONIUGE { get; set; }
+        public decimal IDMAGGIORAZIONECONIUGE { get; set; }
+        public string NOME { get; set; }
+        public string COGNOME { get; set; }
+        public string CODICEFISCALE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
     }
 }

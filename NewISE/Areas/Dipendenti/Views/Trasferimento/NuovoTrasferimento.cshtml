@@ -1,16 +1,26 @@
-﻿@model NewISE.Models.DBModel.TrasferimentoModel
+﻿@model NewISE.Areas.Dipendenti.Models.dipTrasferimentoModel
 
-@using (Html.BeginForm("", "", FormMethod.Post))
+@*<script src="~/bower_components/jquery-modal/jquery.modal.min.js" type="text/javascript" charset="utf-8"></script>
+<link href="~/bower_components/jquery-modal/jquery.modal.min.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="~/bower_components/jquery-modal/customCssModal.css" rel="stylesheet" />*@
+
+<link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+<script src="~/Scripts/fileinput.min.js"></script>
+<script src="~/Scripts/locales/it.js"></script>
+
+@using (@Ajax.BeginForm("", "", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { @id = "formInserisciTrasferimento" }))
 {
     @Html.AntiForgeryToken()
+
     <div id="divControlliNuovoTrasf">
+
         <div class="form-horizontal">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
-                @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-                <div id="divCombo" class="col-xs-10">
+                @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
                         @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
@@ -19,8 +29,8 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-                <div id="divCombo" class="col-xs-10">
+                @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
                         @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
@@ -29,26 +39,26 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.idRuolo, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-                <div id="divCombo" class="col-xs-10">
+                @Html.LabelFor(model => model.idRuolo, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
                         @Html.DropDownList("idRuolo", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idRuolo, "", new { @class = "text-danger" })
                 </div>
             </div>
-            
+
             <div class="form-group">
-                @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-md-2" })<span class="text-danger">*</span>
-                <div id="divCombo" class="col-xs-10">
+                @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
                         @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
@@ -57,38 +67,55 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.protocolloLettera, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.protocolloLettera, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(model => model.protocolloLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.protocolloLettera, new { htmlAttributes = new { @class = "form-control", style = "width:250px;" } })
                     @Html.ValidationMessageFor(model => model.protocolloLettera, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.dataLettera, "", new { @class = "text-danger" })
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.CheckBox("chkAllegaDoc", true, new { @class = "checkbox" })
+                    </div>
+                </div>*@
+
             <div class="form-group">
-                @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-md-3" })
-                <div class="col-md-9">
-                    @Html.CheckBox("chkAllegaDoc", true, new { @class = "checkbox" })
+                @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @*<a href="#divModalDocumento" rel="modal:open"><img id="imgAllegaDocumento" src="~/Immagini/paperclip-icon_34384.png" height="40" /></a>*@
+                    <div style="width: 60%;">
+                        <input id="fileDoc" name="file" type="file" class="file-loading">
+                    </div>
+                    
                 </div>
             </div>
 
+            @*<div id="divModalDocumento" style="display:none;">
+                <div>
+                    <input id="file" name="file" type="file" class="file file-loading" data-show-caption="true" data-show-preview="false">
+                </div>
+            </div>*@
+
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-9">
+                <div class="col-xs-offset-3 col-xs-9">
                     <input type="submit" value="Inserisci" class="btn btn-default" />
                 </div>
             </div>
@@ -97,6 +124,25 @@
 
 }
 
+<div class="modal fade" id="myModalError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert text-danger" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-danger text-danger">
+                <p id="msgModalError" class="text-info"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $('#chkAllegaDoc').checkboxpicker();
 
@@ -104,7 +150,7 @@
         placeholder: "Seleziona il tipo trasferimento",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '350'
 
     });
 
@@ -112,7 +158,7 @@
         placeholder: "Seleziona l'ufficio",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '250'
 
     });
 
@@ -120,7 +166,7 @@
         placeholder: "Seleziona il ruolo",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '200'
 
     });
 
@@ -128,11 +174,46 @@
         placeholder: "Seleziona la tipologia del coan",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '200'
 
     });
 
-    
+    $('#dataPartenza').datepicker({
+        inline: true,
+    });
+
+    $('#dataLettera').datepicker({
+        inline: true,
+    });
+
+    //$('#fileDoc').fileinput({
+    //    language: "it",
+    //    allowedFileExtensions: ["pdf"],
+    //    maxFileSize: 5120,
+    //    showClose: false,
+    //    showUpload: false,
+    //    //maxImageWidth: 700,
+    //    //maxImageHeight: 700,
+    //    //resizePreference: 'height',
+    //    //maxFileCount: 1,
+    //    //resizeImage: true
+        
+    //});
+
+    $("#fileDoc").fileinput({
+        showUpload: false,
+        mainClass: "input-group-xs"
+    });
+
+    //$("#divModalDocumento").modal({
+    //    closeClass: 'icon-remove',
+    //    closeText: 'X'
+    //});
+
+    function ErroreElaborazioneAjax(response) {
+        $("#msgModalError").text("Errore nell'elaborazione.");
+        $('#myModalError').modal('toggle');
+    }
 </script>
 
 @section Scripts {

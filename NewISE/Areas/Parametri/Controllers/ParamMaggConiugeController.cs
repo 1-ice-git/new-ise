@@ -14,9 +14,9 @@ namespace NewISE.Areas.Parametri.Controllers
         
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult MaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge = 0)
+        public ActionResult PercMaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge = 0)
         {
-            List<MaggiorazioneConiugeModel> libm = new List<MaggiorazioneConiugeModel>();
+            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
             var r = new List<SelectListItem>();
             List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
 
@@ -54,11 +54,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneConiuge(idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListPercMagConiuge(idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListMaggiorazioneConiuge(idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListPercMagConiuge(idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -74,9 +74,9 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult MaggiorazioneConiugeLivello(decimal idTipologiaConiuge, bool escludiAnnullati)
+        public ActionResult PercMaggiorazioneConiugeLivello(decimal idTipologiaConiuge, bool escludiAnnullati)
         {
-            List<MaggiorazioneConiugeModel> libm = new List<MaggiorazioneConiugeModel>();
+            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
             var r = new List<SelectListItem>();
             List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
 
@@ -105,11 +105,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListPercMagConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListMaggiorazioneConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListPercMagConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -119,12 +119,12 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
-            return PartialView("MaggiorazioneConiuge", libm);
+            return PartialView("PercMaggiorazioneConiuge", libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaMaggiorazioneConiuge(decimal idTipologiaConiuge, bool escludiAnnullati)
+        public ActionResult NuovaPercMaggiorazioneConiuge(decimal idTipologiaConiuge, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
 
@@ -146,7 +146,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneConiuge(MaggiorazioneConiugeModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -156,10 +156,10 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtMaggConiuge dtib = new dtMaggConiuge())
                     {
-                        dtib.SetMaggiorazioneConiuge(ibm);
+                        dtib.SetPercMagConiuge(ibm);
                     }
 
-                    return RedirectToAction("MaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
+                    return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
                 }
                 else
                 {
@@ -169,7 +169,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.Livello = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    return PartialView("NuovaMaggiorazioneConiuge", ibm);
+                    return PartialView("NuovaPercMaggiorazioneConiuge", ibm);
                 }
             }
             catch (Exception ex)
@@ -180,17 +180,17 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaMaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge, decimal idMaggConiuge)
+        public ActionResult EliminaPercMaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge, decimal idMaggConiuge)
         {
 
             try
             {
                 using (dtMaggConiuge dtib = new dtMaggConiuge())
                 {
-                    dtib.DelMaggiorazioneConiuge(idMaggConiuge);
+                    dtib.DelPercMagConiuge(idMaggConiuge);
                 }
 
-                return RedirectToAction("MaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = idTipologiaConiuge });
+                return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = idTipologiaConiuge });
             }
             catch (Exception ex)
             {

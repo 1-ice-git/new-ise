@@ -29,7 +29,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new MaggiorazioniAnnualiModel()
                             {
                                 idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
@@ -64,7 +64,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new MaggiorazioniAnnualiModel()
                             {
                                 idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
@@ -99,7 +99,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new MaggiorazioniAnnualiModel()
                             {
                                 idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
@@ -134,7 +134,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new MaggiorazioniAnnualiModel()
                             {
                                 idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,

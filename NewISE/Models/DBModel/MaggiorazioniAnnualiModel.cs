@@ -29,8 +29,8 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il campo Annualità è richiesta.")]
         [Display(Name = "Maggiorazione Annuale")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
-        public decimal annualita { get; set; }
+        [DefaultValue(false)]
+        public bool annualita { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]

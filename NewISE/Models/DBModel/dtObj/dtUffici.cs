@@ -1,10 +1,9 @@
-﻿using NewISE.Models.DBModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NewISE.Areas.Parametri.Models.dtObj
+namespace NewISE.Models.DBModel.dtObj
 {
     public class dtUffici : IDisposable
     {
@@ -62,6 +61,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
+
+
+
+
+        
+
+
 
     }
 }

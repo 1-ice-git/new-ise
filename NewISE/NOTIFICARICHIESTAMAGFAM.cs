@@ -15,13 +15,11 @@ namespace NewISE
     public partial class NOTIFICARICHIESTAMAGFAM
     {
         public decimal IDNOTRICMAGFAM { get; set; }
-        public Nullable<decimal> IDMAGFAM { get; set; }
-        public decimal IDINDENNITA { get; set; }
-        public decimal RINUNCIAMAGGIORAZIONI { get; set; }
-        public decimal PRATICACONCLUSA { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public bool RINUNCIAMAGGIORAZIONI { get; set; }
+        public bool PRATICACONCLUSA { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
-        public virtual INDENNITA INDENNITA { get; set; }
-        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

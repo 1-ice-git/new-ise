@@ -22,7 +22,7 @@ namespace NewISE
         }
     
         public decimal IDRICHIAMO { get; set; }
-        public decimal IDINDENNITA { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDCOEFINDRICHIAMO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool RICALCOLATO { get; set; }
@@ -30,8 +30,8 @@ namespace NewISE
         public virtual COEFFICIENTEINDRICHIAMO COEFFICIENTEINDRICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
-        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTIRIENTRO> TRASPORTOEFFETTIRIENTRO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace NewISE
         public REGOLECALCOLO()
         {
             this.RIDUZIONI = new HashSet<RIDUZIONI>();
+            this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDREGOLA { get; set; }
@@ -33,5 +34,7 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual TIPOREGOLACALCOLO TIPOREGOLACALCOLO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
     }
 }

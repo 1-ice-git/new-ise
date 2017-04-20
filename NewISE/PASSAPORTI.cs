@@ -21,11 +21,9 @@ namespace NewISE
         }
     
         public decimal IDPASSAPORTO { get; set; }
-        public decimal IDMAGFAM { get; set; }
         public decimal NOTIFICARICHIESTA { get; set; }
         public decimal PRATICACONCLUSA { get; set; }
     
-        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿.form-group {
+﻿
+.form-group {
   margin-bottom: 5px;
 }
 #ContenitoreDipendentiGepe{
@@ -86,3 +87,27 @@
     padding-top:5px;
     padding-right:5px;
 }
+
+/*#region Dipendenti */
+#ContenitoreDipendentiGepe{
+    font-size: 13px;
+}
+
+
+/*#endregion */
+
+/*#region Dati Trasferimento */
+#ContenitoreDatiTrasf{
+    font-size: 13px;
+}
+
+
+/*#endregion */
+
+/*#region Nuovo trasferimento */
+
+#divControlliNuovoTrasf{
+    font-size:13px;
+}
+
+/*#endregion */

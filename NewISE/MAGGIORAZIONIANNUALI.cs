@@ -17,19 +17,19 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONIANNUALI()
         {
-            this.DATIMAB = new HashSet<DATIMAB>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
         }
     
         public decimal IDMAGANNUALI { get; set; }
-        public Nullable<decimal> IDUFFICIO { get; set; }
+        public decimal IDUFFICIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal ANNUALITA { get; set; }
+        public bool ANNUALITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DATIMAB> DATIMAB { get; set; }
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual UFFICI UFFICI { get; set; }
     }
 }

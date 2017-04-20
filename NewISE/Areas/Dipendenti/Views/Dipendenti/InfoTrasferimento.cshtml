@@ -2,17 +2,37 @@
 @using NewISE.Models.DBModel;
 
 
-
-
 @{ 
-    string statoTrasferimento = Model.statoTrasferimento.ToString();
+    EnumStatoTraferimento statoTrasferimento = Model.statoTrasferimento;
+    string varDescStatoTrasf = string.Empty;
+
+    switch (statoTrasferimento)
+    {
+        case EnumStatoTraferimento.Attivo:
+            varDescStatoTrasf = "Attivo";
+            break;
+        case EnumStatoTraferimento.Da_Attivare:
+            varDescStatoTrasf = "Da Attivare";
+            break;
+        case EnumStatoTraferimento.Non_Trasferito:
+            varDescStatoTrasf = "Non Trasferito";
+            break;
+        case EnumStatoTraferimento.Terminato:
+            varDescStatoTrasf = "Terminato";
+            break;
+        default:
+            break;
+    }
+
+
+
 }
 
 <div class="form-horizontal">
     <div class="form-group">
         @Html.Label("lblStatoTrasferimento", "Stato Trasferimento", new { @class = "control-label col-xs-4" })
         <div class="col-xs-8">
-            <input id="statoTrasferimento" name="statoTrasferimento" type="text" value="@statoTrasferimento" class="form-control" readonly/>
+            <input id="statoTrasferimento" name="statoTrasferimento" type="text" value="@varDescStatoTrasf" class="form-control" readonly/>
         </div>
     </div>
     <div class="form-group">
