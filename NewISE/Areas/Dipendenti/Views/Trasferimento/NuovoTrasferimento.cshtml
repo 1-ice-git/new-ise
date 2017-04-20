@@ -1,12 +1,5 @@
 ﻿@model NewISE.Areas.Dipendenti.Models.dipTrasferimentoModel
 
-@*<script src="~/bower_components/jquery-modal/jquery.modal.min.js" type="text/javascript" charset="utf-8"></script>
-<link href="~/bower_components/jquery-modal/jquery.modal.min.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="~/bower_components/jquery-modal/customCssModal.css" rel="stylesheet" />*@
-
-<link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
-<script src="~/Scripts/fileinput.min.js"></script>
-<script src="~/Scripts/locales/it.js"></script>
 
 @using (@Ajax.BeginForm("", "", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { @id = "formInserisciTrasferimento" }))
 {
@@ -202,7 +195,9 @@
 
     $("#fileDoc").fileinput({
         showUpload: false,
-        mainClass: "input-group-xs"
+        mainClass: "input-group-xs",
+        language: "it",
+        showPreview: false,
     });
 
     //$("#divModalDocumento").modal({
