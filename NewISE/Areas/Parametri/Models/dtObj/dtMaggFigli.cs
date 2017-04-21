@@ -14,24 +14,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public IList<MaggiorazioneFigliModel> getListMaggiorazioneFiglio()
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio()
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONEFIGLI.ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioneFigliModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idMaggiorazioneFigli = e.IDMAGGIORAZIONEFIGLI,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio =e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioneFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 
                                 annullato = e.ANNULLATO,
@@ -51,24 +51,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioneFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio)
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio)
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONEFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioneFigliModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idMaggiorazioneFigli = e.IDMAGGIORAZIONEFIGLI,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioneFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 Figlio = new TipologiaFiglioModel()
@@ -88,24 +88,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioneFigliModel> getListMaggiorazioneFiglio(bool escludiAnnullati = false)
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(bool escludiAnnullati = false)
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONEFIGLI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioneFigliModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idMaggiorazioneFigli =e.IDMAGGIORAZIONEFIGLI,
+                                idPercMagFigli =e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioneFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 Figlio = new TipologiaFiglioModel()
@@ -125,24 +125,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioneFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio, bool escludiAnnullati = false)
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio, bool escludiAnnullati = false)
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONEFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioneFigliModel()
+                            select new PercMagFigliModel()
                             {
 
-                                idMaggiorazioneFigli = e.IDMAGGIORAZIONEFIGLI,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioneConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 Figlio = new TipologiaFiglioModel()
@@ -166,15 +166,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetMaggiorazioneFiglio(MaggiorazioneFigliModel ibm)
+        public void SetMaggiorazioneFiglio(PercMagFigliModel ibm)
         {
-            List<MAGGIORAZIONEFIGLI> libNew = new List<MAGGIORAZIONEFIGLI>();
+            List<PERCENTUALEMAGFIGLI> libNew = new List<PERCENTUALEMAGFIGLI>();
 
-            MAGGIORAZIONEFIGLI ibNew = new MAGGIORAZIONEFIGLI();
+            PERCENTUALEMAGFIGLI ibNew = new PERCENTUALEMAGFIGLI();
 
-            MAGGIORAZIONEFIGLI ibPrecedente = new MAGGIORAZIONEFIGLI();
+            PERCENTUALEMAGFIGLI ibPrecedente = new PERCENTUALEMAGFIGLI();
 
-            List<MAGGIORAZIONEFIGLI> lArchivioIB = new List<MAGGIORAZIONEFIGLI>();
+            List<PERCENTUALEMAGFIGLI> lArchivioIB = new List<PERCENTUALEMAGFIGLI>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -184,11 +184,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new MAGGIORAZIONEFIGLI()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
-                                IDINDPRIMOSEGR =ibm.idIndennitaPrimoSegretario,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -198,11 +197,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         }
                         else
                         {
-                            ibNew = new MAGGIORAZIONEFIGLI()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
                                 IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
-                                IDINDPRIMOSEGR = ibm.idIndennitaPrimoSegretario,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -213,11 +211,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     }
                     else
                     {
-                        ibNew = new MAGGIORAZIONEFIGLI()
+                        ibNew = new PERCENTUALEMAGFIGLI()
                         {
-                            IDMAGGIORAZIONEFIGLI = ibm.idMaggiorazioneFigli,
+                            IDPERCMAGFIGLI = ibm.idPercMagFigli,
                             IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
-                            IDINDPRIMOSEGR = ibm.idIndennitaPrimoSegretario,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALEFIGLI = ibm.percentualeFigli,
@@ -228,7 +225,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.MAGGIORAZIONEFIGLI.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == ibNew.IDTIPOLOGIAFIGLIO)
+                    var recordInteressati = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == ibNew.IDTIPOLOGIAFIGLIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -245,11 +242,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONEFIGLI()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
-                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -262,11 +258,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONEFIGLI()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
-                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -274,11 +269,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new MAGGIORAZIONEFIGLI()
+                                    var ibOld2 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
-                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -300,11 +294,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONEFIGLI()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
-                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -323,11 +316,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONEFIGLI()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDMAGGIORAZIONEFIGLI = item.IDMAGGIORAZIONEFIGLI,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
                                         IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
-                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
@@ -343,18 +335,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.MAGGIORAZIONEFIGLI.AddRange(libNew);
+                        db.PERCENTUALEMAGFIGLI.AddRange(libNew);
                     }
                     else
                     {
-                        db.MAGGIORAZIONEFIGLI.Add(ibNew);
+                        db.PERCENTUALEMAGFIGLI.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di maggiorazione figli.", "MAGGIORAZIONEFIGLI", ibNew.IDMAGGIORAZIONEFIGLI);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro per la percentuale di maggiorazione figli.", "PERCENTUALEMAGFIGLI", ibNew.IDPERCMAGFIGLI);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -367,21 +359,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(MaggiorazioneFigliModel ibm)
+        public bool EsistonoMovimentiPrima(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONEFIGLI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(MaggiorazioneFigliModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONEFIGLI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -390,13 +382,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(MaggiorazioneFigliModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONEFIGLI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -407,18 +399,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
 
 
-        public bool EsistonoMovimentiPrimaUguale(MaggiorazioneFigliModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONEFIGLI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
             }
         }
 
-        public void DelMaggiorazioneFiglio(decimal idMaggFiglio)
+        public void DelMaggiorazioneFiglio(decimal idPercMaggFiglio)
         {
-            MAGGIORAZIONEFIGLI precedenteIB = new MAGGIORAZIONEFIGLI();
-            MAGGIORAZIONEFIGLI delIB = new MAGGIORAZIONEFIGLI();
+            PERCENTUALEMAGFIGLI precedenteIB = new PERCENTUALEMAGFIGLI();
+            PERCENTUALEMAGFIGLI delIB = new PERCENTUALEMAGFIGLI();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -427,25 +419,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.MAGGIORAZIONEFIGLI.Where(a => a.IDMAGGIORAZIONEFIGLI == idMaggFiglio);
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDPERCMAGFIGLI == idPercMaggFiglio);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.MAGGIORAZIONEFIGLI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEMAGFIGLI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new MAGGIORAZIONEFIGLI()
+                            var ibOld1 = new PERCENTUALEMAGFIGLI()
                             {
-                                IDMAGGIORAZIONEFIGLI = precedenteIB.IDMAGGIORAZIONEFIGLI,
+                                IDPERCMAGFIGLI = precedenteIB.IDPERCMAGFIGLI,
                                 IDTIPOLOGIAFIGLIO = precedenteIB.IDTIPOLOGIAFIGLIO,
-                                IDINDPRIMOSEGR = precedenteIB.IDINDPRIMOSEGR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 PERCENTUALEFIGLI = precedenteIB.PERCENTUALEFIGLI,
@@ -453,14 +444,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 ANNULLATO = false
                             };
 
-                            db.MAGGIORAZIONEFIGLI.Add(ibOld1);
+                            db.PERCENTUALEMAGFIGLI.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di maggiorazione figlio.", "MAGGIORAZIONEFIGLIO", idMaggFiglio);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro per la percentuale di maggiorazione figlio.", "PERCENTUALEMAGFIGLI", idPercMaggFiglio);
                         }
 
 

@@ -17,7 +17,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         public ActionResult MaggiorazioneFigli(bool escludiAnnullati, decimal idTipologiaFiglio = 0)
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
@@ -77,7 +77,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult MaggiorazioneFiglioLivello(decimal idTipologiaFiglio, bool escludiAnnullati)
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
@@ -147,7 +147,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneFiglio(MaggiorazioneFigliModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 

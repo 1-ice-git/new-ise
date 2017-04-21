@@ -7,11 +7,11 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class MaggiorazioneFigliModel
+    public class PercMagFigliModel
     {
         [Key]
         [Display(Name = "ID")]
-        public decimal idMaggiorazioneFigli { get; set; }
+        public decimal idPercMagFigli { get; set; }
 
         [Required(ErrorMessage = "ID Tipologia figlio.")]
         public decimal idTipologiaFiglio { get; set; }

@@ -1716,7 +1716,7 @@
     <Compile Include="Models\DBModel\LivelliDipendentiModel.cs" />
     <Compile Include="Models\DBModel\LivelloModel.cs" />
     <Compile Include="Models\DBModel\PercentualeMagConiugeModel.cs" />
-    <Compile Include="Models\DBModel\MaggiorazioneFigliModel.cs" />
+    <Compile Include="Models\DBModel\PercMagFigliModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniAnnualiModel.cs" />
     <Compile Include="Models\DBModel\PercentualeDisagioModel.cs" />
     <Compile Include="Models\DBModel\PercMaggAbitazModel.cs" />
