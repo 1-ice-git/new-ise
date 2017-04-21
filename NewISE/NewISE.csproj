@@ -1574,7 +1574,6 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaConiuge.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipoTrasferimento.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtUffici.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />

@@ -23,14 +23,14 @@ namespace NewISE.Areas.Dipendenti.Controllers
             {
                 using (dtTipoTrasferimento dttt=new dtTipoTrasferimento())
                 {
-                    var ltt = dttt.GetListTipoTrasferimento().OrderBy(a=>a.tipologiaTrasferimento).ToList();
+                    var ltt = dttt.GetListTipoTrasferimento().OrderBy(a=>a.descTipoTrasf).ToList();
 
                     if (ltt!=null && ltt.Count > 0)
                     {
                         r = (from t in ltt
                              select new SelectListItem()
                              {
-                                 Text = t.tipologiaTrasferimento,
+                                 Text = t.descTipoTrasf,
                                  Value = t.idTipoTrasferimento.ToString()
                              }).ToList();
                         r.Insert(0, new SelectListItem() { Text = "", Value = "" });
