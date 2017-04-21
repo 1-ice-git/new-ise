@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.CoefficientiSedeModel
+﻿@model NewISE.Models.DBModel.IndennitaPrimoSegretModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -8,13 +8,15 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-    UfficiModel lm = (UfficiModel)ViewBag.Descrizione;
-    string descrizioneUfficio = lm.DescUfficio;
+
+    IndennitaPrimoSegretModel lm = (IndennitaPrimoSegretModel)ViewBag.idIndPrimoSegr;
+    decimal descrizioneprimosegr = lm.idIndPrimoSegr;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idUfficio = lm.idUfficio;
+    decimal idIndPrimoSegr = lm.idIndPrimoSegr;
+
 }
 
-@using (Ajax.BeginForm("InserisciCoefficientiSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciIndennitaPrimoSegretario", "ParamPrimoIndSegr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -26,16 +28,16 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idUfficio)
+        @Html.HiddenFor(model => model.idIndPrimoSegr)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
-                <label>Ufficio </label>
+                <label>Indennità primo Segretario </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneprimosegr</label>
                 </div>
             </div>
         </div>
@@ -56,14 +58,13 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.valore, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group ">
+            @Html.LabelFor(model => model.indennita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.valore, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.valore, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.indennita, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.ValidationMessageFor(model => model.indennita, "", new { @class = "text-danger" })
             </div>
         </div>
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -75,14 +76,14 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco dei Coefficienti di Sede.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle indennità di primo segretario .</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#percentuale").autoNumeric('init',
+    $("#indennita").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
@@ -125,13 +126,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
-
-
-        var idUfficio = parseFloat('@idUfficio');
+        rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
+        
+        var idIndPrimoSegr = parseFloat('@idIndPrimoSegr');
         var chk = true;
 
-        if (isNaN(idUfficio)) {
+        if (isNaN(idIndPrimoSegr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -143,7 +143,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idUfficio: idUfficio, escludiAnnullati: chk },
+            data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -172,6 +172,4 @@
 
         });
     }
-
 </script>
-

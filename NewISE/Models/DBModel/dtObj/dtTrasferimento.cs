@@ -94,7 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
                                     idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                                    tipologiaTrasferimento = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                                    descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                 },
                                 Ufficio = new UfficiModel()
                                 {

@@ -1382,8 +1382,16 @@
     <Content Include="Areas\Dipendenti\Views\Dipendenti\Index.cshtml" />
     <Content Include="Areas\Dipendenti\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaPercMaggiorazioneConiuge.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamMaggFigli\NuovaMaggiorazioneFiglio.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndSistemaz\NuovaIndennitaSistemazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamAliquoteContr\NuovaAliquotaContributiva.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamRiduzioni\NuoveRiduzioni.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamFasciaKm\NuovaFasciaKm.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\NuovaIndennitaPrimoSegretario.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamIndRichiamo\NuovaIndennitaRichiamo.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
     <Content Include="Areas\Dipendenti\Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
@@ -1529,6 +1537,10 @@
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtIndSist.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtPrimoSegr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipoAliquoteContributive.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1561,6 +1573,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercMaggAbitazione.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipologiaConiuge.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipoTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
@@ -1656,6 +1669,7 @@
     <Compile Include="Models\DBModel\CDCModel.cs" />
     <Compile Include="Models\DBModel\CDC_TRASFModel.cs" />
     <Compile Include="Models\DBModel\CoeffFasciaKmModel.cs" />
+    <Compile Include="Models\DBModel\CoefficienteRichiamoModel.cs" />
     <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />

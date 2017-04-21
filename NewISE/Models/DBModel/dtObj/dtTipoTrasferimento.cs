@@ -21,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
                 lttm = (from e in db.TIPOTRASFERIMENTO
                         select new TipoTrasferimentoModel() {
                             idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
-                            tipologiaTrasferimento = e.TIPOTRASFERIMENTO1
+                            descTipoTrasf = e.TIPOTRASFERIMENTO1
                         }).ToList();
             }
 

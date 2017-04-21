@@ -10,6 +10,9 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTipologiaFiglio { get; set; }
+
+        [Required(ErrorMessage = "La descrizione tipologiaFiglio è richiesta.")]
+        [Display(Name = "Figlio")]
         public string tipologiaFiglio { get; set; }
 
     }
