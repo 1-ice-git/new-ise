@@ -16,7 +16,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaRichiamo()
         {
-            List<IndennitaRichiamoModel> libm = new List<IndennitaRichiamoModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
@@ -27,7 +27,9 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 return PartialView("ErrorPartial");
             }
+
             return PartialView(libm);
+           
         }
     }
 }

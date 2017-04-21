@@ -2,46 +2,57 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 <p>
-    <a id="btnInsNuovaMagg" href="#" onclick="NuoveValute();">Inserisci Valute</a>
+    <a id="btnInsNuovaValuta" href="#" onclick="NuovaValuta();">Inserisci Valuta</a>
 </p>
 
-<table id="tbValute" class="display" cellspacing="0">
+<p>
+    <div class="form-group">
+        @Html.Label("lblValuta0", "Seleziona Valuta", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idValuta", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVValuta();", @onClick = "PrelevaPVValuta();" })
+            </div>
+        </div>
+    </div>
+</p>
+<table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.idValuta)
+                @Html.DisplayNameFor(model => model.descrizioneValuta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.descrizione)
+                @Html.DisplayNameFor(model => model.valutaUfficiale)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.valuta)
-            </th>
+            
             <th></th>
         </tr>
-</thead>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.idValuta)
+                    @Html.DisplayFor(modelItem => item.descrizioneValuta)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.descrizione)
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.valutaUfficiale)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.valuta)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idValuta }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idValuta }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idValuta })
+                <td style="text-align:center;">
+                    @using (dtValute dtib = new dtValute())
+                    {
+                        <a href="#" onclick="EliminaValuta(@item.idValuta );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                    }
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div id="dialog-confirm" title="Elimina Valuta?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della Valuta?</p>
+</div>
+
 <script type="text/javascript">
     $('.display').DataTable({
         "language": {
@@ -69,17 +80,184 @@
         }
     });
 
-
-    $("#idLivello").select2({
-        placeholder: "Seleziona il ",
+    $("#idValuta").select2({
+        placeholder: "Seleziona la Valuta ",
         allowClear: true,
         language: "it",
         width: '150'
 
     });
 
-    $("#btnInsNuovaMagg").button();
+    $("#btnInsNuovaValuta").button();
 
-    
+    function PrelevaPVValuta() {
+        //debugger;
+        rotta = "/Parametri/ParamValute/ValutaLivello";
 
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        var chk = true;
+
+        if (isNaN(idValuta)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idValuta: idValuta, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaValuta() {
+        debugger;
+
+        var rotta = "/Parametri/ParamValute/NuoveValute";
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        var chk = false;
+
+        if (isNaN(idValuta)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare una valuta per procedere.");
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idValuta: idValuta, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaValuta(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamValute/EliminaValuta";
+
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        var chk = true;
+
+        if (isNaN(idValuta)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idValuta: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
 </script>

@@ -12,22 +12,44 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idPercMabAbitaz { get; set; }
+        [Required(ErrorMessage = "Il codice ufficio è richiesto.")]
+        [Display(Name = "CodiceUfficio")]
+        [DataType(DataType.Text)]
         public decimal idUfficio { get; set; }
+        [Required(ErrorMessage = "Il livello è richiesto.")]
+        [Display(Name = "Livello")]
         public decimal idLivello { get; set; }
+        [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
+        [Display(Name = "Data inizio validità")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataInizioValidita { get; set; }
+        [Display(Name = "Data fine validità")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
+        [Required(ErrorMessage = "La percentuale è richiesta.")]
+        [Display(Name = "Percentuale Maggiorazione Abitazione")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal percentuale { get; set; }
 
+        [Required(ErrorMessage = "La percentuale è richiesta.")]
+        [Display(Name = "Percentuale Responsabile")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
+        public decimal percentualeResponsabile { get; set; }
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Lettera")]
+        [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 
+        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
+        [Display(Name = "Annullato")]
+        [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
         public LivelloModel Livello { get; set; }
-        public UfficiModel DescrizioneUfficio { get; set; }
+        public UfficiModel Ufficio { get; set; }
 
     }
 }

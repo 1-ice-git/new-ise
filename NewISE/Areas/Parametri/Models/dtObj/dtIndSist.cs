@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtMaggAnnuali : IDisposable
+    public class dtIndSist : IDisposable
     {
         public void Dispose()
         {
@@ -15,30 +15,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
 
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale()
+        public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione()
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.ToList();
+                    var lib = db.INDENNITASISTEMAZIONE.ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new IndennitaSistemazioneModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idIndSist= e.IDINDSIST,
+                                idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                coefficiente = e.COEFFICIENTE,
+                                dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    
+                                    idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
+                                    
                                 }
                             }).ToList();
                 }
@@ -51,30 +54,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(decimal idUfficio)
+        public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione(decimal idTipoTrasferimento)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new IndennitaSistemazioneModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idIndSist = e.IDINDSIST,
+                                idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                coefficiente = e.COEFFICIENTE,
+                                dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
                                 }
                             }).ToList();
                 }
@@ -87,30 +91,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(bool escludiAnnullati = false)
+        public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione(bool escludiAnnullati = false)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new IndennitaSistemazioneModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idIndSist = e.IDINDSIST,
+                                idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                coefficiente = e.COEFFICIENTE,
+                                dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
                                 }
                             }).ToList();
                 }
@@ -123,30 +128,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(decimal idUfficio, bool escludiAnnullati = false)
+        public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione(decimal idTipoTrasferimento, bool escludiAnnullati = false)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new IndennitaSistemazioneModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                idIndSist = e.IDINDSIST,
+                                idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                coefficiente = e.COEFFICIENTE,
+                                dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
+                                TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    idTipoTrasferimento = e.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                    descTipoTrasf = e.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                 }
                             }).ToList();
                 }
@@ -163,15 +168,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm)
+        public void SetIndennitaSistemazione(IndennitaSistemazioneModel ibm)
         {
-            List<MAGGIORAZIONIANNUALI> libNew = new List<MAGGIORAZIONIANNUALI>();
+            List<INDENNITASISTEMAZIONE> libNew = new List<INDENNITASISTEMAZIONE>();
 
-            MAGGIORAZIONIANNUALI ibNew = new MAGGIORAZIONIANNUALI();
+            INDENNITASISTEMAZIONE ibNew = new INDENNITASISTEMAZIONE();
 
-            MAGGIORAZIONIANNUALI ibPrecedente = new MAGGIORAZIONIANNUALI();
+            INDENNITASISTEMAZIONE ibPrecedente = new INDENNITASISTEMAZIONE();
 
-            List<MAGGIORAZIONIANNUALI> lArchivioIB = new List<MAGGIORAZIONIANNUALI>();
+            List<INDENNITASISTEMAZIONE> lArchivioIB = new List<INDENNITASISTEMAZIONE>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -181,49 +186,56 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new MAGGIORAZIONIANNUALI()
+                            ibNew = new INDENNITASISTEMAZIONE()
                             {
-
-                                IDUFFICIO = ibm.idUfficio,
+                                
+                                IDINDSIST = ibm.idIndSist,
+                                IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ANNUALITA = ibm.annualita,
+                                COEFFICIENTE = ibm.coefficiente,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new MAGGIORAZIONIANNUALI()
+                            ibNew = new INDENNITASISTEMAZIONE()
                             {
-                                IDUFFICIO = ibm.idUfficio,
+                                
+                                IDINDSIST = ibm.idIndSist,
+                                IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ANNUALITA = ibm.annualita,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                COEFFICIENTE = ibm.coefficiente,
+                                DATAAGGIORNAMENTO = System.DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new MAGGIORAZIONIANNUALI()
+                        ibNew = new INDENNITASISTEMAZIONE()
                         {
-                            IDUFFICIO = ibm.idUfficio,
+                            
+                            IDINDSIST = ibm.idIndSist,
+                            IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ANNUALITA = ibm.annualita,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            COEFFICIENTE = ibm.coefficiente,
+                            DATAAGGIORNAMENTO = System.DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
+                    var recordInteressati = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false && a.IDTIPOTRASFERIMENTO == ibNew.IDTIPOTRASFERIMENTO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
+
+                                                            
 
                     recordInteressati.ForEach(a => a.ANNULLATO = true);
                     //db.SaveChanges();
@@ -237,13 +249,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTE = item.COEFFICIENTE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -252,23 +264,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTE = item.COEFFICIENTE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld2 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTE = item.COEFFICIENTE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -286,13 +298,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTE = item.COEFFICIENTE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -307,13 +319,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTE = item.COEFFICIENTE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -325,18 +337,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.MAGGIORAZIONIANNUALI.AddRange(libNew);
+                        db.INDENNITASISTEMAZIONE.AddRange(libNew);
                     }
                     else
                     {
-                        db.MAGGIORAZIONIANNUALI.Add(ibNew);
+                        db.INDENNITASISTEMAZIONE.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro maggiorazioni annuali.", "MAGGIORAZIONIANNUALI", ibNew.IDMAGANNUALI);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di sistemazione.", "INDENNITASISTEMAZIONE", ibNew.IDINDSIST);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -349,21 +361,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiPrima(IndennitaSistemazioneModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiSuccessivi(IndennitaSistemazioneModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -372,13 +384,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(IndennitaSistemazioneModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -387,18 +399,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrimaUguale(MaggiorazioniAnnualiModel ibm)
+
+
+        public bool EsistonoMovimentiPrimaUguale(IndennitaSistemazioneModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
             }
         }
 
-        public void DelMaggiorazioneAnnuale(decimal idMagAnnuali)
+        public void DelIndennitaSistemazione(decimal idIndSist)
         {
-            MAGGIORAZIONIANNUALI precedenteIB = new MAGGIORAZIONIANNUALI();
-            MAGGIORAZIONIANNUALI delIB = new MAGGIORAZIONIANNUALI();
+            INDENNITASISTEMAZIONE precedenteIB = new INDENNITASISTEMAZIONE();
+            INDENNITASISTEMAZIONE delIB = new INDENNITASISTEMAZIONE();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -407,39 +421,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDMAGANNUALI == idMagAnnuali);
+                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDINDSIST == idIndSist);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.MAGGIORAZIONIANNUALI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.INDENNITASISTEMAZIONE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new MAGGIORAZIONIANNUALI()
+                            var ibOld1 = new INDENNITASISTEMAZIONE()
                             {
-                                IDUFFICIO = precedenteIB.IDUFFICIO,
-
+                                
+                                IDTIPOTRASFERIMENTO = precedenteIB.IDTIPOTRASFERIMENTO,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ANNUALITA = precedenteIB.ANNUALITA,
+                                COEFFICIENTE = precedenteIB.COEFFICIENTE,
                                 DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
 
-                            db.MAGGIORAZIONIANNUALI.Add(ibOld1);
+                            db.INDENNITASISTEMAZIONE.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro maggiorazioni annuali.", "MAGGIORAZIONIANNUALI", idMagAnnuali);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di sistemazione.", "INDENNITASISTEMAZIONE", idIndSist);
                         }
 
 

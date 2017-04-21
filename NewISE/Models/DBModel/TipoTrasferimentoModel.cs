@@ -11,7 +11,10 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTipoTrasferimento { get; set; }
-        public string tipologiaTrasferimento { get; set; }
+
+        [Required(ErrorMessage = "La tipologia del trasferimento è richiesta.")]
+        [Display(Name = "Trasferimento")]
+        public string descTipoTrasf { get; set; }
 
     }
 }

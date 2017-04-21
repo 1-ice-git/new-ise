@@ -1,15 +1,30 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaSistemazioneModel>
-
 @using NewISE.Areas.Parametri.Models.dtObj;
 
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+
+}
+
 <p>
-    <a id="btnInsNuovaIndSist" href="#" onclick="NuovaIndennitaDiBase();">Inserisci Indennita di Sistemazione</a>
+    <a id="btnInsNuovaIndSist" href="#" onclick="NuovaIndennitaSistemazione();">Inserisci Indennita Sistemazione </a>
 </p>
-<table id="tbIndSistemaz" class="display" cellspacing="0">
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblTipoTrasferimento0", "Seleziona Indennità", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idTipoTrasferimento", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndSist();", @onClick = "PrelevaPVIndSist();" })
+            </div>
+        </div>
+    </div>
+</p>
+<table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.idIndSist)
+                @Html.DisplayNameFor(model => model.TipoTrasferimento.descTipoTrasf)               
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -18,10 +33,10 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.idTipoTrasferimento)
+                @Html.DisplayNameFor(model => model.coefficiente)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tipologiaTrasferimento)
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -34,32 +49,46 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.idIndSist)
+                    @Html.DisplayFor(modelItem => item.TipoTrasferimento.descTipoTrasf)
                 </td>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idTipoTrasferimento)
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.coefficiente)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipologiaTrasferimento)
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idIndSist }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idIndSist }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idIndSist })
+                <td style="text-align:center;">
+                    @using (dtIndSist dtib = new dtIndSist())
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                            <a href="#" onclick="EliminaIndSist(@item.idIndSist );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                    }
+
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div id="dialog-confirm" title="Elimina indennità di sistemazione?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di sistemazione?</p>
+</div>
+
 <script type="text/javascript">
     $('.display').DataTable({
         "language": {
@@ -87,8 +116,8 @@
         }
     });
 
-    $("#idLivello").select2({
-        placeholder: "Seleziona il ",
+    $("#idTipoTrasferimento").select2({
+        placeholder: "Seleziona tipo trasferimento",
         allowClear: true,
         language: "it",
         width: '150'
@@ -97,4 +126,174 @@
 
     $("#btnInsNuovaIndSist").button();
 
+    function PrelevaPVIndSist() {
+        //debugger;
+        rotta = "/Parametri/ParamIndSistemaz/IndennitaSistemazioneLivello";
+
+        var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
+        var chk = true;
+
+        if (isNaN(idTipoTrasferimento)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipoTrasferimento: idTipoTrasferimento, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaIndennitaSistemazione() {
+        debugger;
+
+        var rotta = "/Parametri/ParamIndSistemaz/NuovaIndennitaSistemazione";
+        var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
+        var chk = false;
+
+        if (isNaN(idTipoTrasferimento)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un indennita per procedere.");
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipoTrasferimento: idTipoTrasferimento, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaIndSist(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamIndSistemaz/EliminaIndennitaSistemazione";
+
+        var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
+        var chk = true;
+
+        if (isNaN(idTipoTrasferimento)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idTipoTrasferimento: idTipoTrasferimento, idIndSist: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
 </script>

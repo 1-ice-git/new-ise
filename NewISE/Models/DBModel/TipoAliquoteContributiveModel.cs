@@ -11,7 +11,13 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTipoAliqContr { get; set; }
+        [Required(ErrorMessage = "Il codice è richiesto.")]
+        
+        [Display(Name = "Codice")]
+        [DataType(DataType.Text)]
         public string codice { get; set; }
+        [Required(ErrorMessage = "La descrizione è richiesto.")]
+        [Display(Name = "Descrizione")]
         public string descrizione { get; set; }
 
     }

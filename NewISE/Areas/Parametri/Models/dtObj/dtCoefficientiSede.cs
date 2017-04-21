@@ -33,6 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -68,6 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -102,6 +104,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -136,6 +139,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -181,6 +185,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 VALORECOEFFICIENTE = ibm.valore,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -192,6 +197,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 VALORECOEFFICIENTE = ibm.valore,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -204,6 +210,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             VALORECOEFFICIENTE = ibm.valore,
+                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -231,8 +238,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -245,7 +253,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
@@ -253,8 +262,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld2 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
                                         ANNULLATO = false
                                     };
@@ -276,9 +286,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -296,9 +307,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new COEFFICIENTESEDE()
                                     {
                                         IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 

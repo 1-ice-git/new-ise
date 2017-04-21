@@ -24,7 +24,7 @@
 
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio.DescUfficio)
+                @Html.DisplayNameFor(model => model.Ufficio.DescUfficio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -33,7 +33,10 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valoreCoefficiente)
+                @Html.DisplayNameFor(model => model.valore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -46,7 +49,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => item.DescrizioneUfficio.DescUfficio)
+                    @Html.DisplayFor(model => item.Ufficio.DescUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -55,7 +58,10 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.valoreCoefficiente)
+                    @Html.DisplayFor(modelItem => item.valore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
@@ -65,7 +71,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaPercdisagio(@item.idCoefficientiSede );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -222,7 +228,7 @@
 
     }
 
-    function EliminaPercdisagio(id) {
+    function EliminaCoefficientiSede(id) {
         //debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
         

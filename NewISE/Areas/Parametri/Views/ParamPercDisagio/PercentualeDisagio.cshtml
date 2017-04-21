@@ -24,7 +24,7 @@
 
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio.DescUfficio)
+                @Html.DisplayNameFor(model => model.Ufficio.DescUfficio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -34,6 +34,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.percentuale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -46,7 +49,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => item.DescrizioneUfficio.DescUfficio)
+                    @Html.DisplayFor(model => item.Ufficio.DescUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -56,6 +59,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.percentuale)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
@@ -171,7 +177,7 @@
     }
 
     function NuovaPercentualeDisagio() {
-        //debugger;
+        debugger;
 
         var rotta = "/Parametri/ParamPercDisagio/NuovaPercentualeDisagio";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
