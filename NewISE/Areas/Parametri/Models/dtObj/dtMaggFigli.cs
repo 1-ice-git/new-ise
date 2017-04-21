@@ -35,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 
                                 annullato = e.ANNULLATO,
-                                Figlio = new TipologiaFiglioModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
                                     idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                     tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
@@ -71,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                Figlio = new TipologiaFiglioModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
                                     idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                     tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
@@ -108,7 +108,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                Figlio = new TipologiaFiglioModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
                                     idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                     tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
@@ -145,7 +145,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                Figlio = new TipologiaFiglioModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
                                     idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                     tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()

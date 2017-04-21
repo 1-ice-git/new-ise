@@ -1,7 +1,10 @@
 ﻿@model NewISE.Areas.Dipendenti.Models.dipTrasferimentoModel
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
-@using (@Ajax.BeginForm("", "", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { @id = "formInserisciTrasferimento" }))
+@using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data", @id = "formInserisciTrasferimento" }))
 {
     @Html.AntiForgeryToken()
 
@@ -34,7 +37,10 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div class="col-xs-9">
-                    @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                    <div>
+                        @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                    </div>
+                    
                     @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -93,19 +99,13 @@
             <div class="form-group">
                 @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-xs-3" })
                 <div class="col-xs-9">
-                    @*<a href="#divModalDocumento" rel="modal:open"><img id="imgAllegaDocumento" src="~/Immagini/paperclip-icon_34384.png" height="40" /></a>*@
+                    <img id="imgAllegaDocumento" src="~/Immagini/paperclip-icon_34384.png" height="40" />
+                    <strong><span id="spanNomeFile">Nessun documento selezionato</span></strong>
                     <div style="width: 60%;">
-                        <input id="fileDoc" name="file" type="file" class="file-loading">
+                        <input id="fileDoc" name="file" type="file" class="hidden">
                     </div>
-                    
                 </div>
             </div>
-
-            @*<div id="divModalDocumento" style="display:none;">
-                <div>
-                    <input id="file" name="file" type="file" class="file file-loading" data-show-caption="true" data-show-preview="false">
-                </div>
-            </div>*@
 
             <div class="form-group">
                 <div class="col-xs-offset-3 col-xs-9">
@@ -124,10 +124,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title alert text-danger" id="myModalLabel">Attenzione!!!</h4>
+                <h4 class="modal-title alert alert-danger text-danger" id="myModalLabel">Attenzione!!!</h4>
             </div>
             <div class="modal-body alert alert-danger text-danger">
-                <p id="msgModalError" class="text-info"></p>
+                <p id="msgModalError" class="text-danger"></p>
             </div>
             <div class="modal-footer">
                 <button id="btProcedi" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
@@ -136,8 +136,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">Info!!!</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-    $('#chkAllegaDoc').checkboxpicker();
+    //$('#chkAllegaDoc').checkboxpicker();
 
     $("#idTipoTrasferimento").select2({
         placeholder: "Seleziona il tipo trasferimento",
@@ -172,33 +191,50 @@
     });
 
     $('#dataPartenza').datepicker({
-        inline: true,
+        //inline: true,
+        showOptions: { direction: "up" }
     });
 
     $('#dataLettera').datepicker({
         inline: true,
     });
 
-    //$('#fileDoc').fileinput({
-    //    language: "it",
-    //    allowedFileExtensions: ["pdf"],
-    //    maxFileSize: 5120,
-    //    showClose: false,
-    //    showUpload: false,
-    //    //maxImageWidth: 700,
-    //    //maxImageHeight: 700,
-    //    //resizePreference: 'height',
-    //    //maxFileCount: 1,
-    //    //resizeImage: true
-        
-    //});
-
-    $("#fileDoc").fileinput({
-        showUpload: false,
-        mainClass: "input-group-xs",
-        language: "it",
-        showPreview: false,
+    $("#imgAllegaDocumento").click(function () {
+        $("#fileDoc").val("");
+        $("#fileDoc").click();
     });
+
+    $("#fileDoc").change(function () {
+        //debugger;
+        var file = $("#fileDoc").val();
+
+        if (file != "") {
+            var splitFile = file.split("\\");
+            var nomeFile = splitFile[splitFile.length - 1];
+
+            var estensioniValide = new Array(".pdf");
+            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+            if (estensioniValide.contiene(estensione)) {
+
+                //$("#nomeFile").val(nomeFile);
+                $("#spanNomeFile").html(nomeFile);
+                return true;
+            } else {
+
+                DialogInfo("L'estensione del documento che si vuole importare non è supportata. L'estensione supportata è il .pdf");
+
+                return false;
+            }
+        }
+
+    });
+
+    //$("#fileDoc").fileinput({
+    //    showUpload: false,
+    //    mainClass: "input-group-xs",
+    //    language: "it",
+    //    showPreview: false,
+    //});
 
     //$("#divModalDocumento").modal({
     //    closeClass: 'icon-remove',
@@ -209,8 +245,10 @@
         $("#msgModalError").text("Errore nell'elaborazione.");
         $('#myModalError').modal('toggle');
     }
+
+    function DialogInfo(response) {
+        $("#msgModalInfo").text(response);
+        $('#myModalInfo').modal('toggle');
+    }
 </script>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

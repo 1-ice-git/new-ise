@@ -81,15 +81,6 @@ namespace NewISE.Areas.Dipendenti.Models
         [DataType(DataType.Upload)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Lettera Trasferimento")]
         public HttpPostedFileBase file { get; set; }
-        //[StringLength(50, ErrorMessage = "Per il nome documento sono richiesti un massimo di 50 caratteri.")]
-        //[Display(Name = "Nome Documento")]
-        //[DataType(DataType.Text)]
-        //[Required(ErrorMessage = "Il Nome del documento è richiesto.")]
-        //public string nomeDocumento { get; set; }
-        //[StringLength(5, ErrorMessage = "Per l'estensione sono richiesti un massimo di 5 caratteri.")]
-        //[Display(Name = "Estensione")]
-        //[DataType(DataType.Text)]
-        //[Required(ErrorMessage = "L'estensione è richiesta.")]
-        //public string estensione { get; set; }
+        
     }
 }

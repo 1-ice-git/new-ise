@@ -26,22 +26,29 @@ namespace NewISE.Models.DBModel.dtObj
 
             var tr = context.ObjectInstance as TrasferimentoModel;
 
+            if (tr!=null)
+            {
+                if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Promozionali))
+                {
+                    if (tr.coan != string.Empty && tr.coan.Length == 10)
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
+                    }
+                }
+                else if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Istituzionali))
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
+            }
             
-            if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Promozionali))
-            {
-                if (tr.coan != string.Empty && tr.coan.Length == 10)
-                {
-                    vr= ValidationResult.Success;
-                }
-                else
-                {
-                    vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
-                }
-            }
-            else if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Istituzionali))
-            {
-                vr = ValidationResult.Success;
-            }
 
             return vr;
             

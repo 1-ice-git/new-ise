@@ -78,6 +78,8 @@ namespace NewISE.Models.DBModel
         [Display(AutoGenerateField = false)]
         public bool annullato { get; set; }
 
+
+
         
         public StatoTrasferimentoModel StatoTrasferimento { get; set; }
 

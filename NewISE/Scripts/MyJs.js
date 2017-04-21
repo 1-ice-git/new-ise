@@ -14,3 +14,15 @@ $(document).ajaxStop(function () {
     Sblocca();
 });
 
+$(function () {
+    if (typeof Array.prototype.contiene !== 'function') {
+        Array.prototype.contiene = function (valore) {
+            for (i in this) {
+                if (this[i] == valore) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+});
