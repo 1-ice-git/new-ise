@@ -25,7 +25,6 @@ namespace NewISE
         public Nullable<decimal> IDANTICIPO { get; set; }
         public Nullable<decimal> IDRICHIAMO { get; set; }
         public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
-        public decimal IDVARIAZIONERATAMAB { get; set; }
     
         public virtual ANTICIPI ANTICIPI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -33,6 +32,5 @@ namespace NewISE
         public virtual INDENNITA INDENNITA { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
-        public virtual VARIAZIONIRATEMAB VARIAZIONIRATEMAB { get; set; }
     }
 }

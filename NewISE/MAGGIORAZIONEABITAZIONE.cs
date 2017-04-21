@@ -17,21 +17,28 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEABITAZIONE()
         {
-            this.DATIMAB = new HashSet<DATIMAB>();
             this.MAB_DOC = new HashSet<MAB_DOC>();
         }
     
         public decimal IDMAB { get; set; }
+        public decimal IDPERCMAB { get; set; }
+        public decimal IDTFR { get; set; }
+        public decimal IDMAGANNUALI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
+        public System.DateTime DATAINIZIOVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public bool ANTICIPOANNUALE { get; set; }
+        public bool CONDIVISO { get; set; }
+        public bool PAGATOCONDIVISO { get; set; }
+        public decimal CANONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DATIMAB> DATIMAB { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
+        public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
+        public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual TFR TFR { get; set; }
     }
 }

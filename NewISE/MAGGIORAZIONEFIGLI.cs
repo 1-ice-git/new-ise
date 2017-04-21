@@ -17,21 +17,28 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEFIGLI()
         {
-            this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
+            this.FIGLI = new HashSet<FIGLI>();
+            this.INDENNITA = new HashSet<INDENNITA>();
+            this.MAGFAM_DOC = new HashSet<MAGFAM_DOC>();
         }
     
         public decimal IDMAGGIORAZIONEFIGLI { get; set; }
-        public decimal IDTIPOLOGIAFIGLIO { get; set; }
+        public decimal IDPERCMAGFIGLI { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDINDPRIMOSEGR { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal PERCENTUALEFIGLI { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual INDENNITAPRIMOSEGRETARIO INDENNITAPRIMOSEGRETARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
+        public virtual INDENNITAPRIMOSEGRETARIO INDENNITAPRIMOSEGRETARIO { get; set; }
+        public virtual PERCENTUALEMAGFIGLI PERCENTUALEMAGFIGLI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGFAM_DOC> MAGFAM_DOC { get; set; }
     }
 }

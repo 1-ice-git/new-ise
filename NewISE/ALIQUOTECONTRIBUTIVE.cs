@@ -14,13 +14,6 @@ namespace NewISE
     
     public partial class ALIQUOTECONTRIBUTIVE
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ALIQUOTECONTRIBUTIVE()
-        {
-            this.MAB_ALIQCONTR = new HashSet<MAB_ALIQCONTR>();
-            this.PRIMASIST_ALIQCONTR = new HashSet<PRIMASIST_ALIQCONTR>();
-        }
-    
         public decimal IDALIQCONTR { get; set; }
         public decimal IDTIPOCONTRIBUTO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
@@ -29,10 +22,7 @@ namespace NewISE
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRIMASIST_ALIQCONTR> PRIMASIST_ALIQCONTR { get; set; }
+        public virtual MAB_ALIQCONTR MAB_ALIQCONTR { get; set; }
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
     }
 }

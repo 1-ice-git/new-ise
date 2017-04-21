@@ -37,12 +37,13 @@ namespace NewISE
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
+        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
-        public virtual DbSet<DATIMAB> DATIMAB { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
+        public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
@@ -53,20 +54,20 @@ namespace NewISE
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
+        public virtual DbSet<MAGFAM_DOC> MAGFAM_DOC { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
         public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
-        public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         public virtual DbSet<OA> OA { get; set; }
-        public virtual DbSet<PARENTELA> PARENTELA { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PENSIONECONIUGE> PENSIONECONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
-        public virtual DbSet<PRIMASIST_ALIQCONTR> PRIMASIST_ALIQCONTR { get; set; }
+        public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
+        public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
@@ -100,7 +101,6 @@ namespace NewISE
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
-        public virtual DbSet<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
     
         public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI, ObjectParameter iNDPERSONALE, ObjectParameter iNDANTSISTLORDA, ObjectParameter iNDSISTLORDA)

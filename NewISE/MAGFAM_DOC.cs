@@ -12,13 +12,14 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASIST_ALIQCONTR
+    public partial class MAGFAM_DOC
     {
-        public decimal IDALIQCONTR { get; set; }
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDDOCUMENTO { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONECONIUGE { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONEFIGLI { get; set; }
     
-        public virtual ALIQUOTECONTRIBUTIVE ALIQUOTECONTRIBUTIVE { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+        public virtual DOCUMENTI DOCUMENTI { get; set; }
+        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
     }
 }

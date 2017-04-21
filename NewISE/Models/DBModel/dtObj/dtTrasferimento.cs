@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public enum TipologiaCoan
+    public enum EnumTipologiaCoan
     {
         Servizi_Istituzionali = 1,
         Servizi_Promozionali = 2
@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel.dtObj
             var tr = context.ObjectInstance as TrasferimentoModel;
 
             
-            if (tr.idTipoCoan == Convert.ToDecimal(TipologiaCoan.Servizi_Promozionali))
+            if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Promozionali))
             {
                 if (tr.coan != string.Empty && tr.coan.Length == 10)
                 {
@@ -38,7 +38,7 @@ namespace NewISE.Models.DBModel.dtObj
                     vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
                 }
             }
-            else if (tr.idTipoCoan == Convert.ToDecimal(TipologiaCoan.Servizi_Istituzionali))
+            else if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Istituzionali))
             {
                 vr = ValidationResult.Success;
             }
@@ -120,9 +120,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     abilitato = t.DIPENDENTI.ABILITATO,
                                     dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
                                 }
-
-
-
                             };
                         }
                         

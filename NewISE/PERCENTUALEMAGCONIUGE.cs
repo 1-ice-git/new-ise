@@ -12,28 +12,24 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class DATIMAB
+    public partial class PERCENTUALEMAGCONIUGE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public DATIMAB()
+        public PERCENTUALEMAGCONIUGE()
         {
-            this.VARIAZIONIRATEMAB = new HashSet<VARIAZIONIRATEMAB>();
+            this.MAGGIORAZIONECONIUGE = new HashSet<MAGGIORAZIONECONIUGE>();
         }
     
-        public decimal IDDATIMAB { get; set; }
-        public decimal IDMAB { get; set; }
-        public Nullable<decimal> IDMAGANNUALI { get; set; }
-        public decimal ANTICIPOANNUALE { get; set; }
-        public decimal CONDIVISO { get; set; }
-        public decimal PAGATOCONDIVISO { get; set; }
+        public decimal IDPERCMAGCONIUGE { get; set; }
+        public decimal IDTIPOLOGIACONIUGE { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
+        public decimal PERCENTUALECONIUGE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VARIAZIONIRATEMAB> VARIAZIONIRATEMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
+        public virtual ICollection<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
+        public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
     }
 }

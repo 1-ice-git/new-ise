@@ -15,7 +15,8 @@ namespace NewISE
     public partial class ALTRIDATIFAM
     {
         public decimal IDALTRIDATIFAM { get; set; }
-        public decimal IDMAGFAM { get; set; }
+        public Nullable<decimal> IDFIGLI { get; set; }
+        public Nullable<decimal> IDCONIUGE { get; set; }
         public System.DateTime DATANASCITA { get; set; }
         public string COMUNENASCITA { get; set; }
         public string PROVINCIANASCITA { get; set; }
@@ -24,11 +25,11 @@ namespace NewISE
         public string COMUNERESIDENZA { get; set; }
         public string PROVINCIARESIDENZA { get; set; }
         public string CAP { get; set; }
-        public decimal RESIDENTE { get; set; }
-        public decimal ULTERIOREMAGCONIUGENONRES { get; set; }
         public decimal STUDENTE { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual CONIUGE CONIUGE { get; set; }
+        public virtual FIGLI FIGLI { get; set; }
     }
 }

@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models.DBModel
 {
-    public class MaggiorazioneConiugeModel
+    public class PercentualeMagConiugeModel
     {
         [Key]
         [Display(Name = "ID")]
-        public decimal idMaggiorazioneConiuge { get; set; }
+        public decimal idPercentualeConiuge { get; set; }
         [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
         public decimal idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
