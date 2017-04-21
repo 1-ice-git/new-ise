@@ -16,7 +16,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult MaggiorazioneFigli()
         {
-            List<MaggiorazioneFigliModel> libm = new List<MaggiorazioneFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
