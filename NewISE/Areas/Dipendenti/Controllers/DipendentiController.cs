@@ -23,7 +23,6 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
         public ActionResult DipendentiGepe(string matricola = "")
         {
-
             DipendenteRest dr = new DipendenteRest();
             var rMatricola = new List<SelectListItem>();
             var rNominativo = new List<SelectListItem>();
