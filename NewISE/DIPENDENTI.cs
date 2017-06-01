@@ -37,6 +37,7 @@ namespace NewISE
         public bool ABILITATO { get; set; }
         public System.DateTime DATAINIZIORICALCOLI { get; set; }
     
+        public virtual CDCGEPE CDCGEPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

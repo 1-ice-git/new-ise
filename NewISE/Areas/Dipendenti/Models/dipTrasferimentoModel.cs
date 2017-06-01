@@ -1,4 +1,4 @@
-﻿using NewISE.Models.DBModel.dtObj;
+﻿using NewISE.Areas.Dipendenti.Models.DtObj;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,7 +37,7 @@ namespace NewISE.Areas.Dipendenti.Models
         [Display(Name = "Tipo Co.An.")]
         public decimal idTipoCoan { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
         [Display(Name = "Data di partenza")]
         [Required(ErrorMessage = "La data di partenza è richiesta.")]
         public DateTime dataPartenza { get; set; }
@@ -51,36 +51,31 @@ namespace NewISE.Areas.Dipendenti.Models
         [StringLength(10, ErrorMessage = "Per il COAN sono richiesti 10 caratteri.")]
         [Display(Name = "Co.An.")]
         [DataType(DataType.Text)]
-        [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredCoan", ErrorMessage = "")]
+        [CustomValidation(typeof(dtDipTrasferimento), "VerificaRequiredCoan")]
         public string coan { get; set; }
 
 
         [StringLength(100, ErrorMessage = "Per il protocollo lettera sono richiesti un massimo di 100 caratteri.")]
         [Display(Name = "Protocollo Lettera")]
         [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Il protocollo è richiesto.")]
+        [CustomValidation(typeof(dtDipTrasferimento), "VerificaRequiredProtocolloLettera")]
         public string protocolloLettera { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Lettera")]
+        [CustomValidation(typeof(dtDipTrasferimento), "VerificaRequiredDataLettera")]
         public DateTime? dataLettera { get; set; }
 
-        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Agg.")]
-        public DateTime dataAggiornamento { get; set; }
-
-        [Required(ErrorMessage = "Il flag annullato è richiesto.")]
-        [DefaultValue(false)]
-        [Display(AutoGenerateField = false)]
-        public bool annullato { get; set; }
-
-        [Required(ErrorMessage = "La lettera è richiesta.")]
-        [DataType(DataType.Upload)]
-        [Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Lettera Trasferimento")]
-        public HttpPostedFileBase file { get; set; }
         
+        //[Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Lettera Trasferimento")]
+        //[DataType(DataType.Upload)]
+        //public HttpPostedFileBase documento { get; set; }
+
+        [Display(Name = "Allega Lettera Trasferimento")]
+        [DefaultValue(false)]
+        [CustomValidation(typeof(dtDipTrasferimento), "VerificaRequiredDocumentoLettera")]
+        public bool documento { get; set; }
+
     }
 }

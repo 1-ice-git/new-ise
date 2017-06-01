@@ -1,4 +1,5 @@
 ﻿using NewISE.Areas.Dipendenti.Models;
+using NewISE.Areas.Dipendenti.Models.DtObj;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
@@ -98,10 +99,12 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
 
 
-        // GET: Dipendenti/Trasferimento
-        public ActionResult NuovoTrasferimento(string matricola)
+        [Authorize(Roles = "1 ,2")]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult NuovoTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
         {
             //TrasferimentoModel tm = new TrasferimentoModel();
+            //dipTrasferimentoModel dtm = new dipTrasferimentoModel();
 
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
@@ -115,8 +118,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;
                 ViewBag.ListRuolo = lRuoloUfficio;
-                ViewBag.ListTipoCoan = lTipologiaCoan;                
-
+                ViewBag.ListTipoCoan = lTipologiaCoan;
 
             }
             catch (Exception ex)
@@ -125,16 +127,65 @@ namespace NewISE.Areas.Dipendenti.Controllers
                 return PartialView("errorPartial"); ;
             }
 
+
+            ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
+
             return PartialView();
         }
 
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciTrasferimento(dipTrasferimentoModel dtm)
         {
-            DocumentiModel dm = new DocumentiModel();
+            TrasferimentoModel trm;            
+            
 
             if (ModelState.IsValid)
             {
+                try
+                {
+                    using (dtDipTrasferimento dttr = new dtDipTrasferimento())
+                    {
+                        trm = new TrasferimentoModel()
+                        {
+                            idTipoTrasferimento = dtm.idTipoTrasferimento,
+                            idUfficio = dtm.idUfficio,
+                            idStatoTrasferimento = (decimal)EnumStatoTraferimento.Da_Attivare,
+                            idDipendente = dtm.idDipendente,
+                            idTipoCoan = dtm.idTipoCoan,
+                            dataPartenza = dtm.dataPartenza,
+                            coan = dtm.coan,
+                            protocolloLettera = dtm.protocolloLettera,
+                            dataLettera = dtm.dataLettera,
+                            dataAggiornamento = DateTime.Now,
+                            annullato = false
+                        };
 
+                        dttr.SetTrasferimento(trm);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    var lTipoTrasferimento = new List<SelectListItem>();
+                    var lUffici = new List<SelectListItem>();
+                    var lRuoloUfficio = new List<SelectListItem>();
+                    var lTipologiaCoan = new List<SelectListItem>();
+
+                    ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+
+                    ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
+                    ViewBag.ListUfficio = lUffici;
+                    ViewBag.ListRuolo = lRuoloUfficio;
+                    ViewBag.ListTipoCoan = lTipologiaCoan;
+
+                    ModelState.AddModelError("", ex.Message);
+
+                    return PartialView("NuovoTrasferimento", dtm);
+                }
+                
             }
             else
             {
@@ -154,12 +205,13 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
             }
 
-
-
-
-
-            return RedirectToAction("NuovoTrasferimento");
+            //return RedirectToAction("NuovoTrasferimento", new { matricola =  });
+            return null;
         }
+
+
+
+
 
 
     }

@@ -12,11 +12,11 @@ namespace NewISE.Models.DBModel
     public class LivelliDipendentiModel
     {
         [Key]
-        [Column(Order = 1)]
+        public decimal idLivDipendente { get; set; }
+
         [Required(ErrorMessage = "Il dipendente è richiesto.")]
         public decimal idDipendente { get; set; }
-        [Key]
-        [Column(Order = 2)]
+        
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]

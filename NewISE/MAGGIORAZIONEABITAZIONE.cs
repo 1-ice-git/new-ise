@@ -33,11 +33,15 @@ namespace NewISE
         public decimal CANONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDRUOLODIPENDENTE { get; set; }
+        public decimal IDLIVDIPENDENTE { get; set; }
     
+        public virtual LIVELLIDIPENDENTI LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
         public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
         public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
+        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TFR TFR { get; set; }
     }

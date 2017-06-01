@@ -14,6 +14,14 @@ namespace NewISE
     
     public partial class LIVELLIDIPENDENTI
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public LIVELLIDIPENDENTI()
+        {
+            this.INDENNITA = new HashSet<INDENNITA>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+        }
+    
+        public decimal IDLIVDIPENDENTE { get; set; }
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDLIVELLO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
@@ -22,6 +30,10 @@ namespace NewISE
         public bool ANNULLATO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

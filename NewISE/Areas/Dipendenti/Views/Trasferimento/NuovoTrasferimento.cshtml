@@ -1,10 +1,12 @@
 ﻿@model NewISE.Areas.Dipendenti.Models.dipTrasferimentoModel
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@{
+    bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
+
+
 }
 
-@using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data", @id = "formInserisciTrasferimento" }))
+@using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -36,11 +38,8 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
-                    <div>
-                        @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
-                    </div>
-                    
+                <div class="col-xs-9 form-inline">
+                    @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -83,31 +82,21 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
+                <div class="col-xs-9 form-inline">
                     @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.dataLettera, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.CheckBox("chkAllegaDoc", true, new { @class = "checkbox" })
-                    </div>
-                </div>*@
-
             <div class="form-group">
-                @Html.Label("lblDocumento", "Allega Lettera Trasferimento", new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
-                    <img id="imgAllegaDocumento" src="~/Immagini/paperclip-icon_34384.png" height="40" />
-                    <strong><span id="spanNomeFile">Nessun documento selezionato</span></strong>
-                    <div style="width: 60%;">
-                        <input id="fileDoc" name="file" type="file" class="hidden">
-                    </div>
+                @Html.LabelFor(model => model.documento, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9 form-inline">
+                    @Html.EditorFor(model => model.documento, new { htmlAttributes = new { @class = "form-control checkbox",  @style = "width:35px;" } })                   
+                    @Html.ValidationMessageFor(model => model.documento, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group ">
                 <div class="col-xs-offset-3 col-xs-9">
                     <input type="submit" value="Inserisci" class="btn btn-default" />
                 </div>
@@ -155,6 +144,7 @@
     </div>
 </div>
 
+
 <script type="text/javascript">
     //$('#chkAllegaDoc').checkboxpicker();
 
@@ -191,8 +181,8 @@
     });
 
     $('#dataPartenza').datepicker({
-        //inline: true,
-        showOptions: { direction: "up" }
+        inline: true,
+
     });
 
     $('#dataLettera').datepicker({
@@ -200,46 +190,47 @@
     });
 
     $("#imgAllegaDocumento").click(function () {
-        $("#fileDoc").val("");
-        $("#fileDoc").click();
+        $("#documento").val("");
+        $("#documento").click();
     });
 
-    $("#fileDoc").change(function () {
-        //debugger;
-        var file = $("#fileDoc").val();
+    $(function () {
+        debugger;
+        var rit=@ricaricaInfoTrasf;
 
-        if (file != "") {
-            var splitFile = file.split("\\");
-            var nomeFile = splitFile[splitFile.length - 1];
+        if (rit==true) {
 
-            var estensioniValide = new Array(".pdf");
-            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
-            if (estensioniValide.contiene(estensione)) {
-
-                //$("#nomeFile").val(nomeFile);
-                $("#spanNomeFile").html(nomeFile);
-                return true;
-            } else {
-
-                DialogInfo("L'estensione del documento che si vuole importare non è supportata. L'estensione supportata è il .pdf");
-
-                return false;
-            }
         }
-
     });
 
-    //$("#fileDoc").fileinput({
-    //    showUpload: false,
-    //    mainClass: "input-group-xs",
-    //    language: "it",
-    //    showPreview: false,
+    //$("#documento").change(function () {
+    //    debugger;
+    //    var file = $("#documento").val();
+
+    //    if (file != "") {
+    //        var splitFile = file.split("\\");
+    //        var nomeFile = splitFile[splitFile.length - 1];
+
+    //        var estensioniValide = new Array(".pdf");
+    //        var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+    //        if (estensioniValide.contiene(estensione)) {
+
+    //            //$("#nomeFile").val(nomeFile);
+    //            $("#spanNomeFile").html(nomeFile);
+    //            return true;
+    //        } else {
+
+    //            DialogInfo("L'estensione del documento che si vuole importare non è supportata. L'estensione supportata è il .pdf");
+
+    //            return false;
+    //        }
+    //    }
+
     //});
 
-    //$("#divModalDocumento").modal({
-    //    closeClass: 'icon-remove',
-    //    closeText: 'X'
-    //});
+   
+    
+    
 
     function ErroreElaborazioneAjax(response) {
         $("#msgModalError").text("Errore nell'elaborazione.");
@@ -250,5 +241,31 @@
         $("#msgModalInfo").text(response);
         $('#myModalInfo').modal('toggle');
     }
+    //per inviare file da ajaxs
+    //window.addEventListener("submit", function (e) {
+    //    var form = e.target;
+    //    if (form.getAttribute("enctype") === "multipart/form-data") {
+    //        if (form.dataset.ajax) {
+    //            e.preventDefault();
+    //            e.stopImmediatePropagation();
+    //            var xhr = new XMLHttpRequest();
+    //            xhr.open(form.method, form.action);
+    //            xhr.onreadystatechange = function () {
+    //                if (xhr.readyState == 4 && xhr.status == 200) {
+    //                    if (form.dataset.ajaxUpdate) {
+    //                        var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
+    //                        if (updateTarget) {
+    //                            updateTarget.innerHTML = xhr.responseText;
+    //                        }
+    //                    }
+    //                }
+    //            };
+    //            xhr.send(new FormData(form));
+    //        }
+    //    }
+    //}, true);
 </script>
 
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+}

@@ -1536,6 +1536,8 @@
     <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Areas\Dipendenti\Models\dipTrasferimentoModel.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipCDCGepe.cs" />
+    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipLivelli.cs" />
     <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPrimoSegr.cs" />
@@ -1586,6 +1588,9 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="BIGLIETTI_DOCUMENTI.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CDCGEPE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="COEFFICIENTEFKM.cs">
@@ -1666,6 +1671,7 @@
     </Compile>
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
+    <Compile Include="Models\DBModel\CDCGepeModel.cs" />
     <Compile Include="Models\DBModel\CDCModel.cs" />
     <Compile Include="Models\DBModel\CDC_TRASFModel.cs" />
     <Compile Include="Models\DBModel\CoeffFasciaKmModel.cs" />
@@ -1706,7 +1712,6 @@
     <Compile Include="Models\Config\s_admin\sAdmin.cs" />
     <Compile Include="Models\Config\s_admin\utente_sAdmin.cs" />
     <Compile Include="Models\DBModel\dtObj\dtUffici.cs" />
-    <Compile Include="Models\DBModel\dtObj\Enumeratori.cs" />
     <Compile Include="Models\DBModel\FasciaChilometricaModel.cs" />
     <Compile Include="Models\DBModel\IndennitaBaseModel.cs" />
     <Compile Include="Models\DBModel\IndennitaModel.cs" />
@@ -1721,6 +1726,7 @@
     <Compile Include="Models\DBModel\PercentualeDisagioModel.cs" />
     <Compile Include="Models\DBModel\PercMaggAbitazModel.cs" />
     <Compile Include="Models\DBModel\RiduzioniModel.cs" />
+    <Compile Include="Models\DBModel\RuoloDipendenteModel.cs" />
     <Compile Include="Models\DBModel\RuoloUfficioModel.cs" />
     <Compile Include="Models\DBModel\StatoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TFRModel.cs" />
@@ -1800,6 +1806,9 @@
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="RUOLOACCESSO.cs">
+      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RUOLODIPENDENTE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
     <Compile Include="RUOLOUFFICIO.cs">

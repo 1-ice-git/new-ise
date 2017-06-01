@@ -34,6 +34,7 @@ namespace NewISE
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
         public virtual DbSet<BIGLIETTI_DOCUMENTI> BIGLIETTI_DOCUMENTI { get; set; }
+        public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
@@ -73,6 +74,7 @@ namespace NewISE
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
+        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }

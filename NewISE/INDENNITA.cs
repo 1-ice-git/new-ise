@@ -19,7 +19,6 @@ namespace NewISE
         {
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
-            this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
         }
     
         public decimal IDINDENNITA { get; set; }
@@ -34,6 +33,8 @@ namespace NewISE
         public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDRUOLODIPENDENTE { get; set; }
+        public decimal IDLIVDIPENDENTE { get; set; }
     
         public virtual COEFFICIENTESEDE COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -41,12 +42,12 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual INDENNITABASE INDENNITABASE { get; set; }
+        public virtual LIVELLIDIPENDENTI LIVELLIDIPENDENTI { get; set; }
         public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
         public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         public virtual PERCENTUALEDISAGIO PERCENTUALEDISAGIO { get; set; }
+        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TFR TFR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
     }
 }

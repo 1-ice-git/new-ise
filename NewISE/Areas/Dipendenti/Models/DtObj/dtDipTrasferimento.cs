@@ -2,6 +2,7 @@
 using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -13,6 +14,141 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
         {
             GC.SuppressFinalize(this);
         }
+
+        public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
+        {
+
+            ValidationResult vr = ValidationResult.Success;
+
+            var tr = context.ObjectInstance as dipTrasferimentoModel;
+
+            if (tr != null)
+            {
+                if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Promozionali))
+                {
+                    if (tr.coan != null && tr.coan != string.Empty && tr.coan.Length == 10)
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
+                    }
+                }
+                else if (tr.idTipoCoan == Convert.ToDecimal(EnumTipologiaCoan.Servizi_Istituzionali))
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
+            }
+
+
+            return vr;
+
+        }
+
+        public static ValidationResult VerificaRequiredDataLettera(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var tr = context.ObjectInstance as dipTrasferimentoModel;
+
+            if (tr != null)
+            {
+                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.documento == true)
+                {
+                    if (tr.dataLettera.HasValue)
+                    {
+                        vr = ValidationResult.Success;                        
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("La data della lettera è richiesta.");
+                    }
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+
+            return vr;
+        }
+
+        public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
+        {
+
+            ValidationResult vr = ValidationResult.Success;
+
+            var tr = context.ObjectInstance as dipTrasferimentoModel;
+
+            if (tr != null)
+            {
+                if (tr.dataLettera.HasValue || tr.documento == true)
+                {
+                    if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
+                    {
+                        vr = ValidationResult.Success;                        
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
+                    }
+                }                
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = ValidationResult.Success;
+            }
+
+
+            return vr;
+
+        }
+
+        public static ValidationResult VerificaRequiredDocumentoLettera(string v, ValidationContext context)
+        {
+
+            ValidationResult vr = ValidationResult.Success;
+
+            var tr = context.ObjectInstance as dipTrasferimentoModel;
+
+            if (tr != null)
+            {
+                if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
+                {
+                    if (tr.documento == true)
+                    {
+                        vr = ValidationResult.Success;                        
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("L'opzione allega lettera di trasferimento è richiesta.");
+                    }
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = ValidationResult.Success;
+            }
+
+
+            return vr;
+
+        }
+
+
 
         public dipInfoTrasferimentoModel GetInfoTrasferimento(string matricola)
         {
@@ -31,8 +167,6 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                         dit.statoTrasferimento = (EnumStatoTraferimento)tm.idStatoTrasferimento;
                         dit.UfficioDestinazione = tm.Ufficio;
                         dit.Decorrenza = tm.dataPartenza;
-                        dit.RuoloUfficio = tm.RuoloUfficio;
-
                         if (tm.dataRientro.HasValue)
                         {
                             dtDatiParametri = tm.dataRientro.Value;
@@ -41,13 +175,6 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                         {
                             dtDatiParametri = DateTime.Now.Date;
                         }
-
-                        
-
-
-
-
-
                     }
 
 
@@ -60,6 +187,37 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
             }
 
             return dit;
+        }
+
+        public void SetTrasferimento(TrasferimentoModel trm)
+        {
+            TRASFERIMENTO tr;
+
+            using (EntitiesDBISE db=new EntitiesDBISE())
+            {
+                tr = new TRASFERIMENTO()
+                {
+                    IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
+                    IDUFFICIO = trm.idUfficio,
+                    IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento,
+                    IDDIPENDENTE = trm.idDipendente,
+                    IDTIPOCOAN = trm.idTipoCoan,
+                    DATAPARTENZA = trm.dataPartenza,
+                    DATARIENTRO = trm.dataRientro,
+                    COAN = trm.coan,
+                    PROTOCOLLOLETTERA = trm.protocolloLettera,
+                    DATALETTERA = trm.dataLettera,
+                    DATAAGGIORNAMENTO = trm.dataAggiornamento,
+                    ANNULLATO = trm.annullato
+                };
+
+                db.TRASFERIMENTO.Add(tr);
+
+                db.SaveChanges();
+            }
+
+
+
         }
 
 

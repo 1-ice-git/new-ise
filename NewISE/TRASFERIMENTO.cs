@@ -25,6 +25,8 @@ namespace NewISE
             this.NOTIFICARICHIESTAMAGFAM = new HashSet<NOTIFICARICHIESTAMAGFAM>();
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
+            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
+            this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
@@ -32,7 +34,6 @@ namespace NewISE
         public decimal IDTIPOTRASFERIMENTO { get; set; }
         public decimal IDUFFICIO { get; set; }
         public decimal IDSTATOTRASFERIMENTO { get; set; }
-        public decimal IDRUOLO { get; set; }
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDTIPOCOAN { get; set; }
         public System.DateTime DATAPARTENZA { get; set; }
@@ -60,7 +61,10 @@ namespace NewISE
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
-        public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }

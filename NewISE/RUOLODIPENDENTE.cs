@@ -12,26 +12,28 @@ namespace NewISE
     using System;
     using System.Collections.Generic;
     
-    public partial class REGOLECALCOLO
+    public partial class RUOLODIPENDENTE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public REGOLECALCOLO()
+        public RUOLODIPENDENTE()
         {
-            this.RIDUZIONI = new HashSet<RIDUZIONI>();
+            this.INDENNITA = new HashSet<INDENNITA>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
         }
     
-        public decimal IDREGOLA { get; set; }
-        public Nullable<decimal> IDTIPOREGOLACALCOLO { get; set; }
-        public Nullable<decimal> IDNORMACALCOLO { get; set; }
-        public string FORMULAREGOLACALCOLO { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
+        public decimal IDRUOLODIPENDENTE { get; set; }
+        public decimal IDRUOLO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public System.DateTime DATAINZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual NORMACALCOLO NORMACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
-        public virtual TIPOREGOLACALCOLO TIPOREGOLACALCOLO { get; set; }
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

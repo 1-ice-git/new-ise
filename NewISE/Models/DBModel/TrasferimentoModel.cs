@@ -25,11 +25,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Stato trasferimento richiesto")]
         [Display(Name = "Stato Trasferimento")]
         public decimal idStatoTrasferimento { get; set; }
-
-        [Required(ErrorMessage = "Ruolo richiesto")]
-        [Display(Name = "Ruolo")]
-        public decimal idRuolo { get; set; }
-
+                
         [Required(ErrorMessage = "Dipendente richiesto")]
         [Display(Name = "Dipendente")]
         public decimal idDipendente { get; set; }
@@ -83,7 +79,7 @@ namespace NewISE.Models.DBModel
         
         public StatoTrasferimentoModel StatoTrasferimento { get; set; }
 
-        public RuoloUfficioModel RuoloUfficio { get; set; }
+        
 
         public UfficiModel Ufficio { get; set; }
 

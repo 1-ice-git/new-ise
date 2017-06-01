@@ -36,9 +36,9 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         public virtual INDENNITAPRIMOSEGRETARIO INDENNITAPRIMOSEGRETARIO { get; set; }
-        public virtual PERCENTUALEMAGFIGLI PERCENTUALEMAGFIGLI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGFAM_DOC> MAGFAM_DOC { get; set; }
+        public virtual PERCENTUALEMAGFIGLI PERCENTUALEMAGFIGLI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

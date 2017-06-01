@@ -21,8 +21,10 @@ namespace NewISE
         public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
     
         public virtual INDENNITA INDENNITA { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TIPOSOSPENSIONE TIPOSOSPENSIONE { get; set; }
     }
 }

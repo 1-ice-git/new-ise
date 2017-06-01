@@ -17,13 +17,13 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RUOLOUFFICIO()
         {
-            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
+            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
         }
     
         public decimal IDRUOLO { get; set; }
         public string DESCRUOLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
+        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
     }
 }

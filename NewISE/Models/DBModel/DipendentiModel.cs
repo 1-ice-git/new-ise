@@ -87,6 +87,10 @@ namespace NewISE.Models.DBModel
 
         public IList<CDCDipendentiModel> CdcDipendenti { get; set; }
 
+        public CDCGepeModel cdcGepe { get; set; }
+
+        public LivelliDipendentiModel livelloDipendenteValido { get; set; }
+
 
 
     }
