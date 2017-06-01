@@ -15,7 +15,7 @@ namespace NewISE.Areas.Dipendenti.Models
         public UfficiModel UfficioDestinazione { get; set; }
 
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:d}")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime? Decorrenza { get; set; }
         
         public RuoloUfficioModel RuoloUfficio { get; set; }

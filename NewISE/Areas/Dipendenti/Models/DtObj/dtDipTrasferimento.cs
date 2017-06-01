@@ -1,23 +1,15 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace NewISE.Areas.Dipendenti.Models.DtObj
 {
     public class dtDipTrasferimento : IDisposable
     {
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
 
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
-
             ValidationResult vr = ValidationResult.Success;
 
             var tr = context.ObjectInstance as dipTrasferimentoModel;
@@ -45,9 +37,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                 vr = new ValidationResult("Il CO.AN. è richiesto e deve essere composto da 10 caratteri.");
             }
 
-
             return vr;
-
         }
 
         public static ValidationResult VerificaRequiredDataLettera(string v, ValidationContext context)
@@ -62,7 +52,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                 {
                     if (tr.dataLettera.HasValue)
                     {
-                        vr = ValidationResult.Success;                        
+                        vr = ValidationResult.Success;
                     }
                     else
                     {
@@ -78,44 +68,8 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
             return vr;
         }
 
-        public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
-        {
-
-            ValidationResult vr = ValidationResult.Success;
-
-            var tr = context.ObjectInstance as dipTrasferimentoModel;
-
-            if (tr != null)
-            {
-                if (tr.dataLettera.HasValue || tr.documento == true)
-                {
-                    if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
-                    {
-                        vr = ValidationResult.Success;                        
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
-                    }
-                }                
-                else
-                {
-                    vr = ValidationResult.Success;
-                }
-            }
-            else
-            {
-                vr = ValidationResult.Success;
-            }
-
-
-            return vr;
-
-        }
-
         public static ValidationResult VerificaRequiredDocumentoLettera(string v, ValidationContext context)
         {
-
             ValidationResult vr = ValidationResult.Success;
 
             var tr = context.ObjectInstance as dipTrasferimentoModel;
@@ -126,7 +80,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                 {
                     if (tr.documento == true)
                     {
-                        vr = ValidationResult.Success;                        
+                        vr = ValidationResult.Success;
                     }
                     else
                     {
@@ -143,22 +97,54 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                 vr = ValidationResult.Success;
             }
 
-
             return vr;
-
         }
 
+        public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
 
+            var tr = context.ObjectInstance as dipTrasferimentoModel;
 
+            if (tr != null)
+            {
+                if (tr.dataLettera.HasValue || tr.documento == true)
+                {
+                    if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
+                    }
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = ValidationResult.Success;
+            }
+
+            return vr;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
         public dipInfoTrasferimentoModel GetInfoTrasferimento(string matricola)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             TrasferimentoModel tm = new TrasferimentoModel();
             DateTime dtDatiParametri;
-            
+
             try
             {
-                using (dtTrasferimento dtt=new dtTrasferimento())
+                using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     tm = dtt.GetUltimoTrasferimentoByMatricola(matricola);
 
@@ -175,14 +161,19 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                         {
                             dtDatiParametri = DateTime.Now.Date;
                         }
+
+                        using (dtDipRuoloUfficio dtru = new dtDipRuoloUfficio())
+                        {
+                            RuoloUfficioModel rum = new RuoloUfficioModel();
+                            rum = dtru.GetRuoloDipendente(tm.idTrasferimento, dtDatiParametri).RuoloUfficio;
+
+                            dit.RuoloUfficio = rum;
+                        }
                     }
-
-
                 }
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 
@@ -193,7 +184,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
         {
             TRASFERIMENTO tr;
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 tr = new TRASFERIMENTO()
                 {
@@ -215,11 +206,6 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
 
                 db.SaveChanges();
             }
-
-
-
         }
-
-
     }
 }

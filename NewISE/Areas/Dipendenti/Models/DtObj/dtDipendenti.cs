@@ -200,6 +200,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
                            matricola = e.MATRICOLA,
                            nome = e.NOME,
                            cognome = e.COGNOME,
+                           dataAssunzione = e.DATAASSUNZIONE,
                            dataCessazione = e.DATACESSAZIONE,
                            indirizzo = e.INDIRIZZO,
                            cap = e.CAP,

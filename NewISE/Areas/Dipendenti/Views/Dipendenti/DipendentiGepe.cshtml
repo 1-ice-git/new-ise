@@ -30,9 +30,9 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.livelloDipendenteValido, htmlAttributes: new { @class = "control-label col-xs-3" })
+            @Html.LabelFor(model => model.livelloDipendenteValido.Livello.DescLivello, htmlAttributes: new { @class = "control-label col-xs-3" })
             <div class="col-xs-9">
-                <input id="livello" name="livello" type="text" value="@Model.livelloDipendenteValido" class="form-control" readonly />
+                <input id="livello" name="livello" type="text" value="@Model.livelloDipendenteValido.Livello.DescLivello" class="form-control" readonly />
             </div>
         </div>
         <div class="form-group">
