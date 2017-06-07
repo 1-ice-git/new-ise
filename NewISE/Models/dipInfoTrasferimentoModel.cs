@@ -5,19 +5,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace NewISE.Areas.Dipendenti.Models
+namespace NewISE.Models
 {
     public class dipInfoTrasferimentoModel
     {
         [Display(Name = "Stato Trasferimento")]
         public EnumStatoTraferimento statoTrasferimento { get; set; }
-        
+
         public UfficiModel UfficioDestinazione { get; set; }
 
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime? Decorrenza { get; set; }
-        
+
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
         [Display(Name = "Indennità di Base")]
@@ -42,7 +42,7 @@ namespace NewISE.Areas.Dipendenti.Models
             get
             {
 
-                if (UfficioDestinazione != null && UfficioDestinazione.idUfficio>0)
+                if (UfficioDestinazione != null && UfficioDestinazione.idUfficio > 0)
                 {
                     return UfficioDestinazione.DescUfficio + " (" + UfficioDestinazione.codiceUfficio + ")";
                 }
@@ -54,9 +54,5 @@ namespace NewISE.Areas.Dipendenti.Models
         }
 
         public HttpPostedFileBase documento { get; set; }
-
-
-
-
     }
 }

@@ -1,0 +1,8 @@
+﻿#imgSalva:hover{
+    cursor:pointer;
+}
+
+.ui-datepicker { 
+  
+  z-index: 1000;
+}

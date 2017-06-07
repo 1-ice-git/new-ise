@@ -38,6 +38,19 @@ namespace NewISE.Models.DBModel
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
+        public bool hasValue()
+        {
+            bool ret = false;
+
+            if (idRuoloDipendente > 0)
+            {
+                ret = true;
+            }
+
+            return ret;
+
+        }
+
         
     }
 }

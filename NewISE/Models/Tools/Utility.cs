@@ -12,6 +12,49 @@ namespace NewISE.Models.Tools
 {
     public static class Utility
     {
+
+        public static bool Amministratore()
+        {
+            bool admin = false;
+
+            AccountModel ac = new AccountModel();
+            ac = Utility.UtenteAutorizzato();
+            if (ac != null)
+            {
+                if (ac.idRuoloUtente == 1 || ac.idRuoloUtente == 2)
+                {
+                    admin = true;
+                }
+                else
+                {
+                    admin = false;
+                }
+            }
+
+            return admin;
+        }
+
+        public static bool Amministratore(out AccountModel ac)
+        {
+            bool admin = false;
+
+            //AccountModel ac = new AccountModel();
+            ac = Utility.UtenteAutorizzato();
+            if (ac != null)
+            {
+                if (ac.idRuoloUtente == 1 || ac.idRuoloUtente == 2)
+                {
+                    admin = true;
+                }
+                else
+                {
+                    admin = false;
+                }
+            }
+
+            return admin;
+        }
+
         public static AccountModel UtenteAutorizzato()
         {
             ClaimsPrincipal currentClaimsPrincipal = ClaimsPrincipal.Current;

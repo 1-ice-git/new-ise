@@ -1,4 +1,4 @@
-﻿using NewISE.Areas.Dipendenti.Models.DtObj;
+﻿using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +15,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Desc. Ruolo")]
         [StringLength(30, ErrorMessage = "Per la descrione sono richiesti un massimo di 30 caratteri.")]
         [DataType(DataType.Text)]
-        [CustomValidation(typeof(dtDipRuoloUfficio), "DescrizioneRuoloUfficioUnivoca", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
+        [CustomValidation(typeof(dtRuoloUfficio), "DescrizioneRuoloUfficioUnivoca", ErrorMessage = "La descrizione inserita è già presente, inserirne un altra.")]
         public string DescrizioneRuolo { get; set; }
     }
 }

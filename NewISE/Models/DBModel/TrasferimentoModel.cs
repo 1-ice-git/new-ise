@@ -55,7 +55,6 @@ namespace NewISE.Models.DBModel
         [StringLength(100, ErrorMessage = "per il protocollo lettera sono richiesti un massimo di 100 caratteri.")]
         [Display(Name = "Protocollo Lettera")]
         [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Il protocollo è richiesto.")]
         public string protocolloLettera { get; set; }
 
         [DataType(DataType.Date)]
@@ -74,7 +73,8 @@ namespace NewISE.Models.DBModel
         [Display(AutoGenerateField = false)]
         public bool annullato { get; set; }
 
-
+        [Required(ErrorMessage = "Il ruolo dell'ufficio è richiesto.")]
+        public decimal idRuoloUfficio { get; set; }
 
         
         public StatoTrasferimentoModel StatoTrasferimento { get; set; }
@@ -92,5 +92,12 @@ namespace NewISE.Models.DBModel
         public IList<IndennitaModel> lIndennita { get; set; }
 
         public DocumentiModel Documento { get; set; }
+
+        public RuoloUfficioModel RuoloUfficio { get; set; }
+
+        [Display(Name = "Allega Lettera Trasferimento")]
+        [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredDocumentoLettera")]
+        [DefaultValue(false)]
+        public bool allegaDocumento { get; set; }
     }
 }

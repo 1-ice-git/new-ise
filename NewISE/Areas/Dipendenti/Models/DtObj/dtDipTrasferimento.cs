@@ -7,7 +7,6 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
 {
     public class dtDipTrasferimento : IDisposable
     {
-
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -48,7 +47,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
 
             if (tr != null)
             {
-                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.documento == true)
+                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.documento != null)
                 {
                     if (tr.dataLettera.HasValue)
                     {
@@ -78,7 +77,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
             {
                 if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
                 {
-                    if (tr.documento == true)
+                    if (tr.documento != null)
                     {
                         vr = ValidationResult.Success;
                     }
@@ -108,7 +107,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
 
             if (tr != null)
             {
-                if (tr.dataLettera.HasValue || tr.documento == true)
+                if (tr.dataLettera.HasValue || tr.documento != null)
                 {
                     if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
                     {
@@ -136,6 +135,7 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
         {
             GC.SuppressFinalize(this);
         }
+
         public dipInfoTrasferimentoModel GetInfoTrasferimento(string matricola)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
@@ -180,32 +180,29 @@ namespace NewISE.Areas.Dipendenti.Models.DtObj
             return dit;
         }
 
-        public void SetTrasferimento(TrasferimentoModel trm)
+        public void SetTrasferimento(TrasferimentoModel trm, EntitiesDBISE db)
         {
             TRASFERIMENTO tr;
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            tr = new TRASFERIMENTO()
             {
-                tr = new TRASFERIMENTO()
-                {
-                    IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
-                    IDUFFICIO = trm.idUfficio,
-                    IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento,
-                    IDDIPENDENTE = trm.idDipendente,
-                    IDTIPOCOAN = trm.idTipoCoan,
-                    DATAPARTENZA = trm.dataPartenza,
-                    DATARIENTRO = trm.dataRientro,
-                    COAN = trm.coan,
-                    PROTOCOLLOLETTERA = trm.protocolloLettera,
-                    DATALETTERA = trm.dataLettera,
-                    DATAAGGIORNAMENTO = trm.dataAggiornamento,
-                    ANNULLATO = trm.annullato
-                };
+                IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
+                IDUFFICIO = trm.idUfficio,
+                IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento,
+                IDDIPENDENTE = trm.idDipendente,
+                IDTIPOCOAN = trm.idTipoCoan,
+                DATAPARTENZA = trm.dataPartenza,
+                DATARIENTRO = trm.dataRientro,
+                COAN = trm.coan,
+                PROTOCOLLOLETTERA = trm.protocolloLettera,
+                DATALETTERA = trm.dataLettera,
+                DATAAGGIORNAMENTO = trm.dataAggiornamento,
+                ANNULLATO = trm.annullato
+            };
 
-                db.TRASFERIMENTO.Add(tr);
+            db.TRASFERIMENTO.Add(tr);
 
-                db.SaveChanges();
-            }
+            db.SaveChanges();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using NewISE.Areas.Dipendenti.Models.DtObj;
+﻿using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

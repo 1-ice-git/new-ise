@@ -24,7 +24,7 @@
         uploadLabel: 'Carica',
         uploadTitle: 'Carica i file selezionati',
         msgNo: 'No',
-        msgNoFilesSelected: '',
+        msgNoFilesSelected: 'Nessun file selezionato',
         msgCancelled: 'Annullato',
         msgZoomModalHeading: 'Anteprima dettagliata',
         msgSizeTooSmall: 'File "{name}" (<b>{size} KB</b>) is too small and must be larger than <b>{minSize} KB</b>.',

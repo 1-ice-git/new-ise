@@ -27,6 +27,11 @@ namespace NewISE
                 name: "Logout",
                 url: "Account/Logout"
             );
+
+            routes.MapRoute(
+                name: "Dipendenti",
+                url: "Dipendenti/Index"
+            );
         }
     }
 }

@@ -2,15 +2,13 @@
 
 @using NewISE.Models.DBModel
 
-<link href="~/Areas/Dipendenti/Content/Trasferimento.css" rel="stylesheet" />
-
+<link href="~/Content/Trasferimento.css" rel="stylesheet" />
 
 @{
     bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
     string vMatricola = ViewBag.Matricola;
     DipendentiModel dipendente = (DipendentiModel)ViewBag.Dipendente;
-
-    
+    bool vModifica = (bool)ViewBag.Modifica;
 
 }
 
@@ -26,8 +24,9 @@
 
             @Html.Hidden("matricola", vMatricola)
             @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
+            @Html.Hidden("modifica", vModifica)
 
-            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
                 @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
@@ -71,7 +70,7 @@
                 @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AbilitaDisabilitaCoan(this.value);" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
                 </div>
@@ -95,26 +94,21 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9 form-inline">
-                    @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                <div class="col-xs-3 form-inline">
+                    @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control ui-datepicker", @style = "width:200px;" } })
                     @Html.ValidationMessageFor(model => model.dataLettera, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.documento, htmlAttributes: new { @class = "control-label col-xs-3" })
-                    <div class="col-xs-9 form-inline">
-                        @Html.EditorFor(model => model.documento, new { htmlAttributes = new { @class = "form-control checkbox",  @style = "width:35px;" } })
-                        @Html.ValidationMessageFor(model => model.documento, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-
             <div class="form-group">
-                @Html.LabelFor(model => model.fileDoc, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-6">
-                    <input id="fileDoc" name="fileDoc" type="file" class="file file-loading" data-allowed-file-extensions='["pdf"]' data-show-upload="false" data-show-preview="false">
+                @Html.LabelFor(model => model.allegaDocumento, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9 form-inline">
+                    @Html.EditorFor(model => model.allegaDocumento, new { htmlAttributes = new { @class = "form-control checkbox", @style = "width:35px;" } })
+                    @Html.ValidationMessageFor(model => model.allegaDocumento, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            
 
             <div class="form-group ">
                 <div class="col-xs-offset-9 col-xs-3 pull-right">
@@ -166,17 +160,27 @@
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <script type="text/javascript">
-    //$('#chkAllegaDoc').checkboxpicker();
+    //$('#allegaDocumento').checkboxpicker();
+
+    function AbilitaDisabilitaCoan(value) {
+        //debugger;
+        if (value == "1") {
+            $("#coan").attr("disabled", "disabled");
+        }
+        else {
+            $("#coan").removeAttr("disabled");
+        }
+    }
+
+
 
     function Salva() {
         $("#formTrasf").submit();
     }
-
 
     $("#fileDoc").fileinput({
         language: "it",
@@ -215,12 +219,35 @@
     });
 
     $('#dataPartenza').datepicker({
-        inline: true,
-
+        showButtonPanel: true,
+        showAnim: "slide",
+        //beforeShow: function (textbox, instance) {
+        //    //debugger;
+        //    var txtBoxOffset = $(this).offset();
+        //    var top = txtBoxOffset.top;
+        //    var left = txtBoxOffset.left;
+        //    var altezza = textbox.offsetHeight;
+        //    instance.dpDiv.css({
+        //        marginTop: (-(altezza+277)) + 'px',
+        //        //marginLeft: textbox.offsetWidth + 'px'
+        //    });
+        //}
     });
 
     $('#dataLettera').datepicker({
-        inline: true,
+        showButtonPanel: true,
+        showAnim: "slide",
+        //beforeShow: function (textbox, instance) {
+        //    //debugger;
+        //    var txtBoxOffset = $(this).offset();
+        //    var top = txtBoxOffset.top;
+        //    var left = txtBoxOffset.left;
+        //    var altezza = textbox.offsetHeight;
+        //    instance.dpDiv.css({
+        //        marginTop: (-(altezza+234)) + 'px',
+        //        //marginLeft: textbox.offsetWidth + 'px'
+        //    });
+        //}
     });
 
     //$("#imgAllegaDocumento").click(function () {
@@ -228,7 +255,6 @@
     //    $("#documento").click();
     //});
 
-    
     //debugger;
     var rit = '@ricaricaInfoTrasf.ToString()';
     var boolrit = rit == 'true'
@@ -262,7 +288,7 @@
     //});
 
     function ErroreElaborazioneAjax(response) {
-        debugger;
+        //debugger;
         $("#msgModalError").text("Errore nell'elaborazione.");
         $('#myModalError').modal('toggle');
     }
@@ -295,4 +321,3 @@
     //    }
     //}, true);
 </script>
-

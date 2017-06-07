@@ -1,9 +1,8 @@
-﻿<link href="~/Areas/Dipendenti/Content/Dipendenti.css" rel="stylesheet" />
+﻿<link href="~/Content/Dipendenti.css" rel="stylesheet" />
 
 <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
 <script src="~/Scripts/fileinput.min.js"></script>
 <script src="~/Scripts/locales/it.js"></script>
-
 @{
     ViewBag.Title = "Dipendenti";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -73,7 +72,7 @@
             //debugger;
 
             var matricola = $("#hMatricola").val();
-            rotta = "/Dipendenti/Trasferimento/NuovoTrasferimento";
+            rotta = "/Trasferimento/NuovoTrasferimento";
 
             $.ajax({
                 type: "POST",
@@ -110,3 +109,4 @@
         }
     </script>
 }
+

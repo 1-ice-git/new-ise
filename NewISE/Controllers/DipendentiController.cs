@@ -1,23 +1,19 @@
-﻿using NewISE.Areas.Dipendenti.Models;
-using NewISE.Areas.Dipendenti.Models.DtObj;
-using NewISE.Models;
+﻿using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
-namespace NewISE.Areas.Dipendenti.Controllers
+namespace NewISE.Controllers
 {
     public class DipendentiController : Controller
     {
-
-        
-
-
-
-        // GET: Dipendenti/Dipendenti
+        // GET: Dipendenti
         public ActionResult Index()
         {
             bool admin = false;
@@ -38,6 +34,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
             return View();
         }
 
+
         public ActionResult DipendentiGepe(string matricola = "")
         {
             var rMatricola = new List<SelectListItem>();
@@ -48,7 +45,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
             AccountModel ac = new AccountModel();
             try
             {
-                
+
                 admin = Utility.Amministratore(out ac);
 
                 using (dtDipendenti dtd = new dtDipendenti())
@@ -92,17 +89,17 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
                 dm = ldm.First();
 
-                using (dtDipCDCGepe dtcdcg=new dtDipCDCGepe())
+                using (dtCDCGepe dtcdcg = new dtCDCGepe())
                 {
                     dm.cdcGepe = dtcdcg.GetCDCGepe(dm.idDipendente);
                 }
 
 
-                using (dtDipLivelli dtpl=new dtDipLivelli())
+                using (dtLivelli dtpl = new dtLivelli())
                 {
                     dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
                 }
-                
+
 
                 ViewBag.ListDipendentiGepeMatricola = rMatricola;
                 ViewBag.ListDipendentiGepeNominativo = rNominativo;
@@ -123,7 +120,7 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
             try
             {
-                using (dtDipTrasferimento dtdt = new dtDipTrasferimento())
+                using (dtTrasferimento dtdt = new dtTrasferimento())
                 {
                     dit = dtdt.GetInfoTrasferimento(matricola);
 
@@ -142,5 +139,9 @@ namespace NewISE.Areas.Dipendenti.Controllers
 
             return PartialView(dit);
         }
+
     }
+
+
+
 }

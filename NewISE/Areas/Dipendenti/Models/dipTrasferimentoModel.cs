@@ -73,9 +73,8 @@ namespace NewISE.Areas.Dipendenti.Models
         //public HttpPostedFileBase documento { get; set; }
 
         [Display(Name = "Allega Lettera Trasferimento")]
-        [DefaultValue(false)]
         [CustomValidation(typeof(dtDipTrasferimento), "VerificaRequiredDocumentoLettera")]
-        public bool documento { get; set; }
+        public HttpPostedFileBase documento { get; set; }
 
     }
 }

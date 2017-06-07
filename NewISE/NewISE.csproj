@@ -168,7 +168,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Dipendenti\Content\Dipendenti.css" />
     <Content Include="Areas\Parametri\Contenuti\CSS\Parametri.css" />
     <Content Include="bower_components\jquery-modal\.gitignore" />
     <Content Include="bower_components\jquery-modal\examples\ajax.html" />
@@ -827,6 +826,7 @@
     <Content Include="Content\DataTables-1.10.13\media\js\jquery.dataTables.js" />
     <Content Include="Content\DataTables-1.10.13\media\js\jquery.dataTables.min.js" />
     <Content Include="Content\DataTables-1.10.13\media\js\jquery.js" />
+    <Content Include="Content\Dipendenti.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\jquery-ui-1.12.1.custom\AUTHORS.txt" />
@@ -918,6 +918,7 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.mousewheel.min.js" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.css" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\third-party\wijmo\jquery.wijmo-open.1.5.0.min.js" />
+    <Content Include="Content\Trasferimento.css" />
     <Content Include="EntitiesDBISEPRO.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EntitiesDBISEPRO.edmx</DependentUpon>
@@ -944,7 +945,10 @@
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\LogOut.png" />
     <Content Include="Immagini\logo_ITA_rgb %281%29.jpg" />
+    <Content Include="Immagini\Mail-icon.png" />
     <Content Include="Immagini\paperclip-icon_34384.png" />
+    <Content Include="Immagini\print-icon.png" />
+    <Content Include="Immagini\Save-icon.png" />
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1378,9 +1382,6 @@
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\PercMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\NuovaMaggiorazioneAnnuale.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggAnnuali\MaggiorazioniAnnuali.cshtml" />
-    <Content Include="Areas\Dipendenti\Views\Dipendenti\DipendentiGepe.cshtml" />
-    <Content Include="Areas\Dipendenti\Views\Dipendenti\Index.cshtml" />
-    <Content Include="Areas\Dipendenti\Views\web.config" />
     <Content Include="Areas\Parametri\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggConiuge\NuovaPercMaggiorazioneConiuge.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamMaggFigli\NuovaMaggiorazioneFiglio.cshtml" />
@@ -1392,8 +1393,6 @@
     <Content Include="Areas\Parametri\Views\ParamIndRichiamo\NuovaIndennitaRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
-    <Content Include="Areas\Dipendenti\Views\Dipendenti\InfoTrasferimento.cshtml" />
-    <Content Include="Areas\Dipendenti\Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\composer.json" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\LICENSE" />
@@ -1531,14 +1530,6 @@
     <Compile Include="ANTICIPI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Dipendenti\Controllers\DipendentiController.cs" />
-    <Compile Include="Areas\Dipendenti\Controllers\TrasferimentoController.cs" />
-    <Compile Include="Areas\Dipendenti\DipendentiAreaRegistration.cs" />
-    <Compile Include="Areas\Dipendenti\Models\dipInfoTrasferimentoModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\dipTrasferimentoModel.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipCDCGepe.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipLivelli.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipoAliquoteContributive.cs" />
@@ -1578,9 +1569,6 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtTipoTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipendenti.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipRuoloUfficio.cs" />
-    <Compile Include="Areas\Dipendenti\Models\DtObj\dtDipStatoTrasferimento.cs" />
     <Compile Include="ATTIVITACRUD.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1608,7 +1596,9 @@
     <Compile Include="CONTABILITA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
+    <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="DEFFASCIACHILOMETRICA.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1680,8 +1670,11 @@
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
     <Compile Include="Models\DBModel\DocumentiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtDipendenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRuoloDipendente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloUfficio.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtStatoTrasferimento.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipologiaCoan.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipoTrasferimento.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
@@ -1738,9 +1731,12 @@
     <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
+    <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtCDCGepe.cs" />
     <Compile Include="Models\dtObj\dtDipendentiRest.cs" />
     <Compile Include="Models\dtObj\dtAccount.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtLivelli.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
     <Compile Include="Models\dtObj\objB\CalcoloIndennita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
@@ -1909,6 +1905,10 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\InviamiPassword.cshtml" />
     <Content Include="Views\Shared\ErrorPartial.cshtml" />
+    <Content Include="Views\Dipendenti\Index.cshtml" />
+    <Content Include="Views\Dipendenti\DipendentiGepe.cshtml" />
+    <Content Include="Views\Dipendenti\InfoTrasferimento.cshtml" />
+    <Content Include="Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1919,10 +1919,8 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Dipendenti\Views\Shared\" />
     <Folder Include="Views\Documenti\" />
     <Folder Include="Views\Log\" />
-    <Folder Include="Views\Trasferimento\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

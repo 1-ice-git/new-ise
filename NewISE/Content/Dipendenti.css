@@ -1,0 +1,113 @@
+﻿
+.form-group {
+  margin-bottom: 5px;
+}
+#ContenitoreDipendentiGepe{
+    height: 267px;
+    border: 2px solid #237069;
+    padding-top: 10px;
+    padding-right:10px;
+}
+
+#tabIntestazione{
+    border:1px solid #237069;
+    padding-top: 2px;
+}
+#tabContenuti{
+    border-left:1px solid #237069;
+    border-right:1px solid #237069;
+    border-bottom:1px solid #237069;
+    border-top: none;
+    border-top-color: transparent !important;
+}
+.nav-tabs {
+  border-bottom: 1px solid #ddd;
+  font-size: 13px;
+
+}
+.nav-tabs > li {
+  float: left;
+  margin-bottom: -1px;
+  
+}
+.nav-tabs > li > a {
+  margin-right: 2px;
+  line-height: 1.12857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  color: #237069;
+  
+}
+.nav-tabs > li > a:hover {
+  border-color: #eee #eee #ddd;
+  background-color: #E9F0EB;
+  color:#A5A167;
+}
+
+.nav-tabs > li > a:focus {
+  background-color: #E9F0EB;
+  color:#927349;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color:#918434;
+  cursor: default;
+  background-color: #E9F0EB;
+  /*border: 1px solid #237069;*/
+  /*border-right: 1px solid #237069;*/
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+.nav-tabs.nav-justified {
+  width: 100%;
+  border-bottom: 0;
+}
+.nav-tabs.nav-justified > li {
+  float: none;
+}
+.nav-tabs.nav-justified > li > a {
+  margin-bottom: 5px;
+  text-align: center;
+}
+.nav-tabs.nav-justified > .dropdown .dropdown-menu {
+  top: auto;
+  left: auto;
+}
+
+.tab-content > .tab-pane {
+  display: none;
+}
+.tab-content > .active {
+  display: block;
+}
+
+#divControlliNuovoTrasf{
+    padding-top:5px;
+    padding-right:5px;
+}
+
+/*#region Dipendenti */
+#ContenitoreDipendentiGepe{
+    font-size: 13px;
+}
+
+
+/*#endregion */
+
+/*#region Dati Trasferimento */
+#ContenitoreDatiTrasf{
+    font-size: 13px;
+}
+
+
+/*#endregion */
+
+/*#region Nuovo trasferimento */
+
+#divControlliNuovoTrasf{
+    font-size:13px;
+}
+
+/*#endregion */
