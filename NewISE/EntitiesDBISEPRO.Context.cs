@@ -74,7 +74,6 @@ namespace NewISE
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
-        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
@@ -104,6 +103,7 @@ namespace NewISE
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
     
         public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI, ObjectParameter iNDPERSONALE, ObjectParameter iNDANTSISTLORDA, ObjectParameter iNDSISTLORDA)
         {

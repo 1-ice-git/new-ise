@@ -75,5 +75,26 @@ namespace NewISE.Models.DBModel.dtObj
 
             return im;
         }
+
+
+        public void SetIndennita(IndennitaModel im, EntitiesDBISE db)
+        {
+            INDENNITA i;
+
+            i = new INDENNITA()
+            {
+                IDTRASFERIMENTO = im.idTrasferimento,
+                //IDLIVDIPENDENTE = im.id
+            };
+
+
+
+
+
+
+        }
+
+
+
     }
 }

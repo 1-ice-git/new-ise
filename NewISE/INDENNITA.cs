@@ -46,8 +46,8 @@ namespace NewISE
         public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
         public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         public virtual PERCENTUALEDISAGIO PERCENTUALEDISAGIO { get; set; }
-        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TFR TFR { get; set; }
+        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
     }
 }

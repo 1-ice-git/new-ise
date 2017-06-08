@@ -23,7 +23,6 @@ namespace NewISE
     
         public decimal IDRUOLODIPENDENTE { get; set; }
         public decimal IDRUOLO { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
@@ -34,6 +33,5 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

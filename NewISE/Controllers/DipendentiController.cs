@@ -114,31 +114,7 @@ namespace NewISE.Controllers
             return PartialView(dm);
         }
 
-        public ActionResult InfoTrasferimento(string matricola)
-        {
-            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-
-            try
-            {
-                using (dtTrasferimento dtdt = new dtTrasferimento())
-                {
-                    dit = dtdt.GetInfoTrasferimento(matricola);
-
-                    if (dit.CDCDestinazione == string.Empty)
-                    {
-                        dit.statoTrasferimento = EnumStatoTraferimento.Non_Trasferito;
-                        dit.UfficioDestinazione = new UfficiModel();
-                        dit.RuoloUfficio = new RuoloUfficioModel();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial");
-            }
-
-            return PartialView(dit);
-        }
+        
 
     }
 

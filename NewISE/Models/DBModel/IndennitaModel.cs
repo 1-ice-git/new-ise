@@ -13,6 +13,8 @@ namespace NewISE.Models.DBModel
         public decimal idIndennita { get; set; }
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
         public decimal idTrasferimento { get; set; }
+        [Required(ErrorMessage = "Il livello del dipendente è richiesto.")]
+        public decimal idLivDipendente { get; set; }
         [Required(ErrorMessage = "L'indennità di base è richiesta.")]
         public decimal idIndennitaBase { get; set; }
         [Required(ErrorMessage = "Il TFR è richiesto.")]
@@ -21,6 +23,10 @@ namespace NewISE.Models.DBModel
         public decimal idPercentualeDisagio { get; set; }
         [Required(ErrorMessage = "Il coefficente di sede è richiesto.")]
         public decimal idCoefficenteSede { get; set; }
+
+
+
+
         [Required(ErrorMessage = "La data di inizio è richiesta.")]
         [Display(Name = "Data inizio")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

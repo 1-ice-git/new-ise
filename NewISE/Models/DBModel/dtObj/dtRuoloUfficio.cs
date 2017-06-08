@@ -74,7 +74,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                var rd = db.RUOLODIPENDENTE.Where(a => a.IDTRASFERIMENTO == idTrasferimento && a.ANNULLATO == false && dtdecorrenza >= a.DATAINZIOVALIDITA && dtdecorrenza <= a.DATAFINEVALIDITA).OrderBy(a=>a.DATAINZIOVALIDITA).Last();
+                var rd = db.RUOLODIPENDENTE.Where(a => a.IDTRASFERIMENTO == idTrasferimento && a.ANNULLATO == false && dtdecorrenza >= a.DATAINZIOVALIDITA && dtdecorrenza <= a.DATAFINEVALIDITA).OrderBy(a=>a.DATAINZIOVALIDITA).ToList().Last();
 
                 rdm = new RuoloDipendenteModel()
                 {
@@ -97,6 +97,35 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
         }
 
-        
+        public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, decimal idTrasferimento, DateTime dtdecorrenza)
+        {
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
+
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                var rd = db.RUOLODIPENDENTE.Where(a => a.IDRUOLO == idRuolo && a.IDTRASFERIMENTO == idTrasferimento && a.ANNULLATO == false && dtdecorrenza >= a.DATAINZIOVALIDITA && dtdecorrenza <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINZIOVALIDITA).ToList().Last();
+
+                rdm = new RuoloDipendenteModel()
+                {
+                    idRuoloDipendente = rd.IDRUOLODIPENDENTE,
+                    idRuolo = rd.IDRUOLO,
+                    idTrasferimento = rd.IDTRASFERIMENTO,
+                    dataInizioValidita = rd.DATAINZIOVALIDITA,
+                    dataFineValidita = rd.DATAFINEVALIDITA,
+                    dataAggiornamento = rd.DATAAGGIORNAMENTO,
+                    annullato = rd.ANNULLATO,
+                    RuoloUfficio = new RuoloUfficioModel()
+                    {
+                        idRuoloUfficio = rd.RUOLOUFFICIO.IDRUOLO,
+                        DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
+                    }
+                };
+
+            }
+
+            return rdm;
+        }
+
+
     }
 }

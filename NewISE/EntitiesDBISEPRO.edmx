@@ -57,16 +57,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata definita alcuna chiave primaria e non è possibile dedurre una chiave primaria valida. La tabella/visualizzazione è stata esclusa. Per utilizzare l'entità, è necessario esaminare lo schema, aggiungere le chiavi corrette e rimuovere i commenti.
-        <EntityType Name="APPO_MAB">
-          <Property Name="MATR" Type="number" Precision="38" Scale="0" />
-          <Property Name="DATA_INIZIO" Type="date" />
-          <Property Name="CANONE" Type="number" Precision="15" Scale="5" />
-          <Property Name="VALUTA" Type="varchar2" MaxLength="24" />
-          <Property Name="CONDIVISA" Type="number" Precision="38" Scale="0" />
-          <Property Name="PAGATO" Type="number" Precision="38" Scale="0" />
-        </EntityType>-->
         <EntityType Name="ATTIVITACRUD">
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
@@ -583,9 +573,8 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
           </Key>
-          <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
@@ -1856,20 +1845,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_RD">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RUOLODIPENDENTE" Type="Self.RUOLODIPENDENTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_S">
           <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1" />
           <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
@@ -2429,23 +2404,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Parameter Name="INDANTSISTLORDA" Type="number" Mode="Out" />
           <Parameter Name="INDSISTLORDA" Type="number" Mode="Out" />
         </Function>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         <Function Name="IND_ANT_SIST_LORDA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO" ReturnType="number">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
@@ -2466,8 +2424,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
         </Function>
-        
-        
         <Function Name="NETTIZZA_INDENNITA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
@@ -2476,7 +2432,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Parameter Name="ALIQUOTA_FISC" Type="number" Mode="Out" />
           <Parameter Name="IMPORTO_NETTO" Type="number" Mode="Out" />
         </Function>
-        
         <Function Name="PROC_IND_BASE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
@@ -2487,7 +2442,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Parameter Name="INDENNITA_BASE_TEORICA" Type="number" Mode="Out" />
           <Parameter Name="INDENNITA_BASE" Type="number" Mode="Out" />
         </Function>
-        
         <Function Name="PROC_IND_SERVIZIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="VDATA" Type="date" Mode="In" />
           <Parameter Name="VDIP" Type="number" Mode="In" />
@@ -2500,18 +2454,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Parameter Name="PERCENTUALE_RIDUZIONE" Type="number" Mode="Out" />
           <Parameter Name="INDENNITA_SERVIZIO" Type="number" Mode="Out" />
         </Function>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
@@ -2878,10 +2820,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="NOTIFICARICHIESTAMAGFAM" EntitySet="NOTIFICARICHIESTAMAGFAM" />
           </AssociationSet>
-          <AssociationSet Name="R_T_RD" Association="Self.R_T_RD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
           <AssociationSet Name="R_T_S" Association="Self.R_T_S">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="STIPENDI" EntitySet="STIPENDI" />
@@ -3132,7 +3070,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <EntitySet Name="RICHIAMO" EntityType="DBISE.RICHIAMO" />
           <EntitySet Name="RIDUZIONI" EntityType="DBISE.RIDUZIONI" />
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISE.RUOLOACCESSO" />
-          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISE.RUOLODIPENDENTE" />
           <EntitySet Name="RUOLOUFFICIO" EntityType="DBISE.RUOLOUFFICIO" />
           <EntitySet Name="SOSPENSIONE" EntityType="DBISE.SOSPENSIONE" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="DBISE.STATOTRASFERIMENTO" />
@@ -3318,10 +3255,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
-          <AssociationSet Name="R_RD_I" Association="DBISE.R_RD_I">
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-          </AssociationSet>
           <AssociationSet Name="R_T_I" Association="DBISE.R_T_I">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -3392,10 +3325,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           </AssociationSet>
           <AssociationSet Name="R_PMAB_MAB" Association="DBISE.R_PMAB_MAB">
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="R_RD_MAB" Association="DBISE.R_RD_MAB">
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_T_MB" Association="DBISE.R_T_MB">
@@ -3481,14 +3410,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <AssociationSet Name="R_RU_UA" Association="DBISE.R_RU_UA">
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
-          </AssociationSet>
-          <AssociationSet Name="R_RU_RD" Association="DBISE.R_RU_RD">
-            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_RD" Association="DBISE.R_T_RD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_SOSP" Association="DBISE.R_TRASF_SOSP">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3589,6 +3510,19 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <AssociationSet Name="TRASF_DOC" Association="DBISE.TRASF_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISE.RUOLODIPENDENTE" />
+          <AssociationSet Name="R_RD_I" Association="DBISE.R_RD_I">
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_RD_MAB" Association="DBISE.R_RD_MAB">
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="R_RU_RD" Association="DBISE.R_RU_RD">
+            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -3873,9 +3807,9 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISE.R_MC_I" FromRole="INDENNITA" ToRole="MAGGIORAZIONECONIUGE" />
           <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISE.R_MF_I" FromRole="INDENNITA" ToRole="MAGGIORAZIONEFIGLI" />
           <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_PERCDISAGIO_INDENNITA" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RD_I" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TFR" Relationship="DBISE.R_TFR_INDENNITA" FromRole="INDENNITA" ToRole="TFR" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RD_I" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
         </EntityType>
         <EntityType Name="INDENNITABASE">
           <Key>
@@ -4016,9 +3950,9 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <NavigationProperty Name="MAB_DOC" Relationship="DBISE.R_MAB_MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_DOC" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.R_MAGANNUALI_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.R_PMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RD_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TFR" Relationship="DBISE.R_TFR_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RD_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONECONIUGE">
           <Key>
@@ -4260,22 +4194,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <Property Name="DESCRUOLO" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISE.R_RU_UA" FromRole="RUOLOACCESSO" ToRole="UTENTIAUTORIZZATI" />
         </EntityType>
-        <EntityType Name="RUOLODIPENDENTE">
-          <Key>
-            <PropertyRef Name="IDRUOLODIPENDENTE" />
-          </Key>
-          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_RD_I" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_RD_MAB" FromRole="RUOLODIPENDENTE" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISE.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_RD" FromRole="RUOLODIPENDENTE" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="RUOLOUFFICIO">
           <Key>
             <PropertyRef Name="IDRUOLO" />
@@ -4491,7 +4409,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <NavigationProperty Name="NOTIFICARICHIESTAMAGFAM" Relationship="DBISE.R_T_NRMF" FromRole="TRASFERIMENTO" ToRole="NOTIFICARICHIESTAMAGFAM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISE.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISE.R_TRASF_RICHIAMO" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="DBISE.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISE.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISE.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
@@ -5166,20 +5083,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_RD_I">
-          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDRUOLODIPENDENTE" />
-            </Principal>
-            <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDRUOLODIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_I">
           <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5429,20 +5332,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             </Principal>
             <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDPERCMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RD_MAB">
-          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDRUOLODIPENDENTE" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDRUOLODIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5737,34 +5626,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             </Principal>
             <Dependent Role="UTENTIAUTORIZZATI">
               <PropertyRef Name="IDRUOLOUTENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RU_RD">
-          <End Type="DBISE.RUOLOUFFICIO" Role="RUOLOUFFICIO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RUOLOUFFICIO">
-              <PropertyRef Name="IDRUOLO" />
-            </Principal>
-            <Dependent Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDRUOLO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_RD">
-          <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6075,6 +5936,62 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
         <Association Name="TRASF_DOC">
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <EntityType Name="RUOLODIPENDENTE">
+          <Key>
+            <PropertyRef Name="IDRUOLODIPENDENTE" />
+          </Key>
+          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_RD_I" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISE.R_RD_MAB" FromRole="RUOLODIPENDENTE" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISE.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
+        </EntityType>
+        <Association Name="R_RD_I">
+          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLODIPENDENTE">
+              <PropertyRef Name="IDRUOLODIPENDENTE" />
+            </Principal>
+            <Dependent Role="INDENNITA">
+              <PropertyRef Name="IDRUOLODIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RD_MAB">
+          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLODIPENDENTE">
+              <PropertyRef Name="IDRUOLODIPENDENTE" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDRUOLODIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_RU_RD">
+          <End Type="DBISE.RUOLOUFFICIO" Role="RUOLOUFFICIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLOUFFICIO">
+              <PropertyRef Name="IDRUOLO" />
+            </Principal>
+            <Dependent Role="RUOLODIPENDENTE">
+              <PropertyRef Name="IDRUOLO" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -6671,19 +6588,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RUOLODIPENDENTE">
-            <EntityTypeMapping TypeName="DBISE.RUOLODIPENDENTE">
-              <MappingFragment StoreEntitySet="RUOLODIPENDENTE">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINZIOVALIDITA" ColumnName="DATAINZIOVALIDITA" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
-                <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RUOLOUFFICIO">
             <EntityTypeMapping TypeName="DBISE.RUOLOUFFICIO">
               <MappingFragment StoreEntitySet="RUOLOUFFICIO">
@@ -7004,6 +6908,18 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="RUOLODIPENDENTE">
+            <EntityTypeMapping TypeName="DBISE.RUOLODIPENDENTE">
+              <MappingFragment StoreEntitySet="RUOLODIPENDENTE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINZIOVALIDITA" ColumnName="DATAINZIOVALIDITA" />
+                <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
+                <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

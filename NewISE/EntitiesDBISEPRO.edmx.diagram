@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3fb934f8e15249519a25c1f509a0c3e8" Name="Diagram1" ZoomLevel="67">
-        <EntityTypeShape EntityType="DBISE.ACCESSI" Width="1.5" PointX="8.25" PointY="10.125" />
+        <EntityTypeShape EntityType="DBISE.ACCESSI" Width="1.5" PointX="8.25" PointY="9.125" />
         <EntityTypeShape EntityType="DBISE.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="DBISE.ALTRIDATIFAM" Width="1.5" PointX="16.75" PointY="33.375" />
         <EntityTypeShape EntityType="DBISE.ANTICIPI" Width="1.5" PointX="10.5" PointY="44.75" />
@@ -52,7 +52,6 @@
         <EntityTypeShape EntityType="DBISE.RICHIAMO" Width="1.5" PointX="11.25" PointY="31.625" />
         <EntityTypeShape EntityType="DBISE.RIDUZIONI" Width="1.5" PointX="7.5" PointY="58.875" />
         <EntityTypeShape EntityType="DBISE.RUOLOACCESSO" Width="1.5" PointX="3.75" PointY="13.375" />
-        <EntityTypeShape EntityType="DBISE.RUOLODIPENDENTE" Width="1.5" PointX="11.25" PointY="40.375" />
         <EntityTypeShape EntityType="DBISE.RUOLOUFFICIO" Width="1.5" PointX="9" PointY="56.125" />
         <EntityTypeShape EntityType="DBISE.SOSPENSIONE" Width="1.5" PointX="19.75" PointY="39.125" />
         <EntityTypeShape EntityType="DBISE.STATOTRASFERIMENTO" Width="1.5" PointX="3.75" PointY="26.5" />
@@ -121,7 +120,6 @@
         <AssociationConnector Association="DBISE.R_MC_I" />
         <AssociationConnector Association="DBISE.R_MF_I" />
         <AssociationConnector Association="DBISE.R_PERCDISAGIO_INDENNITA" />
-        <AssociationConnector Association="DBISE.R_RD_I" />
         <AssociationConnector Association="DBISE.R_T_I" />
         <AssociationConnector Association="DBISE.R_TFR_INDENNITA" />
         <AssociationConnector Association="DBISE.R_L_I" />
@@ -140,7 +138,6 @@
         <AssociationConnector Association="DBISE.R_MF_MFD" />
         <AssociationConnector Association="DBISE.R_MAGANNUALI_MAB" />
         <AssociationConnector Association="DBISE.R_PMAB_MAB" />
-        <AssociationConnector Association="DBISE.R_RD_MAB" />
         <AssociationConnector Association="DBISE.R_T_MB" />
         <AssociationConnector Association="DBISE.R_TFR_MAB" />
         <AssociationConnector Association="DBISE.R_PC_MC" />
@@ -162,8 +159,6 @@
         <AssociationConnector Association="DBISE.R_IR_TER" />
         <AssociationConnector Association="DBISE.R_TRASF_RICHIAMO" />
         <AssociationConnector Association="DBISE.R_RU_UA" />
-        <AssociationConnector Association="DBISE.R_RU_RD" />
-        <AssociationConnector Association="DBISE.R_T_RD" />
         <AssociationConnector Association="DBISE.R_TRASF_SOSP" />
         <AssociationConnector Association="DBISE.R_TS_S" />
         <AssociationConnector Association="DBISE.R_ST_T" />
@@ -189,6 +184,10 @@
         <AssociationConnector Association="DBISE.FASCIACHILOMETRICA" />
         <AssociationConnector Association="DBISE.PASSAPORTI_DOCUMENTI" />
         <AssociationConnector Association="DBISE.TRASF_DOC" />
+        <EntityTypeShape EntityType="DBISE.RUOLODIPENDENTE" Width="1.5" PointX="11.25" PointY="63.5" />
+        <AssociationConnector Association="DBISE.R_RD_I" />
+        <AssociationConnector Association="DBISE.R_RD_MAB" />
+        <AssociationConnector Association="DBISE.R_RU_RD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

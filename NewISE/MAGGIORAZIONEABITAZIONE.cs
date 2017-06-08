@@ -41,8 +41,8 @@ namespace NewISE
         public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
         public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
         public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
-        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TFR TFR { get; set; }
+        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
     }
 }

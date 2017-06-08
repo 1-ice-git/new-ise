@@ -1,4 +1,5 @@
-﻿using NewISE.Models.DBModel;
+﻿using NewISE.Models;
+using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,37 @@ namespace NewISE.Controllers
 
         #endregion Metodi privati
 
+
+
+        public ActionResult InfoTrasferimento(string matricola)
+        {
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
+
+            try
+            {
+                using (dtTrasferimento dtdt = new dtTrasferimento())
+                {
+                    dit = dtdt.GetInfoTrasferimento(matricola);
+
+                    if (dit.CDCDestinazione == string.Empty)
+                    {
+                        dit.statoTrasferimento = EnumStatoTraferimento.Non_Trasferito;
+                        dit.UfficioDestinazione = new UfficiModel();
+                        dit.RuoloUfficio = new RuoloUfficioModel();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+
+            return PartialView(dit);
+        }
+
+
+
+
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult NuovoTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
@@ -128,13 +160,13 @@ namespace NewISE.Controllers
                 {
                     trm = dttr.GetUltimoTrasferimentoByMatricola(matricola);
 
-                    ///TODO Valorizzare il ruolo del dipendente vedi codice sotto commentato.
+                    
                     //using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                     //{
                     //    RuoloUfficioModel rum = new RuoloUfficioModel();
-                    //    rum = dtru.GetRuoloDipendente(trm.idTrasferimento, dtDatiParametri).RuoloUfficio;
+                    //    rum = dtru.GetRuoloDipendente(trm.idTrasferimento, trm.dataPartenza).RuoloUfficio;
 
-                    //    dit.RuoloUfficio = rum;
+                    //    trm.idRuoloUfficio = rum.idRuoloUfficio;
                     //}
 
 

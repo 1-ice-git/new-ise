@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -17,7 +17,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
 
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
@@ -143,25 +142,23 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-
-
-
-
         public IList<TrasferimentoModel> GetTrasferimentiPrecedenti(decimal idDipendente, DateTime dataPartenza)
         {
             List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 var lt = db.TRASFERIMENTO.Where(a => a.IDDIPENDENTE == idDipendente && a.ANNULLATO == false && a.DATAPARTENZA < dataPartenza).ToList();
 
                 ltm = (from t in lt
-                       select new TrasferimentoModel() {
+                       select new TrasferimentoModel()
+                       {
                            idTrasferimento = t.IDTRASFERIMENTO,
                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                            idUfficio = t.IDUFFICIO,
                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
                            idDipendente = t.IDDIPENDENTE,
+                           idTipoCoan = t.IDTIPOCOAN,
                            dataPartenza = t.DATAPARTENZA,
                            dataRientro = t.DATARIENTRO,
                            coan = t.COAN,
@@ -202,10 +199,19 @@ namespace NewISE.Models.DBModel.dtObj
                                fax = t.DIPENDENTI.FAX,
                                abilitato = t.DIPENDENTI.ABILITATO,
                                dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                           },
+                           TipoCoan = new TipologiaCoanModel()
+                           {
+                               idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                               descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                           },
+                           RuoloUfficio = new RuoloUfficioModel()
+                           {
+                               idRuoloUfficio = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                               DescrizioneRuolo = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.DESCRUOLO
                            }
                        }).ToList();
             }
-
 
             return ltm;
         }
@@ -226,7 +232,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lt != null && lt.Count() > 0)
                         {
-                            var t = lt.OrderBy(a=>a.DATAPARTENZA).Last();
+                            var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
+
+                            //var ruoloUfficio = t.RUOLODIPENDENTE.Where(a => a.IDTRASFERIMENTO == t.IDTRASFERIMENTO &&
+                            //                                           a.ANNULLATO == false &&
+                            //                                           t.DATAPARTENZA >= a.DATAINZIOVALIDITA &&
+                            //                                           t.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                            //                                    .OrderByDescending(a => a.DATAINZIOVALIDITA).First().RUOLOUFFICIO;
 
                             tm = new TrasferimentoModel()
                             {
@@ -235,6 +247,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idUfficio = t.IDUFFICIO,
                                 idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
                                 idDipendente = t.IDDIPENDENTE,
+                                idTipoCoan = t.IDTIPOCOAN,
                                 dataPartenza = t.DATAPARTENZA,
                                 dataRientro = t.DATARIENTRO,
                                 coan = t.COAN,
@@ -275,6 +288,16 @@ namespace NewISE.Models.DBModel.dtObj
                                     fax = t.DIPENDENTI.FAX,
                                     abilitato = t.DIPENDENTI.ABILITATO,
                                     dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                                },
+                                TipoCoan = new TipologiaCoanModel()
+                                {
+                                    idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                    descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                                },
+                                RuoloUfficio = new RuoloUfficioModel()
+                                {
+                                    idRuoloUfficio = t.INDENNITA.Where(a=>a.ANNULLATO == false).OrderByDescending(a=>a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                                    DescrizioneRuolo = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.DESCRUOLO
                                 }
                             };
                         }
@@ -367,7 +390,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
-            if (tr!= null && tr.IDTRASFERIMENTO > 0)
+            if (tr != null && tr.IDTRASFERIMENTO > 0)
             {
                 tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
                 tr.IDUFFICIO = trm.idUfficio;
@@ -383,10 +406,7 @@ namespace NewISE.Models.DBModel.dtObj
                 tr.ANNULLATO = trm.annullato;
 
                 db.SaveChanges();
-               
             }
-
-
         }
     }
 }
