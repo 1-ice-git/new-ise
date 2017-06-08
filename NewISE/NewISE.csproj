@@ -1711,8 +1711,10 @@
     <Compile Include="Models\DBModel\IndennitaPrimoSegretModel.cs" />
     <Compile Include="Models\DBModel\IndennitaRichiamoModel.cs" />
     <Compile Include="Models\DBModel\IndennitaSistemazioneModel.cs" />
-    <Compile Include="Models\DBModel\LivelliDipendentiModel.cs" />
+    <Compile Include="Models\DBModel\LivelloDipendenteModel.cs" />
     <Compile Include="Models\DBModel\LivelloModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioneConiugeModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioniFigliModel.cs" />
     <Compile Include="Models\DBModel\PercentualeMagConiugeModel.cs" />
     <Compile Include="Models\DBModel\PercMagFigliModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniAnnualiModel.cs" />

@@ -83,13 +83,13 @@ namespace NewISE.Models.DBModel
             }
         }
 
-        public IList<LivelliDipendentiModel> LivelloDipendenti { get; set; }
+        public IList<LivelloDipendenteModel> LivelloDipendenti { get; set; }
 
         public IList<CDCDipendentiModel> CdcDipendenti { get; set; }
 
         public CDCGepeModel cdcGepe { get; set; }
 
-        public LivelliDipendentiModel livelloDipendenteValido { get; set; }
+        public LivelloDipendenteModel livelloDipendenteValido { get; set; }
 
 
 

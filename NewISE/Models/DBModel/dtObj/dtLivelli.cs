@@ -13,16 +13,16 @@ namespace NewISE.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public LivelliDipendentiModel GetLivelloDipendente(decimal idDipendente, DateTime data)
+        public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data)
         {
-            LivelliDipendentiModel ldm = new LivelliDipendentiModel();
+            LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data.Date <= a.DATAFINEVALIDITA).ToList();
 
                 ldm = (from e in ld
-                       select new LivelliDipendentiModel()
+                       select new LivelloDipendenteModel()
                        {
                            idLivDipendente = e.IDLIVDIPENDENTE,
                            idDipendente = e.IDDIPENDENTE,

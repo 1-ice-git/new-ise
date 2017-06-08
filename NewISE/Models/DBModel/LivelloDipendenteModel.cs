@@ -9,7 +9,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class LivelliDipendentiModel
+    public class LivelloDipendenteModel
     {
         [Key]
         public decimal idLivDipendente { get; set; }

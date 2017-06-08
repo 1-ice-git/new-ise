@@ -24,7 +24,11 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il coefficente di sede è richiesto.")]
         public decimal idCoefficenteSede { get; set; }
 
+        public decimal idMaggiorazioneConiuge { get; set; }
 
+        public decimal idMaggiorazioneFigli { get; set; }
+        [Required(ErrorMessage = "Il ruolo del dipendente è richiesto.")]
+        public decimal idRuoloDipendente { get; set; }
 
 
         [Required(ErrorMessage = "La data di inizio è richiesta.")]
@@ -52,6 +56,8 @@ namespace NewISE.Models.DBModel
 
         public TrasferimentoModel Trasferimento { get; set; }
 
+        public LivelloDipendenteModel LivelloDipendente { get; set; }
+
         public IndennitaBaseModel IndennitaBase { get; set; }
 
         public TFRModel TFR { get; set; }
@@ -59,6 +65,10 @@ namespace NewISE.Models.DBModel
         public PercentualeDisagioModel PercentualeDisagio { get; set; }
 
         public CoefficientiSedeModel CoefficenteSede { get; set; }
+
+        public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
+
+        public MaggiorazioniFigliModel MaggiorazioneFigli { get; set; }
 
 
 
