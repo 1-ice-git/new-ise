@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtTipoTrasferimento : IDisposable
+    public class dtParTipoTrasferimento : IDisposable
     {
         public void Dispose()
         {

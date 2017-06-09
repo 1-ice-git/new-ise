@@ -38,7 +38,15 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool Annullato { get; set; }
 
+
+        public bool HasValue()
+        {
+            return idTFR > 0 ? true : false;
+        }
+
+
         public ValuteModel Valute { get; set; }
+
 
     }
 }

@@ -23,7 +23,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
+                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
                 {
                     llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
 
@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
             }
 
-                using (dtMaggFigli dtib = new dtMaggFigli())
+                using (dtParMaggFigli dtib = new dtParMaggFigli())
             {
                     if (escludiAnnullati)
                     {
@@ -83,7 +83,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
+                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
                 {
                     llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
 
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtMaggFigli dtib = new dtMaggFigli())
+                using (dtParMaggFigli dtib = new dtParMaggFigli())
                 {
                     if (escludiAnnullati)
                     {
@@ -131,7 +131,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
+                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
                 {
                     var lm = dtl.GetTipologiaFiglio(idTipologiaFiglio);
                     ViewBag.Figlio = lm;
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtMaggFigli dtib = new dtMaggFigli())
+                    using (dtParMaggFigli dtib = new dtParMaggFigli())
                     {
                         dtib.SetMaggiorazioneFiglio(ibm);
                     }
@@ -164,7 +164,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
+                    using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
                     {
                         var lm = dtl.GetTipologiaFiglio(ibm.idTipologiaFiglio);
                         ViewBag.Figlio = lm;
@@ -186,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtMaggFigli dtib = new dtMaggFigli())
+                using (dtParMaggFigli dtib = new dtParMaggFigli())
                 {
                     dtib.DelMaggiorazioneFiglio(idMaggFiglio);
                 }

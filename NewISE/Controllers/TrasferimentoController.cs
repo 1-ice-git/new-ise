@@ -1,6 +1,8 @@
-﻿using NewISE.Models;
+﻿
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.dtObj;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,14 +38,14 @@ namespace NewISE.Controllers
 
             using (dtUffici dtl = new dtUffici())
             {
-                var llm = dtl.GetUffici().OrderBy(a => a.DescUfficio).ToList();
+                var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
                 if (llm != null && llm.Count > 0)
                 {
                     r = (from t in llm
                          select new SelectListItem()
                          {
-                             Text = t.DescUfficio,
+                             Text = t.descUfficio,
                              Value = t.idUfficio.ToString()
                          }).ToList();
 
@@ -233,7 +235,63 @@ namespace NewISE.Controllers
                                     {
                                         db.Database.BeginTransaction();
 
-                                        dttr.SetTrasferimento(trm, db);
+                                        dttr.SetTrasferimento(ref trm, db);
+
+                                        using (dtIndennita dti=new dtIndennita())
+                                        {
+                                            IndennitaModel im = new IndennitaModel();
+                                            LivelloDipendenteModel ldm = new LivelloDipendenteModel();
+
+                                            im.idTrasferimento = trm.idTrasferimento;
+                                            //im.idLivDipendente = trm.id
+                                            using (dtLivelliDipendente dtld=new dtLivelliDipendente())
+                                            {
+                                                ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza);
+                                                if (ldm.HasValue())
+                                                {
+                                                    im.idLivDipendente = ldm.idLivDipendente;
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non risulta assegnato nessun livello per la matricola elaborata.");
+                                                }                                                                                              
+
+                                            }
+
+                                            using (dtIndennitaBase dtib=new dtIndennitaBase())
+                                            {
+                                                IndennitaBaseModel ibm = new IndennitaBaseModel();
+
+                                                ibm = dtib.GetIndennitaBaseValida(ldm.idLivello, trm.dataPartenza, db);
+
+                                                if (ibm.HasValue())
+                                                {
+                                                    im.idIndennitaBase = ibm.idIndennitaBase;
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non risulta l'indennità base per il livello/datadeccorenza in elaboeazione.");
+                                                }
+                                            }
+
+                                            using (dtTFR dttfr=new dtTFR())
+                                            {
+                                                TFRModel tfrm = dttfr.GetTFRValido(trm.idUfficio, trm.dataPartenza, db);
+                                                if (tfrm.HasValue())
+                                                {
+                                                    im.idTFR = tfrm.idTFR;
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non risulta il tasso fisso di ragguaglio per l'utente elaborato.");
+                                                }
+
+                                            }
+                                        }
+
+
+
+
 
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
@@ -260,7 +318,7 @@ namespace NewISE.Controllers
                                     catch (Exception ex)
                                     {
                                         db.Database.CurrentTransaction.Rollback();
-                                        return PartialView("ErrorPartial");
+                                        throw ex;
                                     }
                                 }
                             }
@@ -309,7 +367,7 @@ namespace NewISE.Controllers
                                     catch (Exception ex)
                                     {
                                         db.Database.CurrentTransaction.Rollback();
-                                        return PartialView("ErrorPartial");
+                                        throw ex;
                                     }
                                 }
                             }

@@ -20,7 +20,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -47,7 +47,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndennitaBase dtib = new dtIndennitaBase())
+                using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     if (escludiAnnullati)
                     {
@@ -80,7 +80,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -98,7 +98,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndennitaBase dtib = new dtIndennitaBase())
+                using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     if (escludiAnnullati)
                     {
@@ -129,7 +129,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     var lm = dtl.GetLivelli(idLivello);
                     ViewBag.Livello = lm;                   
@@ -153,7 +153,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtIndennitaBase dtib = new dtIndennitaBase())
+                    using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
 
                         //if (!dtib.EsistonoMovimentiPrimaUguale(ibm))
@@ -187,7 +187,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtLivelli dtl = new dtLivelli())
+                    using (dtParLivelli dtl = new dtParLivelli())
                     {
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
@@ -209,7 +209,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndennitaBase dtib=new dtIndennitaBase())
+                using (dtParIndennitaBase dtib=new dtParIndennitaBase())
                 {
                     dtib.DelIndennitaDiBase(idIndBase);
                 }

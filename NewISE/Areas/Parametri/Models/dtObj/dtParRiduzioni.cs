@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtMaggAnnuali : IDisposable
+    public class dtParRiduzioni : IDisposable
     {
         public void Dispose()
         {
@@ -15,31 +15,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
 
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale()
+        public IList<RiduzioniModel> getListRiduzioni()
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.ToList();
+                    var lib = db.RIDUZIONI.ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new RiduzioniModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //Livello = new LivelloModel()
+                                //{
+                                //    idLivello = e.LIVELLI.IDLIVELLO,
+                                //    DescLivello = e.LIVELLI.LIVELLO
+                                //}
                             }).ToList();
                 }
 
@@ -51,31 +50,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(decimal idUfficio)
+        public IList<RiduzioniModel> getListRiduzioni(decimal idRiduzioni)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new RiduzioniModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //Livello = new LivelloModel()
+                                //{
+                                //    idLivello = e.LIVELLI.IDLIVELLO,
+                                //    DescLivello = e.LIVELLI.LIVELLO
+                                //}
                             }).ToList();
                 }
 
@@ -87,31 +85,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(bool escludiAnnullati = false)
+        public IList<RiduzioniModel> getListRiduzioni(bool escludiAnnullati = false)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.RIDUZIONI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new RiduzioniModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //Livello = new LivelloModel()
+                                //{
+                                //    idLivello = e.LIVELLI.IDLIVELLO,
+                                //    DescLivello = e.LIVELLI.LIVELLO
+                                //}
                             }).ToList();
                 }
 
@@ -123,31 +120,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<MaggiorazioniAnnualiModel> getListMaggiorazioneAnnuale(decimal idUfficio, bool escludiAnnullati = false)
+        public IList<RiduzioniModel> getListRiduzioni(decimal idRiduzioni, bool escludiAnnullati = false)
         {
-            List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new MaggiorazioniAnnualiModel()
+                            select new RiduzioniModel()
                             {
-                                idMagAnnuali = e.IDMAGANNUALI,
-                                idUfficio = e.IDUFFICIO,
+                                
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                DescrizioneUfficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //Livello = new LivelloModel()
+                                //{
+                                //    idLivello = e.LIVELLI.IDLIVELLO,
+                                //    DescLivello = e.LIVELLI.LIVELLO
+                                //}
                             }).ToList();
                 }
 
@@ -163,15 +159,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm)
+        public void SetRiduzioni(RiduzioniModel ibm)
         {
-            List<MAGGIORAZIONIANNUALI> libNew = new List<MAGGIORAZIONIANNUALI>();
+            List<RIDUZIONI> libNew = new List<RIDUZIONI>();
 
-            MAGGIORAZIONIANNUALI ibNew = new MAGGIORAZIONIANNUALI();
+            RIDUZIONI ibNew = new RIDUZIONI();
 
-            MAGGIORAZIONIANNUALI ibPrecedente = new MAGGIORAZIONIANNUALI();
+            RIDUZIONI ibPrecedente = new RIDUZIONI();
 
-            List<MAGGIORAZIONIANNUALI> lArchivioIB = new List<MAGGIORAZIONIANNUALI>();
+            List<RIDUZIONI> lArchivioIB = new List<RIDUZIONI>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -181,46 +177,44 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new MAGGIORAZIONIANNUALI()
+                            ibNew = new RIDUZIONI()
                             {
-
-                                IDUFFICIO = ibm.idUfficio,
+                                
+                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ANNUALITA = ibm.annualita,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new MAGGIORAZIONIANNUALI()
+                            ibNew = new RIDUZIONI()
                             {
-                                IDUFFICIO = ibm.idUfficio,
+                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ANNUALITA = ibm.annualita,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new MAGGIORAZIONIANNUALI()
+                        ibNew = new RIDUZIONI()
                         {
-                            IDUFFICIO = ibm.idUfficio,
+                            
+                            IDRIDUZIONI = ibm.idRiduzioni,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ANNUALITA = ibm.annualita,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
+                    var recordInteressati = db.RIDUZIONI.Where(a => a.ANNULLATO == false && a.IDRIDUZIONI == ibNew.IDRIDUZIONI)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -237,13 +231,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new RIDUZIONI()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -252,23 +246,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new RIDUZIONI()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld2 = new RIDUZIONI()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -286,13 +280,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new RIDUZIONI()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -307,13 +301,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new MAGGIORAZIONIANNUALI()
+                                    var ibOld1 = new RIDUZIONI()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ANNUALITA = item.ANNUALITA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -325,18 +319,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.MAGGIORAZIONIANNUALI.AddRange(libNew);
+                        db.RIDUZIONI.AddRange(libNew);
                     }
                     else
                     {
-                        db.MAGGIORAZIONIANNUALI.Add(ibNew);
+                        db.RIDUZIONI.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro maggiorazioni annuali.", "MAGGIORAZIONIANNUALI", ibNew.IDMAGANNUALI);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di riduzioni.", "RIDUZIONI", ibNew.IDRIDUZIONI);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -349,21 +343,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiPrima(RiduzioniModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiSuccessivi(RiduzioniModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -372,13 +366,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(MaggiorazioniAnnualiModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(RiduzioniModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -387,18 +381,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrimaUguale(MaggiorazioniAnnualiModel ibm)
+
+
+        public bool EsistonoMovimentiPrimaUguale(RiduzioniModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.MAGGIORAZIONIANNUALI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public void DelMaggiorazioneAnnuale(decimal idMagAnnuali)
+        public void DelRiduzioni(decimal idRiduzioni)
         {
-            MAGGIORAZIONIANNUALI precedenteIB = new MAGGIORAZIONIANNUALI();
-            MAGGIORAZIONIANNUALI delIB = new MAGGIORAZIONIANNUALI();
+            RIDUZIONI precedenteIB = new RIDUZIONI();
+            RIDUZIONI delIB = new RIDUZIONI();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -407,39 +403,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDMAGANNUALI == idMagAnnuali);
+                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.MAGGIORAZIONIANNUALI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.RIDUZIONI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new MAGGIORAZIONIANNUALI()
+                            var ibOld1 = new RIDUZIONI()
                             {
-                                IDUFFICIO = precedenteIB.IDUFFICIO,
-
-                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
+                                
+                                IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ANNUALITA = precedenteIB.ANNUALITA,
-                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
+                                PERCENTUALE = precedenteIB.PERCENTUALE,
+                                
                                 ANNULLATO = false
                             };
 
-                            db.MAGGIORAZIONIANNUALI.Add(ibOld1);
+                            db.RIDUZIONI.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro maggiorazioni annuali.", "MAGGIORAZIONIANNUALI", idMagAnnuali);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di riduzioni.", "RIDUZIONI", idRiduzioni);
                         }
 
 
@@ -455,6 +451,64 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+
+
+        public IList<RiduzioniModel> GetRiduzioni()
+        {
+            List<RiduzioniModel> llm = new List<RiduzioniModel>();
+
+            try
+            {
+                using (EntitiesDBISE db = new EntitiesDBISE())
+                {
+                    var ll = db.RIDUZIONI.ToList();
+
+                    llm = (from e in ll
+                           select new RiduzioniModel()
+                           {
+                               
+                               idRiduzioni =e.IDRIDUZIONI,
+                               percentuale = e.PERCENTUALE 
+                               
+                           }).ToList();
+                }
+
+                return llm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public RiduzioniModel GetRiduzioni(decimal idRiduzioni)
+        {
+            RiduzioniModel lm = new RiduzioniModel();
+
+            try
+            {
+                using (EntitiesDBISE db = new EntitiesDBISE())
+                {
+                    var liv = db.RIDUZIONI.Find(idRiduzioni);
+
+                    lm = new RiduzioniModel()
+                    {
+                        
+                        idRiduzioni = liv.IDRIDUZIONI,
+                        percentuale = liv.PERCENTUALE
+
+                    };
+                }
+
+                return lm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
     }
 }

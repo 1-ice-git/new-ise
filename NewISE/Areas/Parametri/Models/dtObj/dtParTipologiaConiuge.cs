@@ -6,29 +6,30 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtTipologiaFiglio : IDisposable
+    public class dtParTipologiaConiuge : IDisposable
     {
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<TipologiaFiglioModel> GetTipologiaFiglio()
+
+        public IList<TipologiaConiugeModel> GetTipologiaConiuge()
         {
-            List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
+            List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var ll = db.TIPOLOGIAFIGLIO.ToList();
+                    var ll = db.TIPOLOGIACONIUGE.ToList();
 
                     llm = (from e in ll
-                           select new TipologiaFiglioModel()
+                           select new TipologiaConiugeModel()
                            {
-                               idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
-                               tipologiaFiglio = e.TIPOLOGIAFIGLIO1
+                               
+                               idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                               tipologiaConiuge = e.TIPOLOGIACONIUGE1
                            }).ToList();
                 }
 
@@ -40,22 +41,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public TipologiaFiglioModel GetTipologiaFiglio(decimal idTipologiaFiglio)
+        public TipologiaConiugeModel GetTipologiaConiuge(decimal idTipologiaConiuge)
         {
-            TipologiaFiglioModel lm = new TipologiaFiglioModel();
+            TipologiaConiugeModel lm = new TipologiaConiugeModel();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var liv = db.TIPOLOGIAFIGLIO.Find(idTipologiaFiglio);
+                    var liv = db.TIPOLOGIACONIUGE.Find(idTipologiaConiuge);
 
-                    lm = new TipologiaFiglioModel()
+                    lm = new TipologiaConiugeModel()
                     {
-
-                        idTipologiaFiglio = liv.IDTIPOLOGIAFIGLIO,
-                        tipologiaFiglio = liv.TIPOLOGIAFIGLIO1
-
+                        
+                        idTipologiaConiuge = liv.IDTIPOLOGIACONIUGE,
+                        tipologiaConiuge = liv.TIPOLOGIACONIUGE1
+                        
                     };
                 }
 
@@ -66,6 +67,5 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
     }
 }

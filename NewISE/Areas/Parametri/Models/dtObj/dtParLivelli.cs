@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtLivelli : IDisposable
+    public class dtParLivelli : IDisposable
     {
         public void Dispose()
         {

@@ -29,6 +29,8 @@ namespace NewISE
         public decimal IDUFFICIO { get; set; }
         public string CODICEUFFICIO { get; set; }
         public string DESCRIZIONEUFFICIO { get; set; }
+        public decimal IDVALUTA { get; set; }
+        public bool PAGATOVALUTAUFFICIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
@@ -44,5 +46,6 @@ namespace NewISE
         public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
+        public virtual VALUTE VALUTE { get; set; }
     }
 }

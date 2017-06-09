@@ -5,12 +5,14 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtCoeffFasciaKm : IDisposable
+    public class dtParIndRichiamo : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
+
+
 
 
     }

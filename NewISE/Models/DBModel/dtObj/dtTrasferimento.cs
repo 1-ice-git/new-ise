@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NewISE.Models.dtObj;
+using NewISE.Models.Tools;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -180,7 +182,7 @@ namespace NewISE.Models.DBModel.dtObj
                            {
                                idUfficio = t.UFFICI.IDUFFICIO,
                                codiceUfficio = t.UFFICI.CODICEUFFICIO,
-                               DescUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                               descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
                            },
                            Dipendente = new DipendentiModel()
                            {
@@ -269,7 +271,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idUfficio = t.UFFICI.IDUFFICIO,
                                     codiceUfficio = t.UFFICI.CODICEUFFICIO,
-                                    DescUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                    descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
                                 },
                                 Dipendente = new DipendentiModel()
                                 {
@@ -361,7 +363,7 @@ namespace NewISE.Models.DBModel.dtObj
             return dit;
         }
 
-        public void SetTrasferimento(TrasferimentoModel trm, EntitiesDBISE db)
+        public void SetTrasferimento(ref TrasferimentoModel trm, EntitiesDBISE db)
         {
             TRASFERIMENTO tr;
 
@@ -384,6 +386,23 @@ namespace NewISE.Models.DBModel.dtObj
             db.TRASFERIMENTO.Add(tr);
 
             db.SaveChanges();
+
+            using (dtLogAttivita dtla=new dtLogAttivita())
+            {
+                LogAttivitaModel lam = new LogAttivitaModel();
+
+                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                lam.idTrasferimento = tr.IDTRASFERIMENTO;
+                lam.idAttivitaCrud = (decimal)EnumAttivitaCrud.Inserimento;
+                lam.dataOperazione = DateTime.Now;
+                lam.descAttivitaSvolta = "Inserimento di un nuovo trasferimento.";
+                lam.idTabellaCoinvolta = tr.IDTRASFERIMENTO;
+
+                dtla.SetLogAttivita(lam, db);
+            }
+
+
+
         }
 
         public void EditTrasferimento(TrasferimentoModel trm, EntitiesDBISE db)
@@ -406,6 +425,20 @@ namespace NewISE.Models.DBModel.dtObj
                 tr.ANNULLATO = trm.annullato;
 
                 db.SaveChanges();
+
+                using (dtLogAttivita dtla = new dtLogAttivita())
+                {
+                    LogAttivitaModel lam = new LogAttivitaModel();
+
+                    lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                    lam.idTrasferimento = tr.IDTRASFERIMENTO;
+                    lam.idAttivitaCrud = (decimal)EnumAttivitaCrud.Modifica;
+                    lam.dataOperazione = DateTime.Now;
+                    lam.descAttivitaSvolta = "Modifica del trasferimento.";
+                    lam.idTabellaCoinvolta = tr.IDTRASFERIMENTO;
+
+                    dtla.SetLogAttivita(lam, db);
+                }
             }
         }
     }

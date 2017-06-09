@@ -33,6 +33,7 @@ namespace NewISE.Models.DBModel
 
         public TrasferimentoModel Trasferimento { get; set; }
         public PercentualeMagConiugeModel PercentualeMaggiorazioneConiuge { get; set; }
+        public PensioneConiugeModel PensioneConiuge { get; set; }
         
 
 

@@ -18,7 +18,12 @@ namespace NewISE.Models.DBModel
         public string descrizioneValuta { get; set; }
         [Required(ErrorMessage = "Il campo valuta è richiesto.")]
         [Display(Name = "Valuta")]
-        public decimal valutaUfficiale { get; set; } 
+        public bool valutaUfficiale { get; set; } 
+
+        public bool HasValue()
+        {
+            return idValuta > 0 ? true : false;
+        }
         
     }
 }

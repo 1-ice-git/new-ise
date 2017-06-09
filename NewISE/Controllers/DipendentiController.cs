@@ -95,7 +95,7 @@ namespace NewISE.Controllers
                 }
 
 
-                using (dtLivelli dtpl = new dtLivelli())
+                using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
                 {
                     dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
                 }

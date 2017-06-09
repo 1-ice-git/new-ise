@@ -70,6 +70,8 @@ namespace NewISE.Models.DBModel
 
         public MaggiorazioniFigliModel MaggiorazioneFigli { get; set; }
 
+        
+
 
 
         

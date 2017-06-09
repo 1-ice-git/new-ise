@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3fb934f8e15249519a25c1f509a0c3e8" Name="Diagram1" ZoomLevel="67">
+      <Diagram DiagramId="3fb934f8e15249519a25c1f509a0c3e8" Name="Diagram1" ZoomLevel="101">
         <EntityTypeShape EntityType="DBISE.ACCESSI" Width="1.5" PointX="8.25" PointY="9.125" />
         <EntityTypeShape EntityType="DBISE.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="DBISE.ALTRIDATIFAM" Width="1.5" PointX="16.75" PointY="33.375" />
@@ -188,6 +188,7 @@
         <AssociationConnector Association="DBISE.R_RD_I" />
         <AssociationConnector Association="DBISE.R_RD_MAB" />
         <AssociationConnector Association="DBISE.R_RU_RD" />
+        <AssociationConnector Association="DBISE.R_V_U" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

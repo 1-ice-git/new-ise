@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
+                using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
                 {
                     llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
 
@@ -49,7 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndSist dtib = new dtIndSist())
+                using (dtParIndSist dtib = new dtParIndSist())
                 {
                     if (escludiAnnullati)
                     {
@@ -82,7 +82,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
+                using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
                 {
                     llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
 
@@ -100,7 +100,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndSist dtib = new dtIndSist())
+                using (dtParIndSist dtib = new dtParIndSist())
                 {
                     if (escludiAnnullati)
                     {
@@ -130,7 +130,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
+                using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
                 {
                     var lm = dtl.GetTrasferimenti(idTipoTrasferimento);
                     ViewBag.Trasferimento = lm;
@@ -154,7 +154,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtIndSist dtib = new dtIndSist())
+                    using (dtParIndSist dtib = new dtParIndSist())
                     {
                         
                         dtib.SetIndennitaSistemazione(ibm);
@@ -164,7 +164,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtTipoTrasferimento dtl = new dtTipoTrasferimento())
+                    using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
                     {
                         var lm = dtl.GetTrasferimenti(ibm.idTipoTrasferimento);
                         ViewBag.Trasferimento = lm;
@@ -186,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndSist dtib = new dtIndSist())
+                using (dtParIndSist dtib = new dtParIndSist())
                 {
                     dtib.DelIndennitaSistemazione(idIndSist);
                 }

@@ -5,7 +5,13 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtPrimoSegr
+    public class dtParCoeffFasciaKm : IDisposable
     {
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
+
     }
 }

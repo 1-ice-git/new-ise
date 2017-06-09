@@ -6,14 +6,14 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class MaggiorazioniFigliModel
+    public class PensioneConiugeModel
     {
         [Key]
-        public decimal idMaggiorazioneFigli { get; set; }
-        [Required(ErrorMessage = "Il trasferimento è richiesto.")]
-        public decimal idTrasferimento { get; set; }
-        [Required(ErrorMessage = "L'indennità di primo segretario è richiesta.")]
-        public decimal idIndPrimoSegr { get; set; }
+        public decimal idPensioneConiuge { get; set; }
+        [Required(ErrorMessage = "L'importo della pensione è richiesto.")]
+        [Display(Name = "Pensione")]
+        [DisplayFormat(DataFormatString = "{0:F8}", ApplyFormatInEditMode = true)]
+        public decimal importoPensione { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -27,10 +27,5 @@ namespace NewISE.Models.DBModel
         public DateTime dataAggiornamento { get; set; }
         [Display(Name = "Annullato")]
         public bool annullato { get; set; }
-
-        public TrasferimentoModel Trasferimento { get; set; }
-        public PercMagFigliModel PercentualeMaggiorazioneFigli { get; set; }
-        public IndennitaPrimoSegretModel IndennitaPrimoSegretario { get; set; }
-
     }
 }

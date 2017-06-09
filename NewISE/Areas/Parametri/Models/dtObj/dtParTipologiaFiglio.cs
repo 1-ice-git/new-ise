@@ -6,28 +6,29 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtTipoAliquoteContributive : IDisposable
+    public class dtParTipologiaFiglio : IDisposable
     {
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<TipoAliquoteContributiveModel> GetTipoAliquote()
+        public IList<TipologiaFiglioModel> GetTipologiaFiglio()
         {
-            List<TipoAliquoteContributiveModel> llm = new List<TipoAliquoteContributiveModel>();
+            List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var ll = db.TIPOALIQUOTECONTRIBUTIVE.ToList();
+                    var ll = db.TIPOLOGIAFIGLIO.ToList();
 
                     llm = (from e in ll
-                           select new TipoAliquoteContributiveModel()
+                           select new TipologiaFiglioModel()
                            {
-                               codice = e.CODICE,
-                               idTipoAliqContr = e.IDTIPOALIQCONTR,
+                               idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                               tipologiaFiglio = e.TIPOLOGIAFIGLIO1
                            }).ToList();
                 }
 
@@ -39,22 +40,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public TipoAliquoteContributiveModel GetTipoAliquote(decimal idAliqContr)
+        public TipologiaFiglioModel GetTipologiaFiglio(decimal idTipologiaFiglio)
         {
-            TipoAliquoteContributiveModel lm = new TipoAliquoteContributiveModel();
+            TipologiaFiglioModel lm = new TipologiaFiglioModel();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idAliqContr);
+                    var liv = db.TIPOLOGIAFIGLIO.Find(idTipologiaFiglio);
 
-                    lm = new TipoAliquoteContributiveModel()
+                    lm = new TipologiaFiglioModel()
                     {
-                        
-                        codice =liv.CODICE,
-                        idTipoAliqContr = liv.IDTIPOALIQCONTR
-                        
+
+                        idTipologiaFiglio = liv.IDTIPOLOGIAFIGLIO,
+                        tipologiaFiglio = liv.TIPOLOGIAFIGLIO1
+
                     };
                 }
 

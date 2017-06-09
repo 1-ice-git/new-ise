@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtRiduzioni dtl = new dtRiduzioni())
+                using (dtParRiduzioni dtl = new dtParRiduzioni())
                 {
                     llm1 = dtl.GetRiduzioni().OrderBy(a => a.percentuale).ToList();
 
@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtRiduzioni dtib = new dtRiduzioni())
+                using (dtParRiduzioni dtib = new dtParRiduzioni())
                 {
                     if (escludiAnnullati)
                     {
@@ -83,7 +83,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtRiduzioni dtl = new dtRiduzioni())
+                using (dtParRiduzioni dtl = new dtParRiduzioni())
                 {
                     llm1 = dtl.GetRiduzioni().OrderBy(a => a.percentuale).ToList();
 
@@ -102,7 +102,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtRiduzioni dtib = new dtRiduzioni())
+                using (dtParRiduzioni dtib = new dtParRiduzioni())
                 {
                     if (escludiAnnullati)
                     {
@@ -133,7 +133,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtRiduzioni dtl = new dtRiduzioni())
+                using (dtParRiduzioni dtl = new dtParRiduzioni())
                 {
                     var lm = dtl.GetRiduzioni(idRiduzioni);
                     ViewBag.percentuale = lm;
@@ -157,7 +157,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtRiduzioni dtib = new dtRiduzioni())
+                    using (dtParRiduzioni dtib = new dtParRiduzioni())
                     {
                         
 
@@ -168,7 +168,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtRiduzioni dtl = new dtRiduzioni())
+                    using (dtParRiduzioni dtl = new dtParRiduzioni())
                     {
                         var lm = dtl.GetRiduzioni(ibm.idRiduzioni);
                         ViewBag.percentuale = lm;
@@ -190,7 +190,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtRiduzioni dtib = new dtRiduzioni())
+                using (dtParRiduzioni dtib = new dtParRiduzioni())
                 {
                     dtib.DelRiduzioni(idRiduzioni);
                 }

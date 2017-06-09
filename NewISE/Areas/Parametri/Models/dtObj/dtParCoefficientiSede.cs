@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtCoefficientiSede : IDisposable
+    public class dtParCoefficientiSede : IDisposable
     {
         public void Dispose()
         {

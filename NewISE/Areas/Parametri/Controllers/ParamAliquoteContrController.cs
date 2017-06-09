@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
+                using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
                 {
                     llm = dtl.GetTipoAliquote().OrderBy(a => a.descrizione).ToList();
 
@@ -51,7 +51,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtAliquoteContr dtib = new dtAliquoteContr())
+                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
@@ -84,7 +84,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
+                using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
                 {
                     llm = dtl.GetTipoAliquote().OrderBy(a => a.descrizione).ToList();
 
@@ -102,7 +102,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtAliquoteContr dtib = new dtAliquoteContr())
+                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
@@ -132,7 +132,7 @@ namespace NewISE.Areas.Parametri.Controllers
            
             try
             {
-                using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
+                using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
                 {
                     var lm = dtl.GetTipoAliquote(idTipoAliqContr);
                     ViewBag.descrizione = lm;
@@ -156,7 +156,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtAliquoteContr dtib = new dtAliquoteContr())
+                    using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
                     {
                         
                         dtib.SetAliquoteContributive(ibm);
@@ -166,7 +166,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
+                    using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
                     {
                         var lm = dtl.GetTipoAliquote(ibm.idTipoContributo);
                         ViewBag.Livello = lm;
@@ -188,7 +188,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtAliquoteContr dtib = new dtAliquoteContr())
+                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
                 {
                     dtib.DelAliquoteContributive(idTipoAliqContr);
                 }

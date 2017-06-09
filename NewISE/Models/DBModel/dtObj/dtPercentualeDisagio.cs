@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace NewISE.Areas.Parametri.Models.dtObj
+namespace NewISE.Models.DBModel.dtObj
 {
-    public class dtIndRichiamo : IDisposable
+    public class dtPercentualeDisagio : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
+
 
 
 

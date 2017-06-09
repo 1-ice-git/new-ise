@@ -5,6 +5,13 @@ using System.Linq;
 using System.Web;
 namespace NewISE.Models
 {
+    public enum EnumAttivitaCrud
+    {
+        Inserimento = 1,
+        Eliminazione = 2,
+        Modifica = 3
+
+    }
     public class AttivitaCRUDModel
     {
         [Key]

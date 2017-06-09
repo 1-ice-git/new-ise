@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models
 {
+    
+
     public class LogAttivitaModel
     {
         [Key]

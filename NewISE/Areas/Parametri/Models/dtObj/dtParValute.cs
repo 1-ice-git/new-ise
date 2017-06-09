@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtValute : IDisposable
+    public class dtParValute : IDisposable
     {
         public void Dispose()
         {

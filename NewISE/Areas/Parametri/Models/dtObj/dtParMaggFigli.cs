@@ -7,39 +7,38 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtMaggConiuge : IDisposable
+    public class dtParMaggFigli : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-
-        public IList<PercentualeMagConiugeModel> getListPercMagConiuge()
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio()
         {
-            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.PERCENTUALEMAGCONIUGE.ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.ToList();
 
                     libm = (from e in lib
-                            select new PercentualeMagConiugeModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                idTipologiaFiglio =e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
-                                percentualeConiuge = e.PERCENTUALECONIUGE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
+                                
                                 annullato = e.ANNULLATO,
-                                Coniuge = new TipologiaConiugeModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
-                                    idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                                    tipologiaConiuge = e.TIPOLOGIACONIUGE.ToString()
-                                   
+                                    idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                    tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
                                 }
                             }).ToList();
                 }
@@ -52,67 +51,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<PercentualeMagConiugeModel> getListPercMagConiuge(decimal idTipologiaConiuge)
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio)
         {
-            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio).ToList();
 
                     libm = (from e in lib
-                            select new PercentualeMagConiugeModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
-                                percentualeConiuge = e.PERCENTUALECONIUGE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                Coniuge = new TipologiaConiugeModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
-                                    idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                                    tipologiaConiuge = e.TIPOLOGIACONIUGE.ToString()
-
-                                }
-                            }).ToList();
-                }
-
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public IList<PercentualeMagConiugeModel> getListPercMagConiuge(bool escludiAnnullati = false)
-        {
-            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
-
-            try
-            {
-                using (EntitiesDBISE db = new EntitiesDBISE())
-                {
-                    var lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
-
-                    libm = (from e in lib
-                            select new PercentualeMagConiugeModel()
-                            {
-                                
-                                idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
-                                percentualeConiuge = e.PERCENTUALECONIUGE,
-                                annullato = e.ANNULLATO,
-                                Coniuge = new TipologiaConiugeModel()
-                                {
-                                    idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                                    tipologiaConiuge = e.TIPOLOGIACONIUGE.ToString()
+                                    idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                    tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
 
                                 }
                             }).ToList();
@@ -126,30 +88,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<PercentualeMagConiugeModel> getListPercMagConiuge(decimal idTipologiaConiuge, bool escludiAnnullati = false)
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(bool escludiAnnullati = false)
         {
-            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new PercentualeMagConiugeModel()
+                            select new PercMagFigliModel()
                             {
                                 
-                                idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idPercMagFigli =e.IDPERCMAGFIGLI,
+                                idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
-                                percentualeConiuge = e.PERCENTUALECONIUGE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                Coniuge = new TipologiaConiugeModel()
+                                tipologiaFiglio = new TipologiaFiglioModel()
                                 {
-                                    idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                                    tipologiaConiuge = e.TIPOLOGIACONIUGE.ToString()
+                                    idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                    tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
 
                                 }
                             }).ToList();
@@ -163,21 +125,56 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        
+        public IList<PercMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio, bool escludiAnnullati = false)
+        {
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
+
+            try
+            {
+                using (EntitiesDBISE db = new EntitiesDBISE())
+                {
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio && a.ANNULLATO == escludiAnnullati).ToList();
+
+                    libm = (from e in lib
+                            select new PercMagFigliModel()
+                            {
+
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
+                                annullato = e.ANNULLATO,
+                                tipologiaFiglio = new TipologiaFiglioModel()
+                                {
+                                    idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                    tipologiaFiglio = e.TIPOLOGIAFIGLIO.ToString()
+
+                                }
+                            }).ToList();
+                }
+
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetPercMagConiuge(PercentualeMagConiugeModel ibm)
+        public void SetMaggiorazioneFiglio(PercMagFigliModel ibm)
         {
-            List<PERCENTUALEMAGCONIUGE> libNew = new List<PERCENTUALEMAGCONIUGE>();
+            List<PERCENTUALEMAGFIGLI> libNew = new List<PERCENTUALEMAGFIGLI>();
 
-            PERCENTUALEMAGCONIUGE ibNew = new PERCENTUALEMAGCONIUGE();
+            PERCENTUALEMAGFIGLI ibNew = new PERCENTUALEMAGFIGLI();
 
-            PERCENTUALEMAGCONIUGE ibPrecedente = new PERCENTUALEMAGCONIUGE();
+            PERCENTUALEMAGFIGLI ibPrecedente = new PERCENTUALEMAGFIGLI();
 
-            List<PERCENTUALEMAGCONIUGE> lArchivioIB = new List<PERCENTUALEMAGCONIUGE>();
+            List<PERCENTUALEMAGFIGLI> lArchivioIB = new List<PERCENTUALEMAGFIGLI>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -187,44 +184,48 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new PERCENTUALEMAGCONIUGE()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                
-                                IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                                IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                PERCENTUALECONIUGE = ibm.percentualeConiuge,
+                                PERCENTUALEFIGLI = ibm.percentualeFigli,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new PERCENTUALEMAGCONIUGE()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                                IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                PERCENTUALECONIUGE = ibm.percentualeConiuge,
+                                PERCENTUALEFIGLI = ibm.percentualeFigli,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new PERCENTUALEMAGCONIUGE()
+                        ibNew = new PERCENTUALEMAGFIGLI()
                         {
-                            
-                            IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                            IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                            IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            PERCENTUALECONIUGE = ibm.percentualeConiuge,
+                            PERCENTUALEFIGLI = ibm.percentualeFigli,
+                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == ibNew.IDTIPOLOGIACONIUGE)
+                    var recordInteressati = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == ibNew.IDTIPOLOGIAFIGLIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -241,12 +242,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new PERCENTUALEMAGCONIUGE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -255,23 +258,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new PERCENTUALEMAGCONIUGE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new PERCENTUALEMAGCONIUGE()
+                                    var ibOld2 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -289,13 +294,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new PERCENTUALEMAGCONIUGE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -310,13 +316,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new PERCENTUALEMAGCONIUGE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -328,18 +335,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.PERCENTUALEMAGCONIUGE.AddRange(libNew);
+                        db.PERCENTUALEMAGFIGLI.AddRange(libNew);
                     }
                     else
                     {
-                        db.PERCENTUALEMAGCONIUGE.Add(ibNew);
+                        db.PERCENTUALEMAGFIGLI.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di maggiorazione coniuge.", "MAGGIORAZIONECONIUGE", ibNew.IDPERCMAGCONIUGE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro per la percentuale di maggiorazione figli.", "PERCENTUALEMAGFIGLI", ibNew.IDPERCMAGFIGLI);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -352,21 +359,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(PercentualeMagConiugeModel ibm)
+        public bool EsistonoMovimentiPrima(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(PercentualeMagConiugeModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -375,13 +382,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(PercentualeMagConiugeModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -392,18 +399,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
 
 
-        public bool EsistonoMovimentiPrimaUguale(PercentualeMagConiugeModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(PercMagFigliModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIAFIGLIO == ibm.idTipologiaFiglio).Count() > 0 ? true : false;
             }
         }
 
-        public void DelPercMagConiuge(decimal idPercMaggConiuge)
+        public void DelMaggiorazioneFiglio(decimal idPercMaggFiglio)
         {
-            PERCENTUALEMAGCONIUGE precedenteIB = new PERCENTUALEMAGCONIUGE();
-            PERCENTUALEMAGCONIUGE delIB = new PERCENTUALEMAGCONIUGE();
+            PERCENTUALEMAGFIGLI precedenteIB = new PERCENTUALEMAGFIGLI();
+            PERCENTUALEMAGFIGLI delIB = new PERCENTUALEMAGFIGLI();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -412,38 +419,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDPERCMAGCONIUGE == idPercMaggConiuge);
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDPERCMAGFIGLI == idPercMaggFiglio);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEMAGFIGLI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new PERCENTUALEMAGCONIUGE()
+                            var ibOld1 = new PERCENTUALEMAGFIGLI()
                             {
-                                
-                                IDTIPOLOGIACONIUGE = precedenteIB.IDTIPOLOGIACONIUGE,
+                                IDPERCMAGFIGLI = precedenteIB.IDPERCMAGFIGLI,
+                                IDTIPOLOGIAFIGLIO = precedenteIB.IDTIPOLOGIAFIGLIO,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                PERCENTUALECONIUGE = precedenteIB.PERCENTUALECONIUGE,
+                                PERCENTUALEFIGLI = precedenteIB.PERCENTUALEFIGLI,
+                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
 
-                            db.PERCENTUALEMAGCONIUGE.Add(ibOld1);
+                            db.PERCENTUALEMAGFIGLI.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di percentuale maggiorazione coniuge.", "PERCENTUALEMAGCONIUGE", idPercMaggConiuge);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro per la percentuale di maggiorazione figlio.", "PERCENTUALEMAGFIGLI", idPercMaggFiglio);
                         }
 
 
@@ -459,5 +467,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,8 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idUfficio { get; set; }
+        [Required(ErrorMessage = "La valuta è richiesta.")]
+        public decimal idValuta { get; set; }
         [Required(ErrorMessage = "Il codice ufficio è richiesto.")]
         [StringLength(30, ErrorMessage = "Per il codice ufficio sono ammessi massimo 4 caratteri.")]
         [Display(Name = "CodiceUfficio")]
@@ -18,6 +21,13 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La descrizione ufficio è richiesta.")]
         [StringLength(30, ErrorMessage = "Per la descrizione dell'ufficio sono ammessi massimo 50 caratteri.")]
         [Display(Name = "Descrizione")]
-        public string DescUfficio { get; set; }
+        public string descUfficio { get; set; }
+        [DefaultValue(false)]
+        [Display(Name = "Pag. val. uff.")]
+        public bool pagatoValutaUfficio { get; set; }
+
+        public ValuteModel ValutaUfficio { get; set; }
+
+
     }
 }

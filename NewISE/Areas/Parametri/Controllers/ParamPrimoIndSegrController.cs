@@ -21,7 +21,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtl = new dtParIndPrimoSegr())
                 {
                     llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
 
@@ -49,7 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())
                 {
                     if (escludiAnnullati)
                     {
@@ -82,7 +82,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtl = new dtParIndPrimoSegr())
                 {
                     llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
 
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())
                 {
                     if (escludiAnnullati)
                     {
@@ -132,7 +132,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtl = new dtParIndPrimoSegr())
                 {
                     var lm = dtl.getIndennitaPrimoSegretario(idIndPrimoSegr);
                     ViewBag.idIndPrimoSegr = lm;
@@ -156,7 +156,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                    using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())
                     {
                         dtib.SetIndennitaPrimoSegretario(ibm);
                     }
@@ -165,7 +165,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                    using (dtParIndPrimoSegr dtl = new dtParIndPrimoSegr())
                     {
                         var lm = dtl.getIndennitaPrimoSegretario(ibm.idIndPrimoSegr);
                         ViewBag.idIndPrimoSegr = lm;
@@ -187,7 +187,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())
                 {
                     dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);
                 }

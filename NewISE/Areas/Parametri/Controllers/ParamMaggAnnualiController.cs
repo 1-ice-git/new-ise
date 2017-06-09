@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtMaggAnnuali dtib = new dtMaggAnnuali())
+                using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                 {
                     if (escludiAnnullati)
                     {
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtMaggAnnuali dtib = new dtMaggAnnuali())
+                using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                 {
                     if (escludiAnnullati)
                     {
@@ -162,7 +162,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtMaggAnnuali dtib = new dtMaggAnnuali())
+                    using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                     {
                         dtib.SetMaggiorazioneAnnuale(ibm);
                     }
@@ -192,7 +192,7 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             try
             {
-                using (dtMaggAnnuali dtib = new dtMaggAnnuali())
+                using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                 {
                     dtib.DelMaggiorazioneAnnuale(idMaggAnnuale);
                 }

@@ -3,41 +3,43 @@ using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtIndennitaBase : IDisposable
+    public class dtParPercentualeDisagio : IDisposable
     {
+        
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase()
+
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio()
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.INDENNITABASE.ToList();
+                    var lib = db.PERCENTUALEDISAGIO.ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new PercentualeDisagioModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
+                                
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -50,30 +52,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase(decimal idLivello)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello).ToList();
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new PercentualeDisagioModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -86,30 +87,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase(bool escludiAnnullati = false)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new PercentualeDisagioModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -122,30 +122,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase(decimal idLivello, bool escludiAnnullati = false)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new PercentualeDisagioModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -162,15 +161,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetIndennitaDiBase(IndennitaBaseModel ibm)
+        public void SetPercentualeDisagio(PercentualeDisagioModel ibm)
         {
-            List<INDENNITABASE> libNew = new List<INDENNITABASE>();
+            List<PERCENTUALEDISAGIO> libNew = new List<PERCENTUALEDISAGIO>();
 
-            INDENNITABASE ibNew = new INDENNITABASE();
+            PERCENTUALEDISAGIO ibNew = new PERCENTUALEDISAGIO();
 
-            INDENNITABASE ibPrecedente = new INDENNITABASE();
+            PERCENTUALEDISAGIO ibPrecedente = new PERCENTUALEDISAGIO();
 
-            List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
+            List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -180,45 +179,43 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new INDENNITABASE()
+                            ibNew = new PERCENTUALEDISAGIO()
                             {
-                                IDLIVELLO = ibm.idLivello,
+                                
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                VALORE = ibm.valore,
-                                VALORERESP = ibm.valoreResponsabile,
+                                PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new INDENNITABASE()
+                            ibNew = new PERCENTUALEDISAGIO()
                             {
-                                IDLIVELLO = ibm.idLivello,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                VALORE = ibm.valore,
-                                VALORERESP = ibm.valoreResponsabile,
+                                PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new INDENNITABASE()
+                        ibNew = new PERCENTUALEDISAGIO()
                         {
-                            IDLIVELLO = ibm.idLivello,
+                            IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            VALORE = ibm.valore,
-                            VALORERESP = ibm.valoreResponsabile,
+                            PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibNew.IDLIVELLO)
+                    var recordInteressati = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -235,44 +232,41 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
                                     libNew.Add(ibOld1);
-                                    
+
                                 }
-                                else if(item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new INDENNITABASE()
+                                    var ibOld2 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDLIVELLO = item.IDLIVELLO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+ 1),
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
-                                    
+
                                     libNew.Add(ibOld1);
                                     libNew.Add(ibOld2);
-                                    
+
                                 }
 
                             }
@@ -284,13 +278,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -305,13 +298,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        PERCENTUALE = item.PERCENTUALE,
                                         ANNULLATO = false
                                     };
 
@@ -320,23 +312,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             }
                         }
 
-                        libNew.Add(ibNew); 
+                        libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.INDENNITABASE.AddRange(libNew);
+                        db.PERCENTUALEDISAGIO.AddRange(libNew);
                     }
                     else
                     {
-                        db.INDENNITABASE.Add(ibNew);
-                        
+                        db.PERCENTUALEDISAGIO.Add(ibNew);
+
                     }
                     db.SaveChanges();
 
-                    using (objLogAttivita log=new objLogAttivita())
+                    using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "INDENNITABASE", ibNew.IDINDENNITABASE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
                     }
-                    
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -347,21 +339,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -370,13 +362,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -385,20 +377,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-       
-
-        public bool EsistonoMovimentiPrimaUguale(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(PercentualeDisagioModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
-        public void DelIndennitaDiBase(decimal idIndbase)
+        public void DelPercentualeDisagio(decimal idPercDisagio)
         {
-            INDENNITABASE precedenteIB = new INDENNITABASE();            
-            INDENNITABASE delIB = new INDENNITABASE();
+            PERCENTUALEDISAGIO precedenteIB = new PERCENTUALEDISAGIO();
+            PERCENTUALEDISAGIO delIB = new PERCENTUALEDISAGIO();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -407,38 +397,40 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.INDENNITABASE.Where(a => a.IDINDENNITABASE == idIndbase);
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDPERCENTUALEDISAGIO == idPercDisagio);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEDISAGIO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new INDENNITABASE()
+                            var ibOld1 = new PERCENTUALEDISAGIO()
                             {
-                                IDLIVELLO = precedenteIB.IDLIVELLO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                IDUFFICIO = precedenteIB.IDUFFICIO,
+                                
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                VALORE = precedenteIB.VALORE,
-                                VALORERESP = precedenteIB.VALORERESP,
+                                //DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                PERCENTUALE = precedenteIB.PERCENTUALE,
+                                
                                 ANNULLATO = false
                             };
 
-                            db.INDENNITABASE.Add(ibOld1);
+                            db.PERCENTUALEDISAGIO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "INDENNITABASE", idIndbase);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEDISAGIO", idPercDisagio);
                         }
 
 
@@ -450,9 +442,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-               
+
             }
 
         }
+
+
     }
 }

@@ -22,11 +22,16 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ll = db.UFFICI.ToList();
 
+                    
                     llm = (from e in ll
                            select new UfficiModel()
                            {
                                idUfficio = e.IDUFFICIO,
-                               DescUfficio = e.DESCRIZIONEUFFICIO
+                               codiceUfficio = e.CODICEUFFICIO,
+                               descUfficio = e.DESCRIZIONEUFFICIO,
+                               pagatoValutaUfficio = e.PAGATOVALUTAUFFICIO,
+                               idValuta = e.IDVALUTA
+                               
                            }).ToList();
                 }
 
@@ -47,12 +52,51 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var liv = db.UFFICI.Find(idUfficio);
 
+                    if (liv != null && liv.IDUFFICIO > 0)
+                    {
+                        lm = new UfficiModel()
+                        {
+                            idUfficio = liv.IDUFFICIO,
+                            codiceUfficio = liv.CODICEUFFICIO,
+                            descUfficio = liv.DESCRIZIONEUFFICIO,
+                            pagatoValutaUfficio = liv.PAGATOVALUTAUFFICIO,
+                            idValuta = liv.IDVALUTA
+                        };
+                    }
+
+                    
+                }
+
+                return lm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public UfficiModel GetUffici(decimal idUfficio, EntitiesDBISE db)
+        {
+            UfficiModel lm = new UfficiModel();
+
+            try
+            {
+                
+                var liv = db.UFFICI.Find(idUfficio);
+
+                if (liv!= null && liv.IDUFFICIO > 0)
+                {
                     lm = new UfficiModel()
                     {
                         idUfficio = liv.IDUFFICIO,
-                        DescUfficio = liv.DESCRIZIONEUFFICIO
+                        codiceUfficio = liv.CODICEUFFICIO,
+                        descUfficio = liv.DESCRIZIONEUFFICIO,
+                        pagatoValutaUfficio = liv.PAGATOVALUTAUFFICIO,
+                        idValuta = liv.IDVALUTA                        
                     };
+
                 }
+
 
                 return lm;
             }
@@ -65,7 +109,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        
+
 
 
 

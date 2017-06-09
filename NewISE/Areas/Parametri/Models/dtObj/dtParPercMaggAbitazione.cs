@@ -7,7 +7,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtRiduzioni : IDisposable
+    public class dtParPercMaggAbitazione : IDisposable
     {
         public void Dispose()
         {
@@ -15,30 +15,34 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
 
 
-        public IList<RiduzioniModel> getListRiduzioni()
+
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
         {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.RIDUZIONI.ToList();
+                    var lib = db.PERCENTUALEMAB.ToList();
 
                     libm = (from e in lib
-                            select new RiduzioniModel()
+                            select new PercMaggAbitazModel()
                             {
                                 
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idPercMabAbitaz = e.IDPERCMAB,
+                                idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
+                                percentualeResponsabile = e.PERCENTUALERESPONSABILE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Livello = new LivelloModel()
-                                //{
-                                //    idLivello = e.LIVELLI.IDLIVELLO,
-                                //    DescLivello = e.LIVELLI.LIVELLO
-                                //}
+                                Livello = new LivelloModel()
+                                {
+                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                    DescLivello = e.LIVELLI.LIVELLO
+                                }
                             }).ToList();
                 }
 
@@ -50,30 +54,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<RiduzioniModel> getListRiduzioni(decimal idRiduzioni)
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello)
         {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
+                    var lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello).ToList();
 
                     libm = (from e in lib
-                            select new RiduzioniModel()
+                            select new PercMaggAbitazModel()
                             {
-                                
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idPercMabAbitaz = e.IDPERCMAB,
+                                idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
+                                percentualeResponsabile = e.PERCENTUALERESPONSABILE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Livello = new LivelloModel()
-                                //{
-                                //    idLivello = e.LIVELLI.IDLIVELLO,
-                                //    DescLivello = e.LIVELLI.LIVELLO
-                                //}
+                                Livello = new LivelloModel()
+                                {
+                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                    DescLivello = e.LIVELLI.LIVELLO
+                                }
                             }).ToList();
                 }
 
@@ -85,30 +91,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<RiduzioniModel> getListRiduzioni(bool escludiAnnullati = false)
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(bool escludiAnnullati = false)
         {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.RIDUZIONI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new RiduzioniModel()
+                            select new PercMaggAbitazModel()
                             {
-                                
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idPercMabAbitaz = e.IDPERCMAB,
+                                idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
+                                percentualeResponsabile = e.PERCENTUALERESPONSABILE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Livello = new LivelloModel()
-                                //{
-                                //    idLivello = e.LIVELLI.IDLIVELLO,
-                                //    DescLivello = e.LIVELLI.LIVELLO
-                                //}
+                                Livello = new LivelloModel()
+                                {
+                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                    DescLivello = e.LIVELLI.LIVELLO
+                                }
                             }).ToList();
                 }
 
@@ -120,30 +128,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<RiduzioniModel> getListRiduzioni(decimal idRiduzioni, bool escludiAnnullati = false)
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello, bool escludiAnnullati = false)
         {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new RiduzioniModel()
+                            select new PercMaggAbitazModel()
                             {
-                                
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idPercMabAbitaz = e.IDPERCMAB,
+                                idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
+                                percentualeResponsabile = e.PERCENTUALERESPONSABILE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Livello = new LivelloModel()
-                                //{
-                                //    idLivello = e.LIVELLI.IDLIVELLO,
-                                //    DescLivello = e.LIVELLI.LIVELLO
-                                //}
+                                Livello = new LivelloModel()
+                                {
+                                    idLivello = e.LIVELLI.IDLIVELLO,
+                                    DescLivello = e.LIVELLI.LIVELLO
+                                }
                             }).ToList();
                 }
 
@@ -159,15 +169,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetRiduzioni(RiduzioniModel ibm)
+        public void SetMaggiorazioneAbitazione(PercMaggAbitazModel ibm)
         {
-            List<RIDUZIONI> libNew = new List<RIDUZIONI>();
+            List<PERCENTUALEMAB> libNew = new List<PERCENTUALEMAB>();
 
-            RIDUZIONI ibNew = new RIDUZIONI();
+            PERCENTUALEMAB ibNew = new PERCENTUALEMAB();
 
-            RIDUZIONI ibPrecedente = new RIDUZIONI();
+            PERCENTUALEMAB ibPrecedente = new PERCENTUALEMAB();
 
-            List<RIDUZIONI> lArchivioIB = new List<RIDUZIONI>();
+            List<PERCENTUALEMAB> lArchivioIB = new List<PERCENTUALEMAB>();
 
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
@@ -177,44 +187,48 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new RIDUZIONI()
+                            ibNew = new PERCENTUALEMAB()
                             {
-                                
-                                IDRIDUZIONI = ibm.idRiduzioni,
+                                IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALE = ibm.percentuale,
+                                PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new RIDUZIONI()
+                            ibNew = new PERCENTUALEMAB()
                             {
-                                IDRIDUZIONI = ibm.idRiduzioni,
+                                IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
+                                PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
+                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new RIDUZIONI()
+                        ibNew = new PERCENTUALEMAB()
                         {
-                            
-                            IDRIDUZIONI = ibm.idRiduzioni,
+                            IDLIVELLO = ibm.idLivello,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALE = ibm.percentuale,
+                            PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
+                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.RIDUZIONI.Where(a => a.ANNULLATO == false && a.IDRIDUZIONI == ibNew.IDRIDUZIONI)
+                    var recordInteressati = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibNew.IDLIVELLO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -231,13 +245,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new RIDUZIONI()
+                                    var ibOld1 = new PERCENTUALEMAB()
                                     {
-                                        
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
+                                        PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -246,23 +261,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new RIDUZIONI()
+                                    var ibOld1 = new PERCENTUALEMAB()
                                     {
-                                        
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        IDLIVELLO = item.IDLIVELLO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
+                                        PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new RIDUZIONI()
+                                    var ibOld2 = new PERCENTUALEMAB()
                                     {
-                                        
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
+                                        IDLIVELLO = item.IDLIVELLO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
+                                        PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -280,13 +297,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new RIDUZIONI()
+                                    var ibOld1 = new PERCENTUALEMAB()
                                     {
-                                        
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDLIVELLO = item.IDLIVELLO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
+                                        PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -301,13 +319,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new RIDUZIONI()
+                                    var ibOld1 = new PERCENTUALEMAB()
                                     {
-                                        
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDLIVELLO = item.IDLIVELLO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
+                                        PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
+                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
@@ -319,18 +338,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.RIDUZIONI.AddRange(libNew);
+                        db.PERCENTUALEMAB.AddRange(libNew);
                     }
                     else
                     {
-                        db.RIDUZIONI.Add(ibNew);
+                        db.PERCENTUALEMAB.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di riduzioni.", "RIDUZIONI", ibNew.IDRIDUZIONI);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "PERCENTUALEMAB", ibNew.IDPERCMAB);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -343,21 +362,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(RiduzioniModel ibm)
+        public bool EsistonoMovimentiPrima(PercMaggAbitazModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(RiduzioniModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercMaggAbitazModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -366,13 +385,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(RiduzioniModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercMaggAbitazModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -383,18 +402,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
 
 
-        public bool EsistonoMovimentiPrimaUguale(RiduzioniModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(PercMaggAbitazModel ibm)
         {
             using (EntitiesDBISE db = new EntitiesDBISE())
             {
-                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
         }
 
-        public void DelRiduzioni(decimal idRiduzioni)
+        public void DelMaggiorazioneAbitazione(decimal idPercMabAbitaz)
         {
-            RIDUZIONI precedenteIB = new RIDUZIONI();
-            RIDUZIONI delIB = new RIDUZIONI();
+            PERCENTUALEMAB precedenteIB = new PERCENTUALEMAB();
+            PERCENTUALEMAB delIB = new PERCENTUALEMAB();
 
 
             using (EntitiesDBISE db = new EntitiesDBISE())
@@ -403,39 +422,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni);
+                    var lib = db.PERCENTUALEMAB.Where(a => a.IDPERCMAB == idPercMabAbitaz);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.RIDUZIONI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEMAB.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new RIDUZIONI()
+                            var ibOld1 = new PERCENTUALEMAB()
                             {
-                                
-                                IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
+                                IDLIVELLO = precedenteIB.IDLIVELLO,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 PERCENTUALE = precedenteIB.PERCENTUALE,
-                                
+                                PERCENTUALERESPONSABILE = precedenteIB.PERCENTUALERESPONSABILE,
+                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
 
-                            db.RIDUZIONI.Add(ibOld1);
+                            db.PERCENTUALEMAB.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di riduzioni.", "RIDUZIONI", idRiduzioni);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEMAB", idPercMabAbitaz);
                         }
 
 
@@ -451,64 +470,5 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-
-
-        public IList<RiduzioniModel> GetRiduzioni()
-        {
-            List<RiduzioniModel> llm = new List<RiduzioniModel>();
-
-            try
-            {
-                using (EntitiesDBISE db = new EntitiesDBISE())
-                {
-                    var ll = db.RIDUZIONI.ToList();
-
-                    llm = (from e in ll
-                           select new RiduzioniModel()
-                           {
-                               
-                               idRiduzioni =e.IDRIDUZIONI,
-                               percentuale = e.PERCENTUALE 
-                               
-                           }).ToList();
-                }
-
-                return llm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public RiduzioniModel GetRiduzioni(decimal idRiduzioni)
-        {
-            RiduzioniModel lm = new RiduzioniModel();
-
-            try
-            {
-                using (EntitiesDBISE db = new EntitiesDBISE())
-                {
-                    var liv = db.RIDUZIONI.Find(idRiduzioni);
-
-                    lm = new RiduzioniModel()
-                    {
-                        
-                        idRiduzioni = liv.IDRIDUZIONI,
-                        percentuale = liv.PERCENTUALE
-
-                    };
-                }
-
-                return lm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-
     }
 }

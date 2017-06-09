@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NewISE.Models.dtObj
 {
-    public class dtLivelli :IDisposable
+    public class dtLivelliDipendente :IDisposable
     {
         public void Dispose()
         {

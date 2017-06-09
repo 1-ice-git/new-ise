@@ -240,7 +240,6 @@
           <Property Name="IDINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDENNITABASE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDCOEFFICIENTESEDE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" />
@@ -251,6 +250,7 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="INDENNITABASE">
           <Key>
@@ -573,7 +573,7 @@
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
           </Key>
-          <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -812,6 +812,8 @@
           <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CODICEUFFICIO" Type="varchar2" MaxLength="4" Nullable="false" />
           <Property Name="DESCRIZIONEUFFICIO" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PAGATOVALUTAUFFICIO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
           <Key>
@@ -2039,7 +2041,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TFR_INDENNITA">
+        <Association Name="R_TFR_I">
           <End Role="TFR" Type="Self.TFR" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -2358,6 +2360,20 @@
             </Principal>
             <Dependent Role="TEORICI">
               <PropertyRef Name="IDVOCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_U">
+          <End Role="VALUTE" Type="Self.VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="UFFICI">
+              <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2876,7 +2892,7 @@
             <End Role="TIPOLOGIAFIGLIO" EntitySet="TIPOLOGIAFIGLIO" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_TFR_INDENNITA" Association="Self.R_TFR_INDENNITA">
+          <AssociationSet Name="R_TFR_I" Association="Self.R_TFR_I">
             <End Role="TFR" EntitySet="TFR" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
@@ -2967,6 +2983,10 @@
           <AssociationSet Name="R_V_T" Association="Self.R_V_T">
             <End Role="VOCI" EntitySet="VOCI" />
             <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_U" Association="Self.R_V_U">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
           <AssociationSet Name="R_VALUTE_TFR" Association="Self.R_VALUTE_TFR">
             <End Role="VALUTE" EntitySet="VALUTE" />
@@ -3523,6 +3543,10 @@
           <AssociationSet Name="R_RU_RD" Association="DBISE.R_RU_RD">
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_U" Association="DBISE.R_V_U">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -4488,6 +4512,9 @@
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_U_T" FromRole="UFFICI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_UFF_VALUFF" FromRole="UFFICI" ToRole="VALUTAUFFICIO" />
           <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISE.FASCIACHILOMETRICA" FromRole="UFFICI" ToRole="COEFFICIENTEFKM" />
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="VALUTE" Relationship="DBISE.R_V_U" FromRole="UFFICI" ToRole="VALUTE" />
         </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
           <Key>
@@ -4520,9 +4547,10 @@
           </Key>
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="VALUTAUFFICIALE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TFR" Relationship="DBISE.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_V_U" FromRole="VALUTE" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="VOCI">
           <Key>
@@ -5941,7 +5969,7 @@
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
           </Key>
-          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
@@ -5990,6 +6018,20 @@
             </Principal>
             <Dependent Role="RUOLODIPENDENTE">
               <PropertyRef Name="IDRUOLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_U">
+          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.UFFICI" Role="UFFICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="UFFICI">
+              <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6829,6 +6871,8 @@
           <EntitySetMapping Name="UFFICI">
             <EntityTypeMapping TypeName="DBISE.UFFICI">
               <MappingFragment StoreEntitySet="UFFICI">
+                <ScalarProperty Name="PAGATOVALUTAUFFICIO" ColumnName="PAGATOVALUTAUFFICIO" />
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
                 <ScalarProperty Name="DESCRIZIONEUFFICIO" ColumnName="DESCRIZIONEUFFICIO" />
                 <ScalarProperty Name="CODICEUFFICIO" ColumnName="CODICEUFFICIO" />
                 <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />

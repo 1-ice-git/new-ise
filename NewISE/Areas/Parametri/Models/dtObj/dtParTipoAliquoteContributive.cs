@@ -6,30 +6,28 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtTipologiaConiuge : IDisposable
+    public class dtParTipoAliquoteContributive : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-
-        public IList<TipologiaConiugeModel> GetTipologiaConiuge()
+        public IList<TipoAliquoteContributiveModel> GetTipoAliquote()
         {
-            List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
+            List<TipoAliquoteContributiveModel> llm = new List<TipoAliquoteContributiveModel>();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var ll = db.TIPOLOGIACONIUGE.ToList();
+                    var ll = db.TIPOALIQUOTECONTRIBUTIVE.ToList();
 
                     llm = (from e in ll
-                           select new TipologiaConiugeModel()
+                           select new TipoAliquoteContributiveModel()
                            {
-                               
-                               idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
-                               tipologiaConiuge = e.TIPOLOGIACONIUGE1
+                               codice = e.CODICE,
+                               idTipoAliqContr = e.IDTIPOALIQCONTR,
                            }).ToList();
                 }
 
@@ -41,21 +39,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public TipologiaConiugeModel GetTipologiaConiuge(decimal idTipologiaConiuge)
+        public TipoAliquoteContributiveModel GetTipoAliquote(decimal idAliqContr)
         {
-            TipologiaConiugeModel lm = new TipologiaConiugeModel();
+            TipoAliquoteContributiveModel lm = new TipoAliquoteContributiveModel();
 
             try
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var liv = db.TIPOLOGIACONIUGE.Find(idTipologiaConiuge);
+                    var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idAliqContr);
 
-                    lm = new TipologiaConiugeModel()
+                    lm = new TipoAliquoteContributiveModel()
                     {
                         
-                        idTipologiaConiuge = liv.IDTIPOLOGIACONIUGE,
-                        tipologiaConiuge = liv.TIPOLOGIACONIUGE1
+                        codice =liv.CODICE,
+                        idTipoAliqContr = liv.IDTIPOALIQCONTR
                         
                     };
                 }
@@ -67,5 +65,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
+
     }
 }

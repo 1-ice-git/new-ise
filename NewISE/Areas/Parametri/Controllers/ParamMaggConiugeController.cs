@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaConiuge dtl = new dtTipologiaConiuge())
+                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                 {
                     llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
 
@@ -49,7 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtMaggConiuge dtib = new dtMaggConiuge())
+                using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     if (escludiAnnullati)
                     {
@@ -82,7 +82,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaConiuge dtl = new dtTipologiaConiuge())
+                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                 {
                     llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
 
@@ -100,7 +100,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtMaggConiuge dtib = new dtMaggConiuge())
+                using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     if (escludiAnnullati)
                     {
@@ -130,7 +130,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtTipologiaConiuge dtl = new dtTipologiaConiuge())
+                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                 {
                     var lm = dtl.GetTipologiaConiuge(idTipologiaConiuge);
                     ViewBag.Coniuge = lm;
@@ -154,7 +154,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtMaggConiuge dtib = new dtMaggConiuge())
+                    using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
                         dtib.SetPercMagConiuge(ibm);
                     }
@@ -163,7 +163,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtTipologiaConiuge dtl = new dtTipologiaConiuge())
+                    using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                     {
                         var lm = dtl.GetTipologiaConiuge(ibm.idTipologiaConiuge);
                         ViewBag.Livello = lm;
@@ -185,7 +185,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtMaggConiuge dtib = new dtMaggConiuge())
+                using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     dtib.DelPercMagConiuge(idMaggConiuge);
                 }

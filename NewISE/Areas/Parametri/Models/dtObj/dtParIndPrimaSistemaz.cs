@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtFasciaKm : IDisposable
+    public class dtParIndPrimaSistemaz : IDisposable
     {
         public void Dispose()
         {

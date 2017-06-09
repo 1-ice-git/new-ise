@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
                     if (escludiAnnullati)
                     {
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
                     if (escludiAnnullati)
                     {
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                    using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                     {
                         dtib.SetPercentualeDisagio(ibm);
                     }
@@ -185,7 +185,7 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             try
             {
-                using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
                    dtib.DelPercentualeDisagio(idPercDisagio);
                 }

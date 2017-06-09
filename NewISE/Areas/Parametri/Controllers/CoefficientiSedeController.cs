@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtCoefficientiSede dtib = new dtCoefficientiSede())
+                using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
                     if (escludiAnnullati)
                     {
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtCoefficientiSede dtib = new dtCoefficientiSede())
+                using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
                     if (escludiAnnullati)
                     {
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtCoefficientiSede dtib = new dtCoefficientiSede())
+                    using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                     {
                         dtib.SetCoefficientiSede(ibm);
                     }
@@ -185,7 +185,7 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             try
             {
-                using (dtCoefficientiSede dtib = new dtCoefficientiSede())
+                using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
                     dtib.DelCoefficientiSede(idCoefficientiSede);
                 }

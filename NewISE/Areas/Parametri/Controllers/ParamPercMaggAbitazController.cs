@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -49,7 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
+                using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
                     if (escludiAnnullati)
                     {
@@ -82,7 +82,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -100,7 +100,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
+                using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
                     if (escludiAnnullati)
                     {
@@ -131,7 +131,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
+                using (dtParLivelli dtl = new dtParLivelli())
                 {
                     var lm = dtl.GetLivelli(idLivello);
                     ViewBag.Livello = lm;
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
+                    using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {
 
                  
@@ -167,7 +167,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtLivelli dtl = new dtLivelli())
+                    using (dtParLivelli dtl = new dtParLivelli())
                     {
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
@@ -189,7 +189,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
+                using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
                     dtib.DelMaggiorazioneAbitazione(idPercMabAbitaz);
                 }

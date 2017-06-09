@@ -22,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtValute dtl = new dtValute())
+                using (dtParValute dtl = new dtParValute())
                 {
                     llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
 
@@ -82,7 +82,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtValute dtl = new dtValute())
+                using (dtParValute dtl = new dtParValute())
                 {
                     llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
 
@@ -131,7 +131,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtValute dtl = new dtValute())
+                using (dtParValute dtl = new dtParValute())
                 {
                     var lm = dtl.GetValute(idValuta);
                     ViewBag.descrizionevaluta = lm;
@@ -156,7 +156,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtValute dtib = new dtValute())
+                    using (dtParValute dtib = new dtParValute())
                     {
 
                         dtib.SetValute(ibm);
@@ -166,7 +166,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtValute dtl = new dtValute())
+                    using (dtParValute dtl = new dtParValute())
                     {
                         var lm = dtl.GetValute(ibm.idValuta);
                         ViewBag.Livello = lm;
@@ -188,7 +188,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtValute dtib = new dtValute())
+                using (dtParValute dtib = new dtParValute())
                 {
                     dtib.DelValute(idValuta);
                 }

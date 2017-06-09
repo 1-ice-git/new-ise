@@ -42,5 +42,10 @@ namespace NewISE.Models.DBModel
         public DipendentiModel Dipendente { get; set; }
 
         public LivelloModel Livello { get; set; }
+
+        public bool HasValue()
+        {
+            return idLivDipendente > 0 ? true : false;
+        }
     }
 }
