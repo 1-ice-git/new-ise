@@ -21,7 +21,7 @@ namespace NewISE
         }
     
         public decimal IDPERCENTUALEDISAGIO { get; set; }
-        public Nullable<decimal> IDUFFICIO { get; set; }
+        public decimal IDUFFICIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALE { get; set; }

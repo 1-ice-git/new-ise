@@ -1,9 +1,9 @@
-﻿using NewISE.Models.dtObj;
-using NewISE.Models.Tools;
+﻿using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -60,7 +60,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (tr != null)
             {
-                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.allegaDocumento == true)
+                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.file != null)
                 {
                     if (tr.dataLettera.HasValue)
                     {
@@ -80,7 +80,7 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        public static ValidationResult VerificaRequiredDocumentoLettera(string v, ValidationContext context)
+        public static ValidationResult VerificaRequiredDocumentoLettera(HttpPostedFileBase v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
 
@@ -90,13 +90,13 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
                 {
-                    if (tr.allegaDocumento == true)
+                    if (tr.file != null)
                     {
                         vr = ValidationResult.Success;
                     }
                     else
                     {
-                        vr = new ValidationResult("L'opzione allega lettera di trasferimento è richiesta.");
+                        vr = new ValidationResult("La lettera di trasferimento è richiesta.");
                     }
                 }
                 else
@@ -120,7 +120,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (tr != null)
             {
-                if (tr.dataLettera.HasValue || tr.allegaDocumento == true)
+                if (tr.dataLettera.HasValue || tr.file != null)
                 {
                     if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
                     {
@@ -226,7 +226,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (EntitiesDBISE db = new EntitiesDBISE())
                 {
-                    var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr);
+                    var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
 
                     if (ldp != null && ldp.Count() > 0)
                     {
@@ -234,13 +234,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lt != null && lt.Count() > 0)
                         {
+                            List<IndennitaModel> lim = new List<IndennitaModel>();
                             var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
-
-                            //var ruoloUfficio = t.RUOLODIPENDENTE.Where(a => a.IDTRASFERIMENTO == t.IDTRASFERIMENTO &&
-                            //                                           a.ANNULLATO == false &&
-                            //                                           t.DATAPARTENZA >= a.DATAINZIOVALIDITA &&
-                            //                                           t.DATAPARTENZA <= a.DATAFINEVALIDITA)
-                            //                                    .OrderByDescending(a => a.DATAINZIOVALIDITA).First().RUOLOUFFICIO;
 
                             tm = new TrasferimentoModel()
                             {
@@ -298,11 +293,159 @@ namespace NewISE.Models.DBModel.dtObj
                                 },
                                 RuoloUfficio = new RuoloUfficioModel()
                                 {
-                                    idRuoloUfficio = t.INDENNITA.Where(a=>a.ANNULLATO == false).OrderByDescending(a=>a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                                    idRuoloUfficio = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
                                     DescrizioneRuolo = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.DESCRUOLO
-                                }
+                                },
+                                idRuoloUfficio = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                                lIndennita = (from e in t.INDENNITA
+                                              where e.ANNULLATO == false
+                                              select new IndennitaModel()
+                                              {
+                                                  idIndennita = e.IDINDENNITA,
+                                                  idTrasferimento = e.IDTRASFERIMENTO,
+                                                  idLivDipendente = e.IDLIVDIPENDENTE,
+                                                  idIndennitaBase = e.IDINDENNITABASE,
+                                                  idTFR = e.IDTFR,
+                                                  idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                                  idCoefficenteSede = e.IDCOEFFICIENTESEDE,
+                                                  idMaggiorazioneConiuge = e.IDMAGGIORAZIONECONIUGE,
+                                                  idMaggiorazioneFigli = e.IDMAGGIORAZIONEFIGLI,
+                                                  idRuoloDipendente = e.IDRUOLODIPENDENTE,
+                                                  dataInizio = e.DATAINIZIO,
+                                                  dataFine = e.DATAFINE,
+                                                  dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                                  annullato = e.ANNULLATO,
+                                                  CoefficenteSede = new CoefficientiSedeModel()
+                                                  {
+                                                      idCoefficientiSede = e.COEFFICIENTESEDE.IDCOEFFICIENTESEDE,
+                                                      idUfficio = e.COEFFICIENTESEDE.IDUFFICIO,
+                                                      dataInizioValidita = e.COEFFICIENTESEDE.DATAINIZIOVALIDITA,
+                                                      dataFineValidita = e.COEFFICIENTESEDE.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : e.DATAFINE,
+                                                      valore = e.COEFFICIENTESEDE.VALORECOEFFICIENTE,
+                                                      dataAggiornamento = e.COEFFICIENTESEDE.DATAAGGIORNAMENTO,
+                                                      annullato = e.COEFFICIENTESEDE.ANNULLATO
+                                                  }
+                                              }).ToList()
                             };
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return tm;
+        }
+
+        public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola, EntitiesDBISE db)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+            int matr = Convert.ToInt16(matricola);
+            try
+            {
+                var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
+
+                if (ldp != null && ldp.Count() > 0)
+                {
+                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false).ToList();
+
+                    if (lt != null && lt.Count() > 0)
+                    {
+                        List<IndennitaModel> lim = new List<IndennitaModel>();
+                        var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
+
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+                            annullato = t.ANNULLATO,
+                            StatoTrasferimento = new StatoTrasferimentoModel()
+                            {
+                                idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                                descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                            },
+                            TipoTrasferimento = new TipoTrasferimentoModel()
+                            {
+                                idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                            },
+                            Ufficio = new UfficiModel()
+                            {
+                                idUfficio = t.UFFICI.IDUFFICIO,
+                                codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                            },
+                            Dipendente = new DipendentiModel()
+                            {
+                                idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                                matricola = t.DIPENDENTI.MATRICOLA,
+                                nome = t.DIPENDENTI.NOME,
+                                cognome = t.DIPENDENTI.COGNOME,
+                                dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                                dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                                indirizzo = t.DIPENDENTI.INDIRIZZO,
+                                cap = t.DIPENDENTI.CAP,
+                                citta = t.DIPENDENTI.CITTA,
+                                provincia = t.DIPENDENTI.PROVINCIA,
+                                email = t.DIPENDENTI.EMAIL,
+                                telefono = t.DIPENDENTI.TELEFONO,
+                                fax = t.DIPENDENTI.FAX,
+                                abilitato = t.DIPENDENTI.ABILITATO,
+                                dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                            },
+                            TipoCoan = new TipologiaCoanModel()
+                            {
+                                idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                            },
+                            RuoloUfficio = new RuoloUfficioModel()
+                            {
+                                idRuoloUfficio = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                                DescrizioneRuolo = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.DESCRUOLO
+                            },
+                            idRuoloUfficio = t.INDENNITA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAINIZIO).First().RUOLODIPENDENTE.RUOLOUFFICIO.IDRUOLO,
+                            lIndennita = (from e in t.INDENNITA
+                                          where e.ANNULLATO == false
+                                          select new IndennitaModel()
+                                          {
+                                              idIndennita = e.IDINDENNITA,
+                                              idTrasferimento = e.IDTRASFERIMENTO,
+                                              idLivDipendente = e.IDLIVDIPENDENTE,
+                                              idIndennitaBase = e.IDINDENNITABASE,
+                                              idTFR = e.IDTFR,
+                                              idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                              idCoefficenteSede = e.IDCOEFFICIENTESEDE,
+                                              idMaggiorazioneConiuge = e.IDMAGGIORAZIONECONIUGE,
+                                              idMaggiorazioneFigli = e.IDMAGGIORAZIONEFIGLI,
+                                              idRuoloDipendente = e.IDRUOLODIPENDENTE,
+                                              dataInizio = e.DATAINIZIO,
+                                              dataFine = e.DATAFINE,
+                                              dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                              annullato = e.ANNULLATO,
+                                              //CoefficenteSede = new CoefficientiSedeModel()
+                                              //{
+                                              //    idCoefficientiSede = e.COEFFICIENTESEDE.IDCOEFFICIENTESEDE,
+                                              //    idUfficio = e.COEFFICIENTESEDE.IDUFFICIO,
+                                              //    dataInizioValidita = e.COEFFICIENTESEDE.DATAINIZIOVALIDITA,
+                                              //    dataFineValidita = e.COEFFICIENTESEDE.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : e.DATAFINE,
+                                              //    valore = e.COEFFICIENTESEDE.VALORECOEFFICIENTE,
+                                              //    dataAggiornamento = e.COEFFICIENTESEDE.DATAAGGIORNAMENTO,
+                                              //    annullato = e.COEFFICIENTESEDE.ANNULLATO
+                                              //}
+                                          }).ToList()
+                        };
                     }
                 }
             }
@@ -318,6 +461,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             TrasferimentoModel tm = new TrasferimentoModel();
+
             DateTime dtDatiParametri;
 
             try
@@ -340,17 +484,24 @@ namespace NewISE.Models.DBModel.dtObj
                             dtDatiParametri = DateTime.Now.Date;
                         }
 
-                        using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                         {
                             RuoloUfficioModel rum = new RuoloUfficioModel();
-                            rum = dtru.GetRuoloDipendente(tm.idTrasferimento, dtDatiParametri).RuoloUfficio;
+                            rum = dtrd.GetRuoloDipendente(tm.RuoloUfficio.idRuoloUfficio, dtDatiParametri).RuoloUfficio;
 
                             dit.RuoloUfficio = rum;
                         }
 
                         if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare)
                         {
-                            //TODO:Inserire codice per prelevare le informazioni di: indennità di base; indennità di servizio; maggiorazioni famigliari; indennità personale.
+                            
+                            using (CalcoliIndennita ci=new CalcoliIndennita(tm.Dipendente.matricola.ToString()))
+                            {
+                                dit.indennitaBase = ci.indennitaBaseRiduzione;
+                                dit.indennitaServizio = ci.indennitaServizio;
+                            }
+
+                            
                         }
                     }
                 }
@@ -385,24 +536,10 @@ namespace NewISE.Models.DBModel.dtObj
 
             db.TRASFERIMENTO.Add(tr);
 
-            db.SaveChanges();
-
-            using (dtLogAttivita dtla=new dtLogAttivita())
+            if (db.SaveChanges() > 0)
             {
-                LogAttivitaModel lam = new LogAttivitaModel();
-
-                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
-                lam.idTrasferimento = tr.IDTRASFERIMENTO;
-                lam.idAttivitaCrud = (decimal)EnumAttivitaCrud.Inserimento;
-                lam.dataOperazione = DateTime.Now;
-                lam.descAttivitaSvolta = "Inserimento di un nuovo trasferimento.";
-                lam.idTabellaCoinvolta = tr.IDTRASFERIMENTO;
-
-                dtla.SetLogAttivita(lam, db);
+                trm.idTrasferimento = tr.IDTRASFERIMENTO;
             }
-
-
-
         }
 
         public void EditTrasferimento(TrasferimentoModel trm, EntitiesDBISE db)
@@ -426,19 +563,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 db.SaveChanges();
 
-                using (dtLogAttivita dtla = new dtLogAttivita())
-                {
-                    LogAttivitaModel lam = new LogAttivitaModel();
-
-                    lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
-                    lam.idTrasferimento = tr.IDTRASFERIMENTO;
-                    lam.idAttivitaCrud = (decimal)EnumAttivitaCrud.Modifica;
-                    lam.dataOperazione = DateTime.Now;
-                    lam.descAttivitaSvolta = "Modifica del trasferimento.";
-                    lam.idTabellaCoinvolta = tr.IDTRASFERIMENTO;
-
-                    dtla.SetLogAttivita(lam, db);
-                }
+                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
             }
         }
     }

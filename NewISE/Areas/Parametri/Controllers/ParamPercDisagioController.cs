@@ -25,14 +25,14 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtUffici dtl = new dtUffici())
                 {
-                    llm = dtl.GetUffici().OrderBy(a => a.DescUfficio).ToList();
+                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.DescUfficio,
+                                 Text = t.descUfficio,
                                  Value = t.idUfficio.ToString()
                              }).ToList();
 
@@ -85,14 +85,14 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtUffici dtl = new dtUffici())
                 {
-                    llm = dtl.GetUffici().OrderBy(a => a.DescUfficio).ToList();
+                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.DescUfficio,
+                                 Text = t.descUfficio,
                                  Value = t.idUfficio.ToString()
                              }).ToList();
                         r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;

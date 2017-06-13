@@ -472,7 +472,7 @@
             <PropertyRef Name="IDPERCENTUALEDISAGIO" />
           </Key>
           <Property Name="IDPERCENTUALEDISAGIO" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
@@ -839,9 +839,9 @@
           <Key>
             <PropertyRef Name="IDVALUTA" />
           </Key>
-          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDVALUTA" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONEVALUTA" Type="varchar2" MaxLength="30" Nullable="false" />
-          <Property Name="VALUTAUFFICIALE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="VALUTAUFFICIALE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="VOCI">
           <Key>
@@ -2308,7 +2308,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_UFFICI_PERCDISAGIO">
-          <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="0..1">
+          <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="PERCENTUALEDISAGIO" Type="Self.PERCENTUALEDISAGIO" Multiplicity="*" />
@@ -3081,7 +3081,6 @@
           <EntitySet Name="OA" EntityType="DBISE.OA" />
           <EntitySet Name="PASSAPORTI" EntityType="DBISE.PASSAPORTI" />
           <EntitySet Name="PENSIONECONIUGE" EntityType="DBISE.PENSIONECONIUGE" />
-          <EntitySet Name="PERCENTUALEDISAGIO" EntityType="DBISE.PERCENTUALEDISAGIO" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="DBISE.PERCENTUALEMAB" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="DBISE.PERCENTUALEMAGCONIUGE" />
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="DBISE.PERCENTUALEMAGFIGLI" />
@@ -3117,7 +3116,6 @@
           <EntitySet Name="UFFICI" EntityType="DBISE.UFFICI" />
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="DBISE.UTENTIAUTORIZZATI" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="DBISE.VALUTAUFFICIO" />
-          <EntitySet Name="VALUTE" EntityType="DBISE.VALUTE" />
           <EntitySet Name="VOCI" EntityType="DBISE.VOCI" />
           <AssociationSet Name="R_UL_C" Association="DBISE.R_UL_C">
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
@@ -3271,10 +3269,6 @@
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
-          <AssociationSet Name="R_PERCDISAGIO_INDENNITA" Association="DBISE.R_PERCDISAGIO_INDENNITA">
-            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-          </AssociationSet>
           <AssociationSet Name="R_T_I" Association="DBISE.R_T_I">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -3387,10 +3381,6 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="NOTIFICARICHIESTAMAGFAM" EntitySet="NOTIFICARICHIESTAMAGFAM" />
           </AssociationSet>
-          <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="DBISE.R_UFFICI_PERCDISAGIO">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
-          </AssociationSet>
           <AssociationSet Name="R_U_PMAB" Association="DBISE.R_U_PMAB">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
@@ -3455,10 +3445,6 @@
             <End Role="VOCI" EntitySet="VOCI" />
             <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
-          <AssociationSet Name="R_VALUTE_TFR" Association="DBISE.R_VALUTE_TFR">
-            <End Role="VALUTE" EntitySet="VALUTE" />
-            <End Role="TFR" EntitySet="TFR" />
-          </AssociationSet>
           <AssociationSet Name="R_TD_TER_D" Association="DBISE.R_TD_TER_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
@@ -3511,10 +3497,6 @@
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <AssociationSet Name="R_VALUTE_VALUFF" Association="DBISE.R_VALUTE_VALUFF">
-            <End Role="VALUTE" EntitySet="VALUTE" />
-            <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
-          </AssociationSet>
           <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISE.DOCUMENTO_NORMACALCOLO">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -3544,9 +3526,27 @@
             <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
+          <EntitySet Name="PERCENTUALEDISAGIO" EntityType="DBISE.PERCENTUALEDISAGIO" />
+          <AssociationSet Name="R_PERCDISAGIO_INDENNITA" Association="DBISE.R_PERCDISAGIO_INDENNITA">
+            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="DBISE.R_UFFICI_PERCDISAGIO">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
+          </AssociationSet>
+          <EntitySet Name="VALUTE" EntityType="DBISE.VALUTE" />
+          <AssociationSet Name="R_VALUTE_TFR" Association="DBISE.R_VALUTE_TFR">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="TFR" EntitySet="TFR" />
+          </AssociationSet>
           <AssociationSet Name="R_V_U" Association="DBISE.R_V_U">
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="UFFICI" EntitySet="UFFICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_VALUTE_VALUFF" Association="DBISE.R_VALUTE_VALUFF">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -3830,10 +3830,10 @@
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISE.R_LIVDIP_IND" FromRole="INDENNITA" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISE.R_MC_I" FromRole="INDENNITA" ToRole="MAGGIORAZIONECONIUGE" />
           <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISE.R_MF_I" FromRole="INDENNITA" ToRole="MAGGIORAZIONEFIGLI" />
-          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_PERCDISAGIO_INDENNITA" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TFR" Relationship="DBISE.R_TFR_INDENNITA" FromRole="INDENNITA" ToRole="TFR" />
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISE.R_RD_I" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
+          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_PERCDISAGIO_INDENNITA" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
         </EntityType>
         <EntityType Name="INDENNITABASE">
           <Key>
@@ -4091,20 +4091,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISE.R_PC_MC" FromRole="PENSIONECONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
-        </EntityType>
-        <EntityType Name="PERCENTUALEDISAGIO">
-          <Key>
-            <PropertyRef Name="IDPERCENTUALEDISAGIO" />
-          </Key>
-          <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDUFFICIO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_PERCDISAGIO_INDENNITA" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
@@ -4507,13 +4493,13 @@
           <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISE.R_UFFICI_COEFFICIENTESEDE" FromRole="UFFICI" ToRole="COEFFICIENTESEDE" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISE.R_UFFICI_MAGANNUALI" FromRole="UFFICI" ToRole="MAGGIORAZIONIANNUALI" />
-          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISE.R_U_PMAB" FromRole="UFFICI" ToRole="PERCENTUALEMAB" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISE.R_U_T" FromRole="UFFICI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_UFF_VALUFF" FromRole="UFFICI" ToRole="VALUTAUFFICIO" />
           <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISE.FASCIACHILOMETRICA" FromRole="UFFICI" ToRole="COEFFICIENTEFKM" />
           <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
           <NavigationProperty Name="VALUTE" Relationship="DBISE.R_V_U" FromRole="UFFICI" ToRole="VALUTE" />
         </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
@@ -4540,17 +4526,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFF_VALUFF" FromRole="VALUTAUFFICIO" ToRole="UFFICI" />
           <NavigationProperty Name="VALUTE" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTAUFFICIO" ToRole="VALUTE" />
-        </EntityType>
-        <EntityType Name="VALUTE">
-          <Key>
-            <PropertyRef Name="IDVALUTA" />
-          </Key>
-          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TFR" Relationship="DBISE.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
-          <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_V_U" FromRole="VALUTE" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="VOCI">
           <Key>
@@ -5097,20 +5072,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_PERCDISAGIO_INDENNITA">
-          <End Type="DBISE.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEDISAGIO">
-              <PropertyRef Name="IDPERCENTUALEDISAGIO" />
-            </Principal>
-            <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDPERCENTUALEDISAGIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_I">
           <End Type="DBISE.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5503,20 +5464,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_UFFICI_PERCDISAGIO">
-          <End Type="DBISE.UFFICI" Role="UFFICI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="PERCENTUALEDISAGIO">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_U_PMAB">
           <End Type="DBISE.UFFICI" Role="UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5739,20 +5686,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_VALUTE_TFR">
-          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.TFR" Role="TFR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VALUTE">
-              <PropertyRef Name="IDVALUTA" />
-            </Principal>
-            <Dependent Role="TFR">
-              <PropertyRef Name="IDVALUTA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TD_TER_D">
           <End Type="DBISE.TIPODOCUMENTI" Role="TIPODOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5935,20 +5868,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_VALUTE_VALUFF">
-          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISE.VALUTAUFFICIO" Role="VALUTAUFFICIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VALUTE">
-              <PropertyRef Name="IDVALUTA" />
-            </Principal>
-            <Dependent Role="VALUTAUFFICIO">
-              <PropertyRef Name="IDVALUTA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="DOCUMENTO_NORMACALCOLO">
           <End Type="DBISE.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISE.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
@@ -6021,6 +5940,73 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PERCENTUALEDISAGIO">
+          <Key>
+            <PropertyRef Name="IDPERCENTUALEDISAGIO" />
+          </Key>
+          <Property Name="IDPERCENTUALEDISAGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISE.R_PERCDISAGIO_INDENNITA" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
+        </EntityType>
+        <Association Name="R_PERCDISAGIO_INDENNITA">
+          <End Type="DBISE.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERCENTUALEDISAGIO">
+              <PropertyRef Name="IDPERCENTUALEDISAGIO" />
+            </Principal>
+            <Dependent Role="INDENNITA">
+              <PropertyRef Name="IDPERCENTUALEDISAGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_UFFICI_PERCDISAGIO">
+          <End Type="DBISE.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="PERCENTUALEDISAGIO">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="VALUTE">
+          <Key>
+            <PropertyRef Name="IDVALUTA" />
+          </Key>
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TFR" Relationship="DBISE.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISE.R_V_U" FromRole="VALUTE" ToRole="UFFICI" />
+          <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISE.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
+        </EntityType>
+        <Association Name="R_VALUTE_TFR">
+          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.TFR" Role="TFR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="TFR">
+              <PropertyRef Name="IDVALUTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_V_U">
           <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6031,6 +6017,20 @@
               <PropertyRef Name="IDVALUTA" />
             </Principal>
             <Dependent Role="UFFICI">
+              <PropertyRef Name="IDVALUTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_VALUTE_VALUFF">
+          <End Type="DBISE.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISE.VALUTAUFFICIO" Role="VALUTAUFFICIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="VALUTAUFFICIO">
               <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
@@ -6519,19 +6519,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PERCENTUALEDISAGIO">
-            <EntityTypeMapping TypeName="DBISE.PERCENTUALEDISAGIO">
-              <MappingFragment StoreEntitySet="PERCENTUALEDISAGIO">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-                <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEMAB">
             <EntityTypeMapping TypeName="DBISE.PERCENTUALEMAB">
               <MappingFragment StoreEntitySet="PERCENTUALEMAB">
@@ -6900,15 +6887,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VALUTE">
-            <EntityTypeMapping TypeName="DBISE.VALUTE">
-              <MappingFragment StoreEntitySet="VALUTE">
-                <ScalarProperty Name="VALUTAUFFICIALE" ColumnName="VALUTAUFFICIALE" />
-                <ScalarProperty Name="DESCRIZIONEVALUTA" ColumnName="DESCRIZIONEVALUTA" />
-                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="VOCI">
             <EntityTypeMapping TypeName="DBISE.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
@@ -6961,6 +6939,28 @@
                 <ScalarProperty Name="DATAINZIOVALIDITA" ColumnName="DATAINZIOVALIDITA" />
                 <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
                 <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERCENTUALEDISAGIO">
+            <EntityTypeMapping TypeName="DBISE.PERCENTUALEDISAGIO">
+              <MappingFragment StoreEntitySet="PERCENTUALEDISAGIO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
+                <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VALUTE">
+            <EntityTypeMapping TypeName="DBISE.VALUTE">
+              <MappingFragment StoreEntitySet="VALUTE">
+                <ScalarProperty Name="VALUTAUFFICIALE" ColumnName="VALUTAUFFICIALE" />
+                <ScalarProperty Name="DESCRIZIONEVALUTA" ColumnName="DESCRIZIONEVALUTA" />
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

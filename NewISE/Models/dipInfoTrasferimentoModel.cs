@@ -18,23 +18,25 @@ namespace NewISE.Models
         [DisplayFormat(ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-mm-yyyy}")]
         public DateTime? Decorrenza { get; set; }
 
+
+
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
         [Display(Name = "Indennità di Base")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
-        public double indennitaBase { get; set; }
+        public decimal indennitaBase { get; set; }
 
         [Display(Name = "Indennità di Servizio")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
-        public double indennitaServizio { get; set; }
+        public decimal indennitaServizio { get; set; }
 
         [Display(Name = "Maggiorazione Familiari")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
-        public double maggiorazioniFamiliari { get; set; }
+        public decimal maggiorazioniFamiliari { get; set; }
 
         [Display(Name = "Indennità Personale")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
-        public double indennitaPersonale { get; set; }
+        public decimal indennitaPersonale { get; set; }
 
         [Display(Name = "CDC Destinazione")]
         public string CDCDestinazione
@@ -44,7 +46,7 @@ namespace NewISE.Models
 
                 if (UfficioDestinazione != null && UfficioDestinazione.idUfficio > 0)
                 {
-                    return UfficioDestinazione.DescUfficio + " (" + UfficioDestinazione.codiceUfficio + ")";
+                    return UfficioDestinazione.descUfficio + " (" + UfficioDestinazione.codiceUfficio + ")";
                 }
                 else
                 {

@@ -36,5 +36,7 @@ namespace NewISE.Models.DBModel
         public HttpPostedFileBase file { get; set; }
 
         public TrasferimentoModel Trasferimento { get; set; }
+
+        
     }
 }

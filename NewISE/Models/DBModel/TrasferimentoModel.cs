@@ -76,7 +76,11 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il ruolo dell'ufficio è richiesto.")]
         public decimal idRuoloUfficio { get; set; }
 
-        
+        [Display(Name = "Allega Lettera Trasferimento")]
+        [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredDocumentoLettera")]
+        public HttpPostedFileBase file { get; set; }
+
+
         public StatoTrasferimentoModel StatoTrasferimento { get; set; }
 
         
@@ -95,9 +99,15 @@ namespace NewISE.Models.DBModel
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
-        [Display(Name = "Allega Lettera Trasferimento")]
-        [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredDocumentoLettera")]
-        [DefaultValue(false)]
-        public bool allegaDocumento { get; set; }
+        //[Display(Name = "Allega Lettera Trasferimento")]
+        //[CustomValidation(typeof(dtTrasferimento), "VerificaRequiredDocumentoLettera")]
+        //[DefaultValue(false)]
+        //public bool allegaDocumento { get; set; }
+
+
+        public bool HasValue()
+        {
+            return idTrasferimento > 0 ? true : false;
+        }
     }
 }

@@ -94,7 +94,6 @@ namespace NewISE.Controllers
                     dm.cdcGepe = dtcdcg.GetCDCGepe(dm.idDipendente);
                 }
 
-
                 using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
                 {
                     dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);

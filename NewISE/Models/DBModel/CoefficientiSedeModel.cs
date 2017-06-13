@@ -18,12 +18,12 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fin. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime? dataFineValidita { get; set; }
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
@@ -43,5 +43,10 @@ namespace NewISE.Models.DBModel
         public bool annullato { get; set; } = false;
 
         public UfficiModel Ufficio { get; set; }
+
+        public bool HasValue()
+        {
+            return idCoefficientiSede > 0 ? true : false;
+        }
     }
 }

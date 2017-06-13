@@ -42,5 +42,11 @@ namespace NewISE.Models.DBModel
 
         public UfficiModel Ufficio { get; set; }
 
+
+        public bool HasValue()
+        {
+            return idPercentualeDisagio > 0 ? true : false;
+        }
+
     }
 }

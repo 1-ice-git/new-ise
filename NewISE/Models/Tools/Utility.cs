@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.Config.s_admin;
+using NewISE.Models.dtObj;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -111,6 +112,32 @@ namespace NewISE.Models.Tools
 
             return ac;
         }
-                
+
+        public static void SetLogAttivita(EnumAttivitaCrud eac, string descAttivitaSvolta, string tabellaCoinvolta, EntitiesDBISE db, decimal idTrasferimento = 0, decimal idTabellaCoinvolta = 0)
+        {
+            using (dtLogAttivita dtla = new dtLogAttivita())
+            {
+                LogAttivitaModel lam = new LogAttivitaModel();
+
+                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                if (idTrasferimento > 0)
+                {
+                    lam.idTrasferimento = idTrasferimento;
+                }
+
+                lam.idAttivitaCrud = (decimal)eac;
+                lam.dataOperazione = DateTime.Now;
+                lam.descAttivitaSvolta = descAttivitaSvolta;
+                lam.tabellaCoinvolta = tabellaCoinvolta;
+                if (idTabellaCoinvolta > 0)
+                {
+                    lam.idTabellaCoinvolta = idTabellaCoinvolta;
+                }
+
+                dtla.SetLogAttivita(lam, db);
+            }
+        }
     }
+
+    
 }

@@ -31,7 +31,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -39,7 +39,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -66,7 +66,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -74,7 +74,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -109,7 +109,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -136,7 +136,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new PercentualeDisagioModel()
                             {
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
-                                idUfficio = e.IDUFFICIO.Value,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
@@ -144,7 +144,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
-                                    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }

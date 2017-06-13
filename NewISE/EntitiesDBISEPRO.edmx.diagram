@@ -43,7 +43,6 @@
         <EntityTypeShape EntityType="DBISE.OA" Width="1.5" PointX="26.5" PointY="31.375" />
         <EntityTypeShape EntityType="DBISE.PASSAPORTI" Width="1.5" PointX="3" PointY="56.75" />
         <EntityTypeShape EntityType="DBISE.PENSIONECONIUGE" Width="1.5" PointX="9" PointY="49" />
-        <EntityTypeShape EntityType="DBISE.PERCENTUALEDISAGIO" Width="1.5" PointX="14.25" PointY="48.625" />
         <EntityTypeShape EntityType="DBISE.PERCENTUALEMAB" Width="1.5" PointX="12" PointY="48.5" />
         <EntityTypeShape EntityType="DBISE.PERCENTUALEMAGCONIUGE" Width="1.5" PointX="9" PointY="52.125" />
         <EntityTypeShape EntityType="DBISE.PERCENTUALEMAGFIGLI" Width="1.5" PointX="6" PointY="16.125" />
@@ -79,7 +78,6 @@
         <EntityTypeShape EntityType="DBISE.UFFICI" Width="1.5" PointX="3.75" PointY="50.5" />
         <EntityTypeShape EntityType="DBISE.UTENTIAUTORIZZATI" Width="1.5" PointX="6" PointY="13" />
         <EntityTypeShape EntityType="DBISE.VALUTAUFFICIO" Width="1.5" PointX="14" PointY="30.875" />
-        <EntityTypeShape EntityType="DBISE.VALUTE" Width="1.5" PointX="9.75" PointY="13" />
         <EntityTypeShape EntityType="DBISE.VOCI" Width="1.5" PointX="19.75" PointY="27.625" />
         <AssociationConnector Association="DBISE.R_UL_C" />
         <AssociationConnector Association="DBISE.R_AC_MAB_AC" />
@@ -119,7 +117,6 @@
         <AssociationConnector Association="DBISE.R_LIVDIP_IND" />
         <AssociationConnector Association="DBISE.R_MC_I" />
         <AssociationConnector Association="DBISE.R_MF_I" />
-        <AssociationConnector Association="DBISE.R_PERCDISAGIO_INDENNITA" />
         <AssociationConnector Association="DBISE.R_T_I" />
         <AssociationConnector Association="DBISE.R_TFR_INDENNITA" />
         <AssociationConnector Association="DBISE.R_L_I" />
@@ -148,7 +145,6 @@
         <AssociationConnector Association="DBISE.R_UFFICI_MAGANNUALI" />
         <AssociationConnector Association="DBISE.R_NC_RC" />
         <AssociationConnector Association="DBISE.R_T_NRMF" />
-        <AssociationConnector Association="DBISE.R_UFFICI_PERCDISAGIO" />
         <AssociationConnector Association="DBISE.R_U_PMAB" />
         <AssociationConnector Association="DBISE.R_TC_PMC" />
         <AssociationConnector Association="DBISE.R_TF_MF" />
@@ -165,7 +161,6 @@
         <AssociationConnector Association="DBISE.R_T_S" />
         <AssociationConnector Association="DBISE.R_TM_T" />
         <AssociationConnector Association="DBISE.R_V_T" />
-        <AssociationConnector Association="DBISE.R_VALUTE_TFR" />
         <AssociationConnector Association="DBISE.R_TD_TER_D" />
         <AssociationConnector Association="DBISE.R_TD_TES_D" />
         <AssociationConnector Association="DBISE.R_TE_TV" />
@@ -179,7 +174,6 @@
         <AssociationConnector Association="DBISE.R_TES_TES_D" />
         <AssociationConnector Association="DBISE.R_TES_TER" />
         <AssociationConnector Association="DBISE.R_UFF_VALUFF" />
-        <AssociationConnector Association="DBISE.R_VALUTE_VALUFF" />
         <AssociationConnector Association="DBISE.DOCUMENTO_NORMACALCOLO" />
         <AssociationConnector Association="DBISE.FASCIACHILOMETRICA" />
         <AssociationConnector Association="DBISE.PASSAPORTI_DOCUMENTI" />
@@ -188,7 +182,13 @@
         <AssociationConnector Association="DBISE.R_RD_I" />
         <AssociationConnector Association="DBISE.R_RD_MAB" />
         <AssociationConnector Association="DBISE.R_RU_RD" />
+        <EntityTypeShape EntityType="DBISE.PERCENTUALEDISAGIO" Width="1.5" PointX="6" PointY="42.875" />
+        <AssociationConnector Association="DBISE.R_PERCDISAGIO_INDENNITA" />
+        <AssociationConnector Association="DBISE.R_UFFICI_PERCDISAGIO" />
+        <EntityTypeShape EntityType="DBISE.VALUTE" Width="1.5" PointX="0.75" PointY="32.125" />
+        <AssociationConnector Association="DBISE.R_VALUTE_TFR" />
         <AssociationConnector Association="DBISE.R_V_U" />
+        <AssociationConnector Association="DBISE.R_VALUTE_VALUFF" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

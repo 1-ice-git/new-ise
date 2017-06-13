@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NewISE.Models.dtObj;
+using NewISE.Models.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,26 +13,65 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
-        public RuoloDipendenteModel GetRuoloDipendente(decimal idTrasferimento, DateTime dataIni, EntitiesDBISE db)
+        public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
-            var rd = db.RUOLODIPENDENTE.Where(a => a.IDTRASFERIMENTO == idTrasferimento &&
+            using (EntitiesDBISE db=new EntitiesDBISE())
+            {
+                var lrd = db.RUOLODIPENDENTE.Where(a => a.IDRUOLO == idRuolo &&
                                                dataIni >= a.DATAINZIOVALIDITA &&
                                                dataIni <= a.DATAFINEVALIDITA &&
                                                a.ANNULLATO == false)
-                                       .OrderBy(a => a.DATAINZIOVALIDITA).Last();
+                                       .OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
 
 
-            if (rd != null && rd.IDRUOLODIPENDENTE > 0)
+                if (lrd != null && lrd.Count > 0)
+                {
+                    var rd = lrd.First();
+
+                    rdm = new RuoloDipendenteModel()
+                    {
+                        idRuoloDipendente = rd.IDRUOLODIPENDENTE,
+                        idRuolo = rd.IDRUOLO,
+                        dataInizioValidita = rd.DATAINZIOVALIDITA,
+                        dataFineValidita = rd.DATAFINEVALIDITA,
+                        dataAggiornamento = rd.DATAAGGIORNAMENTO,
+                        annullato = rd.ANNULLATO,
+                        RuoloUfficio = new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = rd.RUOLOUFFICIO.IDRUOLO,
+                            DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
+                        }
+                    };
+
+
+                }
+            }
+                       
+
+            return rdm;
+
+        }
+        public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni, EntitiesDBISE db)
+        {
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
+
+            var lrd = db.RUOLODIPENDENTE.Where(a => a.IDRUOLO == idRuolo &&
+                                               dataIni >= a.DATAINZIOVALIDITA &&
+                                               dataIni <= a.DATAFINEVALIDITA &&
+                                               a.ANNULLATO == false)
+                                       .OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
+
+
+            if (lrd != null && lrd.Count > 0)
             {
-                
+                var rd = lrd.First();
+
                 rdm = new RuoloDipendenteModel()
                 {
                     idRuoloDipendente = rd.IDRUOLODIPENDENTE,
                     idRuolo = rd.IDRUOLO,
-                    idTrasferimento = rd.IDTRASFERIMENTO,
                     dataInizioValidita = rd.DATAINZIOVALIDITA,
                     dataFineValidita = rd.DATAFINEVALIDITA,
                     dataAggiornamento = rd.DATAAGGIORNAMENTO,
@@ -49,14 +90,13 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetRuoloDipendente(RuoloDipendenteModel rdm, EntitiesDBISE db)
+        public void SetRuoloDipendente(ref RuoloDipendenteModel rdm, EntitiesDBISE db)
         {
             RUOLODIPENDENTE rd;
 
             rd = new RUOLODIPENDENTE()
             {
                 IDRUOLO = rdm.idRuolo,
-                IDTRASFERIMENTO = rdm.idTrasferimento,
                 DATAINZIOVALIDITA = rdm.dataInizioValidita,
                 DATAFINEVALIDITA = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Convert.ToDateTime("31/12/9999"),
                 DATAAGGIORNAMENTO = rdm.dataAggiornamento,
@@ -64,9 +104,13 @@ namespace NewISE.Models.DBModel.dtObj
 
             };
 
-            db.SaveChanges();
+            db.RUOLODIPENDENTE.Add(rd);
 
-
+            if(db.SaveChanges() > 0)
+            {
+                rdm.idRuoloDipendente = rd.IDRUOLODIPENDENTE;
+            }
+            
 
 
         }
@@ -78,7 +122,6 @@ namespace NewISE.Models.DBModel.dtObj
             if (rd != null && rd.IDRUOLODIPENDENTE > 0)
             {
                 rd.IDRUOLO = rdm.idRuolo;
-                rd.IDTRASFERIMENTO = rdm.idTrasferimento;
                 rd.DATAINZIOVALIDITA = rdm.dataInizioValidita;
                 rd.DATAFINEVALIDITA = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Convert.ToDateTime("31/12/9999");
                 rd.DATAAGGIORNAMENTO = rdm.dataAggiornamento;

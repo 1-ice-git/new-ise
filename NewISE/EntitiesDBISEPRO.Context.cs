@@ -65,7 +65,6 @@ namespace NewISE
         public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PENSIONECONIUGE> PENSIONECONIUGE { get; set; }
-        public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
@@ -101,9 +100,10 @@ namespace NewISE
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
-        public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
+        public virtual DbSet<VALUTE> VALUTE { get; set; }
     
         public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI, ObjectParameter iNDPERSONALE, ObjectParameter iNDANTSISTLORDA, ObjectParameter iNDSISTLORDA)
         {

@@ -1,0 +1,13 @@
+﻿#imgSalva:hover{
+    cursor:pointer;
+}
+/*#imgNotificaTrasf:hover{
+    cursor:pointer;
+}*/
+
+#imgNotificaTrasf{
+    margin-left:10px;
+}
+.disabilitato {
+  cursor: not-allowed;
+}

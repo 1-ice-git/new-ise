@@ -24,9 +24,9 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il coefficente di sede è richiesto.")]
         public decimal idCoefficenteSede { get; set; }
 
-        public decimal idMaggiorazioneConiuge { get; set; }
+        public decimal? idMaggiorazioneConiuge { get; set; }
 
-        public decimal idMaggiorazioneFigli { get; set; }
+        public decimal? idMaggiorazioneFigli { get; set; }
         [Required(ErrorMessage = "Il ruolo del dipendente è richiesto.")]
         public decimal idRuoloDipendente { get; set; }
 
