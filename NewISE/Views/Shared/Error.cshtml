@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -10,5 +12,8 @@
         <h1>Errore.</h1>
         <h2>Si è verificato un errore durante l'elaborazione della richiesta.</h2>
     </hgroup>
+    <div id="divCorpoErrore" class="margineSinistro10px">
+            @Model.Exception.Message
+    </div>
 </body>
 </html>

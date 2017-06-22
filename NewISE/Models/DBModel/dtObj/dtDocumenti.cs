@@ -1,6 +1,5 @@
 ﻿using NewISE.Models.Tools;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -22,9 +21,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (d != null && d.IDDOCUMENTO > 0)
             {
-                
                 var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                
+
                 dm = new DocumentiModel()
                 {
                     idDocumenti = d.IDDOCUMENTO,
@@ -34,8 +32,46 @@ namespace NewISE.Models.DBModel.dtObj
                 };
             }
 
-
             return dm;
+        }
+
+        /// <summary>
+        /// Verifica la presenza della lettera di trasferimento. Può esistere solo una lettera di trasferimento.
+        /// </summary>
+        /// <param name="idTrasferimento"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public bool HasLetteraTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+        {
+            bool ret = false;
+
+            var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
+
+            if (ld != null && ld.Count > 0)
+            {
+                ret = true;
+            }
+            else
+            {
+                ret = false;
+            }
+
+            return ret;
+        }
+
+        public void RimuoviLetteraTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+        {
+            var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
+            if (ld != null && ld.Count > 0)
+            {
+                foreach (var e in ld)
+                {
+                    db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI.Remove(e);
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione della lettera di trasferimento.", "Documenti", db, idTrasferimento, e.IDDOCUMENTO);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public DocumentiModel GetDocumentoByIdTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
@@ -48,7 +84,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var d = ld.First();
                 var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                
+
                 dm = new DocumentiModel()
                 {
                     idDocumenti = d.IDDOCUMENTO,
@@ -58,22 +94,23 @@ namespace NewISE.Models.DBModel.dtObj
                 };
             }
 
-
             return dm;
         }
 
         public DocumentiModel GetDocumentoByIdTrasferimento(decimal idTrasferimento)
         {
             DocumentiModel dm = new DocumentiModel();
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (EntitiesDBISE db = new EntitiesDBISE())
             {
                 var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
 
                 if (ld != null && ld.Count > 0)
                 {
                     var d = ld.First();
-                    var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                    
+                    HttpPostedFileBase f;
+
+                    f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO, d.NOMEDOCUMENTO + d.ESTENSIONE, "application/pdf");
+
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
@@ -83,12 +120,108 @@ namespace NewISE.Models.DBModel.dtObj
                     };
                 }
             }
-            
-            
+
             return dm;
         }
 
-        public void SetDocumento(ref DocumentiModel dm, decimal idTrasferimento, EntitiesDBISE db)
+        public DocumentiModel GetDatiDocumentoByIdTrasferimento(decimal idTrasferimento)
+        {
+            DocumentiModel dm = new DocumentiModel();
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
+
+                if (ld != null && ld.Count > 0)
+                {
+                    var d = ld.First();
+                    //HttpPostedFileBase f;
+
+                    //f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO, d.NOMEDOCUMENTO + d.ESTENSIONE, "application/pdf");
+
+                    dm = new DocumentiModel()
+                    {
+                        idDocumenti = d.IDDOCUMENTO,
+                        NomeDocumento = d.NOMEDOCUMENTO,
+                        Estensione = d.ESTENSIONE,
+                        //file = f
+                    };
+                }
+            }
+
+            return dm;
+        }
+
+        public DocumentiModel GetDatiDocumentoById(decimal idDocumento)
+        {
+            DocumentiModel dm = new DocumentiModel();
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                var d = db.DOCUMENTI.Find(idDocumento);
+
+                if (d != null && d.IDDOCUMENTO > 0)
+                {
+                    dm = new DocumentiModel()
+                    {
+                        idDocumenti = d.IDDOCUMENTO,
+                        NomeDocumento = d.NOMEDOCUMENTO,
+                        Estensione = d.ESTENSIONE,
+                        //file = f
+                    };
+                }
+            }
+
+            return dm;
+        }
+
+        public byte[] GetDocumentoByteById(decimal idDocumento)
+        {
+            byte[] blob = null;
+
+            using (EntitiesDBISE db = new EntitiesDBISE())
+            {
+                var d = db.DOCUMENTI.Find(idDocumento);
+
+                if (d != null && d.IDDOCUMENTO > 0)
+                {
+                    blob = d.FILEDOCUMENTO;
+                }
+            }
+
+            return blob;
+        }
+
+        public byte[] GetDocumentoByteById(decimal idDocumento, EntitiesDBISE db)
+        {
+            byte[] blob = null;
+
+            var d = db.DOCUMENTI.Find(idDocumento);
+
+            if (d != null && d.IDDOCUMENTO > 0)
+            {
+                blob = d.FILEDOCUMENTO;
+            }
+
+            return blob;
+        }
+
+        public void SetDocumento(ref DocumentiModel dm, EntitiesDBISE db)
+        {
+            MemoryStream ms = new MemoryStream();
+            DOCUMENTI d = new DOCUMENTI();
+            dm.file.InputStream.CopyTo(ms);
+
+            d.NOMEDOCUMENTO = dm.NomeDocumento;
+            d.ESTENSIONE = dm.Estensione;
+            d.FILEDOCUMENTO = ms.ToArray();
+
+            db.DOCUMENTI.Add(d);
+
+            db.SaveChanges();
+
+            dm.idDocumenti = d.IDDOCUMENTO;
+        }
+
+        public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, EntitiesDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();
@@ -103,7 +236,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.NOMEDOCUMENTO = dm.NomeDocumento;
                 d.ESTENSIONE = dm.Estensione;
                 d.FILEDOCUMENTO = ms.ToArray();
-                
+
                 db.SaveChanges();
 
                 dm.idDocumenti = d.IDDOCUMENTO;
@@ -115,14 +248,11 @@ namespace NewISE.Models.DBModel.dtObj
                 d.FILEDOCUMENTO = ms.ToArray();
                 ld.Add(d);
 
-                if(db.SaveChanges() > 0)
+                if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
                 }
             }
-            
-
         }
-
     }
 }

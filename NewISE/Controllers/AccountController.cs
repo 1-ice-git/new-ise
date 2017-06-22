@@ -332,5 +332,17 @@ namespace NewISE.Controllers
                 return View("Error");
             }
         }
+
+        [AllowAnonymous]
+        public JsonResult isAutenticated()
+        {
+            var autenticato = new { Autenticato = false };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                autenticato = new { Autenticato = true };
+            }
+            return Json(autenticato, JsonRequestBehavior.DenyGet);
+        }
     }
 }

@@ -46,7 +46,6 @@ namespace NewISE
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
-        public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
@@ -99,11 +98,11 @@ namespace NewISE
         public virtual DbSet<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
-        public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
+        public virtual DbSet<INDENNITA> INDENNITA { get; set; }
     
         public virtual int CALCOLIINDENNITA(Nullable<System.DateTime> v_VDATA, Nullable<decimal> v_VDIP, ObjectParameter iNDBASE, ObjectParameter iNDSERVIZIO, ObjectParameter mAGGIORAZIONECONIUGE, ObjectParameter mAGGIORAZIONEFIGLI, ObjectParameter iNDPERSONALE, ObjectParameter iNDANTSISTLORDA, ObjectParameter iNDSISTLORDA)
         {

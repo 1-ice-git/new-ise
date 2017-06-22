@@ -54,7 +54,7 @@ namespace NewISE.Controllers
                     {
                         ldm.Add(dtd.GetDipendenteByMatricola(Convert.ToInt16(ac.utente)));
                     }
-                    else if (matricola != string.Empty)
+                    else if (matricola != string.Empty && admin == false)
                     {
                         ldm.Add(dtd.GetDipendenteByMatricola(Convert.ToInt16(matricola)));
                     }
@@ -65,43 +65,73 @@ namespace NewISE.Controllers
 
                     if (ldm.Count > 0)
                     {
-                        foreach (var item in ldm.OrderBy(a => a.matricola))
+                        foreach (var item in ldm)
                         {
                             rMatricola.Add(new SelectListItem()
                             {
                                 Text = item.matricola.ToString(),
-                                Value = item.matricola.ToString(),
-                                Selected = ldm.Count == 1 ? true : false
+                                Value = item.matricola.ToString()
                             });
-                        }
 
-                        foreach (var item in ldm.OrderBy(a => a.Nominativo))
-                        {
                             rNominativo.Add(new SelectListItem()
                             {
-                                Text = item.Nominativo,
-                                Value = item.matricola.ToString(),
-                                Selected = ldm.Count == 1 ? true : false
+                                Text = item.Nominativo + " (" + item.matricola.ToString() + ")",
+                                Value = item.matricola.ToString()
                             });
+
+                        }
+
+                        rMatricola.Insert(0, new SelectListItem() { Text = "", Value = "" });
+
+                        
+
+                        rNominativo.Insert(0, new SelectListItem() { Text = "", Value = "" });
+
+                        if (matricola == string.Empty)
+                        {
+                            rMatricola.First().Selected = true;
+                            rNominativo.First().Selected = true;
+                        }
+                        else
+                        {
+                            foreach (var item in rMatricola)
+                            {
+                                if (matricola == item.Value )
+                                {
+                                    item.Selected = true;
+                                }
+                            }
+
+                            foreach (var item in rNominativo)
+                            {
+                                if (matricola == item.Value)
+                                {
+                                    item.Selected = true;
+                                }
+                            }
                         }
                     }
                 }
 
-                dm = ldm.First();
 
-                using (dtCDCGepe dtcdcg = new dtCDCGepe())
+                if (matricola != string.Empty)
                 {
-                    dm.cdcGepe = dtcdcg.GetCDCGepe(dm.idDipendente);
+                    dm = ldm.Where(a => a.matricola == Convert.ToInt16(matricola)).First();
+
+                    using (dtCDCGepe dtcdcg = new dtCDCGepe())
+                    {
+                        dm.cdcGepe = dtcdcg.GetCDCGepe(dm.idDipendente);
+                    }
+
+                    using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
+                    {
+                        dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
+                    }
                 }
+                
 
-                using (dtLivelliDipendente dtpl = new dtLivelliDipendente())
-                {
-                    dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
-                }
-
-
-                ViewBag.ListDipendentiGepeMatricola = rMatricola;
-                ViewBag.ListDipendentiGepeNominativo = rNominativo;
+                //ViewBag.ListDipendentiGepeMatricola = rMatricola.OrderBy(a=>a.Text);
+                ViewBag.ListDipendentiGepeNominativo = rNominativo.OrderBy(a=>a.Text);
                 ViewBag.Amministratore = admin;
                 ViewBag.Matricola = dm.matricola;
             }

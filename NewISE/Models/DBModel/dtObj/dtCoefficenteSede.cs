@@ -12,6 +12,77 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+        public void AssociaCoefficenteSede_Indennita(decimal idTrasferimento, decimal id, EntitiesDBISE db)
+        {
+
+            try
+            {
+                var i = db.INDENNITA.Find(idTrasferimento);
+
+                var item = db.Entry<INDENNITA>(i);
+
+                item.State = System.Data.Entity.EntityState.Modified;
+
+
+
+                item.Collection(a => a.COEFFICIENTESEDE).Load();
+
+                var e = db.COEFFICIENTESEDE.Find(id);
+
+                i.COEFFICIENTESEDE.Add(e);
+
+                db.SaveChanges();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public CoefficientiSedeModel GetCoefficenteSedeByIdTrasf(decimal idTrasferimento, DateTime dt, EntitiesDBISE db)
+        {
+            CoefficientiSedeModel csm = new CoefficientiSedeModel();
+
+            var lcs = db.INDENNITA.Find(idTrasferimento)
+                                  .COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && 
+                                                          dt >= a.DATAINIZIOVALIDITA && 
+                                                          dt <= a.DATAFINEVALIDITA)
+                                                   .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                                   .ToList();
+
+            if (lcs != null && lcs.Count > 0)
+            {
+                var cs = lcs.First();
+
+                csm = new CoefficientiSedeModel()
+                {
+                    idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
+                    idUfficio = cs.IDUFFICIO,
+                    dataInizioValidita = cs.DATAINIZIOVALIDITA,
+                    dataFineValidita = cs.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : cs.DATAFINEVALIDITA,
+                    valore = cs.VALORECOEFFICIENTE,
+                    dataAggiornamento = cs.DATAAGGIORNAMENTO,
+                    annullato = cs.ANNULLATO,
+                    Ufficio = new UfficiModel()
+                    {
+                        idUfficio = cs.UFFICI.IDUFFICIO,
+                        idValuta = cs.UFFICI.IDVALUTA,
+                        codiceUfficio = cs.UFFICI.CODICEUFFICIO,
+                        descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
+                        pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
+                    }
+                };
+            }
+
+            return csm;
+        }
+
         public CoefficientiSedeModel GetCoefficenteSede(decimal idCoefficenteSede, EntitiesDBISE db)
         {
             CoefficientiSedeModel csm = new CoefficientiSedeModel();

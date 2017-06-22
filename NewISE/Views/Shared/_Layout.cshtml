@@ -21,7 +21,7 @@
     @Scripts.Render("~/bundles/globalize")
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
-    
+
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
 
@@ -85,8 +85,6 @@
 
     <script src="~/Componenti/bootstrap-checkbox-1.4.0/dist/js/bootstrap-checkbox.min.js"></script>
     <script src="~/Componenti/bootstrap-checkbox-1.4.0/dist/js/i18n/it.js"></script>
-
-
 
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
@@ -211,7 +209,6 @@
 
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
-       
 
         function PosizioneFooter() {
             var f = $("footer");
@@ -304,9 +301,20 @@
 
         }
 
+        function VerificaAutenticazione() {
+            $.ajax({
+                type: "POST",
+                url: "/Account/isAutenticated",
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    if (!result.Autenticato) {
+                        window.location.href = "/Account/Login";
+                    }
 
-        
-
+                }
+            });
+        }
     </script>
 </body>
 </html>

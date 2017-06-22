@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using Oracle.ManagedDataAccess.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,36 @@ namespace NewISE.Controllers
 
             return Json(dm);
 
+        }
+
+        public ActionResult LeggiDocumento(decimal id)
+        {
+            byte[] Blob;
+            DocumentiModel documento = new DocumentiModel();
+
+            
+            using (dtDocumenti dtd = new dtDocumenti())
+            {
+
+                documento = dtd.GetDatiDocumentoById(id);
+                Blob = dtd.GetDocumentoByteById(id);
+
+                Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.Estensione.ToLower() + ";");
+
+                switch (documento.Estensione.ToLower())
+                {
+                    case ".pdf":
+                        return File(Blob, "application/pdf");
+                        break;
+                    default:
+                        return File(Blob, "application/pdf");
+                        break;
+
+                }
+
+
+            }
+                
         }
     }
 }

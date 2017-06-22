@@ -135,3 +135,7 @@ hr{
 a.disabled{
     cursor:not-allowed;
 }
+
+.SfondoBordoImg {
+	box-shadow: 7px 4px 10px #808080; 
+}﻿

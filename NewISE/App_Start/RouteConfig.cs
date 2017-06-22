@@ -32,6 +32,10 @@ namespace NewISE
                 name: "Dipendenti",
                 url: "Dipendenti/Index"
             );
+            routes.MapRoute(
+                name: "LeggiDocumento",
+                url: "Documenti/LeggiDocumento/{id}"
+            );
         }
     }
 }

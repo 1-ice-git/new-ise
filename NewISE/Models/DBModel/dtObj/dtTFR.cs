@@ -12,6 +12,38 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+        public void AssociaTFR_Indennita(decimal idTrasferimento, decimal idTFR, EntitiesDBISE db)
+        {
+
+            try
+            {
+                var i = db.INDENNITA.Find(idTrasferimento);
+
+                var item = db.Entry<INDENNITA>(i);
+
+                item.State = System.Data.Entity.EntityState.Modified;
+
+                item.Collection(a => a.TFR).Load();
+
+                var l = db.TFR.Find(idTFR);
+
+                i.TFR.Add(l);
+
+                db.SaveChanges();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+
         public TFRModel GetTFRValido(decimal idUfficio, DateTime dt, EntitiesDBISE db)
         {
             TFRModel tfrm = new TFRModel();

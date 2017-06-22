@@ -7,38 +7,59 @@
 
 <div id="divControlliDipendenti">
     <div class="form-horizontal">
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.Label("lblMatricola", "Matricola", new { @class = "control-label col-xs-3" })
             <div id="divCombo" class="col-xs-9">
                 <div class="select2-container select2-container--classic">
                     @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeMatricola as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
                 </div>
             </div>
-        </div>
+        </div>*@
         <div class="form-group">
             @Html.Label("lblNominativo", "Nominativo", new { @class = "control-label col-xs-3" })
             <div id="divCombo2" class="col-xs-9">
                 <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("nominativo", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "listNominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
+                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new {@id="Nominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label for="dataAssunzione" class="col-xs-3 control-label">Data assunz.</label>
             <div class="col-xs-9">
-                <input id="dataAssunzione" name="dataAssunzione" type="datetime" value="@Model.dataAssunzione.ToShortDateString()" class="form-control" readonly />
+                @if (Model != null && Model.dataAssunzione > DateTime.MinValue)
+                {
+                    <input id="dataAssunzione" name="dataAssunzione" type="datetime" value="@Model.dataAssunzione.ToShortDateString()" class="form-control" readonly />
+                }
+                else
+                {
+                    <input id="dataAssunzione" name="dataAssunzione" type="datetime" value="" class="form-control" readonly />
+                }
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.livelloDipendenteValido.Livello.DescLivello, htmlAttributes: new { @class = "control-label col-xs-3" })
             <div class="col-xs-9">
-                <input id="livello" name="livello" type="text" value="@Model.livelloDipendenteValido.Livello.DescLivello" class="form-control" readonly />
+                @if (Model != null && Model.livelloDipendenteValido != null && Model.livelloDipendenteValido.Livello != null)
+                {
+                    <input id="livello" name="livello" type="text" value="@Model.livelloDipendenteValido.Livello.DescLivello" class="form-control" readonly />
+                }
+                else
+                {
+                    <input id="livello" name="livello" type="text" value="" class="form-control" readonly />
+                }
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.cdcGepe.descCDC, htmlAttributes: new { @class = "control-label col-xs-3" })
             <div class="col-xs-9">
-                <input id="cdc" name="cdc" type="text" value="@Model.cdcGepe.descCDC" class="form-control" readonly />
+                @if (Model != null && Model.cdcGepe != null)
+                {
+                    <input id="cdc" name="cdc" type="text" value="@Model.cdcGepe.descCDC" class="form-control" readonly />
+                }
+                else
+                {
+                    <input id="cdc" name="cdc" type="text" value="" class="form-control" readonly />
+                }
             </div>
         </div>
     </div>
@@ -50,6 +71,12 @@
 
     InfoTrasferimento('@matricola');
 
+
+
+
+
+
+
     $("#matricola").select2({
         placeholder: "Seleziona la matricola",
         allowClear: true,
@@ -57,7 +84,7 @@
         width: '100'
 
     });
-    $("#listNominativo").select2({
+    $("#Nominativo").select2({
         placeholder: "Seleziona il nominativo",
         allowClear: true,
         language: "it",
@@ -66,7 +93,7 @@
     });
 
     function FiltraDipendente(matricola) {
-        //debugger;
+        debugger;
         var rotta = "/Dipendenti/DipendentiGepe";
         //var matricola = $("#matricola").select2('val');
 
@@ -108,6 +135,10 @@
 
     function InfoTrasferimento(matricola) {
         //debugger;
+
+        if (matricola == "") {
+            return;
+        }
         var rotta = "/Trasferimento/InfoTrasferimento";
         if (matricola != "") {
             $.ajax({

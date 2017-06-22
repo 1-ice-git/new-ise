@@ -17,37 +17,37 @@ namespace NewISE
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITA()
         {
-            this.ELAB_CONT = new HashSet<ELAB_CONT>();
-            this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
+            this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
+            this.INDENNITABASE = new HashSet<INDENNITABASE>();
+            this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
+            this.MAGGIORAZIONECONIUGE = new HashSet<MAGGIORAZIONECONIUGE>();
+            this.MAGGIORAZIONEFIGLI = new HashSet<MAGGIORAZIONEFIGLI>();
+            this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
+            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
+            this.TFR = new HashSet<TFR>();
         }
     
-        public decimal IDINDENNITA { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
-        public decimal IDINDENNITABASE { get; set; }
-        public decimal IDTFR { get; set; }
-        public decimal IDPERCENTUALEDISAGIO { get; set; }
-        public decimal IDCOEFFICIENTESEDE { get; set; }
-        public Nullable<decimal> IDMAGGIORAZIONECONIUGE { get; set; }
-        public Nullable<decimal> IDMAGGIORAZIONEFIGLI { get; set; }
+        public decimal IDTRASFINDENNITA { get; set; }
         public System.DateTime DATAINIZIO { get; set; }
         public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
-        public decimal IDRUOLODIPENDENTE { get; set; }
-        public decimal IDLIVDIPENDENTE { get; set; }
     
-        public virtual COEFFICIENTESEDE COEFFICIENTESEDE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
-        public virtual INDENNITABASE INDENNITABASE { get; set; }
-        public virtual LIVELLIDIPENDENTI LIVELLIDIPENDENTI { get; set; }
-        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
-        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        public virtual TFR TFR { get; set; }
-        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
-        public virtual PERCENTUALEDISAGIO PERCENTUALEDISAGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TFR> TFR { get; set; }
     }
 }

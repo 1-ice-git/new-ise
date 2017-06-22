@@ -6,6 +6,11 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
+    public enum TipologiaCOAN
+    {
+        Servizi_Istituzionali = 1,
+        Servizi_Promozionali = 2
+    }
     public class TipologiaCoanModel
     {
         [Key]

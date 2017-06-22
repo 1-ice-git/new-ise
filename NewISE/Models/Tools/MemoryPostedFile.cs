@@ -10,10 +10,11 @@ namespace NewISE.Models.Tools
     {
         private readonly byte[] fileBytes;
 
-        public MemoryPostedFile(byte[] fileBytes, string fileName = null)
+        public MemoryPostedFile(byte[] fileBytes, string fileName = null, string contentType = "")
         {
             this.fileBytes = fileBytes;
             this.FileName = fileName;
+            this.ContentType = contentType;
             this.InputStream = new MemoryStream(fileBytes);
         }
 
@@ -22,5 +23,7 @@ namespace NewISE.Models.Tools
         public override string FileName { get; }
 
         public override Stream InputStream { get; }
+
+        public override string ContentType { get; }
     }
 }

@@ -10,7 +10,7 @@
     DipendentiModel dipendente = (DipendentiModel)ViewBag.Dipendente;
     bool vModifica = (bool)ViewBag.Modifica;
 
-    
+    decimal vTipoCoan = (decimal)Model.idTipoCoan;
 
 }
 
@@ -22,11 +22,15 @@
 
     <div class="form-horizontal">
 
+        @Html.Hidden("idTrasferimento", Model.idTrasferimento)
+        @Html.Hidden("idStatoTrasferimento", Model.idStatoTrasferimento)
+
         @Html.Hidden("idDipendente", dipendente.idDipendente)
 
         @Html.Hidden("matricola", vMatricola)
         @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
         @Html.Hidden("modifica", vModifica)
+        @Html.Hidden("idDocumento", Model.idDocumento)
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -110,26 +114,63 @@
                 </div>
             </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-xs-3" })
-            <div class="col-xs-9">
-                @if (Model!= null && Model.file != null)
-                {
-                    <input id="file" name="file" multiple type="file" class="file file-loading" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="@Model.file">
-                    @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
-                }
-                else
-                {
-                    <input id="file" name="file" multiple type="file" class="file file-loading" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
-                }
+        @if (Model != null && Model.file != null)
+        {
+            <div class="form-group">
+                @Html.Label("Visualizza lettera traferimento", htmlAttributes: new { @class = "control-label col-xs-3", @id = "lblVisLettera" })
                 
+                    <div class="col-xs-1" id="divVisualizzaDoc">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new { id = Model.Documento.idDocumenti })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" /></a>
+                    </div>
+                    <div class="col-xs-1" id="divBtSostituisciDoc">
+                        <button id="btSostituisciDoc" class="btn btn-default btn-xs" onclick="SostituisciDoc();">
+                            <i class="fa fa-eraser" aria-hidden="true"></i>
+                            Sostituisci documento
+                        </button>
+                    </div>
+                @Html.Label("Sostituisci lettera traferimento", htmlAttributes: new { @class = "control-label col-xs-3", @id = "lblSostLettera", style="display:none;" })
+                
+                    <div id="divNewInputFile" class="col-xs-6" style="display:none;">
+                        <input id="file" name="file" multiple type="file" class="file file-loading" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
+                    </div>
+                    <div id="divbtAnnullaSostituisciDoc" class="col-xs-1" style="display:none; ">
+                        <button id="btSostituisciDoc" class="btn btn-default btn-xs" onclick="AnnullaSotituisciDoc();">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                            Annulla sostit. doc.
+                        </button>
+                    </div>
+                @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
             </div>
-        </div>
-
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    <input id="file" name="file" multiple type="file" class="file file-loading" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
+                    @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        
         <div class="form-group ">
-            <div class="col-xs-offset-9 col-xs-3 pull-right">
-                <img id="imgSalva" src="~/Immagini/Save-icon.png" width="50" onclick="Salva();" />
-                <img id="imgNotificaTrasf" class="disabilitato" src="~/Immagini/Mail-icon-disabled.png" width="50" onclick="" />
+            <div class="col-xs-offset-8 col-xs-1">
+                <button class="btn btn-default btn-sm" onclick="Salva();" id="btSalva">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm" onclick="NotificaTrasferimento();" id="btNotifica">
+                    <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                    Notifica
+                </button>
+            </div>
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm" onclick="" id="btStampa">
+                    <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                    Stampa
+                </button>
             </div>
         </div>
     </div>
@@ -179,12 +220,109 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <script type="text/javascript">
-    //$('#allegaDocumento').checkboxpicker();
+
+
+
+    function NotificaTrasferimento() {
+        debugger;
+        var rotta = "/Trasferimento/NotificaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+        $.ajax({
+	        type: "POST",
+	        url: rotta,
+	        data: {
+	            idTrasferimento: idTrasferimento
+	        },
+	        dataType: 'json',
+	        async: false,
+	        beforeSend: function () {
+	            debugger;
+	            VerificaAutenticazione();
+	            Blocca();
+
+	        },
+	        success: function (result) {
+	            debugger;
+	            
+
+	            if (result.msg != "") {
+	                //LeggiSommatorieFDR();
+	                //LeggiSommatorieFDRtarget();
+	                //EmptyTextBox();
+	                DialogInfo(result.msg);
+	                
+	            }
+	            else {
+	                //LeggiSommatorieFDR();
+	                //LeggiSommatorieFDRtarget();
+	                var err = result.err;	                
+                    ErroreElaborazioneAjax(err);
+	            }
+	        },
+	        complete: function () {
+
+	            Sblocca();
+	        },
+	        error: function (error) {
+	            //debugger;
+	            Sblocca();
+	            var msg = error.responseText;
+	            ErroreElaborazioneAjax(msg);
+	        }
+
+	    });
+    }
+
+
+    //debugger;
+    GestionePulsanteSalva();
+
+    function GestionePulsanteSalva()
+    {
+        //debugger;
+        var statoTrasferimento = parseInt($("#idStatoTrasferimento").val());
+        if (statoTrasferimento == 21) {
+            $("#btSalva").attr("disabled","disabled");
+        }
+        else {
+            $("#btSalva").removeAttr("disabled");
+        }
+    }
+
+
+    function SostituisciDoc() {
+        //debugger;
+        $("#divNewInputFile").show('slow');
+        $("#divbtAnnullaSostituisciDoc").show('slow');
+        $("#lblSostLettera").show('slow');
+
+        $("#divVisualizzaDoc").hide('slow');
+        $("#divBtSostituisciDoc").hide('slow');
+        $("#lblVisLettera").hide('slow');
+
+
+    }
+
+    function AnnullaSotituisciDoc() {
+        $("#divNewInputFile").hide('slow');
+        $("#divbtAnnullaSostituisciDoc").hide('slow');
+        $("#lblSostLettera").hide('slow');
+
+        $("#divVisualizzaDoc").show('slow');
+        $("#divBtSostituisciDoc").show('slow');
+        $("#lblVisLettera").show('slow');
+    }
 
     $("#file").fileinput({
         showUpload: false,
         mainClass: "input-group-lg",
-        language: "it"
+        language: "it",
+        rtl: true,
+        //allowedFileExtensions: ["pdf"],
+        browseClass: "btn btn-default",
+        //initialPreviewAsData: true,
+        //initialPreviewFileType: 'image',
 
     });
 
@@ -204,6 +342,8 @@
         var datiForm = new FormData();
         var rotta = "/Trasferimento/InserisciTrasferimento";
 
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var idStatoTrasferimento = parseInt($("#idStatoTrasferimento").val());
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").val());
         var idUfficio = parseInt($("#idUfficio").val());
         var dataPartenza = $("#dataPartenza").val();
@@ -218,9 +358,10 @@
         var matricola = $("#matricola").val();
         var ricaricaInfoTrasf = $("#ricaricaInfoTrasf").val();
         var modifica = $("#modifica").val();
+        var idDocumento = $("#idDocumento").val();
 
-
-
+        datiForm.append("idTrasferimento", idTrasferimento);
+        datiForm.append("idStatoTrasferimento", idStatoTrasferimento);
         datiForm.append("idTipoTrasferimento", idTipoTrasferimento);
         datiForm.append("idUfficio", idUfficio);
         datiForm.append("dataPartenza", dataPartenza);
@@ -242,8 +383,7 @@
         datiForm.append("matricola", matricola);
         datiForm.append("ricaricaInfoTrasf", ricaricaInfoTrasf);
         datiForm.append("modifica", modifica);
-
-
+        datiForm.append("idDocumento", idDocumento);
 
         $.ajax({
             url: rotta,
@@ -251,24 +391,30 @@
             data: datiForm, //I dati, forniti sotto forma di oggetto FormData
             dataType: 'html',
             cache: false,
+            beforeSend: function () {
+	            //debugger;
+	            VerificaAutenticazione();
+	            Blocca();
+
+	        },
             processData: false, //Serve per NON far convertire l’oggetto
             //FormData in una stringa, preservando il file
             contentType: false, //Serve per NON far inserire automaticamente
             //un content type errato
-            success: function(result)
-            {
+            success: function (result) {
                 //debugger;
-                
+
                 $("#tabNuovoTrasferimento").empty();
                 $("#tabNuovoTrasferimento").html(result);
-            }
+            },
+            error: function (error) {
+	            //debugger;
+	            Sblocca();
+	            var msg = error.responseText;
+	            ErroreElaborazioneAjax(msg);
+	        }
         });
     }
-
-
-    
-
-    
 
     $("#idTipoTrasferimento").select2({
         placeholder: "Seleziona il tipo trasferimento",
@@ -334,17 +480,16 @@
         //}
     });
 
-    //$("#imgAllegaDocumento").click(function () {
-    //    $("#documento").val("");
-    //    $("#documento").click();
-    //});
-
     //debugger;
     var rit = '@ricaricaInfoTrasf.ToString()';
-    var boolrit = rit == 'true'
+    var vMatricola = '@vMatricola';
+    var boolrit = rit == 'True'
     if (boolrit == true) {
         InfoTrasferimento(vMatricola);
     }
+
+    var vTipoCoan = parseInt('@vTipoCoan');
+    AbilitaDisabilitaCoan(vTipoCoan);
 
     //$("#documento").change(function () {
     //    debugger;
@@ -381,27 +526,4 @@
         $("#msgModalInfo").text(response);
         $('#myModalInfo').modal('toggle');
     }
-    //per inviare file da ajaxs
-    //window.addEventListener("submit", function (e) {
-    //    var form = e.target;
-    //    if (form.getAttribute("enctype") === "multipart/form-data") {
-    //        if (form.dataset.ajax) {
-    //            e.preventDefault();
-    //            e.stopImmediatePropagation();
-    //            var xhr = new XMLHttpRequest();
-    //            xhr.open(form.method, form.action);
-    //            xhr.onreadystatechange = function () {
-    //                if (xhr.readyState == 4 && xhr.status == 200) {
-    //                    if (form.dataset.ajaxUpdate) {
-    //                        var updateTarget = document.querySelector(form.dataset.ajaxUpdate);
-    //                        if (updateTarget) {
-    //                            updateTarget.innerHTML = xhr.responseText;
-    //                        }
-    //                    }
-    //                }
-    //            };
-    //            xhr.send(new FormData(form));
-    //        }
-    //    }
-    //}, true);
 </script>

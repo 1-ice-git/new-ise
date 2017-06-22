@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.Config.s_admin;
+using NewISE.Models.DBModel;
 using NewISE.Models.dtObj;
 using System;
 using System.Collections.Generic;
@@ -137,6 +138,130 @@ namespace NewISE.Models.Tools
                 dtla.SetLogAttivita(lam, db);
             }
         }
+
+        public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita)
+        {
+
+            dm = new DocumentiModel();
+            gestisceEstensioni = false;
+            dimensioneConsentita = false;
+            esisteFile = false;
+
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    esisteFile = true;
+
+                    var estensioniGestite = new[] { ".pdf" };
+                    var estensione = Path.GetExtension(file.FileName);
+                    var nomeFileNoEstensione = Path.GetFileNameWithoutExtension(file.FileName);
+                    if (!estensioniGestite.Contains(estensione.ToLower()))
+                    {
+                        gestisceEstensioni = false;
+                    }
+                    else
+                    {
+                        gestisceEstensioni = true;
+                    }
+
+                    var keyDimensioneDocumento = System.Configuration.ConfigurationManager.AppSettings["DimensioneDocumento"];
+
+                    if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
+                    {
+                        dm.NomeDocumento = nomeFileNoEstensione;
+                        dm.Estensione = estensione;
+                        dm.file = file;
+
+                        dimensioneConsentita = true;
+                    }
+                    else
+                    {
+                        dimensioneConsentita = false;
+                    }
+
+                }
+                else
+                {
+                    esisteFile = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static DateTime GetDtInizioMeseCorrente()
+        {
+            return Convert.ToDateTime("01/" + DateTime.Now.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + DateTime.Now.Year.ToString());
+        }
+
+        public static DateTime GetDtFineMeseCorrente()
+        {
+            string giorno = "01";
+
+            switch (DateTime.Now.Month)
+            {
+                case 1:
+                    giorno = "31";
+                    break;
+                case 2:
+                    if (DateTime.IsLeapYear(DateTime.Now.Year))
+                    {
+                        giorno = "29";
+                    }
+                    else
+                    {
+                        giorno = "28";
+                    }
+                    break;
+                case 3:
+                    giorno = "31";
+                    break;
+                case 4:
+                    giorno = "30";
+                    break;
+                case 5:
+                    giorno = "31";
+                    break;
+                case 6:
+                    giorno = "30";
+                    break;
+                case 7:
+                    giorno = "31";
+                    break;
+                case 8:
+                    giorno = "31";
+                    break;
+                case 9:
+                    giorno = "30";
+                    break;
+                case 10:
+                    giorno = "31";
+                    break;
+                case 11:
+                    giorno = "30";
+                    break;
+                case 12:
+                    giorno = "31";
+                    break;
+                default:
+                    giorno = "31";
+                    break;
+            }
+
+
+            return Convert.ToDateTime(giorno + DateTime.Now.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + DateTime.Now.Year.ToString());
+        }
+
+        public static DateTime DataFineStop()
+        {
+            return Convert.ToDateTime("31/12/9999");
+        } 
+
+
+
     }
 
     

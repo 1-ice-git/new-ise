@@ -78,7 +78,13 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Allega Lettera Trasferimento")]
         [CustomValidation(typeof(dtTrasferimento), "VerificaRequiredDocumentoLettera")]
+        [DataType(DataType.Upload)]
         public HttpPostedFileBase file { get; set; }
+
+        public decimal idDocumento { get; set; }
+        
+
+
 
 
         public StatoTrasferimentoModel StatoTrasferimento { get; set; }
@@ -93,7 +99,7 @@ namespace NewISE.Models.DBModel
 
         public TipologiaCoanModel TipoCoan { get; set; }
 
-        public IList<IndennitaModel> lIndennita { get; set; }
+        public IndennitaModel Indennita { get; set; }
 
         public DocumentiModel Documento { get; set; }
 

@@ -21,7 +21,6 @@ namespace NewISE
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
-            this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
             this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
         }
@@ -40,8 +39,6 @@ namespace NewISE
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

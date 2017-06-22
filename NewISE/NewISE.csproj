@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,8 +51,8 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.Functions, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.Functions.1.3.1\lib\net46\EntityFramework.Functions.dll</HintPath>
+    <Reference Include="EntityFramework.Functions, Version=1.3.1.0, Culture=neutral, PublicKeyToken=dbe58f97a0872a64, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Functions.1.4.0\lib\net46\EntityFramework.Functions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -67,33 +67,33 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
@@ -169,6 +169,65 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Parametri\Contenuti\CSS\Parametri.css" />
+    <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.css" />
+    <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.min.css" />
+    <Content Include="bower_components\bootstrap-fileinput\css\fileinput.css" />
+    <Content Include="bower_components\bootstrap-fileinput\css\fileinput.min.css" />
+    <Content Include="bower_components\bootstrap-fileinput\img\loading-sm.gif" />
+    <Content Include="bower_components\bootstrap-fileinput\img\loading.gif" />
+    <Content Include="bower_components\bootstrap-fileinput\js\fileinput.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\fileinput.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\ar.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\bg.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\ca.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\cr.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\cz.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\da.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\de.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\el.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\es.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\et.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\fa.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\fi.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\fr.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\gl.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\hu.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\id.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\it.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\ja.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\kr.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\kz.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\LANG.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\nl.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\no.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\pl.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\pt-BR.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\pt.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\ro.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\ru.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\sk.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\sl.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\sv.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\th.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\tr.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\uk.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\vi.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\zh-TW.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\locales\zh.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\piexif.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\piexif.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\purify.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\purify.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\sortable.js" />
+    <Content Include="bower_components\bootstrap-fileinput\js\plugins\sortable.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\explorer\theme.css" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\explorer\theme.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\explorer\theme.min.css" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\explorer\theme.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\fa\theme.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\fa\theme.min.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\gly\theme.js" />
+    <Content Include="bower_components\bootstrap-fileinput\themes\gly\theme.min.js" />
     <Content Include="bower_components\jquery-modal\.gitignore" />
     <Content Include="bower_components\jquery-modal\examples\ajax.html" />
     <Content Include="bower_components\jquery-modal\examples\ajax2.html" />
@@ -197,14 +256,19 @@
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\ru.js" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\tr.js" />
     <Content Include="bower_components\jquery-modal\customCssModal.css" />
+    <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.min.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.min.css" />
     <Content Include="Content\bootstrap-fileinput\img\loading-sm.gif" />
     <Content Include="Content\bootstrap-fileinput\img\loading.gif" />
     <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.css" />
     <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.js" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.min.css" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.min.js" />
     <Content Include="Content\bootstrap-fileinput\themes\fa\theme.js" />
+    <Content Include="Content\bootstrap-fileinput\themes\fa\theme.min.js" />
     <Content Include="Content\bootstrap-fileinput\themes\gly\theme.js" />
+    <Content Include="Content\bootstrap-fileinput\themes\gly\theme.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -941,6 +1005,7 @@
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\Eliminazione.png" />
     <Content Include="Immagini\EliminazioneDisable.png" />
+    <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Logo ISE.png" />
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\LogOut.png" />
@@ -950,6 +1015,14 @@
     <Content Include="Immagini\paperclip-icon_34384.png" />
     <Content Include="Immagini\print-icon.png" />
     <Content Include="Immagini\Save-icon.png" />
+    <Content Include="POCO\ModelDbIse.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelDbIse.Context1.cs</LastGenOutput>
+    </Content>
+    <Content Include="POCO\ModelDbIse.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelDbIse1.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1405,6 +1478,15 @@
     <Content Include="bower_components\jquery-modal\package.json" />
     <Content Include="bower_components\jquery-modal\README.md" />
     <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
+    <Content Include="bower_components\bootstrap-fileinput\.bower.json" />
+    <Content Include="bower_components\bootstrap-fileinput\bower.json" />
+    <Content Include="bower_components\bootstrap-fileinput\CHANGE.md" />
+    <Content Include="bower_components\bootstrap-fileinput\LICENSE.md" />
+    <Content Include="bower_components\bootstrap-fileinput\nuget\build.bat" />
+    <Content Include="bower_components\bootstrap-fileinput\nuget\Package.nuspec" />
+    <Content Include="bower_components\bootstrap-fileinput\package.json" />
+    <Content Include="bower_components\bootstrap-fileinput\README.md" />
+    <Content Include="bower_components\bootstrap-fileinput\sass\fileinput.scss" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1475,9 +1557,11 @@
     <Content Include="Scripts\locales\de.js" />
     <Content Include="Scripts\locales\el.js" />
     <Content Include="Scripts\locales\es.js" />
+    <Content Include="Scripts\locales\et.js" />
     <Content Include="Scripts\locales\fa.js" />
     <Content Include="Scripts\locales\fi.js" />
     <Content Include="Scripts\locales\fr.js" />
+    <Content Include="Scripts\locales\gl.js" />
     <Content Include="Scripts\locales\hu.js" />
     <Content Include="Scripts\locales\id.js" />
     <Content Include="Scripts\locales\it.js" />
@@ -1486,6 +1570,7 @@
     <Content Include="Scripts\locales\kz.js" />
     <Content Include="Scripts\locales\LANG.js" />
     <Content Include="Scripts\locales\nl.js" />
+    <Content Include="Scripts\locales\no.js" />
     <Content Include="Scripts\locales\pl.js" />
     <Content Include="Scripts\locales\pt-BR.js" />
     <Content Include="Scripts\locales\pt.js" />
@@ -1500,13 +1585,14 @@
     <Content Include="Scripts\locales\vi.js" />
     <Content Include="Scripts\locales\zh-TW.js" />
     <Content Include="Scripts\locales\zh.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\MyJs.js" />
-    <Content Include="Scripts\plugins\canvas-to-blob.js" />
-    <Content Include="Scripts\plugins\canvas-to-blob.min.js" />
+    <Content Include="Scripts\plugins\piexif.js" />
+    <Content Include="Scripts\plugins\piexif.min.js" />
     <Content Include="Scripts\plugins\purify.js" />
     <Content Include="Scripts\plugins\purify.min.js" />
     <Content Include="Scripts\plugins\sortable.js" />
@@ -1752,7 +1838,6 @@
     <Compile Include="Models\dtObj\dtAccount.cs" />
     <Compile Include="Models\DBModel\dtObj\dtLivelliDipendente.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
-    <Compile Include="Models\dtObj\objB\CalcoloIndennita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
@@ -1766,6 +1851,7 @@
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\CalcoliIndennita.cs" />
     <Compile Include="Models\Tools\MemoryPostedFile.cs" />
+    <Compile Include="Models\Tools\ModelError.cs" />
     <Compile Include="Models\Tools\Utility.cs" />
     <Compile Include="Models\UtenteAutorizzatoModel.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1803,6 +1889,18 @@
     </Compile>
     <Compile Include="PERCENTUALEMAGFIGLI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="POCO\ModelDbIse.Context.cs" />
+    <Compile Include="POCO\ModelDbIse.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelDbIse.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="POCO\ModelDbIse.cs" />
+    <Compile Include="POCO\ModelDbIse1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelDbIse.tt</DependentUpon>
     </Compile>
     <Compile Include="PRIMASITEMAZIONE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
@@ -1901,9 +1999,6 @@
     <Compile Include="UTENTIAUTORIZZATI.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
-    <Compile Include="VALUTAUFFICIO.cs">
-      <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
-    </Compile>
     <Compile Include="VALUTE.cs">
       <DependentUpon>EntitiesDBISEPRO.tt</DependentUpon>
     </Compile>
@@ -1969,11 +2064,10 @@
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
-      <ErrorText>
-      </ErrorText>
+      <ErrorText>Questo progetto fa riferimento a uno o più pacchetti NuGet che non sono presenti in questo computer. Usare lo strumento di ripristino dei pacchetti NuGet per scaricarli. Per altre informazioni, vedere http://go.microsoft.com/fwlink/?LinkID=322105. Il file mancante è {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.5\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
