@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace NewISE.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public LivelloDipendenteModel GetLivelloDipendenteByIdTrasf(decimal idTrasferimento, DateTime dt, EntitiesDBISE db)
+        public LivelloDipendenteModel GetLivelloDipendenteByIdTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
@@ -49,7 +50,7 @@ namespace NewISE.Models.dtObj
         {
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data.Date <= a.DATAFINEVALIDITA).ToList();
 
@@ -74,7 +75,7 @@ namespace NewISE.Models.dtObj
             return ldm;
         }
 
-        public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data, EntitiesDBISE db)
+        public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data, ModelDBISE db)
         {
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
@@ -108,7 +109,7 @@ namespace NewISE.Models.dtObj
         }
 
 
-        public void AssociaLivelloDipendente_Indennita(decimal idTrasferimento, decimal idLivelloDipendente, EntitiesDBISE db)
+        public void AssociaLivelloDipendente_Indennita(decimal idTrasferimento, decimal idLivelloDipendente, ModelDBISE db)
         {
 
             try

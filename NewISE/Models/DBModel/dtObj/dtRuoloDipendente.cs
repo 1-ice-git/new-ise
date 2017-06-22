@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void AssociaRuoloDipendente_Indennita(decimal idTrasferimento, decimal id, EntitiesDBISE db)
+        public void AssociaRuoloDipendente_Indennita(decimal idTrasferimento, decimal id, ModelDBISE db)
         {
 
             try
@@ -53,7 +54,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var lrd = db.RUOLODIPENDENTE.Where(a => a.IDRUOLO == idRuolo &&
                                                dataIni >= a.DATAINZIOVALIDITA &&
@@ -89,7 +90,7 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
-        public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni, EntitiesDBISE db)
+        public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni, ModelDBISE db)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
@@ -126,7 +127,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt, EntitiesDBISE db)
+        public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
@@ -167,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
@@ -208,7 +209,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void SetRuoloDipendente(ref RuoloDipendenteModel rdm, EntitiesDBISE db)
+        public void SetRuoloDipendente(ref RuoloDipendenteModel rdm, ModelDBISE db)
         {
             RUOLODIPENDENTE rd;
 
@@ -233,7 +234,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void EditRuoloDipendente(RuoloDipendenteModel rdm, EntitiesDBISE db)
+        public void EditRuoloDipendente(RuoloDipendenteModel rdm, ModelDBISE db)
         {
             RUOLODIPENDENTE rd = db.RUOLODIPENDENTE.Find(rdm.idRuoloDipendente);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,7 +13,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public ValuteModel GetValuta(decimal idValuta, EntitiesDBISE db)
+        public ValuteModel GetValuta(decimal idValuta, ModelDBISE db)
         {
             ValuteModel vm = new ValuteModel();
 
@@ -32,7 +33,7 @@ namespace NewISE.Models.DBModel.dtObj
             return vm;
         }
 
-        public ValuteModel GetValutaUfficiale(EntitiesDBISE db)
+        public ValuteModel GetValutaUfficiale(ModelDBISE db)
         {
             ValuteModel vm = new ValuteModel();
 

@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.RIDUZIONI.ToList();
 
@@ -56,7 +57,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
 
@@ -91,7 +92,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.RIDUZIONI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -126,7 +127,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.RIDUZIONI.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -169,7 +170,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<RIDUZIONI> lArchivioIB = new List<RIDUZIONI>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -345,7 +346,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrima(RiduzioniModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
@@ -353,7 +354,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessivi(RiduzioniModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -368,7 +369,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessiviUguale(RiduzioniModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -385,7 +386,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrimaUguale(RiduzioniModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
@@ -397,7 +398,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             RIDUZIONI delIB = new RIDUZIONI();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -459,7 +460,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.RIDUZIONI.ToList();
 
@@ -487,7 +488,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.RIDUZIONI.Find(idRiduzioni);
 

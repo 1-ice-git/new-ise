@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -150,7 +151,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var lt = db.TRASFERIMENTO.Where(a => a.IDDIPENDENTE == idDipendente && a.ANNULLATO == false && a.DATAPARTENZA < dataPartenza).ToList();
 
@@ -223,7 +224,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
 
@@ -324,7 +325,7 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
-        public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola, EntitiesDBISE db)
+        public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola, ModelDBISE db)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
             int matr = Convert.ToInt16(matricola);
@@ -461,7 +462,7 @@ namespace NewISE.Models.DBModel.dtObj
             return dit;
         }
 
-        public void SetTrasferimento(ref TrasferimentoModel trm, EntitiesDBISE db)
+        public void SetTrasferimento(ref TrasferimentoModel trm, ModelDBISE db)
         {
             TRASFERIMENTO tr;
 
@@ -489,7 +490,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void EditTrasferimento(TrasferimentoModel trm, EntitiesDBISE db)
+        public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
         {
             TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
@@ -518,7 +519,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             TrasferimentoModel trm = new TrasferimentoModel();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var tr = db.TRASFERIMENTO.Find(idTrasferimento);
                 if (tr != null && tr.IDTRASFERIMENTO > 0)
@@ -551,7 +552,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             bool ret = false;
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var tr = db.TRASFERIMENTO.Find(idTrasferimento);
 

@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEMAB.ToList();
 
@@ -60,7 +61,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello).ToList();
 
@@ -97,7 +98,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -134,7 +135,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -179,7 +180,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<PERCENTUALEMAB> lArchivioIB = new List<PERCENTUALEMAB>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -364,7 +365,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrima(PercMaggAbitazModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
@@ -372,7 +373,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessivi(PercMaggAbitazModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -387,7 +388,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessiviUguale(PercMaggAbitazModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -404,7 +405,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrimaUguale(PercMaggAbitazModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.PERCENTUALEMAB.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
@@ -416,7 +417,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             PERCENTUALEMAB delIB = new PERCENTUALEMAB();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 
 namespace NewISE.Models.dtObj
 {
@@ -11,7 +12,7 @@ namespace NewISE.Models.dtObj
 
         public void SetLogAttivita(LogAttivitaModel lam)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -36,7 +37,7 @@ namespace NewISE.Models.dtObj
             }
         }
 
-        public void SetLogAttivita(LogAttivitaModel lam, EntitiesDBISE db)
+        public void SetLogAttivita(LogAttivitaModel lam, ModelDBISE db)
         {
             try
             {

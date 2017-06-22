@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace NewISE.Models.DBModel.dtObj
         public static ValidationResult MatricolaUnivoca(string v, ValidationContext context)
         {
             var dNew = context.ObjectInstance as DipendentiModel;
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 //Prelevo il record interessato dalla verifica.
                 var vli = db.DIPENDENTI.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
@@ -68,7 +69,7 @@ namespace NewISE.Models.DBModel.dtObj
         public static ValidationResult EmailUnivoca(string v, ValidationContext context)
         {
             var dNew = context.ObjectInstance as DipendentiModel;
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 //Prelevo il record interessato dalla verifica.
                 var vli = db.DIPENDENTI.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
@@ -114,7 +115,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             DipendentiModel dm;
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 DIPENDENTI d = db.DIPENDENTI.Find(id);
 
@@ -152,7 +153,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             DipendentiModel dm;
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 DIPENDENTI d = db.DIPENDENTI.Where(a=>a.MATRICOLA == matricola).First();
 
@@ -190,7 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<DipendentiModel> ldm = new List<DipendentiModel>();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db=new ModelDBISE())
             {
                 var ld = db.DIPENDENTI.ToList();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,7 +25,7 @@ namespace NewISE.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     if (db.UTENTIAUTORIZZATI.Where(a=>a.UTENTE == matricola).Count()>0)
                     {
@@ -47,7 +48,7 @@ namespace NewISE.Models.dtObj
             
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {                    
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 

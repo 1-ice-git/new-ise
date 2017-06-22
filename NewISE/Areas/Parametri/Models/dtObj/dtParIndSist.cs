@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITASISTEMAZIONE.ToList();
 
@@ -60,7 +61,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).ToList();
 
@@ -97,7 +98,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -134,7 +135,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -178,7 +179,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<INDENNITASISTEMAZIONE> lArchivioIB = new List<INDENNITASISTEMAZIONE>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -363,7 +364,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrima(IndennitaSistemazioneModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
             }
@@ -371,7 +372,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessivi(IndennitaSistemazioneModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -386,7 +387,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessiviUguale(IndennitaSistemazioneModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -403,7 +404,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrimaUguale(IndennitaSistemazioneModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.INDENNITASISTEMAZIONE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).Count() > 0 ? true : false;
             }
@@ -415,7 +416,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             INDENNITASISTEMAZIONE delIB = new INDENNITASISTEMAZIONE();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {

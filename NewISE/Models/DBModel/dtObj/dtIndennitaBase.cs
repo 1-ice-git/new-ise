@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void AssociaIndennitaBase_Indennita(decimal idTrasferimento, decimal idIndennitaBase, EntitiesDBISE db)
+        public void AssociaIndennitaBase_Indennita(decimal idTrasferimento, decimal idIndennitaBase, ModelDBISE db)
         {
 
             try
@@ -43,7 +44,7 @@ namespace NewISE.Models.DBModel.dtObj
         public IndennitaBaseModel GetIndennitaBaseByIdTrasf(decimal idTrasferimento, DateTime dt)
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var lib = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
                 if (lib != null && lib.Count > 0)
@@ -83,7 +84,7 @@ namespace NewISE.Models.DBModel.dtObj
             return ibm;
         }
 
-        public IndennitaBaseModel GetIndennitaBaseByIdTrasf(decimal idTrasferimento, DateTime dt, EntitiesDBISE db)
+        public IndennitaBaseModel GetIndennitaBaseByIdTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
 
@@ -128,7 +129,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var ib = db.INDENNITABASE.Find(idIndennitaBase);
 
@@ -167,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
             return ibm;
         }
 
-        public IndennitaBaseModel GetIndennitaBase(decimal idIndennitaBase, EntitiesDBISE db)
+        public IndennitaBaseModel GetIndennitaBase(decimal idIndennitaBase, ModelDBISE db)
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
 
@@ -207,7 +208,7 @@ namespace NewISE.Models.DBModel.dtObj
             return ibm;
         }
 
-        public IndennitaBaseModel GetIndennitaBaseValida(decimal idLivello, DateTime dt, EntitiesDBISE db)
+        public IndennitaBaseModel GetIndennitaBaseValida(decimal idLivello, DateTime dt, ModelDBISE db)
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
 

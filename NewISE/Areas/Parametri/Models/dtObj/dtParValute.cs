@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.VALUTE.ToList();
 
@@ -47,7 +48,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.VALUTE.Where(a => a.IDVALUTA == idValute).ToList();
 
@@ -74,7 +75,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     //var lib = db.VALUTE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -110,7 +111,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         //    try
         //    {
-        //        using (EntitiesDBISE db = new EntitiesDBISE())
+        //        using (ModelDBISE db = new ModelDBISE())
         //        {
         //            var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -154,7 +155,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             //List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -334,7 +335,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         //public bool EsistonoMovimentiPrima(ValuteModel ibm)
         //{
-        //    using (EntitiesDBISE db = new EntitiesDBISE())
+        //    using (ModelDBISE db = new ModelDBISE())
         //    {
         //        return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
         //    }
@@ -342,7 +343,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         //public bool EsistonoMovimentiSuccessivi(ValuteModel ibm)
         //{
-        //    using (EntitiesDBISE db = new EntitiesDBISE())
+        //    using (ModelDBISE db = new ModelDBISE())
         //    {
         //        if (ibm.dataFineValidita.HasValue)
         //        {
@@ -357,7 +358,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         //public bool EsistonoMovimentiSuccessiviUguale(ValuteModel ibm)
         //{
-        //    using (EntitiesDBISE db = new EntitiesDBISE())
+        //    using (ModelDBISE db = new ModelDBISE())
         //    {
         //        if (ibm.dataFineValidita.HasValue)
         //        {
@@ -374,7 +375,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         //public bool EsistonoMovimentiPrimaUguale(ValuteModel ibm)
         //{
-        //    using (EntitiesDBISE db = new EntitiesDBISE())
+        //    using (ModelDBISE db = new ModelDBISE())
         //    {
         //        return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
         //    }
@@ -386,7 +387,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             VALUTE delIB = new VALUTE();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -451,7 +452,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.VALUTE.ToList();
 
@@ -480,7 +481,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.VALUTE.Find(idValuta);
 

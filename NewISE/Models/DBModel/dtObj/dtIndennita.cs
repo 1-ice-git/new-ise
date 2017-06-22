@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void DeleteIndennita(decimal idTrasferimento, EntitiesDBISE db)
+        public void DeleteIndennita(decimal idTrasferimento, ModelDBISE db)
         {
             var i = db.INDENNITA.Find(idTrasferimento);
 
@@ -23,9 +24,9 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
-        
 
-        public IndennitaModel GetIndennitaByIdTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+
+        public IndennitaModel GetIndennitaByIdTrasferimento(decimal idTrasferimento, ModelDBISE db)
         {
             IndennitaModel indennita = new IndennitaModel();
             //RuoloDipendenteModel rdm = new RuoloDipendenteModel();
@@ -53,10 +54,10 @@ namespace NewISE.Models.DBModel.dtObj
             return indennita;
         }
 
-        
 
 
-        public void SetIndennita(IndennitaModel im, EntitiesDBISE db)
+
+        public void SetIndennita(IndennitaModel im, ModelDBISE db)
         {
             INDENNITA i = new INDENNITA();
 

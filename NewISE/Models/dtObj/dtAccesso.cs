@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +16,7 @@ namespace NewISE.Models.dtObj
         public void SetAccesso(AccessoModel am)
         {
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db=new ModelDBISE())
             {
                 var a = new ACCESSI()
                 {

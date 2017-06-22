@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEDISAGIO.ToList();
 
@@ -58,7 +59,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
@@ -93,7 +94,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -128,7 +129,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -171,7 +172,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -341,7 +342,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
@@ -349,7 +350,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessivi(PercentualeDisagioModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -364,7 +365,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessiviUguale(PercentualeDisagioModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -379,7 +380,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrimaUguale(PercentualeDisagioModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
@@ -391,7 +392,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             PERCENTUALEDISAGIO delIB = new PERCENTUALEDISAGIO();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {

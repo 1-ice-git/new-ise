@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<TipoTrasferimentoModel> lttm = new List<TipoTrasferimentoModel>();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db=new ModelDBISE())
             {
                 lttm = (from e in db.TIPOTRASFERIMENTO
                         select new TipoTrasferimentoModel() {

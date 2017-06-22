@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db=new ModelDBISE())
             {
                 lru = (from e in db.RUOLOUFFICIO
                        select new RuoloUfficioModel() {
@@ -34,7 +35,7 @@ namespace NewISE.Models.DBModel.dtObj
         public static ValidationResult DescrizioneRuoloUfficioUnivoca(string v, ValidationContext context)
         {
             var dNew = context.ObjectInstance as RuoloUfficioModel;
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 //Prelevo il record interessato dalla verifica.
                 var vli = db.RUOLOUFFICIO.Where(a => a.IDRUOLO == dNew.idRuoloUfficio);

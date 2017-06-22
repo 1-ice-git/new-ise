@@ -4,6 +4,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -239,7 +240,7 @@ namespace NewISE.Controllers
                                 trm.dataAggiornamento = DateTime.Now;
                                 trm.annullato = false;
 
-                                using (EntitiesDBISE db = new EntitiesDBISE())
+                                using (ModelDBISE db = new ModelDBISE())
                                 {
                                     try
                                     {
@@ -450,7 +451,7 @@ namespace NewISE.Controllers
                             else///Modifica le informazioni
                             {
                                 
-                                using (EntitiesDBISE db = new EntitiesDBISE())
+                                using (ModelDBISE db = new ModelDBISE())
                                 {
                                     try
                                     {

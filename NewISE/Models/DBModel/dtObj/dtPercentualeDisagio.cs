@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,8 +12,8 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        
-        public void AssociaPercentualeDisagio_Indennita(decimal idTrasferimento,  decimal id, EntitiesDBISE db)
+
+        public void AssociaPercentualeDisagio_Indennita(decimal idTrasferimento, decimal id, ModelDBISE db)
         {
 
             try
@@ -41,7 +42,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public PercentualeDisagioModel GetPercentualeDisagioByIdTrasf(decimal idTrasferimento, DateTime dt, EntitiesDBISE db)
+        public PercentualeDisagioModel GetPercentualeDisagioByIdTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
 
@@ -84,7 +85,7 @@ namespace NewISE.Models.DBModel.dtObj
             return pdm;
         }
 
-        public PercentualeDisagioModel GetPercentualeDisagio(decimal idPercentualeDisagio, EntitiesDBISE db)
+        public PercentualeDisagioModel GetPercentualeDisagio(decimal idPercentualeDisagio, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
 
@@ -108,7 +109,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, EntitiesDBISE db)
+        public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
 

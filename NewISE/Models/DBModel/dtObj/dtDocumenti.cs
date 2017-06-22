@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.Tools;
+using NewISE.POCO;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public DocumentiModel GetDocumento(decimal idDocumento, EntitiesDBISE db)
+        public DocumentiModel GetDocumento(decimal idDocumento, ModelDBISE db)
         {
             DocumentiModel dm = new DocumentiModel();
 
@@ -41,7 +42,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="idTrasferimento"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public bool HasLetteraTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+        public bool HasLetteraTrasferimento(decimal idTrasferimento, ModelDBISE db)
         {
             bool ret = false;
 
@@ -59,7 +60,7 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
-        public void RimuoviLetteraTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+        public void RimuoviLetteraTrasferimento(decimal idTrasferimento, ModelDBISE db)
         {
             var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
             if (ld != null && ld.Count > 0)
@@ -74,7 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public DocumentiModel GetDocumentoByIdTrasferimento(decimal idTrasferimento, EntitiesDBISE db)
+        public DocumentiModel GetDocumentoByIdTrasferimento(decimal idTrasferimento, ModelDBISE db)
         {
             DocumentiModel dm = new DocumentiModel();
 
@@ -100,7 +101,7 @@ namespace NewISE.Models.DBModel.dtObj
         public DocumentiModel GetDocumentoByIdTrasferimento(decimal idTrasferimento)
         {
             DocumentiModel dm = new DocumentiModel();
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
 
@@ -127,7 +128,7 @@ namespace NewISE.Models.DBModel.dtObj
         public DocumentiModel GetDatiDocumentoByIdTrasferimento(decimal idTrasferimento)
         {
             DocumentiModel dm = new DocumentiModel();
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.TRASFERIMENTO.Find(idTrasferimento).DOCUMENTI;
 
@@ -154,7 +155,7 @@ namespace NewISE.Models.DBModel.dtObj
         public DocumentiModel GetDatiDocumentoById(decimal idDocumento)
         {
             DocumentiModel dm = new DocumentiModel();
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var d = db.DOCUMENTI.Find(idDocumento);
 
@@ -177,7 +178,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             byte[] blob = null;
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var d = db.DOCUMENTI.Find(idDocumento);
 
@@ -190,7 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
             return blob;
         }
 
-        public byte[] GetDocumentoByteById(decimal idDocumento, EntitiesDBISE db)
+        public byte[] GetDocumentoByteById(decimal idDocumento, ModelDBISE db)
         {
             byte[] blob = null;
 
@@ -204,7 +205,7 @@ namespace NewISE.Models.DBModel.dtObj
             return blob;
         }
 
-        public void SetDocumento(ref DocumentiModel dm, EntitiesDBISE db)
+        public void SetDocumento(ref DocumentiModel dm, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();
@@ -221,7 +222,7 @@ namespace NewISE.Models.DBModel.dtObj
             dm.idDocumenti = d.IDDOCUMENTO;
         }
 
-        public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, EntitiesDBISE db)
+        public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();

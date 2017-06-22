@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,7 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<TipologiaCoanModel> ltc = new List<TipologiaCoanModel>();
 
-            using (EntitiesDBISE db=new EntitiesDBISE())
+            using (ModelDBISE db=new ModelDBISE())
             {
                 ltc = (from e in db.TIPOLOGIACOAN
                        select new TipologiaCoanModel() {

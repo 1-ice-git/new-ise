@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.TIPOALIQUOTECONTRIBUTIVE.ToList();
 
@@ -45,7 +46,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idAliqContr);
 

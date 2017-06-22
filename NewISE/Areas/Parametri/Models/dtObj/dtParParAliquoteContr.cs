@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.ALIQUOTECONTRIBUTIVE.ToList();
 
@@ -56,7 +57,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr).ToList();
 
@@ -92,7 +93,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -128,7 +129,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -172,7 +173,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<ALIQUOTECONTRIBUTIVE> lArchivioIB = new List<ALIQUOTECONTRIBUTIVE>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -349,7 +350,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrima(AliquoteContributiveModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
             }
@@ -357,7 +358,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessivi(AliquoteContributiveModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -372,7 +373,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiSuccessiviUguale(AliquoteContributiveModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -389,7 +390,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
             }
@@ -401,7 +402,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {

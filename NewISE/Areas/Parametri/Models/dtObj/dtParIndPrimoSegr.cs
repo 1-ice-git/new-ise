@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITAPRIMOSEGRETARIO.ToList();
 
@@ -50,7 +51,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == idIndPrimoSegr).ToList();
 
@@ -80,7 +81,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -115,7 +116,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == idIndPrimoSegr && a.ANNULLATO == escludiAnnullati).ToList();
 
@@ -159,7 +160,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             List<INDENNITAPRIMOSEGRETARIO> lArchivioIB = new List<INDENNITAPRIMOSEGRETARIO>();
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -343,14 +344,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
         public bool EsistonoMovimentiPrima(IndennitaPrimoSegretModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
             }
         }
         public bool EsistonoMovimentiSuccessivi(IndennitaPrimoSegretModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -364,7 +365,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
         public bool EsistonoMovimentiSuccessiviUguale(IndennitaPrimoSegretModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
@@ -378,7 +379,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         }
         public bool EsistonoMovimentiPrimaUguale(IndennitaPrimoSegretModel ibm)
         {
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
             }
@@ -389,7 +390,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             INDENNITAPRIMOSEGRETARIO delIB = new INDENNITAPRIMOSEGRETARIO();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
@@ -448,7 +449,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.INDENNITAPRIMOSEGRETARIO.ToList();
 
@@ -475,7 +476,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.INDENNITAPRIMOSEGRETARIO.Find(idIndPrimoSegr);
 

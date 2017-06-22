@@ -1,6 +1,7 @@
 ﻿using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -96,7 +97,7 @@ namespace NewISE.Models.Tools
 
                 if (ac.idRuoloUtente > 0)
                 {
-                    using (EntitiesDBISE db = new EntitiesDBISE())
+                    using (ModelDBISE db = new ModelDBISE())
                     {
                         RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
                         if (ruolo!=null)
@@ -114,7 +115,7 @@ namespace NewISE.Models.Tools
             return ac;
         }
 
-        public static void SetLogAttivita(EnumAttivitaCrud eac, string descAttivitaSvolta, string tabellaCoinvolta, EntitiesDBISE db, decimal idTrasferimento = 0, decimal idTabellaCoinvolta = 0)
+        public static void SetLogAttivita(EnumAttivitaCrud eac, string descAttivitaSvolta, string tabellaCoinvolta, ModelDBISE db, decimal idTrasferimento = 0, decimal idTabellaCoinvolta = 0)
         {
             using (dtLogAttivita dtla = new dtLogAttivita())
             {

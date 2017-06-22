@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         public static ValidationResult DescrizioneStatoTrasferimentoUnivoco(string v, ValidationContext context)
         {
             var dNew = context.ObjectInstance as StatoTrasferimentoModel;
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 //Prelevo il record interessato dalla verifica.
                 var vli = db.STATOTRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO == dNew.idStatoTrasferimento);

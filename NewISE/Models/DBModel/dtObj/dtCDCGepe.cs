@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel;
+using NewISE.POCO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace NewISE.Models.dtObj
             CDCGepeModel cdcgm = new CDCGepeModel();
 
 
-            using (EntitiesDBISE db = new EntitiesDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var cdcg = db.CDCGEPE.Find(idDipendente);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.POCO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,7 +19,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.UFFICI.ToList();
 
@@ -48,7 +49,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.UFFICI.Find(idUfficio);
 
@@ -75,7 +76,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public UfficiModel GetUffici(decimal idUfficio, EntitiesDBISE db)
+        public UfficiModel GetUffici(decimal idUfficio, ModelDBISE db)
         {
             UfficiModel lm = new UfficiModel();
 
