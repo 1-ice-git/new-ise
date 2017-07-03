@@ -7,19 +7,12 @@
 
 <div id="divControlliDipendenti">
     <div class="form-horizontal">
-        @*<div class="form-group">
-            @Html.Label("lblMatricola", "Matricola", new { @class = "control-label col-xs-3" })
-            <div id="divCombo" class="col-xs-9">
-                <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeMatricola as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
-                </div>
-            </div>
-        </div>*@
+        
         <div class="form-group">
             @Html.Label("lblNominativo", "Nominativo", new { @class = "control-label col-xs-3" })
             <div id="divCombo2" class="col-xs-9">
                 <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new {@id="Nominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente(this.value);" })
+                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente();" })
                 </div>
             </div>
         </div>
@@ -66,24 +59,91 @@
 </div>
 
 <script type="text/javascript">
-
+    //debugger;
     $("#hMatricola").val('@matricola');
 
     InfoTrasferimento('@matricola');
+    //debugger;
+    GestioneMenu();
+
+    
+
+    function GestioneAbilitazioneMenu(matricola)
+    {
+        //debugger;
+
+        if (MenuGestioneTrasferimento(matricola) == 1) {
+            $("#lkGestioneTrasferimento").removeAttr("disabled");
+            $("#mnGestioneTrasferimento").removeClass("disabled");
+            $('#lkGestioneTrasferimento').attr('onClick', 'FunctionName(this);');
+        }
+        else {
+            $("#lkGestioneTrasferimento").attr("disabled", "disabled");
+            $("#mnGestioneTrasferimento").addClass("disabled");
+            $("#lkGestioneTrasferimento").removeAttr("onClick");
+        }
 
 
+    }
 
+    function GestioneMenu() {
+        //debugger;
+        var matr = $("#Nominativo").val();
 
+        if (matr != "" && matr != '0') {
+            SvuotaTab();
+            $("#lkNuovoTrasferimento").removeAttr("disabled");
+            $("#mnNuovoTrasferimento").removeClass("disabled");
 
+            GestioneAbilitazioneMenu(matr);
+            
+        }
+        else {
+            SvuotaTab();
 
+            $("#lkNuovoTrasferimento").attr("disabled", "disabled");
+            $("#mnNuovoTrasferimento").addClass("disabled");
 
-    $("#matricola").select2({
-        placeholder: "Seleziona la matricola",
-        allowClear: true,
-        language: "it",
-        width: '100'
+            $("#lkGestioneTrasferimento").attr("disabled", "disabled");
+            $("#mnGestioneTrasferimento").addClass("disabled");
 
-    });
+            $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
+            $("#mnMaggiorazioneFamiliare").addClass("disabled");
+
+            $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
+            $("#mnMaggiorazioneAbitazione").addClass("disabled");
+
+            $("#lkCongediPermessi").attr("disabled", "disabled");
+            $("#mnCongediPermessi").addClass("disabled");
+
+            $("#lkSospensione").attr("disabled", "disabled");
+            $("#mnSospensione").addClass("disabled");
+
+            $("#lkRichiamo").attr("disabled", "disabled");
+            $("#mnRichiamo").addClass("disabled");
+
+            $("#lkIndennità").attr("disabled", "disabled");
+            $("#mnIndennità").addClass("disabled");
+
+            $("#lkRiepilogoVoci").attr("disabled", "disabled");
+            $("#mnRiepilogoVoci").addClass("disabled");
+
+        }
+
+    }
+
+    function SvuotaTab() {
+        $("#tabNuovoTrasferimento").empty();
+        $("#tabGestioneTrasferimento").empty();
+        $("#tabMaggiorazioneFamiliare").empty();
+        $("#tabMaggiorazioneAbitazione").empty();
+        $("#tabCongediPermessi").empty();
+        $("#tabSospensione").empty();
+        $("#tabRichiamo").empty();
+        $("#tabIndennita").empty();
+        $("#RiepilogoVoci").empty();
+    }
+
     $("#Nominativo").select2({
         placeholder: "Seleziona il nominativo",
         allowClear: true,
@@ -92,12 +152,59 @@
 
     });
 
-    function FiltraDipendente(matricola) {
-        debugger;
-        var rotta = "/Dipendenti/DipendentiGepe";
-        //var matricola = $("#matricola").select2('val');
+    function MenuGestioneTrasferimento(matricola) {
+        var rotta = "/Trasferimento/VerirficaCompilazioneTrasferimento";
+        var valoreRitorno = 0;
 
-        if (matricola != "") {
+        if (matricola != "" && matricola != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    
+                },
+                success: function (result) {
+                    //debugger;
+                    
+                    if (result.err == "" || result.err == undefined) {
+                        if(result.VerificaCompilazione == 1){
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function FiltraDipendente() {
+        //debugger;
+        var rotta = "/Dipendenti/DipendentiGepe";
+        var matricola = $("#Nominativo").val();
+
+        if (matricola != "" && matricola != undefined) {
             $.ajax({
                 type: "POST",
                 url: rotta,
@@ -117,7 +224,7 @@
                     $("#ContenitoreDipendentiGepe").html(result);
 
                     InfoTrasferimento(matricola);
-
+                    GestioneMenu();
                 },
                 complete: function () {
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
@@ -138,6 +245,9 @@
 
         if (matricola == "") {
             return;
+        }
+        else {
+            $("#hMatricola").val(matricola);
         }
         var rotta = "/Trasferimento/InfoTrasferimento";
         if (matricola != "") {

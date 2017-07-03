@@ -1,5 +1,5 @@
 ﻿.btn-default {
-  text-shadow: 0 1px 0 #008039;
+  /*text-shadow: 0 1px 0 #008039;
   background-image: -webkit-linear-gradient(top, #008039 0%, #e0e0e0 100%);
   background-image:      -o-linear-gradient(top, 008039 0%, #e0e0e0 100%);
   background-image: -webkit-gradient(linear, left top, left bottom, from(008039), to(#e0e0e0));
@@ -8,18 +8,21 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   background-repeat: repeat-x;
   border-color: #003317;
-  border-color: #001a0b;
+  border-color: #001a0b;*/
+  color: #008039;
   
 }
 .btn-default:hover,
 .btn-default:focus {
-  background-color: #e0e0e0;
-  background-position: 0 -15px;
+  /*background-color: #e0e0e0;
+  background-position: 0 -15px;*/
+  color: saddlebrown;
 }
 .btn-default:active,
 .btn-default.active {
-  background-color: #e0e0e0;
-  border-color: #dbdbdb;
+  /*background-color: #e0e0e0;
+  border-color: #dbdbdb;*/
+  color: saddlebrown;
 }
 .btn-default.disabled,
 .btn-default[disabled],
@@ -41,4 +44,5 @@ fieldset[disabled] .btn-default:active,
 fieldset[disabled] .btn-default.active {
   background-color: #e0e0e0;
   background-image: none;
+  color: gray;
 }

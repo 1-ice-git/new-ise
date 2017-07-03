@@ -1,5 +1,5 @@
 ﻿
-.form-group {
+div.form-group {
   margin-bottom: 5px;
 }
 #ContenitoreDipendentiGepe{
@@ -22,7 +22,7 @@
 }
 .nav-tabs {
   border-bottom: 1px solid #ddd;
-  font-size: 13px;
+  font-size: 1em;
 
 }
 .nav-tabs > li {
@@ -53,7 +53,7 @@
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
   color:#918434;
-  cursor: default;
+  cursor: pointer;
   background-color: #E9F0EB;
   /*border: 1px solid #237069;*/
   /*border-right: 1px solid #237069;*/
@@ -90,7 +90,7 @@
 
 /*#region Dipendenti */
 #ContenitoreDipendentiGepe{
-    font-size: 13px;
+    font-size: 1.05em;
 }
 
 
@@ -98,7 +98,7 @@
 
 /*#region Dati Trasferimento */
 #ContenitoreDatiTrasf{
-    font-size: 13px;
+    font-size: 1.05em;
 }
 
 
@@ -107,7 +107,7 @@
 /*#region Nuovo trasferimento */
 
 #divControlliNuovoTrasf{
-    font-size:13px;
+    font-size:1.05em;
 }
 
 /*#endregion */

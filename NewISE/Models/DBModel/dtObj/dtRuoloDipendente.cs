@@ -1,6 +1,7 @@
-﻿using NewISE.Models.dtObj;
+﻿using NewISE.EF;
+using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
-using NewISE.POCO;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

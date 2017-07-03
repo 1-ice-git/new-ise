@@ -1,11 +1,13 @@
-﻿using NewISE.Models.Config.s_admin;
+﻿using NewISE.EF;
+using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj;
-using NewISE.POCO;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
@@ -139,14 +141,15 @@ namespace NewISE.Models.Tools
                 dtla.SetLogAttivita(lam, db);
             }
         }
-
-        public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita)
+        public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento)
         {
 
             dm = new DocumentiModel();
             gestisceEstensioni = false;
             dimensioneConsentita = false;
             esisteFile = false;
+
+            dimensioneMaxDocumento = string.Empty;
 
             try
             {
@@ -167,6 +170,8 @@ namespace NewISE.Models.Tools
                     }
 
                     var keyDimensioneDocumento = System.Configuration.ConfigurationManager.AppSettings["DimensioneDocumento"];
+
+                    dimensioneMaxDocumento = keyDimensioneDocumento;
 
                     if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
                     {
@@ -259,9 +264,19 @@ namespace NewISE.Models.Tools
         public static DateTime DataFineStop()
         {
             return Convert.ToDateTime("31/12/9999");
-        } 
+        }
+
+        public static PropertyInfo[] GetProperty(object val)
+        {
+            PropertyInfo[] arPi;
+            Type ty = val.GetType();
+
+            arPi = ty.GetProperties();
+                        
+            return arPi;
 
 
+        }
 
     }
 

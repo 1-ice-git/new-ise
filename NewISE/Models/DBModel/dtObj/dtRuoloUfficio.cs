@@ -1,4 +1,6 @@
-﻿using NewISE.POCO;
+﻿using NewISE.EF;
+using NewISE.Models.Tools;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +14,46 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        public RuoloUfficioModel GetRuoloUfficioValidoByIdTrasferimento(decimal idTrasferimento)
+        {
+            RuoloUfficioModel rum = new RuoloUfficioModel();
+            DateTime dtDatiParametri = DateTime.Now;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    if (tr.DATARIENTRO.HasValue)
+                    {
+                        dtDatiParametri = tr.DATARIENTRO.Value;
+                    }
+                    else
+                    {
+                        dtDatiParametri = tr.DATAPARTENZA > Utility.GetDtInizioMeseCorrente() ? tr.DATAPARTENZA : Utility.GetDtInizioMeseCorrente();
+                    }
+
+                    var lru = tr.INDENNITA.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
+
+                    if (lru != null && lru.Count > 0)
+                    {
+                        var ru = lru.First();
+
+                        rum = new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = ru.RUOLOUFFICIO.IDRUOLO,
+                            DescrizioneRuolo = ru.RUOLOUFFICIO.DESCRUOLO
+                        };
+
+                    }
+                }
+            }
+
+
+                return rum;
         }
 
         public IList<RuoloUfficioModel> GetListRuoloUfficio()

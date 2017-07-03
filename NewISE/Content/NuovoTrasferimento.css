@@ -1,4 +1,4 @@
-﻿#imgSalva:hover{
+﻿#imgSalva:hover {
     cursor:pointer;
 }
 /*#imgNotificaTrasf:hover{
@@ -10,4 +10,6 @@
 }
 .disabilitato {
   cursor: not-allowed;
+  opacity: 0,65;
 }
+

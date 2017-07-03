@@ -1,5 +1,5 @@
-﻿using NewISE.Models.Tools;
-using NewISE.POCO;
+﻿using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;

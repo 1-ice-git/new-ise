@@ -1,26 +1,15 @@
 ﻿<link href="~/Content/Dipendenti.css" rel="stylesheet" />
 
-@*<link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
-<link href="~/Content/bootstrap-fileinput/css/fileinput-rtl.min.css" rel="stylesheet" />
-<script src="~/Scripts/fileinput.min.js"></script>
-<script src="~/Scripts/locales/it.js"></script>*@
-
-<link href="~/bower_components/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
-<link href="~/bower_components/bootstrap-fileinput/css/fileinput-rtl.min.css" rel="stylesheet" />
-<script src="~/bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="~/bower_components/bootstrap-fileinput/js/locales/it.js"></script>
-
-
 @{
     ViewBag.Title = "Dipendenti";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
 
-
 }
 
-<input type="hidden" id="hMatricola" value=""/>
+<input type="hidden" id="hMatricola" value="" />
+@*<input type="hidden" id="hAbilitaModifica" value="False" />*@
 
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
@@ -39,20 +28,20 @@
             <ul id="tabsGestioneTrasferimento" class="nav nav-tabs tabs-destro">
                 @if (admin)
                 {
-                    <li><a href="#tabNuovoTrasferimento" data-toggle="tab" onclick="NuovoTrasferimento();">Nuovo Trasferimento</a></li>
+                    <li class="disabled" id="mnNuovoTrasferimento"><a id="lkNuovoTrasferimento" disabled href="#tabNuovoTrasferimento" data-toggle="tab" onclick="NuovoTrasferimento();">Nuovo Trasferimento</a></li>
                 }
                 else
                 {
-                    <li class="disabled"><a href="#tabNuovoTrasferimento" data-toggle="tab" >Nuovo Trasferimento</a></li>
+                    <li class="disabled" id="mnNuovoTrasferimento"><a id="lkNuovoTrasferimento" disabled href="#tabNuovoTrasferimento" data-toggle="tab">Nuovo Trasferimento</a></li>
                 }
-                <li><a href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
-                <li><a href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
-                <li><a href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
-                <li><a href="#tabCongediPermessi" data-toggle="tab">Congedi e Permessi</a></li>
-                <li><a href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
-                <li><a href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
-                <li><a href="#tabIndennita" data-toggle="tab">Indennità</a></li>
-                <li><a href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
+                <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
+                <li class="disabled" id="mnMaggiorazioneFamiliare"><a id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
+                <li class="disabled" id="mnMaggiorazioneAbitazione"><a id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
+                <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Congedi e Permessi</a></li>
+                <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
+                <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
+                <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
+                <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
             </ul>
         </div>
         <div id="tabContenuti" class="tab-content">
@@ -72,9 +61,13 @@
 @section scripts
 {
     <script type="text/javascript">
+
+
+        
         jQuery(document).ready(function ($) {
             $('#tabsGestioneTrasferimento').tab();
         });
+
 
         function NuovoTrasferimento() {
             //debugger;
@@ -117,4 +110,3 @@
         }
     </script>
 }
-

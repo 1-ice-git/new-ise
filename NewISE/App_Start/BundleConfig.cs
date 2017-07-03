@@ -31,10 +31,10 @@ namespace NewISE.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Content/jquery-ui-1.12.1.custom/jquery-ui.min.js"));
 
-            bundles.Add(new StyleBundle("~/Content/jqueryuiCSS").Include(
-                      "~/Content/jquery-ui-1.12.1.custom/jquery-ui.min.css",
-                      "~/Content/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css",
-                      "~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"));
+            //bundles.Add(new StyleBundle("~/Content/jqueryuiCSS").Include(
+            //          "~/Content/jquery-ui-1.12.1.custom/jquery-ui.min.css",
+            //          "~/Content/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css",
+            //          "~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
                       "~/Content/font-awesome.min.css"));         

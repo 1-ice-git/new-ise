@@ -1,5 +1,5 @@
-﻿using NewISE.Models.Tools;
-using NewISE.POCO;
+﻿using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -55,97 +55,100 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        public static ValidationResult VerificaRequiredDataLettera(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
+        //public static ValidationResult VerificaRequiredDataLettera(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
 
-            var tr = context.ObjectInstance as TrasferimentoModel;
+        //    var tr = context.ObjectInstance as TrasferimentoModel;
 
-            if (tr != null)
-            {
-                if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.file != null || tr.idDocumento > 0)
-                {
-                    if (tr.dataLettera.HasValue)
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("La data della lettera è richiesta.");
-                    }
-                }
-                else
-                {
-                    vr = ValidationResult.Success;
-                }
-            }
+        //    if (tr != null)
+        //    {
+        //        if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.file != null || tr.idDocumento > 0)
+        //        {
+        //            if (tr.dataLettera.HasValue)
+        //            {
+        //                vr = ValidationResult.Success;
+        //            }
+        //            else
+        //            {
+        //                vr = new ValidationResult("La data della lettera è richiesta.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            vr = ValidationResult.Success;
+        //        }
+        //    }
 
-            return vr;
-        }
+        //    return vr;
+        //}
 
-        public static ValidationResult VerificaRequiredDocumentoLettera(HttpPostedFileBase v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
+        //public static ValidationResult VerificaRequiredDocumentoLettera(HttpPostedFileBase v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
 
-            var tr = context.ObjectInstance as TrasferimentoModel;
+        //    var tr = context.ObjectInstance as TrasferimentoModel;
 
-            if (tr != null)
-            {
-                if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
-                {
-                    if (tr.file != null || tr.idDocumento > 0)
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("La lettera di trasferimento è richiesta.");
-                    }
-                }
-                else
-                {
-                    vr = ValidationResult.Success;
-                }
-            }
-            else
-            {
-                vr = ValidationResult.Success;
-            }
+        //    if (tr != null)
+        //    {
+        //        if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
+        //        {
+        //            if (tr.file != null || tr.idDocumento > 0)
+        //            {
+        //                vr = ValidationResult.Success;
+        //            }
+        //            else
+        //            {
+        //                vr = new ValidationResult("La lettera di trasferimento è richiesta.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            vr = ValidationResult.Success;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        vr = ValidationResult.Success;
+        //    }
 
-            return vr;
-        }
+        //    return vr;
+        //}
 
-        public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
+        //public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
 
-            var tr = context.ObjectInstance as TrasferimentoModel;
+        //    var tr = context.ObjectInstance as TrasferimentoModel;
 
-            if (tr != null)
-            {
-                if (tr.dataLettera.HasValue || tr.file != null || tr.idDocumento > 0)
-                {
-                    if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
-                    }
-                }
-                else
-                {
-                    vr = ValidationResult.Success;
-                }
-            }
-            else
-            {
-                vr = ValidationResult.Success;
-            }
+        //    if (tr != null)
+        //    {
+        //        if (tr.dataLettera.HasValue || tr.file != null || tr.idDocumento > 0)
+        //        {
+        //            if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
+        //            {
+        //                vr = ValidationResult.Success;
+        //            }
+        //            else
+        //            {
+        //                vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            vr = ValidationResult.Success;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        vr = ValidationResult.Success;
+        //    }
 
-            return vr;
-        }
+        //    return vr;
+        //}
+
+
+
 
         public IList<TrasferimentoModel> GetTrasferimentiPrecedenti(decimal idDipendente, DateTime dataPartenza)
         {
@@ -169,6 +172,7 @@ namespace NewISE.Models.DBModel.dtObj
                            coan = t.COAN,
                            protocolloLettera = t.PROTOCOLLOLETTERA,
                            dataLettera = t.DATALETTERA,
+                           notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                            dataAggiornamento = t.DATAAGGIORNAMENTO,
                            annullato = t.ANNULLATO,
                            StatoTrasferimento = new StatoTrasferimentoModel()
@@ -216,11 +220,51 @@ namespace NewISE.Models.DBModel.dtObj
             return ltm;
         }
 
+        public TrasferimentoModel GetUltimoSoloTrasferimentoByMatricola(string matricola)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+            int matr = Convert.ToInt16(matricola);
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
+                if (ldp != null && ldp.Count() > 0)
+                {
+                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false).ToList();
+
+                    if (lt != null && lt.Count() > 0)
+                    {
+                        var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
+
+
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+                            annullato = t.ANNULLATO            
+                        };
+                    }
+                }
+            }
+
+            return tm;
+        }
+
         public TrasferimentoModel GetUltimoTrasferimentoByMatricola(string matricola)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
             int matr = Convert.ToInt16(matricola);
-            DateTime dtDatiParametri = DateTime.Now;
+            
 
             try
             {
@@ -236,22 +280,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
 
-                            if (t.DATARIENTRO.HasValue)
-                            {
-                                dtDatiParametri = t.DATARIENTRO.Value;
-                            }
-                            else
-                            {
-                                dtDatiParametri = t.DATAPARTENZA > Utility.GetDtInizioMeseCorrente() ? t.DATAPARTENZA : Utility.GetDtInizioMeseCorrente();
-                            }
-
-                            RUOLOUFFICIO ru = new RUOLOUFFICIO();
-                            var lrd = t.INDENNITA.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
-                            if (lrd != null && lrd.Count() > 0)
-                            {
-                                ru = lrd.First().RUOLOUFFICIO;
-                            }
-
+                                                        
                             tm = new TrasferimentoModel()
                             {
                                 idTrasferimento = t.IDTRASFERIMENTO,
@@ -265,8 +294,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 coan = t.COAN,
                                 protocolloLettera = t.PROTOCOLLOLETTERA,
                                 dataLettera = t.DATALETTERA,
+                                notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                                 dataAggiornamento = t.DATAAGGIORNAMENTO,
-                                annullato = t.ANNULLATO,
+                                annullato = t.ANNULLATO,                                
                                 StatoTrasferimento = new StatoTrasferimentoModel()
                                 {
                                     idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
@@ -305,12 +335,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
                                     descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
-                                },
-                                idRuoloUfficio = ru.IDRUOLO,
-                                RuoloUfficio = new RuoloUfficioModel()
-                                {
-                                    idRuoloUfficio = ru.IDRUOLO,
-                                    DescrizioneRuolo = ru.DESCRUOLO
                                 }
                             };
                         }
@@ -355,6 +379,7 @@ namespace NewISE.Models.DBModel.dtObj
                             coan = t.COAN,
                             protocolloLettera = t.PROTOCOLLOLETTERA,
                             dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                             dataAggiornamento = t.DATAAGGIORNAMENTO,
                             annullato = t.ANNULLATO,
                             StatoTrasferimento = new StatoTrasferimentoModel()
@@ -465,7 +490,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void SetTrasferimento(ref TrasferimentoModel trm, ModelDBISE db)
         {
             TRASFERIMENTO tr;
-
+            
             tr = new TRASFERIMENTO()
             {
                 IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
@@ -478,16 +503,52 @@ namespace NewISE.Models.DBModel.dtObj
                 COAN = trm.coan,
                 PROTOCOLLOLETTERA = trm.protocolloLettera,
                 DATALETTERA = trm.dataLettera,
+                NOTIFICATRASFERIMENTO = trm.notificaTrasferimento,
                 DATAAGGIORNAMENTO = trm.dataAggiornamento,
                 ANNULLATO = trm.annullato
             };
 
             db.TRASFERIMENTO.Add(tr);
 
-            if (db.SaveChanges() > 0)
+            int i = db.SaveChanges();
+
+            
+            if (i > 0)
             {
                 trm.idTrasferimento = tr.IDTRASFERIMENTO;
             }
+
+            
+
+        }
+
+        public void EditTrasferimento(TrasferimentoModel trm)
+        {
+            using (ModelDBISE db=new ModelDBISE())
+            {
+                TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
+                    tr.IDUFFICIO = trm.idUfficio;
+                    tr.IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento;
+                    tr.IDDIPENDENTE = trm.idDipendente;
+                    tr.IDTIPOCOAN = trm.idTipoCoan;
+                    tr.DATAPARTENZA = trm.dataPartenza;
+                    tr.DATARIENTRO = trm.dataRientro;
+                    tr.COAN = trm.coan;
+                    tr.PROTOCOLLOLETTERA = trm.protocolloLettera;
+                    tr.DATALETTERA = trm.dataLettera;
+                    tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
+                    tr.ANNULLATO = trm.annullato;
+
+                    db.SaveChanges();
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                }
+            }
+            
         }
 
         public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
@@ -510,9 +571,82 @@ namespace NewISE.Models.DBModel.dtObj
                 tr.ANNULLATO = trm.annullato;
 
                 db.SaveChanges();
-
                 Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+
+                //if(db.SaveChanges() > 0)
+                //{
+                //    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                //}
+                //else
+                //{
+                //    throw new Exception("Modifica del trasferimento non effettuato.");
+                //}
+
             }
+        }
+
+        public TrasferimentoModel GetSoloTrasferimentoById(decimal idTrasferimento)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    trm = new TrasferimentoModel()
+                    {
+                        idTrasferimento = tr.IDTRASFERIMENTO,
+                        idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                        idUfficio = tr.IDUFFICIO,
+                        idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                        idDipendente = tr.IDDIPENDENTE,
+                        idTipoCoan = tr.IDTIPOCOAN,
+                        dataPartenza = tr.DATAPARTENZA,
+                        dataRientro = tr.DATARIENTRO,
+                        coan = tr.COAN,
+                        protocolloLettera = tr.PROTOCOLLOLETTERA,
+                        dataLettera = tr.DATALETTERA,
+                        notificaTrasferimento = trm.notificaTrasferimento,
+                        dataAggiornamento = tr.DATAAGGIORNAMENTO,
+                        annullato = tr.ANNULLATO
+                    };
+                }
+                
+            }
+
+             return trm;
+
+        }
+
+        public TrasferimentoModel GetSoloTrasferimentoById(decimal idTrasferimento, ModelDBISE db)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+            
+            var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (tr != null && tr.IDTRASFERIMENTO > 0)
+            {
+                trm = new TrasferimentoModel()
+                {
+                    idTrasferimento = tr.IDTRASFERIMENTO,
+                    idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                    idUfficio = tr.IDUFFICIO,
+                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idDipendente = tr.IDDIPENDENTE,
+                    idTipoCoan = tr.IDTIPOCOAN,
+                    dataPartenza = tr.DATAPARTENZA,
+                    dataRientro = tr.DATARIENTRO,
+                    coan = tr.COAN,
+                    protocolloLettera = tr.PROTOCOLLOLETTERA,
+                    dataLettera = tr.DATALETTERA,
+                    notificaTrasferimento = trm.notificaTrasferimento,
+                    dataAggiornamento = tr.DATAAGGIORNAMENTO,
+                    annullato = tr.ANNULLATO
+                };
+            }            
+
+            return trm;
+
         }
 
         public TrasferimentoModel GetTrasferimentoById(decimal idTrasferimento)
@@ -537,14 +671,54 @@ namespace NewISE.Models.DBModel.dtObj
                         coan = tr.COAN,
                         protocolloLettera = tr.PROTOCOLLOLETTERA,
                         dataLettera = tr.DATALETTERA,
+                        notificaTrasferimento = trm.notificaTrasferimento,
                         dataAggiornamento = tr.DATAAGGIORNAMENTO,
-                        annullato = tr.ANNULLATO
+                        annullato = tr.ANNULLATO,
+                        StatoTrasferimento = new StatoTrasferimentoModel()
+                        {
+                            idStatoTrasferimento = tr.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                            descrizioneStatoTrasferimento = tr.STATOTRASFERIMENTO.DESCRIZIONE
+                        },
+                        TipoTrasferimento = new TipoTrasferimentoModel()
+                        {
+                            idTipoTrasferimento = tr.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                            descTipoTrasf = tr.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                        },
+                        Ufficio = new UfficiModel()
+                        {
+                            idUfficio = tr.UFFICI.IDUFFICIO,
+                            codiceUfficio = tr.UFFICI.CODICEUFFICIO,
+                            descUfficio = tr.UFFICI.DESCRIZIONEUFFICIO
+                        },
+                        Dipendente = new DipendentiModel()
+                        {
+                            idDipendente = tr.DIPENDENTI.IDDIPENDENTE,
+                            matricola = tr.DIPENDENTI.MATRICOLA,
+                            nome = tr.DIPENDENTI.NOME,
+                            cognome = tr.DIPENDENTI.COGNOME,
+                            dataAssunzione = tr.DIPENDENTI.DATAASSUNZIONE,
+                            dataCessazione = tr.DIPENDENTI.DATACESSAZIONE,
+                            indirizzo = tr.DIPENDENTI.INDIRIZZO,
+                            cap = tr.DIPENDENTI.CAP,
+                            citta = tr.DIPENDENTI.CITTA,
+                            provincia = tr.DIPENDENTI.PROVINCIA,
+                            email = tr.DIPENDENTI.EMAIL,
+                            telefono = tr.DIPENDENTI.TELEFONO,
+                            fax = tr.DIPENDENTI.FAX,
+                            abilitato = tr.DIPENDENTI.ABILITATO,
+                            dataInizioRicalcoli = tr.DIPENDENTI.DATAINIZIORICALCOLI
+                        },
+                        TipoCoan = new TipologiaCoanModel()
+                        {
+                            idTipoCoan = tr.TIPOLOGIACOAN.IDTIPOCOAN,
+                            descrizione = tr.TIPOLOGIACOAN.DESCRIZIONE
+                        }
                     };
                 }
-                
+
             }
 
-             return trm;
+            return trm;
 
         }
 
@@ -554,15 +728,18 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                //db.Database.BeginTransaction();
+
                 var tr = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 if (tr != null && tr.IDTRASFERIMENTO > 0 )
                 {
-                    tr.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Attivo;
+                    tr.NOTIFICATRASFERIMENTO = true;
 
                     var i = db.SaveChanges();
                     if (i > 0)
                     {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Notifica del trasferimento.", "Trasferimento", db, idTrasferimento, tr.IDTRASFERIMENTO);
                         ret = true;
                     }
                     else
@@ -579,5 +756,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ret;
         }
+
+        
     }
 }

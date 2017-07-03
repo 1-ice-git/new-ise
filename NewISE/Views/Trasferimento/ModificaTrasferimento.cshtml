@@ -1,0 +1,479 @@
+﻿@model NewISE.Models.DBModel.TrasferimentoModel
+
+@using System.Web.Optimization
+@using NewISE.Models.DBModel
+
+@{
+    bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
+    string vMatricola = (string)ViewBag.Matricola;
+
+    DipendentiModel d = (DipendentiModel)ViewBag.Dipendente;
+
+    bool AbilitaNotifica = false;
+
+    if (Model != null)
+    {
+        if (Model.notificaTrasferimento == false)
+        {
+            if (Model.idTipoTrasferimento > 0 &&
+                Model.idUfficio > 0 &&
+                Model.idStatoTrasferimento > 0 &&
+                Model.idDipendente > 0 &&
+                Model.idTipoCoan > 0 &&
+                Model.dataPartenza > DateTime.MinValue &&
+                Model.idRuoloUfficio > 0 &&
+                Model.protocolloLettera != string.Empty &&
+                Model.dataLettera > DateTime.MinValue &&
+                Model.Documento != null &&
+                Model.Documento.idDocumenti > 0)
+            {
+                AbilitaNotifica = true;
+            }
+            else
+            {
+                AbilitaNotifica = false;
+            }
+        }
+        else
+        {
+            AbilitaNotifica = false;
+        }
+    }
+
+}
+
+<div class="form-horizontal">
+    @using (@Ajax.BeginForm("ModificaTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditTrasf" }))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.idTrasferimento)
+
+        @Html.HiddenFor(model => model.idStatoTrasferimento)
+        @Html.Hidden("idDipendente", d.idDipendente)
+        @Html.HiddenFor(model => model.idDocumento)
+
+        @Html.Hidden("matricola", vMatricola)
+        @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
+        <div style="padding-top:3px;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-3">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9 form-inline">
+                    @Html.TextBoxFor(model => model.dataPartenza, "{0:dd/MM/yyyy}", new { @class = "form-control", style = "width:200px;" })
+                    @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.RuoloUfficio.DescrizioneRuolo, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-3">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idRuoloUfficio", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idRuoloUfficio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div id="divCombo" class="col-xs-9">
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AbilitaDisabilitaCoan();" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                    @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Visualizza lettera di trasferimento", new { @class = "control-label col-xs-3" })
+                @if (Model != null && Model.idDocumento > 0)
+                {
+                    <div class="col-xs-1">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new { id = Model.idDocumento })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" /></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-1">
+                        <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" />
+                    </div>
+                }
+                <div class="col-xs-3">
+                    @if (Model != null && Model.idDocumento > 0)
+                    {
+                        <button type="button" class="btn btn-default btn-sm" onclick="DocumentoModal();">
+                            <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                            Sostituisci Lettera trasf.
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-default btn-sm" onclick="DocumentoModal();">
+                            <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                            Inserisci Lettera trasf.
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+
+    <div class="form-group ">
+        <div class="col-xs-offset-8 col-xs-1">
+            <button type="button" class="btn btn-default btn-sm" onclick="Salva();" id="btSalva">
+                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                Salva
+            </button>
+        </div>
+        @if (AbilitaNotifica)
+        {
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm " id="btNotifica" data-toggle="modal" data-target="#notificaModal">
+                    <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                    Notifica
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm disabled" disabled id="btNotifica">
+                    <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                    Notifica
+                </button>
+            </div>
+        }
+
+        <div class="col-xs-1">
+            <button class="btn btn-default btn-sm disabled" disabled id="btStampa">
+                <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                Stampa
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalError" tabindex="-4" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-danger text-danger" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-danger text-danger">
+                <p id="msgModalError" class="text-danger"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalInfo" tabindex="-3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">Info!!!</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="notificaModal" tabindex="-2" role="dialog" aria-labelledby="notificaModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Notifica del trasferimento</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1.5em;">
+                <p>Procedere con la notifica del trasferimento?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="NotificaTrasferimento();">Invia notifica</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Lettera di trasferimento</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btUpload" type="button" class="btn btn-info" onclick="SalvaDocumento();">Salva</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    //ValorizzaAbilitaModifica('@AbilitaNotifica.ToString()');
+    RicaricaInfoTrasferimento();
+    //AbilitaMenuGestioneTrasferimento();
+    AbilitaDisabilitaCoan();
+    AbilitaMenuGestioneTrasferimento('@vMatricola')
+
+    function Modifica() {
+        $("#formEditTrasf").submit();
+    }
+
+    function CloseTimeModal() {
+        setTimeout(CloseModalFile, 2000);
+        //CloseModalFile();
+    }
+
+    function CloseModalFile() {
+        $('#inviaDocModal').modal('hide');
+        //RicaricaModificaTrasferimento();
+        setTimeout(RicaricaModificaTrasferimento, 1000);
+    }
+
+    function DocumentoModal() {
+
+        var rotta = "/Documenti/LetteraDiTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                $('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewDocumento").empty();
+                $("#viewDocumento").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    $("#idTipoTrasferimento").select2({
+        placeholder: "Seleziona il tipo trasferimento",
+        allowClear: true,
+        language: "it",
+        width: '350'
+
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'ufficio",
+        allowClear: true,
+        language: "it",
+        width: '250'
+
+    });
+
+    $("#idRuoloUfficio").select2({
+        placeholder: "Seleziona il ruolo",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $("#idTipoCoan").select2({
+        placeholder: "Seleziona la tipologia del coan",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $('#dataPartenza').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+    });
+
+    function ErroreElaborazioneAjax(response) {
+        //debugger;
+        $("#msgModalError").text("Errore nell'elaborazione.");
+        $('#myModalError').modal('toggle');
+    }
+
+    function DialogInfo(response) {
+        $("#msgModalInfo").text(response);
+        $('#myModalInfo').modal('toggle');
+    }
+
+    function AbilitaDisabilitaCoan() {
+        //debugger;
+
+        var valore = $("#idTipoCoan").val();
+
+        if (valore == "1") {
+            $("#coan").attr("disabled", "disabled");
+        }
+        else {
+            $("#coan").removeAttr("disabled");
+        }
+    }
+
+    function NotificaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/NotificaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.msg != "" && typeof result.msg !== "undefined") {
+                    //LeggiSommatorieFDR();
+                    //LeggiSommatorieFDRtarget();
+                    //EmptyTextBox();
+                    DialogInfo(result.msg);
+                    $("#btNotifica").attr("disabled", "disabled");
+                }
+                else {
+                    //LeggiSommatorieFDR();
+                    //LeggiSommatorieFDRtarget();
+                    var err = result.err;
+                    ErroreElaborazioneAjax(err);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function RicaricaInfoTrasferimento() {
+        var rit = '@ricaricaInfoTrasf.ToString()';
+        var vMatricola = '@vMatricola';
+        var boolrit = rit == 'True'
+        if (boolrit == true) {
+            InfoTrasferimento(vMatricola);
+        }
+    }
+
+    function AbilitaMenuGestioneTrasferimento(matricola) {
+        GestioneAbilitazioneMenu(matricola);
+    }
+
+    function RicaricaModificaTrasferimento() {
+        //debugger;
+
+        var rotta = "/Trasferimento/ModificaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var matricola = '@vMatricola';
+        var ricaricaInfoTrasf = '@ricaricaInfoTrasf';
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento, matricola: matricola, ricaricaInfoTrasf: ricaricaInfoTrasf },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabNuovoTrasferimento").empty();
+                $("#tabNuovoTrasferimento").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+</script>

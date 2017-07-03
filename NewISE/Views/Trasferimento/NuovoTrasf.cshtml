@@ -1,0 +1,601 @@
+﻿@model NewISE.Models.DBModel.TrasferimentoModel
+
+
+@using System.Web.Optimization
+
+
+<link href="~/Content/NuovoTrasferimento.css" rel="stylesheet" />
+
+@{
+    bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
+    string vMatricola = ViewBag.Matricola;
+
+
+
+}
+
+@*@using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data", id = "formTrasf" }))
+    {*@
+@*@Html.AntiForgeryToken()*@
+
+<div id="divControlliNuovoTrasf">
+
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(model => model.idTrasferimento)
+        @Html.HiddenFor(model => model.idStatoTrasferimento)
+        @Html.HiddenFor(model => model.idDipendente)
+        @Html.HiddenFor(model => model.idDocumento)
+
+        @Html.Hidden("matricola", vMatricola)
+        @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
+        
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div id="divCombo" class="col-xs-3">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                </div>
+                @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div id="divCombo" class="col-xs-9">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                </div>
+                @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9 form-inline">
+                @Html.EditorFor(model => model.dataPartenza, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RuoloUfficio.DescrizioneRuolo, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div id="divCombo" class="col-xs-3">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idRuoloUfficio", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                </div>
+                @Html.ValidationMessageFor(model => model.idRuoloUfficio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div id="divCombo" class="col-xs-9">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AbilitaDisabilitaCoan(this.value);" })
+                </div>
+                @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.protocolloLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-9">
+                @Html.EditorFor(model => model.protocolloLettera, new { htmlAttributes = new { @class = "form-control", style = "width:250px;" } })
+                @Html.ValidationMessageFor(model => model.protocolloLettera, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
+            <div class="col-xs-3 form-inline">
+                @Html.EditorFor(model => model.dataLettera, new { htmlAttributes = new { @class = "form-control", @style = "width:200px;" } })
+                @Html.ValidationMessageFor(model => model.dataLettera, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.allegaDocumento, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9 form-inline">
+                    @Html.EditorFor(model => model.allegaDocumento, new { htmlAttributes = new { @class = "form-control checkbox", @style = "width:35px;" } })
+                    @Html.ValidationMessageFor(model => model.allegaDocumento, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        @if (Model != null && Model.notificaTrasferimento)
+            <div class="form-group">
+                @Html.Label("Visualizza lettera di trasferimento", htmlAttributes: new { @class = "control-label col-xs-3" })
+
+                <div class="col-xs-1" id="divVisualizzaDoc">
+                    <a href="@Html.Label("Sostituisci lettera di trasferimento", htmlAttributes: new { @class = "control-label col-xs-3" })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" /></a>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.Label("Visualizza lettera di trasferimento", htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-1 disabled" id="divVisualizzaDoc">
+                    <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" />
+                </div>
+            </div>
+        }
+        @if (Model != null && Model.file != null && Model.Documento != null)
+        {
+            <div class="form-group ">
+                @Html.Label("Sostituisci lettera di trasferimento", htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-5">
+
+                    <input id="file" name="file" multiple type="file" class="file file-loading hidden" value="">
+                    <button class="btn btn-default " id="btUpload" onclick="">
+                        <i class="fa fa-2x fa-upload" aria-hidden="true"></i>
+                        Invia lettera trasferimento
+                    </button>
+                    <span id="spanNomeFile"></span>
+                    @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group ">
+                @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-5">
+
+                    <input id="file" name="file" multiple type="file" class="file file-loading hidden" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
+                    <button class="btn btn-default  " id="btUpload" onclick="">
+                        <i class="fa fa-2x fa-upload" aria-hidden="true"></i>
+                        Invia lettera trasferimento
+                    </button>
+                    <span id="spanNomeFile"></span>
+                    @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+        <div class="form-group ">
+            <div class="col-xs-offset-8 col-xs-1">
+                <button class="btn btn-default btn-sm" onclick="Salva();" id="btSalva">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
+            @if (Model != null && Model.file != null && Model.Documento != null)
+            {
+
+
+
+            }
+            else
+            {
+                <div class="col-xs-1">
+                    <button class="btn btn-default btn-sm" onclick="NotificaTrasferimento();" id="btNotifica">
+                        <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                        Notifica
+                    </button>
+                </div>
+            }
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm" onclick="" id="btStampa">
+                    <i class="fa fa-2x fa-print" aria-hidden="true"></i>
+                    Stampa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*}*@
+
+<div class="modal fade" id="myModalError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-danger text-danger" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-danger text-danger">
+                <p id="msgModalError" class="text-danger"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">Info!!!</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    $("#btUpload").click(function () {
+        $("#file").empty();
+        $("#file").click();
+    });
+
+    $("#file").change(function () {
+        //debugger;
+        var file = $("#file").val();
+        if (file != null && file != undefined) {
+            var splitFile = file.split("\\");
+        var nomeFile = splitFile[splitFile.length - 1];
+
+        var estensioniValide = new Array(".pdf");
+        var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+        if (estensioniValide.contiene(estensione)) {
+
+            $("#NomeFile").val(nomeFile);
+            //$("#EstensioneFile").val(estensione);
+
+            $("#spanNomeFile").html(nomeFile);
+            return true;
+        } else {
+            DialogInfo("L'estensione del documento che si vuole importare ("+ estensione + ") non è supportata.\nL'estensione supportata è il .pdf");
+            return false;
+        }
+        }
+        
+
+    });
+
+    function NotificaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/NotificaTrasferimento";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.msg != "" && typeof result.msg !== "undefined") {
+                    //LeggiSommatorieFDR();
+                    //LeggiSommatorieFDRtarget();
+                    //EmptyTextBox();
+                    DialogInfo(result.msg);
+                    $("#btNotifica").attr("disabled", "disabled");
+                }
+                else {
+                    //LeggiSommatorieFDR();
+                    //LeggiSommatorieFDRtarget();
+                    var err = result.err;
+                    ErroreElaborazioneAjax(err);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    //debugger;
+    GestionePulsanteSalva();
+
+    function GestionePulsanteSalva() {
+        //debugger;
+        var statoTrasferimento = parseInt($("#idStatoTrasferimento").val());
+        if (statoTrasferimento == 21) {
+            $("#btSalva").attr("disabled", "disabled");
+        }
+        else {
+            $("#btSalva").removeAttr("disabled");
+        }
+    }
+
+    //function SostituisciDoc() {
+    //    //debugger;
+    //    $("#divNewInputFile").show('slow');
+    //    $("#divbtAnnullaSostituisciDoc").show('slow');
+    //    $("#lblSostLettera").show('slow');
+
+    //    $("#divVisualizzaDoc").hide('slow');
+    //    $("#divBtSostituisciDoc").hide('slow');
+    //    $("#lblVisLettera").hide('slow');
+
+    //}
+
+    //function AnnullaSotituisciDoc() {
+    //    $("#divNewInputFile").hide('slow');
+    //    $("#divbtAnnullaSostituisciDoc").hide('slow');
+    //    $("#lblSostLettera").hide('slow');
+
+    //    $("#divVisualizzaDoc").show('slow');
+    //    $("#divBtSostituisciDoc").show('slow');
+    //    $("#lblVisLettera").show('slow');
+    //}
+
+    //$("#file").fileinput({
+    //    showUpload: false,
+    //    mainClass: "input-group-lg",
+    //    language: "it",
+    //    rtl: true,
+    //    //allowedFileExtensions: ["pdf"],
+    //    browseClass: "btn btn-default",
+    //    //initialPreviewAsData: true,
+    //    //initialPreviewFileType: 'image',
+
+    //});
+
+    function AbilitaDisabilitaCoan(value) {
+        //debugger;
+        if (value == "1") {
+            $("#coan").attr("disabled", "disabled");
+        }
+        else {
+            $("#coan").removeAttr("disabled");
+        }
+    }
+
+    function Salva() {
+        //$("#formTrasf").submit();
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/Trasferimento/InserisciTrasferimento";
+
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var idStatoTrasferimento = parseInt($("#idStatoTrasferimento").val());
+        var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").val());
+        var idUfficio = parseInt($("#idUfficio").val());
+        var dataPartenza = $("#dataPartenza").val();
+        var idRuoloUfficio = parseInt($("#idRuoloUfficio").val());
+        var idTipoCoan = parseInt($("#idTipoCoan").val());
+        var coan = $("#coan").val();
+        var protocolloLettera = $("#protocolloLettera").val();
+        var dataLettera = $("#dataLettera").val();
+        var file = $("#file")[0].files[0];
+
+        var idDipendente = $("#idDipendente").val();
+        var matricola = $("#matricola").val();
+        var ricaricaInfoTrasf = $("#ricaricaInfoTrasf").val();
+        var modifica = $("#modifica").val();
+        var idDocumento = $("#idDocumento").val();
+
+
+        
+
+
+        if (idTrasferimento > 0) {
+            datiForm.append("idTrasferimento", idTrasferimento);
+        }        
+
+        if (idStatoTrasferimento > 0) {
+            datiForm.append("idStatoTrasferimento", idStatoTrasferimento);
+        }
+
+        if (idTipoTrasferimento > 0) {
+            datiForm.append("idTipoTrasferimento", idTipoTrasferimento);
+        }
+        
+        if (idUfficio > 0) {
+            datiForm.append("idUfficio", idUfficio);
+        }
+        
+        if (dataPartenza != "") {
+            datiForm.append("dataPartenza", dataPartenza);
+        }
+        
+        if (idRuoloUfficio > 0) {
+            datiForm.append("idRuoloUfficio", idRuoloUfficio);
+        }
+        
+        if (idTipoCoan > 0) {
+            datiForm.append("idTipoCoan", idTipoCoan);
+        }
+        
+        if (coan != "") {
+            datiForm.append("coan", coan);
+        }
+        if (protocolloLettera != "") {
+            datiForm.append("protocolloLettera", protocolloLettera);
+        }
+        if ($("#dataLettera").val() != "") {
+            datiForm.append("dataLettera", dataLettera);
+        }
+
+        datiForm.append("file", file);
+
+
+        if (idDipendente > 0) {
+            datiForm.append("idDipendente", idDipendente);
+        }
+        
+
+        
+        datiForm.append("matricola", matricola);
+        datiForm.append("ricaricaInfoTrasf", ricaricaInfoTrasf);
+        datiForm.append("modifica", modifica);
+        datiForm.append("idDocumento", idDocumento);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'html',
+            cache: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            processData: false, //Serve per NON far convertire l’oggetto
+            //FormData in una stringa, preservando il file
+            contentType: false, //Serve per NON far inserire automaticamente
+            //un content type errato
+            success: function (result) {
+                //debugger;
+
+                $("#tabNuovoTrasferimento").empty();
+                $("#tabNuovoTrasferimento").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    $("#idTipoTrasferimento").select2({
+        placeholder: "Seleziona il tipo trasferimento",
+        allowClear: true,
+        language: "it",
+        width: '350'
+
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l'ufficio",
+        allowClear: true,
+        language: "it",
+        width: '250'
+
+    });
+
+    $("#idRuoloUfficio").select2({
+        placeholder: "Seleziona il ruolo",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $("#idTipoCoan").select2({
+        placeholder: "Seleziona la tipologia del coan",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $('#dataPartenza').datepicker({
+        showButtonPanel: true,
+        showAnim: "slide",
+        //beforeShow: function (textbox, instance) {
+        //    //debugger;
+        //    var txtBoxOffset = $(this).offset();
+        //    var top = txtBoxOffset.top;
+        //    var left = txtBoxOffset.left;
+        //    var altezza = textbox.offsetHeight;
+        //    instance.dpDiv.css({
+        //        marginTop: (-(altezza+277)) + 'px',
+        //        //marginLeft: textbox.offsetWidth + 'px'
+        //    });
+        //}
+    });
+
+    $('#dataLettera').datepicker({
+        showButtonPanel: true,
+        showAnim: "slide",
+        //beforeShow: function (textbox, instance) {
+        //    //debugger;
+        //    var txtBoxOffset = $(this).offset();
+        //    var top = txtBoxOffset.top;
+        //    var left = txtBoxOffset.left;
+        //    var altezza = textbox.offsetHeight;
+        //    instance.dpDiv.css({
+        //        marginTop: (-(altezza+234)) + 'px',
+        //        //marginLeft: textbox.offsetWidth + 'px'
+        //    });
+        //}
+    });
+
+    //debugger;
+    @*var rit = '@ricaricaInfoTrasf.ToString()';
+    var vMatricola = '@vMatricola';
+    var boolrit = rit == 'True'
+    if (boolrit == true) {
+        InfoTrasferimento(vMatricola);
+    }
+
+    var vTipoCoan = parseInt('@vTipoCoan');
+    AbilitaDisabilitaCoan(vTipoCoan);*@
+
+    //$("#documento").change(function () {
+    //    debugger;
+    //    var file = $("#documento").val();
+
+    //    if (file != "") {
+    //        var splitFile = file.split("\\");
+    //        var nomeFile = splitFile[splitFile.length - 1];
+
+    //        var estensioniValide = new Array(".pdf");
+    //        var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+    //        if (estensioniValide.contiene(estensione)) {
+
+    //            //$("#nomeFile").val(nomeFile);
+    //            $("#spanNomeFile").html(nomeFile);
+    //            return true;
+    //        } else {
+
+    //            DialogInfo("L'estensione del documento che si vuole importare non è supportata. L'estensione supportata è il .pdf");
+
+    //            return false;
+    //        }
+    //    }
+
+    //});
+
+    function ErroreElaborazioneAjax(response) {
+        //debugger;
+        $("#msgModalError").text("Errore nell'elaborazione.");
+        $('#myModalError').modal('toggle');
+    }
+
+    function DialogInfo(response) {
+        $("#msgModalInfo").text(response);
+        $('#myModalInfo').modal('toggle');
+    }
+</script>

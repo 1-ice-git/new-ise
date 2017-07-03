@@ -1,4 +1,5 @@
-﻿using NewISE.POCO;
+﻿
+using NewISE.EF;
 using System;
 
 namespace NewISE.Models.dtObj
