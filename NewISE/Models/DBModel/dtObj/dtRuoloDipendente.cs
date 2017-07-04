@@ -48,7 +48,30 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void RimuoviAssociaRuoloDipendente_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        {
+            var i = db.INDENNITA.Find(idTrasferimento);
 
+            var item = db.Entry<INDENNITA>(i);
+
+            item.State = System.Data.Entity.EntityState.Modified;
+
+            item.Collection(a => a.RUOLODIPENDENTE).Load();
+
+            var e = db.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dt >= a.DATAINZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            if (e != null && e.Count > 0)
+            {
+                foreach (var it in e)
+                {
+                    i.RUOLODIPENDENTE.Remove(it);
+                }
+            }
+
+            
+
+            db.SaveChanges();
+        }
 
 
         public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni)

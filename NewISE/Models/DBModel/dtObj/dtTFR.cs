@@ -44,6 +44,30 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void RimuoviAssociaTFR_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        {
+            var i = db.INDENNITA.Find(idTrasferimento);
+
+            var item = db.Entry<INDENNITA>(i);
+
+            item.State = System.Data.Entity.EntityState.Modified;
+
+            item.Collection(a => a.TFR).Load();
+
+            var l = db.TFR.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            if (l!=null && l.Count > 0)
+            {
+                foreach (var it in l)
+                {
+                    i.TFR.Remove(it);
+                }
+            }
+
+            
+
+            db.SaveChanges()
+        }
 
 
         public TFRModel GetTFRValido(decimal idUfficio, DateTime dt, ModelDBISE db)

@@ -26,9 +26,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                 item.State = System.Data.Entity.EntityState.Modified;
 
-
-
                 item.Collection(a => a.COEFFICIENTESEDE).Load();
+
+
 
                 var e = db.COEFFICIENTESEDE.Find(id);
 
@@ -44,6 +44,33 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
 
+        }
+
+
+        public void RimuoviAssociaCoefficenteSede_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        {
+            var i = db.INDENNITA.Find(idTrasferimento);
+
+            var item = db.Entry<INDENNITA>(i);
+
+            item.State = System.Data.Entity.EntityState.Modified;
+
+            item.Collection(a => a.COEFFICIENTESEDE).Load();
+
+
+            var e = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            if (e != null && e.Count > 0)
+            {
+                foreach (var it in e)
+                {
+                    i.COEFFICIENTESEDE.Remove(it);
+                }
+            }
+
+            
+
+            db.SaveChanges();
         }
 
 

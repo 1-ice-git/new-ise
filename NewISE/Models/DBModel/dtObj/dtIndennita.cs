@@ -68,10 +68,26 @@ namespace NewISE.Models.DBModel.dtObj
 
             db.INDENNITA.Add(i);
 
-            db.SaveChanges();
+            if(db.SaveChanges() > 0)
+            {
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, im.idTrasfIndennita, im.idTrasfIndennita);
+            }
 
             
 
+        }
+
+        public void EditIndennita(IndennitaModel im, ModelDBISE db)
+        {
+            INDENNITA i = db.INDENNITA.Find(im.idTrasfIndennita);
+            i.DATAINIZIO = im.dataInizio;
+            i.DATAFINE = im.dataFine.HasValue ? im.dataFine.Value : Utility.DataFineStop();
+            i.DATAAGGIORNAMENTO = im.dataAggiornamento;
+
+            if (db.SaveChanges() > 0)
+            {
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Modifica dell'indennità.", "Indennita", db, im.idTrasfIndennita, im.idTrasfIndennita);
+            }
         }
 
 

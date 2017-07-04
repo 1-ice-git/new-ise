@@ -286,109 +286,168 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial");
             }
 
-            //return null;
+            
         }
 
-        [Authorize(Roles = "1 ,2")]
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult NuovoTrasf(string matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
         {
-            var lTipoTrasferimento = new List<SelectListItem>();
-            var lUffici = new List<SelectListItem>();
-            var lRuoloUfficio = new List<SelectListItem>();
-            var lTipologiaCoan = new List<SelectListItem>();
-
-            ViewBag.Modifica = false;
-
             try
             {
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
-
-                ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
-                ViewBag.ListUfficio = lUffici;
-                ViewBag.ListRuolo = lRuoloUfficio;
-                ViewBag.ListTipoCoan = lTipologiaCoan;
-
-                ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-                ViewBag.Matricola = matricola;
-
-                using (dtDipendenti dtd = new dtDipendenti())
+                trm.dataAggiornamento = DateTime.Now;
+                if (ModelState.IsValid)
                 {
-                    var d = dtd.GetDipendenteByMatricola(Convert.ToInt16(matricola));
-                    ViewBag.Dipendente = d;
-                }
-
-                using (dtTrasferimento dttr = new dtTrasferimento())
-                {
-                    var trm = dttr.GetUltimoTrasferimentoByMatricola(matricola);
-
-                    if (trm.HasValue())
+                    
+                    using (dtTrasferimento dttr = new dtTrasferimento())
                     {
-                        switch ((EnumStatoTraferimento)trm.StatoTrasferimento)
+                        using (ModelDBISE db = new ModelDBISE())
                         {
-                            case EnumStatoTraferimento.Attivo:
+                            try
+                            {
+                                db.Database.BeginTransaction();
 
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 2.ToString() || a.Value == 3.ToString());
-                                ViewBag.ListUfficio = lUffici.Where(a => a.Value != trm.idUfficio.ToString());
-                                return PartialView();
-
-                            case EnumStatoTraferimento.Da_Attivare:
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == trm.idTipoTrasferimento.ToString());
-                                ViewBag.Modifica = true;
-
-                                using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                                dttr.EditTrasferimento(trm);
+                                using (dtIndennita dti=new dtIndennita())
                                 {
-                                    trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
-                                    trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
-                                }
+                                    IndennitaModel im = dti.GetIndennitaByIdTrasferimento(trm.idTrasferimento, db);
 
-                                using (dtDocumenti dtd = new dtDocumenti())
-                                {
-                                    DocumentiModel dm = new DocumentiModel();
+                                    im.dataInizio = trm.dataPartenza;
+                                    im.dataFine = trm.dataRientro;
+                                    im.dataAggiornamento = DateTime.Now;
 
-                                    dm = dtd.GetDocumentoByIdTrasferimento(trm.idTrasferimento);
-                                    if (dm != null && dm.file != null)
+                                    dti.EditIndennita(im, db);
+
+                                    using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                     {
-                                        trm.idDocumento = dm.idDocumenti;
-                                        trm.file = dm.file;
-                                        trm.Documento = dm;
+
+                                        dtld.RimuoviAssociazioneLivelloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+
+                                        LivelloDipendenteModel ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
+                                        if (ldm.HasValue())
+                                        {
+                                            dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non risulta assegnato nessun livello per il dipendente " + trm.Dipendente.Nominativo + " (" + trm.Dipendente.matricola + ")");
+                                        }
+
+                                        using (dtIndennitaBase dtib = new dtIndennitaBase())
+                                        {
+                                            dtib.RimuoviAssociazioneIndennitaBase_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                            IndennitaBaseModel ibm = new IndennitaBaseModel();
+                                            ibm = dtib.GetIndennitaBaseValida(ldm.idLivello, trm.dataPartenza, db);
+                                            if (ibm.HasValue())
+                                            {
+                                                dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                            }
+                                        }
+
+                                        using (dtTFR dttfr = new dtTFR())
+                                        {
+                                            dttfr.RimuoviAssociaTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                            TFRModel tfrm = dttfr.GetTFRValido(trm.idUfficio, trm.dataPartenza, db);
+                                            if (tfrm.HasValue())
+                                            {
+                                                dttfr.AssociaTFR_Indennita(trm.idTrasferimento, tfrm.idTFR, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
+                                            }
+                                        }
+
+                                        using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                                        {
+                                            dtpd.RimuoviAssociaPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioValida(trm.idUfficio, trm.dataPartenza, db);
+
+                                            if (pdm.HasValue())
+                                            {
+                                                dtpd.AssociaPercentualeDisagio_Indennita(trm.idTrasferimento, pdm.idPercentualeDisagio, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
+                                            }
+                                        }
+                                        using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                                        {
+                                            dtcs.RimuoviAssociaCoefficenteSede_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                            CoefficientiSedeModel cs = dtcs.GetCoefficenteSedeValido(trm.idUfficio, trm.dataPartenza, db);
+                                            if (cs.HasValue())
+                                            {
+                                                dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, cs.idCoefficientiSede, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
+                                            }
+                                        }
+
+                                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                        {
+
+                                            dtrd.RimuoviAssociaRuoloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idRuoloUfficio, trm.dataPartenza, db);
+
+                                            if (rdm.hasValue())
+                                            {
+                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
+                                            }
+                                            else
+                                            {
+                                                rdm = new RuoloDipendenteModel()
+                                                {
+                                                    idRuolo = trm.idRuoloUfficio,
+                                                    dataInizioValidita = trm.dataPartenza,
+                                                    dataFineValidita = Convert.ToDateTime("31/12/9999"),
+                                                    dataAggiornamento = DateTime.Now,
+                                                    annullato = false
+                                                };
+
+                                                dtrd.SetRuoloDipendente(ref rdm, db);
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+
+                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
+                                            }
+                                        }
                                     }
+
+
+                                    
+
                                 }
-                                return PartialView(trm);
 
-                            case EnumStatoTraferimento.Non_Trasferito:
-                                trm.Ufficio = new UfficiModel();
-                                trm.RuoloUfficio = new RuoloUfficioModel();
+                            }
+                            catch (Exception ex)
+                            {
 
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
-
-                                return PartialView();
-
-                            case EnumStatoTraferimento.Terminato:
-                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
-                                return PartialView();
-
-                            default:
-
+                                db.Database.CurrentTransaction.Rollback();
                                 return PartialView("ErrorPartial");
+                            }
                         }
                     }
-                    else
-                    {
-                        trm.Ufficio = new UfficiModel();
-                        trm.RuoloUfficio = new RuoloUfficioModel();
-                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
-
-                        return PartialView();
-                    }
+                    
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+
+                return PartialView("errorPartial");
             }
         }
 
+        
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public ActionResult InserisciTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
@@ -414,9 +473,7 @@ namespace NewISE.Controllers
                                 {
                                     db.Database.BeginTransaction();
 
-                                    dttr.SetTrasferimento(ref trm, db);
-
-                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo trasferimento.", "Trasferimento", db, trm.idTrasferimento, trm.idTrasferimento);
+                                    dttr.SetTrasferimento(ref trm, db);                                    
 
                                     using (dtIndennita dti = new dtIndennita())
                                     {
@@ -430,7 +487,7 @@ namespace NewISE.Controllers
 
                                         dti.SetIndennita(im, db);
 
-                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, trm.idTrasferimento, im.idTrasfIndennita);
+                                        //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, trm.idTrasferimento, im.idTrasfIndennita);
 
                                         using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                         {
@@ -740,6 +797,14 @@ namespace NewISE.Controllers
             }
 
             
+        }
+
+        public ActionResult GestioneTrasferimento(decimal idTrasferimento)
+        {
+
+
+
+            return null;
         }
     }
 }

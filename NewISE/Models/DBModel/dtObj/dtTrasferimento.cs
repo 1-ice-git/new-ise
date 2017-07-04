@@ -516,6 +516,8 @@ namespace NewISE.Models.DBModel.dtObj
             if (i > 0)
             {
                 trm.idTrasferimento = tr.IDTRASFERIMENTO;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo trasferimento.", "Trasferimento", db, trm.idTrasferimento, trm.idTrasferimento);
             }
 
             
@@ -543,9 +545,12 @@ namespace NewISE.Models.DBModel.dtObj
                     tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
                     tr.ANNULLATO = trm.annullato;
 
-                    db.SaveChanges();
+                    if(db.SaveChanges() > 0)
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                    }
 
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                   
                 }
             }
             

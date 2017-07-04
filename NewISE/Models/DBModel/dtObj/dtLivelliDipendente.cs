@@ -129,7 +129,10 @@ namespace NewISE.Models.dtObj
 
                 i.LIVELLIDIPENDENTI.Add(l);
 
-                db.SaveChanges();
+                if(db.SaveChanges() > 0)
+                {
+                    //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Associazione del livello dipendente all'indennità.", "LIVELLIDIPENDENTI", db, idTrasferimento, idLivelloDipendente);
+                }
 
                 
             }
@@ -139,6 +142,26 @@ namespace NewISE.Models.dtObj
                 throw ex;
             }
             
+        }
+
+        public void RimuoviAssociazioneLivelloDipendente_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        {
+            var i = db.INDENNITA.Find(idTrasferimento);
+            var item = db.Entry<INDENNITA>(i);
+            item.State = System.Data.Entity.EntityState.Modified;
+            item.Collection(a => a.LIVELLIDIPENDENTI).Load();
+
+            var l = db.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            if (l!=null && l.Count > 0)
+            {
+                foreach (var it in l)
+                {
+                    i.LIVELLIDIPENDENTI.Remove(it);
+                }
+            }
+            
+            db.SaveChanges();
         }
     }
 }
