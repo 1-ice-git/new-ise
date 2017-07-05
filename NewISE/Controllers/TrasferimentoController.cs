@@ -428,6 +428,8 @@ namespace NewISE.Controllers
 
                                 }
 
+                                db.Database.CurrentTransaction.Commit();
+
                             }
                             catch (Exception ex)
                             {
