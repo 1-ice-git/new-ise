@@ -45,27 +45,28 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void RimuoviAssociaPercentualeDisagio_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
+            //var i = db.INDENNITA.Find(idTrasferimento);
 
-            var item = db.Entry<INDENNITA>(i);
+            //var item = db.Entry<INDENNITA>(i);
 
-            item.State = System.Data.Entity.EntityState.Modified;
+            //item.State = System.Data.Entity.EntityState.Modified;
 
-            item.Collection(a => a.PERCENTUALEDISAGIO).Load();
+            //item.Collection(a => a.PERCENTUALEDISAGIO).Load();
 
-            var l = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+            //var n = i.PERCENTUALEDISAGIO.ToList().RemoveAll(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-            if (l != null && l.Count > 0)
+            //if (n > 0)
+            //    db.SaveChanges();
+
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lit = i.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            foreach (var item in lit)
             {
-                foreach (var it in l)
-                {
-                    i.PERCENTUALEDISAGIO.Remove(it);
-                }
+                i.PERCENTUALEDISAGIO.Remove(item);
             }
-
-            
-
             db.SaveChanges();
+
         }
 
         public PercentualeDisagioModel GetPercentualeDisagioByIdTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
@@ -139,11 +140,11 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
 
-            var lpd = db.PERCENTUALEDISAGIO.Where(a=>a.ANNULLATO == false && 
+            var lpd = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false &&
                                                   a.IDUFFICIO == idUfficio &&
                                                   dt >= a.DATAINIZIOVALIDITA &&
-                                                  dt<= a.DATAFINEVALIDITA)
-                                           .OrderByDescending(a=>a.DATAINIZIOVALIDITA).ToList();
+                                                  dt <= a.DATAFINEVALIDITA)
+                                           .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
             if (lpd != null && lpd.Count > 0)
             {

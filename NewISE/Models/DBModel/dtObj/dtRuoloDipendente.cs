@@ -50,27 +50,17 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void RimuoviAssociaRuoloDipendente_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
 
-            var item = db.Entry<INDENNITA>(i);
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lrd = i.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dt >= a.DATAINZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
 
-            item.State = System.Data.Entity.EntityState.Modified;
-
-            item.Collection(a => a.RUOLODIPENDENTE).Load();
-
-            var e = db.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dt >= a.DATAINZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
-
-            if (e != null && e.Count > 0)
+            foreach (var item in lrd)
             {
-                foreach (var it in e)
-                {
-                    i.RUOLODIPENDENTE.Remove(it);
-                }
+                i.RUOLODIPENDENTE.Remove(item);
             }
-
-            
-
             db.SaveChanges();
+
+
         }
 
 
@@ -109,7 +99,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
             }
-                       
+
 
             return rdm;
 
@@ -143,10 +133,10 @@ namespace NewISE.Models.DBModel.dtObj
                         DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
                     }
                 };
-                
+
 
             }
-            
+
             return rdm;
 
         }
@@ -224,7 +214,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
             }
-            
+
             return rdm;
 
         }
@@ -249,11 +239,11 @@ namespace NewISE.Models.DBModel.dtObj
 
             db.RUOLODIPENDENTE.Add(rd);
 
-            if(db.SaveChanges() > 0)
+            if (db.SaveChanges() > 0)
             {
                 rdm.idRuoloDipendente = rd.IDRUOLODIPENDENTE;
             }
-            
+
 
 
         }

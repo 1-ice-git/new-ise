@@ -43,7 +43,7 @@
 }
 
 <div class="form-horizontal">
-    @using (@Ajax.BeginForm("ModificaTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditTrasf" }))
+    @using (@Ajax.BeginForm("ConfermaModificaTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditTrasf" }))
     {
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.idTrasferimento)
@@ -59,7 +59,7 @@
                 @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-3">
                     <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
                 </div>
@@ -69,7 +69,7 @@
                 @Html.LabelFor(model => model.idUfficio, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        @Html.DropDownList("idUfficio", ViewBag.ListUfficio as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idUfficio, "", new { @class = "text-danger" })
                 </div>
@@ -85,7 +85,7 @@
                 @Html.LabelFor(model => model.RuoloUfficio.DescrizioneRuolo, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-3">
                     <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idRuoloUfficio", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        @Html.DropDownList("idRuoloUfficio", ViewBag.ListRuolo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idRuoloUfficio, "", new { @class = "text-danger" })
                 </div>
@@ -143,7 +143,7 @@
 
     <div class="form-group ">
         <div class="col-xs-offset-8 col-xs-1">
-            <button type="button" class="btn btn-default btn-sm" onclick="Modifica();" id="btSalva">
+            <button type="button" class="btn btn-default btn-sm" id="btModifica">
                 <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
                 Salva
             </button>
@@ -267,9 +267,12 @@
     AbilitaDisabilitaCoan();
     AbilitaMenuGestioneTrasferimento('@vMatricola')
 
-    function Modifica() {
+
+
+    $("#btModifica").click(function () {
+        //debugger;
         $("#formEditTrasf").submit();
-    }
+    });
 
     function CloseTimeModal() {
         setTimeout(CloseModalFile, 2000);
@@ -283,7 +286,7 @@
     }
 
     function DocumentoModal() {
-
+        //debugger;
         var rotta = "/Documenti/LetteraDiTrasferimento";
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 

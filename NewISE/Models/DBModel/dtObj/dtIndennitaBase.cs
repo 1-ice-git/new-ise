@@ -44,26 +44,31 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void RimuoviAssociazioneIndennitaBase_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
+            //var i = db.INDENNITA.Find(idTrasferimento);
 
-            var item = db.Entry<INDENNITA>(i);
+            //var item = db.Entry<INDENNITA>(i);
 
-            item.State = System.Data.Entity.EntityState.Modified;
+            //item.State = System.Data.Entity.EntityState.Modified;
 
-            item.Collection(a => a.INDENNITABASE).Load();
+            //item.Collection(a => a.INDENNITABASE).Load();
 
-            var l = db.INDENNITABASE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+            //var n = i.INDENNITABASE.ToList().RemoveAll(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-            if (l!=null && l.Count > 0)
+            //if (n > 0)
+            //{
+            //    db.SaveChanges();
+            //}
+
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lit = i.INDENNITABASE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            foreach (var item in lit)
             {
-                foreach (var it in l)
-                {
-                    i.INDENNITABASE.Remove(it);
-                }
+                i.INDENNITABASE.Remove(item);
             }
-                       
-
             db.SaveChanges();
+
+
         }
 
         public IndennitaBaseModel GetIndennitaBaseByIdTrasf(decimal idTrasferimento, DateTime dt)

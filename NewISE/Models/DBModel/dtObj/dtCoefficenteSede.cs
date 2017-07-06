@@ -49,28 +49,28 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void RimuoviAssociaCoefficenteSede_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
+            //var i = db.INDENNITA.Find(idTrasferimento);
 
-            var item = db.Entry<INDENNITA>(i);
+            //var item = db.Entry<INDENNITA>(i);
 
-            item.State = System.Data.Entity.EntityState.Modified;
+            //item.State = System.Data.Entity.EntityState.Modified;
 
-            item.Collection(a => a.COEFFICIENTESEDE).Load();
+            //item.Collection(a => a.COEFFICIENTESEDE).Load();
 
+            //var n = i.COEFFICIENTESEDE.ToList().RemoveAll(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-            var e = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+            //if (n > 0)
+            //    db.SaveChanges();
 
-            if (e != null && e.Count > 0)
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lit = i.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            foreach (var item in lit)
             {
-                foreach (var it in e)
-                {
-                    i.COEFFICIENTESEDE.Remove(it);
-                }
+                i.COEFFICIENTESEDE.Remove(item);
             }
-
-            
-
             db.SaveChanges();
+
         }
 
 
@@ -79,8 +79,8 @@ namespace NewISE.Models.DBModel.dtObj
             CoefficientiSedeModel csm = new CoefficientiSedeModel();
 
             var lcs = db.INDENNITA.Find(idTrasferimento)
-                                  .COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && 
-                                                          dt >= a.DATAINIZIOVALIDITA && 
+                                  .COEFFICIENTESEDE.Where(a => a.ANNULLATO == false &&
+                                                          dt >= a.DATAINIZIOVALIDITA &&
                                                           dt <= a.DATAFINEVALIDITA)
                                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                                    .ToList();
@@ -118,7 +118,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var cs = db.COEFFICIENTESEDE.Find(idCoefficenteSede);
 
-            if (cs!= null && cs.IDCOEFFICIENTESEDE > 0)
+            if (cs != null && cs.IDCOEFFICIENTESEDE > 0)
             {
                 csm = new CoefficientiSedeModel()
                 {

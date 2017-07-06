@@ -9,7 +9,7 @@ using System.Web;
 
 namespace NewISE.Models.dtObj
 {
-    public class dtLivelliDipendente :IDisposable
+    public class dtLivelliDipendente : IDisposable
     {
         public void Dispose()
         {
@@ -21,8 +21,8 @@ namespace NewISE.Models.dtObj
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
             var lld = db.INDENNITA.Find(idTrasferimento)
-                        .LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && 
-                                                 dt >= a.DATAINIZIOVALIDITA && 
+                        .LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false &&
+                                                 dt >= a.DATAINIZIOVALIDITA &&
                                                  dt <= a.DATAFINEVALIDITA)
                                           .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                           .ToList();
@@ -39,12 +39,12 @@ namespace NewISE.Models.dtObj
                     dataFineValidita = ld.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ld.DATAFINEVALIDITA,
                     dataAggiornamento = ld.DATAAGGIORNAMENTO,
                     annullato = ld.ANNULLATO
-                    
+
                 };
             }
-               
 
-        return ldm;
+
+            return ldm;
         }
 
         public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data)
@@ -80,31 +80,31 @@ namespace NewISE.Models.dtObj
         {
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
-            
-                var ld = db.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && 
-                                                    a.IDDIPENDENTE == idDipendente && 
-                                                    data >= a.DATAINIZIOVALIDITA && 
-                                                    data.Date <= a.DATAFINEVALIDITA)
-                                             .OrderByDescending(a=>a.DATAINIZIOVALIDITA)
-                                             .ToList();
 
-                ldm = (from e in ld
-                       select new LivelloDipendenteModel()
+            var ld = db.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false &&
+                                                a.IDDIPENDENTE == idDipendente &&
+                                                data >= a.DATAINIZIOVALIDITA &&
+                                                data.Date <= a.DATAFINEVALIDITA)
+                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                         .ToList();
+
+            ldm = (from e in ld
+                   select new LivelloDipendenteModel()
+                   {
+                       idLivDipendente = e.IDLIVDIPENDENTE,
+                       idDipendente = e.IDDIPENDENTE,
+                       idLivello = e.IDLIVELLO,
+                       dataInizioValdita = e.DATAINIZIOVALIDITA,
+                       dataFineValidita = e.DATAFINEVALIDITA,
+                       dataAggiornamento = e.DATAAGGIORNAMENTO,
+                       annullato = e.ANNULLATO,
+                       Livello = new LivelloModel()
                        {
-                           idLivDipendente = e.IDLIVDIPENDENTE,
-                           idDipendente = e.IDDIPENDENTE,
-                           idLivello = e.IDLIVELLO,
-                           dataInizioValdita = e.DATAINIZIOVALIDITA,
-                           dataFineValidita = e.DATAFINEVALIDITA,
-                           dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           annullato = e.ANNULLATO,
-                           Livello = new LivelloModel()
-                           {
-                               idLivello = e.LIVELLI.IDLIVELLO,
-                               DescLivello = e.LIVELLI.LIVELLO
-                           }
-                       }).First();
-            
+                           idLivello = e.LIVELLI.IDLIVELLO,
+                           DescLivello = e.LIVELLI.LIVELLO
+                       }
+                   }).First();
+
 
             return ldm;
         }
@@ -114,7 +114,7 @@ namespace NewISE.Models.dtObj
         {
 
             try
-            {                
+            {
                 var i = db.INDENNITA.Find(idTrasferimento);
 
                 var item = db.Entry<INDENNITA>(i);
@@ -129,39 +129,43 @@ namespace NewISE.Models.dtObj
 
                 i.LIVELLIDIPENDENTI.Add(l);
 
-                if(db.SaveChanges() > 0)
+                if (db.SaveChanges() > 0)
                 {
                     //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Associazione del livello dipendente all'indennità.", "LIVELLIDIPENDENTI", db, idTrasferimento, idLivelloDipendente);
                 }
 
-                
+
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
-            
+
         }
 
         public void RimuoviAssociazioneLivelloDipendente_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
-            var item = db.Entry<INDENNITA>(i);
-            item.State = System.Data.Entity.EntityState.Modified;
-            item.Collection(a => a.LIVELLIDIPENDENTI).Load();
+            //var i = db.INDENNITA.Find(idTrasferimento);
+            //var item = db.Entry<INDENNITA>(i);
+            //item.State = System.Data.Entity.EntityState.Modified;
+            //item.Collection(a => a.LIVELLIDIPENDENTI).Load();
+            //var n = i.LIVELLIDIPENDENTI.ToList().RemoveAll(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-            var l = db.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+            //if (n > 0)
+            //{
+            //    db.SaveChanges();
+            //}
 
-            if (l!=null && l.Count > 0)
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lit = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            foreach (var item in lit)
             {
-                foreach (var it in l)
-                {
-                    i.LIVELLIDIPENDENTI.Remove(it);
-                }
+                i.LIVELLIDIPENDENTI.Remove(item);
             }
-            
             db.SaveChanges();
+
         }
     }
 }

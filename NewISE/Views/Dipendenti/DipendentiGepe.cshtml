@@ -7,12 +7,12 @@
 
 <div id="divControlliDipendenti">
     <div class="form-horizontal">
-        
+
         <div class="form-group">
             @Html.Label("lblNominativo", "Nominativo", new { @class = "control-label col-xs-3" })
             <div id="divCombo2" class="col-xs-9">
                 <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select", @onchange = "FiltraDipendente();" })
+                    @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select" })
                 </div>
             </div>
         </div>
@@ -66,10 +66,12 @@
     //debugger;
     GestioneMenu();
 
-    
+    $("#Nominativo").change(function () {
+        //debugger;
+        FiltraDipendente();
+    });
 
-    function GestioneAbilitazioneMenu(matricola)
-    {
+    function GestioneAbilitazioneMenu(matricola) {
         //debugger;
 
         if (MenuGestioneTrasferimento(matricola) == 1) {
@@ -96,7 +98,7 @@
             $("#mnNuovoTrasferimento").removeClass("disabled");
 
             GestioneAbilitazioneMenu(matr);
-            
+
         }
         else {
             SvuotaTab();
@@ -166,13 +168,13 @@
                 beforeSend: function () {
                     //debugger;
                     //VerificaAutenticazione();
-                    
+
                 },
                 success: function (result) {
                     //debugger;
-                    
+
                     if (result.err == "" || result.err == undefined) {
-                        if(result.VerificaCompilazione == 1){
+                        if (result.VerificaCompilazione == 1) {
                             valoreRitorno = 1;
                         }
                         else {
@@ -200,7 +202,7 @@
     }
 
     function FiltraDipendente() {
-        //debugger;
+        debugger;
         var rotta = "/Dipendenti/DipendentiGepe";
         var matricola = $("#Nominativo").val();
 
@@ -223,8 +225,8 @@
                     $("#ContenitoreDipendentiGepe").empty();
                     $("#ContenitoreDipendentiGepe").html(result);
 
-                    InfoTrasferimento(matricola);
-                    GestioneMenu();
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
                 },
                 complete: function () {
                     //$("#divEffettoLoadAutNoDoc").hide("slow");

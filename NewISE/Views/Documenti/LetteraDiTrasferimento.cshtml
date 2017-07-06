@@ -45,7 +45,7 @@
             <div id="divFile" style="display:inline-block;">
                 <button class="btn btn-default  " id="btUpload" onclick="">
                     <i class="fa fa-2x fa-upload" aria-hidden="true"></i>
-                    Invia lettera trasferimento
+                    Seleziona lettera trasferimento
                 </button>
                 <span id="spanNomeFile">Seleziona il documento</span>
             </div>
@@ -195,11 +195,11 @@
                     //debugger;
 
                     if (result.err != "" && result.err != undefined) {
-                        MsgErroreJson(result.err);                        
+                        MsgErroreJson(result.err);
                     }
                     else {
                         MsgErroreJson(result.msg);
-                        
+
                         CloseTimeModal();
                     }
 
@@ -222,5 +222,5 @@
         $("#spMsgError").html(msg);
     }
 
-    
+
 </script>

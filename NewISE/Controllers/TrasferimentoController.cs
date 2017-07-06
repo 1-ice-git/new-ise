@@ -286,7 +286,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial");
             }
 
-            
+
         }
 
         public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
@@ -296,7 +296,7 @@ namespace NewISE.Controllers
                 trm.dataAggiornamento = DateTime.Now;
                 if (ModelState.IsValid)
                 {
-                    
+
                     using (dtTrasferimento dttr = new dtTrasferimento())
                     {
                         using (ModelDBISE db = new ModelDBISE())
@@ -305,8 +305,8 @@ namespace NewISE.Controllers
                             {
                                 db.Database.BeginTransaction();
 
-                                dttr.EditTrasferimento(trm);
-                                using (dtIndennita dti=new dtIndennita())
+                                dttr.EditTrasferimento(trm, db);
+                                using (dtIndennita dti = new dtIndennita())
                                 {
                                     IndennitaModel im = dti.GetIndennitaByIdTrasferimento(trm.idTrasferimento, db);
 
@@ -423,12 +423,13 @@ namespace NewISE.Controllers
                                         }
                                     }
 
-
-                                    
-
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
+
+                                ricaricaInfoTrasf = true;
+
+                                return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
 
                             }
                             catch (Exception ex)
@@ -439,7 +440,33 @@ namespace NewISE.Controllers
                             }
                         }
                     }
-                    
+
+                }
+                else
+                {
+                    var lTipoTrasferimento = new List<SelectListItem>();
+                    var lUffici = new List<SelectListItem>();
+                    var lRuoloUfficio = new List<SelectListItem>();
+                    var lTipologiaCoan = new List<SelectListItem>();
+
+                    try
+                    {
+                        ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+
+                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
+                        ViewBag.ListUfficio = lUffici;
+                        ViewBag.ListRuolo = lRuoloUfficio;
+                        ViewBag.ListTipoCoan = lTipologiaCoan;
+
+                        ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
+                        ViewBag.Matricola = matricola;
+
+                        return PartialView("ModificaTrasferimento", trm);
+                    }
+                    catch (Exception ex)
+                    {
+                        return PartialView("ErrorPartial");
+                    }
                 }
             }
             catch (Exception ex)
@@ -449,7 +476,7 @@ namespace NewISE.Controllers
             }
         }
 
-        
+
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         public ActionResult InserisciTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
@@ -475,7 +502,7 @@ namespace NewISE.Controllers
                                 {
                                     db.Database.BeginTransaction();
 
-                                    dttr.SetTrasferimento(ref trm, db);                                    
+                                    dttr.SetTrasferimento(ref trm, db);
 
                                     using (dtIndennita dti = new dtIndennita())
                                     {
@@ -762,7 +789,7 @@ namespace NewISE.Controllers
                             trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
                             trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
                         }
-                        using (dtDocumenti dtd=new dtDocumenti())
+                        using (dtDocumenti dtd = new dtDocumenti())
                         {
                             DocumentiModel dm = dtd.GetDocumentoByIdTrasferimento(trm.idTrasferimento);
                             trm.Documento = dm;
@@ -798,7 +825,7 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
 
-            
+
         }
 
         public ActionResult GestioneTrasferimento(decimal idTrasferimento)

@@ -1,9 +1,6 @@
-﻿
-using NewISE.EF;
+﻿using NewISE.EF;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -14,10 +11,8 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-
         public void AssociaTFR_Indennita(decimal idTrasferimento, decimal idTFR, ModelDBISE db)
         {
-
             try
             {
                 var i = db.INDENNITA.Find(idTrasferimento);
@@ -33,65 +28,62 @@ namespace NewISE.Models.DBModel.dtObj
                 i.TFR.Add(l);
 
                 db.SaveChanges();
-
-
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
 
         public void RimuoviAssociaTFR_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
-            var i = db.INDENNITA.Find(idTrasferimento);
+            //var i = db.INDENNITA.Find(idTrasferimento);
 
-            var item = db.Entry<INDENNITA>(i);
+            //var item = db.Entry<INDENNITA>(i);
 
-            item.State = System.Data.Entity.EntityState.Modified;
+            //item.State = System.Data.Entity.EntityState.Modified;
 
-            item.Collection(a => a.TFR).Load();
+            //item.Collection(a => a.TFR).Load();
 
-            var l = db.TFR.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+            //var n = i.TFR.ToList().RemoveAll(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-            if (l!=null && l.Count > 0)
+            //if (n > 0)
+            //    db.SaveChanges();
+
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lit = i.TFR.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).ToList();
+
+            foreach (var item in lit)
             {
-                foreach (var it in l)
-                {
-                    i.TFR.Remove(it);
-                }
+                i.TFR.Remove(item);
             }
+            db.SaveChanges();
 
-            
 
-            db.SaveChanges()
         }
-
 
         public TFRModel GetTFRValido(decimal idUfficio, DateTime dt, ModelDBISE db)
         {
             TFRModel tfrm = new TFRModel();
 
-            using (dtUffici dtu=new dtUffici())
+            using (dtUffici dtu = new dtUffici())
             {
                 UfficiModel ufm = dtu.GetUffici(idUfficio, db);
                 ValuteModel vm = new ValuteModel();
 
                 if (ufm.pagatoValutaUfficio == false)
                 {
-                    using (dtValute dtv=new dtValute())
+                    using (dtValute dtv = new dtValute())
                     {
                         vm = dtv.GetValutaUfficiale(db);
 
                         if (vm.HasValue())
                         {
-                            var ltfr = db.TFR.Where(a=>a.ANNULLATO == false && 
-                                                    a.IDVALUTA == vm.idValuta && 
-                                                    dt >= a.DATAINIZIOVALIDITA && 
+                            var ltfr = db.TFR.Where(a => a.ANNULLATO == false &&
+                                                    a.IDVALUTA == vm.idValuta &&
+                                                    dt >= a.DATAINIZIOVALIDITA &&
                                                     dt <= a.DATAFINEVALIDITA)
-                                             .OrderByDescending(a=>a.DATAINIZIOVALIDITA)
+                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                              .ToList();
 
                             if (ltfr != null && ltfr.Count > 0)
@@ -106,11 +98,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataFineValidita = tfr.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : tfr.DATAFINEVALIDITA,
                                     dataAggiornamento = tfr.DATAAGGIORNAMENTO,
                                     tassoCambio = tfr.TASSOCAMBIO,
-                                    Annullato = tfr.ANNULLATO                                    
-                            };
+                                    Annullato = tfr.ANNULLATO
+                                };
                             }
-
-                            
                         }
                         else
                         {
@@ -118,14 +108,9 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                 }
-
             }
 
             return tfrm;
         }
-
-
-
-
     }
 }
