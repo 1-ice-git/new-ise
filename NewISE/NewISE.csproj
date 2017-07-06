@@ -273,7 +273,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
+    <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\OverrideBootstrap.css" />
     <Content Include="Content\css\select2.css" />
@@ -1639,6 +1641,7 @@
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
+    <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
@@ -2004,6 +2007,8 @@
     <Content Include="Views\Trasferimento\NuovoTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\ModificaTrasferimento.cshtml" />
     <Content Include="Views\Documenti\LetteraDiTrasferimento.cshtml" />
+    <Content Include="Views\Trasferimento\GestioneTrasferimento.cshtml" />
+    <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2015,6 +2020,7 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\MaggiorazioniFamiliari\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

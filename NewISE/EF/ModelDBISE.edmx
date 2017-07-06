@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBISEPRO.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -57,16 +57,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <!--Errori trovati durante la generazione:
-avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata definita alcuna chiave primaria e non è possibile dedurre una chiave primaria valida. La tabella/visualizzazione è stata esclusa. Per utilizzare l'entità, è necessario esaminare lo schema, aggiungere le chiavi corrette e rimuovere i commenti.
-        <EntityType Name="APPO_MAB">
-          <Property Name="MATR" Type="number" Precision="38" Scale="0" />
-          <Property Name="DATA_INIZIO" Type="date" />
-          <Property Name="CANONE" Type="number" Precision="15" Scale="5" />
-          <Property Name="VALUTA" Type="varchar2" MaxLength="24" />
-          <Property Name="CONDIVISA" Type="number" Precision="38" Scale="0" />
-          <Property Name="PAGATO" Type="number" Precision="38" Scale="0" />
-        </EntityType>-->
         <EntityType Name="ATTIVITACRUD">
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
@@ -476,9 +466,8 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
         </EntityType>
         <EntityType Name="NOTIFICARICHIESTAMAGFAM">
           <Key>
-            <PropertyRef Name="IDNOTRICMAGFAM" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
           </Key>
-          <Property Name="IDNOTRICMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -1970,20 +1959,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_NRMF">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="NOTIFICARICHIESTAMAGFAM" Type="Self.NOTIFICARICHIESTAMAGFAM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="NOTIFICARICHIESTAMAGFAM">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_S">
           <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="1" />
           <End Role="STIPENDI" Type="Self.STIPENDI" Multiplicity="*" />
@@ -2907,10 +2882,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="R_T_NRMF" Association="Self.R_T_NRMF">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="NOTIFICARICHIESTAMAGFAM" EntitySet="NOTIFICARICHIESTAMAGFAM" />
-          </AssociationSet>
           <AssociationSet Name="R_T_S" Association="Self.R_T_S">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="STIPENDI" EntitySet="STIPENDI" />
@@ -3064,8 +3035,7 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
             <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBISEPRO" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3548,9 +3518,8 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
         </EntityType>
         <EntityType Name="NOTIFICARICHIESTAMAGFAM">
           <Key>
-            <PropertyRef Name="IDNOTRICMAGFAM" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
           </Key>
-          <Property Name="IDNOTRICMAGFAM" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="Boolean" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Boolean" Nullable="false" />
@@ -4886,7 +4855,7 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="NOTIFICARICHIESTAMAGFAM" Type="Self.NOTIFICARICHIESTAMAGFAM" Multiplicity="*" />
+          <End Role="NOTIFICARICHIESTAMAGFAM" Type="Self.NOTIFICARICHIESTAMAGFAM" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="TRASFERIMENTO">
               <PropertyRef Name="IDTRASFERIMENTO" />
@@ -6300,7 +6269,6 @@ avviso 6013: Per la tabella/visualizzazione 'ISEPRO.APPO_MAB' non è stata defin
           <EntitySetMapping Name="NOTIFICARICHIESTAMAGFAM">
             <EntityTypeMapping TypeName="DBISEPRO.NOTIFICARICHIESTAMAGFAM">
               <MappingFragment StoreEntitySet="NOTIFICARICHIESTAMAGFAM">
-                <ScalarProperty Name="IDNOTRICMAGFAM" ColumnName="IDNOTRICMAGFAM" />
                 <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
                 <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />

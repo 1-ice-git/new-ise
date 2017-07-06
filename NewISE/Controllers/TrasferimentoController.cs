@@ -828,12 +828,18 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult GestioneTrasferimento(decimal idTrasferimento)
+        public ActionResult GestioneTrasferimento(string matricola)
         {
 
+            ViewBag.matricola = matricola;
 
+            return PartialView();
+        }
 
-            return null;
+        public ActionResult AttivitaTrasferimento(string matricola)
+        {
+
+            return PartialView();
         }
     }
 }
