@@ -7,13 +7,13 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class FigliModel
+    public class ConiugeModel
     {
         [Key]
-        public decimal idFigli { get; set; }
-        [Required(ErrorMessage = "La maggiorazione dei figli è richiesta.")]
-        [Display(Name = "Magg. figli")]
-        public decimal idMaggiorazioneFigli { get; set; }
+        public decimal idConiuge { get; set; }
+        [Required(ErrorMessage = "La maggiorazione de coniuge è richiesta.")]
+        [Display(Name = "Magg. coniuge")]
+        public decimal idMaggiorazioneConiuge { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]
@@ -25,10 +25,10 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il codice fiscale è richiesto.")]
         [Display(Name = "Cod. Fiscale")]
         [StringLength(16, ErrorMessage = "Per il codice fiscale sono richiesti 16 caratteri.", MinimumLength = 16)]
-        [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale", ErrorMessage = "")]
+        [CustomValidation(typeof(dtConiuge), "VerificaCodiceFiscale", ErrorMessage = "")]
         public string codiceFiscale { get; set; }
 
-        public MaggiorazioniFigliModel MaggiorazioniFigli { get; set; }
 
+        public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
     }
 }

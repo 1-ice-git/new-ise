@@ -1,30 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace NewISE.Models.Tools
 {
     public static class CodiceFiscale
     {
         #region Private Members
+
         private static readonly string Months = "ABCDEHLMPRST";
         private static readonly string Vocals = "AEIOU";
         private static readonly string Consonants = "BCDFGHJKLMNPQRSTVWXYZ";
         private static readonly string OmocodeChars = "LMNPQRSTUV";
         private static readonly int[] ControlCodeArray = new[] { 1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, 20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23 };
         private static readonly Regex CheckRegex = new Regex(@"^[A-Z]{6}[\d]{2}[A-Z][\d]{2}[A-Z][\d]{3}[A-Z]$");
+
         #endregion Private Members
 
         #region Public Methods
+
         /// <summary>
         /// Costruisce un codice fiscale "formalmente corretto" sulla base dei parametri indicati.
-        /// 
+        ///
         /// - Il codice ISTAT, relativo al comune di nascita, può essere recuperato da questo elenco:
         ///   http://www.agenziaentrate.gov.it/wps/content/Nsilib/Nsi/Strumenti/Codici+attivita+e+tributo/Codici+territorio/Comuni+italia+esteri/
-        ///   
+        ///
         /// IMPORTANTE: Si ricorda che il Codice Fiscale generato potrebbe non corrispondere effettivamente a quello reale.
         /// </summary>
         /// <param name="nome">Nome</param>
@@ -49,14 +49,15 @@ namespace NewISE.Models.Tools
             cf += CalcolaCarattereDiControllo(cf);
             return cf;
         }
+
         /// <summary>
         /// Effettua un "controllo formale" del Codice Fiscale indicato secondo i seguenti criteri:
-        /// 
+        ///
         /// - Controlla che non sia un valore nullo/vuoto.
         /// - Controlla che il codice sia coerente con le specifiche normative per i Codici Fiscali (inclusi possibili casi di omocodia).
         /// - Controlla che il carattere di controllo sia coerente rispetto al Codice Fiscale indicato.
-        /// 
-        /// IMPORTANTE: Si ricorda che, anche se il Codice Fiscale risulta "formalmente corretto", 
+        ///
+        /// IMPORTANTE: Si ricorda che, anche se il Codice Fiscale risulta "formalmente corretto",
         /// non ci sono garanzie che si tratti di un Codice Fiscale relativo a una persona realmente esistente o esistita.
         /// </summary>
         /// <param name="cf">il codice fiscale da controllare</param>
@@ -76,13 +77,13 @@ namespace NewISE.Models.Tools
 
         /// <summary>
         /// Effettua un "controllo formale" del Codice Fiscale indicato secondo i seguenti criteri:
-        /// 
+        ///
         /// - Controlla che non sia un valore nullo/vuoto.
         /// - Controlla che il codice sia coerente con le specifiche normative per i Codici Fiscali (inclusi possibili casi di omocodia).
         /// - Controlla che il carattere di controllo sia coerente rispetto al Codice Fiscale indicato.
         /// - Controlla la corrispondenza tra il codice fiscale e i dati anagrafici indicati.
-        /// 
-        /// IMPORTANTE: Si ricorda che, anche se il Codice Fiscale risulta "formalmente corretto", 
+        ///
+        /// IMPORTANTE: Si ricorda che, anche se il Codice Fiscale risulta "formalmente corretto",
         /// non ci sono garanzie che si tratti di un Codice Fiscale relativo a una persona realmente esistente o esistita.
         /// </summary>
         /// <param name="cf">il codice fiscale da controllare</param>
@@ -105,7 +106,7 @@ namespace NewISE.Models.Tools
             }
             else cf_NoOmocodia = cf;
 
-            // NOTE: 
+            // NOTE:
             // - 'fc' è il codice fiscale inserito (potrebbe contenere lettere al posto di numeri per omocodia)
             // - 'cf_NoOmocodia' è il codice fiscale epurato di eventuali modifiche dovute a omocodia.
 
@@ -119,9 +120,11 @@ namespace NewISE.Models.Tools
 
             return true;
         }
+
         #endregion Public Methods
 
         #region Private Methods
+
         /// <summary>
         /// Calcola le 3 lettere del cognome indicato, utilizzate per il calcolo del Codice Fiscale.
         /// </summary>
@@ -199,7 +202,6 @@ namespace NewISE.Models.Tools
             return (code.Length < 3) ? code.PadRight(3, 'X') : code;
         }
 
-
         /// <summary>
         /// Calcola le 5 lettere relative a data di nascita e genere, utilizzate per il calcolo del Codice Fiscale.
         /// </summary>
@@ -271,8 +273,7 @@ namespace NewISE.Models.Tools
             }
             return s;
         }
+
         #endregion Private Methods
-    }
-}
     }
 }

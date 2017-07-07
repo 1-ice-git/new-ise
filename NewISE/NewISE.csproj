@@ -1895,10 +1895,12 @@
     <Compile Include="Models\DBModel\CoeffFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\CoefficienteRichiamoModel.cs" />
     <Compile Include="Models\DBModel\CoefficientiSedeModel.cs" />
+    <Compile Include="Models\DBModel\ConiugeModel.cs" />
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
     <Compile Include="Models\DBModel\DocumentiModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCoefficenteSede.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDipendenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDocumenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigli.cs" />
