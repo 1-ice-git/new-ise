@@ -1887,6 +1887,7 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
+    <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
     <Compile Include="Models\DBModel\CDCGepeModel.cs" />
     <Compile Include="Models\DBModel\CDCModel.cs" />
@@ -1900,6 +1901,7 @@
     <Compile Include="Models\DBModel\dtObj\dtCoefficenteSede.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDipendenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDocumenti.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaBase.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeDisagio.cs" />
@@ -1925,6 +1927,7 @@
     <Compile Include="Models\DBModel\dtObj\dtUffici.cs" />
     <Compile Include="Models\DBModel\dtObj\dtValute.cs" />
     <Compile Include="Models\DBModel\FasciaChilometricaModel.cs" />
+    <Compile Include="Models\DBModel\FigliModel.cs" />
     <Compile Include="Models\DBModel\IndennitaBaseModel.cs" />
     <Compile Include="Models\DBModel\IndennitaModel.cs" />
     <Compile Include="Models\DBModel\IndennitaPrimoSegretModel.cs" />
@@ -1973,6 +1976,7 @@
     <Compile Include="Models\ModelRest\RetDipendenteJson.cs" />
     <Compile Include="Models\ModelRest\RetDipendentiJson.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
+    <Compile Include="Models\Tools\CodiceFiscale.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\CalcoliIndennita.cs" />
     <Compile Include="Models\Tools\MemoryPostedFile.cs" />
@@ -1988,7 +1992,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ViewModel\LetteraTrasferimentoModel.cs" />
+    <Compile Include="Models\ViewModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,12 +38,13 @@
           <Property Name="PROVINCIANASCITA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="NAZIONALITA" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="INDIRIZZORESIDENZA" Type="varchar2" MaxLength="100" Nullable="false" />
-          <Property Name="COMUNERESIDENZA" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="PROVINCIARESIDENZA" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="CAP" Type="char" MaxLength="10" Nullable="false" />
-          <Property Name="STUDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="COMUNERESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="PROVINCIARESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="CAPRESIDENZA" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="STUDENTE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="CAPNASCITA" Type="varchar2" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="ANTICIPI">
           <Key>
@@ -3075,14 +3076,15 @@
           <Property Name="PROVINCIANASCITA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NAZIONALITA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="INDIRIZZORESIDENZA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="COMUNERESIDENZA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PROVINCIARESIDENZA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CAP" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="STUDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="COMUNERESIDENZA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PROVINCIARESIDENZA" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STUDENTE" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONIUGE" Relationship="Self.R_C_ADF" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="Self.R_F_ADF" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
+          <Property Name="CAPRESIDENZA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CAPNASCITA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ANTICIPI">
           <Key>
@@ -5881,6 +5883,8 @@
           <EntitySetMapping Name="ALTRIDATIFAM">
             <EntityTypeMapping TypeName="DBISEPRO.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
+                <ScalarProperty Name="CAPNASCITA" ColumnName="CAPNASCITA" />
+                <ScalarProperty Name="CAPRESIDENZA" ColumnName="CAPRESIDENZA" />
                 <ScalarProperty Name="IDALTRIDATIFAM" ColumnName="IDALTRIDATIFAM" />
                 <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
                 <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
@@ -5891,7 +5895,6 @@
                 <ScalarProperty Name="INDIRIZZORESIDENZA" ColumnName="INDIRIZZORESIDENZA" />
                 <ScalarProperty Name="COMUNERESIDENZA" ColumnName="COMUNERESIDENZA" />
                 <ScalarProperty Name="PROVINCIARESIDENZA" ColumnName="PROVINCIARESIDENZA" />
-                <ScalarProperty Name="CAP" ColumnName="CAP" />
                 <ScalarProperty Name="STUDENTE" ColumnName="STUDENTE" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />

@@ -10,7 +10,7 @@ namespace NewISE.Models.DBModel
     public class IndennitaBaseModel
     {
         [Key]
-        [Display(Name ="ID")]
+        [Display(Name = "ID")]
         public decimal idIndennitaBase { get; set; }
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
@@ -22,11 +22,11 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fin. validità")]
-        [DataType(DataType.DateTime, ErrorMessage ="la data non è valida.")]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "Il valore è richiesto.")]
-        [Display(Name ="Valore")]
+        [Display(Name = "Valore")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
@@ -37,14 +37,14 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Lettera")]
+        [Display(Name = "Data aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-       
+
         public LivelloModel Livello { get; set; }
 
         public RiduzioniModel Riduzioni { get; set; }

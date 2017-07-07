@@ -72,11 +72,11 @@ namespace NewISE.Models.Tools
                 foreach (Claim claim in currentClaimsPrincipal.Claims)
                 {
                     if (claim.Type == ClaimTypes.NameIdentifier)
-                    {                        
+                    {
                         ac.idUtenteAutorizzato = Convert.ToDecimal(claim.Value);
                     }
                     else if (claim.Type == ClaimTypes.Name)
-                    {                        
+                    {
                         ac.nome = claim.Value;
                     }
                     else if (claim.Type == ClaimTypes.Surname)
@@ -102,7 +102,7 @@ namespace NewISE.Models.Tools
                     using (ModelDBISE db = new ModelDBISE())
                     {
                         RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
-                        if (ruolo!=null)
+                        if (ruolo != null)
                         {
                             ac.ruoloAccesso = new RuoloAccesoModel()
                             {
@@ -272,13 +272,23 @@ namespace NewISE.Models.Tools
             Type ty = val.GetType();
 
             arPi = ty.GetProperties();
-                        
+
             return arPi;
 
 
         }
 
+        public static bool CheckCodiceFiscale(string CodFisc)
+        {
+            bool result = false;
+
+            result = CodiceFiscale.ControlloFormaleOK(CodFisc);
+
+            return result;
+
+        }
+
     }
 
-    
+
 }
