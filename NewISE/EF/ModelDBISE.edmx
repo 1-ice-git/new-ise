@@ -267,22 +267,6 @@
           <Property Name="IDLIVDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="INDENNITA_MAGCONIUGE">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            <PropertyRef Name="IDTRASFINDENNITA" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="INDENNITA_MAGFIGLI">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            <PropertyRef Name="IDTRASFINDENNITA" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="INDENNITA_PERCDISAGIO">
           <Key>
             <PropertyRef Name="IDPERCENTUALEDISAGIO" />
@@ -1316,34 +1300,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_I_IMC">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="INDENNITA_MAGCONIUGE" Type="Self.INDENNITA_MAGCONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Principal>
-            <Dependent Role="INDENNITA_MAGCONIUGE">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_I_IMF">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="INDENNITA_MAGFIGLI" Type="Self.INDENNITA_MAGFIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Principal>
-            <Dependent Role="INDENNITA_MAGFIGLI">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_I_IPD">
           <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1540,20 +1496,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MC_IMC">
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="INDENNITA_MAGCONIUGE" Type="Self.INDENNITA_MAGCONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Principal>
-            <Dependent Role="INDENNITA_MAGCONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MC_MFD">
           <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1578,20 +1520,6 @@
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Principal>
             <Dependent Role="FIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_IMF">
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="INDENNITA_MAGFIGLI" Type="Self.INDENNITA_MAGFIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="INDENNITA_MAGFIGLI">
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2516,8 +2444,6 @@
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA_INDENNITABASE" EntityType="Self.INDENNITA_INDENNITABASE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA_LIVELLIDIPENDENTI" EntityType="Self.INDENNITA_LIVELLIDIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_MAGCONIUGE" EntityType="Self.INDENNITA_MAGCONIUGE" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_MAGFIGLI" EntityType="Self.INDENNITA_MAGFIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA_PERCDISAGIO" EntityType="Self.INDENNITA_PERCDISAGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA_RUOLODIPENDENTE" EntityType="Self.INDENNITA_RUOLODIPENDENTE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA_TFR" EntityType="Self.INDENNITA_TFR" Schema="ISEPRO" store:Type="Tables" />
@@ -2699,14 +2625,6 @@
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="INDENNITA_LIVELLIDIPENDENTI" EntitySet="INDENNITA_LIVELLIDIPENDENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_I_IMC" Association="Self.R_I_IMC">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="INDENNITA_MAGCONIUGE" EntitySet="INDENNITA_MAGCONIUGE" />
-          </AssociationSet>
-          <AssociationSet Name="R_I_IMF" Association="Self.R_I_IMF">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="INDENNITA_MAGFIGLI" EntitySet="INDENNITA_MAGFIGLI" />
-          </AssociationSet>
           <AssociationSet Name="R_I_IPD" Association="Self.R_I_IPD">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="INDENNITA_PERCDISAGIO" EntitySet="INDENNITA_PERCDISAGIO" />
@@ -2763,10 +2681,6 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_MC_IMC" Association="Self.R_MC_IMC">
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-            <End Role="INDENNITA_MAGCONIUGE" EntitySet="INDENNITA_MAGCONIUGE" />
-          </AssociationSet>
           <AssociationSet Name="R_MC_MFD" Association="Self.R_MC_MFD">
             <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
             <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
@@ -2774,10 +2688,6 @@
           <AssociationSet Name="R_MF_F" Association="Self.R_MF_F">
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="FIGLI" EntitySet="FIGLI" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_IMF" Association="Self.R_MF_IMF">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="INDENNITA_MAGFIGLI" EntitySet="INDENNITA_MAGFIGLI" />
           </AssociationSet>
           <AssociationSet Name="R_MF_MFD" Association="Self.R_MF_MFD">
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
@@ -6761,22 +6671,6 @@
             </EndProperty>
             <EndProperty Name="LIVELLIDIPENDENTI">
               <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_MAGCONIUGE" TypeName="DBISEPRO.INDENNITA_MAGCONIUGE" StoreEntitySet="INDENNITA_MAGCONIUGE">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONECONIUGE">
-              <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_MAGFIGLI" TypeName="DBISEPRO.INDENNITA_MAGFIGLI" StoreEntitySet="INDENNITA_MAGFIGLI">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONEFIGLI">
-              <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="INDENNITA_PERCDISAGIO" TypeName="DBISEPRO.INDENNITA_PERCDISAGIO" StoreEntitySet="INDENNITA_PERCDISAGIO">
