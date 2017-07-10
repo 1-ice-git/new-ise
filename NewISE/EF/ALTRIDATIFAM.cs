@@ -16,7 +16,7 @@ namespace NewISE.EF
     {
         public decimal IDALTRIDATIFAM { get; set; }
         public Nullable<decimal> IDFIGLI { get; set; }
-        public Nullable<decimal> IDCONIUGE { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONECONIUGE { get; set; }
         public System.DateTime DATANASCITA { get; set; }
         public string COMUNENASCITA { get; set; }
         public string PROVINCIANASCITA { get; set; }
@@ -24,11 +24,13 @@ namespace NewISE.EF
         public string INDIRIZZORESIDENZA { get; set; }
         public string COMUNERESIDENZA { get; set; }
         public string PROVINCIARESIDENZA { get; set; }
+        public string CAPRESIDENZA { get; set; }
         public bool STUDENTE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public string CAPRESIDENZA { get; set; }
         public string CAPNASCITA { get; set; }
+        public bool RESIDENTE { get; set; }
+        public bool ULTERIOREMAGCONIUGE { get; set; }
     
         public virtual CONIUGE CONIUGE { get; set; }
         public virtual FIGLI FIGLI { get; set; }

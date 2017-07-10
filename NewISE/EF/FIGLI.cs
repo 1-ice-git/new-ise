@@ -26,8 +26,8 @@ namespace NewISE.EF
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
     
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
-        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
     }
 }

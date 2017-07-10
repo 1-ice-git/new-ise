@@ -20,14 +20,13 @@ namespace NewISE.EF
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
         }
     
-        public decimal IDCONIUGE { get; set; }
         public decimal IDMAGGIORAZIONECONIUGE { get; set; }
         public string NOME { get; set; }
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
     
+        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
-        public virtual MAGGIORAZIONECONIUGE MAGGIORAZIONECONIUGE { get; set; }
     }
 }

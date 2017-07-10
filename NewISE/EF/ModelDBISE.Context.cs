@@ -27,7 +27,6 @@ namespace NewISE.EF
     
         public virtual DbSet<ACCESSI> ACCESSI { get; set; }
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
-        public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
@@ -36,7 +35,6 @@ namespace NewISE.EF
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
-        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
@@ -101,5 +99,7 @@ namespace NewISE.EF
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
+        public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
     }
 }

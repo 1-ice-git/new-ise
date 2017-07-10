@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONECONIUGE()
         {
-            this.CONIUGE = new HashSet<CONIUGE>();
             this.MAGFAM_DOC = new HashSet<MAGFAM_DOC>();
             this.INDENNITA = new HashSet<INDENNITA>();
         }
@@ -32,13 +31,12 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGFAM_DOC> MAGFAM_DOC { get; set; }
         public virtual PENSIONECONIUGE PENSIONECONIUGE { get; set; }
         public virtual PERCENTUALEMAGCONIUGE PERCENTUALEMAGCONIUGE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
+        public virtual CONIUGE CONIUGE { get; set; }
     }
 }
