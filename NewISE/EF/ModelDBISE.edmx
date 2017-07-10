@@ -30,7 +30,7 @@
           <Key>
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
-          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDALTRIDATIFAM" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" />
           <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" />
           <Property Name="DATANASCITA" Type="date" Nullable="false" />
@@ -139,6 +139,14 @@
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="CODICEFISCALE" Type="varchar2" MaxLength="16" Nullable="false" />
         </EntityType>
+        <EntityType Name="CONIUGE_DOC">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
@@ -227,6 +235,14 @@
           <Property Name="NOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="COGNOME" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="CODICEFISCALE" Type="varchar2" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FIGLI_DOC">
+          <Key>
+            <PropertyRef Name="IDFIGLI" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="GRUPPIDOCUMENTI">
           <Key>
@@ -376,14 +392,6 @@
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MAGFAM_DOC">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
@@ -965,6 +973,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_C_CD">
+          <End Role="CONIUGE" Type="Self.CONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CONIUGE_DOC" Type="Self.CONIUGE_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Principal>
+            <Dependent Role="CONIUGE_DOC">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_C_MC">
           <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1063,6 +1085,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_D_CD">
+          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1" />
+          <End Role="CONIUGE_DOC" Type="Self.CONIUGE_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="CONIUGE_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_D_D_NC">
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1077,6 +1111,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_D_FD">
+          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIGLI_DOC" Type="Self.FIGLI_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="FIGLI_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_D_MAB_DOC">
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1087,20 +1135,6 @@
               <PropertyRef Name="IDDOCUMENTO" />
             </Principal>
             <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_MF_D">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
               <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -1241,6 +1275,20 @@
               <PropertyRef Name="IDFIGLI" />
             </Principal>
             <Dependent Role="ALTRIDATIFAM">
+              <PropertyRef Name="IDFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_F_FD">
+          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIGLI_DOC" Type="Self.FIGLI_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIGLI">
+              <PropertyRef Name="IDFIGLI" />
+            </Principal>
+            <Dependent Role="FIGLI_DOC">
               <PropertyRef Name="IDFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -1497,20 +1545,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MC_MFD">
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MF_F">
           <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1521,20 +1555,6 @@
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Principal>
             <Dependent Role="FIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_MFD">
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2432,6 +2452,7 @@
           <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTESEDE" EntityType="Self.COEFFICIENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONIUGE" EntityType="Self.CONIUGE" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CONIUGE_DOC" EntityType="Self.CONIUGE_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="Self.DEFFASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
@@ -2440,6 +2461,7 @@
           <EntitySet Name="ELAB_CONT" EntityType="Self.ELAB_CONT" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FASCIACHILOMETRICA" EntityType="Self.FASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="Self.GRUPPIDOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISEPRO" store:Type="Tables" />
@@ -2456,7 +2478,6 @@
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAB_ALIQCONTR" EntityType="Self.MAB_ALIQCONTR" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAB_DOC" EntityType="Self.MAB_DOC" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="MAGFAM_DOC" EntityType="Self.MAGFAM_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONECONIUGE" EntityType="Self.MAGGIORAZIONECONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONEFIGLI" EntityType="Self.MAGGIORAZIONEFIGLI" Schema="ISEPRO" store:Type="Tables" />
@@ -2530,6 +2551,10 @@
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
           </AssociationSet>
+          <AssociationSet Name="R_C_CD" Association="Self.R_C_CD">
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+            <End Role="CONIUGE_DOC" EntitySet="CONIUGE_DOC" />
+          </AssociationSet>
           <AssociationSet Name="R_C_MC" Association="Self.R_C_MC">
             <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -2558,17 +2583,21 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
           </AssociationSet>
+          <AssociationSet Name="R_D_CD" Association="Self.R_D_CD">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="CONIUGE_DOC" EntitySet="CONIUGE_DOC" />
+          </AssociationSet>
           <AssociationSet Name="R_D_D_NC" Association="Self.R_D_D_NC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="DOCUMENTO_NORMACALCOLO" EntitySet="DOCUMENTO_NORMACALCOLO" />
           </AssociationSet>
+          <AssociationSet Name="R_D_FD" Association="Self.R_D_FD">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="FIGLI_DOC" EntitySet="FIGLI_DOC" />
+          </AssociationSet>
           <AssociationSet Name="R_D_MAB_DOC" Association="Self.R_D_MAB_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_MF_D" Association="Self.R_D_MF_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_D_T_D" Association="Self.R_D_T_D">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -2609,6 +2638,10 @@
           <AssociationSet Name="R_F_ADF" Association="Self.R_F_ADF">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
+          </AssociationSet>
+          <AssociationSet Name="R_F_FD" Association="Self.R_F_FD">
+            <End Role="FIGLI" EntitySet="FIGLI" />
+            <End Role="FIGLI_DOC" EntitySet="FIGLI_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_GD_TDV" Association="Self.R_GD_TDV">
             <End Role="GRUPPIDOCUMENTI" EntitySet="GRUPPIDOCUMENTI" />
@@ -2682,17 +2715,9 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_MC_MFD" Association="Self.R_MC_MFD">
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
-          </AssociationSet>
           <AssociationSet Name="R_MF_F" Association="Self.R_MF_F">
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="FIGLI" EntitySet="FIGLI" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_MFD" Association="Self.R_MF_MFD">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_NC_D_NC" Association="Self.R_NC_D_NC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -3016,8 +3041,8 @@
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="BIGLIETTI" Relationship="Self.R_B_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="BIGLIETTI" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="TIPODOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -3070,7 +3095,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="Self.R_UFFICI_COEFFICIENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="UFFICI" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.IND_COEFFICENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.IND_COEFFICENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -3122,23 +3147,6 @@
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
-        <EntityType Name="DOCUMENTI">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NOMEDOCUMENTO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ESTENSIONE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FILEDOCUMENTO" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="Self.R_D_B_D" FromRole="DOCUMENTI" ToRole="BIGLIETTI_DOCUMENTI" />
-          <NavigationProperty Name="MAB_DOC" Relationship="Self.R_D_MAB_DOC" FromRole="DOCUMENTI" ToRole="MAB_DOC" />
-          <NavigationProperty Name="MAGFAM_DOC" Relationship="Self.R_D_MF_D" FromRole="DOCUMENTI" ToRole="MAGFAM_DOC" />
-          <NavigationProperty Name="TRASPEFFETTIRIENTRO_DOC" Relationship="Self.R_D_TER_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTIRIENTRO_DOC" />
-          <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="Self.R_D_TES_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTISIST_DOC" />
-          <NavigationProperty Name="NORMACALCOLO" Relationship="Self.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
-          <NavigationProperty Name="PASSAPORTI" Relationship="Self.PASSAPORTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="PASSAPORTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="ELAB_CONT">
           <Key>
             <PropertyRef Name="IDELABCONT" />
@@ -3153,18 +3161,6 @@
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_PS_E_C" FromRole="ELAB_CONT" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_R_E_C" FromRole="ELAB_CONT" ToRole="RICHIAMO" />
         </EntityType>
-        <EntityType Name="FIGLI">
-          <Key>
-            <PropertyRef Name="IDFIGLI" />
-          </Key>
-          <Property Name="IDFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="NOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="COGNOME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CODICEFISCALE" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFIGLI" />
-          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
-        </EntityType>
         <EntityType Name="GRUPPIDOCUMENTI">
           <Key>
             <PropertyRef Name="IDGRUPPODOC" />
@@ -3172,24 +3168,6 @@
           <Property Name="IDGRUPPODOC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCGRUPPO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_GD_TDV" FromRole="GRUPPIDOCUMENTI" ToRole="TIPODOCUMENTI" />
-        </EntityType>
-        <EntityType Name="INDENNITA">
-          <Key>
-            <PropertyRef Name="IDTRASFINDENNITA" />
-          </Key>
-          <Property Name="IDTRASFINDENNITA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="Self.IND_COEFFICENTESEDE" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
-          <NavigationProperty Name="INDENNITABASE" Relationship="Self.INDENNITA_INDENNITABASE" FromRole="INDENNITA" ToRole="INDENNITABASE" />
-          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.INDENNITA_LIVELLIDIPENDENTI" FromRole="INDENNITA" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.INDENNITA_MAGCONIUGE" FromRole="INDENNITA" ToRole="MAGGIORAZIONECONIUGE" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.INDENNITA_MAGFIGLI" FromRole="INDENNITA" ToRole="MAGGIORAZIONEFIGLI" />
-          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="Self.INDENNITA_PERCDISAGIO" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="Self.INDENNITA_RUOLODIPENDENTE" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
-          <NavigationProperty Name="TFR" Relationship="Self.INDENNITA_TFR" FromRole="INDENNITA" ToRole="TFR" />
         </EntityType>
         <EntityType Name="INDENNITABASE">
           <Key>
@@ -3206,7 +3184,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="Self.R_L_I" FromRole="INDENNITABASE" ToRole="LIVELLI" />
           <NavigationProperty Name="RIDUZIONI" Relationship="Self.R_RIDUZIONI_INDBASE" FromRole="INDENNITABASE" ToRole="RIDUZIONI" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_INDENNITABASE" FromRole="INDENNITABASE" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_INDENNITABASE" FromRole="INDENNITABASE" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="INDENNITAPRIMOSEGRETARIO">
           <Key>
@@ -3258,7 +3236,7 @@
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="Self.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_LIVDIP_MAB" FromRole="LIVELLIDIPENDENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_LIVELLIDIPENDENTI" FromRole="LIVELLIDIPENDENTI" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="LIVELLIDIPENDENTI" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
           <Key>
@@ -3292,20 +3270,9 @@
           <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_MAB_DOC" FromRole="MAB_DOC" ToRole="DOCUMENTI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_DOC" FromRole="MAB_DOC" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_MAB_DOC" FromRole="MAB_DOC" ToRole="TIPODOCUMENTI" />
-        </EntityType>
-        <EntityType Name="MAGFAM_DOC">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_MF_D" FromRole="MAGFAM_DOC" ToRole="DOCUMENTI" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.R_MC_MFD" FromRole="MAGFAM_DOC" ToRole="MAGGIORAZIONECONIUGE" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.R_MF_MFD" FromRole="MAGFAM_DOC" ToRole="MAGGIORAZIONEFIGLI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_MAB_DOC" FromRole="MAB_DOC" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
@@ -3346,11 +3313,9 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGFAM_DOC" Relationship="Self.R_MC_MFD" FromRole="MAGGIORAZIONECONIUGE" ToRole="MAGFAM_DOC" />
           <NavigationProperty Name="PENSIONECONIUGE" Relationship="Self.R_PC_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="PENSIONECONIUGE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="Self.R_PMC_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_MAGCONIUGE" FromRole="MAGGIORAZIONECONIUGE" ToRole="INDENNITA" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="CONIUGE" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEFIGLI">
@@ -3365,12 +3330,10 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FIGLI" Relationship="Self.R_MF_F" FromRole="MAGGIORAZIONEFIGLI" ToRole="FIGLI" />
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="Self.R_IPS_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
-          <NavigationProperty Name="MAGFAM_DOC" Relationship="Self.R_MF_MFD" FromRole="MAGGIORAZIONEFIGLI" ToRole="MAGFAM_DOC" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="Self.R_PMF_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="PERCENTUALEMAGFIGLI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_MAGFIGLI" FromRole="MAGGIORAZIONEFIGLI" ToRole="INDENNITA" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="MAGGIORAZIONEFIGLI" ToRole="FIGLI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -3393,7 +3356,7 @@
           <Property Name="IDNORMACALCOLO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="RIFERIMENTONORMATIVO" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="Self.R_NC_RC" FromRole="NORMACALCOLO" ToRole="REGOLECALCOLO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.DOCUMENTO_NORMACALCOLO" FromRole="NORMACALCOLO" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="NORMACALCOLO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="NOTIFICARICHIESTAMAGFAM">
           <Key>
@@ -3433,7 +3396,7 @@
           <Property Name="IDPASSAPORTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.PASSAPORTI_DOCUMENTI" FromRole="PASSAPORTI" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="PASSAPORTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="PENSIONECONIUGE">
           <Key>
@@ -3459,7 +3422,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UFFICI" Relationship="Self.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
@@ -3585,7 +3548,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_RD_MAB" FromRole="RUOLODIPENDENTE" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="Self.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_RUOLODIPENDENTE" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="RUOLOUFFICIO">
           <Key>
@@ -3667,7 +3630,7 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_TFR_MAB" FromRole="TFR" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="VALUTE" Relationship="Self.R_VALUTE_TFR" FromRole="TFR" ToRole="VALUTE" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.INDENNITA_TFR" FromRole="TFR" ToRole="INDENNITA" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="TFR" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="TIPOALIQUOTECONTRIBUTIVE">
           <Key>
@@ -3794,7 +3757,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
-          <NavigationProperty Name="INDENNITA" Relationship="Self.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_T_MB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.R_T_MC" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONECONIUGE" />
@@ -3807,7 +3769,8 @@
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="Self.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="Self.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
           <NavigationProperty Name="UFFICI" Relationship="Self.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <Key>
@@ -3828,9 +3791,9 @@
           <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="TIPODOCUMENTI" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="Self.R_TER_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="TRASPORTOEFFETTIRIENTRO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TRASPEFFETTISIST_DOC">
           <Key>
@@ -3840,9 +3803,9 @@
           <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="Self.R_D_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="TIPODOCUMENTI" />
           <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="Self.R_TES_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="TRASPORTOEFFETTISIST" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TRASPORTOEFFETTIRIENTRO">
           <Key>
@@ -4016,20 +3979,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_B_D">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BIGLIETTI_DOCUMENTI" Type="Self.BIGLIETTI_DOCUMENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="BIGLIETTI_DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TD_B_D">
           <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4184,62 +4133,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_MAB_DOC">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAB_DOC" Type="Self.MAB_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_MF_D">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_TER_D">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTIRIENTRO_DOC" Type="Self.TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_TES_D">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTISIST_DOC" Type="Self.TRASPEFFETTISIST_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTISIST_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_EC_T">
           <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4282,20 +4175,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_MF_F">
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="FIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_GD_TDV">
           <End Role="GRUPPIDOCUMENTI" Type="Self.GRUPPIDOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4307,20 +4186,6 @@
             </Principal>
             <Dependent Role="TIPODOCUMENTI">
               <PropertyRef Name="IDGRUPPODOC" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_I">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4489,34 +4354,6 @@
             </Principal>
             <Dependent Role="MAB_DOC">
               <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MC_MFD">
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_MFD">
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGFAM_DOC" Type="Self.MAGFAM_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="MAGFAM_DOC">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5148,53 +4985,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="DOCUMENTO_NORMACALCOLO">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
-          <End Role="NORMACALCOLO" Type="Self.NORMACALCOLO" Multiplicity="*" />
-        </Association>
         <Association Name="FASCIACHILOMETRICA">
           <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="*" />
           <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="*" />
-        </Association>
-        <Association Name="IND_COEFFICENTESEDE">
-          <End Role="COEFFICIENTESEDE" Type="Self.COEFFICIENTESEDE" Multiplicity="*" />
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_INDENNITABASE">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="INDENNITABASE" Type="Self.INDENNITABASE" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_LIVELLIDIPENDENTI">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="LIVELLIDIPENDENTI" Type="Self.LIVELLIDIPENDENTI" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_MAGCONIUGE">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_MAGFIGLI">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_PERCDISAGIO">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="PERCENTUALEDISAGIO" Type="Self.PERCENTUALEDISAGIO" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_RUOLODIPENDENTE">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="RUOLODIPENDENTE" Type="Self.RUOLODIPENDENTE" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_TFR">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="*" />
-          <End Role="TFR" Type="Self.TFR" Multiplicity="*" />
-        </Association>
-        <Association Name="PASSAPORTI_DOCUMENTI">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
-          <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="*" />
-        </Association>
-        <Association Name="TRASF_DOC">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="*" />
         </Association>
         <EntityContainer Name="ModelDBISE" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" />
@@ -5210,11 +5003,8 @@
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="Self.DEFFASCIACHILOMETRICA" />
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" />
-          <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" />
           <EntitySet Name="ELAB_CONT" EntityType="Self.ELAB_CONT" />
-          <EntitySet Name="FIGLI" EntityType="Self.FIGLI" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="Self.GRUPPIDOCUMENTI" />
-          <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" />
           <EntitySet Name="INDENNITABASE" EntityType="Self.INDENNITABASE" />
           <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="Self.INDENNITAPRIMOSEGRETARIO" />
           <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="Self.INDENNITASISTEMAZIONE" />
@@ -5223,7 +5013,6 @@
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" />
           <EntitySet Name="MAB_ALIQCONTR" EntityType="Self.MAB_ALIQCONTR" />
           <EntitySet Name="MAB_DOC" EntityType="Self.MAB_DOC" />
-          <EntitySet Name="MAGFAM_DOC" EntityType="Self.MAGFAM_DOC" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" />
           <EntitySet Name="MAGGIORAZIONECONIUGE" EntityType="Self.MAGGIORAZIONECONIUGE" />
           <EntitySet Name="MAGGIORAZIONEFIGLI" EntityType="Self.MAGGIORAZIONEFIGLI" />
@@ -5299,10 +5088,6 @@
             <End Role="BIGLIETTI" EntitySet="BIGLIETTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_D_B_D" Association="Self.R_D_B_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
-          </AssociationSet>
           <AssociationSet Name="R_TD_B_D" Association="Self.R_TD_B_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
@@ -5347,22 +5132,6 @@
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="R_D_MAB_DOC" Association="Self.R_D_MAB_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_MF_D" Association="Self.R_D_MF_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_TER_D" Association="Self.R_D_TER_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_TES_D" Association="Self.R_D_TES_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
-          </AssociationSet>
           <AssociationSet Name="R_EC_T" Association="Self.R_EC_T">
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
             <End Role="TEORICI" EntitySet="TEORICI" />
@@ -5375,17 +5144,9 @@
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
-          <AssociationSet Name="R_MF_F" Association="Self.R_MF_F">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="FIGLI" EntitySet="FIGLI" />
-          </AssociationSet>
           <AssociationSet Name="R_GD_TDV" Association="Self.R_GD_TDV">
             <End Role="GRUPPIDOCUMENTI" EntitySet="GRUPPIDOCUMENTI" />
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_I" Association="Self.R_T_I">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
           </AssociationSet>
           <AssociationSet Name="R_L_I" Association="Self.R_L_I">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
@@ -5434,14 +5195,6 @@
           <AssociationSet Name="R_TD_MAB_DOC" Association="Self.R_TD_MAB_DOC">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_MC_MFD" Association="Self.R_MC_MFD">
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_MFD" Association="Self.R_MF_MFD">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="MAGFAM_DOC" EntitySet="MAGFAM_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_MAGANNUALI_MAB" Association="Self.R_MAGANNUALI_MAB">
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
@@ -5623,60 +5376,14 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
-          <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="Self.DOCUMENTO_NORMACALCOLO">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
-          </AssociationSet>
           <AssociationSet Name="FASCIACHILOMETRICA" Association="Self.FASCIACHILOMETRICA">
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
-          <AssociationSet Name="IND_COEFFICENTESEDE" Association="Self.IND_COEFFICENTESEDE">
-            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_INDENNITABASE" Association="Self.INDENNITA_INDENNITABASE">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_LIVELLIDIPENDENTI" Association="Self.INDENNITA_LIVELLIDIPENDENTI">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_MAGCONIUGE" Association="Self.INDENNITA_MAGCONIUGE">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_MAGFIGLI" Association="Self.INDENNITA_MAGFIGLI">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_PERCDISAGIO" Association="Self.INDENNITA_PERCDISAGIO">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_RUOLODIPENDENTE" Association="Self.INDENNITA_RUOLODIPENDENTE">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_TFR" Association="Self.INDENNITA_TFR">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="TFR" EntitySet="TFR" />
-          </AssociationSet>
-          <AssociationSet Name="PASSAPORTI_DOCUMENTI" Association="Self.PASSAPORTI_DOCUMENTI">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
-          </AssociationSet>
-          <AssociationSet Name="TRASF_DOC" Association="Self.TRASF_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-          </AssociationSet>
-          <EntitySet Name="CONIUGE" EntityType="DBISEPRO.CONIUGE" />
-          <AssociationSet Name="R_C_MC" Association="DBISEPRO.R_C_MC">
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-            <End Role="CONIUGE" EntitySet="CONIUGE" />
-          </AssociationSet>
           <EntitySet Name="ALTRIDATIFAM" EntityType="DBISEPRO.ALTRIDATIFAM" />
+          <EntitySet Name="CONIUGE" EntityType="DBISEPRO.CONIUGE" />
+          <EntitySet Name="DOCUMENTI" EntityType="DBISEPRO.DOCUMENTI" />
+          <EntitySet Name="FIGLI" EntityType="DBISEPRO.FIGLI" />
           <AssociationSet Name="R_C_ADF" Association="DBISEPRO.R_C_ADF">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
@@ -5685,37 +5392,85 @@
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
           </AssociationSet>
+          <AssociationSet Name="R_D_B_D" Association="DBISEPRO.R_D_B_D">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_C_MC" Association="DBISEPRO.R_C_MC">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_MAB_DOC" Association="DBISEPRO.R_D_MAB_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_TER_D" Association="DBISEPRO.R_D_TER_D">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_TES_D" Association="DBISEPRO.R_D_TES_D">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_MF_F" Association="DBISEPRO.R_MF_F">
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="CONIUGE_DOC" Association="DBISEPRO.CONIUGE_DOC">
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISEPRO.DOCUMENTO_NORMACALCOLO">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
+          </AssociationSet>
+          <AssociationSet Name="FIGLI_DOC" Association="DBISEPRO.FIGLI_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="PASSAPORTI_DOCUMENTI" Association="DBISEPRO.PASSAPORTI_DOCUMENTI">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
+          </AssociationSet>
+          <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <EntitySet Name="INDENNITA" EntityType="DBISEPRO.INDENNITA" />
+          <AssociationSet Name="R_T_I" Association="DBISEPRO.R_T_I">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISEPRO.IND_COEFFICENTESEDE">
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_INDENNITABASE" Association="DBISEPRO.INDENNITA_INDENNITABASE">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_LIVELLIDIPENDENTI" Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_PERCDISAGIO" Association="DBISEPRO.INDENNITA_PERCDISAGIO">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_RUOLODIPENDENTE" Association="DBISEPRO.INDENNITA_RUOLODIPENDENTE">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_TFR" Association="DBISEPRO.INDENNITA_TFR">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="TFR" EntitySet="TFR" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="CONIUGE">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
-          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_C_ADF" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
-        </EntityType>
-        <Association Name="R_C_MC">
-          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Principal>
-            <Dependent Role="CONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ALTRIDATIFAM">
           <Key>
             <PropertyRef Name="IDALTRIDATIFAM" />
           </Key>
-          <Property Name="IDALTRIDATIFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDALTRIDATIFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATANASCITA" Type="DateTime" Nullable="false" />
@@ -5734,6 +5489,49 @@
           <Property Name="ULTERIOREMAGCONIUGE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_ADF" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_F_ADF" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
+        </EntityType>
+        <EntityType Name="CONIUGE">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_C_ADF" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
+          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
+        </EntityType>
+        <EntityType Name="DOCUMENTI">
+          <Key>
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="DBISEPRO.R_D_B_D" FromRole="DOCUMENTI" ToRole="BIGLIETTI_DOCUMENTI" />
+          <NavigationProperty Name="MAB_DOC" Relationship="DBISEPRO.R_D_MAB_DOC" FromRole="DOCUMENTI" ToRole="MAB_DOC" />
+          <NavigationProperty Name="TRASPEFFETTIRIENTRO_DOC" Relationship="DBISEPRO.R_D_TER_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTIRIENTRO_DOC" />
+          <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="DBISEPRO.R_D_TES_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTISIST_DOC" />
+          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
+          <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
+          <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="PASSAPORTI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <EntityType Name="FIGLI">
+          <Key>
+            <PropertyRef Name="IDFIGLI" />
+          </Key>
+          <Property Name="IDFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
+          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFIGLI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
         </EntityType>
         <Association Name="R_C_ADF">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
@@ -5762,6 +5560,164 @@
               <PropertyRef Name="IDFIGLI" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_B_D">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.BIGLIETTI_DOCUMENTI" Role="BIGLIETTI_DOCUMENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="BIGLIETTI_DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_C_MC">
+          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONECONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Principal>
+            <Dependent Role="CONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_MAB_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAB_DOC" Role="MAB_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="MAB_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_TER_D">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" Role="TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_TES_D">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASPEFFETTISIST_DOC" Role="TRASPEFFETTISIST_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="TRASPEFFETTISIST_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MF_F">
+          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEFIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Principal>
+            <Dependent Role="FIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CONIUGE_DOC">
+          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="DOCUMENTO_NORMACALCOLO">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
+        </Association>
+        <Association Name="FIGLI_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
+        </Association>
+        <Association Name="PASSAPORTI_DOCUMENTI">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASF_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <EntityType Name="INDENNITA">
+          <Key>
+            <PropertyRef Name="IDTRASFINDENNITA" />
+          </Key>
+          <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.IND_COEFFICENTESEDE" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
+          <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.INDENNITA_INDENNITABASE" FromRole="INDENNITA" ToRole="INDENNITABASE" />
+          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="INDENNITA" ToRole="LIVELLIDIPENDENTI" />
+          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.INDENNITA_PERCDISAGIO" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
+          <NavigationProperty Name="TFR" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="INDENNITA" ToRole="TFR" />
+        </EntityType>
+        <Association Name="R_T_I">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="INDENNITA">
+              <PropertyRef Name="IDTRASFINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IND_COEFFICENTESEDE">
+          <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_INDENNITABASE">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_LIVELLIDIPENDENTI">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_PERCDISAGIO">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_RUOLODIPENDENTE">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_TFR">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -5928,16 +5884,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DOCUMENTI">
-            <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
-              <MappingFragment StoreEntitySet="DOCUMENTI">
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
-                <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
-                <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ELAB_CONT">
             <EntityTypeMapping TypeName="DBISEPRO.ELAB_CONT">
               <MappingFragment StoreEntitySet="ELAB_CONT">
@@ -5949,32 +5895,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FIGLI">
-            <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
-              <MappingFragment StoreEntitySet="FIGLI">
-                <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
-                <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
-                <ScalarProperty Name="NOME" ColumnName="NOME" />
-                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
-                <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="GRUPPIDOCUMENTI">
             <EntityTypeMapping TypeName="DBISEPRO.GRUPPIDOCUMENTI">
               <MappingFragment StoreEntitySet="GRUPPIDOCUMENTI">
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
                 <ScalarProperty Name="DESCGRUPPO" ColumnName="DESCGRUPPO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="INDENNITA">
-            <EntityTypeMapping TypeName="DBISEPRO.INDENNITA">
-              <MappingFragment StoreEntitySet="INDENNITA">
-                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-                <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
-                <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6067,15 +5992,6 @@
                 <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
                 <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
                 <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MAGFAM_DOC">
-            <EntityTypeMapping TypeName="DBISEPRO.MAGFAM_DOC">
-              <MappingFragment StoreEntitySet="MAGFAM_DOC">
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
-                <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6603,14 +6519,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="NORMACALCOLO">
-              <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="FASCIACHILOMETRICA" TypeName="DBISEPRO.FASCIACHILOMETRICA" StoreEntitySet="FASCIACHILOMETRICA">
             <EndProperty Name="COEFFICIENTEFKM">
               <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
@@ -6619,80 +6527,6 @@
               <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
-            <EndProperty Name="COEFFICIENTESEDE">
-              <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_INDENNITABASE" TypeName="DBISEPRO.INDENNITA_INDENNITABASE" StoreEntitySet="INDENNITA_INDENNITABASE">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="INDENNITABASE">
-              <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_LIVELLIDIPENDENTI" TypeName="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" StoreEntitySet="INDENNITA_LIVELLIDIPENDENTI">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="LIVELLIDIPENDENTI">
-              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_PERCDISAGIO" TypeName="DBISEPRO.INDENNITA_PERCDISAGIO" StoreEntitySet="INDENNITA_PERCDISAGIO">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="PERCENTUALEDISAGIO">
-              <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_RUOLODIPENDENTE" TypeName="DBISEPRO.INDENNITA_RUOLODIPENDENTE" StoreEntitySet="INDENNITA_RUOLODIPENDENTE">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="RUOLODIPENDENTE">
-              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_TFR" TypeName="DBISEPRO.INDENNITA_TFR" StoreEntitySet="INDENNITA_TFR">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="TFR">
-              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="DBISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="PASSAPORTI">
-              <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="TRASFERIMENTO">
-              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="CONIUGE">
-            <EntityTypeMapping TypeName="DBISEPRO.CONIUGE">
-              <MappingFragment StoreEntitySet="CONIUGE">
-                <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
-                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
-                <ScalarProperty Name="NOME" ColumnName="NOME" />
-                <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ALTRIDATIFAM">
             <EntityTypeMapping TypeName="DBISEPRO.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
@@ -6716,6 +6550,135 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CONIUGE">
+            <EntityTypeMapping TypeName="DBISEPRO.CONIUGE">
+              <MappingFragment StoreEntitySet="CONIUGE">
+                <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
+                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
+              <MappingFragment StoreEntitySet="DOCUMENTI">
+                <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
+                <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
+                <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
+                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FIGLI">
+            <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
+              <MappingFragment StoreEntitySet="FIGLI">
+                <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
+                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
+                <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CONIUGE_DOC" TypeName="DBISEPRO.CONIUGE_DOC" StoreEntitySet="CONIUGE_DOC">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="CONIUGE">
+              <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
+            <EndProperty Name="NORMACALCOLO">
+              <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FIGLI_DOC" TypeName="DBISEPRO.FIGLI_DOC" StoreEntitySet="FIGLI_DOC">
+            <EndProperty Name="FIGLI">
+              <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="DBISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
+            <EndProperty Name="PASSAPORTI">
+              <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
+            <EndProperty Name="TRASFERIMENTO">
+              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="INDENNITA">
+            <EntityTypeMapping TypeName="DBISEPRO.INDENNITA">
+              <MappingFragment StoreEntitySet="INDENNITA">
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
+                <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
+                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+            <EndProperty Name="COEFFICIENTESEDE">
+              <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_INDENNITABASE" TypeName="DBISEPRO.INDENNITA_INDENNITABASE" StoreEntitySet="INDENNITA_INDENNITABASE">
+            <EndProperty Name="INDENNITABASE">
+              <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_LIVELLIDIPENDENTI" TypeName="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" StoreEntitySet="INDENNITA_LIVELLIDIPENDENTI">
+            <EndProperty Name="LIVELLIDIPENDENTI">
+              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_PERCDISAGIO" TypeName="DBISEPRO.INDENNITA_PERCDISAGIO" StoreEntitySet="INDENNITA_PERCDISAGIO">
+            <EndProperty Name="PERCENTUALEDISAGIO">
+              <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_RUOLODIPENDENTE" TypeName="DBISEPRO.INDENNITA_RUOLODIPENDENTE" StoreEntitySet="INDENNITA_RUOLODIPENDENTE">
+            <EndProperty Name="RUOLODIPENDENTE">
+              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_TFR" TypeName="DBISEPRO.INDENNITA_TFR" StoreEntitySet="INDENNITA_TFR">
+            <EndProperty Name="TFR">
+              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

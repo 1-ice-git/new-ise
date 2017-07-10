@@ -18,6 +18,7 @@ namespace NewISE.EF
         public FIGLI()
         {
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDFIGLI { get; set; }
@@ -26,8 +27,10 @@ namespace NewISE.EF
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
     
-        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

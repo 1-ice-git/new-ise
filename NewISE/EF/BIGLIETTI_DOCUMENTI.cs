@@ -19,7 +19,7 @@ namespace NewISE.EF
         public decimal IDTIPODOCUMENTO { get; set; }
     
         public virtual BIGLIETTI BIGLIETTI { get; set; }
-        public virtual DOCUMENTI DOCUMENTI { get; set; }
         public virtual TIPODOCUMENTI TIPODOCUMENTI { get; set; }
+        public virtual DOCUMENTI DOCUMENTI { get; set; }
     }
 }

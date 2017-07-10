@@ -38,11 +38,8 @@ namespace NewISE.EF
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
-        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
-        public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
-        public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
@@ -51,7 +48,6 @@ namespace NewISE.EF
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
-        public virtual DbSet<MAGFAM_DOC> MAGFAM_DOC { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
         public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
@@ -99,7 +95,10 @@ namespace NewISE.EF
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
-        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
+        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DbSet<FIGLI> FIGLI { get; set; }
+        public virtual DbSet<INDENNITA> INDENNITA { get; set; }
     }
 }

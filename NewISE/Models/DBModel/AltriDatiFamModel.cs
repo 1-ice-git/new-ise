@@ -54,8 +54,16 @@ namespace NewISE.Models.DBModel
         public string provinciaResidenza { get; set; }
 
         [DefaultValue(false)]
+        [Display(Name = "Residente")]
+        public bool residente { get; set; }
+
+        [DefaultValue(false)]
         [Display(Name = "Studente")]
         public bool studente { get; set; }
+        [DefaultValue(false)]
+        [Display(Name = "Ult. Magg. Coniuge")]
+        public bool ulterioreMagConiuge { get; set; }
+
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date, ErrorMessage = "La data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
