@@ -21,7 +21,6 @@
         <EntityTypeShape EntityType="DBISEPRO.ELAB_CONT" Width="1.5" PointX="16.5" PointY="47.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.GRUPPIDOCUMENTI" Width="1.5" PointX="1.5" PointY="18.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="13.5" PointY="44.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="11.25" PointY="29" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="6" PointY="33.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLI" Width="1.5" PointX="11.25" PointY="32.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLIDIPENDENTI" Width="1.5" PointX="13.5" PointY="39.375" IsExpanded="true" />
@@ -29,14 +28,11 @@
         <EntityTypeShape EntityType="DBISEPRO.MAB_ALIQCONTR" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.MAB_DOC" Width="1.5" PointX="3" PointY="36.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="21.75" PointY="39.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONECONIUGE" Width="1.5" PointX="16.5" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" Width="1.5" PointX="13.5" PointY="34" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" Width="1.5" PointX="19.5" PointY="30.25" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.NORMACALCOLO" Width="1.5" PointX="3" PointY="47.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.NOTIFICARICHIESTAMAGFAM" Width="1.5" PointX="8.25" PointY="48" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.OA" Width="1.5" PointX="23.25" PointY="49.625" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="3" PointY="50" IsExpanded="true" />
-        <EntityTypeShape EntityType="DBISEPRO.PENSIONECONIUGE" Width="1.5" PointX="14.25" PointY="28" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEDISAGIO" Width="1.5" PointX="16.5" PointY="35.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAB" Width="1.5" PointX="19.5" PointY="25.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.PRIMASITEMAZIONE" Width="1.5" PointX="8.25" PointY="43.5" IsExpanded="true" />
@@ -95,7 +91,6 @@
         <AssociationConnector Association="DBISEPRO.R_GD_TDV" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_L_I" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_RIDUZIONI_INDBASE" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISEPRO.R_IPS_MF" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_INDPRIMSIST_PRIMASIST" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_TT_IS" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_L_PMAB" ManuallyRouted="false" />
@@ -110,9 +105,6 @@
         <AssociationConnector Association="DBISEPRO.R_RD_MAB" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_T_MB" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_TFR_MAB" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISEPRO.R_PC_MC" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISEPRO.R_T_MC" ManuallyRouted="false" />
-        <AssociationConnector Association="DBISEPRO.R_T_MF" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_NC_RC" ManuallyRouted="false" />
         <AssociationConnector Association="DBISEPRO.R_T_NRMF" ManuallyRouted="false" />
@@ -154,11 +146,9 @@
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
         <AssociationConnector Association="DBISEPRO.R_F_ADF" />
         <AssociationConnector Association="DBISEPRO.R_D_B_D" />
-        <AssociationConnector Association="DBISEPRO.R_C_MC" />
         <AssociationConnector Association="DBISEPRO.R_D_MAB_DOC" />
         <AssociationConnector Association="DBISEPRO.R_D_TER_D" />
         <AssociationConnector Association="DBISEPRO.R_D_TES_D" />
-        <AssociationConnector Association="DBISEPRO.R_MF_F" />
         <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
         <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
         <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
@@ -172,14 +162,24 @@
         <AssociationConnector Association="DBISEPRO.INDENNITA_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_RUOLODIPENDENTE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_TFR" />
-        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" Width="2.5" PointX="14.625" PointY="24.375" />
-        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" Width="2.875" PointX="0.75" PointY="4.875" />
-        <AssociationConnector Association="DBISEPRO.R_PMC_MC" />
-        <AssociationConnector Association="DBISEPRO.R_PMF_MF" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOLOGIACONIUGE" Width="1.5" PointX="12.375" PointY="24.875" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOLOGIAFIGLIO" Width="1.5" PointX="0.75" PointY="8.375" />
+        <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="12" PointY="28.375" />
+        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONECONIUGE" Width="1.5" PointX="8.25" PointY="57.5" />
+        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" Width="1.5" PointX="14.25" PointY="35.125" />
+        <EntityTypeShape EntityType="DBISEPRO.PENSIONE" Width="1.5" PointX="10.5" PointY="58.875" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" Width="1.5" PointX="16.625" PointY="40.25" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" Width="1.5" PointX="16.5" PointY="21.875" />
+        <AssociationConnector Association="DBISEPRO.R_C_MC" />
+        <AssociationConnector Association="DBISEPRO.R_MF_F" />
+        <AssociationConnector Association="DBISEPRO.R_T_MC" />
+        <AssociationConnector Association="DBISEPRO.R_T_MF" />
         <AssociationConnector Association="DBISEPRO.R_TC_PMC" />
         <AssociationConnector Association="DBISEPRO.R_TF_MF" />
+        <AssociationConnector Association="DBISEPRO.MC_P" />
+        <AssociationConnector Association="DBISEPRO.MC_PMC" />
+        <AssociationConnector Association="DBISEPRO.MF_IPS" />
+        <AssociationConnector Association="DBISEPRO.MF_PMF" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

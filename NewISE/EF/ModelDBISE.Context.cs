@@ -41,7 +41,6 @@ namespace NewISE.EF
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
-        public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
@@ -49,14 +48,11 @@ namespace NewISE.EF
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAB_DOC> MAB_DOC { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
-        public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<NOTIFICARICHIESTAMAGFAM> NOTIFICARICHIESTAMAGFAM { get; set; }
         public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
-        public virtual DbSet<PENSIONECONIUGE> PENSIONECONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
@@ -96,9 +92,13 @@ namespace NewISE.EF
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
-        public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
-        public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
+        public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
+        public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
+        public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
+        public virtual DbSet<PENSIONE> PENSIONE { get; set; }
+        public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
+        public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
     }
 }

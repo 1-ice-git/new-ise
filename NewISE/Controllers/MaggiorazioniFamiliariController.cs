@@ -12,7 +12,15 @@ namespace NewISE.Controllers
     public class MaggiorazioniFamiliariController : Controller
     {
 
-        public ActionResult ElencoFamiliari(decimal idTrasferimento)
+        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
+        {
+            ViewBag.idTrasferimento = idTrasferimento;
+            return PartialView();
+        }
+
+
+
+        public ActionResult ElencoConiuge(decimal idTrasferimento)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
 
@@ -21,84 +29,107 @@ namespace NewISE.Controllers
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     var tr = dtt.GetSoloTrasferimentoById(idTrasferimento);
-
-                    using (dtMaggiorazioniFigli dtmf = new dtMaggiorazioniFigli())
+                    if (tr != null && tr.HasValue())
                     {
-                        MaggiorazioniFigliModel mf = dtmf.GetMaggiorazioneFigli(tr.idTrasferimento, tr.dataPartenza);
+                        //using (dtMaggiorazioniFigli dtmf = new dtMaggiorazioniFigli())
+                        //{
+                        //    MaggiorazioniFigliModel mf = dtmf.GetMaggiorazioneFigli(tr.idTrasferimento, tr.dataPartenza);
+                        //    if (mf != null && mf.HasValue())
+                        //    {
+                        //        using (dtFigli dtf = new dtFigli())
+                        //        {
+                        //            mf.LFigli = dtf.GetListaFigli(mf.idMaggiorazioneFigli);
+                        //            if (mf.LFigli != null && mf.LFigli.Count > 0)
+                        //            {
+                        //                using (dtDocumenti dtd = new dtDocumenti())
+                        //                {
+                        //                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                        //                    {
+                        //                        foreach (var item in mf.LFigli)
+                        //                        {
+                        //                            ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                        //                            {
+                        //                                id = item.idMaggiorazioneFigli,
+                        //                                idTrasferimento = idTrasferimento,
+                        //                                idFamiliare = item.idFigli,
+                        //                                Nominativo = item.cognome + " " + item.nome,
+                        //                                CodiceFiscale = item.codiceFiscale,
+                        //                                dataInizio = item.MaggiorazioniFigli.dataInizioValidita,
+                        //                                dataFine = item.MaggiorazioniFigli.dataFineValidita,
+                        //                                parentela = EnumParentela.Figlio,
+                        //                                idAltriDati = dtadf.GetAltriDatiFamiliariFiglio(item.idFigli).idAltriDatiFam,
+                        //                                Documento = dtd.GetDocumentoByIdFiglio(idFiglio: item.idFigli),
 
-                        using (dtFigli dtf = new dtFigli())
+
+                        //                            };
+
+                        //                            lefm.Add(efm);
+                        //                        }
+                        //                    }
+
+                        //                }
+                        //            }
+
+                        //        }
+                        //    }
+
+
+                        //}
+
+                        using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
                         {
-                            mf.LFigli = dtf.GetListaFigli(mf.idMaggiorazioneFigli);
-
-                            using (dtDocumenti dtd = new dtDocumenti())
+                            MaggiorazioneConiugeModel mcm = dtmc.GetMaggiorazioneConiuge(tr.idTrasferimento, tr.dataPartenza);
+                            if (mcm != null && mcm.HasValue())
                             {
-                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                using (dtConiuge dtc = new dtConiuge())
                                 {
-                                    foreach (var item in mf.LFigli)
+                                    mcm.Coniuge = dtc.GetConiuge(mcm.idMaggiorazioneConiuge);
+
+                                    if (mcm.Coniuge != null && mcm.Coniuge.HasValue())
                                     {
-                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                        using (dtDocumenti dtd = new dtDocumenti())
                                         {
-                                            id = item.idMaggiorazioneFigli,
-                                            idTrasferimento = idTrasferimento,
-                                            idFamiliare = item.idFigli,
-                                            Nominativo = item.cognome + " " + item.nome,
-                                            CodiceFiscale = item.codiceFiscale,
-                                            dataInizio = item.MaggiorazioniFigli.dataInizioValidita,
-                                            dataFine = item.MaggiorazioniFigli.dataFineValidita,
-                                            parentela = EnumParentela.Figlio,
-                                            idAltriDati = dtadf.GetAltriDatiFamiliariFiglio(item.idFigli).idAltriDatiFam,
-                                            Documento = dtd.GetDocumentoByIdFiglio(idFiglio: item.idFigli),
+                                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                            {
+                                                var adf = dtadf.GetAltriDatiFamiliariConiuge(mcm.idMaggiorazioneConiuge);
+                                                var d = dtd.GetDocumentoByIdMagConiuge(idMagConiuge: mcm.idMaggiorazioneConiuge);
 
+                                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                                {
+                                                    id = mcm.idMaggiorazioneConiuge,
+                                                    idTrasferimento = idTrasferimento,
+                                                    idFamiliare = mcm.idMaggiorazioneConiuge,
+                                                    Nominativo = mcm.Coniuge.cognome + " " + mcm.Coniuge.nome,
+                                                    CodiceFiscale = mcm.Coniuge.codiceFiscale,
+                                                    dataInizio = mcm.dataInizioValidita,
+                                                    dataFine = mcm.dataFineValidita,
+                                                    parentela = EnumParentela.Coniuge,
+                                                    idAltriDati = adf.idAltriDatiFam > 0 ? adf.idAltriDatiFam : 0,
+                                                    Documento = d,
+                                                    idDocumento = d.idDocumenti > 0 ? d.idDocumenti : 0,
 
-                                        };
+                                                };
 
-                                        lefm.Add(efm);
+                                                lefm.Add(efm);
+                                            }
+
+                                        }
                                     }
+
+
                                 }
-
-                            }
-                        }
-
-                    }
-
-                    using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
-                    {
-                        MaggiorazioneConiugeModel mcm = dtmc.GetMaggiorazioneConiuge(tr.idTrasferimento, tr.dataPartenza);
-                        using (dtConiuge dtc = new dtConiuge())
-                        {
-                            mcm.Coniuge = dtc.GetConiuge(mcm.idMaggiorazioneConiuge);
-                            using (dtDocumenti dtd = new dtDocumenti())
-                            {
-                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                                {
-                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                    {
-                                        id = mcm.idMaggiorazioneConiuge,
-                                        idTrasferimento = idTrasferimento,
-                                        idFamiliare = mcm.idMaggiorazioneConiuge,
-                                        Nominativo = mcm.Coniuge.cognome + " " + mcm.Coniuge.nome,
-                                        CodiceFiscale = mcm.Coniuge.codiceFiscale,
-                                        dataInizio = mcm.dataInizioValidita,
-                                        dataFine = mcm.dataFineValidita,
-                                        parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtadf.GetAltriDatiFamiliariConiuge(mcm.idMaggiorazioneConiuge).idAltriDatiFam,
-                                        Documento = dtd.GetDocumentoByIdMagConiuge(idMagConiuge: mcm.idMaggiorazioneConiuge),
-
-
-                                    };
-
-                                    lefm.Add(efm);
-                                }
-
                             }
 
-                        }
 
+                        }
                     }
+
 
 
 
                 }
+                ViewBag.idTrasferimento = idTrasferimento;
+
                 return PartialView(lefm);
 
             }
@@ -111,8 +142,35 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuovoFamiliare(decimal idTrasferimento)
+        public ActionResult NuovoConiuge(decimal idTrasferimento)
         {
+
+            List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
+
+            var r = new List<SelectListItem>();
+
+            using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
+            {
+                var ltcm = dttc.GetListTipologiaConiuge();
+
+                if (ltcm != null && ltcm.Count > 0)
+                {
+                    r = (from t in ltcm
+                         select new SelectListItem()
+                         {
+                             Text = t.tipologiaConiuge,
+                             Value = t.idTipologiaConiuge.ToString()
+                         }).ToList();
+                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                }
+
+                lTipologiaConiuge = r;
+            }
+
+
+            ViewBag.lTipologiaConiuge = lTipologiaConiuge;
+            ViewBag.idTrasferimento = idTrasferimento;
+
             return PartialView();
         }
 

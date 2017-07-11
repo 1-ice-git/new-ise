@@ -326,7 +326,7 @@
           <Key>
             <PropertyRef Name="IDINDPRIMOSEGR" />
           </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="INDENNITA" Type="number" Precision="18" Scale="8" Nullable="false" />
@@ -417,10 +417,8 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
           </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPENSIONECONIUGE" Type="number" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
@@ -430,10 +428,8 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
@@ -450,6 +446,38 @@
           <Property Name="ANNUALITA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MC_P">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            <PropertyRef Name="IDPENSIONE" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MC_PMC">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            <PropertyRef Name="IDPERCMAGCONIUGE" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MF_IPS">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            <PropertyRef Name="IDINDPRIMOSEGR" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MF_PMF">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            <PropertyRef Name="IDPERCMAGFIGLI" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="NORMACALCOLO">
           <Key>
@@ -503,14 +531,14 @@
           <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="PENSIONECONIUGE">
+        <EntityType Name="PENSIONE">
           <Key>
-            <PropertyRef Name="IDPENSIONECONIUGE" />
+            <PropertyRef Name="IDPENSIONE" />
           </Key>
-          <Property Name="IDPENSIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="IDPENSIONE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IMPORTOPENSIONE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="DATAINIZIO" Type="date" Nullable="false" />
+          <Property Name="DATAFINE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -544,7 +572,7 @@
           <Key>
             <PropertyRef Name="IDPERCMAGCONIUGE" />
           </Key>
-          <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALECONIUGE" Type="number" Precision="11" Scale="8" Nullable="false" />
@@ -556,7 +584,7 @@
           <Key>
             <PropertyRef Name="IDPERCMAGFIGLI" />
           </Key>
-          <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="PERCENTUALEFIGLI" Type="number" Precision="11" Scale="8" Nullable="false" />
@@ -1419,16 +1447,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_IPS_MF">
+        <Association Name="R_IPS_MF_IPS">
           <End Role="INDENNITAPRIMOSEGRETARIO" Type="Self.INDENNITAPRIMOSEGRETARIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="*" />
+          <End Role="MF_IPS" Type="Self.MF_IPS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="INDENNITAPRIMOSEGRETARIO">
               <PropertyRef Name="IDINDPRIMOSEGR" />
             </Principal>
-            <Dependent Role="MAGGIORAZIONEFIGLI">
+            <Dependent Role="MF_IPS">
               <PropertyRef Name="IDINDPRIMOSEGR" />
             </Dependent>
           </ReferentialConstraint>
@@ -1545,6 +1573,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MC_MC_P">
+          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MC_P" Type="Self.MC_P" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONECONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Principal>
+            <Dependent Role="MC_P">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MC_MC_PMC">
+          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MC_PMC" Type="Self.MC_PMC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONECONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Principal>
+            <Dependent Role="MC_PMC">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MF_F">
           <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1555,6 +1611,34 @@
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Principal>
             <Dependent Role="FIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MF_MF_IPS">
+          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MF_IPS" Type="Self.MF_IPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEFIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Principal>
+            <Dependent Role="MF_IPS">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MF_MF_PMF">
+          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MF_PMF" Type="Self.MF_PMF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEFIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Principal>
+            <Dependent Role="MF_PMF">
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -1587,6 +1671,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_P_MC_P">
+          <End Role="PENSIONE" Type="Self.PENSIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MC_P" Type="Self.MC_P" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PENSIONE">
+              <PropertyRef Name="IDPENSIONE" />
+            </Principal>
+            <Dependent Role="MC_P">
+              <PropertyRef Name="IDPENSIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_P_PD">
           <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1598,20 +1696,6 @@
             </Principal>
             <Dependent Role="PASSAPORTI_DOCUMENTI">
               <PropertyRef Name="IDPASSAPORTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PC_MC">
-          <End Role="PENSIONECONIUGE" Type="Self.PENSIONECONIUGE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PENSIONECONIUGE">
-              <PropertyRef Name="IDPENSIONECONIUGE" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDPENSIONECONIUGE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1643,30 +1727,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_PMC_MC">
+        <Association Name="R_PMC_MC_PMC">
           <End Role="PERCENTUALEMAGCONIUGE" Type="Self.PERCENTUALEMAGCONIUGE" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="*" />
+          <End Role="MC_PMC" Type="Self.MC_PMC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERCENTUALEMAGCONIUGE">
               <PropertyRef Name="IDPERCMAGCONIUGE" />
             </Principal>
-            <Dependent Role="MAGGIORAZIONECONIUGE">
+            <Dependent Role="MC_PMC">
               <PropertyRef Name="IDPERCMAGCONIUGE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_PMF_MF">
+        <Association Name="R_PMF_MF_PMF">
           <End Role="PERCENTUALEMAGFIGLI" Type="Self.PERCENTUALEMAGFIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="*" />
+          <End Role="MF_PMF" Type="Self.MF_PMF" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PERCENTUALEMAGFIGLI">
               <PropertyRef Name="IDPERCMAGFIGLI" />
             </Principal>
-            <Dependent Role="MAGGIORAZIONEFIGLI">
+            <Dependent Role="MF_PMF">
               <PropertyRef Name="IDPERCMAGFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2482,12 +2566,16 @@
           <EntitySet Name="MAGGIORAZIONECONIUGE" EntityType="Self.MAGGIORAZIONECONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONEFIGLI" EntityType="Self.MAGGIORAZIONEFIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="MC_P" EntityType="Self.MC_P" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="MC_PMC" EntityType="Self.MC_PMC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="MF_IPS" EntityType="Self.MF_IPS" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="MF_PMF" EntityType="Self.MF_PMF" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NOTIFICARICHIESTAMAGFAM" EntityType="Self.NOTIFICARICHIESTAMAGFAM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="OA" EntityType="Self.OA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI_DOCUMENTI" EntityType="Self.PASSAPORTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="PENSIONECONIUGE" EntityType="Self.PENSIONECONIUGE" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISEPRO" store:Type="Tables" />
@@ -2679,9 +2767,9 @@
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_IPS_MF" Association="Self.R_IPS_MF">
+          <AssociationSet Name="R_IPS_MF_IPS" Association="Self.R_IPS_MF_IPS">
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="MF_IPS" EntitySet="MF_IPS" />
           </AssociationSet>
           <AssociationSet Name="R_IR_TER" Association="Self.R_IR_TER">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -2715,9 +2803,25 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
+          <AssociationSet Name="R_MC_MC_P" Association="Self.R_MC_MC_P">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="MC_P" EntitySet="MC_P" />
+          </AssociationSet>
+          <AssociationSet Name="R_MC_MC_PMC" Association="Self.R_MC_MC_PMC">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="MC_PMC" EntitySet="MC_PMC" />
+          </AssociationSet>
           <AssociationSet Name="R_MF_F" Association="Self.R_MF_F">
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="R_MF_MF_IPS" Association="Self.R_MF_MF_IPS">
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="MF_IPS" EntitySet="MF_IPS" />
+          </AssociationSet>
+          <AssociationSet Name="R_MF_MF_PMF" Association="Self.R_MF_MF_PMF">
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="MF_PMF" EntitySet="MF_PMF" />
           </AssociationSet>
           <AssociationSet Name="R_NC_D_NC" Association="Self.R_NC_D_NC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -2727,13 +2831,13 @@
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
           </AssociationSet>
+          <AssociationSet Name="R_P_MC_P" Association="Self.R_P_MC_P">
+            <End Role="PENSIONE" EntitySet="PENSIONE" />
+            <End Role="MC_P" EntitySet="MC_P" />
+          </AssociationSet>
           <AssociationSet Name="R_P_PD" Association="Self.R_P_PD">
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
             <End Role="PASSAPORTI_DOCUMENTI" EntitySet="PASSAPORTI_DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_PC_MC" Association="Self.R_PC_MC">
-            <End Role="PENSIONECONIUGE" EntitySet="PENSIONECONIUGE" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
           </AssociationSet>
           <AssociationSet Name="R_PD_IPD" Association="Self.R_PD_IPD">
             <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
@@ -2743,13 +2847,13 @@
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_PMC_MC" Association="Self.R_PMC_MC">
+          <AssociationSet Name="R_PMC_MC_PMC" Association="Self.R_PMC_MC_PMC">
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="MC_PMC" EntitySet="MC_PMC" />
           </AssociationSet>
-          <AssociationSet Name="R_PMF_MF" Association="Self.R_PMF_MF">
+          <AssociationSet Name="R_PMF_MF_PMF" Association="Self.R_PMF_MF_PMF">
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="MF_PMF" EntitySet="MF_PMF" />
           </AssociationSet>
           <AssociationSet Name="R_PS_A" Association="Self.R_PS_A">
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
@@ -3186,18 +3290,6 @@
           <NavigationProperty Name="RIDUZIONI" Relationship="Self.R_RIDUZIONI_INDBASE" FromRole="INDENNITABASE" ToRole="RIDUZIONI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_INDENNITABASE" FromRole="INDENNITABASE" ToRole="INDENNITA" />
         </EntityType>
-        <EntityType Name="INDENNITAPRIMOSEGRETARIO">
-          <Key>
-            <PropertyRef Name="IDINDPRIMOSEGR" />
-          </Key>
-          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="INDENNITA" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.R_IPS_MF" FromRole="INDENNITAPRIMOSEGRETARIO" ToRole="MAGGIORAZIONEFIGLI" />
-        </EntityType>
         <EntityType Name="INDENNITASISTEMAZIONE">
           <Key>
             <PropertyRef Name="IDINDSIST" />
@@ -3301,40 +3393,6 @@
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TFR" Relationship="Self.R_TFR_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
         </EntityType>
-        <EntityType Name="MAGGIORAZIONECONIUGE">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPERCMAGCONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDPENSIONECONIUGE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PENSIONECONIUGE" Relationship="Self.R_PC_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="PENSIONECONIUGE" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="CONIUGE" />
-          <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.R_PMC_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
-        </EntityType>
-        <EntityType Name="MAGGIORAZIONEFIGLI">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDPERCMAGFIGLI" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="Self.R_IPS_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="MAGGIORAZIONEFIGLI" ToRole="FIGLI" />
-          <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.R_PMF_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="PERCENTUALEMAGFIGLI" />
-        </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
             <PropertyRef Name="IDMAGANNUALI" />
@@ -3397,18 +3455,6 @@
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="PASSAPORTI" ToRole="DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="PENSIONECONIUGE">
-          <Key>
-            <PropertyRef Name="IDPENSIONECONIUGE" />
-          </Key>
-          <Property Name="IDPENSIONECONIUGE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="IMPORTOPENSIONE" Type="Decimal" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.R_PC_MC" FromRole="PENSIONECONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
         </EntityType>
         <EntityType Name="PERCENTUALEDISAGIO">
           <Key>
@@ -3715,8 +3761,6 @@
           <NavigationProperty Name="DIPENDENTI" Relationship="Self.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="Self.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_T_MB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="Self.R_T_MC" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONECONIUGE" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="Self.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEFIGLI" />
           <NavigationProperty Name="NOTIFICARICHIESTAMAGFAM" Relationship="Self.R_T_NRMF" FromRole="TRASFERIMENTO" ToRole="NOTIFICARICHIESTAMAGFAM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_TRASF_RICHIAMO" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
@@ -3727,6 +3771,8 @@
           <NavigationProperty Name="UFFICI" Relationship="Self.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
+          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_T_MC" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONECONIUGE" />
+          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEFIGLI" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <Key>
@@ -4173,20 +4219,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_IPS_MF">
-          <End Role="INDENNITAPRIMOSEGRETARIO" Type="Self.INDENNITAPRIMOSEGRETARIO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITAPRIMOSEGRETARIO">
-              <PropertyRef Name="IDINDPRIMOSEGR" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDINDPRIMOSEGR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_INDPRIMSIST_PRIMASIST">
           <End Role="INDENNITASISTEMAZIONE" Type="Self.INDENNITASISTEMAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4380,48 +4412,6 @@
             </Principal>
             <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDTFR" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PC_MC">
-          <End Role="PENSIONECONIUGE" Type="Self.PENSIONECONIUGE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PENSIONECONIUGE">
-              <PropertyRef Name="IDPENSIONECONIUGE" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDPENSIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MC">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONECONIUGE" Type="Self.MAGGIORAZIONECONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MF">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4906,7 +4896,6 @@
           <EntitySet Name="ELAB_CONT" EntityType="Self.ELAB_CONT" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="Self.GRUPPIDOCUMENTI" />
           <EntitySet Name="INDENNITABASE" EntityType="Self.INDENNITABASE" />
-          <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="Self.INDENNITAPRIMOSEGRETARIO" />
           <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="Self.INDENNITASISTEMAZIONE" />
           <EntitySet Name="LIVELLI" EntityType="Self.LIVELLI" />
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" />
@@ -4914,14 +4903,11 @@
           <EntitySet Name="MAB_ALIQCONTR" EntityType="Self.MAB_ALIQCONTR" />
           <EntitySet Name="MAB_DOC" EntityType="Self.MAB_DOC" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" />
-          <EntitySet Name="MAGGIORAZIONECONIUGE" EntityType="Self.MAGGIORAZIONECONIUGE" />
-          <EntitySet Name="MAGGIORAZIONEFIGLI" EntityType="Self.MAGGIORAZIONEFIGLI" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" />
           <EntitySet Name="NOTIFICARICHIESTAMAGFAM" EntityType="Self.NOTIFICARICHIESTAMAGFAM" />
           <EntitySet Name="OA" EntityType="Self.OA" />
           <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" />
-          <EntitySet Name="PENSIONECONIUGE" EntityType="Self.PENSIONECONIUGE" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" />
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" />
@@ -5052,10 +5038,6 @@
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
             <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
           </AssociationSet>
-          <AssociationSet Name="R_IPS_MF" Association="Self.R_IPS_MF">
-            <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-          </AssociationSet>
           <AssociationSet Name="R_INDPRIMSIST_PRIMASIST" Association="Self.R_INDPRIMSIST_PRIMASIST">
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
@@ -5111,18 +5093,6 @@
           <AssociationSet Name="R_TFR_MAB" Association="Self.R_TFR_MAB">
             <End Role="TFR" EntitySet="TFR" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="R_PC_MC" Association="Self.R_PC_MC">
-            <End Role="PENSIONECONIUGE" EntitySet="PENSIONECONIUGE" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MC" Association="Self.R_T_MC">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MF" Association="Self.R_T_MF">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
           </AssociationSet>
           <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="Self.R_UFFICI_MAGANNUALI">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -5276,10 +5246,6 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_C_MC" Association="DBISEPRO.R_C_MC">
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-            <End Role="CONIUGE" EntitySet="CONIUGE" />
-          </AssociationSet>
           <AssociationSet Name="R_D_MAB_DOC" Association="DBISEPRO.R_D_MAB_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="MAB_DOC" EntitySet="MAB_DOC" />
@@ -5291,10 +5257,6 @@
           <AssociationSet Name="R_D_TES_D" Association="DBISEPRO.R_D_TES_D">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_F" Association="DBISEPRO.R_MF_F">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="FIGLI" EntitySet="FIGLI" />
           </AssociationSet>
           <AssociationSet Name="CONIUGE_DOC" Association="DBISEPRO.CONIUGE_DOC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -5345,24 +5307,52 @@
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
-          <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" />
-          <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" />
-          <AssociationSet Name="R_PMC_MC" Association="DBISEPRO.R_PMC_MC">
-            <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
-            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
-          </AssociationSet>
-          <AssociationSet Name="R_PMF_MF" Association="DBISEPRO.R_PMF_MF">
-            <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-          </AssociationSet>
           <EntitySet Name="TIPOLOGIACONIUGE" EntityType="DBISEPRO.TIPOLOGIACONIUGE" />
           <EntitySet Name="TIPOLOGIAFIGLIO" EntityType="DBISEPRO.TIPOLOGIAFIGLIO" />
+          <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" />
+          <EntitySet Name="MAGGIORAZIONECONIUGE" EntityType="DBISEPRO.MAGGIORAZIONECONIUGE" />
+          <EntitySet Name="MAGGIORAZIONEFIGLI" EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" />
+          <EntitySet Name="PENSIONE" EntityType="DBISEPRO.PENSIONE" />
+          <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" />
+          <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" />
+          <AssociationSet Name="R_C_MC" Association="DBISEPRO.R_C_MC">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="R_MF_F" Association="DBISEPRO.R_MF_F">
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+            <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_MC" Association="DBISEPRO.R_T_MC">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_MF" Association="DBISEPRO.R_T_MF">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+          </AssociationSet>
           <AssociationSet Name="R_TC_PMC" Association="DBISEPRO.R_TC_PMC">
             <End Role="TIPOLOGIACONIUGE" EntitySet="TIPOLOGIACONIUGE" />
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
           </AssociationSet>
           <AssociationSet Name="R_TF_MF" Association="DBISEPRO.R_TF_MF">
             <End Role="TIPOLOGIAFIGLIO" EntitySet="TIPOLOGIAFIGLIO" />
+            <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="MC_P" Association="DBISEPRO.MC_P">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="PENSIONE" EntitySet="PENSIONE" />
+          </AssociationSet>
+          <AssociationSet Name="MC_PMC" Association="DBISEPRO.MC_PMC">
+            <End Role="MAGGIORAZIONECONIUGE" EntitySet="MAGGIORAZIONECONIUGE" />
+            <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
+          </AssociationSet>
+          <AssociationSet Name="MF_IPS" Association="DBISEPRO.MF_IPS">
+            <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="MF_PMF" Association="DBISEPRO.MF_PMF">
+            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
         </EntityContainer>
@@ -5399,8 +5389,8 @@
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_C_ADF" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
         </EntityType>
         <EntityType Name="DOCUMENTI">
           <Key>
@@ -5430,8 +5420,8 @@
           <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="CODICEFISCALE" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFIGLI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFIGLI" />
         </EntityType>
         <Association Name="R_C_ADF">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
@@ -5475,20 +5465,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_C_MC">
-          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Principal>
-            <Dependent Role="CONIUGE">
-              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_D_MAB_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5528,20 +5504,6 @@
             </Principal>
             <Dependent Role="TRASPEFFETTISIST_DOC">
               <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_F">
-          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="FIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5619,62 +5581,6 @@
           <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
           <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
         </Association>
-        <EntityType Name="PERCENTUALEMAGCONIUGE">
-          <Key>
-            <PropertyRef Name="IDPERCMAGCONIUGE" />
-          </Key>
-          <Property Name="IDPERCMAGCONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALECONIUGE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.R_PMC_MC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
-          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="TIPOLOGIACONIUGE" Relationship="DBISEPRO.R_TC_PMC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="TIPOLOGIACONIUGE" />
-        </EntityType>
-        <EntityType Name="PERCENTUALEMAGFIGLI">
-          <Key>
-            <PropertyRef Name="IDPERCMAGFIGLI" />
-          </Key>
-          <Property Name="IDPERCMAGFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALEFIGLI" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_PMF_MF" FromRole="PERCENTUALEMAGFIGLI" ToRole="MAGGIORAZIONEFIGLI" />
-          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISEPRO.R_TF_MF" FromRole="PERCENTUALEMAGFIGLI" ToRole="TIPOLOGIAFIGLIO" />
-        </EntityType>
-        <Association Name="R_PMC_MC">
-          <End Type="DBISEPRO.PERCENTUALEMAGCONIUGE" Role="PERCENTUALEMAGCONIUGE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEMAGCONIUGE">
-              <PropertyRef Name="IDPERCMAGCONIUGE" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONECONIUGE">
-              <PropertyRef Name="IDPERCMAGCONIUGE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PMF_MF">
-          <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PERCENTUALEMAGFIGLI">
-              <PropertyRef Name="IDPERCMAGFIGLI" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDPERCMAGFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="TIPOLOGIACONIUGE">
           <Key>
             <PropertyRef Name="IDTIPOLOGIACONIUGE" />
@@ -5691,6 +5597,144 @@
           <Property Name="TIPOLOGIAFIGLIO1" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.R_TF_MF" FromRole="TIPOLOGIAFIGLIO" ToRole="PERCENTUALEMAGFIGLI" />
         </EntityType>
+        <EntityType Name="INDENNITAPRIMOSEGRETARIO">
+          <Key>
+            <PropertyRef Name="IDINDPRIMOSEGR" />
+          </Key>
+          <Property Name="IDINDPRIMOSEGR" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="INDENNITA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.MF_IPS" FromRole="INDENNITAPRIMOSEGRETARIO" ToRole="MAGGIORAZIONEFIGLI" />
+        </EntityType>
+        <EntityType Name="MAGGIORAZIONECONIUGE">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="CONIUGE" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MC" FromRole="MAGGIORAZIONECONIUGE" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="PENSIONE" Relationship="DBISEPRO.MC_P" FromRole="MAGGIORAZIONECONIUGE" ToRole="PENSIONE" />
+          <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.MC_PMC" FromRole="MAGGIORAZIONECONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
+        </EntityType>
+        <EntityType Name="MAGGIORAZIONEFIGLI">
+          <Key>
+            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+          </Key>
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="MAGGIORAZIONEFIGLI" ToRole="FIGLI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.MF_IPS" FromRole="MAGGIORAZIONEFIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
+          <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.MF_PMF" FromRole="MAGGIORAZIONEFIGLI" ToRole="PERCENTUALEMAGFIGLI" />
+        </EntityType>
+        <EntityType Name="PENSIONE">
+          <Key>
+            <PropertyRef Name="IDPENSIONE" />
+          </Key>
+          <Property Name="IDPENSIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IMPORTOPENSIONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.MC_P" FromRole="PENSIONE" ToRole="MAGGIORAZIONECONIUGE" />
+        </EntityType>
+        <EntityType Name="PERCENTUALEMAGCONIUGE">
+          <Key>
+            <PropertyRef Name="IDPERCMAGCONIUGE" />
+          </Key>
+          <Property Name="IDPERCMAGCONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALECONIUGE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDTIPOLOGIACONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="TIPOLOGIACONIUGE" Relationship="DBISEPRO.R_TC_PMC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="TIPOLOGIACONIUGE" />
+          <NavigationProperty Name="MAGGIORAZIONECONIUGE" Relationship="DBISEPRO.MC_PMC" FromRole="PERCENTUALEMAGCONIUGE" ToRole="MAGGIORAZIONECONIUGE" />
+        </EntityType>
+        <EntityType Name="PERCENTUALEMAGFIGLI">
+          <Key>
+            <PropertyRef Name="IDPERCMAGFIGLI" />
+          </Key>
+          <Property Name="IDPERCMAGFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALEFIGLI" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDTIPOLOGIAFIGLIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISEPRO.R_TF_MF" FromRole="PERCENTUALEMAGFIGLI" ToRole="TIPOLOGIAFIGLIO" />
+          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.MF_PMF" FromRole="PERCENTUALEMAGFIGLI" ToRole="MAGGIORAZIONEFIGLI" />
+        </EntityType>
+        <Association Name="R_C_MC">
+          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONECONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Principal>
+            <Dependent Role="CONIUGE">
+              <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MF_F">
+          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEFIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Principal>
+            <Dependent Role="FIGLI">
+              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_MC">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONECONIUGE">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_MF">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEFIGLI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TC_PMC">
           <End Type="DBISEPRO.TIPOLOGIACONIUGE" Role="TIPOLOGIACONIUGE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5718,6 +5762,22 @@
               <PropertyRef Name="IDTIPOLOGIAFIGLIO" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="MC_P">
+          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="*" />
+          <End Type="DBISEPRO.PENSIONE" Role="PENSIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="MC_PMC">
+          <End Type="DBISEPRO.MAGGIORAZIONECONIUGE" Role="MAGGIORAZIONECONIUGE" Multiplicity="*" />
+          <End Type="DBISEPRO.PERCENTUALEMAGCONIUGE" Role="PERCENTUALEMAGCONIUGE" Multiplicity="*" />
+        </Association>
+        <Association Name="MF_IPS">
+          <End Type="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Role="INDENNITAPRIMOSEGRETARIO" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
+        </Association>
+        <Association Name="MF_PMF">
+          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
+          <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -5918,18 +5978,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="INDENNITAPRIMOSEGRETARIO">
-            <EntityTypeMapping TypeName="DBISEPRO.INDENNITAPRIMOSEGRETARIO">
-              <MappingFragment StoreEntitySet="INDENNITAPRIMOSEGRETARIO">
-                <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="INDENNITA" ColumnName="INDENNITA" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="INDENNITASISTEMAZIONE">
             <EntityTypeMapping TypeName="DBISEPRO.INDENNITASISTEMAZIONE">
               <MappingFragment StoreEntitySet="INDENNITASISTEMAZIONE">
@@ -6016,34 +6064,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MAGGIORAZIONECONIUGE">
-            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONECONIUGE">
-              <MappingFragment StoreEntitySet="MAGGIORAZIONECONIUGE">
-                <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDPERCMAGCONIUGE" ColumnName="IDPERCMAGCONIUGE" />
-                <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MAGGIORAZIONEFIGLI">
-            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEFIGLI">
-              <MappingFragment StoreEntitySet="MAGGIORAZIONEFIGLI">
-                <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
-                <ScalarProperty Name="IDPERCMAGFIGLI" ColumnName="IDPERCMAGFIGLI" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="MAGGIORAZIONIANNUALI">
             <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONIANNUALI">
               <MappingFragment StoreEntitySet="MAGGIORAZIONIANNUALI">
@@ -6102,18 +6122,6 @@
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PENSIONECONIUGE">
-            <EntityTypeMapping TypeName="DBISEPRO.PENSIONECONIUGE">
-              <MappingFragment StoreEntitySet="PENSIONECONIUGE">
-                <ScalarProperty Name="IDPENSIONECONIUGE" ColumnName="IDPENSIONECONIUGE" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6637,6 +6645,70 @@
               <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="TIPOLOGIACONIUGE">
+            <EntityTypeMapping TypeName="DBISEPRO.TIPOLOGIACONIUGE">
+              <MappingFragment StoreEntitySet="TIPOLOGIACONIUGE">
+                <ScalarProperty Name="TIPOLOGIACONIUGE1" ColumnName="TIPOLOGIACONIUGE" />
+                <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPOLOGIAFIGLIO">
+            <EntityTypeMapping TypeName="DBISEPRO.TIPOLOGIAFIGLIO">
+              <MappingFragment StoreEntitySet="TIPOLOGIAFIGLIO">
+                <ScalarProperty Name="TIPOLOGIAFIGLIO1" ColumnName="TIPOLOGIAFIGLIO" />
+                <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INDENNITAPRIMOSEGRETARIO">
+            <EntityTypeMapping TypeName="DBISEPRO.INDENNITAPRIMOSEGRETARIO">
+              <MappingFragment StoreEntitySet="INDENNITAPRIMOSEGRETARIO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="INDENNITA" ColumnName="INDENNITA" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAGGIORAZIONECONIUGE">
+            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONECONIUGE">
+              <MappingFragment StoreEntitySet="MAGGIORAZIONECONIUGE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAGGIORAZIONEFIGLI">
+            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEFIGLI">
+              <MappingFragment StoreEntitySet="MAGGIORAZIONEFIGLI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PENSIONE">
+            <EntityTypeMapping TypeName="DBISEPRO.PENSIONE">
+              <MappingFragment StoreEntitySet="PENSIONE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
+                <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
+                <ScalarProperty Name="IMPORTOPENSIONE" ColumnName="IMPORTOPENSIONE" />
+                <ScalarProperty Name="IDPENSIONE" ColumnName="IDPENSIONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PERCENTUALEMAGCONIUGE">
             <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALEMAGCONIUGE">
               <MappingFragment StoreEntitySet="PERCENTUALEMAGCONIUGE">
@@ -6663,22 +6735,38 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TIPOLOGIACONIUGE">
-            <EntityTypeMapping TypeName="DBISEPRO.TIPOLOGIACONIUGE">
-              <MappingFragment StoreEntitySet="TIPOLOGIACONIUGE">
-                <ScalarProperty Name="TIPOLOGIACONIUGE1" ColumnName="TIPOLOGIACONIUGE" />
-                <ScalarProperty Name="IDTIPOLOGIACONIUGE" ColumnName="IDTIPOLOGIACONIUGE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TIPOLOGIAFIGLIO">
-            <EntityTypeMapping TypeName="DBISEPRO.TIPOLOGIAFIGLIO">
-              <MappingFragment StoreEntitySet="TIPOLOGIAFIGLIO">
-                <ScalarProperty Name="TIPOLOGIAFIGLIO1" ColumnName="TIPOLOGIAFIGLIO" />
-                <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <AssociationSetMapping Name="MC_P" TypeName="DBISEPRO.MC_P" StoreEntitySet="MC_P">
+            <EndProperty Name="PENSIONE">
+              <ScalarProperty Name="IDPENSIONE" ColumnName="IDPENSIONE" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONECONIUGE">
+              <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MC_PMC" TypeName="DBISEPRO.MC_PMC" StoreEntitySet="MC_PMC">
+            <EndProperty Name="PERCENTUALEMAGCONIUGE">
+              <ScalarProperty Name="IDPERCMAGCONIUGE" ColumnName="IDPERCMAGCONIUGE" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONECONIUGE">
+              <ScalarProperty Name="IDMAGGIORAZIONECONIUGE" ColumnName="IDMAGGIORAZIONECONIUGE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MF_IPS" TypeName="DBISEPRO.MF_IPS" StoreEntitySet="MF_IPS">
+            <EndProperty Name="MAGGIORAZIONEFIGLI">
+              <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
+            </EndProperty>
+            <EndProperty Name="INDENNITAPRIMOSEGRETARIO">
+              <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MF_PMF" TypeName="DBISEPRO.MF_PMF" StoreEntitySet="MF_PMF">
+            <EndProperty Name="PERCENTUALEMAGFIGLI">
+              <ScalarProperty Name="IDPERCMAGFIGLI" ColumnName="IDPERCMAGFIGLI" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONEFIGLI">
+              <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

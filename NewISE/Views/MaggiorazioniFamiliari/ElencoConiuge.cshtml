@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+}
 <style>
     a.dt-button.green {
         color: green;
     }
 </style>
 
-<div style="padding-right:5px; padding-top:5px;">
+<div style="padding-right:5px; padding-top:10px;">
     <table class="TabellaDataTable " cellspacing="0">
         <thead>
             <tr>
@@ -105,19 +108,19 @@
         dom: 'Bfrtip',
         buttons: [
             {
-                text: 'Nuovo familiare',
+                text: 'Nuovo Coniuge',
                 className: 'green',
                 action: function (e, dt, node, config) {
-                    NuovoFamiliare();
+                    NuovoConiuge();
                 }
             }
         ]
     });
 
-    function NuovoFamiliare() {
+    function NuovoConiuge() {
         //debugger;
-        var rotta = "/MaggiorazioniFamiliari/NuovoFamiliare";
-        var idTrasferimento = parseInt($("#idTrasferimento").val());
+        var rotta = "/MaggiorazioniFamiliari/NuovoConiuge";
+        var idTrasferimento = parseInt('@idTrasferimento');
 
         $.ajax({
             url: rotta,

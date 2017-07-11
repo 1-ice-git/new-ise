@@ -1,5 +1,6 @@
 ﻿using NewISE.EF;
 using NewISE.Models.Tools;
+using NewISE.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,39 @@ namespace NewISE.Models.DBModel.dtObj
                 if (cm.codiceFiscale != null && cm.codiceFiscale != string.Empty)
                 {
                     if (Utility.CheckCodiceFiscale(cm.codiceFiscale))
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il Codice Fiscale non è corretto.");
+                    }
+                }
+                else
+                {
+                    vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+            }
+
+            return vr;
+        }
+
+        public static ValidationResult VerificaCodFiscMaggiorazioneConiugeVModel(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var cm = context.ObjectInstance as MaggiorazioneConiugeVModel;
+
+            if (cm != null)
+            {
+
+                if (cm.CodiceFiscale != null && cm.CodiceFiscale != string.Empty)
+                {
+                    if (Utility.CheckCodiceFiscale(cm.CodiceFiscale))
                     {
                         vr = ValidationResult.Success;
                     }

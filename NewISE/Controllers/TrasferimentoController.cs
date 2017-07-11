@@ -479,6 +479,7 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
         {
             try

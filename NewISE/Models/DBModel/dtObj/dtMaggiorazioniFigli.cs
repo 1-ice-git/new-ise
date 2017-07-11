@@ -24,17 +24,33 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var mf = lmf.First();
 
-                    mfm = new MaggiorazioniFigliModel()
+                    var lpmf = mf.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                    if (lpmf != null && lpmf.Count > 0)
                     {
-                        idMaggiorazioneFigli = mf.IDMAGGIORAZIONEFIGLI,
-                        idTrasferimento = mf.IDTRASFERIMENTO,
-                        idPercentualeMaggFigli = mf.IDPERCMAGFIGLI,
-                        idIndPrimoSegr = mf.IDINDPRIMOSEGR,
-                        dataInizioValidita = mf.DATAINIZIOVALIDITA,
-                        dataFineValidita = mf.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : mf.DATAFINEVALIDITA,
-                        dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                        annullato = mf.ANNULLATO
-                    };
+                        var pmf = lpmf.First();
+
+                        var lips = mf.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                        if (lips != null && lips.Count > 0)
+                        {
+                            var ips = lips.First();
+
+                            mfm = new MaggiorazioniFigliModel()
+                            {
+                                idMaggiorazioneFigli = mf.IDMAGGIORAZIONEFIGLI,
+                                idTrasferimento = mf.IDTRASFERIMENTO,
+                                idPercentualeMaggFigli = pmf.IDPERCMAGFIGLI,
+                                idIndPrimoSegr = ips.IDINDPRIMOSEGR,
+                                dataInizioValidita = mf.DATAINIZIOVALIDITA,
+                                dataFineValidita = mf.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : mf.DATAFINEVALIDITA,
+                                dataAggiornamento = mf.DATAAGGIORNAMENTO,
+                                annullato = mf.ANNULLATO
+                            };
+                        }
+
+
+                    }
+
+
 
 
                 }

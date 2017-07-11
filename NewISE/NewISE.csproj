@@ -1768,7 +1768,7 @@
     <Compile Include="EF\PASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\PENSIONECONIUGE.cs">
+    <Compile Include="EF\PENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\PERCENTUALEDISAGIO.cs">
@@ -1908,6 +1908,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaBase.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioniFigli.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtPercentualeConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeDisagio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiduzioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloDipendente.cs" />
@@ -1915,6 +1916,7 @@
     <Compile Include="Models\DBModel\dtObj\dtStatoTrasferimento.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTFR.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipologiaCoan.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtTipologiaConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipoTrasferimento.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
     <Compile Include="Interfacce\Iemail.cs" />
@@ -1997,6 +1999,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
+    <Compile Include="Models\ViewModel\MaggiorazioneConiugeVModel.cs" />
     <Compile Include="Models\ViewModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2018,7 +2021,9 @@
     <Content Include="Views\Documenti\LetteraDiTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\GestioneTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoConiuge.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\NuovoConiuge.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MaggiorazioniFamiliari.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

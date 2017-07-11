@@ -1,0 +1,128 @@
+﻿@model NewISE.Models.ViewModel.MaggiorazioneConiugeVModel
+@using System.Web.Optimization
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+}
+
+@using (@Ajax.BeginForm("InserisciConiuge", "MaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewTrasf" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.HiddenFor(model => model.idTrasferimento)
+
+
+        <div class="form-group">
+
+            <div id="divCombo" class="col-xs-4">
+                @Html.LabelFor(model => model.idTipologiaConiuge, new { @class = "control-label" })
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idTipologiaConiuge", ViewBag.lTipologiaConiuge as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                </div>
+                @Html.ValidationMessageFor(model => model.idTipologiaConiuge, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-xs-3">
+                @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-xs-3">
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-4">
+                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.Nome, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-xs-4">
+                @Html.LabelFor(model => model.Cognome, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.Cognome, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Cognome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-xs-3">
+                @Html.LabelFor(model => model.CodiceFiscale, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.TextBoxFor(model => model.CodiceFiscale, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CodiceFiscale, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.idPensioneConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.idPensioneConiuge, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.idPensioneConiuge, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $("#idTipologiaConiuge").select2({
+        placeholder: "Seleziona la tipologia del coniuge",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $('#dataInizioValidita').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+    });
+
+    $('#dataFineValidita').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+    });
+</script>

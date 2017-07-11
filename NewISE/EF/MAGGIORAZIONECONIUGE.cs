@@ -14,18 +14,25 @@ namespace NewISE.EF
     
     public partial class MAGGIORAZIONECONIUGE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MAGGIORAZIONECONIUGE()
+        {
+            this.PENSIONE = new HashSet<PENSIONE>();
+            this.PERCENTUALEMAGCONIUGE = new HashSet<PERCENTUALEMAGCONIUGE>();
+        }
+    
         public decimal IDMAGGIORAZIONECONIUGE { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
-        public decimal IDPERCMAGCONIUGE { get; set; }
-        public Nullable<decimal> IDPENSIONECONIUGE { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual PENSIONECONIUGE PENSIONECONIUGE { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
-        public virtual PERCENTUALEMAGCONIUGE PERCENTUALEMAGCONIUGE { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PENSIONE> PENSIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
     }
 }

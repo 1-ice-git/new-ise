@@ -28,8 +28,8 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public decimal IDTIPOLOGIACONIUGE { get; set; }
     
+        public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
-        public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
     }
 }

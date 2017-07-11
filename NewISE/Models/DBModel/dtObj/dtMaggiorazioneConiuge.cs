@@ -23,18 +23,35 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lmc != null && lmc.Count > 0)
                 {
                     var mc = lmc.First();
-
-                    mcm = new MaggiorazioneConiugeModel()
+                    var lpmg = mc.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                    if (lpmg != null && lpmg.Count > 0)
                     {
-                        idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
-                        idTrasferimento = mc.IDTRASFERIMENTO,
-                        idPercentualeMaggiorazioneConiuge = mc.IDPERCMAGCONIUGE,
-                        idPensioneConiuge = mc.IDPENSIONECONIUGE,
-                        dataInizioValidita = mc.DATAINIZIOVALIDITA,
-                        dataFineValidita = mc.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : mc.DATAFINEVALIDITA,
-                        dataAggiornamento = mc.DATAAGGIORNAMENTO,
-                        annullato = mc.ANNULLATO
-                    };
+                        var pmg = lpmg.First();
+
+                        var lpc = mc.PENSIONE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIO && dt <= a.DATAFINE).OrderByDescending(a => a.DATAINIZIO).ToList();
+
+                        if (lpc != null && lpc.Count > 0)
+                        {
+                            var pc = lpc.First();
+
+                            mcm = new MaggiorazioneConiugeModel()
+                            {
+                                idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
+                                idTrasferimento = mc.IDTRASFERIMENTO,
+                                idPercentualeMaggiorazioneConiuge = pmg.IDPERCMAGCONIUGE,
+                                idPensioneConiuge = pc.IDPENSIONE,
+                                dataInizioValidita = mc.DATAINIZIOVALIDITA,
+                                dataFineValidita = mc.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : mc.DATAFINEVALIDITA,
+                                dataAggiornamento = mc.DATAAGGIORNAMENTO,
+                                annullato = mc.ANNULLATO,
+
+                            };
+                        }
+
+
+                    }
+
+
 
 
                 }

@@ -12,18 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PENSIONECONIUGE
+    public partial class PENSIONE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PENSIONECONIUGE()
+        public PENSIONE()
         {
             this.MAGGIORAZIONECONIUGE = new HashSet<MAGGIORAZIONECONIUGE>();
         }
     
-        public decimal IDPENSIONECONIUGE { get; set; }
-        public System.DateTime DATAINIZIOVALIDITA { get; set; }
-        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public decimal IDPENSIONE { get; set; }
         public decimal IMPORTOPENSIONE { get; set; }
+        public System.DateTime DATAINIZIO { get; set; }
+        public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     

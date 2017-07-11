@@ -28,5 +28,10 @@ namespace NewISE.Models.DBModel
 
 
         public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
+
+        public bool HasValue()
+        {
+            return idMaggiorazioneConiuge > 0 ? true : false;
+        }
     }
 }

@@ -28,8 +28,8 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public decimal IDTIPOLOGIAFIGLIO { get; set; }
     
+        public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
-        public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
     }
 }

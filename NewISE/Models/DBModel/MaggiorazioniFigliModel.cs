@@ -36,5 +36,10 @@ namespace NewISE.Models.DBModel
 
         public IList<FigliModel> LFigli { get; set; }
 
+        public bool HasValue()
+        {
+            return idMaggiorazioneFigli > 0 ? true : false;
+        }
+
     }
 }
