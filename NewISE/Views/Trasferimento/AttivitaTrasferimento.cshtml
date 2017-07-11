@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+}
 
 <table class="table table-striped">
     <thead>
@@ -17,7 +19,8 @@
     <tbody>
         <tr>
             <th>
-                @*@Ajax.ActionLink("Richiesta Maggiorazioni familiari", "", "")*@
+                @Ajax.ActionLink("Richiesta Maggiorazioni familiari", "ElencoFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -130,3 +133,9 @@
         Annulla Trasferimento
     </button>
 </div>
+
+<script type="text/javascript">
+
+
+
+</script>

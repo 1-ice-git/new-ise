@@ -1,4 +1,5 @@
-﻿using NewISE.Models.Tools;
+﻿using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,5 +47,38 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+
+
+        public ConiugeModel GetConiuge(decimal idMaggiorazioneConiuge)
+        {
+            ConiugeModel cm = new ConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
+
+                if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+                {
+                    cm = new ConiugeModel()
+                    {
+                        idMaggiorazioneConiuge = c.IDMAGGIORAZIONECONIUGE,
+                        nome = c.NOME,
+                        cognome = c.COGNOME,
+                        codiceFiscale = c.CODICEFISCALE
+                    };
+
+
+                }
+
+
+            }
+
+            return cm;
+
+        }
+
+
+
+
     }
 }

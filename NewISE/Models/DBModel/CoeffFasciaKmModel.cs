@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Lettera")]
         public DateTime dataAggiornamento { get; set; }
 

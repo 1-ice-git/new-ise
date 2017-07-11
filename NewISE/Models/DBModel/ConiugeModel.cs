@@ -10,8 +10,6 @@ namespace NewISE.Models.DBModel
     public class ConiugeModel
     {
         [Key]
-        public decimal idConiuge { get; set; }
-        [Required(ErrorMessage = "La maggiorazione de coniuge è richiesta.")]
         [Display(Name = "Magg. coniuge")]
         public decimal idMaggiorazioneConiuge { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]

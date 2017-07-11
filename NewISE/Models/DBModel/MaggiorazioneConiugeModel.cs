@@ -15,7 +15,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La percentuale per la maggiorazione coniuge è richiesta.")]
         public decimal idPercentualeMaggiorazioneConiuge { get; set; }
         [Required(ErrorMessage = "La pensione coniuge è richiesta.")]
-        public decimal idPensioneConiuge { get; set; }
+        public decimal? idPensioneConiuge { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
@@ -34,7 +34,11 @@ namespace NewISE.Models.DBModel
         public TrasferimentoModel Trasferimento { get; set; }
         public PercentualeMagConiugeModel PercentualeMaggiorazioneConiuge { get; set; }
         public PensioneConiugeModel PensioneConiuge { get; set; }
-        
+
+        public ConiugeModel Coniuge { get; set; }
+
+
+
 
 
     }

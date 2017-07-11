@@ -12,13 +12,13 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idAltriDatiFam { get; set; }
         [Display(Name = "Figli")]
-        public decimal idFigli { get; set; }
+        public decimal? idFigli { get; set; }
         [Display(Name = "Coniuge")]
-        public decimal idConiuge { get; set; }
+        public decimal? idMaggiorazioneConiuge { get; set; }
         [Required(ErrorMessage = "La data di nascita è richiesta.")]
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime dataNascita { get; set; }
         [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
         [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date, ErrorMessage = "La data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 

@@ -24,8 +24,8 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual PENSIONECONIUGE PENSIONECONIUGE { get; set; }
-        public virtual PERCENTUALEMAGCONIUGE PERCENTUALEMAGCONIUGE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
+        public virtual PERCENTUALEMAGCONIUGE PERCENTUALEMAGCONIUGE { get; set; }
     }
 }

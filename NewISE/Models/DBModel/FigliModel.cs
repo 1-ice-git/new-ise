@@ -30,5 +30,8 @@ namespace NewISE.Models.DBModel
 
         public MaggiorazioniFigliModel MaggiorazioniFigli { get; set; }
 
+        public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }
+
+
     }
 }

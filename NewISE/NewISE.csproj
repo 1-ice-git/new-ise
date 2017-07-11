@@ -1016,6 +1016,8 @@
     <Content Include="Immagini\Mail-icon-disabled.png" />
     <Content Include="Immagini\Mail-icon.png" />
     <Content Include="Immagini\paperclip-icon_34384.png" />
+    <Content Include="Immagini\Plus_Green.png" />
+    <Content Include="Immagini\Plus_Red.png" />
     <Content Include="Immagini\print-icon.png" />
     <Content Include="Immagini\Save-icon.png" />
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
@@ -1896,6 +1898,7 @@
     <Compile Include="Models\DBModel\DefFasciaKmModel.cs" />
     <Compile Include="Models\DBModel\DipendentiModel.cs" />
     <Compile Include="Models\DBModel\DocumentiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAltriDatiFamiliari.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCoefficenteSede.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtDipendenti.cs" />
@@ -1903,6 +1906,8 @@
     <Compile Include="Models\DBModel\dtObj\dtFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaBase.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneConiuge.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtMaggiorazioniFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeDisagio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiduzioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloDipendente.cs" />
@@ -1991,6 +1996,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2012,6 +2018,7 @@
     <Content Include="Views\Documenti\LetteraDiTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\GestioneTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2023,7 +2030,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Log\" />
-    <Folder Include="Views\MaggiorazioniFamiliari\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

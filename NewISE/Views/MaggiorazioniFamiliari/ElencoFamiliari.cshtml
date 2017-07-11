@@ -1,0 +1,150 @@
+﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
+
+<style>
+    a.dt-button.green {
+        color: green;
+    }
+</style>
+
+<div style="padding-right:5px; padding-top:5px;">
+    <table class="TabellaDataTable " cellspacing="0">
+        <thead>
+            <tr>
+                <th style="width:0px;">
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nominativo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodiceFiscale)
+                </th>
+                <th style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.dataInizio)
+                </th>
+                <th style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.dataFine)
+                </th>
+                <th style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.parentela)
+                </th>
+                <th style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.idAltriDati)
+                </th>
+                <th style="text-align:center;">
+                    @Html.DisplayNameFor(model => model.idDocumento)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(modelItem => item.id)
+                        @Html.HiddenFor(modelItem => item.idTrasferimento)
+                        @Html.HiddenFor(modelItem => item.idFamiliare)
+                        @Html.HiddenFor(modelItem => item.idAltriDati)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nominativo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CodiceFiscale)
+                    </td>
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataInizio)
+                    </td>
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataFine)
+                    </td>
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.parentela)
+                    </td>
+                    <td style="text-align:center;">
+                        <img src="~/Immagini/Plus_Red.png" width="20" />
+                    </td>
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.idDocumento)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $('.TabellaDataTable').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Nuovo familiare',
+                className: 'green',
+                action: function (e, dt, node, config) {
+                    NuovoFamiliare();
+                }
+            }
+        ]
+    });
+
+    function NuovoFamiliare() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/NuovoFamiliare";
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST",
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divOperazioniAttivitaTrasf").empty();
+                $("#divOperazioniAttivitaTrasf").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+</script>

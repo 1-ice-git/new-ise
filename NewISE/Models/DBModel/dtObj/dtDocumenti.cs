@@ -15,6 +15,64 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public DocumentiModel GetDocumentoByIdMagConiuge(decimal idMagConiuge)
+        {
+            DocumentiModel dm = new DocumentiModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ld = db.CONIUGE.Find(idMagConiuge).DOCUMENTI.ToList();
+                if (ld != null && ld.Count > 0)
+                {
+                    var d = ld.First();
+                    var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
+                    dm = new DocumentiModel()
+                    {
+                        idDocumenti = d.IDDOCUMENTO,
+                        NomeDocumento = d.NOMEDOCUMENTO,
+                        Estensione = d.ESTENSIONE,
+                        file = f
+                    };
+
+                }
+
+
+            }
+
+
+            return dm;
+        }
+
+        public DocumentiModel GetDocumentoByIdFiglio(decimal idFiglio)
+        {
+            DocumentiModel dm = new DocumentiModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ld = db.FIGLI.Find(idFiglio).DOCUMENTI.ToList();
+                if (ld != null && ld.Count > 0)
+                {
+                    var d = ld.First();
+                    var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
+                    dm = new DocumentiModel()
+                    {
+                        idDocumenti = d.IDDOCUMENTO,
+                        NomeDocumento = d.NOMEDOCUMENTO,
+                        Estensione = d.ESTENSIONE,
+                        file = f
+                    };
+
+                }
+
+
+            }
+
+
+            return dm;
+        }
+
+
+
         public DocumentiModel GetDocumento(decimal idDocumento, ModelDBISE db)
         {
             DocumentiModel dm = new DocumentiModel();

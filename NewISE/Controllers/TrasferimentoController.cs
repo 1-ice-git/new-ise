@@ -839,6 +839,20 @@ namespace NewISE.Controllers
         public ActionResult AttivitaTrasferimento(string matricola)
         {
 
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+
+                if (tr != null && tr.HasValue())
+                {
+                    ViewBag.idTrasferimento = tr.idTrasferimento;
+                }
+                else
+                {
+                    return PartialView("ErrorPartial");
+                }
+            }
+
             return PartialView();
         }
     }

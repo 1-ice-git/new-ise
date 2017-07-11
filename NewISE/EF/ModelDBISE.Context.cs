@@ -59,8 +59,6 @@ namespace NewISE.EF
         public virtual DbSet<PENSIONECONIUGE> PENSIONECONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
-        public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
-        public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
@@ -78,8 +76,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
         public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
-        public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
-        public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
         public virtual DbSet<TIPOMOVIMENTO> TIPOMOVIMENTO { get; set; }
         public virtual DbSet<TIPOREGOLACALCOLO> TIPOREGOLACALCOLO { get; set; }
         public virtual DbSet<TIPOSOSPENSIONE> TIPOSOSPENSIONE { get; set; }
@@ -100,5 +96,9 @@ namespace NewISE.EF
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
+        public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
+        public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
+        public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
+        public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
     }
 }
