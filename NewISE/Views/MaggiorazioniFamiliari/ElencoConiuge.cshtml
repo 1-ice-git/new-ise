@@ -28,7 +28,7 @@
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
                 <th style="text-align:center;">
-                    @Html.DisplayNameFor(model => model.parentela)
+                    @Html.DisplayNameFor(model => model.HasPensione)
                 </th>
                 <th style="text-align:center;">
                     @Html.DisplayNameFor(model => model.idAltriDati)
@@ -47,6 +47,7 @@
                         @Html.HiddenFor(modelItem => item.idTrasferimento)
                         @Html.HiddenFor(modelItem => item.idFamiliare)
                         @Html.HiddenFor(modelItem => item.idAltriDati)
+                        @Html.HiddenFor(modelItem => item.idDocumento)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Nominativo)
@@ -60,19 +61,60 @@
                     <td style="text-align:center;">
                         @Html.DisplayFor(modelItem => item.dataFine)
                     </td>
-                    <td style="text-align:center;">
-                        @Html.DisplayFor(modelItem => item.parentela)
-                    </td>
+                    @if (item.HasPensione)
+                    {
+                        <td style="text-align:center;">
+                            <a href="#" onclick="PensioneModal(@item.id);"><img src='~/Immagini/Simbolo euro green.png' width='30' /></a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align:center;">
+                            <a href="#" onclick="PensioneModal(@item.id);"><img src="~/Immagini/Simbolo euro green Disable.png" width="30" /></a>
+                        </td>
+                    }
+
                     <td style="text-align:center;">
                         <img src="~/Immagini/Plus_Red.png" width="20" />
                     </td>
-                    <td style="text-align:center;">
-                        @Html.DisplayFor(modelItem => item.idDocumento)
-                    </td>
+                    @if (item.idDocumento > 0)
+                    {
+                        <td style="text-align:center;">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" />
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align:center;">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" />
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
     </table>
+</div>
+
+<div class="modal fade" id="ModalPensione" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Pensione Coniuge</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewPensione">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btSalvaPensione" type="button" class="btn btn-info" onclick="SalvaPensione();">Salva</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -114,13 +156,21 @@
                     NuovoConiuge();
                 }
             }
+        ],
+        "columnDefs": [
+            {
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            },
+
         ]
     });
 
     function NuovoConiuge() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/NuovoConiuge";
-        var idTrasferimento = parseInt('@idTrasferimento');
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
             url: rotta,
@@ -139,6 +189,39 @@
                 //debugger;
                 $("#divOperazioniAttivitaTrasf").empty();
                 $("#divOperazioniAttivitaTrasf").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function PensioneModal(idMagConiuge) {
+        //debugger;
+        var rotta = "/PensioneConiuge/ElencoPensioniConiuge";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idMaggiorazioneConiuge: idMagConiuge },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                $('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewPensione").empty();
+                $("#viewPensione").html(result);
 
             },
             error: function (error) {

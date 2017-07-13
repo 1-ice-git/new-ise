@@ -417,7 +417,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
           </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -428,7 +428,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
@@ -5613,7 +5613,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONECONIUGE" />
           </Key>
-          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAGGIORAZIONECONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
@@ -5628,7 +5628,7 @@
           <Key>
             <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
           </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAGGIORAZIONEFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />

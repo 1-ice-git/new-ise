@@ -9,7 +9,6 @@
 }
 
 <input type="hidden" id="hMatricola" value="" />
-@*<input type="hidden" id="hAbilitaModifica" value="False" />*@
 
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
@@ -64,6 +63,11 @@
 
         jQuery(document).ready(function ($) {
             $('#tabsGestioneTrasferimento').tab();
+        });
+
+        $(function () {
+            Globalize.culture("it-IT");
+
         });
 
         function NuovoTrasferimento() {

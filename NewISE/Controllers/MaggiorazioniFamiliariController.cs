@@ -89,6 +89,8 @@ namespace NewISE.Controllers
                                     {
                                         using (dtDocumenti dtd = new dtDocumenti())
                                         {
+
+
                                             using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                                             {
                                                 var adf = dtadf.GetAltriDatiFamiliariConiuge(mcm.idMaggiorazioneConiuge);
@@ -108,7 +110,14 @@ namespace NewISE.Controllers
                                                     Documento = d,
                                                     idDocumento = d.idDocumenti > 0 ? d.idDocumenti : 0,
 
+
                                                 };
+
+                                                using (dtPensione dtp = new dtPensione())
+                                                {
+                                                    efm.HasPensione = dtp.HasPensione(mcm.idMaggiorazioneConiuge);
+
+                                                }
 
                                                 lefm.Add(efm);
                                             }
@@ -141,10 +150,10 @@ namespace NewISE.Controllers
 
         }
 
-        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NuovoConiuge(decimal idTrasferimento)
         {
-
+            MaggiorazioneConiugeVModel mcvm = new MaggiorazioneConiugeVModel();
             List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
 
             var r = new List<SelectListItem>();
@@ -169,11 +178,74 @@ namespace NewISE.Controllers
 
 
             ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-            ViewBag.idTrasferimento = idTrasferimento;
+            //ViewBag.idTrasferimento = idTrasferimento;
+            mcvm.idTrasferimento = idTrasferimento;
 
-            return PartialView();
+            return PartialView(mcvm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciConiuge(MaggiorazioneConiugeVModel mcvm)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
+                        {
+                            dtmc.InserisciConiuge(mcvm);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        ModelState.AddModelError("", ex.Message);
+                    }
+                }
+                else
+                {
+                    List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
+
+                    var r = new List<SelectListItem>();
+
+                    using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
+                    {
+                        var ltcm = dttc.GetListTipologiaConiuge();
+
+                        if (ltcm != null && ltcm.Count > 0)
+                        {
+                            r = (from t in ltcm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.tipologiaConiuge,
+                                     Value = t.idTipologiaConiuge.ToString()
+                                 }).ToList();
+                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                        }
+
+                        lTipologiaConiuge = r;
+                    }
+
+
+                    ViewBag.lTipologiaConiuge = lTipologiaConiuge;
+                    ViewBag.idTrasferimento = mcvm.idTrasferimento;
+
+                    return PartialView("NuovoConiuge", mcvm);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                PartialView("ErrorPartial");
+            }
+
+
+            return RedirectToAction("ElencoConiuge", new { idTrasferimento = mcvm.idTrasferimento });
+        }
 
 
 

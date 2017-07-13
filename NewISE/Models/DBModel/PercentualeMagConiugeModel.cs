@@ -38,7 +38,16 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-        
+
         public TipologiaConiugeModel Coniuge { get; set; }
+
+
+        public bool HasValue()
+        {
+            return idPercentualeConiuge > 0 ? true : false;
+        }
+
+
+
     }
 }

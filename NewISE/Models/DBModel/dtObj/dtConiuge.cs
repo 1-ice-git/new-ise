@@ -58,9 +58,9 @@ namespace NewISE.Models.DBModel.dtObj
             if (cm != null)
             {
 
-                if (cm.CodiceFiscale != null && cm.CodiceFiscale != string.Empty)
+                if (cm.codiceFiscale != null && cm.codiceFiscale != string.Empty)
                 {
-                    if (Utility.CheckCodiceFiscale(cm.CodiceFiscale))
+                    if (Utility.CheckCodiceFiscale(cm.codiceFiscale))
                     {
                         vr = ValidationResult.Success;
                     }
@@ -112,7 +112,20 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void SetConiuge(ConiugeModel cm, ModelDBISE db)
+        {
+            CONIUGE c = new CONIUGE()
+            {
+                IDMAGGIORAZIONECONIUGE = cm.idMaggiorazioneConiuge,
+                NOME = cm.nome,
+                COGNOME = cm.cognome,
+                CODICEFISCALE = cm.codiceFiscale
+            };
 
+            db.CONIUGE.Add(c);
+
+            db.SaveChanges();
+        }
 
     }
 }

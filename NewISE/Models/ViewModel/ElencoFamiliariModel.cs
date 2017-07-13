@@ -23,6 +23,8 @@ namespace NewISE.Models.ViewModel
         public DateTime? dataFine { get; set; }
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }
+        [Display(Name = "Pensione")]
+        public bool HasPensione { get; set; }
         [Display(Name = "Altri dati")]
         public decimal idAltriDati { get; set; }
         [Display(Name = "Doc.")]
