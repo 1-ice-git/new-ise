@@ -1,0 +1,139 @@
+﻿@model NewISE.Models.DBModel.PensioneConiugeModel
+
+@{
+    decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
+
+    var errori = ViewData.ModelState;
+
+    foreach (var e in errori)
+    {
+        if (e.Value.Errors.Count > 0)
+        {
+            @:DialogModalError('True');
+            break;
+        }
+
+    }
+}
+
+<div style="margin-right:15px; margin-left:-10px;">
+    @using (@Ajax.BeginForm("InserisciImportoPensione", "PensioneConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewPensione" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Hidden("idMaggiorazioneConiuge", idMaggiorazioneConiuge)
+
+        <div class="form-horizontal">
+            <h4>Pensione Coniuge</h4>
+            <hr />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.importoPensione, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
+                    @*@Html.ValidationMessageFor(model => model.importoPensione, "", new { @class = "text-danger" })*@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salva" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalErrorNewImpPensione" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+                    </div>
+                    <div class="modal-body alert alert-warning text-warning">
+                        <p id="msgModalWarning" class="text-warning">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    }
+</div>
+
+
+<div>
+    @Html.ActionLink("Torna indietro", "Index")
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    function DialogModalError(err) {
+        //debugger;
+
+        if (err == 'True') {
+            $('#ModalErrorNewImpPensione').modal('toggle');
+        }
+    }
+
+    $('#formNewPensione').submit(function () {
+        //debugger;
+        var form = $(this);
+        if (!form.valid()) {
+            DialogModalError('True');
+        }
+
+    });
+
+    $('#dataInizioValidita').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+    });
+
+    $('#dataFineValidita').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+    });
+
+    $("#importoPensione").autoNumeric('init',
+    {
+        aSep: '.',
+        aDec: ',',
+        aSign: ''
+    });
+
+    $.validator.methods.number = function (value, element) {
+        //debugger;
+        var e = this.optional(element);
+        var g = Globalize.parseFloat(value);
+        element.value = g.toString().replace(".", ",");
+        var n = isNaN(g);
+        var r = e || !n;
+        return r;
+        //return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+    };
+
+</script>

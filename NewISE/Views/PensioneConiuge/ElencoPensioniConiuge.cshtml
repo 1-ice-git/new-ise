@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.PensioneConiugeModel>
 
+@{
+    decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
+}
 
 <style>
     a.dt-button.green {
@@ -8,49 +11,53 @@
 </style>
 
 
-<p>
-    <a href="#" class="btn btn-success">Nuovo importo</a>
+<p style="margin-top: 5px; margin-left:-10px;">
+
+    @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
 </p>
-<table id="TabPensioni" cellspacing="0">
-    <thead>
-        <tr>
-
-            <th>
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataFineValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.importoPensione)
-            </th>
-
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div style="padding-right:15px; margin-left:-10px;">
+    <table id="TabPensioni" cellspacing="0">
+        <thead>
             <tr>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.importoPensione)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idPensioneConiuge }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idPensioneConiuge }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idPensioneConiuge })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataInizioValidita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataFineValidita)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.importoPensione)
+                </th>
+
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.importoPensione)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.idPensioneConiuge }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.idPensioneConiuge }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.idPensioneConiuge })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 
 
 <script type="text/javascript">

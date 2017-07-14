@@ -88,8 +88,6 @@
 
     <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 
-
-
     <link href="~/Content/css/SystemCSS.css" rel="stylesheet" />
 
     <link href="~/Content/css/OverrideBootstrap.css" rel="stylesheet" />
@@ -320,7 +318,11 @@
             });
         }
 
-
+        function ErroreElaborazioneAjax(response) {
+            //debugger;
+            $("#msgModalError").text("Errore nell'elaborazione.");
+            $('#myModalError').modal('toggle');
+        }
     </script>
 </body>
 </html>

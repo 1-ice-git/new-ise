@@ -64,13 +64,13 @@
                     @if (item.HasPensione)
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="PensioneModal(@item.id);"><img src='~/Immagini/Simbolo euro green.png' width='30' /></a>
+                            <a href="#" onclick="PensioneModal(@item.id);"><img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' /></a>
                         </td>
                     }
                     else
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="PensioneModal(@item.id);"><img src="~/Immagini/Simbolo euro green Disable.png" width="30" /></a>
+                            <a href="#" onclick="PensioneModal(@item.id);"><img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" /></a>
                         </td>
                     }
 
@@ -110,8 +110,8 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btSalvaPensione" type="button" class="btn btn-info" onclick="SalvaPensione();">Salva</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                @*<button id="btSalvaPensione" type="button" class="btn btn-info" onclick="SalvaPensione();">Salva</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
@@ -214,14 +214,16 @@
             beforeSend: function () {
                 //debugger;
                 VerificaAutenticazione();
-                $('#ModalPensione').modal('show');
+                //$('#ModalPensione').modal('show');
                 //Blocca();
 
             },
             success: function (result) {
                 //debugger;
-                $("#viewPensione").empty();
-                $("#viewPensione").html(result);
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divOperazioniAttivitaTrasf").empty();
+                $("#divOperazioniAttivitaTrasf").html(result);
 
             },
             error: function (error) {

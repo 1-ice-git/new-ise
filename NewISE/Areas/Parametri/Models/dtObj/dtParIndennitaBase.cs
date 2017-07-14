@@ -247,9 +247,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     };
 
                                     libNew.Add(ibOld1);
-                                    
+
                                 }
-                                else if(item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
                                     var ibOld1 = new INDENNITABASE()
                                     {
@@ -264,16 +264,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld2 = new INDENNITABASE()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+ 1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORE = item.VALORE,
                                         VALORERESP = item.VALORERESP,
                                         ANNULLATO = false
                                     };
-                                    
+
                                     libNew.Add(ibOld1);
                                     libNew.Add(ibOld2);
-                                    
+
                                 }
 
                             }
@@ -321,7 +321,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             }
                         }
 
-                        libNew.Add(ibNew); 
+                        libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                         db.INDENNITABASE.AddRange(libNew);
@@ -329,15 +329,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     else
                     {
                         db.INDENNITABASE.Add(ibNew);
-                        
+
                     }
                     db.SaveChanges();
 
-                    using (objLogAttivita log=new objLogAttivita())
+                    using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "INDENNITABASE", ibNew.IDINDENNITABASE);
                     }
-                    
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -352,7 +352,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
         }
 
@@ -362,7 +362,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -377,7 +377,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -386,19 +386,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-       
+
 
         public bool EsistonoMovimentiPrimaUguale(IndennitaBaseModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
             }
         }
 
         public void DelIndennitaDiBase(decimal idIndbase)
         {
-            INDENNITABASE precedenteIB = new INDENNITABASE();            
+            INDENNITABASE precedenteIB = new INDENNITABASE();
             INDENNITABASE delIB = new INDENNITABASE();
 
 
@@ -451,7 +451,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-               
+
             }
 
         }

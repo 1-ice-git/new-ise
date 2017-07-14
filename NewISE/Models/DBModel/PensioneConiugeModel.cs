@@ -16,19 +16,25 @@ namespace NewISE.Models.DBModel
         public decimal importoPensione { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [DataType(DataType.DateTime)]
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fine valid.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [DataType(DataType.DateTime)]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La data aggiornamento è richiesta.")]
         [Display(Name = "Data agg.", AutoGenerateField = false)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [DataType(DataType.DateTime)]
+        [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }
         [Display(Name = "Annullato", AutoGenerateField = false)]
+        [ScaffoldColumn(false)]
         public bool annullato { get; set; }
+
+        public decimal idMaggiorazioneConiuge { get; set; }
+
+        public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
     }
 }

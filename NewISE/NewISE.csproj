@@ -1024,6 +1024,8 @@
     <Content Include="Immagini\Save-icon.png" />
     <Content Include="Immagini\Simbolo euro green Disable.png" />
     <Content Include="Immagini\Simbolo euro green.png" />
+    <Content Include="Immagini\Simbolo semplice Euro Green.png" />
+    <Content Include="Immagini\Simbolo semplice Euro Red.png" />
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -2031,6 +2033,7 @@
     <Content Include="Views\MaggiorazioniFamiliari\NuovoConiuge.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\MaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\PensioneConiuge\ElencoPensioniConiuge.cshtml" />
+    <Content Include="Views\PensioneConiuge\NuovoImportoPensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
