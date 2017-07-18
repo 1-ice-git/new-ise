@@ -2034,6 +2034,7 @@
     <Content Include="Views\MaggiorazioniFamiliari\MaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\PensioneConiuge\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\PensioneConiuge\NuovoImportoPensione.cshtml" />
+    <Content Include="Views\PensioneConiuge\ModificaPensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

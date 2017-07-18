@@ -10,6 +10,7 @@
     }
 </style>
 
+@Html.Hidden("hdIdImportoPensione")
 
 <p style="margin-top: 5px; margin-left:-10px;">
 
@@ -20,13 +21,13 @@
         <thead>
             <tr>
 
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizioValidita)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFineValidita)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.importoPensione)
                 </th>
 
@@ -38,19 +39,18 @@
             {
                 <tr>
 
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizioValidita)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataFineValidita)
                     </td>
-                    <td>
+                    <td class="text-right">
                         @Html.DisplayFor(modelItem => item.importoPensione)
                     </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.idPensioneConiuge }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.idPensioneConiuge }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.idPensioneConiuge })
+                    <td class="text-center">
+                        @*@Ajax.ActionLink("Modifica", "ModificaPensione", new { idPensioneConiuge = item.idPensioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |*@
+                        <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
                     </td>
                 </tr>
             }
@@ -58,7 +58,27 @@
     </table>
 </div>
 
-
+<div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewPensione">
+                    <label>Eliminare l&rsquo;importo della pensione selezionato (<span id="spanImportoPensione">0,00</span>)?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btSalvaPensione" type="button" class="btn btn-info" onclick="EliminaPensione();">Salva</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $('#TabPensioni').DataTable({
@@ -89,8 +109,60 @@
         "lengthChange": false,
         "pageLength": 5,
         "searching": false,
-        "paging": false,
-
+        "paging": true,
+        "ordering": false
 
     });
+
+    function ModelEliminaPensione(idImportoPensione, importoPensione) {
+        //debugger;
+        $('#hdIdImportoPensione').val(idImportoPensione);
+        $("#spanImportoPensione").text(number_format(importoPensione.replace(',', '.'), 2, ',', '.'));
+
+        $('#ModalEliminaPensioneModal').modal().show();
+    }
+
+    function EliminaPensione() {
+        //debugger;
+        var idPensioneConiuge = $('#hdIdImportoPensione').val();
+        var rotta = "/PensioneConiuge/EliminaPensione";
+
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idPensione: idPensioneConiuge },
+            dataType: 'html',
+            async: true,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divOperazioniAttivitaTrasf").empty();
+                $("#divOperazioniAttivitaTrasf").html(result);
+
+            },
+            complete: function () {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
 </script>

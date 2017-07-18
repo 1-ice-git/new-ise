@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.EF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,19 +11,20 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idPensioneConiuge { get; set; }
-        [Required(ErrorMessage = "L'importo della pensione è richiesto.")]
-        [Display(Name = "Pensione")]
-        [DisplayFormat(DataFormatString = "{0:F8}", ApplyFormatInEditMode = true)]
-        public decimal importoPensione { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fine valid.")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? dataFineValidita { get; set; }
+        [Required(ErrorMessage = "L'importo della pensione è richiesto.")]
+        [Display(Name = "Pensione")]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        public decimal importoPensione { get; set; }
         [Required(ErrorMessage = "La data aggiornamento è richiesta.")]
         [Display(Name = "Data agg.", AutoGenerateField = false)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
@@ -36,5 +38,25 @@ namespace NewISE.Models.DBModel
         public decimal idMaggiorazioneConiuge { get; set; }
 
         public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
+
+
+        public bool HasValue()
+        {
+            return idPensioneConiuge > 0 ? true : false;
+        }
+
+        public void Annulla(ModelDBISE db)
+        {
+            var pc = db.PENSIONE.Find(idPensioneConiuge);
+            if (pc != null && pc.IDPENSIONE > 0)
+            {
+                pc.ANNULLATO = true;
+
+                db.SaveChanges();
+            }
+        }
+
+
+
     }
 }

@@ -24,34 +24,60 @@
         @Html.Hidden("idMaggiorazioneConiuge", idMaggiorazioneConiuge)
 
         <div class="form-horizontal">
-            <h4>Pensione Coniuge</h4>
+            <h4>Nuova Pensione Coniuge</h4>
             <hr />
 
             <div class="form-group">
-                @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-xs-2" })
+                <div class="col-xs-10">
+                    @if (Model != null && Model.dataInizioValidita > DateTime.MinValue)
+                    {
+                        @Html.TextBoxFor(model => model.dataInizioValidita, String.Format("{0:dd/MM/yyyy}", Model.dataInizioValidita), new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                    }
                     @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-xs-2" })
+                <div class="col-xs-10">
+                    @if (Model != null && Model.dataFineValidita.HasValue)
+                    {
+                        @Html.TextBoxFor(model => model.dataFineValidita, string.Format("{0:dd-MM-yyyy}", Model.dataFineValidita), new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
+                    }
                     @*@Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })*@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.importoPensione, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
+                @Html.LabelFor(model => model.importoPensione, htmlAttributes: new { @class = "control-label col-xs-2" })
+                <div class="col-xs-10">
+                    @if (Model != null)
+                    {
+                        <div style="width:120px;">
+                            @Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="width:120px;">
+                            @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
+                        </div>
+                    }
+
                     @*@Html.ValidationMessageFor(model => model.importoPensione, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+                <div class="col-xs-offset-2 col-xs-10">
                     <input type="submit" value="Salva" class="btn btn-default" />
                 </div>
             </div>
@@ -85,7 +111,7 @@
 
 
 <div>
-    @Html.ActionLink("Torna indietro", "Index")
+    @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -104,6 +130,10 @@
         var form = $(this);
         if (!form.valid()) {
             DialogModalError('True');
+        }
+        else {
+            var ip = $("#importoPensione").autoNumeric("get");
+            $("#importoPensione").val(ip.replace(".", ","))
         }
 
     });
@@ -127,13 +157,13 @@
 
     $.validator.methods.number = function (value, element) {
         //debugger;
-        var e = this.optional(element);
-        var g = Globalize.parseFloat(value);
-        element.value = g.toString().replace(".", ",");
-        var n = isNaN(g);
-        var r = e || !n;
-        return r;
-        //return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+        //var e = this.optional(element);
+        //var g = Globalize.parseFloat(value);
+        //element.value = g.toString().replace(".", ",");
+        //var n = isNaN(g);
+        //var r = e || !n;
+        //return r;
+        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
 
 </script>

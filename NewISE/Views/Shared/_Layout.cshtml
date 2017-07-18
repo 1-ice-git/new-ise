@@ -209,8 +209,32 @@
         </div>
     </footer>
 
+    <div class="modal fade" id="myModalError" tabindex="-4" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title alert alert-danger text-danger" id="myModalLabel">Attenzione!!!</h4>
+                </div>
+                <div class="modal-body alert alert-danger text-danger">
+                    <p id="msgModalError" class="text-danger"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btProcedi" type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
+
+        $(function () {
+            Globalize.culture("it-IT");
+
+        });
 
         function PosizioneFooter() {
             var f = $("footer");
@@ -322,6 +346,30 @@
             //debugger;
             $("#msgModalError").text("Errore nell'elaborazione.");
             $('#myModalError').modal('toggle');
+        }
+
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            // Strip all characters but numerical ones.
+            number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
         }
     </script>
 </body>

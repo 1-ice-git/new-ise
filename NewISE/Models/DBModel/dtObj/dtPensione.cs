@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -13,13 +12,36 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-
-        public void SetNuovoImportoPensione(PensioneConiugeModel pcm)
+        public PensioneConiugeModel GetPensioneByID(decimal idPensione)
         {
-            List<PensioneConiugeModel> lpcmSuccessivi = new List<PensioneConiugeModel>();
-            PensioneConiugeModel pcmNew = new PensioneConiugeModel();
+            PensioneConiugeModel pcm = new PensioneConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var pc = db.PENSIONE.Find(idPensione);
+                var mc = pc.MAGGIORAZIONECONIUGE.First();
+
+                if (pc != null && pc.IDPENSIONE > 0)
+                {
+                    pcm = new PensioneConiugeModel()
+                    {
+                        idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
+                        idPensioneConiuge = pc.IDPENSIONE,
+                        dataInizioValidita = pc.DATAINIZIO,
+                        dataFineValidita = pc.DATAFINE,
+                        importoPensione = pc.IMPORTOPENSIONE,
+                        dataAggiornamento = pc.DATAAGGIORNAMENTO,
+                        annullato = pc.ANNULLATO
+                    };
+                }
+
+                return pcm;
+            }
+        }
+
+        public void EliminaImportoPensione(PensioneConiugeModel pcm)
+        {
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
-            List<PensioneConiugeModel> lpcmInteressati = new List<PensioneConiugeModel>();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -28,59 +50,28 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
+                    pcmPrecedente = PrelevaMovimentoPrecedente(pcm, db);
 
-                    bool prima = EsistonoMovimentiPrima(pcm, db);
-                    bool dopo = EsistonoMovimentiSuccessivi(pcm, db);
-
-                    if (prima)
+                    if (pcmPrecedente != null && pcmPrecedente.HasValue())
                     {
-                        pcmPrecedente = PrelevaMovimentoAntecedente(pcm, db);
-                    }
+                        pcm.Annulla(db);
+                        pcmPrecedente.Annulla(db);
 
-                    if (dopo)
-                    {
-                        lpcmSuccessivi = PrelevaMovimentiSuccessivi(pcm, db).ToList();
-                    }
-
-                    lpcmInteressati = PrelevaMovimentiInteressati(pcm, db).ToList();
-
-                    if (lpcmInteressati != null && lpcmInteressati.Count > 0)
-                    {
-                        lpcmInteressati.ForEach(a => a.annullato = true);
-
-                    }
-
-                    if (prima)
-                    {
-                        PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                        PensioneConiugeModel pcmNew = new PensioneConiugeModel()
                         {
-                            importoPensione = lpcmInteressati.First().importoPensione,
-                            dataInizioValidita = lpcmInteressati.First().dataInizioValidita,
-                            dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                            idMaggiorazioneConiuge = pcmPrecedente.idMaggiorazioneConiuge,
+                            dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                            dataFineValidita = pcm.dataFineValidita,
+                            importoPensione = pcmPrecedente.importoPensione,
                             dataAggiornamento = DateTime.Now,
                             annullato = false,
-
                         };
 
-                        SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
-
+                        SetPensioneMaggiorazioneConiuge(ref pcmNew, db);
                     }
-
-                    SetPensioneMaggiorazioneConiuge(ref pcm, db);
-
-                    if (dopo)
+                    else
                     {
-                        PensioneConiugeModel pcmLav = new PensioneConiugeModel()
-                        {
-                            importoPensione = lpcmInteressati.Last().importoPensione,
-                            dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
-                            dataFineValidita = lpcmInteressati.Last().dataFineValidita,
-                            dataAggiornamento = DateTime.Now,
-                            annullato = false,
-
-                        };
-
-                        SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                        pcm.Annulla(db);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -96,89 +87,228 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public bool EsistonoMovimentiPrima(PensioneConiugeModel pcm, ModelDBISE db)
+        public void EditImportoPensione(PensioneConiugeModel pcm)
         {
-            return db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAINIZIO < pcm.dataInizioValidita).Count() > 0 ? true : false;
+            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
+            PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
+            List<PensioneConiugeModel> lpcmInteressati = new List<PensioneConiugeModel>();
 
-        }
 
-
-        public bool EsistonoMovimentiSuccessivi(PensioneConiugeModel pcm, ModelDBISE db)
-        {
-
-            if (pcm.dataFineValidita.HasValue)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                return db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAINIZIO > pcm.dataFineValidita).Count() > 0 ? true : false;
-            }
-            else
-            {
-                return false;
-            }
+                db.Database.BeginTransaction();
 
-        }
-
-        private PensioneConiugeModel PrelevaMovimentoAntecedente(PensioneConiugeModel pcm, ModelDBISE db)
-        {
-            PensioneConiugeModel retPcm = new PensioneConiugeModel();
-
-            var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.DATAFINE < pcm.dataInizioValidita).OrderByDescending(a => a.DATAFINE).ToList();
-
-            if (lpc != null && lpc.Count > 0)
-            {
-                var pc = lpc.First();
-
-                retPcm = new PensioneConiugeModel()
+                try
                 {
-                    idPensioneConiuge = pc.IDPENSIONE,
-                    importoPensione = pc.IMPORTOPENSIONE,
-                    dataInizioValidita = pc.DATAINIZIO,
-                    dataFineValidita = pc.DATAFINE,
-                    dataAggiornamento = pc.DATAAGGIORNAMENTO,
-                    annullato = pc.ANNULLATO,
-                    idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge
+                    var pcmDB = db.PENSIONE.Find(pcm.idPensioneConiuge);
 
-                };
+                    if (pcmDB != null && pcmDB.IDPENSIONE > 0)
+                    {
+                        if (pcmDB.DATAINIZIO != pcm.dataInizioValidita || pcmDB.DATAFINE != pcm.dataFineValidita)
+                        {
+                            lpcmInteressati = PrelevaMovimentiInteressati(pcm, db).OrderBy(a => a.dataInizioValidita).ToList();
+                            if (lpcmInteressati != null && lpcmInteressati.Count > 0)
+                            {
+                                lpcmInteressati.ForEach(a => a.Annulla(db));
+
+                                pcmPrecedente = lpcmInteressati.First();
+                                pcmSuccessivo = lpcmInteressati.Last();
+
+                                if (pcm.dataInizioValidita > pcmPrecedente.dataInizioValidita)
+                                {
+                                    PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                                    {
+                                        idMaggiorazioneConiuge = pcmPrecedente.idMaggiorazioneConiuge,
+                                        importoPensione = pcmPrecedente.importoPensione,
+                                        dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                        dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false,
+                                    };
+
+                                    SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                                }
+
+                                SetPensioneMaggiorazioneConiuge(ref pcm, db);
+
+                                if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
+                                {
+                                    PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                                    {
+                                        idMaggiorazioneConiuge = pcmSuccessivo.idMaggiorazioneConiuge,
+                                        importoPensione = pcmSuccessivo.importoPensione,
+                                        dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
+                                        dataFineValidita = pcmSuccessivo.dataFineValidita,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false,
+                                    };
+
+                                    SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                                }
+
+                            }
+                            else
+                            {
+                                SetPensioneMaggiorazioneConiuge(ref pcm, db);
+                            }
+                        }
+                        else
+                        {
+                            if (pcmDB.IMPORTOPENSIONE != pcm.importoPensione && pcm.importoPensione > 0)
+                            {
+                                pcm.Annulla(db);
+
+                                PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                                {
+                                    idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge,
+                                    importoPensione = pcm.importoPensione,
+                                    dataInizioValidita = pcm.dataInizioValidita,
+                                    dataFineValidita = pcm.dataFineValidita,
+                                    dataAggiornamento = DateTime.Now,
+                                    annullato = false,
+                                };
+
+                                SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                            }
+                        }
 
 
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
             }
-
-            return retPcm;
         }
 
-        private IList<PensioneConiugeModel> PrelevaMovimentiSuccessivi(PensioneConiugeModel pcm, ModelDBISE db)
+        public void SetNuovoImportoPensione(PensioneConiugeModel pcm)
         {
-            List<PensioneConiugeModel> lPensioniConiuge = new List<PensioneConiugeModel>();
 
-            var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAINIZIO > pcm.dataFineValidita).OrderBy(a => a.DATAINIZIO).ToList();
+            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
+            PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
+            List<PensioneConiugeModel> lpcmInteressati = new List<PensioneConiugeModel>();
 
-            if (lpc != null && lpc.Count > 0)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                lPensioniConiuge = (from e in lpc
-                                    select new PensioneConiugeModel()
-                                    {
-                                        idPensioneConiuge = e.IDPENSIONE,
-                                        importoPensione = e.IMPORTOPENSIONE,
-                                        dataInizioValidita = e.DATAINIZIO,
-                                        dataFineValidita = e.DATAFINE,
-                                        dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                        annullato = e.ANNULLATO
-                                    }).ToList();
+                db.Database.BeginTransaction();
+
+                try
+                {
+
+
+                    lpcmInteressati = PrelevaMovimentiInteressati(pcm, db).OrderBy(a => a.dataInizioValidita).ToList();
+
+                    if (lpcmInteressati != null && lpcmInteressati.Count > 0)
+                    {
+                        lpcmInteressati.ForEach(a => a.Annulla(db));
+
+                        pcmPrecedente = lpcmInteressati.First();
+                        pcmSuccessivo = lpcmInteressati.Last();
+
+                        if (pcm.dataInizioValidita > pcmPrecedente.dataInizioValidita)
+                        {
+                            PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                            {
+                                idMaggiorazioneConiuge = pcmPrecedente.idMaggiorazioneConiuge,
+                                importoPensione = pcmPrecedente.importoPensione,
+                                dataInizioValidita = pcmPrecedente.dataInizioValidita,
+                                dataFineValidita = pcm.dataInizioValidita.AddDays(-1),
+                                dataAggiornamento = DateTime.Now,
+                                annullato = false,
+                            };
+
+                            SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                        }
+
+                        SetPensioneMaggiorazioneConiuge(ref pcm, db);
+
+                        if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
+                        {
+                            PensioneConiugeModel pcmLav = new PensioneConiugeModel()
+                            {
+                                idMaggiorazioneConiuge = pcmSuccessivo.idMaggiorazioneConiuge,
+                                importoPensione = pcmSuccessivo.importoPensione,
+                                dataInizioValidita = pcm.dataFineValidita.Value.AddDays(1),
+                                dataFineValidita = pcmSuccessivo.dataFineValidita,
+                                dataAggiornamento = DateTime.Now,
+                                annullato = false,
+                            };
+
+                            SetPensioneMaggiorazioneConiuge(ref pcmLav, db);
+                        }
+
+                    }
+                    else
+                    {
+                        SetPensioneMaggiorazioneConiuge(ref pcm, db);
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        private PensioneConiugeModel PrelevaMovimentoPrecedente(PensioneConiugeModel pcm, ModelDBISE db)
+        {
+            PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
+
+            try
+            {
+                var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAFINE < pcm.dataInizioValidita).OrderByDescending(a => a.DATAFINE).ToList();
+
+                if (lpc != null && lpc.Count > 0)
+                {
+                    var pc = lpc.First();
+
+                    pcmPrecedente = new PensioneConiugeModel()
+                    {
+                        idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge,
+                        idPensioneConiuge = pc.IDPENSIONE,
+                        importoPensione = pc.IMPORTOPENSIONE,
+                        dataInizioValidita = pc.DATAINIZIO,
+                        dataFineValidita = pc.DATAFINE,
+                        dataAggiornamento = pc.DATAAGGIORNAMENTO,
+                        annullato = pc.ANNULLATO
+
+                    };
+                }
+
+                return pcmPrecedente;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
 
 
-            return lPensioniConiuge;
+
         }
 
         private IList<PensioneConiugeModel> PrelevaMovimentiInteressati(PensioneConiugeModel pcm, ModelDBISE db)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
 
-            var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAINIZIO >= pcm.dataFineValidita && a.DATAFINE >= pcm.dataInizioValidita).OrderBy(a => a.DATAINIZIO).ToList();
+            //var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAINIZIO <= pcm.dataFineValidita && a.DATAFINE >= pcm.dataInizioValidita).OrderBy(a => a.DATAINIZIO).ToList();
+            var lpc = db.MAGGIORAZIONECONIUGE.Find(pcm.idMaggiorazioneConiuge).PENSIONE.Where(a => a.ANNULLATO == false &&
+                                                                                              a.DATAINIZIO <= pcm.dataFineValidita &&
+                                                                                              a.DATAFINE >= pcm.dataInizioValidita).ToList();
+
             if (lpc != null && lpc.Count > 0)
             {
                 lpcm = (from e in lpc
                         select new PensioneConiugeModel()
                         {
+                            idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge,
                             idPensioneConiuge = e.IDPENSIONE,
                             importoPensione = e.IMPORTOPENSIONE,
                             dataInizioValidita = e.DATAINIZIO,
@@ -214,19 +344,15 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     pcm.idPensioneConiuge = pc.IDPENSIONE;
                 }
-
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
 
-
         public void SetPensione(ref PensioneConiugeModel pcm)
         {
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 PENSIONE p = new PENSIONE()
@@ -245,8 +371,6 @@ namespace NewISE.Models.DBModel.dtObj
                     pcm.idPensioneConiuge = p.IDPENSIONE;
                 }
             }
-
-
         }
 
         public void SetPensione(ref PensioneConiugeModel pcm, ModelDBISE db)
@@ -266,7 +390,6 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 pcm.idPensioneConiuge = p.IDPENSIONE;
             }
-
         }
 
         public IList<PensioneConiugeModel> GetListaPensioneConiugeByMaggiorazioneConiuge(decimal idMaggiorazioneConiuge)
@@ -286,6 +409,7 @@ namespace NewISE.Models.DBModel.dtObj
                         lpcm = (from e in lpc
                                 select new PensioneConiugeModel()
                                 {
+                                    idMaggiorazioneConiuge = idMaggiorazioneConiuge,
                                     idPensioneConiuge = e.IDPENSIONE,
                                     importoPensione = e.IMPORTOPENSIONE,
                                     dataInizioValidita = e.DATAINIZIO,
@@ -294,7 +418,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     annullato = e.ANNULLATO
                                 }).ToList();
                     }
-
                 }
             }
 
@@ -324,6 +447,7 @@ namespace NewISE.Models.DBModel.dtObj
                         lpcm = (from e in lpc
                                 select new PensioneConiugeModel()
                                 {
+                                    idMaggiorazioneConiuge = idMaggiorazioneConiuge,
                                     idPensioneConiuge = e.IDPENSIONE,
                                     importoPensione = e.IMPORTOPENSIONE,
                                     dataInizioValidita = e.DATAINIZIO,
@@ -332,13 +456,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     annullato = e.ANNULLATO
                                 }).ToList();
                     }
-
                 }
             }
 
             return lpcm;
         }
-
 
         public bool HasPensione(decimal idMaggiorazioneConiuge)
         {
@@ -365,5 +487,25 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
+        public void AnnullaMovimentiPensione(IList<PensioneConiugeModel> lpcm, ModelDBISE db)
+        {
+            try
+            {
+                foreach (var i in lpcm)
+                {
+                    var pc = db.PENSIONE.Find(i.idPensioneConiuge);
+                    if (pc != null && pc.IDPENSIONE > 0)
+                    {
+                        pc.ANNULLATO = true;
+
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
