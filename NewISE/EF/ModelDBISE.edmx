@@ -41,12 +41,9 @@
           <Property Name="COMUNERESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="PROVINCIARESIDENZA" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="CAPRESIDENZA" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="STUDENTE" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="CAPNASCITA" Type="varchar2" MaxLength="10" Nullable="false" />
-          <Property Name="RESIDENTE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="ULTERIOREMAGCONIUGE" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="ANTICIPI">
           <Key>
@@ -5371,12 +5368,9 @@
           <Property Name="COMUNERESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="PROVINCIARESIDENZA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="CAPRESIDENZA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="STUDENTE" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <Property Name="CAPNASCITA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="RESIDENTE" Type="Boolean" Nullable="false" />
-          <Property Name="ULTERIOREMAGCONIUGE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_ADF" FromRole="ALTRIDATIFAM" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_F_ADF" FromRole="ALTRIDATIFAM" ToRole="FIGLI" />
         </EntityType>
@@ -6496,12 +6490,9 @@
           <EntitySetMapping Name="ALTRIDATIFAM">
             <EntityTypeMapping TypeName="DBISEPRO.ALTRIDATIFAM">
               <MappingFragment StoreEntitySet="ALTRIDATIFAM">
-                <ScalarProperty Name="ULTERIOREMAGCONIUGE" ColumnName="ULTERIOREMAGCONIUGE" />
-                <ScalarProperty Name="RESIDENTE" ColumnName="RESIDENTE" />
                 <ScalarProperty Name="CAPNASCITA" ColumnName="CAPNASCITA" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="STUDENTE" ColumnName="STUDENTE" />
                 <ScalarProperty Name="CAPRESIDENZA" ColumnName="CAPRESIDENZA" />
                 <ScalarProperty Name="PROVINCIARESIDENZA" ColumnName="PROVINCIARESIDENZA" />
                 <ScalarProperty Name="COMUNERESIDENZA" ColumnName="COMUNERESIDENZA" />

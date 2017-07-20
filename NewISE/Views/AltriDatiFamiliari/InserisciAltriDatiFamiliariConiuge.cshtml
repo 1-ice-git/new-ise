@@ -13,7 +13,7 @@
 
 }
 
-@using (@Ajax.BeginForm("InserisciAltriDatiFamiliari", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
+@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-right:5px;">
@@ -39,7 +39,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control", @style = "max-width:100px;", @list = "ListaCap" })
+                    @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
                     @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -47,7 +47,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaComuni" })
+                    @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" })
                     @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.provinciaNascita, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaProvincie" })
+                    @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" })
                     @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -63,7 +63,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.nazionalita, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.nazionalita, new { @class = "form-control", @style = "max-width:250px;" })
+                    @Html.TextBoxFor(model => model.nazionalita, new { @class = "form-control text-uppercase", @style = "max-width:250px;" })
                     @Html.ValidationMessageFor(model => model.nazionalita, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -71,7 +71,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.indirizzoResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.indirizzoResidenza, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.indirizzoResidenza, new { @class = "form-control text-uppercase" })
                     @Html.ValidationMessageFor(model => model.indirizzoResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.capResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.capResidenza, new { @class = "form-control", @style = "max-width:100px;", @list = "ListaCap" })
+                    @Html.TextBoxFor(model => model.capResidenza, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
                     @Html.ValidationMessageFor(model => model.capResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -87,15 +87,15 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.comuneResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.comuneResidenza, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaComuni" })
+                    @Html.TextBoxFor(model => model.comuneResidenza, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" })
                     @Html.ValidationMessageFor(model => model.comuneResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group ">
                 @Html.LabelFor(model => model.provinciaResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.provinciaResidenza, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaProvincie" })
+                    @Html.TextBoxFor(model => model.provinciaResidenza, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" })
                     @Html.ValidationMessageFor(model => model.provinciaResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>

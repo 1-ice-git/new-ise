@@ -101,14 +101,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.studente)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.studente)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.ulterioreMagConiuge)
         </dt>
 
@@ -119,6 +111,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.idAltriDatiFam }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Ajax.ActionLink("Modifica", "AltriDatiFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |
+    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+
 </p>

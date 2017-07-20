@@ -11,12 +11,11 @@ namespace NewISE.Controllers
 {
     public class AltriDatiFamiliariController : Controller
     {
-        [AcceptVerbs(HttpVerbs.Post)]
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idMaggiorazioneConiuge)
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
             MaggiorazioneConiugeModel mcm = new MaggiorazioneConiugeModel();
-
 
             try
             {
@@ -28,6 +27,36 @@ namespace NewISE.Controllers
                 {
                     mcm = dtmc.GetMaggiorazioneConiuge(idMaggiorazioneConiuge: idMaggiorazioneConiuge);
                 }
+
+                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                {
+                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idMaggiorazioneConiuge, DateTime.Now.Date);
+
+                    if (pc != null && pc.HasValue())
+                    {
+                        switch (pc.idTipologiaConiuge)
+                        {
+                            case TipologiaConiuge.Residente:
+                                adf.residente = true;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidenteCarico:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = true;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -57,48 +86,24 @@ namespace NewISE.Controllers
 
                 ViewData.Add("Comuni", comuni);
 
-                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                {
-                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idMaggiorazioneConiuge, DateTime.Now.Date);
-
-                    if (pc != null && pc.HasValue())
-                    {
-
-                        switch (pc.idTipologiaConiuge)
-                        {
-                            case TipologiaConiuge.Residente:
-                                adf.residente = true;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidente:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidenteCarico:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = true;
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
-
                 return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
             }
         }
 
-        public ActionResult InserisciAltriDatiFamiliari(AltriDatiFamModel adf, decimal idTrasferimento)
+        public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamModel adf, decimal idTrasferimento)
         {
             try
             {
-
+                adf.dataAggiornamento = DateTime.Now;
+                adf.annullato = false;
 
                 if (ModelState.IsValid)
                 {
+                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                    {
+                        dtadf.SetAltriDatiFamiliariConiuge(adf);
+
+                    }
                 }
                 else
                 {
@@ -125,6 +130,62 @@ namespace NewISE.Controllers
             }
 
             return RedirectToAction("AltriDatiFamiliariConiuge", new { idMaggiorazioneConiuge = adf.idMaggiorazioneConiuge });
+        }
+
+        public ActionResult ModificaAltriDatiFamiliariConiuge(decimal idAltriDatiFam)
+        {
+            AltriDatiFamModel adfm = new AltriDatiFamModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adfm = dtadf.GetAltriDatiFamiliari(idAltriDatiFam);
+                    if (adfm != null && adfm.HasValue())
+                    {
+                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                        {
+                            PercentualeMagConiugeModel pc = new PercentualeMagConiugeModel();
+
+                            pc = dtpc.GetPercMagConiugeNow(adfm.idMaggiorazioneConiuge.Value, DateTime.Now.Date);
+
+                            if (pc != null && pc.HasValue())
+                            {
+                                switch (pc.idTipologiaConiuge)
+                                {
+                                    case TipologiaConiuge.Residente:
+                                        adfm.residente = true;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
+
+                                    case TipologiaConiuge.NonResidente:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
+
+                                    case TipologiaConiuge.NonResidenteCarico:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = true;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+
+                        }
+
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
+
+            return PartialView(adfm);
         }
 
         //public JsonResult DatiComuneNascita(string pComune = "", string pProvincia = "", string pCap = "")
