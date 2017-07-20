@@ -1,6 +1,7 @@
-﻿
-@{
+﻿@{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+    bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
+
 }
 
 <div class="row">
@@ -21,11 +22,19 @@
 <script type="text/javascript">
     $('#tabsMaggiorazioniFamiliari').tab();
 
+    @if (callConiuge)
+    {
+        @:ElencoConiuge();
+        }
+    else
+    {
+
+    }
+
     function ElencoConiuge() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoConiuge";
         var idTrasferimento = parseInt('@idTrasferimento');
-
 
         $.ajax({
             type: "POST",

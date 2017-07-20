@@ -13,6 +13,35 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public PercentualeMagConiugeModel GetPercMagConiugeNow(decimal idMaggiorazioneConiuge, DateTime dt)
+        {
+            PercentualeMagConiugeModel pmcm = new PercentualeMagConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lpmc = db.MAGGIORAZIONECONIUGE.Find(idMaggiorazioneConiuge).PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lpmc != null && lpmc.Count > 0)
+                {
+                    var pmc = lpmc.First();
+
+                    pmcm = new PercentualeMagConiugeModel()
+                    {
+                        idPercentualeConiuge = pmc.IDPERCMAGCONIUGE,
+                        idTipologiaConiuge = (TipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
+                        dataInizioValidita = pmc.DATAINIZIOVALIDITA,
+                        dataFineValidita = pmc.DATAFINEVALIDITA,
+                        percentualeConiuge = pmc.PERCENTUALECONIUGE,
+                        dataAggiornamento = pmc.DATAAGGIORNAMENTO,
+                        annullato = pmc.ANNULLATO
+                    };
+
+                }
+            }
+
+            return pmcm;
+        }
+
         public PercentualeMagConiugeModel GetPercentualeMaggiorazioneConiuge(decimal idTipologiaConiuge, DateTime dt, ModelDBISE db)
         {
             PercentualeMagConiugeModel pmcm = new PercentualeMagConiugeModel();
@@ -26,7 +55,7 @@ namespace NewISE.Models.DBModel.dtObj
                 pmcm = new PercentualeMagConiugeModel()
                 {
                     idPercentualeConiuge = pmc.IDPERCMAGCONIUGE,
-                    idTipologiaConiuge = pmc.IDTIPOLOGIACONIUGE,
+                    idTipologiaConiuge = (TipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
                     dataInizioValidita = pmc.DATAINIZIOVALIDITA,
                     dataFineValidita = pmc.DATAFINEVALIDITA,
                     percentualeConiuge = pmc.PERCENTUALECONIUGE,
@@ -60,7 +89,7 @@ namespace NewISE.Models.DBModel.dtObj
                          select new PercentualeMagConiugeModel()
                          {
                              idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                             idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                             idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                              dataInizioValidita = e.DATAINIZIOVALIDITA,
                              dataFineValidita = e.DATAFINEVALIDITA,
                              percentualeConiuge = e.PERCENTUALECONIUGE,

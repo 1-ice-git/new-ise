@@ -12,9 +12,10 @@ namespace NewISE.Controllers
     public class MaggiorazioniFamiliariController : Controller
     {
 
-        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento)
+        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento, bool callConiuge = true)
         {
             ViewBag.idTrasferimento = idTrasferimento;
+            ViewData.Add("callConiuge", callConiuge);
             return PartialView();
         }
 
@@ -178,7 +179,7 @@ namespace NewISE.Controllers
 
 
             ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-            //ViewBag.idTrasferimento = idTrasferimento;
+            ViewData.Add("idTrasferimento", idTrasferimento);
             mcvm.idTrasferimento = idTrasferimento;
 
             return PartialView(mcvm);

@@ -30,9 +30,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeMagConiugeModel()
                             {
-                                
+
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -41,7 +41,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
                                     tipologiaConiuge = e.TIPOLOGIACONIUGE.ToString()
-                                   
+
                                 }
                             }).ToList();
                 }
@@ -67,9 +67,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeMagConiugeModel()
                             {
-                                
+
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -104,9 +104,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeMagConiugeModel()
                             {
-                                
+
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -141,9 +141,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeMagConiugeModel()
                             {
-                                
+
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -165,7 +165,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        
+
 
         /// <summary>
         /// 
@@ -191,8 +191,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new PERCENTUALEMAGCONIUGE()
                             {
-                                
-                                IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+
+                                IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALECONIUGE = ibm.percentualeConiuge,
@@ -203,7 +203,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new PERCENTUALEMAGCONIUGE()
                             {
-                                IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                                IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALECONIUGE = ibm.percentualeConiuge,
@@ -215,8 +215,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new PERCENTUALEMAGCONIUGE()
                         {
-                            
-                            IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+
+                            IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALECONIUGE = ibm.percentualeConiuge,
@@ -245,7 +245,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEMAGCONIUGE()
                                     {
-                                        IDTIPOLOGIACONIUGE = ibm.idTipologiaConiuge,
+                                        IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALECONIUGE = item.PERCENTUALECONIUGE,
@@ -259,7 +259,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEMAGCONIUGE()
                                     {
-                                        
+
                                         IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
@@ -269,7 +269,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new PERCENTUALEMAGCONIUGE()
                                     {
-                                        
+
                                         IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -293,7 +293,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEMAGCONIUGE()
                                     {
-                                        
+
                                         IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -314,7 +314,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new PERCENTUALEMAGCONIUGE()
                                     {
-                                        
+
                                         IDTIPOLOGIACONIUGE = item.IDTIPOLOGIACONIUGE,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -358,7 +358,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == (decimal)ibm.idTipologiaConiuge).Count() > 0 ? true : false;
             }
         }
 
@@ -368,7 +368,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == (decimal)ibm.idTipologiaConiuge).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -383,7 +383,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOLOGIACONIUGE == (decimal)ibm.idTipologiaConiuge).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -398,7 +398,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == ibm.idTipologiaConiuge).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGCONIUGE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDTIPOLOGIACONIUGE == (decimal)ibm.idTipologiaConiuge).Count() > 0 ? true : false;
             }
         }
 
@@ -430,7 +430,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new PERCENTUALEMAGCONIUGE()
                             {
-                                
+
                                 IDTIPOLOGIACONIUGE = precedenteIB.IDTIPOLOGIACONIUGE,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,

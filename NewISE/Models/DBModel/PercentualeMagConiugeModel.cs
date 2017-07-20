@@ -7,13 +7,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models.DBModel
 {
+    public enum TipologiaConiuge
+    {
+        Residente = 1,
+        NonResidente = 2,
+        NonResidenteCarico = 3
+
+    }
     public class PercentualeMagConiugeModel
     {
         [Key]
         [Display(Name = "ID")]
         public decimal idPercentualeConiuge { get; set; }
         [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
-        public decimal idTipologiaConiuge { get; set; }
+        public TipologiaConiuge idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

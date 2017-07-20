@@ -14,12 +14,20 @@ namespace NewISE.Controllers
         public ActionResult ElencoPensioniConiuge(decimal idMaggiorazioneConiuge)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
+            MaggiorazioneConiugeModel mcm = new MaggiorazioneConiugeModel();
 
             try
             {
                 using (dtPensione dtp = new dtPensione())
                 {
                     lpcm = dtp.GetListaPensioneConiugeByMaggiorazioneConiuge(idMaggiorazioneConiuge).ToList();
+                }
+
+                using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
+                {
+
+
+                    mcm = dtmc.GetMaggiorazioneConiuge(idMaggiorazioneConiuge: idMaggiorazioneConiuge);
                 }
 
             }
@@ -29,6 +37,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial");
             }
 
+            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
             ViewData.Add("idMaggiorazioneConiuge", idMaggiorazioneConiuge);
 
             return PartialView(lpcm);

@@ -12,6 +12,32 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public MaggiorazioneConiugeModel GetMaggiorazioneConiuge(decimal idMaggiorazioneConiuge)
+        {
+            MaggiorazioneConiugeModel mcm = new MaggiorazioneConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mc = db.MAGGIORAZIONECONIUGE.Find(idMaggiorazioneConiuge);
+
+                if (mc != null && mc.IDMAGGIORAZIONECONIUGE > 0)
+                {
+                    mcm = new MaggiorazioneConiugeModel()
+                    {
+                        idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
+                        idTrasferimento = mc.IDTRASFERIMENTO,
+                        dataInizioValidita = mc.DATAINIZIOVALIDITA,
+                        dataFineValidita = mc.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : mc.DATAFINEVALIDITA,
+                        dataAggiornamento = mc.DATAAGGIORNAMENTO,
+                        annullato = mc.ANNULLATO,
+                    };
+                }
+            }
+
+            return mcm;
+
+        }
+
         public MaggiorazioneConiugeModel GetMaggiorazioneConiuge(decimal idTrasferimento, DateTime dt)
         {
             MaggiorazioneConiugeModel mcm = new MaggiorazioneConiugeModel();

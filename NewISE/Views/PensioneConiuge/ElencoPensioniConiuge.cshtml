@@ -2,6 +2,7 @@
 
 @{
     decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 }
 
 <style>
@@ -12,11 +13,11 @@
 
 @Html.Hidden("hdIdImportoPensione")
 
-<p style="margin-top: 5px; margin-left:-10px;">
+<p style="margin-top: 5px; padding-left:5px;">
 
     @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
 </p>
-<div style="padding-right:15px; margin-left:-10px;">
+<div style="padding-left:5px; padding-right:10px;">
     <table id="TabPensioni" cellspacing="0">
         <thead>
             <tr>
@@ -42,9 +43,17 @@
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizioValidita)
                     </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.dataFineValidita)
-                    </td>
+                    @if (item.dataFineValidita != Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
                     <td class="text-right">
                         @Html.DisplayFor(modelItem => item.importoPensione)
                     </td>
@@ -56,6 +65,10 @@
             }
         </tbody>
     </table>
+</div>
+
+<div>
+    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 
 <div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">

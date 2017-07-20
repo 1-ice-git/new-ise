@@ -1,0 +1,317 @@
+﻿@model NewISE.Models.DBModel.AltriDatiFamModel
+@using NewISE.DBComuniItalia
+@using System.Linq;
+@using System.Collections;
+@using System.Collections.Generic;
+
+<link href="~/Content/css/CheckBoxRadio.css" rel="stylesheet" />
+
+@{
+
+    List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+
+}
+
+@using (@Ajax.BeginForm("InserisciAltriDatiFamiliari", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="padding-right:5px;">
+        <div class="form-horizontal">
+            <h4> Inserisci Altri Dati Familiari</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.idMaggiorazioneConiuge)
+            @Html.Hidden("idTrasferimento", idTrasferimento)
+
+            @Html.HiddenFor(model => model.residente)
+            @Html.HiddenFor(model => model.ulterioreMagConiuge)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataNascita, new { @class = "form-control", @style = "max-width:100px;", @placeholder = "gg/mm/aaaa" })
+                    @Html.ValidationMessageFor(model => model.dataNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control", @style = "max-width:100px;", @list = "ListaCap" })
+                    @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaComuni" })
+                    @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.provinciaNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaProvincie" })
+                    @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.nazionalita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.nazionalita, new { @class = "form-control", @style = "max-width:250px;" })
+                    @Html.ValidationMessageFor(model => model.nazionalita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.indirizzoResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.indirizzoResidenza, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.indirizzoResidenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.capResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.capResidenza, new { @class = "form-control", @style = "max-width:100px;", @list = "ListaCap" })
+                    @Html.ValidationMessageFor(model => model.capResidenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.comuneResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.comuneResidenza, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaComuni" })
+                    @Html.ValidationMessageFor(model => model.comuneResidenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.provinciaResidenza, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.provinciaResidenza, new { @class = "form-control", @style = "max-width:250px;", @list = "ListaProvincie" })
+                    @Html.ValidationMessageFor(model => model.provinciaResidenza, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.residente, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model.residente)
+                    {
+                        <div class="checkbox disabled">
+                            <label style="font-size:1.5em">
+                                <input type="checkbox" value="" disabled="disabled" checked="checked">
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="checkbox disabled">
+                            <label style="font-size:1.5em">
+                                <input type="checkbox" value="" disabled="disabled">
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ulterioreMagConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @if (Model.ulterioreMagConiuge)
+                    {
+                        <div class="checkbox disabled">
+                            <label style="font-size:1.5em">
+                                <input type="checkbox" value="" disabled="disabled" checked="checked">
+                                <span class="cr"><i class="cr-icon fa fa-rocket"></i></span>
+                            </label>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="checkbox disabled">
+                            <label style="font-size:1.5em">
+                                <input type="checkbox" value="" disabled="disabled">
+                                <span class="cr"><i class="cr-icon fa fa-rocket"></i></span>
+                            </label>
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Inserisci" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<div>
+    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</div>
+
+<datalist id="ListaComuni">
+    @foreach (var d in comuni.OrderBy(a => a.nome).ToList())
+    {
+        <option value="@d.nome" />
+    }
+</datalist>
+
+<datalist id="ListaProvincie">
+    @foreach (var d in comuni.GroupBy(a => a.provincia.nome).Select(a => a.First()).OrderBy(a => a.provincia.nome))
+    {
+        <option value="@d.provincia.nome" />
+    }
+</datalist>
+<datalist id="ListaCap">
+    @foreach (var d in comuni)
+    {
+        foreach (var item in d.cap.Distinct().OrderBy(a => a.ToString()))
+        {
+            <option value="@item.ToString()" />
+        }
+
+    }
+</datalist>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    //$('#dataNascita').datepicker({
+    //    //showButtonPanel: true,
+    //    showAnim: "slide",
+    //    changeMonth: true,
+    //    changeYear: true
+    //});
+
+    //function DatiComuneNascita(comune) {
+    //    //debugger;
+    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
+
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST",
+    //        data: { pComune: comune },
+    //        dataType: 'json',
+    //        async: true,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            VerificaAutenticazione();
+    //            //$('#inviaDocModal').modal('show');
+    //            //Blocca();
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            var com = result.Comune;
+    //            var prov = result.Provincia;
+    //            var cap = result.Cap;
+
+    //            $("#provinciaNascita").val(prov);
+    //            $("#capNascita").val(cap);
+
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
+
+    //}
+
+    //function DatiProvinciaNascita(provincia) {
+    //    //debugger;
+    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
+
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST",
+    //        data: { pProvincia: provincia },
+    //        dataType: 'json',
+    //        async: true,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            VerificaAutenticazione();
+    //            //$('#inviaDocModal').modal('show');
+    //            //Blocca();
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            var com = result.Comune;
+    //            var prov = result.Provincia;
+    //            var cap = result.Cap;
+
+    //            $("#comuneNascita").val(com);
+    //            //$("#provinciaNascita").val(prov);
+    //            $("#capNascita").val(cap);
+
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
+
+    //}
+
+    //function DatiCapNascita(cap) {
+    //    //debugger;
+    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
+
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST",
+    //        data: { pCap: cap },
+    //        dataType: 'json',
+    //        async: true,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            VerificaAutenticazione();
+    //            //$('#inviaDocModal').modal('show');
+    //            //Blocca();
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            var com = result.Comune;
+    //            var prov = result.Provincia;
+    //            var cap = result.Cap;
+
+    //            $("#comuneNascita").val(com);
+    //            $("#provinciaNascita").val(prov);
+    //            //$("#capNascita").val(cap);
+
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
+
+    //}
+</script>

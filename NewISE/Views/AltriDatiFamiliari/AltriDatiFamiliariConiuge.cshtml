@@ -1,0 +1,124 @@
+﻿@model NewISE.Models.DBModel.AltriDatiFamModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    //decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
+
+}
+
+
+<div>
+    <h4>Altri Dati Familiari</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.idMaggiorazioneConiuge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idMaggiorazioneConiuge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dataNascita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dataNascita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capNascita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capNascita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuneNascita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comuneNascita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.provinciaNascita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.provinciaNascita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nazionalita)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nazionalita)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.indirizzoResidenza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.indirizzoResidenza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capResidenza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capResidenza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comuneResidenza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comuneResidenza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.provinciaResidenza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.provinciaResidenza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.residente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.residente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.studente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.studente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ulterioreMagConiuge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ulterioreMagConiuge)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idAltriDatiFam }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

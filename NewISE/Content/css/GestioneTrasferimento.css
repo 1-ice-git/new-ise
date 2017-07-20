@@ -4,3 +4,17 @@
     border-right-color: #237069;
     /*border-color: #00B04E;*/
 }
+
+#divOperazioniAttivitaTrasf {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.col-xs-8 {
+    padding-left: 5px;
+}
+
+.col-xs-4 {
+    padding-right: 5px;
+}

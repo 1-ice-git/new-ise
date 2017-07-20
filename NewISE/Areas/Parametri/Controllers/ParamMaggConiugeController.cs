@@ -11,7 +11,7 @@ namespace NewISE.Areas.Parametri.Controllers
     public class ParamMaggConiugeController : Controller
     {
         // GET: Parametri/ParamMaggConiuge/MaggiorazioneConiuge
-        
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercMaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge = 0)
@@ -165,7 +165,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                     {
-                        var lm = dtl.GetTipologiaConiuge(ibm.idTipologiaConiuge);
+                        var lm = dtl.GetTipologiaConiuge((decimal)ibm.idTipologiaConiuge);
                         ViewBag.Livello = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;

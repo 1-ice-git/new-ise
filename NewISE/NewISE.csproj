@@ -273,6 +273,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\CheckBoxRadio.css" />
     <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
     <Content Include="Content\css\GestioneTrasferimento.css" />
@@ -1008,6 +1009,8 @@
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\Eliminazione.png" />
     <Content Include="Immagini\EliminazioneDisable.png" />
+    <Content Include="Immagini\Errore.gif" />
+    <Content Include="Immagini\Errore2.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
@@ -1490,6 +1493,8 @@
     <Content Include="EF\ModelDBISE.edmx.diagram">
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Content>
+    <Content Include="DBComuniItalia\json-schemaComuniItalia.json" />
+    <Content Include="DBComuniItalia\jsonComuniItalia.json" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1647,11 +1652,18 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
+    <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
+    <Compile Include="DBComuniItalia\Cm.cs" />
+    <Compile Include="DBComuniItalia\Comuni.cs" />
+    <Compile Include="DBComuniItalia\Provincia.cs" />
+    <Compile Include="DBComuniItalia\Regione.cs" />
+    <Compile Include="DBComuniItalia\SingleValueArrayConverter.cs" />
+    <Compile Include="DBComuniItalia\Zona.cs" />
     <Compile Include="EF\ACCESSI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2035,6 +2047,8 @@
     <Content Include="Views\PensioneConiuge\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\PensioneConiuge\NuovoImportoPensione.cshtml" />
     <Content Include="Views\PensioneConiuge\ModificaPensione.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

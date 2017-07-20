@@ -19,7 +19,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
-        public DateTime dataNascita { get; set; }
+        public DateTime? dataNascita { get; set; }
         [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
         [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
         [Display(Name = "CAP Nascita")]
@@ -68,16 +68,24 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.Date, ErrorMessage = "La data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data aggiornamento")]
+        [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }
 
         [DefaultValue(false)]
         [Display(Name = "Annullato")]
+        [ScaffoldColumn(false)]
         public bool annullato { get; set; }
 
-
+        [ScaffoldColumn(false)]
         public FigliModel Figli { get; set; }
 
+        [ScaffoldColumn(false)]
+        public ConiugeModel Coniuge { get; set; }
 
+        public bool HasValue()
+        {
+            return idAltriDatiFam > 0 ? true : false;
+        }
 
     }
 }
