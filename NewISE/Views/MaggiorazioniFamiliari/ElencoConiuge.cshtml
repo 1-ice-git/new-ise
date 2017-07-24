@@ -3,14 +3,21 @@
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
 }
-<style>
-    a.dt-button.green {
-        color: green;
-    }
-</style>
 
+<p style="padding-left:15px;">
+    @if (Model != null && Model.Any())
+    {
+        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioneConiuge = Model.First().id, idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
+    }
+    else
+    {
+        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
+    }
+
+</p>
 <div style="padding-left:15px; padding-right:5px; padding-top:10px;">
-    <table class="TabellaDataTable " cellspacing="0">
+
+    <table id="tabElencoConiuge" cellspacing="0">
         <thead>
             <tr>
 
@@ -32,7 +39,7 @@
                 <th style="text-align:center;">
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
-                <th style="text-align:center;">
+                <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.idDocumento)
                 </th>
             </tr>
@@ -43,10 +50,10 @@
                 <tr>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.Nominativo)
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CodiceFiscale)
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
                     </td>
                     <td style="text-align:center;">
                         @Html.DisplayFor(modelItem => item.dataInizio)
@@ -57,40 +64,41 @@
                     @if (item.HasPensione)
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="Pensione(@item.id);"><img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' /></a>
+                            <a href="#" onclick="Pensione(@item.id);"><img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" /></a>
                         </td>
                     }
                     else
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="Pensione(@item.id);"><img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" /></a>
+                            <a href="#" onclick="Pensione(@item.id);"><img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" /></a>
                         </td>
                     }
                     @if (item.idAltriDati > 0)
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Green.png" width="20" /></a>
+                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" /></a>
                         </td>
                     }
                     else
                     {
                         <td style="text-align:center;">
-                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Red.png" width="20" /></a>
+                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" /></a>
                         </td>
                     }
 
                     @if (item.idDocumento > 0)
                     {
                         <td style="text-align:center;">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" />
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" title="Documenti" />
                         </td>
                     }
                     else
                     {
                         <td style="text-align:center;">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" />
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                         </td>
                     }
+
                 </tr>
             }
         </tbody>
@@ -98,7 +106,8 @@
 </div>
 
 <script type="text/javascript">
-    $('.TabellaDataTable').DataTable({
+
+    $("#tabElencoConiuge").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -127,59 +136,28 @@
         "pageLength": 5,
         "searching": false,
         "paging": false,
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: 'Nuovo Coniuge',
-                className: 'green',
-                action: function (e, dt, node, config) {
-                    NuovoConiuge();
-                }
-            }
-        ],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "visible": false,
-                "searchable": false
-            },
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        //dom: 'Bfrtip',
+        //buttons: [
+        //    {
+        //        text: 'Nuovo Coniuge',
+        //        className: 'green',
+        //        action: function (e, dt, node, config) {
+        //            NuovoConiuge();
+        //        }
+        //    }
+        //],
+        //"columnDefs": [
+        //    {
+        //        "targets": [0],
+        //        "visible": false,
+        //        "searchable": false
+        //    },
 
-        ]
+        //]
     });
 
-    function NuovoConiuge() {
-        //debugger;
-        var rotta = "/MaggiorazioniFamiliari/NuovoConiuge";
-        var idTrasferimento = parseInt('@idTrasferimento');
-
-        $.ajax({
-            url: rotta,
-            type: "POST",
-            data: { idTrasferimento: idTrasferimento },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$('#inviaDocModal').modal('show');
-                //Blocca();
-
-            },
-            success: function (result) {
-                //debugger;
-                $("#divOperazioniAttivitaTrasf").empty();
-                $("#divOperazioniAttivitaTrasf").html(result);
-
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-
-    }
 
     function Pensione(idMagConiuge) {
         //debugger;
@@ -202,8 +180,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#divOperazioniAttivitaTrasf").empty();
-                $("#divOperazioniAttivitaTrasf").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
 
             },
             error: function (error) {
@@ -237,8 +215,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#divOperazioniAttivitaTrasf").empty();
-                $("#divOperazioniAttivitaTrasf").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
 
             },
             error: function (error) {

@@ -5,19 +5,19 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 }
 
-<style>
-    a.dt-button.green {
-        color: green;
-    }
-</style>
+@*<style>
+        a.dt-button.green {
+            color: green;
+        }
+    </style>*@
 
 @Html.Hidden("hdIdImportoPensione")
 
-<p style="margin-top: 5px; padding-left:5px;">
+<p style="margin-top: 5px; padding-left:15px;">
 
-    @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
 </p>
-<div style="padding-left:5px; padding-right:10px;">
+<div style="padding-left:15px; padding-right:10px;">
     <table id="TabPensioni" cellspacing="0">
         <thead>
             <tr>
@@ -67,8 +67,8 @@
     </table>
 </div>
 
-<div>
-    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+<div style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 
 <div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">
@@ -123,7 +123,9 @@
         "pageLength": 5,
         "searching": false,
         "paging": true,
-        "ordering": false
+        "ordering": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
 
     });
 
@@ -159,8 +161,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#divOperazioniAttivitaTrasf").empty();
-                $("#divOperazioniAttivitaTrasf").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
 
             },
             complete: function () {

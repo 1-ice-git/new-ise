@@ -13,10 +13,10 @@
 
 }
 
-@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
+@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
-    <div style="padding-right:5px;">
+    <div style="padding-left: 15px; padding-right:5px;">
         <div class="form-horizontal">
             <h4> Inserisci Altri Dati Familiari</h4>
             <hr />
@@ -135,7 +135,7 @@
                         <div class="checkbox disabled">
                             <label style="font-size:1.5em">
                                 <input type="checkbox" value="" disabled="disabled" checked="checked">
-                                <span class="cr"><i class="cr-icon fa fa-rocket"></i></span>
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                             </label>
                         </div>
 
@@ -145,7 +145,7 @@
                         <div class="checkbox disabled">
                             <label style="font-size:1.5em">
                                 <input type="checkbox" value="" disabled="disabled">
-                                <span class="cr"><i class="cr-icon fa fa-rocket"></i></span>
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                             </label>
                         </div>
 
@@ -163,8 +163,8 @@
 
 }
 
-<div>
-    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+<div style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 
 <datalist id="ListaComuni">
@@ -194,124 +194,3 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<script type="text/javascript">
-    //$('#dataNascita').datepicker({
-    //    //showButtonPanel: true,
-    //    showAnim: "slide",
-    //    changeMonth: true,
-    //    changeYear: true
-    //});
-
-    //function DatiComuneNascita(comune) {
-    //    //debugger;
-    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST",
-    //        data: { pComune: comune },
-    //        dataType: 'json',
-    //        async: true,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            //$('#inviaDocModal').modal('show');
-    //            //Blocca();
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            var com = result.Comune;
-    //            var prov = result.Provincia;
-    //            var cap = result.Cap;
-
-    //            $("#provinciaNascita").val(prov);
-    //            $("#capNascita").val(cap);
-
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            //Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-
-    //}
-
-    //function DatiProvinciaNascita(provincia) {
-    //    //debugger;
-    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST",
-    //        data: { pProvincia: provincia },
-    //        dataType: 'json',
-    //        async: true,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            //$('#inviaDocModal').modal('show');
-    //            //Blocca();
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            var com = result.Comune;
-    //            var prov = result.Provincia;
-    //            var cap = result.Cap;
-
-    //            $("#comuneNascita").val(com);
-    //            //$("#provinciaNascita").val(prov);
-    //            $("#capNascita").val(cap);
-
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            //Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-
-    //}
-
-    //function DatiCapNascita(cap) {
-    //    //debugger;
-    //    var rotta = "/AltriDatiFamiliari/DatiComuneNascita";
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST",
-    //        data: { pCap: cap },
-    //        dataType: 'json',
-    //        async: true,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            //$('#inviaDocModal').modal('show');
-    //            //Blocca();
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            var com = result.Comune;
-    //            var prov = result.Provincia;
-    //            var cap = result.Cap;
-
-    //            $("#comuneNascita").val(com);
-    //            $("#provinciaNascita").val(prov);
-    //            //$("#capNascita").val(cap);
-
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            //Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-
-    //}
-</script>

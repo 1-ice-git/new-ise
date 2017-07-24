@@ -7,17 +7,17 @@
 }
 
 
-<div>
+<div style="padding-left: 15px;">
     <h4>Altri Dati Familiari</h4>
     <hr />
     <dl class="dl-horizontal">
 
         <dt>
-            @Html.DisplayNameFor(model => model.idMaggiorazioneConiuge)
+            @Html.DisplayNameFor(model => model.Coniuge.nominativo)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.idMaggiorazioneConiuge)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
         </dd>
 
         <dt>
@@ -41,7 +41,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.comuneNascita)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
         </dd>
 
         <dt>
@@ -49,7 +49,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.provinciaNascita)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
         </dd>
 
         <dt>
@@ -57,7 +57,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.nazionalita)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
         </dd>
 
         <dt>
@@ -65,7 +65,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.indirizzoResidenza)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
         </dd>
 
         <dt>
@@ -81,7 +81,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.comuneResidenza)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
         </dd>
 
         <dt>
@@ -89,7 +89,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.provinciaResidenza)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
         </dd>
 
         <dt>
@@ -97,7 +97,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.residente)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
         </dd>
 
         <dt>
@@ -105,13 +105,13 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ulterioreMagConiuge)
+            <span class="text-uppercase">@Html.DisplayFor(model => model.ulterioreMagConiuge)</span>
         </dd>
 
     </dl>
 </div>
-<p>
-    @Ajax.ActionLink("Modifica", "AltriDatiFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |
-    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>

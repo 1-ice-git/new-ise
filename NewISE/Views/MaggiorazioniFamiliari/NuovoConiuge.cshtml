@@ -23,7 +23,7 @@
 
 }
 
-@using (@Ajax.BeginForm("InserisciConiuge", "MaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewConiuge" }))
+@using (@Ajax.BeginForm("InserisciConiuge", "MaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewConiuge" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left:15px;">
@@ -62,14 +62,14 @@
                     <div class="col-xs-4">
                         @Html.LabelFor(model => model.nome, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.TextBoxFor(model => model.nome, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.nome, new { @class = "form-control text-uppercase" })
                             @*@Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })*@
                         </div>
                     </div>
                     <div class="col-xs-4">
                         @Html.LabelFor(model => model.cognome, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.TextBoxFor(model => model.cognome, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.cognome, new { @class = "form-control text-uppercase" })
                             @*@Html.ValidationMessageFor(model => model.cognome, "", new { @class = "text-danger" })*@
                         </div>
                     </div>
@@ -120,7 +120,7 @@
 }
 
 <div>
-    @Ajax.ActionLink("Torna indietro", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>

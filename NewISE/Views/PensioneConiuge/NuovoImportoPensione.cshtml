@@ -16,8 +16,8 @@
     }
 }
 
-<div style="padding-left:5px; padding-right:10px;">
-    @using (@Ajax.BeginForm("InserisciImportoPensione", "PensioneConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewPensione" }))
+<div style="padding-left:15px; padding-right:10px;">
+    @using (@Ajax.BeginForm("InserisciImportoPensione", "PensioneConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewPensione" }))
     {
         @Html.AntiForgeryToken()
 
@@ -110,8 +110,8 @@
 </div>
 
 
-<div>
-    @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+<div style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "PensioneConiuge", new { idMaggiorazioneConiuge = idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

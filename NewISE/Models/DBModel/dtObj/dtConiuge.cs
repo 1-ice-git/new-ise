@@ -127,5 +127,23 @@ namespace NewISE.Models.DBModel.dtObj
             db.SaveChanges();
         }
 
+        public void EditConiuge(ConiugeModel cm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(cm.idMaggiorazioneConiuge);
+
+                if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+                {
+                    c.IDMAGGIORAZIONECONIUGE = cm.idMaggiorazioneConiuge;
+                    c.NOME = cm.nome;
+                    c.COGNOME = cm.cognome;
+                    c.CODICEFISCALE = cm.codiceFiscale;
+
+                    db.SaveChanges();
+                }
+            }
+        }
+
     }
 }

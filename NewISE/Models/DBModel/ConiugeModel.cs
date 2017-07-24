@@ -33,5 +33,11 @@ namespace NewISE.Models.DBModel
         {
             return idMaggiorazioneConiuge > 0 ? true : false;
         }
+
+        [Display(Name = "Nominativo")]
+        public string nominativo
+        {
+            get { return cognome + " " + nome; }
+        }
     }
 }

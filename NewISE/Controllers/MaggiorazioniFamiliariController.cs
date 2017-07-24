@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace NewISE.Controllers
 {
@@ -102,7 +103,7 @@ namespace NewISE.Controllers
                                                     id = mcm.idMaggiorazioneConiuge,
                                                     idTrasferimento = idTrasferimento,
                                                     idFamiliare = mcm.idMaggiorazioneConiuge,
-                                                    Nominativo = mcm.Coniuge.cognome + " " + mcm.Coniuge.nome,
+                                                    Nominativo = mcm.Coniuge.nominativo,
                                                     CodiceFiscale = mcm.Coniuge.codiceFiscale,
                                                     dataInizio = mcm.dataInizioValidita,
                                                     dataFine = mcm.dataFineValidita,
@@ -205,6 +206,34 @@ namespace NewISE.Controllers
                     {
 
                         ModelState.AddModelError("", ex.Message);
+
+                        List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
+
+                        var r = new List<SelectListItem>();
+
+                        using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
+                        {
+                            var ltcm = dttc.GetListTipologiaConiuge();
+
+                            if (ltcm != null && ltcm.Count > 0)
+                            {
+                                r = (from t in ltcm
+                                     select new SelectListItem()
+                                     {
+                                         Text = t.tipologiaConiuge,
+                                         Value = t.idTipologiaConiuge.ToString()
+                                     }).ToList();
+                                r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                            }
+
+                            lTipologiaConiuge = r;
+                        }
+
+
+                        ViewBag.lTipologiaConiuge = lTipologiaConiuge;
+                        ViewBag.idTrasferimento = mcvm.idTrasferimento;
+
+                        return PartialView("NuovoConiuge", mcvm);
                     }
                 }
                 else
@@ -248,7 +277,56 @@ namespace NewISE.Controllers
             return RedirectToAction("ElencoConiuge", new { idTrasferimento = mcvm.idTrasferimento });
         }
 
+        [HttpPost]
+        public ActionResult ModificaConiuge(decimal idMaggiorazioneConiuge, decimal idTrasferimento)
+        {
+            ConiugeModel cm = new ConiugeModel();
 
+            try
+            {
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    cm = dtc.GetConiuge(idMaggiorazioneConiuge);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+
+            ViewData.Add("idTrasferimento", idTrasferimento);
+            return PartialView(cm);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfermaModificaConiuge(ConiugeModel cm, decimal idTrasferimento)
+        {
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (dtConiuge dtc = new dtConiuge())
+                    {
+                        dtc.EditConiuge(cm);
+                    }
+                }
+                else
+                {
+                    ViewData.Add("idTrasferimento", idTrasferimento);
+                    return PartialView("ModificaConiuge", cm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+
+            return RedirectToAction("MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, callConiuge = true });
+
+        }
 
     }
 }
