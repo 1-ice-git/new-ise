@@ -725,7 +725,7 @@ namespace NewISE.Controllers
                                         var docByte = dtdc.GetDocumentoByteById(dm.idDocumenti);
                                         Stream streamDoc = new MemoryStream(docByte);
 
-                                        allegato.nomeFile = dm.NomeDocumento + dm.Estensione;
+                                        allegato.nomeFile = dm.nomeDocumento + dm.estensione;
                                         allegato.allegato = streamDoc;
 
                                         dest.Nominativo = dipendente.Nominativo;

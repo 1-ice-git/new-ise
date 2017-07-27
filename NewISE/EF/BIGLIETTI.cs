@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public BIGLIETTI()
         {
-            this.BIGLIETTI_DOCUMENTI = new HashSet<BIGLIETTI_DOCUMENTI>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDBIGLIETTO { get; set; }
@@ -26,6 +26,6 @@ namespace NewISE.EF
         public decimal PRATICACONCLUSA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BIGLIETTI_DOCUMENTI> BIGLIETTI_DOCUMENTI { get; set; }
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

@@ -80,7 +80,6 @@
           </Key>
           <Property Name="IDBIGLIETTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -196,6 +195,7 @@
           <Property Name="NOMEDOCUMENTO" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="ESTENSIONE" Type="varchar2" MaxLength="5" Nullable="false" />
           <Property Name="FILEDOCUMENTO" Type="blob" Nullable="false" />
+          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="DOCUMENTO_NORMACALCOLO">
           <Key>
@@ -388,7 +388,6 @@
           </Key>
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
@@ -852,7 +851,6 @@
           </Key>
           <Property Name="IDTRASPORTOEFFETTISIST" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TRASPEFFETTISIST_DOC">
           <Key>
@@ -861,7 +859,6 @@
           </Key>
           <Property Name="IDTRASPORTOEFFETTISIST" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TRASPORTOEFFETTIRIENTRO">
           <Key>
@@ -2044,58 +2041,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TD_B_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
+        <Association Name="R_TD_D">
+          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="BIGLIETTI_DOCUMENTI" Type="Self.BIGLIETTI_DOCUMENTI" Multiplicity="*" />
+          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TIPODOCUMENTI">
               <PropertyRef Name="IDTIPODOCUMENTO" />
             </Principal>
-            <Dependent Role="BIGLIETTI_DOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_MAB_DOC">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAB_DOC" Type="Self.MAB_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_TER_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTIRIENTRO_DOC" Type="Self.TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_TES_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTISIST_DOC" Type="Self.TRASPEFFETTISIST_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTISIST_DOC">
+            <Dependent Role="DOCUMENTI">
               <PropertyRef Name="IDTIPODOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -2936,21 +2891,9 @@
             <End Role="TIPOLOGIACONIUGE" EntitySet="TIPOLOGIACONIUGE" />
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
           </AssociationSet>
-          <AssociationSet Name="R_TD_B_D" Association="Self.R_TD_B_D">
+          <AssociationSet Name="R_TD_D" Association="Self.R_TD_D">
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_MAB_DOC" Association="Self.R_TD_MAB_DOC">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_TER_D" Association="Self.R_TD_TER_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_TES_D" Association="Self.R_TD_TES_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
           <AssociationSet Name="R_TE_TV" Association="Self.R_TE_TV">
             <End Role="TIPOELABORAZIONE" EntitySet="TIPOELABORAZIONE" />
@@ -3131,19 +3074,7 @@
           <Property Name="NOTIFICARICHIESTA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PERSONALE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="Self.R_B_B_D" FromRole="BIGLIETTI" ToRole="BIGLIETTI_DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="BIGLIETTI_DOCUMENTI">
-          <Key>
-            <PropertyRef Name="IDBIGLIETTO" />
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDBIGLIETTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="BIGLIETTI" Relationship="Self.R_B_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="BIGLIETTI" />
-          <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="TIPODOCUMENTI" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_B_D" FromRole="BIGLIETTI_DOCUMENTI" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.BIGLIETTI_DOCUMENTI" FromRole="BIGLIETTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
@@ -3351,18 +3282,6 @@
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="Self.R_AC_MAB_AC" FromRole="MAB_ALIQCONTR" ToRole="ALIQUOTECONTRIBUTIVE" />
         </EntityType>
-        <EntityType Name="MAB_DOC">
-          <Key>
-            <PropertyRef Name="IDMAB" />
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDMAB" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="Self.R_MAB_MAB_DOC" FromRole="MAB_DOC" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_MAB_DOC" FromRole="MAB_DOC" ToRole="TIPODOCUMENTI" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_MAB_DOC" FromRole="MAB_DOC" ToRole="DOCUMENTI" />
-        </EntityType>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
             <PropertyRef Name="IDMAB" />
@@ -3383,12 +3302,12 @@
           <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDLIVDIPENDENTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="Self.R_LIVDIP_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="MAB_DOC" Relationship="Self.R_MAB_MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAB_DOC" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="Self.R_MAGANNUALI_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="Self.R_PMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="Self.R_RD_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="Self.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TFR" Relationship="Self.R_TFR_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -3663,11 +3582,8 @@
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDGRUPPODOC" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="Self.R_TD_B_D" FromRole="TIPODOCUMENTI" ToRole="BIGLIETTI_DOCUMENTI" />
           <NavigationProperty Name="GRUPPIDOCUMENTI" Relationship="Self.R_GD_TDV" FromRole="TIPODOCUMENTI" ToRole="GRUPPIDOCUMENTI" />
-          <NavigationProperty Name="MAB_DOC" Relationship="Self.R_TD_MAB_DOC" FromRole="TIPODOCUMENTI" ToRole="MAB_DOC" />
-          <NavigationProperty Name="TRASPEFFETTIRIENTRO_DOC" Relationship="Self.R_TD_TER_D" FromRole="TIPODOCUMENTI" ToRole="TRASPEFFETTIRIENTRO_DOC" />
-          <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="Self.R_TD_TES_D" FromRole="TIPODOCUMENTI" ToRole="TRASPEFFETTISIST_DOC" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="TIPODOCUMENTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TIPOELABORAZIONE">
           <Key>
@@ -3782,30 +3698,6 @@
           <NavigationProperty Name="COEFFICIENTEFKM" Relationship="Self.R_CFKM_TER_CFKM" FromRole="TRASPEFFETTIRIEN_COEFFIFKM" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="Self.R_TER_CFKM" FromRole="TRASPEFFETTIRIEN_COEFFIFKM" ToRole="TRASPORTOEFFETTIRIENTRO" />
         </EntityType>
-        <EntityType Name="TRASPEFFETTIRIENTRO_DOC">
-          <Key>
-            <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="TIPODOCUMENTI" />
-          <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="Self.R_TER_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="TRASPORTOEFFETTIRIENTRO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_TER_D" FromRole="TRASPEFFETTIRIENTRO_DOC" ToRole="DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="TRASPEFFETTISIST_DOC">
-          <Key>
-            <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <NavigationProperty Name="TIPODOCUMENTI" Relationship="Self.R_TD_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="TIPODOCUMENTI" />
-          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="Self.R_TES_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="TRASPORTOEFFETTISIST" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_D_TES_D" FromRole="TRASPEFFETTISIST_DOC" ToRole="DOCUMENTI" />
-        </EntityType>
         <EntityType Name="TRASPORTOEFFETTIRIENTRO">
           <Key>
             <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
@@ -3814,8 +3706,8 @@
           <Property Name="IDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="RICHIAMO" Relationship="Self.R_IR_TER" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="RICHIAMO" />
           <NavigationProperty Name="TRASPEFFETTIRIEN_COEFFIFKM" Relationship="Self.R_TER_CFKM" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="TRASPEFFETTIRIEN_COEFFIFKM" />
-          <NavigationProperty Name="TRASPEFFETTIRIENTRO_DOC" Relationship="Self.R_TER_TER_D" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="TRASPEFFETTIRIENTRO_DOC" />
           <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="Self.R_TES_TER" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="TRASPORTOEFFETTISIST" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TRASPORTOEFFETTISIST">
           <Key>
@@ -3826,8 +3718,8 @@
           <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="COEFFICIENTEFKM" Relationship="Self.R_COEFKM_TRASPEFFSIST" FromRole="TRASPORTOEFFETTISIST" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="Self.R_PS_TE" FromRole="TRASPORTOEFFETTISIST" ToRole="PRIMASITEMAZIONE" />
-          <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="Self.R_TES_TES_D" FromRole="TRASPORTOEFFETTISIST" ToRole="TRASPEFFETTISIST_DOC" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="Self.R_TES_TER" FromRole="TRASPORTOEFFETTISIST" ToRole="TRASPORTOEFFETTIRIENTRO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="TRASPORTOEFFETTISIST" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="UFFICI">
           <Key>
@@ -3961,34 +3853,6 @@
             </Principal>
             <Dependent Role="LOGATTIVITA">
               <PropertyRef Name="IDATTIVITACRUD" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_B_B_D">
-          <End Role="BIGLIETTI" Type="Self.BIGLIETTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BIGLIETTI_DOCUMENTI" Type="Self.BIGLIETTI_DOCUMENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BIGLIETTI">
-              <PropertyRef Name="IDBIGLIETTO" />
-            </Principal>
-            <Dependent Role="BIGLIETTI_DOCUMENTI">
-              <PropertyRef Name="IDBIGLIETTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_B_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="BIGLIETTI_DOCUMENTI" Type="Self.BIGLIETTI_DOCUMENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="BIGLIETTI_DOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4311,34 +4175,6 @@
             </Principal>
             <Dependent Role="LOGATTIVITA">
               <PropertyRef Name="IDUTENTELOGGATO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MAB_MAB_DOC">
-          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAB_DOC" Type="Self.MAB_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
-            </Principal>
-            <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_MAB_DOC">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MAB_DOC" Type="Self.MAB_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4690,34 +4526,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TD_TER_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTIRIENTRO_DOC" Type="Self.TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_TES_D">
-          <End Role="TIPODOCUMENTI" Type="Self.TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTISIST_DOC" Type="Self.TRASPEFFETTISIST_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTISIST_DOC">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TE_TV">
           <End Role="TIPOELABORAZIONE" Type="Self.TIPOELABORAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4816,34 +4624,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TER_TER_D">
-          <End Role="TRASPORTOEFFETTIRIENTRO" Type="Self.TRASPORTOEFFETTIRIENTRO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTIRIENTRO_DOC" Type="Self.TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASPORTOEFFETTIRIENTRO">
-              <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
-              <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TES_TES_D">
-          <End Role="TRASPORTOEFFETTISIST" Type="Self.TRASPORTOEFFETTISIST" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPEFFETTISIST_DOC" Type="Self.TRASPEFFETTISIST_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASPORTOEFFETTISIST">
-              <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTISIST_DOC">
-              <PropertyRef Name="IDTRASPORTOEFFETTISIST" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TES_TER">
           <End Role="TRASPORTOEFFETTISIST" Type="Self.TRASPORTOEFFETTISIST" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4882,7 +4662,6 @@
           <EntitySet Name="ANTICIPI" EntityType="Self.ANTICIPI" />
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" />
           <EntitySet Name="BIGLIETTI" EntityType="Self.BIGLIETTI" />
-          <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" />
           <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" />
           <EntitySet Name="COEFFICIENTEFKM" EntityType="Self.COEFFICIENTEFKM" />
           <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" />
@@ -4898,7 +4677,6 @@
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" />
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" />
           <EntitySet Name="MAB_ALIQCONTR" EntityType="Self.MAB_ALIQCONTR" />
-          <EntitySet Name="MAB_DOC" EntityType="Self.MAB_DOC" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="Self.MAGGIORAZIONEABITAZIONE" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" />
@@ -4931,8 +4709,6 @@
           <EntitySet Name="TIPOVOCE" EntityType="Self.TIPOVOCE" />
           <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" />
           <EntitySet Name="TRASPEFFETTIRIEN_COEFFIFKM" EntityType="Self.TRASPEFFETTIRIEN_COEFFIFKM" />
-          <EntitySet Name="TRASPEFFETTIRIENTRO_DOC" EntityType="Self.TRASPEFFETTIRIENTRO_DOC" />
-          <EntitySet Name="TRASPEFFETTISIST_DOC" EntityType="Self.TRASPEFFETTISIST_DOC" />
           <EntitySet Name="TRASPORTOEFFETTIRIENTRO" EntityType="Self.TRASPORTOEFFETTIRIENTRO" />
           <EntitySet Name="TRASPORTOEFFETTISIST" EntityType="Self.TRASPORTOEFFETTISIST" />
           <EntitySet Name="UFFICI" EntityType="Self.UFFICI" />
@@ -4962,14 +4738,6 @@
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_B_B_D" Association="Self.R_B_B_D">
-            <End Role="BIGLIETTI" EntitySet="BIGLIETTI" />
-            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_B_D" Association="Self.R_TD_B_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
           </AssociationSet>
           <AssociationSet Name="R_DIP_CDCG" Association="Self.R_DIP_CDCG">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -5062,14 +4830,6 @@
           <AssociationSet Name="R_UL_LA" Association="Self.R_UL_LA">
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_MAB_DOC" Association="Self.R_MAB_MAB_DOC">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_MAB_DOC" Association="Self.R_TD_MAB_DOC">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_MAGANNUALI_MAB" Association="Self.R_MAGANNUALI_MAB">
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
@@ -5171,14 +4931,6 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
-          <AssociationSet Name="R_TD_TER_D" Association="Self.R_TD_TER_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_TES_D" Association="Self.R_TD_TES_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
-          </AssociationSet>
           <AssociationSet Name="R_TE_TV" Association="Self.R_TE_TV">
             <End Role="TIPOELABORAZIONE" EntitySet="TIPOELABORAZIONE" />
             <End Role="TIPOVOCE" EntitySet="TIPOVOCE" />
@@ -5207,14 +4959,6 @@
             <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
             <End Role="TRASPEFFETTIRIEN_COEFFIFKM" EntitySet="TRASPEFFETTIRIEN_COEFFIFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_TER_TER_D" Association="Self.R_TER_TER_D">
-            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
-            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_TES_TES_D" Association="Self.R_TES_TES_D">
-            <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
-            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
-          </AssociationSet>
           <AssociationSet Name="R_TES_TER" Association="Self.R_TES_TER">
             <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
             <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
@@ -5238,22 +4982,6 @@
           <AssociationSet Name="R_F_ADF" Association="DBISEPRO.R_F_ADF">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_B_D" Association="DBISEPRO.R_D_B_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="BIGLIETTI_DOCUMENTI" EntitySet="BIGLIETTI_DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_MAB_DOC" Association="DBISEPRO.R_D_MAB_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAB_DOC" EntitySet="MAB_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_TER_D" Association="DBISEPRO.R_D_TER_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPEFFETTIRIENTRO_DOC" EntitySet="TRASPEFFETTIRIENTRO_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_TES_D" Association="DBISEPRO.R_D_TES_D">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPEFFETTISIST_DOC" EntitySet="TRASPEFFETTISIST_DOC" />
           </AssociationSet>
           <AssociationSet Name="CONIUGE_DOC" Association="DBISEPRO.CONIUGE_DOC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -5352,6 +5080,26 @@
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
+          <AssociationSet Name="R_TD_D" Association="DBISEPRO.R_TD_D">
+            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="BIGLIETTI_DOCUMENTI" Association="DBISEPRO.BIGLIETTI_DOCUMENTI">
+            <End Role="BIGLIETTI" EntitySet="BIGLIETTI" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="TRASPEFFETTIRIENTRO_DOC" Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="TRASPEFFETTISIST_DOC" Association="DBISEPRO.TRASPEFFETTISIST_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ALTRIDATIFAM">
           <Key>
@@ -5394,15 +5142,17 @@
           <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="BIGLIETTI_DOCUMENTI" Relationship="DBISEPRO.R_D_B_D" FromRole="DOCUMENTI" ToRole="BIGLIETTI_DOCUMENTI" />
-          <NavigationProperty Name="MAB_DOC" Relationship="DBISEPRO.R_D_MAB_DOC" FromRole="DOCUMENTI" ToRole="MAB_DOC" />
-          <NavigationProperty Name="TRASPEFFETTIRIENTRO_DOC" Relationship="DBISEPRO.R_D_TER_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTIRIENTRO_DOC" />
-          <NavigationProperty Name="TRASPEFFETTISIST_DOC" Relationship="DBISEPRO.R_D_TES_D" FromRole="DOCUMENTI" ToRole="TRASPEFFETTISIST_DOC" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="PASSAPORTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
+          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
+          <NavigationProperty Name="BIGLIETTI" Relationship="DBISEPRO.BIGLIETTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="BIGLIETTI" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTIRIENTRO" />
+          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTISIST" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -5442,62 +5192,6 @@
             </Principal>
             <Dependent Role="ALTRIDATIFAM">
               <PropertyRef Name="IDFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_B_D">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.BIGLIETTI_DOCUMENTI" Role="BIGLIETTI_DOCUMENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="BIGLIETTI_DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_MAB_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAB_DOC" Role="MAB_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="MAB_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_TER_D">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" Role="TRASPEFFETTIRIENTRO_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTIRIENTRO_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_TES_D">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASPEFFETTISIST_DOC" Role="TRASPEFFETTISIST_DOC" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DOCUMENTI">
-              <PropertyRef Name="IDDOCUMENTO" />
-            </Principal>
-            <Dependent Role="TRASPEFFETTISIST_DOC">
-              <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5773,6 +5467,36 @@
           <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
+        <Association Name="R_TD_D">
+          <End Type="DBISEPRO.TIPODOCUMENTI" Role="TIPODOCUMENTI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPODOCUMENTI">
+              <PropertyRef Name="IDTIPODOCUMENTO" />
+            </Principal>
+            <Dependent Role="DOCUMENTI">
+              <PropertyRef Name="IDTIPODOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BIGLIETTI_DOCUMENTI">
+          <End Type="DBISEPRO.BIGLIETTI" Role="BIGLIETTI" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASPEFFETTIRIENTRO_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASPORTOEFFETTIRIENTRO" Role="TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASPEFFETTISIST_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASPORTOEFFETTISIST" Role="TRASPORTOEFFETTISIST" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5830,15 +5554,6 @@
                 <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
                 <ScalarProperty Name="PERSONALE" ColumnName="PERSONALE" />
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BIGLIETTI_DOCUMENTI">
-            <EntityTypeMapping TypeName="DBISEPRO.BIGLIETTI_DOCUMENTI">
-              <MappingFragment StoreEntitySet="BIGLIETTI_DOCUMENTI">
-                <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6025,15 +5740,6 @@
               <MappingFragment StoreEntitySet="MAB_ALIQCONTR">
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MAB_DOC">
-            <EntityTypeMapping TypeName="DBISEPRO.MAB_DOC">
-              <MappingFragment StoreEntitySet="MAB_DOC">
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6404,24 +6110,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TRASPEFFETTIRIENTRO_DOC">
-            <EntityTypeMapping TypeName="DBISEPRO.TRASPEFFETTIRIENTRO_DOC">
-              <MappingFragment StoreEntitySet="TRASPEFFETTIRIENTRO_DOC">
-                <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TRASPEFFETTISIST_DOC">
-            <EntityTypeMapping TypeName="DBISEPRO.TRASPEFFETTISIST_DOC">
-              <MappingFragment StoreEntitySet="TRASPEFFETTISIST_DOC">
-                <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTIRIENTRO">
             <EntityTypeMapping TypeName="DBISEPRO.TRASPORTOEFFETTIRIENTRO">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTIRIENTRO">
@@ -6520,6 +6208,7 @@
           <EntitySetMapping Name="DOCUMENTI">
             <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
               <MappingFragment StoreEntitySet="DOCUMENTI">
+                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
                 <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
                 <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
                 <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
@@ -6756,6 +6445,38 @@
             </EndProperty>
             <EndProperty Name="MAGGIORAZIONEFIGLI">
               <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="BIGLIETTI_DOCUMENTI" TypeName="DBISEPRO.BIGLIETTI_DOCUMENTI" StoreEntitySet="BIGLIETTI_DOCUMENTI">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="BIGLIETTI">
+              <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_DOC" TypeName="DBISEPRO.MAB_DOC" StoreEntitySet="MAB_DOC">
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TRASPEFFETTIRIENTRO_DOC" TypeName="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" StoreEntitySet="TRASPEFFETTIRIENTRO_DOC">
+            <EndProperty Name="TRASPORTOEFFETTIRIENTRO">
+              <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TRASPEFFETTISIST_DOC" TypeName="DBISEPRO.TRASPEFFETTISIST_DOC" StoreEntitySet="TRASPEFFETTISIST_DOC">
+            <EndProperty Name="TRASPORTOEFFETTISIST">
+              <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

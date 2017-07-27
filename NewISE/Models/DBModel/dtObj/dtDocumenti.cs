@@ -2,6 +2,7 @@
 using NewISE.Models.Tools;
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -29,8 +30,9 @@ namespace NewISE.Models.DBModel.dtObj
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
-                        NomeDocumento = d.NOMEDOCUMENTO,
-                        Estensione = d.ESTENSIONE,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                         file = f
                     };
 
@@ -57,8 +59,9 @@ namespace NewISE.Models.DBModel.dtObj
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
-                        NomeDocumento = d.NOMEDOCUMENTO,
-                        Estensione = d.ESTENSIONE,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                         file = f
                     };
 
@@ -86,8 +89,9 @@ namespace NewISE.Models.DBModel.dtObj
                 dm = new DocumentiModel()
                 {
                     idDocumenti = d.IDDOCUMENTO,
-                    NomeDocumento = d.NOMEDOCUMENTO,
-                    Estensione = d.ESTENSIONE,
+                    nomeDocumento = d.NOMEDOCUMENTO,
+                    estensione = d.ESTENSIONE,
+                    tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                     file = f
                 };
             }
@@ -148,8 +152,9 @@ namespace NewISE.Models.DBModel.dtObj
                 dm = new DocumentiModel()
                 {
                     idDocumenti = d.IDDOCUMENTO,
-                    NomeDocumento = d.NOMEDOCUMENTO,
-                    Estensione = d.ESTENSIONE,
+                    nomeDocumento = d.NOMEDOCUMENTO,
+                    estensione = d.ESTENSIONE,
+                    tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                     file = f
                 };
             }
@@ -174,8 +179,9 @@ namespace NewISE.Models.DBModel.dtObj
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
-                        NomeDocumento = d.NOMEDOCUMENTO,
-                        Estensione = d.ESTENSIONE,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                         file = f
                     };
                 }
@@ -201,8 +207,9 @@ namespace NewISE.Models.DBModel.dtObj
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
-                        NomeDocumento = d.NOMEDOCUMENTO,
-                        Estensione = d.ESTENSIONE,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO
                         //file = f
                     };
                 }
@@ -220,11 +227,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (d != null && d.IDDOCUMENTO > 0)
                 {
+
                     dm = new DocumentiModel()
                     {
                         idDocumenti = d.IDDOCUMENTO,
-                        NomeDocumento = d.NOMEDOCUMENTO,
-                        Estensione = d.ESTENSIONE,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                         //file = f
                     };
                 }
@@ -270,8 +279,9 @@ namespace NewISE.Models.DBModel.dtObj
             DOCUMENTI d = new DOCUMENTI();
             dm.file.InputStream.CopyTo(ms);
 
-            d.NOMEDOCUMENTO = dm.NomeDocumento;
-            d.ESTENSIONE = dm.Estensione;
+            d.NOMEDOCUMENTO = dm.nomeDocumento;
+            d.ESTENSIONE = dm.estensione;
+            d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
             d.FILEDOCUMENTO = ms.ToArray();
 
             db.DOCUMENTI.Add(d);
@@ -293,24 +303,31 @@ namespace NewISE.Models.DBModel.dtObj
             if (ld.Count > 0)
             {
                 d = ld.First();
-                d.NOMEDOCUMENTO = dm.NomeDocumento;
-                d.ESTENSIONE = dm.Estensione;
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
                 d.FILEDOCUMENTO = ms.ToArray();
 
-                db.SaveChanges();
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, idTrasferimento, dm.idDocumenti);
+                }
 
-                dm.idDocumenti = d.IDDOCUMENTO;
+
             }
             else
             {
-                d.NOMEDOCUMENTO = dm.NomeDocumento;
-                d.ESTENSIONE = dm.Estensione;
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 ld.Add(d);
 
                 if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, idTrasferimento, dm.idDocumenti);
                 }
             }
         }

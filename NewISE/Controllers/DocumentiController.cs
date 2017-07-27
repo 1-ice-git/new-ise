@@ -34,12 +34,12 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public JsonResult InserisciLetteraTrasferimento(decimal idTrasferimento, string protocolloLettera, DateTime dataLettera, HttpPostedFileBase file)
         {
-            
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
-                    
+
                     db.Database.BeginTransaction();
 
                     if (idTrasferimento <= 0)
@@ -73,7 +73,8 @@ namespace NewISE.Controllers
                             bool gestisceEstensioni = false;
                             bool dimensioneConsentita = false;
                             string dimensioneMaxConsentita = string.Empty;
-                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni, out dimensioneConsentita, out dimensioneMaxConsentita);
+
+                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni, out dimensioneConsentita, out dimensioneMaxConsentita, EnumTipoDoc.LetteraTrasferimento);
 
                             if (esisteFile)
                             {
@@ -86,12 +87,12 @@ namespace NewISE.Controllers
                                 {
                                     dtd.SetLetteraTrasferimento(ref dm, trm.idTrasferimento, db);
                                     //trm.Documento = dm;
-                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, trm.idTrasferimento, dm.idDocumenti);
-                                    
+                                    //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, trm.idTrasferimento, dm.idDocumenti);
+
                                 }
                                 else
                                 {
-                                    throw new Exception("Il documento selezionato supera la dimensione massima consentita (" + dimensioneMaxConsentita + " Mb)." );
+                                    throw new Exception("Il documento selezionato supera la dimensione massima consentita (" + dimensioneMaxConsentita + " Mb).");
                                 }
                             }
                             else
@@ -111,7 +112,7 @@ namespace NewISE.Controllers
                 }
             }
 
-            
+
 
             //using (dtDocumenti dtd = new dtDocumenti())
             //{
@@ -196,42 +197,42 @@ namespace NewISE.Controllers
         }
 
         // GET: Documenti
-        public ActionResult NuovoDocumento(EnumDestinazioneDocumento destdoc, object dati)
-        {
-            switch (destdoc)
-            {
-                case EnumDestinazioneDocumento.TrasportoEffettiSistemazione:
-                    break;
+        //public ActionResult NuovoDocumento(EnumDestinazioneDocumento destdoc, object dati)
+        //{
+        //    switch (destdoc)
+        //    {
+        //        case EnumDestinazioneDocumento.TrasportoEffettiSistemazione:
+        //            break;
 
-                case EnumDestinazioneDocumento.MaggiorazioneAbitazione:
-                    break;
+        //        case EnumDestinazioneDocumento.MaggiorazioneAbitazione:
+        //            break;
 
-                case EnumDestinazioneDocumento.NormaCalcolo:
-                    break;
+        //        case EnumDestinazioneDocumento.NormaCalcolo:
+        //            break;
 
-                case EnumDestinazioneDocumento.TrasportoEffettiRientro:
-                    break;
+        //        case EnumDestinazioneDocumento.TrasportoEffettiRientro:
+        //            break;
 
-                case EnumDestinazioneDocumento.Trasferimento:
-                    ViewBag.TrasferimentoModel = dati;
-                    break;
+        //        case EnumDestinazioneDocumento.Trasferimento:
+        //            ViewBag.TrasferimentoModel = dati;
+        //            break;
 
-                case EnumDestinazioneDocumento.MaggiorazioniFamiliari:
-                    break;
+        //        case EnumDestinazioneDocumento.MaggiorazioniFamiliari:
+        //            break;
 
-                case EnumDestinazioneDocumento.Biglietti:
-                    break;
+        //        case EnumDestinazioneDocumento.Biglietti:
+        //            break;
 
-                case EnumDestinazioneDocumento.Passaporti:
-                    break;
+        //        case EnumDestinazioneDocumento.Passaporti:
+        //            break;
 
-                default:
-                    break;
-            }
+        //        default:
+        //            break;
+        //    }
 
-            ViewBag.EnumDestinazioneDocumento = destdoc;
-            return PartialView();
-        }
+        //    ViewBag.EnumDestinazioneDocumento = destdoc;
+        //    return PartialView();
+        //}
 
         public JsonResult InserisciDocumento()
         {
@@ -240,29 +241,29 @@ namespace NewISE.Controllers
             return Json(dm);
         }
 
-        public ActionResult LeggiDocumento(decimal id)
-        {
-            byte[] Blob;
-            DocumentiModel documento = new DocumentiModel();
+        //public ActionResult LeggiDocumento(decimal id)
+        //{
+        //    byte[] Blob;
+        //    DocumentiModel documento = new DocumentiModel();
 
-            using (dtDocumenti dtd = new dtDocumenti())
-            {
-                documento = dtd.GetDatiDocumentoById(id);
-                Blob = dtd.GetDocumentoByteById(id);
+        //    using (dtDocumenti dtd = new dtDocumenti())
+        //    {
+        //        documento = dtd.GetDatiDocumentoById(id);
+        //        Blob = dtd.GetDocumentoByteById(id);
 
-                Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.Estensione.ToLower() + ";");
+        //        Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.Estensione.ToLower() + ";");
 
-                switch (documento.Estensione.ToLower())
-                {
-                    case ".pdf":
-                        return File(Blob, "application/pdf");
-                        break;
+        //        switch (documento.Estensione.ToLower())
+        //        {
+        //            case ".pdf":
+        //                return File(Blob, "application/pdf");
+        //                break;
 
-                    default:
-                        return File(Blob, "application/pdf");
-                        break;
-                }
-            }
-        }
+        //            default:
+        //                return File(Blob, "application/pdf");
+        //                break;
+        //        }
+        //    }
+        //}
     }
 }

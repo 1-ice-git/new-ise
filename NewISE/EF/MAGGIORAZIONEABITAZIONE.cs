@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEABITAZIONE()
         {
-            this.MAB_DOC = new HashSet<MAB_DOC>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDMAB { get; set; }
@@ -37,12 +37,12 @@ namespace NewISE.EF
         public decimal IDLIVDIPENDENTE { get; set; }
     
         public virtual LIVELLIDIPENDENTI LIVELLIDIPENDENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAB_DOC> MAB_DOC { get; set; }
         public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
         public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
         public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TFR TFR { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

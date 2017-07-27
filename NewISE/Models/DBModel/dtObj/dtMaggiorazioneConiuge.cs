@@ -2,6 +2,7 @@
 using NewISE.Models.ViewModel;
 using System;
 using System.Linq;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -189,6 +190,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 mcm.idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE;
                 mcm.dataFineValidita = mc.DATAFINEVALIDITA;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  della Maggiorazione Coniuge", "MAGGIORAZIONECONIUGE", db, mcm.idTrasferimento, mc.IDMAGGIORAZIONECONIUGE);
             }
         }
     }

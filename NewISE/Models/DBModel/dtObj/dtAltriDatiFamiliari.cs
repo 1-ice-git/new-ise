@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using NewISE.EF;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -17,6 +18,8 @@ namespace NewISE.Models.DBModel.dtObj
         /// <exception cref="Exception"></exception>
         public void EditAltriDatiFamiliari(AltriDatiFamModel adfm)
         {
+            string vConiugeFiglio = string.Empty;
+
             using (var db = new ModelDBISE())
             {
                 db.Database.BeginTransaction();
@@ -28,8 +31,25 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         adf.ANNULLATO = true;
 
+
+
                         if (db.SaveChanges() > 0)
                         {
+                            decimal idTrasf = 0;
+
+                            if (adf.IDMAGGIORAZIONECONIUGE != null && adf.IDMAGGIORAZIONECONIUGE > 0)
+                            {
+                                idTrasf = adf.CONIUGE.MAGGIORAZIONECONIUGE.IDTRASFERIMENTO;
+                                vConiugeFiglio = "Coniuge";
+                            }
+                            else if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
+                            {
+                                idTrasf = adf.FIGLI.MAGGIORAZIONEFIGLI.IDTRASFERIMENTO;
+                                vConiugeFiglio = "Figlio";
+                            }
+
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+
                             if (adfm.dataNascita != null)
                             {
                                 var adfNew = new ALTRIDATIFAM
@@ -53,6 +73,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (db.SaveChanges() > 0)
                                 {
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 else
@@ -94,7 +115,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var adf = new ALTRIDATIFAM
                 {
-                    IDALTRIDATIFAM = adfm.idAltriDatiFam,
+                    //IDALTRIDATIFAM = adfm.idAltriDatiFam,
                     IDMAGGIORAZIONECONIUGE = adfm.idMaggiorazioneConiuge,
                     DATANASCITA = adfm.dataNascita.Value,
                     CAPNASCITA = adfm.capNascita,
@@ -111,7 +132,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                 db.CONIUGE.Find(adfm.idMaggiorazioneConiuge).ALTRIDATIFAM.Add(adf);
 
-                db.SaveChanges();
+                if (db.SaveChanges() > 0)
+                {
+                    decimal idTrasf = db.MAGGIORAZIONECONIUGE.Find(adfm.idMaggiorazioneConiuge).IDTRASFERIMENTO;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+                }
             }
         }
 
@@ -124,7 +150,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var adf = new ALTRIDATIFAM
                 {
-                    IDALTRIDATIFAM = adfm.idAltriDatiFam,
+                    //IDALTRIDATIFAM = adfm.idAltriDatiFam,
                     IDFIGLI = adfm.idFigli,
                     DATANASCITA = adfm.dataNascita.Value,
                     CAPNASCITA = adfm.capNascita,
@@ -141,7 +167,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 db.FIGLI.Find(adfm.idFigli).ALTRIDATIFAM.Add(adf);
 
-                db.SaveChanges();
+                if (db.SaveChanges() > 0)
+                {
+                    decimal idTrasf = db.FIGLI.Find(adfm.idFigli).MAGGIORAZIONEFIGLI.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Figli).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+                }
             }
         }
 

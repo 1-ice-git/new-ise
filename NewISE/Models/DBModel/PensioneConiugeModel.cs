@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel
 {
@@ -52,7 +53,12 @@ namespace NewISE.Models.DBModel
             {
                 pc.ANNULLATO = true;
 
-                db.SaveChanges();
+                if (db.SaveChanges() > 0)
+                {
+                    decimal idTrasf = pc.MAGGIORAZIONECONIUGE.First(a => a.ANNULLATO == false).IDTRASFERIMENTO;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, pc.IDPENSIONE);
+                }
             }
         }
 

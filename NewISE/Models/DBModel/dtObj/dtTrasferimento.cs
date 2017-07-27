@@ -21,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        
+
 
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
@@ -251,7 +251,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataLettera = t.DATALETTERA,
                             notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                             dataAggiornamento = t.DATAAGGIORNAMENTO,
-                            annullato = t.ANNULLATO            
+                            annullato = t.ANNULLATO
                         };
                     }
                 }
@@ -264,7 +264,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             TrasferimentoModel tm = new TrasferimentoModel();
             int matr = Convert.ToInt16(matricola);
-            
+
 
             try
             {
@@ -280,7 +280,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
 
-                                                        
+
                             tm = new TrasferimentoModel()
                             {
                                 idTrasferimento = t.IDTRASFERIMENTO,
@@ -296,7 +296,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataLettera = t.DATALETTERA,
                                 notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                                 dataAggiornamento = t.DATAAGGIORNAMENTO,
-                                annullato = t.ANNULLATO,                                
+                                annullato = t.ANNULLATO,
                                 StatoTrasferimento = new StatoTrasferimentoModel()
                                 {
                                     idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
@@ -490,7 +490,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void SetTrasferimento(ref TrasferimentoModel trm, ModelDBISE db)
         {
             TRASFERIMENTO tr;
-            
+
             tr = new TRASFERIMENTO()
             {
                 IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
@@ -512,7 +512,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             int i = db.SaveChanges();
 
-            
+
             if (i > 0)
             {
                 trm.idTrasferimento = tr.IDTRASFERIMENTO;
@@ -520,13 +520,13 @@ namespace NewISE.Models.DBModel.dtObj
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo trasferimento.", "Trasferimento", db, trm.idTrasferimento, trm.idTrasferimento);
             }
 
-            
+
 
         }
 
         public void EditTrasferimento(TrasferimentoModel trm)
         {
-            using (ModelDBISE db=new ModelDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
@@ -545,15 +545,15 @@ namespace NewISE.Models.DBModel.dtObj
                     tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
                     tr.ANNULLATO = trm.annullato;
 
-                    if(db.SaveChanges() > 0)
+                    if (db.SaveChanges() > 0)
                     {
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
                     }
 
-                   
+
                 }
             }
-            
+
         }
 
         public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
@@ -575,17 +575,10 @@ namespace NewISE.Models.DBModel.dtObj
                 tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
                 tr.ANNULLATO = trm.annullato;
 
-                db.SaveChanges();
-                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
-
-                //if(db.SaveChanges() > 0)
-                //{
-                //    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
-                //}
-                //else
-                //{
-                //    throw new Exception("Modifica del trasferimento non effettuato.");
-                //}
+                if (db.SaveChanges() > 0)
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                }
 
             }
         }
@@ -617,17 +610,17 @@ namespace NewISE.Models.DBModel.dtObj
                         annullato = tr.ANNULLATO
                     };
                 }
-                
+
             }
 
-             return trm;
+            return trm;
 
         }
 
         public TrasferimentoModel GetSoloTrasferimentoById(decimal idTrasferimento, ModelDBISE db)
         {
             TrasferimentoModel trm = new TrasferimentoModel();
-            
+
             var tr = db.TRASFERIMENTO.Find(idTrasferimento);
             if (tr != null && tr.IDTRASFERIMENTO > 0)
             {
@@ -648,7 +641,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataAggiornamento = tr.DATAAGGIORNAMENTO,
                     annullato = tr.ANNULLATO
                 };
-            }            
+            }
 
             return trm;
 
@@ -737,7 +730,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var tr = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                if (tr != null && tr.IDTRASFERIMENTO > 0 )
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
                 {
                     tr.NOTIFICATRASFERIMENTO = true;
 
@@ -762,6 +755,6 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
-        
+
     }
 }

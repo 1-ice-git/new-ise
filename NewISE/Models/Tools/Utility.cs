@@ -141,7 +141,7 @@ namespace NewISE.Models.Tools
                 dtla.SetLogAttivita(lam, db);
             }
         }
-        public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento)
+        public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, EnumTipoDoc tipoDoc)
         {
 
             dm = new DocumentiModel();
@@ -175,8 +175,9 @@ namespace NewISE.Models.Tools
 
                     if (file.ContentLength / 1024 <= Convert.ToInt32(keyDimensioneDocumento))
                     {
-                        dm.NomeDocumento = nomeFileNoEstensione;
-                        dm.Estensione = estensione;
+                        dm.nomeDocumento = nomeFileNoEstensione;
+                        dm.estensione = estensione;
+                        dm.tipoDocumento = tipoDoc;
                         dm.file = file;
 
                         dimensioneConsentita = true;

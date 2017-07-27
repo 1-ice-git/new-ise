@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -199,7 +200,6 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
 
-
                     lpcmInteressati = PrelevaMovimentiInteressati(pcm, db).OrderBy(a => a.dataInizioValidita).ToList();
 
                     if (lpcmInteressati != null && lpcmInteressati.Count > 0)
@@ -343,6 +343,11 @@ namespace NewISE.Models.DBModel.dtObj
                 if (db.SaveChanges() > 0)
                 {
                     pcm.idPensioneConiuge = pc.IDPENSIONE;
+
+                    decimal idTrasferimento =
+                        pc.MAGGIORAZIONECONIUGE.First(a => a.ANNULLATO == false).IDTRASFERIMENTO;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo pensione", "PENSIONE", db, idTrasferimento, pc.IDPENSIONE);
                 }
             }
             catch (Exception ex)

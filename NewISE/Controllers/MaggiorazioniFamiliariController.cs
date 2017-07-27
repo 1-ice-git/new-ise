@@ -7,6 +7,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using NewISE.EF;
+using NewISE.Models;
+using NewISE.Models.Tools;
 
 namespace NewISE.Controllers
 {
@@ -311,6 +314,7 @@ namespace NewISE.Controllers
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         dtc.EditConiuge(cm);
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del coniuge", "CONIUGE", new ModelDBISE(), idTrasferimento, cm.idMaggiorazioneConiuge);
                     }
                 }
                 else
