@@ -256,11 +256,16 @@
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\ru.js" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\js\i18n\tr.js" />
     <Content Include="bower_components\jquery-modal\customCssModal.css" />
+    <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput-rtl.min.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.css" />
     <Content Include="Content\bootstrap-fileinput\css\fileinput.min.css" />
     <Content Include="Content\bootstrap-fileinput\img\loading-sm.gif" />
     <Content Include="Content\bootstrap-fileinput\img\loading.gif" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.css" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.js" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.min.css" />
+    <Content Include="Content\bootstrap-fileinput\themes\explorer-fa\theme.min.js" />
     <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.css" />
     <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.js" />
     <Content Include="Content\bootstrap-fileinput\themes\explorer\theme.min.css" />
@@ -1478,7 +1483,6 @@
     <Content Include="bower_components\jquery-modal\LICENSE" />
     <Content Include="bower_components\jquery-modal\package.json" />
     <Content Include="bower_components\jquery-modal\README.md" />
-    <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
     <Content Include="bower_components\bootstrap-fileinput\.bower.json" />
     <Content Include="bower_components\bootstrap-fileinput\bower.json" />
     <Content Include="bower_components\bootstrap-fileinput\CHANGE.md" />
@@ -1497,6 +1501,7 @@
     </Content>
     <Content Include="DBComuniItalia\json-schemaComuniItalia.json" />
     <Content Include="DBComuniItalia\jsonComuniItalia.json" />
+    <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1559,6 +1564,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\locales\ar.js" />
+    <Content Include="Scripts\locales\az.js" />
     <Content Include="Scripts\locales\bg.js" />
     <Content Include="Scripts\locales\ca.js" />
     <Content Include="Scripts\locales\cr.js" />
@@ -1993,6 +1999,7 @@
     <Compile Include="Models\ModelRest\RetDipendentiJson.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\CodiceFiscale.cs" />
+    <Compile Include="Models\Tools\ErrorFileUpload.cs" />
     <Compile Include="Models\Tools\GestioneEmail.cs" />
     <Compile Include="Models\Tools\CalcoliIndennita.cs" />
     <Compile Include="Models\Tools\MemoryPostedFile.cs" />
@@ -2041,6 +2048,8 @@
     <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaConiuge.cshtml" />
+    <Content Include="Views\Documenti\NuovoDocumento.cshtml" />
+    <Content Include="Views\Documenti\ElencoDocumenti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

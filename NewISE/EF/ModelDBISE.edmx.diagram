@@ -129,15 +129,9 @@
         <AssociationConnector Association="DBISEPRO.FASCIACHILOMETRICA" ManuallyRouted="false" />
         <EntityTypeShape EntityType="DBISEPRO.ALTRIDATIFAM" Width="2.5" PointX="21" PointY="34.125" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="18.75" PointY="22.5" />
-        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.875" PointX="21" PointY="22.125" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="23.25" PointY="28.5" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
         <AssociationConnector Association="DBISEPRO.R_F_ADF" />
-        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
-        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
-        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
-        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
-        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITA" Width="1.5" PointX="11.25" PointY="39" />
         <AssociationConnector Association="DBISEPRO.R_T_I" />
         <AssociationConnector Association="DBISEPRO.IND_COEFFICENTESEDE" />
@@ -164,12 +158,17 @@
         <AssociationConnector Association="DBISEPRO.MC_PMC" />
         <AssociationConnector Association="DBISEPRO.MF_IPS" />
         <AssociationConnector Association="DBISEPRO.MF_PMF" />
+        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="22" PointY="23.5" />
         <AssociationConnector Association="DBISEPRO.R_TD_D" />
         <AssociationConnector Association="DBISEPRO.BIGLIETTI_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
+        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.MAB_DOC" />
+        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

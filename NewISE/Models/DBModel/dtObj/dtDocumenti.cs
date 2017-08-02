@@ -1,7 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.Tools;
-
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,33 +16,42 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public DocumentiModel GetDocumentoByIdMagConiuge(decimal idMagConiuge)
+        public IList<DocumentiModel> GetDocumentiByIdMagConiuge(decimal idMagConiuge)
         {
-            DocumentiModel dm = new DocumentiModel();
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.CONIUGE.Find(idMagConiuge).DOCUMENTI.ToList();
                 if (ld != null && ld.Count > 0)
                 {
-                    var d = ld.First();
-                    var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                    dm = new DocumentiModel()
+
+                    foreach (var d in ld)
                     {
-                        idDocumenti = d.IDDOCUMENTO,
-                        nomeDocumento = d.NOMEDOCUMENTO,
-                        estensione = d.ESTENSIONE,
-                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                        file = f
-                    };
+
+
+                        var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
+                        var dm = new DocumentiModel()
+                        {
+                            idDocumenti = d.IDDOCUMENTO,
+                            nomeDocumento = d.NOMEDOCUMENTO,
+                            estensione = d.ESTENSIONE,
+                            tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                            dataInserimento = d.DATAINSERIMENTO,
+                            file = f
+                        };
+
+                        ldm.Add(dm);
+                    }
+
+
 
                 }
 
 
             }
 
-
-            return dm;
+            return ldm;
         }
 
         public DocumentiModel GetDocumentoByIdFiglio(decimal idFiglio)
@@ -92,6 +101,7 @@ namespace NewISE.Models.DBModel.dtObj
                     nomeDocumento = d.NOMEDOCUMENTO,
                     estensione = d.ESTENSIONE,
                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                    dataInserimento = d.DATAINSERIMENTO,
                     file = f
                 };
             }
@@ -155,6 +165,7 @@ namespace NewISE.Models.DBModel.dtObj
                     nomeDocumento = d.NOMEDOCUMENTO,
                     estensione = d.ESTENSIONE,
                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                    dataInserimento = d.DATAINSERIMENTO,
                     file = f
                 };
             }
@@ -182,6 +193,7 @@ namespace NewISE.Models.DBModel.dtObj
                         nomeDocumento = d.NOMEDOCUMENTO,
                         estensione = d.ESTENSIONE,
                         tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        dataInserimento = d.DATAINSERIMENTO,
                         file = f
                     };
                 }
@@ -209,7 +221,8 @@ namespace NewISE.Models.DBModel.dtObj
                         idDocumenti = d.IDDOCUMENTO,
                         nomeDocumento = d.NOMEDOCUMENTO,
                         estensione = d.ESTENSIONE,
-                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        dataInserimento = d.DATAINSERIMENTO,
                         //file = f
                     };
                 }
@@ -234,6 +247,7 @@ namespace NewISE.Models.DBModel.dtObj
                         nomeDocumento = d.NOMEDOCUMENTO,
                         estensione = d.ESTENSIONE,
                         tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        dataInserimento = d.DATAINSERIMENTO,
                         //file = f
                     };
                 }
@@ -281,14 +295,18 @@ namespace NewISE.Models.DBModel.dtObj
 
             d.NOMEDOCUMENTO = dm.nomeDocumento;
             d.ESTENSIONE = dm.estensione;
-            d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
+            d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+            d.DATAINSERIMENTO = dm.dataInserimento;
             d.FILEDOCUMENTO = ms.ToArray();
 
             db.DOCUMENTI.Add(d);
 
-            db.SaveChanges();
+            if (db.SaveChanges() > 0)
+            {
+                dm.idDocumenti = d.IDDOCUMENTO;
+            }
 
-            dm.idDocumenti = d.IDDOCUMENTO;
+
         }
 
         public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
@@ -305,7 +323,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d = ld.First();
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento_Trasferimento5;
+                d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
 
                 if (db.SaveChanges() > 0)
@@ -320,7 +339,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento_Trasferimento5;
+                d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 ld.Add(d);
 
@@ -331,5 +351,62 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+
+        public void AddDocumentoMagFamConiuge(ref DocumentiModel dm, decimal idMaggiorazioneConiuge, ModelDBISE db)
+        {
+            var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
+
+            if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+            {
+                MemoryStream ms = new MemoryStream();
+                DOCUMENTI d = new DOCUMENTI();
+                dm.file.InputStream.CopyTo(ms);
+
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+
+                c.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                }
+            }
+
+
+        }
+
+        public void DeleteDocumento(decimal idDocumento)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var d = db.DOCUMENTI.Find(idDocumento);
+
+                    if (d != null && d.IDDOCUMENTO > 0)
+                    {
+                        db.DOCUMENTI.Remove(d);
+
+                        if (db.SaveChanges() <= 0)
+                        {
+                            throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+
     }
 }

@@ -99,7 +99,7 @@ namespace NewISE.Controllers
                                             using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                                             {
                                                 var adf = dtadf.GetAltriDatiFamiliariConiuge(mcm.idMaggiorazioneConiuge);
-                                                var d = dtd.GetDocumentoByIdMagConiuge(idMagConiuge: mcm.idMaggiorazioneConiuge);
+                                                var ldm = dtd.GetDocumentiByIdMagConiuge(idMagConiuge: mcm.idMaggiorazioneConiuge);
 
                                                 ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                                 {
@@ -112,9 +112,7 @@ namespace NewISE.Controllers
                                                     dataFine = mcm.dataFineValidita,
                                                     parentela = EnumParentela.Coniuge,
                                                     idAltriDati = adf.idAltriDatiFam > 0 ? adf.idAltriDatiFam : 0,
-                                                    Documento = d,
-                                                    idDocumento = d.idDocumenti > 0 ? d.idDocumenti : 0,
-
+                                                    Documenti = ldm,
 
                                                 };
 

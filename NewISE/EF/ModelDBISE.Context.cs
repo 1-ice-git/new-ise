@@ -85,7 +85,6 @@ namespace NewISE.EF
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
-        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<TIPOLOGIACONIUGE> TIPOLOGIACONIUGE { get; set; }
@@ -96,5 +95,6 @@ namespace NewISE.EF
         public virtual DbSet<PENSIONE> PENSIONE { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
+        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

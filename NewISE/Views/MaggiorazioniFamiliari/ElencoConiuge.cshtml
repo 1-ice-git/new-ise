@@ -4,7 +4,9 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
 }
 
-<p style="padding-left:15px;">
+
+
+<p style="padding-left: 15px;">
     @if (Model != null && Model.Any())
     {
         @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioneConiuge = Model.First().id, idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
@@ -15,32 +17,31 @@
     }
 
 </p>
-<div style="padding-left:15px; padding-right:5px; padding-top:10px;">
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
 
     <table id="tabElencoConiuge" cellspacing="0">
         <thead>
             <tr>
-
                 <th>
                     @Html.DisplayNameFor(model => model.Nominativo)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.CodiceFiscale)
                 </th>
-                <th style="text-align:center;">
+                <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.dataInizio)
                 </th>
-                <th style="text-align:center;">
+                <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
-                <th style="text-align:center;">
+                <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.HasPensione)
                 </th>
-                <th style="text-align:center;">
+                <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
                 <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.idDocumento)
+                    @Html.DisplayNameFor(model => model.Documenti)
                 </th>
             </tr>
         </thead>
@@ -55,47 +56,59 @@
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
                     </td>
-                    <td style="text-align:center;">
+                    <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    <td style="text-align:center;">
+                    <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.dataFine)
                     </td>
                     @if (item.HasPensione)
-                    {
-                        <td style="text-align:center;">
-                            <a href="#" onclick="Pensione(@item.id);"><img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" /></a>
+                {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" Pensione(@item.id); ">
+                                <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
+                            </a>
                         </td>
                     }
                     else
                     {
-                        <td style="text-align:center;">
-                            <a href="#" onclick="Pensione(@item.id);"><img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" /></a>
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" Pensione(@item.id); ">
+                                <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
+                            </a>
                         </td>
                     }
                     @if (item.idAltriDati > 0)
-                    {
-                        <td style="text-align:center;">
-                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" /></a>
+                {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                                <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
+                            </a>
                         </td>
                     }
                     else
                     {
-                        <td style="text-align:center;">
-                            <a href="#" onclick="AltriDatiFamiliari(@item.id);"><img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" /></a>
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                                <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
+                            </a>
                         </td>
                     }
 
-                    @if (item.idDocumento > 0)
+                    @if (item.Documenti.Any())
                     {
-                        <td style="text-align:center;">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" title="Documenti" />
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" ElencoDocumenti(@item.id, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @idTrasferimento ) ">
+                                <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                            </a>
                         </td>
                     }
                     else
                     {
-                        <td style="text-align:center;">
-                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" ElencoDocumenti(@item.id, 10, @idTrasferimento ) ">
+                                <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
+                            </a>
                         </td>
                     }
 
@@ -105,6 +118,27 @@
     </table>
 </div>
 
+@*<div class="modal fade " id="DocModal" tabindex="-1" role="dialog" aria-labelledby="DocModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Documenti</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <p id="viewDocumento">
+                        <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btUpload" type="button" class="btn btn-info" onclick="">Salva</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
 <script type="text/javascript">
 
     $("#tabElencoConiuge").DataTable({
@@ -228,4 +262,112 @@
         });
 
     }
+
+    function DocumentoConiuge(idMagConiuge) {
+        //debugger;
+        var rotta = "/Documenti/NuovoDocumento";
+        var TipoDocumento = 10 //Equivale a documento familiare (Coniuge)
+
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { tipoDoc: TipoDocumento, id: idMagConiuge },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function ElencoDocumenti(id, tipoDoc, idTrasferimento) {
+        //debugger;
+        var rotta = "/Documenti/ElencoDocumenti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { id: id, tipoDoc: tipoDoc, idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+
+    //   function DocumentoModal() {
+    //    //debugger;
+    //    var rotta = "/Documenti/LetteraDiTrasferimento";
+    //    var idTrasferimento = parseInt($("#idTrasferimento").val());
+
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST", //Le info testuali saranno passate in POST
+    //        data: { idTrasferimento: idTrasferimento },
+    //        dataType: 'html',
+    //        async: false,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            VerificaAutenticazione();
+    //            $('#inviaDocModal').modal('show');
+    //            //Blocca();
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            $("#viewDocumento").empty();
+    //            $("#viewDocumento").html(result);
+
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
+
+    //}
 </script>

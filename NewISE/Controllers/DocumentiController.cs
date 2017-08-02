@@ -4,13 +4,45 @@ using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.EnterpriseServices.Internal;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Web.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace NewISE.Controllers
 {
     public class DocumentiController : Controller
     {
+
+        public ActionResult LeggiDocumento(decimal id)
+        {
+            byte[] Blob;
+            DocumentiModel documento = new DocumentiModel();
+
+            using (dtDocumenti dtd = new dtDocumenti())
+            {
+                documento = dtd.GetDatiDocumentoById(id);
+                Blob = dtd.GetDocumentoByteById(id);
+
+                Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.estensione.ToLower() + ";");
+
+                switch (documento.estensione.ToLower())
+                {
+                    case ".pdf":
+                        return File(Blob, "application/pdf");
+                    default:
+                        return File(Blob, "application/pdf");
+                }
+            }
+        }
+
+
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult LetteraDiTrasferimento(decimal idTrasferimento)
@@ -27,19 +59,20 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
+
+
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post)]
-        public JsonResult InserisciLetteraTrasferimento(decimal idTrasferimento, string protocolloLettera, DateTime dataLettera, HttpPostedFileBase file)
+        public JsonResult InserisciLetteraTrasferimento(decimal idTrasferimento, string protocolloLettera,
+            DateTime dataLettera, HttpPostedFileBase file)
         {
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
-
                     db.Database.BeginTransaction();
 
                     if (idTrasferimento <= 0)
@@ -74,13 +107,16 @@ namespace NewISE.Controllers
                             bool dimensioneConsentita = false;
                             string dimensioneMaxConsentita = string.Empty;
 
-                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni, out dimensioneConsentita, out dimensioneMaxConsentita, EnumTipoDoc.LetteraTrasferimento);
+                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                                out dimensioneConsentita, out dimensioneMaxConsentita,
+                                EnumTipoDoc.LetteraTrasferimento_Trasferimento5);
 
                             if (esisteFile)
                             {
                                 if (gestisceEstensioni == false)
                                 {
-                                    throw new Exception("Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                    throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
                                 }
 
                                 if (dimensioneConsentita)
@@ -88,11 +124,12 @@ namespace NewISE.Controllers
                                     dtd.SetLetteraTrasferimento(ref dm, trm.idTrasferimento, db);
                                     //trm.Documento = dm;
                                     //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, trm.idTrasferimento, dm.idDocumenti);
-
                                 }
                                 else
                                 {
-                                    throw new Exception("Il documento selezionato supera la dimensione massima consentita (" + dimensioneMaxConsentita + " Mb).");
+                                    throw new Exception(
+                                        "Il documento selezionato supera la dimensione massima consentita (" +
+                                        dimensioneMaxConsentita + " Mb).");
                                 }
                             }
                             else
@@ -111,159 +148,304 @@ namespace NewISE.Controllers
                     return Json(new { err = ex.Message });
                 }
             }
-
-
-
-            //using (dtDocumenti dtd = new dtDocumenti())
-            //{
-            //    DocumentiModel dm = new DocumentiModel();
-            //    bool esisteFile = false;
-            //    bool gestisceEstensioni = false;
-            //    bool dimensioneConsentita = false;
-
-            //    Utility.PreSetDocumento(trm.file, out dm, out esisteFile, out gestisceEstensioni, out dimensioneConsentita);
-
-            //    if (esisteFile)
-            //    {
-            //        if (gestisceEstensioni == false)
-            //        {
-            //            var lTipoTrasferimento = new List<SelectListItem>();
-            //            var lUffici = new List<SelectListItem>();
-            //            var lRuoloUfficio = new List<SelectListItem>();
-            //            var lTipologiaCoan = new List<SelectListItem>();
-
-            //            ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
-
-            //            ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
-            //            ViewBag.ListUfficio = lUffici;
-            //            ViewBag.ListRuolo = lRuoloUfficio;
-            //            ViewBag.ListTipoCoan = lTipologiaCoan;
-
-            //            ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-            //            ViewBag.Matricola = matricola;
-
-            //            using (dtDipendenti dtd2 = new dtDipendenti())
-            //            {
-            //                var d = dtd2.GetDipendenteByMatricola(Convert.ToInt16(matricola));
-            //                ViewBag.Dipendente = d;
-            //            }
-
-            //            //ViewBag.Modifica = modifica;
-
-            //            ModelState.AddModelError("file", "Il documento selezionato non è nel formato consentito. \n Il formato supportato è: pdf.");
-
-            //            return PartialView("NuovoTrasferimento", trm);
-            //        }
-
-            //        if (dimensioneConsentita)
-            //        {
-            //            dtd.SetLetteraTrasferimento(ref dm, trm.idTrasferimento, db);
-
-            //            trm.Documento = dm;
-
-            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (lettera di trasferimento).", "Documenti", db, trm.idTrasferimento, dm.idDocumenti);
-            //        }
-            //        else
-            //        {
-            //            var lTipoTrasferimento = new List<SelectListItem>();
-            //            var lUffici = new List<SelectListItem>();
-            //            var lRuoloUfficio = new List<SelectListItem>();
-            //            var lTipologiaCoan = new List<SelectListItem>();
-
-            //            ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
-
-            //            ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
-            //            ViewBag.ListUfficio = lUffici;
-            //            ViewBag.ListRuolo = lRuoloUfficio;
-            //            ViewBag.ListTipoCoan = lTipologiaCoan;
-
-            //            ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-            //            ViewBag.Matricola = matricola;
-
-            //            using (dtDipendenti dtd2 = new dtDipendenti())
-            //            {
-            //                var d = dtd2.GetDipendenteByMatricola(Convert.ToInt16(matricola));
-            //                ViewBag.Dipendente = d;
-            //            }
-
-            //            //ViewBag.Modifica = modifica;
-
-            //            ModelState.AddModelError("file", "Il documento selezionato supera la dimensione massima consentita. \n Consentiti 5 MB.");
-
-            //            return PartialView("NuovoTrasferimento", trm);
-            //        }
-            //    }
-            //}
         }
 
-        // GET: Documenti
-        //public ActionResult NuovoDocumento(EnumDestinazioneDocumento destdoc, object dati)
-        //{
-        //    switch (destdoc)
-        //    {
-        //        case EnumDestinazioneDocumento.TrasportoEffettiSistemazione:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.MaggiorazioneAbitazione:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.NormaCalcolo:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.TrasportoEffettiRientro:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.Trasferimento:
-        //            ViewBag.TrasferimentoModel = dati;
-        //            break;
-
-        //        case EnumDestinazioneDocumento.MaggiorazioniFamiliari:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.Biglietti:
-        //            break;
-
-        //        case EnumDestinazioneDocumento.Passaporti:
-        //            break;
-
-        //        default:
-        //            break;
-        //    }
-
-        //    ViewBag.EnumDestinazioneDocumento = destdoc;
-        //    return PartialView();
-        //}
-
-        public JsonResult InserisciDocumento()
+        [HttpPost]
+        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id)
         {
-            DocumentiModel dm = new DocumentiModel();
+            string titoloPagina = string.Empty;
+            decimal idTrasferimento = 0;
 
-            return Json(dm);
+
+            switch (tipoDoc)
+            {
+                case EnumTipoDoc.CartaImbarco_Viaggi1:
+                    titoloPagina = "Viaggi - Carta d'imbarco";
+                    break;
+                case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                    titoloPagina = "Viaggi - Titolo viaggio";
+                    break;
+                case EnumTipoDoc.PrimaRataMab_MAB2:
+                    titoloPagina = "Maggiorazione Abitazione - Prima rata";
+                    break;
+                case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                    titoloPagina = "Maggiorazione Abitazione - Costo locazione";
+                    break;
+                case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                    titoloPagina = "Maggiorazione Abitazione - Spese abitazione";
+                    break;
+                case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                    titoloPagina = "Maggiorazione Abitazione - Clausole alloggio";
+                    break;
+                case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                    titoloPagina = "Maggiorazione Abitazione - Copia contratto locazione";
+                    break;
+                case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                    titoloPagina = "Trasporto Effetti - Contributo omnicomprensivo";
+                    break;
+                case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                    titoloPagina = "Trasporto Effetti - Attestazione trasloco";
+                    break;
+                case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                    titoloPagina = "Maggiorazione Familiare - Documento familiare (Coniuge)";
+                    using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
+                    {
+                        MaggiorazioneConiugeModel mcm = dtmc.GetMaggiorazioneConiuge(id);
+                        if (mcm != null && mcm.HasValue())
+                        {
+                            idTrasferimento = mcm.idTrasferimento;
+                        }
+                    }
+                    break;
+                case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                    titoloPagina = "Maggiorazione Familiare - Documento familiare (Figlio)";
+                    break;
+                case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                    titoloPagina = "Trasferimento - Lettera trasferimento";
+                    break;
+                case EnumTipoDoc.PassaportiVisti_Viaggi1:
+                    titoloPagina = "Viaggi - Passaporti visti";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("tipoDoc");
+            }
+
+            ViewData.Add("titoloPagina", titoloPagina);
+            ViewData.Add("tipoDoc", (decimal)tipoDoc);
+            ViewData.Add("ID", id);
+            ViewData.Add("idTrasferimento", idTrasferimento);
+
+
+            return PartialView();
         }
 
-        //public ActionResult LeggiDocumento(decimal id)
-        //{
-        //    byte[] Blob;
-        //    DocumentiModel documento = new DocumentiModel();
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SalvaDocumento(EnumTipoDoc tipoDoc, decimal id)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
 
-        //    using (dtDocumenti dtd = new dtDocumenti())
-        //    {
-        //        documento = dtd.GetDatiDocumentoById(id);
-        //        Blob = dtd.GetDocumentoByteById(id);
+                    //throw new Exception("Simulazione errore");
 
-        //        Response.AddHeader("Content-Disposition", "inline; filename=" + documento.idDocumenti + documento.Estensione.ToLower() + ";");
+                    foreach (string item in Request.Files)
+                    {
 
-        //        switch (documento.Estensione.ToLower())
-        //        {
-        //            case ".pdf":
-        //                return File(Blob, "application/pdf");
-        //                break;
+                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
 
-        //            default:
-        //                return File(Blob, "application/pdf");
-        //                break;
-        //        }
-        //    }
-        //}
+                        using (dtDocumenti dtd = new dtDocumenti())
+                        {
+                            DocumentiModel dm = new DocumentiModel();
+                            bool esisteFile = false;
+                            bool gestisceEstensioni = false;
+                            bool dimensioneConsentita = false;
+                            string dimensioneMaxConsentita = string.Empty;
+
+                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                                out dimensioneConsentita, out dimensioneMaxConsentita, tipoDoc);
+
+                            if (esisteFile)
+                            {
+                                if (gestisceEstensioni == false)
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                }
+
+                                if (dimensioneConsentita)
+                                {
+                                    switch (tipoDoc)
+                                    {
+                                        case EnumTipoDoc.CartaImbarco_Viaggi1:
+                                            break;
+                                        case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                                            break;
+                                        case EnumTipoDoc.PrimaRataMab_MAB2:
+                                            break;
+                                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                                            break;
+                                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                                            break;
+                                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                                            break;
+                                        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                                            break;
+                                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                                            break;
+                                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                                            break;
+                                        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                                            dtd.AddDocumentoMagFamConiuge(ref dm, id, db);
+                                            break;
+                                        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                                            break;
+                                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                                            break;
+                                        case EnumTipoDoc.PassaportiVisti_Viaggi1:
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException("tipoDoc");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato supera la dimensione massima consentita (" +
+                                        dimensioneMaxConsentita + " Mb).");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Il documento è obbligatorio.");
+                            }
+
+                        }
+
+
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+
+                    return Json(new { error = ex.Message });
+                };
+
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, decimal idTrasferimento)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    switch (tipoDoc)
+                    {
+                        case EnumTipoDoc.CartaImbarco_Viaggi1:
+                            break;
+                        case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                            break;
+                        case EnumTipoDoc.PrimaRataMab_MAB2:
+                            break;
+                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                            break;
+                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                            break;
+                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                            break;
+                        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                            break;
+                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                            break;
+                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                            break;
+                        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                            ldm = dtd.GetDocumentiByIdMagConiuge(id).OrderByDescending(a => a.dataInserimento).ToList();
+                            break;
+                        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                            break;
+                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                            break;
+                        case EnumTipoDoc.PassaportiVisti_Viaggi1:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("tipoDoc");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
+            ViewData.Add("id", id);
+            ViewData.Add("tipoDoc", tipoDoc);
+            ViewData.Add("idTrasferimento", idTrasferimento);
+            return PartialView(ldm);
+        }
+
+        [HttpPost]
+        public JsonResult NumeroDocumentiSalvati(decimal id, EnumTipoDoc tipoDoc)
+        {
+            int nDoc = 0;
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    switch (tipoDoc)
+                    {
+                        case EnumTipoDoc.CartaImbarco_Viaggi1:
+                            break;
+                        case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                            break;
+                        case EnumTipoDoc.PrimaRataMab_MAB2:
+                            break;
+                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                            break;
+                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                            break;
+                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                            break;
+                        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                            break;
+                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                            break;
+                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                            break;
+                        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                            nDoc = dtd.GetDocumentiByIdMagConiuge(id).Count;
+                            break;
+                        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                            break;
+                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                            break;
+                        case EnumTipoDoc.PassaportiVisti_Viaggi1:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("tipoDoc");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { errore = ex.Message, nDoc = 0 });
+            }
+
+            return Json(new { errore = "", nDoc = nDoc });
+        }
+
+        [HttpPost]
+        public JsonResult EliminaDocumento(decimal idDocumento)
+        {
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    dtd.DeleteDocumento(idDocumento);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+
+            return Json(new { errore = "", msg = "Eliminazione effettuata con successo." });
+        }
+
+
     }
 }

@@ -178,6 +178,7 @@ namespace NewISE.Models.Tools
                         dm.nomeDocumento = nomeFileNoEstensione;
                         dm.estensione = estensione;
                         dm.tipoDocumento = tipoDoc;
+                        dm.dataInserimento = DateTime.Now;
                         dm.file = file;
 
                         dimensioneConsentita = true;

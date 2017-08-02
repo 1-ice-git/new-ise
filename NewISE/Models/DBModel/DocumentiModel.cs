@@ -7,25 +7,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace NewISE.Models.DBModel
 {
-    [System.Flags]
-    public enum EnumTipoDoc
-    {
-        CartaImbarco = 1 << (int)GruppiDoc.Viaggi,
-        TitoloViaggio = 2 << (int)GruppiDoc.Viaggi,
-        PrimaRataMab = 3 << 2,
-        DichiarazioneCostoLocazione = 4 << (int)GruppiDoc.MaggiorazioneAbitazione,
-        AttestazioneSpeseAbitazione = 5 << (int)GruppiDoc.MaggiorazioneAbitazione,
-        ClausolaContrattoAlloggio = 6 << (int)GruppiDoc.MaggiorazioneAbitazione,
-        CopiaContrattoLocazione = 7 << (int)GruppiDoc.MaggiorazioneAbitazione,
-        ContributoFissoOmnicomprensivo = 8 << (int)GruppiDoc.TrasportoEffetti,
-        AttestazioneTrasloco = 9 << (int)GruppiDoc.TrasportoEffetti,
-        DocumentoFamiliareConiuge = 10 << (int)GruppiDoc.MaggiorazioniFamiliari,
-        DocumentoFamiliareFiglio = 11 << (int)GruppiDoc.MaggiorazioniFamiliari,
-        LetteraTrasferimento = 12 << (int)GruppiDoc.Trasferimento,
-        PassaportiVisti = 13 << (int)GruppiDoc.Viaggi
-    }
-
-    public enum GruppiDoc
+    public enum EnumGruppiDoc
     {
         Viaggi = 1,
         MaggiorazioneAbitazione = 2,
@@ -33,6 +15,26 @@ namespace NewISE.Models.DBModel
         MaggiorazioniFamiliari = 4,
         Trasferimento = 5
     }
+
+    public enum EnumTipoDoc
+    {
+        CartaImbarco_Viaggi1 = 1,
+        TitoloViaggio_Viaggi1 = 2,
+        PrimaRataMab_MAB2 = 3,
+        DichiarazioneCostoLocazione_MAB2 = 4,
+        AttestazioneSpeseAbitazione_MAB2 = 5,
+        ClausoleContrattoAlloggio_MAB2 = 6,
+        CopiaContrattoLocazione_MAB2 = 7,
+        ContributoFissoOmnicomprensivo_TrasportoEffetti3 = 8,
+        AttestazioneTrasloco_TrasportoEffetti3 = 9,
+        DocumentoFamiliareConiuge_MaggiorazioniFamiliari4 = 10,
+        DocumentoFamiliareFiglio_MaggiorazioniFamiliari4 = 11,
+        LetteraTrasferimento_Trasferimento5 = 12,
+        PassaportiVisti_Viaggi1 = 13
+    }
+
+
+
 
 
 
@@ -43,14 +45,21 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il nome del documento è richiesto.")]
         [DataType(DataType.Text)]
         [StringLength(50, ErrorMessage = "per il nome documento sono consentiti un massimo di 50 caratteri.")]
+        [Display(Name = "Nome doc.")]
         public string nomeDocumento { get; set; }
         [Required(ErrorMessage = "L'estensione del file è richiesta.")]
         [DataType(DataType.Text)]
         [StringLength(5, ErrorMessage = "per l'estensione sono consentiti un massimo di 5 caratteri")]
+        [Display(Name = "Estensione")]
         public string estensione { get; set; }
 
         [Display(Name = "Tipo doc.")]
         public EnumTipoDoc tipoDocumento { get; set; }
+
+        [Required(ErrorMessage = "La data d'inserimento è richiesta.")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Data Ins.")]
+        public DateTime dataInserimento { get; set; }
 
 
         [Required(ErrorMessage = "Il Documento è richiesto.")]

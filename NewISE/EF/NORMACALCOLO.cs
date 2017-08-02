@@ -18,7 +18,6 @@ namespace NewISE.EF
         public NORMACALCOLO()
         {
             this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDNORMACALCOLO { get; set; }
@@ -26,7 +25,5 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

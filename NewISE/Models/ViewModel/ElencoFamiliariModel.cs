@@ -27,10 +27,9 @@ namespace NewISE.Models.ViewModel
         public bool HasPensione { get; set; }
         [Display(Name = "Altri dati")]
         public decimal idAltriDati { get; set; }
-        [Display(Name = "Doc.")]
-        public decimal idDocumento { get; set; }
 
-        public DocumentiModel Documento { get; set; }
+        [Display(Name = "Documenti")]
+        public IList<DocumentiModel> Documenti { get; set; }
 
     }
 }
