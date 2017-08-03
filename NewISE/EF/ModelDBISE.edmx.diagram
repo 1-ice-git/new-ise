@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4958bec9273c4d1baf3367bac1e5fa14" Name="Diagram1">
+      <Diagram DiagramId="4958bec9273c4d1baf3367bac1e5fa14" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="DBISEPRO.ACCESSI" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="DBISEPRO.ANTICIPI" Width="1.5" PointX="10.5" PointY="47.5" IsExpanded="true" />
@@ -144,20 +144,15 @@
         <EntityTypeShape EntityType="DBISEPRO.TIPOLOGIAFIGLIO" Width="1.5" PointX="0.75" PointY="8.375" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="12" PointY="28.375" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONECONIUGE" Width="1.5" PointX="8.25" PointY="57.5" />
-        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" Width="1.5" PointX="14.25" PointY="35.125" />
         <EntityTypeShape EntityType="DBISEPRO.PENSIONE" Width="1.5" PointX="10.5" PointY="58.875" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" Width="1.5" PointX="16.625" PointY="40.25" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" Width="1.5" PointX="16.5" PointY="21.875" />
         <AssociationConnector Association="DBISEPRO.R_C_MC" />
-        <AssociationConnector Association="DBISEPRO.R_MF_F" />
         <AssociationConnector Association="DBISEPRO.R_T_MC" />
-        <AssociationConnector Association="DBISEPRO.R_T_MF" />
         <AssociationConnector Association="DBISEPRO.R_TC_PMC" />
         <AssociationConnector Association="DBISEPRO.R_TF_MF" />
         <AssociationConnector Association="DBISEPRO.MC_P" />
         <AssociationConnector Association="DBISEPRO.MC_PMC" />
-        <AssociationConnector Association="DBISEPRO.MF_IPS" />
-        <AssociationConnector Association="DBISEPRO.MF_PMF" />
         <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="22" PointY="23.5" />
         <AssociationConnector Association="DBISEPRO.R_TD_D" />
         <AssociationConnector Association="DBISEPRO.BIGLIETTI_DOCUMENTI" />
@@ -168,6 +163,12 @@
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
+        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
+        <AssociationConnector Association="DBISEPRO.PMF_F" />
+        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" Width="1.5" PointX="14.25" PointY="34.75" />
+        <AssociationConnector Association="DBISEPRO.R_MF_F" />
+        <AssociationConnector Association="DBISEPRO.R_T_MF" />
+        <AssociationConnector Association="DBISEPRO.MF_IPS" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

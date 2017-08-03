@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PERCENTUALEMAGFIGLI()
         {
-            this.MAGGIORAZIONEFIGLI = new HashSet<MAGGIORAZIONEFIGLI>();
+            this.FIGLI = new HashSet<FIGLI>();
         }
     
         public decimal IDPERCMAGFIGLI { get; set; }
@@ -30,6 +30,6 @@ namespace NewISE.EF
     
         public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
     }
 }

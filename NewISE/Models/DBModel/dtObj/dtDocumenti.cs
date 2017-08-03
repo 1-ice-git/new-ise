@@ -54,33 +54,31 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
         }
 
-        public DocumentiModel GetDocumentoByIdFiglio(decimal idFiglio)
+        public IList<DocumentiModel> GetDocumentiByIdFiglio(decimal idFiglio)
         {
-            DocumentiModel dm = new DocumentiModel();
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.FIGLI.Find(idFiglio).DOCUMENTI.ToList();
-                if (ld != null && ld.Count > 0)
+                if (ld?.Any() ?? false)
                 {
-                    var d = ld.First();
-                    var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                    dm = new DocumentiModel()
-                    {
-                        idDocumenti = d.IDDOCUMENTO,
-                        nomeDocumento = d.NOMEDOCUMENTO,
-                        estensione = d.ESTENSIONE,
-                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                        file = f
-                    };
-
+                    ldm.AddRange(from d in ld
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     file = f
+                                 });
                 }
-
 
             }
 
-
-            return dm;
+            return ldm;
         }
 
 

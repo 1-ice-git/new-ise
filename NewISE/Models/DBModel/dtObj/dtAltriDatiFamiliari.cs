@@ -187,7 +187,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ladf = f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false && a.IDFIGLI == idFiglio).ToList();
 
-                    if (ladf != null && ladf.Count > 0)
+                    if (ladf?.Any() ?? false)
                     {
                         var item = ladf.First();
 

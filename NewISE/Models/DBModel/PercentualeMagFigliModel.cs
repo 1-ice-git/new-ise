@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum TipologiaConiuge
+    public enum TipologiaFiglio
     {
-        Residente = 1,
-        NonResidente = 2,
-        NonResidenteCarico = 3
+        Minorenne = 1,
+        Studente = 2,
+        MaggiorenneInabile = 3
 
     }
-    public class PercentualeMagConiugeModel
+    public class PercentualeMagFigliModel
     {
         [Key]
         [Display(Name = "ID")]
-        public decimal idPercentualeConiuge { get; set; }
-        [Required(ErrorMessage = "La tipologia coniuge è richiesta.")]
-        public TipologiaConiuge idTipologiaConiuge { get; set; }
+        public decimal idPercMagFigli { get; set; }
+        [Required(ErrorMessage = "La tipologia figlio è richiesta.")]
+        public TipologiaFiglio idTipologiaFiglio { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -31,29 +31,26 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La percentuale è richiesta.")]
-        [Display(Name = "Percentuale Coniuge")]
+        [Display(Name = "Percentuale Figlio")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
-        public decimal percentualeConiuge { get; set; }
+        public decimal percentualeFigli { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Aggiornamento")]
+        [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; }
-
-        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
-        [Display(Name = "Annullato")]
+        [Required]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
 
-        public TipologiaConiugeModel Coniuge { get; set; }
+        public TipologiaFiglioModel tipologiaFiglio { get; set; }
 
 
         public bool HasValue()
         {
-            return idPercentualeConiuge > 0 ? true : false;
+            return idPercMagFigli > 0 ? true : false;
         }
-
 
 
     }

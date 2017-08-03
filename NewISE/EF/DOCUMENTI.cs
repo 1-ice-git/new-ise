@@ -25,6 +25,7 @@ namespace NewISE.EF
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
             this.TRASPORTOEFFETTIRIENTRO = new HashSet<TRASPORTOEFFETTIRIENTRO>();
             this.TRASPORTOEFFETTISIST = new HashSet<TRASPORTOEFFETTISIST>();
+            this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
         }
     
         public decimal IDDOCUMENTO { get; set; }
@@ -51,5 +52,7 @@ namespace NewISE.EF
         public virtual ICollection<TRASPORTOEFFETTIRIENTRO> TRASPORTOEFFETTIRIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NORMACALCOLO> NORMACALCOLO { get; set; }
     }
 }

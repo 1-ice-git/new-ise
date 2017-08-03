@@ -1,0 +1,192 @@
+﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
+
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    //bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
+    decimal idMaggiorazioneFigli = Convert.ToDecimal(ViewData["idMaggiorazioneFigli"]);
+
+}
+
+
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento, idMaggiorazioneFigli = idMaggiorazioneFigli }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
+
+</p>
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+    <table id="tabElencoFigli" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nominativo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CodiceFiscale)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataInizio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataFine)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.idAltriDati)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Documenti)
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.dataInizio)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.dataFine)
+                    </td>
+                    @if (item.idAltriDati > 0)
+                {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                                <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                                <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
+                            </a>
+                        </td>
+                    }
+                    @if (item.Documenti.Any())
+                {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" ElencoDocumenti(@item.id, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @idTrasferimento ) ">
+                                <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" ElencoDocumenti(@item.id, 10, @idTrasferimento ) ">
+                                <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
+                            </a>
+                        </td>
+                    }
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    $("#tabElencoFigli").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        //dom: 'Bfrtip',
+        //buttons: [
+        //    {
+        //        text: 'Nuovo Coniuge',
+        //        className: 'green',
+        //        action: function (e, dt, node, config) {
+        //            NuovoConiuge();
+        //        }
+        //    }
+        //],
+        //"columnDefs": [
+        //    {
+        //        "targets": [0],
+        //        "visible": false,
+        //        "searchable": false
+        //    },
+
+        //]
+    });
+
+
+
+    function AltriDatiFamiliari(idFiglio) {
+        //debugger;
+        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idFiglio: idFiglio },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabFiglio").empty();
+                $("#tabFiglio").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+</script>

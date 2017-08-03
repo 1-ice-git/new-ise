@@ -94,12 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         lfm.Add(fm);
                     }
-
-
-
                 }
-
-
             }
 
             return lfm;

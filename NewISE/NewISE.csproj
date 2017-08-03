@@ -284,6 +284,7 @@
     <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
     <Content Include="Content\css\NuovoConiuge.css" />
+    <Content Include="Content\css\NuovoFiglio.css" />
     <Content Include="Content\css\OverrideBootstrap.css" />
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
@@ -1926,6 +1927,7 @@
     <Compile Include="Models\DBModel\dtObj\dtPensione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeDisagio.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtPercentualeMagFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiduzioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloDipendente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloUfficio.cs" />
@@ -1933,6 +1935,7 @@
     <Compile Include="Models\DBModel\dtObj\dtTFR.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipologiaCoan.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipologiaConiuge.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtTipologiaFiglio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipoTrasferimento.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
     <Compile Include="Interfacce\Iemail.cs" />
@@ -1962,7 +1965,7 @@
     <Compile Include="Models\DBModel\NormaCalcoloModel.cs" />
     <Compile Include="Models\DBModel\PensioneConiugeModel.cs" />
     <Compile Include="Models\DBModel\PercentualeMagConiugeModel.cs" />
-    <Compile Include="Models\DBModel\PercMagFigliModel.cs" />
+    <Compile Include="Models\DBModel\PercentualeMagFigliModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniAnnualiModel.cs" />
     <Compile Include="Models\DBModel\PercentualeDisagioModel.cs" />
     <Compile Include="Models\DBModel\PercMaggAbitazModel.cs" />
@@ -2016,6 +2019,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
+    <Compile Include="Models\ViewModel\Figli_V_Model.cs" />
     <Compile Include="Models\ViewModel\MaggiorazioneConiugeVModel.cs" />
     <Compile Include="Models\ViewModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2050,6 +2054,9 @@
     <Content Include="Views\MaggiorazioniFamiliari\ModificaConiuge.cshtml" />
     <Content Include="Views\Documenti\NuovoDocumento.cshtml" />
     <Content Include="Views\Documenti\ElencoDocumenti.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoFigli.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\NuovoFiglio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

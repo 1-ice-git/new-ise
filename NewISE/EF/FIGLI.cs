@@ -19,6 +19,7 @@ namespace NewISE.EF
         {
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.PERCENTUALEMAGFIGLI = new HashSet<PERCENTUALEMAGFIGLI>();
         }
     
         public decimal IDFIGLI { get; set; }
@@ -26,11 +27,15 @@ namespace NewISE.EF
         public string NOME { get; set; }
         public string COGNOME { get; set; }
         public string CODICEFISCALE { get; set; }
+        public System.DateTime DATAINIZIOVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
-        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
+        public virtual MAGGIORAZIONEFIGLI MAGGIORAZIONEFIGLI { get; set; }
     }
 }

@@ -12,6 +12,84 @@ namespace NewISE.Controllers
     public class AltriDatiFamiliariController : Controller
     {
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
+        {
+            AltriDatiFamModel adf = new AltriDatiFamModel();
+            MaggiorazioniFigliModel mfm = new MaggiorazioniFigliModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAltriDatiFamiliariFiglio(idFiglio);
+                }
+                using (dtMaggiorazioniFigli dtmf = new dtMaggiorazioniFigli())
+                {
+                    mfm = dtmf.GetMaggiorazioneFigli(idFiglio);
+
+                }
+
+                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                {
+                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigliNow(idFiglio, DateTime.Now);
+                    if (pf != null && pf.HasValue())
+                    {
+                        switch (pf.idTipologiaFiglio)
+                        {
+                            case TipologiaFiglio.Minorenne:
+                                adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case TipologiaFiglio.Studente:
+                                adf.studente = true;
+                                adf.residente = true;
+                                break;
+                            case TipologiaFiglio.MaggiorenneInabile:
+                                adf.studente = false;
+                                adf.residente = true;
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
+
+            ViewData.Add("idTrasferimento", mfm.idTrasferimento);
+
+            if (adf != null && adf.HasValue())
+            {
+                return PartialView(adf);
+            }
+            else
+            {
+                List<Comuni> comuni = new List<Comuni>();
+
+                using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
+                {
+                    comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+                }
+
+                ViewData.Add("Comuni", comuni);
+
+                return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
+            }
+
+
+
+
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idMaggiorazioneConiuge)
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
@@ -86,6 +164,10 @@ namespace NewISE.Controllers
                 return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
             }
         }
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamModel adf, decimal idTrasferimento)

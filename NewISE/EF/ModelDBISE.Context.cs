@@ -91,10 +91,10 @@ namespace NewISE.EF
         public virtual DbSet<TIPOLOGIAFIGLIO> TIPOLOGIAFIGLIO { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
-        public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
         public virtual DbSet<PENSIONE> PENSIONE { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DbSet<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
     }
 }

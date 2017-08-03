@@ -17,7 +17,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         public ActionResult MaggiorazioneFigli(bool escludiAnnullati, decimal idTipologiaFiglio = 0)
         {
-            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
@@ -48,10 +48,10 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
 
                     ViewBag.LivelliList = r;
-            }
+                }
 
                 using (dtParMaggFigli dtib = new dtParMaggFigli())
-            {
+                {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
@@ -77,7 +77,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult MaggiorazioneFiglioLivello(decimal idTipologiaFiglio, bool escludiAnnullati)
         {
-            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
@@ -96,7 +96,7 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idTipologiaFiglio.ToString()
                              }).ToList();
                         r.Where(a => a.Value == idTipologiaFiglio.ToString()).First().Selected = true;
-    }
+                    }
 
                     ViewBag.LivelliList = r;
                 }
@@ -147,7 +147,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneFiglio(PercentualeMagFigliModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -166,7 +166,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
                     {
-                        var lm = dtl.GetTipologiaFiglio(ibm.idTipologiaFiglio);
+                        var lm = dtl.GetTipologiaFiglio((decimal)ibm.idTipologiaFiglio);
                         ViewBag.Figlio = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;

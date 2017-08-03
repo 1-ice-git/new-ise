@@ -47,7 +47,7 @@ namespace NewISE.Models.ViewModel
         public IList<AltriDatiFamModel> lAltriDatiFamiliari { get; set; }
 
 
-        public PercMagFigliModel PercentualeMaggiorazioneFigli { get; set; }
+        public PercentualeMagFigliModel PercentualeMaggiorazioneFigli { get; set; }
         public IndennitaPrimoSegretModel IndennitaPrimoSegretario { get; set; }
 
 
