@@ -216,6 +216,14 @@
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" />
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" />
         </EntityType>
+        <EntityType Name="F_IPS">
+          <Key>
+            <PropertyRef Name="IDFIGLI" />
+            <PropertyRef Name="IDINDPRIMOSEGR" />
+          </Key>
+          <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="FASCIACHILOMETRICA">
           <Key>
             <PropertyRef Name="IDUFFICIO" />
@@ -235,6 +243,8 @@
           <Property Name="CODICEFISCALE" Type="varchar2" MaxLength="16" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
           <Key>
@@ -459,14 +469,6 @@
           </Key>
           <Property Name="IDMAGGIORAZIONECONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="MF_IPS">
-          <Key>
-            <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            <PropertyRef Name="IDINDPRIMOSEGR" />
-          </Key>
-          <Property Name="IDMAGGIORAZIONEFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="NORMACALCOLO">
           <Key>
@@ -1304,6 +1306,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_F_F_IPS">
+          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="F_IPS" Type="Self.F_IPS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIGLI">
+              <PropertyRef Name="IDFIGLI" />
+            </Principal>
+            <Dependent Role="F_IPS">
+              <PropertyRef Name="IDFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_F_FD">
           <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1458,16 +1474,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_IPS_MF_IPS">
+        <Association Name="R_IPS_F_IPS">
           <End Role="INDENNITAPRIMOSEGRETARIO" Type="Self.INDENNITAPRIMOSEGRETARIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="MF_IPS" Type="Self.MF_IPS" Multiplicity="*" />
+          <End Role="F_IPS" Type="Self.F_IPS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="INDENNITAPRIMOSEGRETARIO">
               <PropertyRef Name="IDINDPRIMOSEGR" />
             </Principal>
-            <Dependent Role="MF_IPS">
+            <Dependent Role="F_IPS">
               <PropertyRef Name="IDINDPRIMOSEGR" />
             </Dependent>
           </ReferentialConstraint>
@@ -1622,20 +1638,6 @@
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Principal>
             <Dependent Role="FIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_MF_IPS">
-          <End Role="MAGGIORAZIONEFIGLI" Type="Self.MAGGIORAZIONEFIGLI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MF_IPS" Type="Self.MF_IPS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEFIGLI">
-              <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
-            </Principal>
-            <Dependent Role="MF_IPS">
               <PropertyRef Name="IDMAGGIORAZIONEFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2498,6 +2500,7 @@
           <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ELAB_CONT" EntityType="Self.ELAB_CONT" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FASCIACHILOMETRICA" EntityType="Self.FASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
@@ -2523,7 +2526,6 @@
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MC_P" EntityType="Self.MC_P" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MC_PMC" EntityType="Self.MC_PMC" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="MF_IPS" EntityType="Self.MF_IPS" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NOTIFICARICHIESTAMAGFAM" EntityType="Self.NOTIFICARICHIESTAMAGFAM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="OA" EntityType="Self.OA" Schema="ISEPRO" store:Type="Tables" />
@@ -2682,6 +2684,10 @@
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
           </AssociationSet>
+          <AssociationSet Name="R_F_F_IPS" Association="Self.R_F_F_IPS">
+            <End Role="FIGLI" EntitySet="FIGLI" />
+            <End Role="F_IPS" EntitySet="F_IPS" />
+          </AssociationSet>
           <AssociationSet Name="R_F_FD" Association="Self.R_F_FD">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="FIGLI_DOC" EntitySet="FIGLI_DOC" />
@@ -2726,9 +2732,9 @@
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_IPS_MF_IPS" Association="Self.R_IPS_MF_IPS">
+          <AssociationSet Name="R_IPS_F_IPS" Association="Self.R_IPS_F_IPS">
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
-            <End Role="MF_IPS" EntitySet="MF_IPS" />
+            <End Role="F_IPS" EntitySet="F_IPS" />
           </AssociationSet>
           <AssociationSet Name="R_IR_TER" Association="Self.R_IR_TER">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -2773,10 +2779,6 @@
           <AssociationSet Name="R_MF_F" Association="Self.R_MF_F">
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
             <End Role="FIGLI" EntitySet="FIGLI" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_MF_IPS" Association="Self.R_MF_MF_IPS">
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
-            <End Role="MF_IPS" EntitySet="MF_IPS" />
           </AssociationSet>
           <AssociationSet Name="R_NC_D_NC" Association="Self.R_NC_D_NC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -5099,9 +5101,9 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="MF_IPS" Association="DBISEPRO.MF_IPS">
+          <AssociationSet Name="F_IPS" Association="DBISEPRO.F_IPS">
+            <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
-            <End Role="MAGGIORAZIONEFIGLI" EntitySet="MAGGIORAZIONEFIGLI" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ALTRIDATIFAM">
@@ -5152,6 +5154,9 @@
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFIGLI" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.F_IPS" FromRole="FIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
         </EntityType>
         <Association Name="R_C_ADF">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
@@ -5261,7 +5266,7 @@
           <Property Name="INDENNITA" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONEFIGLI" Relationship="DBISEPRO.MF_IPS" FromRole="INDENNITAPRIMOSEGRETARIO" ToRole="MAGGIORAZIONEFIGLI" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.F_IPS" FromRole="INDENNITAPRIMOSEGRETARIO" ToRole="FIGLI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONECONIUGE">
           <Key>
@@ -5467,7 +5472,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="MAGGIORAZIONEFIGLI" ToRole="FIGLI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MF" FromRole="MAGGIORAZIONEFIGLI" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.MF_IPS" FromRole="MAGGIORAZIONEFIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
         </EntityType>
         <Association Name="R_MF_F">
           <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="1">
@@ -5497,9 +5501,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="MF_IPS">
+        <Association Name="F_IPS">
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Role="INDENNITAPRIMOSEGRETARIO" Multiplicity="*" />
-          <End Type="DBISEPRO.MAGGIORAZIONEFIGLI" Role="MAGGIORAZIONEFIGLI" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -6212,6 +6216,8 @@
           <EntitySetMapping Name="FIGLI">
             <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
               <MappingFragment StoreEntitySet="FIGLI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="CODICEFISCALE" ColumnName="CODICEFISCALE" />
@@ -6476,12 +6482,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="MF_IPS" TypeName="DBISEPRO.MF_IPS" StoreEntitySet="MF_IPS">
-            <EndProperty Name="MAGGIORAZIONEFIGLI">
-              <ScalarProperty Name="IDMAGGIORAZIONEFIGLI" ColumnName="IDMAGGIORAZIONEFIGLI" />
-            </EndProperty>
+          <AssociationSetMapping Name="F_IPS" TypeName="DBISEPRO.F_IPS" StoreEntitySet="F_IPS">
             <EndProperty Name="INDENNITAPRIMOSEGRETARIO">
               <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
+            </EndProperty>
+            <EndProperty Name="FIGLI">
+              <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>

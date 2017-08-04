@@ -1,6 +1,7 @@
 ﻿using NewISE.Models.DBModel.dtObj;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -27,6 +28,21 @@ namespace NewISE.Models.DBModel
         [StringLength(16, ErrorMessage = "Per il codice fiscale sono richiesti 16 caratteri.", MinimumLength = 16)]
         [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale", ErrorMessage = "")]
         public string codiceFiscale { get; set; }
+        [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
+        [Display(Name = "Data iniz. valid.")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime? dataInizio { get; set; }
+        [Display(Name = "Data fine valid.")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime? dataFine { get; set; }
+
+        [Required(ErrorMessage = "LA data di aggiornamento è richiesta.")]
+        [Display(Name = "Data Agg.")]
+        [DataType(DataType.DateTime)]
+        public DateTime dataAggiornamento { get; set; }
+        [Required(ErrorMessage = "Il campo annullatto è obbligatorio.")]
+        [DefaultValue(false)]
+        public bool Annullato { get; set; }
 
         public string nominativo => cognome + " " + nome;
 

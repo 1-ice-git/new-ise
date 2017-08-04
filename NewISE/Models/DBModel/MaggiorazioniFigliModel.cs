@@ -12,13 +12,6 @@ namespace NewISE.Models.DBModel
         public decimal idMaggiorazioneFigli { get; set; }
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
         public decimal idTrasferimento { get; set; }
-        [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data iniz. valid.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime dataInizioValidita { get; set; }
-        [Display(Name = "Data fine valid.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La data aggiornamento è richiesta.")]
         [Display(Name = "Data agg.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]

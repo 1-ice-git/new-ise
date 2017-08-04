@@ -31,7 +31,7 @@ namespace NewISE.Controllers
 
                 using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
                 {
-                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigliNow(idFiglio, DateTime.Now);
+                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
                     if (pf != null && pf.HasValue())
                     {
                         switch (pf.idTipologiaFiglio)

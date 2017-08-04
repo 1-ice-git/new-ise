@@ -1922,6 +1922,7 @@
     <Compile Include="Models\DBModel\dtObj\dtFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaBase.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtIndennitaPrimoSegretario.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioniFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPensione.cs" />

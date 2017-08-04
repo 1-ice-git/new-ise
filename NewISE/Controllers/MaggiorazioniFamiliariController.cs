@@ -67,8 +67,8 @@ namespace NewISE.Controllers
                                                         idFamiliare = mfm.idMaggiorazioneFigli,
                                                         Nominativo = figlio.nominativo,
                                                         CodiceFiscale = figlio.codiceFiscale,
-                                                        dataInizio = mfm.dataInizioValidita,
-                                                        dataFine = mfm.dataFineValidita,
+                                                        dataInizio = figlio.dataInizio,
+                                                        dataFine = figlio.dataFine,
                                                         parentela = EnumParentela.Figlio,
                                                         idAltriDati = adf.idAltriDatiFam > 0 ? adf.idAltriDatiFam : 0,
                                                         Documenti = ldm,
@@ -218,7 +218,7 @@ namespace NewISE.Controllers
 
         public ActionResult NuovoFiglio(decimal idTrasferimento, decimal idMaggiorazioneFigli)
         {
-            FigliModel fm = new FigliModel();
+            Figli_V_Model fm = new Figli_V_Model();
             List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
             var r = new List<SelectListItem>();
 
@@ -248,7 +248,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial");
             }
 
-            ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
+            ViewData.Add("lTipologiaFiglio", lTipologiaFiglio);
             ViewData.Add("idTrasferimento", idTrasferimento);
             ViewData.Add("idMaggiorazioneFigli", idMaggiorazioneFigli);
 
@@ -300,6 +300,64 @@ namespace NewISE.Controllers
 
             return PartialView(mcvm);
         }
+
+
+
+        public ActionResult InserisciFiglio(Figli_V_Model fm, decimal idTrasferimento)
+        {
+
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    using (dtMaggiorazioniFigli dtmf = new dtMaggiorazioniFigli())
+                    {
+                        dtmf.IserisciFiglio(fm, idTrasferimento);
+                    }
+                }
+                else
+                {
+                    List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
+                    var r = new List<SelectListItem>();
+
+                    using (dtTipologiaFiglio dttf = new dtTipologiaFiglio())
+                    {
+                        var ltfm = dttf.GetListTipologiaFiglio().ToList();
+
+                        if (ltfm?.Any() ?? false)
+                        {
+                            r = (from t in ltfm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.tipologiaFiglio,
+                                     Value = t.idTipologiaFiglio.ToString()
+                                 }).ToList();
+                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                        }
+
+                        lTipologiaFiglio = r;
+                    }
+
+
+                    ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
+                    ViewData.Add("idTrasferimento", idTrasferimento);
+                    ViewData.Add("idMaggiorazioneFigli", fm.idMaggiorazioneFigli);
+
+                    return PartialView("NuovoFiglio", fm);
+                }
+
+                return RedirectToAction("ElencoFiglio", new { idTrasferimento = idTrasferimento });
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial");
+            }
+
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

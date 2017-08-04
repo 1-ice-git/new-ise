@@ -168,7 +168,7 @@
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFIGLI" Width="1.5" PointX="14.25" PointY="34.75" />
         <AssociationConnector Association="DBISEPRO.R_MF_F" />
         <AssociationConnector Association="DBISEPRO.R_T_MF" />
-        <AssociationConnector Association="DBISEPRO.MF_IPS" />
+        <AssociationConnector Association="DBISEPRO.F_IPS" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

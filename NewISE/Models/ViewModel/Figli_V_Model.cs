@@ -26,7 +26,7 @@ namespace NewISE.Models.ViewModel
         [Required(ErrorMessage = "Il codice fiscale è richiesto.")]
         [Display(Name = "Cod. Fiscale")]
         [StringLength(16, ErrorMessage = "Per il codice fiscale sono richiesti 16 caratteri.", MinimumLength = 16)]
-        [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale", ErrorMessage = "")]
+        [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale2", ErrorMessage = "")]
         public string codiceFiscale { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
@@ -38,18 +38,14 @@ namespace NewISE.Models.ViewModel
 
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
-
+        [Required(ErrorMessage = "La tipologia figlio è richiesta.")]
         [Display(Name = "Tipologia figlio")]
-        public decimal idTipologiaFiglio { get; set; }
-
-
-
-
+        public TipologiaFiglio idTipologiaFiglio { get; set; }
 
 
         public MaggiorazioniFigliModel MaggiorazioniFigli { get; set; }
-
         public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
+        public IList<IndennitaPrimoSegretModel> lIndennitaPrimoSegretario { get; set; }
     }
 }

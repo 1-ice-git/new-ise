@@ -81,9 +81,15 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<PercentualeMagConiugeModel> lpmcm = new List<PercentualeMagConiugeModel>();
 
-            var lpmc = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && a.DATAINIZIOVALIDITA <= dtFin && a.DATAFINEVALIDITA >= dtIni).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            var lpmc =
+                db.PERCENTUALEMAGCONIUGE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge &&
+                        a.DATAINIZIOVALIDITA <= dtFin && a.DATAFINEVALIDITA >= dtIni)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
 
-            if (lpmc != null && lpmc.Count > 0)
+            if (lpmc?.Any() ?? false)
             {
                 lpmcm = (from e in lpmc
                          select new PercentualeMagConiugeModel()
@@ -113,8 +119,12 @@ namespace NewISE.Models.DBModel.dtObj
                 item.Collection(a => a.PERCENTUALEMAGCONIUGE).Load();
                 var pmc = db.PERCENTUALEMAGCONIUGE.Find(idPercentualeMagConiuge);
                 mc.PERCENTUALEMAGCONIUGE.Add(pmc);
-                db.SaveChanges();
+                int i = db.SaveChanges();
 
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare la percentuale maggiorazione per il coniuge.");
+                }
             }
             catch (Exception ex)
             {

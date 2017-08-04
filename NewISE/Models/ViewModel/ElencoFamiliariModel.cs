@@ -17,7 +17,7 @@ namespace NewISE.Models.ViewModel
         public string CodiceFiscale { get; set; }
         [Display(Name = "Data Ini.")]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
-        public DateTime dataInizio { get; set; }
+        public DateTime? dataInizio { get; set; }
         [Display(Name = "Data Fin.")]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:d}", NullDisplayText = "")]
         public DateTime? dataFine { get; set; }
