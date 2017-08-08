@@ -410,7 +410,7 @@ namespace NewISE.Controllers
                                                 {
                                                     idRuolo = trm.idRuoloUfficio,
                                                     dataInizioValidita = trm.dataPartenza,
-                                                    dataFineValidita = Convert.ToDateTime("31/12/9999"),
+                                                    dataFineValidita = Utility.DataFineStop(),
                                                     dataAggiornamento = DateTime.Now,
                                                     annullato = false
                                                 };
@@ -504,6 +504,22 @@ namespace NewISE.Controllers
                                     db.Database.BeginTransaction();
 
                                     dttr.SetTrasferimento(ref trm, db);
+
+                                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                    {
+                                        MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel()
+                                        {
+                                            idTrasferimento = trm.idTrasferimento,
+                                            rinunciaMaggiorazioni = false,
+                                            praticaConclusa = false,
+                                            dataConclusione = Utility.DataFineStop(),
+                                            dataAggiornamento = DateTime.Now,
+                                            annullato = false
+                                        };
+
+                                        dtmf.SetMaggiorazioneFamiliari(ref mfm, db);
+
+                                    }
 
                                     using (dtIndennita dti = new dtIndennita())
                                     {
@@ -600,7 +616,7 @@ namespace NewISE.Controllers
                                                 {
                                                     idRuolo = trm.idRuoloUfficio,
                                                     dataInizioValidita = trm.dataPartenza,
-                                                    dataFineValidita = Convert.ToDateTime("31/12/9999"),
+                                                    dataFineValidita = Utility.DataFineStop(),
                                                     dataAggiornamento = DateTime.Now,
                                                     annullato = false
                                                 };

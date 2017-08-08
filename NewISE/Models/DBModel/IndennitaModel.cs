@@ -40,7 +40,7 @@ namespace NewISE.Models.DBModel
 
         public IList<CoefficientiSedeModel> CoefficenteSede { get; set; }
 
-        public IList<MaggiorazioneConiugeModel> MaggiorazioneConiuge { get; set; }
+        public IList<MaggiorazioniFamiliariModel> MaggiorazioneConiuge { get; set; }
 
         public IList<MaggiorazioniFigliModel> MaggiorazioneFigli { get; set; }
     }

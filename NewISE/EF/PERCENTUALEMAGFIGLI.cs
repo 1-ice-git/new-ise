@@ -21,12 +21,12 @@ namespace NewISE.EF
         }
     
         public decimal IDPERCMAGFIGLI { get; set; }
+        public decimal IDTIPOLOGIAFIGLIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALEFIGLI { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDTIPOLOGIAFIGLIO { get; set; }
     
         public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

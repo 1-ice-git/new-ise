@@ -13,13 +13,13 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public PercentualeMagConiugeModel GetPercMagConiugeNow(decimal idMaggiorazioneConiuge, DateTime dt)
+        public PercentualeMagConiugeModel GetPercMagConiugeNow(decimal idConiuge, DateTime dt)
         {
             PercentualeMagConiugeModel pmcm = new PercentualeMagConiugeModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lpmc = db.MAGGIORAZIONECONIUGE.Find(idMaggiorazioneConiuge).PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                var lpmc = db.CONIUGE.Find(idConiuge).PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                 if (lpmc != null && lpmc.Count > 0)
                 {
@@ -108,13 +108,13 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void AssociaPercentualeMaggiorazioneConiuge(decimal idMaggiorazioneConiuge, decimal idPercentualeMagConiuge, ModelDBISE db)
+        public void AssociaPercentualeMaggiorazioneConiuge(decimal idConiuge, decimal idPercentualeMagConiuge, ModelDBISE db)
         {
 
             try
             {
-                var mc = db.MAGGIORAZIONECONIUGE.Find(idMaggiorazioneConiuge);
-                var item = db.Entry<MAGGIORAZIONECONIUGE>(mc);
+                var mc = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(mc);
                 item.State = System.Data.Entity.EntityState.Modified;
                 item.Collection(a => a.PERCENTUALEMAGCONIUGE).Load();
                 var pmc = db.PERCENTUALEMAGCONIUGE.Find(idPercentualeMagConiuge);

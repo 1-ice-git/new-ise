@@ -1,5 +1,6 @@
 ﻿
 using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +90,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
                     idUfficio = pd.IDUFFICIO,
                     dataInizioValidita = pd.DATAINIZIOVALIDITA,
-                    dataFineValidita = pd.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : pd.DATAFINEVALIDITA,
+                    dataFineValidita = pd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : pd.DATAFINEVALIDITA,
                     percentuale = pd.PERCENTUALE,
                     dataAggiornamento = pd.DATAAGGIORNAMENTO,
                     annullato = pd.ANNULLATO,
@@ -125,7 +126,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
                     idUfficio = pd.IDUFFICIO,
                     dataInizioValidita = pd.DATAINIZIOVALIDITA,
-                    dataFineValidita = pd.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : pd.DATAFINEVALIDITA,
+                    dataFineValidita = pd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : pd.DATAFINEVALIDITA,
                     percentuale = pd.PERCENTUALE,
                     dataAggiornamento = pd.DATAAGGIORNAMENTO,
                     annullato = pd.ANNULLATO
@@ -154,7 +155,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
                     idUfficio = pd.IDUFFICIO,
                     dataInizioValidita = pd.DATAINIZIOVALIDITA,
-                    dataFineValidita = pd.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : pd.DATAFINEVALIDITA,
+                    dataFineValidita = pd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : pd.DATAFINEVALIDITA,
                     percentuale = pd.PERCENTUALE,
                     dataAggiornamento = pd.DATAAGGIORNAMENTO,
                     annullato = pd.ANNULLATO

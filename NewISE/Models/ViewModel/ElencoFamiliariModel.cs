@@ -10,7 +10,6 @@ namespace NewISE.Models.ViewModel
     public class ElencoFamiliariModel
     {
         public decimal id { get; set; }///Può essere sia l'id delle maggiorazioni figlio sia l'id delle maggiorazioni coniuge.
-        public decimal idTrasferimento { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]

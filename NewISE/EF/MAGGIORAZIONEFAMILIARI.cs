@@ -12,19 +12,26 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MAGGIORAZIONEFIGLI
+    public partial class MAGGIORAZIONEFAMILIARI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MAGGIORAZIONEFIGLI()
+        public MAGGIORAZIONEFAMILIARI()
         {
+            this.CONIUGE = new HashSet<CONIUGE>();
             this.FIGLI = new HashSet<FIGLI>();
         }
     
-        public decimal IDMAGGIORAZIONEFIGLI { get; set; }
+        public decimal IDMAGGIORAZIONEFAMILIARI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
+        public bool RINUNCIAMAGGIORAZIONI { get; set; }
+        public bool PRATICACONCLUSA { get; set; }
+        public System.DateTime DATACONCLUSIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public bool CHIUSA { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLI> FIGLI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }

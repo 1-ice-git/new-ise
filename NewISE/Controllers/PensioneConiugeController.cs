@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace NewISE.Controllers
         public ActionResult ElencoPensioniConiuge(decimal idMaggiorazioneConiuge)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
-            MaggiorazioneConiugeModel mcm = new MaggiorazioneConiugeModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
             try
             {
@@ -23,11 +24,11 @@ namespace NewISE.Controllers
                     lpcm = dtp.GetListaPensioneConiugeByMaggiorazioneConiuge(idMaggiorazioneConiuge).ToList();
                 }
 
-                using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
 
 
-                    mcm = dtmc.GetMaggiorazioneConiuge(idMaggiorazioneConiuge: idMaggiorazioneConiuge);
+                    //mcm = dtmc.GetMaggiorazioneConiuge(idMaggiorazioneConiuge: idMaggiorazioneConiuge);
                 }
 
             }
@@ -67,7 +68,7 @@ namespace NewISE.Controllers
                         pcm.annullato = false;
                         if (!pcm.dataFineValidita.HasValue)
                         {
-                            pcm.dataFineValidita = Convert.ToDateTime("31/12/9999");
+                            pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
                         dtp.SetNuovoImportoPensione(pcm);
@@ -122,7 +123,7 @@ namespace NewISE.Controllers
                         pcm.annullato = false;
                         if (!pcm.dataFineValidita.HasValue)
                         {
-                            pcm.dataFineValidita = Convert.ToDateTime("31/12/9999");
+                            pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
                         dtp.EditImportoPensione(pcm);

@@ -10,7 +10,7 @@ namespace NewISE.Areas.Parametri.Controllers
 {
     public class ParamMaggConiugeController : Controller
     {
-        // GET: Parametri/ParamMaggConiuge/MaggiorazioneConiuge
+        // GET: Parametri/ParamMaggConiuge/MaggiorazioniConiuge
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]

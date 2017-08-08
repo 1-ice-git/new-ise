@@ -38,7 +38,7 @@ namespace NewISE.Models.DBModel
 
         public decimal idMaggiorazioneConiuge { get; set; }
 
-        public MaggiorazioneConiugeModel MaggiorazioneConiuge { get; set; }
+        public MaggiorazioniFamiliariModel MaggiorazioniConiuge { get; set; }
 
 
         public bool HasValue()
@@ -53,12 +53,12 @@ namespace NewISE.Models.DBModel
             {
                 pc.ANNULLATO = true;
 
-                if (db.SaveChanges() > 0)
-                {
-                    decimal idTrasf = pc.MAGGIORAZIONECONIUGE.First(a => a.ANNULLATO == false).IDTRASFERIMENTO;
+                //if (db.SaveChanges() > 0)
+                //{
+                //    decimal idTrasf = pc.MAGGIORAZIONECONIUGE.First(a => a.ANNULLATO == false).IDTRASFERIMENTO;
 
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, pc.IDPENSIONE);
-                }
+                //    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, pc.IDPENSIONE);
+                //}
             }
         }
 

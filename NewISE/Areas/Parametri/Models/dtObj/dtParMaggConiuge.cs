@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -34,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
                                 idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
@@ -71,7 +72,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
                                 idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
@@ -108,7 +109,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
                                 idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
@@ -145,7 +146,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
                                 idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
@@ -205,7 +206,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALECONIUGE = ibm.percentualeConiuge,
                                 ANNULLATO = ibm.annullato
                             };
@@ -218,7 +219,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             IDTIPOLOGIACONIUGE = (decimal)ibm.idTipologiaConiuge,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALECONIUGE = ibm.percentualeConiuge,
                             ANNULLATO = ibm.annullato
                         };

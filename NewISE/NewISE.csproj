@@ -1754,10 +1754,7 @@
     <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\MAGGIORAZIONECONIUGE.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\MAGGIORAZIONEFIGLI.cs">
+    <Compile Include="EF\MAGGIORAZIONEFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\MAGGIORAZIONIANNUALI.cs">
@@ -1779,9 +1776,6 @@
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\NORMACALCOLO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\NOTIFICARICHIESTAMAGFAM.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\OA.cs">
@@ -1880,9 +1874,6 @@
     <Compile Include="EF\TRASFERIMENTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\TRASPEFFETTIRIEN_COEFFIFKM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\TRASPORTOEFFETTIRIENTRO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -1893,6 +1884,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\UTENTIAUTORIZZATI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\VALUTAUFFICIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\VALUTE.cs">
@@ -1923,7 +1917,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennita.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaBase.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPrimoSegretario.cs" />
-    <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneConiuge.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtMaggiorazioniFamiliari.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioniFigli.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPensione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeConiuge.cs" />
@@ -1961,7 +1955,7 @@
     <Compile Include="Models\DBModel\IndennitaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\LivelloDipendenteModel.cs" />
     <Compile Include="Models\DBModel\LivelloModel.cs" />
-    <Compile Include="Models\DBModel\MaggiorazioneConiugeModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniFigliModel.cs" />
     <Compile Include="Models\DBModel\NormaCalcoloModel.cs" />
     <Compile Include="Models\DBModel\PensioneConiugeModel.cs" />

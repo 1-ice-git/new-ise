@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+//decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
 }
 
 
@@ -9,11 +9,11 @@
 <p style="padding-left: 15px;">
     @if (Model != null && Model.Any())
     {
-        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioneConiuge = Model.First().id, idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
+        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idMConiuge = Model.First().id }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
     }
     else
     {
-        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
+        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.First().id }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
     }
 
 </p>

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -29,17 +30,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
                             {
-                                
+
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
                                 {
                                     idTipoAliqContr = e.IDTIPOCONTRIBUTO,
                                     descrizione = e.ALIQUOTA.ToString()
-                                    
+
                                 }
                             }).ToList();
                 }
@@ -65,10 +66,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
                             {
-                                
+
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -101,10 +102,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
                             {
-                                
+
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -137,10 +138,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
                             {
-                                
+
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -184,7 +185,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new ALIQUOTECONTRIBUTIVE()
                             {
-                                
+
                                 IDALIQCONTR = ibm.idAliqContr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -196,10 +197,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new ALIQUOTECONTRIBUTIVE()
                             {
-                                
+
                                 IDALIQCONTR = ibm.idAliqContr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 ALIQUOTA = ibm.aliquota,
                                 ANNULLATO = ibm.annullato
                             };
@@ -209,10 +210,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new ALIQUOTECONTRIBUTIVE()
                         {
-                            
+
                             IDALIQCONTR = ibm.idAliqContr,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             ALIQUOTA = ibm.aliquota,
                             ANNULLATO = ibm.annullato
                         };
@@ -239,7 +240,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                                     {
-                                        
+
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
@@ -254,7 +255,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                                     {
-                                        
+
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
@@ -264,7 +265,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new ALIQUOTECONTRIBUTIVE()
                                     {
-                                        
+
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -288,7 +289,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                                     {
-                                        
+
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -309,11 +310,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                                     {
-                                        
+
                                         IDALIQCONTR = item.IDALIQCONTR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA =item.ALIQUOTA,
+                                        ALIQUOTA = item.ALIQUOTA,
                                         ANNULLATO = false
                                     };
 
@@ -425,12 +426,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                             {
-                                
+
                                 IDALIQCONTR = precedenteIB.IDALIQCONTR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 ALIQUOTA = precedenteIB.ALIQUOTA,
-                                
+
                                 ANNULLATO = false
                             };
 

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -29,10 +30,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new IndennitaPrimoSegretModel()
                             {
-                                
+
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -59,10 +60,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new IndennitaPrimoSegretModel()
                             {
-                                
+
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -89,10 +90,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new IndennitaPrimoSegretModel()
                             {
-                                
+
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -124,10 +125,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new IndennitaPrimoSegretModel()
                             {
-                                
+
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -171,7 +172,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new INDENNITAPRIMOSEGRETARIO()
                             {
-                                
+
                                 IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -184,10 +185,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new INDENNITAPRIMOSEGRETARIO()
                             {
-                                
+
                                 IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 INDENNITA = ibm.indennita,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
@@ -198,10 +199,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new INDENNITAPRIMOSEGRETARIO()
                         {
-                            
+
                             IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             INDENNITA = ibm.indennita,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
@@ -229,7 +230,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
-                                        
+
                                         IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
@@ -245,7 +246,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
-                                        
+
                                         IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
@@ -256,7 +257,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new INDENNITAPRIMOSEGRETARIO()
                                     {
-                                        
+
                                         IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -281,7 +282,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
-                                        
+
                                         IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -303,7 +304,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
-                                        
+
                                         IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -413,7 +414,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                             {
-                                
+
                                 IDINDPRIMOSEGR = precedenteIB.IDINDPRIMOSEGR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
@@ -457,10 +458,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     llm = (from e in ll
                            select new IndennitaPrimoSegretModel()
                            {
-                               
+
                                idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                indennita = e.INDENNITA
-                               
+
                            }).ToList();
                 }
 
@@ -485,7 +486,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         idIndPrimoSegr = liv.IDINDPRIMOSEGR,
                         indennita = liv.INDENNITA
-                        
+
                     };
                 }
 

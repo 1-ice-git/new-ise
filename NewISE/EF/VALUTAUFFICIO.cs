@@ -12,13 +12,16 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TRASPEFFETTIRIEN_COEFFIFKM
+    public partial class VALUTAUFFICIO
     {
-        public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public decimal IDCFKM { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDVALUTA { get; set; }
+        public decimal IDUFFICIO { get; set; }
+        public System.DateTime DATAINIZIOVALIDITA { get; set; }
+        public System.DateTime DATAFINEVALIDITA { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
-        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
-        public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
+        public virtual VALUTE VALUTE { get; set; }
     }
 }

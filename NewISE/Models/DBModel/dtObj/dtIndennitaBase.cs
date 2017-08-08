@@ -3,6 +3,7 @@ using NewISE.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -87,7 +88,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idLivello = ib.IDLIVELLO,
                         idRiduzioni = ib.IDRIDUZIONI,
                         dataInizioValidita = ib.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.DATAFINEVALIDITA,
+                        dataFineValidita = ib.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.DATAFINEVALIDITA,
                         valore = ib.VALORE,
                         valoreResponsabile = ib.VALORERESP,
                         dataAggiornamento = ib.DATAAGGIORNAMENTO,
@@ -102,7 +103,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                             idRegola = ib.RIDUZIONI.IDREGOLA,
                             dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                            dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                            dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
                             percentuale = ib.RIDUZIONI.PERCENTUALE,
                             dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                             annullato = ib.ANNULLATO
@@ -129,7 +130,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idLivello = ib.IDLIVELLO,
                     idRiduzioni = ib.IDRIDUZIONI,
                     dataInizioValidita = ib.DATAINIZIOVALIDITA,
-                    dataFineValidita = ib.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.DATAFINEVALIDITA,
+                    dataFineValidita = ib.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.DATAFINEVALIDITA,
                     valore = ib.VALORE,
                     valoreResponsabile = ib.VALORERESP,
                     dataAggiornamento = ib.DATAAGGIORNAMENTO,
@@ -144,7 +145,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                         idRegola = ib.RIDUZIONI.IDREGOLA,
                         dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
                         percentuale = ib.RIDUZIONI.PERCENTUALE,
                         dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                         annullato = ib.ANNULLATO
@@ -171,7 +172,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idLivello = ib.IDLIVELLO,
                         idRiduzioni = ib.IDRIDUZIONI,
                         dataInizioValidita = ib.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.DATAFINEVALIDITA,
+                        dataFineValidita = ib.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.DATAFINEVALIDITA,
                         valore = ib.VALORE,
                         valoreResponsabile = ib.VALORERESP,
                         dataAggiornamento = ib.DATAAGGIORNAMENTO,
@@ -186,7 +187,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                             idRegola = ib.RIDUZIONI.IDREGOLA,
                             dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                            dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                            dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
                             percentuale = ib.RIDUZIONI.PERCENTUALE,
                             dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                             annullato = ib.ANNULLATO
@@ -212,7 +213,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idLivello = ib.IDLIVELLO,
                     idRiduzioni = ib.IDRIDUZIONI,
                     dataInizioValidita = ib.DATAINIZIOVALIDITA,
-                    dataFineValidita = ib.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.DATAFINEVALIDITA,
+                    dataFineValidita = ib.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.DATAFINEVALIDITA,
                     valore = ib.VALORE,
                     valoreResponsabile = ib.VALORERESP,
                     dataAggiornamento = ib.DATAAGGIORNAMENTO,
@@ -227,7 +228,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                         idRegola = ib.RIDUZIONI.IDREGOLA,
                         dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
                         percentuale = ib.RIDUZIONI.PERCENTUALE,
                         dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                         annullato = ib.ANNULLATO
@@ -258,7 +259,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idLivello = ib.IDLIVELLO,
                     idRiduzioni = ib.IDRIDUZIONI,
                     dataInizioValidita = ib.DATAINIZIOVALIDITA,
-                    dataFineValidita = ib.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? ib.DATAFINEVALIDITA : new DateTime?(),
+                    dataFineValidita = ib.DATAFINEVALIDITA != Utility.DataFineStop() ? ib.DATAFINEVALIDITA : new DateTime?(),
                     valore = ib.VALORE,
                     valoreResponsabile = ib.VALORERESP,
                     dataAggiornamento = ib.DATAAGGIORNAMENTO,
@@ -273,7 +274,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                         idRegola = ib.RIDUZIONI.IDREGOLA,
                         dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? ib.RIDUZIONI.DATAFINEVALIDITA : new DateTime?(),
+                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA != Utility.DataFineStop() ? ib.RIDUZIONI.DATAFINEVALIDITA : new DateTime?(),
                         percentuale = ib.RIDUZIONI.PERCENTUALE,
                         dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                         annullato = ib.RIDUZIONI.ANNULLATO

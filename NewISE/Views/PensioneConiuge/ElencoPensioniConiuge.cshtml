@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.PensioneConiugeModel>
+﻿@using NewISE.Models.Tools
+@model IEnumerable<NewISE.Models.DBModel.PensioneConiugeModel>
 
 @{
     decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
@@ -43,7 +44,7 @@
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizioValidita)
                     </td>
-                    @if (item.dataFineValidita != Convert.ToDateTime("31/12/9999"))
+                    @if (item.dataFineValidita != Utility.DataFineStop())
                     {
                         <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataFineValidita)

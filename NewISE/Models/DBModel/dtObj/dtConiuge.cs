@@ -83,22 +83,28 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public ConiugeModel GetConiuge(decimal idMaggiorazioneConiuge)
+        public ConiugeModel GetConiugebyID(decimal idConiuge)
         {
             ConiugeModel cm = new ConiugeModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
+                var c = db.CONIUGE.Find(idConiuge);
 
-                if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+                if (c != null && c.IDCONIUGE > 0)
                 {
                     cm = new ConiugeModel()
                     {
-                        idMaggiorazioneConiuge = c.IDMAGGIORAZIONECONIUGE,
+                        idConiuge = c.IDCONIUGE,
+                        idMaggiorazioneFamiliari = c.IDMAGGIORAZIONEFAMILIARI,
+                        idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
                         nome = c.NOME,
                         cognome = c.COGNOME,
-                        codiceFiscale = c.CODICEFISCALE
+                        codiceFiscale = c.CODICEFISCALE,
+                        dataInizio = c.DATAINIZIOVALIDITA,
+                        dataFine = c.DATAFINEVALIDITA,
+                        dataAggiornamento = c.DATAAGGIORNAMENTO,
+                        annullato = c.ANNULLATO
                     };
 
 
@@ -111,37 +117,155 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-        public void SetConiuge(ConiugeModel cm, ModelDBISE db)
+        public IList<ConiugeModel> GetListaConiuge(decimal idMaggiorazioniFamiliari)
         {
+            List<ConiugeModel> lcm = new List<ConiugeModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAFINEVALIDITA);
+
+                if (lc?.Any() ?? false)
+                {
+                    lcm = (from e in lc
+                           select new ConiugeModel()
+                           {
+                               idConiuge = e.IDCONIUGE,
+                               idMaggiorazioneFamiliari = e.IDMAGGIORAZIONEFAMILIARI,
+                               idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                               nome = e.NOME,
+                               cognome = e.COGNOME,
+                               codiceFiscale = e.CODICEFISCALE,
+                               dataInizio = e.DATAINIZIOVALIDITA,
+                               dataFine = e.DATAFINEVALIDITA,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO
+                           }).ToList();
+                }
+
+
+            }
+
+            return lcm;
+
+        }
+
+
+        public void SetConiuge(ref ConiugeModel cm, ModelDBISE db)
+        {
+
             CONIUGE c = new CONIUGE()
             {
-                IDMAGGIORAZIONECONIUGE = cm.idMaggiorazioneConiuge,
+                IDMAGGIORAZIONEFAMILIARI = cm.idMaggiorazioneFamiliari,
+                IDTIPOLOGIACONIUGE = cm.idTipologiaConiuge,
                 NOME = cm.nome,
                 COGNOME = cm.cognome,
-                CODICEFISCALE = cm.codiceFiscale
+                CODICEFISCALE = cm.codiceFiscale,
+                DATAINIZIOVALIDITA = cm.dataInizio.Value,
+                DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
+                DATAAGGIORNAMENTO = cm.dataAggiornamento,
+                ANNULLATO = cm.annullato
             };
 
             db.CONIUGE.Add(c);
 
-            db.SaveChanges();
+            if (db.SaveChanges() <= 0)
+            {
+                throw new Exception("Non è stato possibile inserire il coniuge.");
+            }
+            else
+            {
+                decimal idTrasferimento = c.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                cm.idConiuge = c.IDCONIUGE;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
+            }
         }
 
         public void EditConiuge(ConiugeModel cm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                var c = db.CONIUGE.Find(cm.idMaggiorazioneConiuge);
-
-                if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+                db.Database.BeginTransaction();
+                try
                 {
-                    c.IDMAGGIORAZIONECONIUGE = cm.idMaggiorazioneConiuge;
-                    c.NOME = cm.nome;
-                    c.COGNOME = cm.cognome;
-                    c.CODICEFISCALE = cm.codiceFiscale;
+                    ConiugeModel newc = new ConiugeModel();
 
-                    db.SaveChanges();
+                    var c = db.CONIUGE.Find(cm.idConiuge);
+
+                    DateTime dtFineConiuge = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+
+
+                    if (c != null && c.IDCONIUGE > 0)
+                    {
+
+                        newc.idMaggiorazioneFamiliari = cm.idMaggiorazioneFamiliari;
+                        newc.idTipologiaConiuge = cm.idTipologiaConiuge;
+                        newc.nome = cm.nome;
+                        newc.cognome = cm.cognome;
+                        newc.codiceFiscale = cm.codiceFiscale;
+                        newc.dataInizio = cm.dataInizio.Value;
+                        newc.dataFine = dtFineConiuge;
+
+
+                        c.DATAAGGIORNAMENTO = DateTime.Now;
+                        c.ANNULLATO = true;
+
+
+
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile modificare il coniuge.");
+                        }
+                        else
+                        {
+                            this.SetConiuge(ref newc, db);
+
+                            if (dtFineConiuge < Utility.DataFineStop())
+                            {
+                                using (dtFigli dtf = new dtFigli())
+                                {
+                                    bool hasFigliAttivi = dtf.HasFigliAttivi(cm.idMaggiorazioneFamiliari, db);
+
+                                    if (hasFigliAttivi == false)
+                                    {
+                                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                        {
+
+                                            //MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel()
+                                            //{
+                                            //    idTrasferimento = c.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO,
+                                            //    rinunciaMaggiorazioni = false,
+                                            //    praticaConclusa = false,
+                                            //    dataConclusione = Utility.DataFineStop(),
+                                            //    Chiusa = false,
+                                            //    dataAggiornamento = DateTime.Now,
+                                            //    annullato = false
+                                            //};
+
+                                            //dtmf.SetMaggiorazioneFamiliari(ref mfm, db);
+
+                                            dtmf.ChiudiMaggiorazioneFamiliare(c.IDMAGGIORAZIONEFAMILIARI, db);
+
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
                 }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
             }
         }
 

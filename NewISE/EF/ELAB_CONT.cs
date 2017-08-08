@@ -21,14 +21,15 @@ namespace NewISE.EF
         }
     
         public decimal IDELABCONT { get; set; }
-        public Nullable<decimal> IDINDENNITA { get; set; }
         public Nullable<decimal> IDANTICIPO { get; set; }
         public Nullable<decimal> IDRICHIAMO { get; set; }
         public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
+        public Nullable<decimal> IDTRASFERIMENTO { get; set; }
     
         public virtual ANTICIPI ANTICIPI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEORICI> TEORICI { get; set; }
+        public virtual INDENNITA INDENNITA { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
     }

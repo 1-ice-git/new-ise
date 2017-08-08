@@ -22,13 +22,14 @@ namespace NewISE.EF
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
+            this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
             this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
         }
     
         public decimal IDUFFICIO { get; set; }
+        public decimal IDVALUTA { get; set; }
         public string CODICEUFFICIO { get; set; }
         public string DESCRIZIONEUFFICIO { get; set; }
-        public decimal IDVALUTA { get; set; }
         public bool PAGATOVALUTAUFFICIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -41,6 +42,8 @@ namespace NewISE.EF
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual VALUTE VALUTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }

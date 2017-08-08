@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -67,7 +68,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -103,7 +104,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -139,7 +140,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
                                 valoreResponsabile = e.VALORERESP,
                                 annullato = e.ANNULLATO,
@@ -197,7 +198,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 VALORE = ibm.valore,
                                 VALORERESP = ibm.valoreResponsabile,
                                 ANNULLATO = ibm.annullato
@@ -210,7 +211,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDLIVELLO = ibm.idLivello,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             VALORE = ibm.valore,
                             VALORERESP = ibm.valoreResponsabile,
                             ANNULLATO = ibm.annullato

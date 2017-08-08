@@ -19,12 +19,11 @@ namespace NewISE.EF
         {
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.MAGGIORAZIONEFAMILIARI = new HashSet<MAGGIORAZIONEFAMILIARI>();
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
-            this.MAGGIORAZIONECONIUGE = new HashSet<MAGGIORAZIONECONIUGE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
-            this.MAGGIORAZIONEFIGLI = new HashSet<MAGGIORAZIONEFIGLI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -38,16 +37,18 @@ namespace NewISE.EF
         public string COAN { get; set; }
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }
+        public bool NOTIFICATRASFERIMENTO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public bool NOTIFICATRASFERIMENTO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
+        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual NOTIFICARICHIESTAMAGFAM NOTIFICARICHIESTAMAGFAM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -58,12 +59,7 @@ namespace NewISE.EF
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual UFFICI UFFICI { get; set; }
-        public virtual INDENNITA INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEFIGLI> MAGGIORAZIONEFIGLI { get; set; }
     }
 }

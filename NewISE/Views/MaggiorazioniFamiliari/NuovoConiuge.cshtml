@@ -1,10 +1,11 @@
-﻿@model NewISE.Models.ViewModel.MaggiorazioneConiugeVModel
+﻿@model NewISE.Models.DBModel.ConiugeModel
+@using System.Collections.Generic
 @using System.Web.Optimization
 
 <link href="~/Content/css/NuovoConiuge.css" rel="stylesheet" />
 
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    //decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 
     //ModelError m = new ModelError();
 
@@ -29,7 +30,7 @@
     <div style="padding-left:15px;">
         <div class="form-horizontal">
 
-            @Html.HiddenFor(model => model.idTrasferimento)
+
 
             <div class="panel panel-body" style="padding-left:5px; padding-right:5px; margin-right:10px; margin-top:5px;">
                 <div class="form-group">
@@ -43,17 +44,17 @@
                     </div>
 
                     <div class="col-xs-3">
-                        @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.dataInizio, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.dataInizio, new { @class = "form-control" })
                             @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
                         </div>
                     </div>
 
                     <div class="col-xs-3">
-                        @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.dataFine, htmlAttributes: new { @class = "control-label" })
                         <div>
-                            @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.dataFine, new { @class = "form-control" })
                             @*@Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })*@
                         </div>
                     </div>
@@ -96,33 +97,33 @@
         </div>
     </div>
 
-
-
-}
-
-<div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
-            </div>
-            <div class="modal-body alert alert-warning text-warning">
-                <p id="msgModalWarning" class="text-warning">
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+    <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+                </div>
+                <div class="modal-body alert alert-warning text-warning">
+                    <p id="msgModalWarning" class="text-warning">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+}
+
+
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioneFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -135,7 +136,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                            break;
+                break;
         }
 
     }

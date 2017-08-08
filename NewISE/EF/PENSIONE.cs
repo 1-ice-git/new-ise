@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PENSIONE()
         {
-            this.MAGGIORAZIONECONIUGE = new HashSet<MAGGIORAZIONECONIUGE>();
+            this.CONIUGE = new HashSet<CONIUGE>();
         }
     
         public decimal IDPENSIONE { get; set; }
@@ -28,6 +28,6 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONECONIUGE> MAGGIORAZIONECONIUGE { get; set; }
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
     }
 }

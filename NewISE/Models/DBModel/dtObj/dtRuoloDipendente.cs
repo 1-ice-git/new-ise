@@ -161,7 +161,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idRuoloDipendente = rd.IDRUOLODIPENDENTE,
                         idRuolo = rd.IDRUOLO,
                         dataInizioValidita = rd.DATAINZIOVALIDITA,
-                        dataFineValidita = rd.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : rd.DATAFINEVALIDITA,
+                        dataFineValidita = rd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : rd.DATAFINEVALIDITA,
                         dataAggiornamento = rd.DATAAGGIORNAMENTO,
                         annullato = rd.ANNULLATO,
                         RuoloUfficio = new RuoloUfficioModel()
@@ -200,7 +200,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idRuoloDipendente = rd.IDRUOLODIPENDENTE,
                             idRuolo = rd.IDRUOLO,
                             dataInizioValidita = rd.DATAINZIOVALIDITA,
-                            dataFineValidita = rd.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : rd.DATAFINEVALIDITA,
+                            dataFineValidita = rd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : rd.DATAFINEVALIDITA,
                             dataAggiornamento = rd.DATAAGGIORNAMENTO,
                             annullato = rd.ANNULLATO,
                             RuoloUfficio = new RuoloUfficioModel()
@@ -231,7 +231,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDRUOLO = rdm.idRuolo,
                 DATAINZIOVALIDITA = rdm.dataInizioValidita,
-                DATAFINEVALIDITA = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Convert.ToDateTime("31/12/9999"),
+                DATAFINEVALIDITA = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = rdm.dataAggiornamento,
                 ANNULLATO = rdm.annullato
 

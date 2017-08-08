@@ -1,5 +1,6 @@
 ﻿
 using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,7 +95,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
                     idUfficio = cs.IDUFFICIO,
                     dataInizioValidita = cs.DATAINIZIOVALIDITA,
-                    dataFineValidita = cs.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : cs.DATAFINEVALIDITA,
+                    dataFineValidita = cs.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : cs.DATAFINEVALIDITA,
                     valore = cs.VALORECOEFFICIENTE,
                     dataAggiornamento = cs.DATAAGGIORNAMENTO,
                     annullato = cs.ANNULLATO,
@@ -125,7 +126,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
                     idUfficio = cs.IDUFFICIO,
                     dataInizioValidita = cs.DATAINIZIOVALIDITA,
-                    dataFineValidita = cs.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : cs.DATAFINEVALIDITA,
+                    dataFineValidita = cs.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : cs.DATAFINEVALIDITA,
                     valore = cs.VALORECOEFFICIENTE,
                     dataAggiornamento = cs.DATAAGGIORNAMENTO,
                     annullato = cs.ANNULLATO,
@@ -163,7 +164,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
                     idUfficio = cs.IDUFFICIO,
                     dataInizioValidita = cs.DATAINIZIOVALIDITA,
-                    dataFineValidita = cs.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : cs.DATAFINEVALIDITA,
+                    dataFineValidita = cs.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : cs.DATAFINEVALIDITA,
                     valore = cs.VALORECOEFFICIENTE,
                     dataAggiornamento = cs.DATAAGGIORNAMENTO,
                     annullato = cs.ANNULLATO

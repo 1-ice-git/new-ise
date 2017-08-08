@@ -1,8 +1,13 @@
-﻿@{
+﻿@model NewISE.Models.DBModel.MaggiorazioniFamiliariModel
+
+@{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
 
+    decimal idMafFam = Model.idMaggiorazioneFamiliari;
+
 }
+
 
 <div class="row">
     <div class="col-xs-12" style="padding-right:20px; margin-left:-10px;">
@@ -29,21 +34,21 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                }
+                                    }
     else
     {
         @:ElencoFigli();
-                }
+                                    }
 
     function ElencoConiuge() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoConiuge";
-        var idTrasferimento = parseInt('@idTrasferimento');
+        var idMafFam = parseInt('@idMafFam');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idMaggiorazioniFamiliari: idMafFam },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

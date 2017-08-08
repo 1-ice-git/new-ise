@@ -18,12 +18,14 @@ namespace NewISE.EF
         public MAGGIORAZIONEABITAZIONE()
         {
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
+            this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
+            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
+            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
+            this.TFR = new HashSet<TFR>();
         }
     
         public decimal IDMAB { get; set; }
-        public decimal IDPERCMAB { get; set; }
-        public decimal IDTFR { get; set; }
-        public decimal IDMAGANNUALI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
@@ -33,16 +35,19 @@ namespace NewISE.EF
         public decimal CANONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDRUOLODIPENDENTE { get; set; }
-        public decimal IDLIVDIPENDENTE { get; set; }
     
-        public virtual LIVELLIDIPENDENTI LIVELLIDIPENDENTI { get; set; }
-        public virtual MAGGIORAZIONIANNUALI MAGGIORAZIONIANNUALI { get; set; }
-        public virtual PERCENTUALEMAB PERCENTUALEMAB { get; set; }
-        public virtual RUOLODIPENDENTE RUOLODIPENDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        public virtual TFR TFR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TFR> TFR { get; set; }
     }
 }

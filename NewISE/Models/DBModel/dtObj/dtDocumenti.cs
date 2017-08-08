@@ -16,13 +16,13 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public IList<DocumentiModel> GetDocumentiByIdMagConiuge(decimal idMagConiuge)
+        public IList<DocumentiModel> GetDocumentiByIdConiuge(decimal idConiuge)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.CONIUGE.Find(idMagConiuge).DOCUMENTI.ToList();
+                var ld = db.CONIUGE.Find(idConiuge).DOCUMENTI.ToList();
                 if (ld != null && ld.Count > 0)
                 {
 
@@ -354,25 +354,25 @@ namespace NewISE.Models.DBModel.dtObj
         {
             var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
 
-            if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
-            {
-                MemoryStream ms = new MemoryStream();
-                DOCUMENTI d = new DOCUMENTI();
-                dm.file.InputStream.CopyTo(ms);
+            //if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
+            //{
+            //    MemoryStream ms = new MemoryStream();
+            //    DOCUMENTI d = new DOCUMENTI();
+            //    dm.file.InputStream.CopyTo(ms);
 
-                d.NOMEDOCUMENTO = dm.nomeDocumento;
-                d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-                d.DATAINSERIMENTO = dm.dataInserimento;
-                d.FILEDOCUMENTO = ms.ToArray();
+            //    d.NOMEDOCUMENTO = dm.nomeDocumento;
+            //    d.ESTENSIONE = dm.estensione;
+            //    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+            //    d.DATAINSERIMENTO = dm.dataInserimento;
+            //    d.FILEDOCUMENTO = ms.ToArray();
 
-                c.DOCUMENTI.Add(d);
+            //    c.DOCUMENTI.Add(d);
 
-                if (db.SaveChanges() > 0)
-                {
-                    dm.idDocumenti = d.IDDOCUMENTO;
-                }
-            }
+            //    if (db.SaveChanges() > 0)
+            //    {
+            //        dm.idDocumenti = d.IDDOCUMENTO;
+            //    }
+            //}
 
 
         }

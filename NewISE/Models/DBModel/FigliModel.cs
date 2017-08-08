@@ -14,7 +14,10 @@ namespace NewISE.Models.DBModel
         public decimal idFigli { get; set; }
         [Required(ErrorMessage = "La maggiorazione dei figli è richiesta.")]
         [Display(Name = "Magg. figli")]
-        public decimal idMaggiorazioneFigli { get; set; }
+        public decimal idMaggiorazioneFamiliari { get; set; }
+        [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
+        [Display(Name = "Tipologia figlio")]
+        public decimal idTipologiaFiglio { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]
@@ -45,8 +48,6 @@ namespace NewISE.Models.DBModel
         public bool Annullato { get; set; }
 
         public string nominativo => cognome + " " + nome;
-
-        public MaggiorazioniFigliModel MaggiorazioniFigli { get; set; }
 
         public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }

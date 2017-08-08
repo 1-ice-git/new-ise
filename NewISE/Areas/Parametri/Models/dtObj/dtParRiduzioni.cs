@@ -1,7 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
-
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +30,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-                                
+
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 //Livello = new LivelloModel()
@@ -65,10 +65,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-                                
+
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 //Livello = new LivelloModel()
@@ -100,10 +100,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-                                
+
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 //Livello = new LivelloModel()
@@ -135,10 +135,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-                                
+
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 //Livello = new LivelloModel()
@@ -181,7 +181,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new RIDUZIONI()
                             {
-                                
+
                                 IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -195,7 +195,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
@@ -205,10 +205,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new RIDUZIONI()
                         {
-                            
+
                             IDRIDUZIONI = ibm.idRiduzioni,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
                         };
@@ -235,7 +235,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
@@ -250,7 +250,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
@@ -260,7 +260,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -284,7 +284,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -305,7 +305,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -421,12 +421,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new RIDUZIONI()
                             {
-                                
+
                                 IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 PERCENTUALE = precedenteIB.PERCENTUALE,
-                                
+
                                 ANNULLATO = false
                             };
 
@@ -468,10 +468,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     llm = (from e in ll
                            select new RiduzioniModel()
                            {
-                               
-                               idRiduzioni =e.IDRIDUZIONI,
-                               percentuale = e.PERCENTUALE 
-                               
+
+                               idRiduzioni = e.IDRIDUZIONI,
+                               percentuale = e.PERCENTUALE
+
                            }).ToList();
                 }
 
@@ -495,7 +495,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     lm = new RiduzioniModel()
                     {
-                        
+
                         idRiduzioni = liv.IDRIDUZIONI,
                         percentuale = liv.PERCENTUALE
 

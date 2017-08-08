@@ -86,7 +86,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     //            idIndennitaBase = e.IDINDENNITABASE,
                     //            idLivello = e.IDLIVELLO,
                     //            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                    //            dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                    //            dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                     //            valore = e.VALORE,
                     //            valoreResponsabile = e.VALORERESP,
                     //            annullato = e.ANNULLATO,
@@ -122,7 +122,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         //                        idIndennitaBase = e.IDINDENNITABASE,
         //                        idLivello = e.IDLIVELLO,
         //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
-        //                        dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
         //                        valore = e.VALORE,
         //                        valoreResponsabile = e.VALORERESP,
         //                        annullato = e.ANNULLATO,
@@ -180,7 +180,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     //        {
                     //            IDLIVELLO = ibm.idLivello,
                     //            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                    //            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                    //            DATAFINEVALIDITA = Utility.DataFineStop(),
                     //            VALORE = ibm.valore,
                     //            VALORERESP = ibm.valoreResponsabile,
                     //            ANNULLATO = ibm.annullato
@@ -193,7 +193,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     //    {
                     //        IDLIVELLO = ibm.idLivello,
                     //        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                    //        DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                    //        DATAFINEVALIDITA = Utility.DataFineStop(),
                     //        VALORE = ibm.valore,
                     //        VALORERESP = ibm.valoreResponsabile,
                     //        ANNULLATO = ibm.annullato
@@ -307,11 +307,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     //    libNew.Add(ibNew);
                     //    libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.VALUTE.AddRange(libNew);
+                    db.VALUTE.AddRange(libNew);
                     //}
                     //else
                     //{
-                        db.VALUTE.Add(ibNew);
+                    db.VALUTE.Add(ibNew);
 
                     //}
 
@@ -460,11 +460,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     llm = (from e in ll
                            select new ValuteModel()
                            {
-                               
+
                                idValuta = e.IDVALUTA,
                                descrizioneValuta = e.DESCRIZIONEVALUTA
-                               
-                               
+
+
                            }).ToList();
                 }
 

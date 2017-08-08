@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -28,11 +29,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
-                                
+
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
@@ -68,7 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
@@ -103,7 +104,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
@@ -138,7 +139,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Ufficio = new UfficiModel()
@@ -196,7 +197,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 VALORECOEFFICIENTE = ibm.valore,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
@@ -209,7 +210,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             VALORECOEFFICIENTE = ibm.valore,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
@@ -426,7 +427,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 VALORECOEFFICIENTE = precedenteIB.VALORECOEFFICIENTE,
-                                
+
 
                                 ANNULLATO = false
                             };

@@ -1,7 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
-
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +31,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercMaggAbitazModel()
                             {
-                                
+
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -72,7 +72,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -109,7 +109,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -146,7 +146,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -206,7 +206,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDLIVELLO = ibm.idLivello,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALE = ibm.percentuale,
                                 PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
@@ -220,7 +220,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDLIVELLO = ibm.idLivello,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALE = ibm.percentuale,
                             PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -33,7 +34,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
 
                                 annullato = e.ANNULLATO,
@@ -70,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 tipologiaFiglio = new TipologiaFiglioModel()
@@ -107,7 +108,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 tipologiaFiglio = new TipologiaFiglioModel()
@@ -144,7 +145,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
                                 idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
                                 tipologiaFiglio = new TipologiaFiglioModel()
@@ -204,7 +205,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDPERCMAGFIGLI = ibm.idPercMagFigli,
                                 IDTIPOLOGIAFIGLIO = (decimal)ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALEFIGLI = ibm.percentualeFigli,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
@@ -218,7 +219,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDPERCMAGFIGLI = ibm.idPercMagFigli,
                             IDTIPOLOGIAFIGLIO = (decimal)ibm.idTipologiaFiglio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALEFIGLI = ibm.percentualeFigli,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato

@@ -6,12 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
     public class dtParPercentualeDisagio : IDisposable
     {
-        
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -31,11 +32,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new PercentualeDisagioModel()
                             {
-                                
+
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Ufficio = new UfficiModel()
@@ -70,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Ufficio = new UfficiModel()
@@ -105,7 +106,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Ufficio = new UfficiModel()
@@ -140,7 +141,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
                                 Ufficio = new UfficiModel()
@@ -183,7 +184,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new PERCENTUALEDISAGIO()
                             {
-                                
+
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -197,7 +198,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALE = ibm.percentuale,
                                 ANNULLATO = ibm.annullato
                             };
@@ -209,7 +210,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALE = ibm.percentuale,
                             ANNULLATO = ibm.annullato
                         };
@@ -416,12 +417,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             var ibOld1 = new PERCENTUALEDISAGIO()
                             {
                                 IDUFFICIO = precedenteIB.IDUFFICIO,
-                                
+
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                //DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                //DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALE = precedenteIB.PERCENTUALE,
-                                
+
                                 ANNULLATO = false
                             };
 

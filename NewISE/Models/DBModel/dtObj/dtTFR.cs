@@ -1,4 +1,5 @@
 ﻿using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Linq;
 
@@ -95,7 +96,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idTFR = tfr.IDTFR,
                                     idValuta = tfr.IDVALUTA,
                                     dataInizioValidita = tfr.DATAINIZIOVALIDITA,
-                                    dataFineValidita = tfr.DATAFINEVALIDITA == Convert.ToDateTime("31/12/9999") ? new DateTime?() : tfr.DATAFINEVALIDITA,
+                                    dataFineValidita = tfr.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : tfr.DATAFINEVALIDITA,
                                     dataAggiornamento = tfr.DATAAGGIORNAMENTO,
                                     tassoCambio = tfr.TASSOCAMBIO,
                                     Annullato = tfr.ANNULLATO

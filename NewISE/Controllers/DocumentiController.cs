@@ -188,9 +188,11 @@ namespace NewISE.Controllers
                     break;
                 case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
                     titoloPagina = "Maggiorazione Familiare - Documento familiare (Coniuge)";
-                    using (dtMaggiorazioneConiuge dtmc = new dtMaggiorazioneConiuge())
+                    using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                     {
-                        MaggiorazioneConiugeModel mcm = dtmc.GetMaggiorazioneConiuge(id);
+                        MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+                        //MaggiorazioniFamiliariModel mcm = dtmc.GetMaggiorazioneConiuge(id);
                         if (mcm != null && mcm.HasValue())
                         {
                             idTrasferimento = mcm.idTrasferimento;
@@ -350,7 +352,7 @@ namespace NewISE.Controllers
                         case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
                             break;
                         case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                            ldm = dtd.GetDocumentiByIdMagConiuge(id).OrderByDescending(a => a.dataInserimento).ToList();
+                            ldm = dtd.GetDocumentiByIdConiuge(id).OrderByDescending(a => a.dataInserimento).ToList();
                             break;
                         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
                             break;
@@ -404,7 +406,7 @@ namespace NewISE.Controllers
                         case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
                             break;
                         case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                            nDoc = dtd.GetDocumentiByIdMagConiuge(id).Count;
+                            nDoc = dtd.GetDocumentiByIdConiuge(id).Count;
                             break;
                         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
                             break;

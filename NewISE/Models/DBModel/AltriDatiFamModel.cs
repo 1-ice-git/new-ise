@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Figli")]
         public decimal? idFigli { get; set; }
         [Display(Name = "Coniuge")]
-        public decimal? idMaggiorazioneConiuge { get; set; }
+        public decimal? idConiuge { get; set; }
         [Required(ErrorMessage = "La data di nascita è richiesta.")]
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
