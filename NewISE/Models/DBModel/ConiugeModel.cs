@@ -50,16 +50,16 @@ namespace NewISE.Models.DBModel
 
         public MaggiorazioniFamiliariModel MaggiorazioniFasmiliari { get; set; }
 
+        public IList<AltriDatiFamModel> lAltriDatiFamiliari { get; set; }
+
         public bool HasValue()
         {
             return idConiuge > 0 ? true : false;
         }
 
         [Display(Name = "Nominativo")]
-        public string nominativo
-        {
-            get { return cognome + " " + nome; }
-        }
+        public string nominativo => nome + " " + cognome;
+
 
     }
 }

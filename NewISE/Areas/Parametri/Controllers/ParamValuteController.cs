@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult Valute( decimal idValuta = 0)
+        public ActionResult Valute(decimal idValuta = 0)
         {
             List<ValuteModel> libm = new List<ValuteModel>();
             var r = new List<SelectListItem>();
@@ -64,10 +65,10 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-           
+
 
             return PartialView(libm);
         }
@@ -115,7 +116,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             //ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -127,7 +128,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuoveValute(decimal idValuta)
         {
             var r = new List<SelectListItem>();
-           
+
 
             try
             {
@@ -142,7 +143,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -171,13 +172,13 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetValute(ibm.idValuta);
                         ViewBag.Livello = lm;
                     }
-                   
+
                     return PartialView("NuoveValute", ibm);
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -198,7 +199,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 

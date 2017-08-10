@@ -1,4 +1,5 @@
 ﻿using NewISE.DBComuniItalia;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using Newtonsoft.Json;
@@ -57,7 +58,7 @@ namespace NewISE.Controllers
             //}
             //catch (Exception ex)
             //{
-            //    return PartialView("ErrorPartial");
+            //    return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
             //}
 
             ViewData.Add("idTrasferimento", mfm.idTrasferimento);
@@ -138,7 +139,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewData.Add("idTrasferimento", mcm.idTrasferimento);
@@ -206,7 +207,7 @@ namespace NewISE.Controllers
             //}
             //catch (Exception ex)
             //{
-            //    return PartialView("ErrorPartial");
+            //    return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
             //}
 
             //return RedirectToAction("AltriDatiFamiliariConiuge", new { idMaggiorazioneConiuge = adf.idMaggiorazioneConiuge });
@@ -264,7 +265,7 @@ namespace NewISE.Controllers
             //catch (Exception ex)
             //{
 
-            //    return PartialView("ErrorPartial");
+            //    return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
             //}
 
             //List<Comuni> comuni = new List<Comuni>();
@@ -318,7 +319,7 @@ namespace NewISE.Controllers
             //}
             //catch (Exception ex)
             //{
-            //    return PartialView("ErrorPartial");
+            //    return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
             //}
 
             //return RedirectToAction("AltriDatiFamiliariConiuge", new { idMaggiorazioneConiuge = adfm.idMaggiorazioneConiuge });

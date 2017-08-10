@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,10 @@ namespace NewISE.Areas.Parametri.Controllers
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 
+
                                  Text = t.descrizione,
                                  Value = t.idTipoAliqContr.ToString()
-                                 
+
                              }).ToList();
 
                         if (idAliqContr == 0)
@@ -66,7 +67,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -117,7 +118,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -129,7 +130,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaAliquotaContributiva(decimal idTipoAliqContr, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-           
+
             try
             {
                 using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
@@ -142,7 +143,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -158,7 +159,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
                     {
-                        
+
                         dtib.SetAliquoteContributive(ibm);
                     }
 
@@ -177,7 +178,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -198,7 +199,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 

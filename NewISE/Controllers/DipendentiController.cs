@@ -83,7 +83,7 @@ namespace NewISE.Controllers
 
                         rMatricola.Insert(0, new SelectListItem() { Text = "", Value = "" });
 
-                        
+
 
                         rNominativo.Insert(0, new SelectListItem() { Text = "", Value = "" });
 
@@ -96,7 +96,7 @@ namespace NewISE.Controllers
                         {
                             foreach (var item in rMatricola)
                             {
-                                if (matricola == item.Value )
+                                if (matricola == item.Value)
                                 {
                                     item.Selected = true;
                                 }
@@ -128,22 +128,22 @@ namespace NewISE.Controllers
                         dm.livelloDipendenteValido = dtpl.GetLivelloDipendente(dm.idDipendente, DateTime.Now.Date);
                     }
                 }
-                
+
 
                 //ViewBag.ListDipendentiGepeMatricola = rMatricola.OrderBy(a=>a.Text);
-                ViewBag.ListDipendentiGepeNominativo = rNominativo.OrderBy(a=>a.Text);
+                ViewBag.ListDipendentiGepeNominativo = rNominativo.OrderBy(a => a.Text);
                 ViewBag.Amministratore = admin;
                 ViewBag.Matricola = dm.matricola;
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             return PartialView(dm);
         }
 
-        
+
 
     }
 

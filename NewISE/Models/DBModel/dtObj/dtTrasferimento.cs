@@ -149,6 +149,51 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
+        public TrasferimentoModel GetTrasferimentoByIDMagFam(decimal idMaggiorazioniFamiliari)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO;
+
+                    if (t != null && t.IDTRASFERIMENTO > 0)
+                    {
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+                            annullato = t.ANNULLATO
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("Non è stato possibile intercettare il trasferimento con l'id maggiorazione familiare: (" + idMaggiorazioniFamiliari + ")");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return tm;
+        }
 
         public IList<TrasferimentoModel> GetTrasferimentiPrecedenti(decimal idDipendente, DateTime dataPartenza)
         {

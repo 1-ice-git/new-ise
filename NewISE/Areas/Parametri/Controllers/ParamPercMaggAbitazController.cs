@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -115,7 +116,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -127,7 +128,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaPercentualeMaggiorazioneAbitazione(decimal idLivello, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-       
+
 
             try
             {
@@ -141,7 +142,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -158,7 +159,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {
 
-                 
+
 
                         dtib.SetMaggiorazioneAbitazione(ibm);
                     }
@@ -178,7 +179,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -199,7 +200,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 

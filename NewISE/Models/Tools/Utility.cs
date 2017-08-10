@@ -18,7 +18,7 @@ namespace NewISE.Models.Tools
     public static class Utility
     {
 
-        public const string DataFineSistema = "31/12/9999";
+        private const string DataFineSistema = "31/12/9999";
 
 
         public static bool Amministratore()
@@ -268,7 +268,7 @@ namespace NewISE.Models.Tools
 
         public static DateTime DataFineStop()
         {
-            return Utility.DataFineStop();
+            return Convert.ToDateTime(DataFineSistema);
         }
 
         public static PropertyInfo[] GetProperty(object val)

@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace NewISE.Areas.Parametri.Controllers
                              {
                                  Text = t.percentuale.ToString(),
                                  Value = t.idRiduzioni.ToString()
-                                 
+
                              }).ToList();
 
                         if (idRiduzioni == 0)
@@ -65,7 +66,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -92,7 +93,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         r = (from t in llm1
                              select new SelectListItem()
                              {
-                               
+
                                  Text = t.percentuale.ToString(),
                                  Value = t.idRiduzioni.ToString()
                              }).ToList();
@@ -117,7 +118,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -129,7 +130,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuoveRiduzioni(decimal idRiduzioni, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-          
+
 
             try
             {
@@ -143,7 +144,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -159,7 +160,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParRiduzioni dtib = new dtParRiduzioni())
                     {
-                        
+
 
                         dtib.SetRiduzioni(ibm);
                     }
@@ -179,7 +180,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -200,7 +201,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 

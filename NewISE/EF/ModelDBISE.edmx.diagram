@@ -32,7 +32,6 @@
         <EntityTypeShape EntityType="DBISEPRO.LOGATTIVITA" Width="1.5" PointX="10.5" PointY="29.75" />
         <EntityTypeShape EntityType="DBISEPRO.MAB_ALIQCONTR" Width="1.5" PointX="5.25" PointY="1.5" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="16" PointY="41.875" />
-        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFAMILIARI" Width="1.5" PointX="7.5" PointY="47" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" Width="1.5" PointX="5.25" PointY="46.5" />
         <EntityTypeShape EntityType="DBISEPRO.NORMACALCOLO" Width="1.5" PointX="14.25" PointY="59.125" />
         <EntityTypeShape EntityType="DBISEPRO.OA" Width="1.5" PointX="19.5" PointY="47" />
@@ -87,7 +86,6 @@
         <AssociationConnector Association="DBISEPRO.R_DFK_CFK" />
         <AssociationConnector Association="DBISEPRO.R_COEFFRICHIAMO_RICHIAMO" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" />
-        <AssociationConnector Association="DBISEPRO.R_C_MC" />
         <AssociationConnector Association="DBISEPRO.R_TC_C" />
         <AssociationConnector Association="DBISEPRO.R_C_AQ" />
         <AssociationConnector Association="DBISEPRO.R_T_C" />
@@ -98,7 +96,6 @@
         <AssociationConnector Association="DBISEPRO.R_I_E_C" />
         <AssociationConnector Association="DBISEPRO.R_PS_E_C" />
         <AssociationConnector Association="DBISEPRO.R_R_E_C" />
-        <AssociationConnector Association="DBISEPRO.R_MF_F" />
         <AssociationConnector Association="DBISEPRO.R_TF_F" />
         <AssociationConnector Association="DBISEPRO.R_GD_TDV" />
         <AssociationConnector Association="DBISEPRO.R_T_I" />
@@ -111,7 +108,6 @@
         <AssociationConnector Association="DBISEPRO.R_T_LA" />
         <AssociationConnector Association="DBISEPRO.R_UL_LA" />
         <AssociationConnector Association="DBISEPRO.R_T_MB" />
-        <AssociationConnector Association="DBISEPRO.R_T_MC" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" />
         <AssociationConnector Association="DBISEPRO.R_NC_RC" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_PERCDISAGIO" />
@@ -169,6 +165,10 @@
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEFAMILIARI" Width="1.5" PointX="7.5" PointY="25.875" />
+        <AssociationConnector Association="DBISEPRO.R_C_MC" />
+        <AssociationConnector Association="DBISEPRO.R_MF_F" />
+        <AssociationConnector Association="DBISEPRO.R_T_MC" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

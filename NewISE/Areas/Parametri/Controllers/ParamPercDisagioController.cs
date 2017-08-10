@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using System;
@@ -65,7 +66,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -116,7 +117,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -141,7 +142,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -175,7 +176,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -187,7 +188,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                 {
-                   dtib.DelPercentualeDisagio(idPercDisagio);
+                    dtib.DelPercentualeDisagio(idPercDisagio);
                 }
 
                 return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
@@ -195,7 +196,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 

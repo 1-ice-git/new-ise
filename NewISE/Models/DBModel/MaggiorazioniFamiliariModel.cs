@@ -16,17 +16,12 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Rinuncia maggiorazioni è obbligatorio.")]
         [DefaultValue(false)]
         public bool rinunciaMaggiorazioni { get; set; }
-        [Required(ErrorMessage = "Pratica conclusa è obbligatorio.")]
+        [Required(ErrorMessage = "il campo richiesta attivazione è richiesto.")]
         [DefaultValue(false)]
-        public bool praticaConclusa { get; set; }
-        [Required(ErrorMessage = "La data aggiornamento è richiesta.")]
-        [Display(Name = "Data agg.")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime dataConclusione { get; set; }
-        [Required(ErrorMessage = "Il campo chiusura è richiesto.")]
-        [Display(Name = "Chiusura")]
+        public bool richiestaAttivazione { get; set; }
+        [Required(ErrorMessage = "il campo attivazione maggioarazioni è richiesto.")]
         [DefaultValue(false)]
-        public bool Chiusa { get; set; }
+        public bool attivazioneMaggiorazioni { get; set; }
         [Required(ErrorMessage = "La data aggiornamento è richiesta.")]
         [Display(Name = "Data conclusione.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]

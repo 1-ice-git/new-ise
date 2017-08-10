@@ -36,9 +36,7 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public bool annullato { get; set; }
 
-        public decimal idMaggiorazioneConiuge { get; set; }
-
-        public MaggiorazioniFamiliariModel MaggiorazioniConiuge { get; set; }
+        public IList<ConiugeModel> Coniugi { get; set; }
 
 
         public bool HasValue()
@@ -48,17 +46,21 @@ namespace NewISE.Models.DBModel
 
         public void Annulla(ModelDBISE db)
         {
-            var pc = db.PENSIONE.Find(idPensioneConiuge);
-            if (pc != null && pc.IDPENSIONE > 0)
+            var p = db.PENSIONE.Find(this.idPensioneConiuge);
+            if (p != null && p.IDPENSIONE > 0)
             {
-                pc.ANNULLATO = true;
+                p.ANNULLATO = true;
 
-                //if (db.SaveChanges() > 0)
-                //{
-                //    decimal idTrasf = pc.MAGGIORAZIONECONIUGE.First(a => a.ANNULLATO == false).IDTRASFERIMENTO;
 
-                //    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, pc.IDPENSIONE);
-                //}
+                int i = db.SaveChanges();
+
+                if (i > 0)
+                {
+                    decimal idTrasf = p.CONIUGE.First().MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, p.IDPENSIONE);
+                }
+
+
             }
         }
 

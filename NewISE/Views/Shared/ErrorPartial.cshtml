@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model NewISE.Models.MsgErr
+
+<div class="row">
     <div class="col-xs-12">
         <div class="text-center">
             <h4>Ops! Qualcosa è andato storto.</h4>
@@ -6,6 +8,9 @@
         </div>
         <div class="text-center">
             <img src="~/Immagini/Errore.gif" width="30" />
+        </div>
+        <div class="text-center text-danger">
+            <span>@Model.msg</span>
         </div>
         <div>
             <ul>

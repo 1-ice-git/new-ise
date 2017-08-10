@@ -19,11 +19,11 @@ namespace NewISE.EF
         {
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
-            this.MAGGIORAZIONEFAMILIARI = new HashSet<MAGGIORAZIONEFAMILIARI>();
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.MAGGIORAZIONEFAMILIARI = new HashSet<MAGGIORAZIONEFAMILIARI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -48,8 +48,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
@@ -61,5 +59,7 @@ namespace NewISE.EF
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
     }
 }

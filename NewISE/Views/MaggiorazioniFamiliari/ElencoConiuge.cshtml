@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 @{
-//decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 }
 
 
 
 <p style="padding-left: 15px;">
-    @if (Model != null && Model.Any())
+    @if (Model?.Any() ?? false)
     {
-        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idMConiuge = Model.First().id }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
+        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
     }
     else
     {
-        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.First().id }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
+        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
     }
 
 </p>
@@ -35,13 +35,13 @@
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
                 <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.HasPensione)
+                    Pens.
                 </th>
                 <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.idAltriDati)
+                    Alt. dati
                 </th>
                 <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.Documenti)
+                    Doc.
                 </th>
             </tr>
         </thead>
@@ -59,13 +59,20 @@
                     <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.dataFine)
-                    </td>
-                    @if (item.HasPensione)
-                {
+                    @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                    {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.id); ">
+                            @Html.DisplayFor(modelItem => item.dataFine)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }
+                    @if (item.HasPensione)
+                    {
+                        <td style="text-align: center;">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); ">
                                 <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
                             </a>
                         </td>
@@ -73,15 +80,15 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.id); ">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); ">
                                 <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
                             </a>
                         </td>
                     }
                     @if (item.idAltriDati > 0)
-                {
+                    {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
                                 <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -89,7 +96,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.id); ">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
                                 <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -98,7 +105,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.id, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @idTrasferimento ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -106,7 +113,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.id, 10, @idTrasferimento ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10 ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -193,14 +200,14 @@
     });
 
 
-    function Pensione(idMagConiuge) {
+    function Pensione(idConiuge) {
         //debugger;
         var rotta = "/PensioneConiuge/ElencoPensioniConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idMaggiorazioneConiuge: idMagConiuge },
+            data: { idConiuge: idConiuge },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -299,14 +306,14 @@
 
     }
 
-    function ElencoDocumenti(id, tipoDoc, idTrasferimento) {
+    function ElencoDocumenti(id, tipoDoc) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc, idTrasferimento: idTrasferimento },
+            data: { id: id, tipoDoc: tipoDoc },
             dataType: 'html',
             async: false,
             beforeSend: function () {

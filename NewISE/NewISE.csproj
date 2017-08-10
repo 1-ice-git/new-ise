@@ -1995,6 +1995,7 @@
     <Compile Include="Models\ModelRest\LivelloModelRest.cs" />
     <Compile Include="Models\ModelRest\RetDipendenteJson.cs" />
     <Compile Include="Models\ModelRest\RetDipendentiJson.cs" />
+    <Compile Include="Models\MsgErr.cs" />
     <Compile Include="Models\RuoloAccesoModel.cs" />
     <Compile Include="Models\Tools\CodiceFiscale.cs" />
     <Compile Include="Models\Tools\ErrorFileUpload.cs" />

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NewISE.Models;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
@@ -23,10 +24,10 @@ namespace NewISE.Areas.Parametri.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             return PartialView(libm);
         }

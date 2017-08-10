@@ -5,22 +5,12 @@
 <link href="~/Content/css/NuovoConiuge.css" rel="stylesheet" />
 
 @{
-    //decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 
-    //ModelError m = new ModelError();
-
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     var errori = ViewData.ModelState;
-    //bool nErr = false;
 
-    @*foreach (var e in errori)
-        {
-            if (e.Value.Errors.Count > 0)
-            {
-                @:DialogModalError('True');
-                break;
-            }
 
-        }*@
+
 
 }
 
@@ -29,7 +19,7 @@
     @Html.AntiForgeryToken()
     <div style="padding-left:15px;">
         <div class="form-horizontal">
-
+            @Html.Hidden("idMaggiorazioneFamiliari", idMaggiorazioniFamiliari)
 
 
             <div class="panel panel-body" style="padding-left:5px; padding-right:5px; margin-right:10px; margin-top:5px;">
@@ -123,7 +113,7 @@
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioneFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -136,7 +126,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                break;
+                            break;
         }
 
     }
@@ -153,12 +143,12 @@
 
     });
 
-    $('#dataInizioValidita').datepicker({
+    $('#dataInizio').datepicker({
         //showButtonPanel: true,
         showAnim: "slide",
     });
 
-    $('#dataFineValidita').datepicker({
+    $('#dataFine').datepicker({
         //showButtonPanel: true,
         showAnim: "slide",
     });

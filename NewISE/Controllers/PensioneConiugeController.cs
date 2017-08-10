@@ -1,4 +1,5 @@
-﻿using NewISE.Models.DBModel;
+﻿using NewISE.Models;
+using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -12,7 +13,7 @@ namespace NewISE.Controllers
     public class PensioneConiugeController : Controller
     {
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ElencoPensioniConiuge(decimal idMaggiorazioneConiuge)
+        public ActionResult ElencoPensioniConiuge(decimal idConiuge)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
@@ -21,41 +22,40 @@ namespace NewISE.Controllers
             {
                 using (dtPensione dtp = new dtPensione())
                 {
-                    lpcm = dtp.GetListaPensioneConiugeByMaggiorazioneConiuge(idMaggiorazioneConiuge).ToList();
+                    lpcm = dtp.GetPensioniByIdConiuge(idConiuge).ToList();
                 }
-
-                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                using (dtConiuge dtc = new dtConiuge())
                 {
-
-
-                    //mcm = dtmc.GetMaggiorazioneConiuge(idMaggiorazioneConiuge: idMaggiorazioneConiuge);
+                    decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioneFamiliari;
+                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
                 }
+
 
             }
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
-            ViewData.Add("idMaggiorazioneConiuge", idMaggiorazioneConiuge);
+            //ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+            ViewData.Add("idConiuge", idConiuge);
 
             return PartialView(lpcm);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NuovoImportoPensione(decimal idMaggiorazioneConiuge)
+        public ActionResult NuovoImportoPensione(decimal idConiuge)
         {
             //PensioneConiugeModel pcm = new PensioneConiugeModel();
 
-            ViewData.Add("idMaggiorazioneConiuge", idMaggiorazioneConiuge);
+            ViewData.Add("idConiuge", idConiuge);
             return PartialView();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciImportoPensione(PensioneConiugeModel pcm)
+        public ActionResult InserisciImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
         {
 
             try
@@ -71,21 +71,21 @@ namespace NewISE.Controllers
                             pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
-                        dtp.SetNuovoImportoPensione(pcm);
+                        dtp.SetNuovoImportoPensione(ref pcm, idConiuge);
                     }
                 }
                 else
                 {
-                    ViewData.Add("idMaggiorazioneConiuge", pcm.idMaggiorazioneConiuge);
+                    //ViewData.Add("idMaggiorazioneConiuge", pcm.idMaggiorazioneConiuge);
                     return PartialView("NuovoImportoPensione", pcm);
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge });
+            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
         }
 
         public ActionResult ModificaPensione(decimal idPensioneConiuge)
@@ -103,7 +103,7 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             return PartialView(pcm);
@@ -111,7 +111,7 @@ namespace NewISE.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateAntiForgeryToken]
-        public ActionResult ModificaImportoPensione(PensioneConiugeModel pcm)
+        public ActionResult ModificaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace NewISE.Controllers
                             pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
-                        dtp.EditImportoPensione(pcm);
+                        dtp.EditImportoPensione(pcm, idConiuge);
                     }
                 }
                 else
@@ -137,14 +137,14 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge });
+            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EliminaPensione(decimal idPensione)
+        public ActionResult EliminaPensione(decimal idPensione, decimal idConiuge)
         {
             PensioneConiugeModel pcm = new PensioneConiugeModel();
 
@@ -156,18 +156,18 @@ namespace NewISE.Controllers
 
                     if (pcm != null && pcm.HasValue())
                     {
-                        dtp.EliminaImportoPensione(pcm);
+                        dtp.EliminaImportoPensione(pcm, idConiuge);
                     }
                 }
             }
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idMaggiorazioneConiuge = pcm.idMaggiorazioneConiuge });
+            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
         }
 
     }

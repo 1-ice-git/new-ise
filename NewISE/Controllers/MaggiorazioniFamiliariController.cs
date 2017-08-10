@@ -27,7 +27,6 @@ namespace NewISE.Controllers
 
             }
 
-
             ViewBag.idTrasferimento = idTrasferimento;
             ViewData.Add("callConiuge", callConiuge);
             return PartialView(mfm);
@@ -110,7 +109,7 @@ namespace NewISE.Controllers
         //    }
         //    catch (Exception ex)
         //    {
-        //        return PartialView("ErrorPartial");
+        //        return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
         //    }
         //}
 
@@ -125,7 +124,7 @@ namespace NewISE.Controllers
 
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    var lcm = dtc.GetListaConiuge(idMaggiorazioniFamiliari).ToList();
+                    List<ConiugeModel> lcm = dtc.GetListaConiuge(idMaggiorazioniFamiliari).ToList();
 
                     if (lcm?.Any() ?? false)
                     {
@@ -133,21 +132,28 @@ namespace NewISE.Controllers
                         {
                             using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                             {
-                                foreach (var e in lcm)
+                                using (dtPensione dtp = new dtPensione())
                                 {
-                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                    foreach (var e in lcm)
                                     {
-                                        id = e.idMaggiorazioneFamiliari,
-                                        idFamiliare = e.idConiuge,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                        Documenti = dtd.GetDocumentiByIdConiuge(e.idConiuge),
-                                    };
+                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                        {
+                                            idMaggiorazioniFamiliari = e.idMaggiorazioneFamiliari,
+                                            idFamiliare = e.idConiuge,
+                                            Nominativo = e.cognome + " " + e.nome,
+                                            CodiceFiscale = e.codiceFiscale,
+                                            dataInizio = e.dataInizio,
+                                            dataFine = e.dataFine,
+                                            parentela = EnumParentela.Coniuge,
+                                            idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                            Documenti = dtd.GetDocumentiByIdConiuge(e.idConiuge),
+                                            HasPensione = dtp.HasPensione(e.idConiuge)
+                                        };
+
+                                        lefm.Add(efm);
+                                    }
                                 }
+
                             }
                         }
                     }
@@ -158,13 +164,13 @@ namespace NewISE.Controllers
                 }
 
 
-                //ViewBag.idTrasferimento = idTrasferimento;
+                ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
                 return PartialView(lefm);
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -198,7 +204,7 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewData.Add("lTipologiaFiglio", lTipologiaFiglio);
@@ -214,7 +220,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NuovoConiuge(decimal idMaggiorazioniFamiliari)
         {
-            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+            ConiugeModel cm = new ConiugeModel();
             List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
 
             var r = new List<SelectListItem>();
@@ -238,21 +244,26 @@ namespace NewISE.Controllers
 
                     lTipologiaConiuge = r;
                 }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
+
+                }
             }
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 
 
             ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-            //ViewData.Add("idTrasferimento", idTrasferimento);
-            //mcvm.idTrasferimento = idTrasferimento;
-            mfm.idMaggiorazioneFamiliari = idMaggiorazioniFamiliari;
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
-            return PartialView(mfm);
+
+            return PartialView();
         }
 
 
@@ -306,7 +317,7 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
         }
@@ -356,7 +367,7 @@ namespace NewISE.Controllers
 
 
                         ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-
+                        ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
                         return PartialView("NuovoConiuge", cm);
                     }
                 }
@@ -386,7 +397,7 @@ namespace NewISE.Controllers
 
 
                     ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-                    //ViewBag.idTrasferimento = mcvm.idTrasferimento;
+                    ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
 
                     return PartialView("NuovoConiuge", cm);
                 }
@@ -438,7 +449,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             //ViewData.Add("idTrasferimento", idTrasferimento);
@@ -453,10 +464,9 @@ namespace NewISE.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtConiuge dtc = new dtConiuge())
+                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                     {
-                        dtc.EditConiuge(cm);
-
+                        dtmf.ModificaConiuge(cm);
                     }
                 }
                 else
@@ -489,7 +499,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             return RedirectToAction("ElencoConiuge",

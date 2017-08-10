@@ -8,12 +8,14 @@ using NewISE.Models.dtObj;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace NewISE.Controllers
 {
+
     public class TrasferimentoController : Controller
     {
         #region Metodi privati
@@ -120,7 +122,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             return PartialView(dit);
@@ -148,7 +150,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -195,7 +197,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -277,13 +279,13 @@ namespace NewISE.Controllers
 
                         default:
 
-                            return PartialView("ErrorPartial");
+                            throw new Exception("Stato trasferimento sconosciuto.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
 
@@ -436,7 +438,7 @@ namespace NewISE.Controllers
                             {
 
                                 db.Database.CurrentTransaction.Rollback();
-                                return PartialView("ErrorPartial");
+                                return PartialView("ErrorPartial", new HandleErrorInfo(ex, "Trasferimento", "ConfermaModificaTrasferimento"));
                             }
                         }
                     }
@@ -465,14 +467,14 @@ namespace NewISE.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return PartialView("ErrorPartial");
+                        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
                     }
                 }
             }
             catch (Exception ex)
             {
 
-                return PartialView("errorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -511,8 +513,8 @@ namespace NewISE.Controllers
                                         {
                                             idTrasferimento = trm.idTrasferimento,
                                             rinunciaMaggiorazioni = false,
-                                            praticaConclusa = false,
-                                            dataConclusione = Utility.DataFineStop(),
+                                            richiestaAttivazione = false,
+                                            attivazioneMaggiorazioni = false,
                                             dataAggiornamento = DateTime.Now,
                                             annullato = false
                                         };
@@ -634,7 +636,7 @@ namespace NewISE.Controllers
                                 catch (Exception ex)
                                 {
                                     db.Database.CurrentTransaction.Rollback();
-                                    return PartialView("ErrorPartial");
+                                    return PartialView("ErrorPartial", new HandleErrorInfo(ex, "Trasferimento", "InserisciTrasferimento"));
                                 }
                             }
 
@@ -702,7 +704,7 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("errorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -855,20 +857,29 @@ namespace NewISE.Controllers
 
         public ActionResult AttivitaTrasferimento(string matricola)
         {
-
-            using (dtTrasferimento dtt = new dtTrasferimento())
+            try
             {
-                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
 
-                if (tr != null && tr.HasValue())
-                {
-                    ViewBag.idTrasferimento = tr.idTrasferimento;
-                }
-                else
-                {
-                    return PartialView("ErrorPartial");
+                    if (tr != null && tr.HasValue())
+                    {
+                        ViewBag.idTrasferimento = tr.idTrasferimento;
+                    }
+                    else
+                    {
+                        throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+
+            }
+
+
 
             return PartialView();
         }

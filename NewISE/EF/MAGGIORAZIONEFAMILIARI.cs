@@ -24,11 +24,10 @@ namespace NewISE.EF
         public decimal IDMAGGIORAZIONEFAMILIARI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
-        public bool PRATICACONCLUSA { get; set; }
-        public System.DateTime DATACONCLUSIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public bool CHIUSA { get; set; }
+        public bool RICHIESTAATTIVAZIONE { get; set; }
+        public bool ATTIVAZIONEMAGGIOARAZIONI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }

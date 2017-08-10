@@ -323,12 +323,17 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, decimal idTrasferimento)
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
-
+            ConiugeModel cm = new ConiugeModel();
             try
             {
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    cm = dtc.GetConiugebyID(id);
+                }
+
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
                     switch (tipoDoc)
@@ -368,11 +373,11 @@ namespace NewISE.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewData.Add("id", id);
             ViewData.Add("tipoDoc", tipoDoc);
-            ViewData.Add("idTrasferimento", idTrasferimento);
+            ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
             return PartialView(ldm);
         }
 

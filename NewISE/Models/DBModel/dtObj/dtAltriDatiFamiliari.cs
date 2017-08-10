@@ -24,7 +24,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ladf = db.CONIUGE.Find(idConiuge).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.DATAAGGIORNAMENTO);
+                    var ladf = db.CONIUGE.Find(idConiuge).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
 
                     if (ladf?.Any() ?? false)
                     {

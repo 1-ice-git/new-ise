@@ -17,7 +17,7 @@
         nDoc = Model.Count();
     }
 
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 
 
 }
@@ -98,7 +98,7 @@
         case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
             break;
         case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-            @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+            @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
             break;
@@ -280,7 +280,7 @@
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc);
 
         if (newDoc != nDocOld) {
-            ElencoDocumenti(@id, @tipoDoc, @idTrasferimento);
+            ElencoDocumenti(@id, @tipoDoc);
         }
     }
 

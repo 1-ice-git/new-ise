@@ -52,7 +52,6 @@ namespace NewISE.EF
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual DbSet<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<OA> OA { get; set; }
@@ -94,5 +93,6 @@ namespace NewISE.EF
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+        public virtual DbSet<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
     }
 }

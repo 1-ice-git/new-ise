@@ -10,11 +10,11 @@
 
 
 <div class="row">
-    <div class="col-xs-12" style="padding-right:20px; margin-left:-10px;">
+    <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
         <div class="nav nav-tabs nav-justified">
             <ul id="tabsMaggiorazioniFamiliari" class="nav nav-tabs tabs-destro">
-                <li id="mnConiuge"><a id="lkConiuge" href="#tabConiuge" data-toggle="tab" onclick="ElencoConiuge();">Coniuge</a></li>
-                <li id="mnFigli"><a id="lkFigli" href="#tabFigli" data-toggle="tab" onclick="ElencoFigli();">Figli</a></li>
+                <li id="mnConiuge"><a id="lkConiuge" href="#tabConiuge" data-toggle="tab" onclick=" ElencoConiuge(); ">Coniuge</a></li>
+                <li id="mnFigli"><a id="lkFigli" href="#tabFigli" data-toggle="tab" onclick=" ElencoFigli(); ">Figli</a></li>
             </ul>
         </div>
         <div id="tabContenuti" class="tab-content">
@@ -22,6 +22,9 @@
             <div class="tab-pane" id="tabFigli"></div>
         </div>
     </div>
+</div>
+<div class="row">
+
 </div>
 
 
@@ -34,11 +37,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                    }
+        }
     else
     {
         @:ElencoFigli();
-                                    }
+        }
 
     function ElencoConiuge() {
         //debugger;

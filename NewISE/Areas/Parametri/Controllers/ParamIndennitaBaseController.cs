@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -113,7 +114,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -132,23 +133,23 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtParLivelli dtl = new dtParLivelli())
                 {
                     var lm = dtl.GetLivelli(idLivello);
-                    ViewBag.Livello = lm;                   
+                    ViewBag.Livello = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool  escludiAnnullati = true)
+        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
-            
+
             try
             {
                 if (ModelState.IsValid)
@@ -179,7 +180,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         //    dtib.SetIndennitaDiBase(ibm);
                         //}
 
-                        
+
                         dtib.SetIndennitaDiBase(ibm);
                     }
 
@@ -198,7 +199,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -209,7 +210,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParIndennitaBase dtib=new dtParIndennitaBase())
+                using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     dtib.DelIndennitaDiBase(idIndBase);
                 }
@@ -219,10 +220,10 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial");
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            
+
         }
 
 

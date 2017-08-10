@@ -19,6 +19,8 @@
     @*@Html.HiddenFor(model => model.idStatoTrasferimento)*@
     @using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewTrasf" }))
     {
+        @Html.AntiForgeryToken()
+
         @Html.Hidden("idDipendente", d.idDipendente)
 
         @Html.Hidden("matricola", vMatricola)
