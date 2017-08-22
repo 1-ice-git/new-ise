@@ -105,7 +105,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @idMaggiorazioniFamiliari ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -113,7 +113,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10 ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @idMaggiorazioniFamiliari ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -235,14 +235,14 @@
 
     }
 
-    function AltriDatiFamiliari(idMagConiuge) {
+    function AltriDatiFamiliari(idConiuge) {
         //debugger;
         var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idMaggiorazioneConiuge: idMagConiuge },
+            data: { idConiuge: idConiuge },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -306,14 +306,14 @@
 
     }
 
-    function ElencoDocumenti(id, tipoDoc) {
+    function ElencoDocumenti(id, tipoDoc, idMaggiorazioniFamiliari) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc },
+            data: { id: id, tipoDoc: tipoDoc, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
             dataType: 'html',
             async: false,
             beforeSend: function () {

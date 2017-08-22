@@ -7,6 +7,13 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
+
+    public enum EnumTipoFamiliare
+    {
+        Coniuge = 1,
+        Figlio = 2
+    }
+
     public class MaggiorazioniFamiliariModel
     {
         [Key]

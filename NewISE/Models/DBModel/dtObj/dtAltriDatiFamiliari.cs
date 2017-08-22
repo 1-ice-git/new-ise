@@ -16,6 +16,47 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public AltriDatiFamModel GetAltriDatiFamiliari(decimal idAltriDatiFam)
+        {
+            AltriDatiFamModel adfm = new AltriDatiFamModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var adf = db.ALTRIDATIFAM.Find(idAltriDatiFam);
+                    if (adf != null && adf.IDALTRIDATIFAM > 0)
+                    {
+
+                        adfm = new AltriDatiFamModel()
+                        {
+                            idAltriDatiFam = adf.IDALTRIDATIFAM,
+                            idConiuge = adf.IDCONIUGE,
+                            idFigli = adf.IDFIGLI,
+                            dataNascita = adf.DATANASCITA,
+                            capNascita = adf.CAPNASCITA,
+                            comuneNascita = adf.COMUNENASCITA,
+                            provinciaNascita = adf.PROVINCIANASCITA,
+                            nazionalita = adf.NAZIONALITA,
+                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                            capResidenza = adf.CAPRESIDENZA,
+                            comuneResidenza = adf.COMUNERESIDENZA,
+                            provinciaResidenza = adf.PROVINCIARESIDENZA,
+                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                            annullato = adf.ANNULLATO
+                        };
+                    }
+                }
+
+                return adfm;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public AltriDatiFamModel GetAlttriDatiFamiliariConiuge(decimal idConiuge)
         {
             AltriDatiFamModel adfm = new AltriDatiFamModel();
@@ -63,131 +104,132 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
+
+
         /// <exception cref="Exception"></exception>
-        //public void EditAltriDatiFamiliari(AltriDatiFamModel adfm)
-        //{
-        //    string vConiugeFiglio = string.Empty;
+        public void EditAltriDatiFamiliari(AltriDatiFamModel adfm)
+        {
+            string vConiugeFiglio = string.Empty;
 
-        //    using (var db = new ModelDBISE())
-        //    {
-        //        db.Database.BeginTransaction();
-        //        try
-        //        {
-        //            var adf = db.ALTRIDATIFAM.Find(adfm.idAltriDatiFam);
+            using (var db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    var adf = db.ALTRIDATIFAM.Find(adfm.idAltriDatiFam);
 
-        //            if (adf != null && adfm.idAltriDatiFam > 0)
-        //            {
-        //                adf.ANNULLATO = true;
+                    if (adf != null && adfm.idAltriDatiFam > 0)
+                    {
+                        adf.ANNULLATO = true;
 
 
+                        if (db.SaveChanges() > 0)
+                        {
+                            decimal idTrasf = 0;
 
-        //                if (db.SaveChanges() > 0)
-        //                {
-        //                    decimal idTrasf = 0;
+                            if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
+                            {
+                                idTrasf = adf.CONIUGE.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                                vConiugeFiglio = "Coniuge";
+                            }
+                            else if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
+                            {
+                                idTrasf = adf.FIGLI.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                                vConiugeFiglio = "Figlio";
+                            }
 
-        //                    if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
-        //                    {
-        //                        idTrasf = adf.CONIUGE.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
-        //                        vConiugeFiglio = "Coniuge";
-        //                    }
-        //                    else if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
-        //                    {
-        //                        idTrasf = adf.FIGLI.MAGGIORAZIONEFIGLI.IDTRASFERIMENTO;
-        //                        vConiugeFiglio = "Figlio";
-        //                    }
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
 
-        //                    Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+                            if (adfm.dataNascita != null)
+                            {
+                                var adfNew = new ALTRIDATIFAM
+                                {
+                                    IDFIGLI = adfm.idFigli,
+                                    IDCONIUGE = adfm.idConiuge,
+                                    DATANASCITA = adfm.dataNascita.Value,
+                                    CAPNASCITA = adfm.capNascita,
+                                    COMUNENASCITA = adfm.comuneNascita,
+                                    PROVINCIANASCITA = adfm.provinciaNascita,
+                                    NAZIONALITA = adfm.nazionalita,
+                                    INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
+                                    CAPRESIDENZA = adfm.capResidenza,
+                                    COMUNERESIDENZA = adfm.comuneResidenza,
+                                    PROVINCIARESIDENZA = adfm.provinciaResidenza,
+                                    DATAAGGIORNAMENTO = adfm.dataAggiornamento,
+                                    ANNULLATO = adfm.annullato
+                                };
 
-        //                    if (adfm.dataNascita != null)
-        //                    {
-        //                        var adfNew = new ALTRIDATIFAM
-        //                        {
-        //                            IDFIGLI = adfm.idFigli,
-        //                            IDCONIUGE = adfm.idMaggiorazioneConiuge,
-        //                            DATANASCITA = adfm.dataNascita.Value,
-        //                            CAPNASCITA = adfm.capNascita,
-        //                            COMUNENASCITA = adfm.comuneNascita,
-        //                            PROVINCIANASCITA = adfm.provinciaNascita,
-        //                            NAZIONALITA = adfm.nazionalita,
-        //                            INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
-        //                            CAPRESIDENZA = adfm.capResidenza,
-        //                            COMUNERESIDENZA = adfm.comuneResidenza,
-        //                            PROVINCIARESIDENZA = adfm.provinciaResidenza,
-        //                            DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-        //                            ANNULLATO = adfm.annullato
-        //                        };
+                                db.ALTRIDATIFAM.Add(adfNew);
 
-        //                        db.ALTRIDATIFAM.Add(adfNew);
+                                if (db.SaveChanges() > 0)
+                                {
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "L'inserimento del record relativo agli altri dati familiari non è avvenuto.");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("La data di nascita non può essere null");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                "La modifica per la riga relativa agli altri dati familiari non è avvenuta.");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("L'oggetto altri dati familiari passato non è valorizzato.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
-        //                        if (db.SaveChanges() > 0)
-        //                        {
-        //                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
-        //                            db.Database.CurrentTransaction.Commit();
-        //                        }
-        //                        else
-        //                        {
-        //                            throw new Exception(
-        //                                "L'inserimento del record relativo agli altri dati familiari non è avvenuto.");
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        throw new Exception("La data di nascita non può essere null");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    throw new Exception(
-        //                        "La modifica per la riga relativa agli altri dati familiari non è avvenuta.");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                throw new Exception("L'oggetto altri dati familiari passato non è valorizzato.");
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            db.Database.CurrentTransaction.Rollback();
-        //            throw ex;
-        //        }
-        //    }
-        //}
+        //<exception cref = "DbUpdateException" > Si è verificato un errore durante l'invio degli aggiornamenti al database.</exception>
+        //<exception cref = "DbUpdateConcurrencyException" > Un comando di database non ha influito sul numero previsto di righe.Questo indica in genere una violazione della concorrenza ottimistica, ovvero che una riga è cambiata nel database rispetto a quando è stata eseguita la query.</exception>
+        //<exception cref = "DbEntityValidationException" > Il salvataggio è stato annullato perché la convalida dei valori di proprietà delle entità non è riuscita.</exception>
+        public void SetAltriDatiFamiliariConiuge(AltriDatiFamModel adfm)
+        {
+            using (var db = new ModelDBISE())
+            {
+                var adf = new ALTRIDATIFAM
+                {
+                    IDCONIUGE = adfm.idConiuge,
+                    DATANASCITA = adfm.dataNascita.Value,
+                    CAPNASCITA = adfm.capNascita,
+                    COMUNENASCITA = adfm.comuneNascita,
+                    PROVINCIANASCITA = adfm.provinciaNascita,
+                    NAZIONALITA = adfm.nazionalita,
+                    INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
+                    CAPRESIDENZA = adfm.capResidenza,
+                    COMUNERESIDENZA = adfm.comuneResidenza,
+                    PROVINCIARESIDENZA = adfm.provinciaResidenza,
+                    DATAAGGIORNAMENTO = adfm.dataAggiornamento,
+                    ANNULLATO = adfm.annullato
+                };
 
-        /// <exception cref="DbUpdateException">Si è verificato un errore durante l'invio degli aggiornamenti al database.</exception>
-        /// <exception cref="DbUpdateConcurrencyException">Un comando di database non ha influito sul numero previsto di righe.Questo indica in genere una violazione della concorrenza ottimistica, ovvero che una riga è cambiata nel database rispetto a quando è stata eseguita la query.</exception>
-        /// <exception cref="DbEntityValidationException">Il salvataggio è stato annullato perché la convalida dei valori di proprietà delle entità non è riuscita.</exception>
-        //public void SetAltriDatiFamiliariConiuge(AltriDatiFamModel adfm)
-        //{
-        //    using (var db = new ModelDBISE())
-        //    {
-        //        var adf = new ALTRIDATIFAM
-        //        {
-        //            //IDALTRIDATIFAM = adfm.idAltriDatiFam,
-        //            IDMAGGIORAZIONECONIUGE = adfm.idMaggiorazioneConiuge,
-        //            DATANASCITA = adfm.dataNascita.Value,
-        //            CAPNASCITA = adfm.capNascita,
-        //            COMUNENASCITA = adfm.comuneNascita,
-        //            PROVINCIANASCITA = adfm.provinciaNascita,
-        //            NAZIONALITA = adfm.nazionalita,
-        //            INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
-        //            CAPRESIDENZA = adfm.capResidenza,
-        //            COMUNERESIDENZA = adfm.comuneResidenza,
-        //            PROVINCIARESIDENZA = adfm.provinciaResidenza,
-        //            DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-        //            ANNULLATO = adfm.annullato
-        //        };
+                db.CONIUGE.Find(adfm.idConiuge).ALTRIDATIFAM.Add(adf);
 
-        //        db.CONIUGE.Find(adfm.idMaggiorazioneConiuge).ALTRIDATIFAM.Add(adf);
+                if (db.SaveChanges() > 0)
+                {
+                    decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
-        //        if (db.SaveChanges() > 0)
-        //        {
-        //            decimal idTrasf = db.MAGGIORAZIONECONIUGE.Find(adfm.idMaggiorazioneConiuge).IDTRASFERIMENTO;
-
-        //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
-        //        }
-        //    }
-        //}
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+                }
+            }
+        }
 
         /// <exception cref="DbUpdateException">Si è verificato un errore durante l'invio degli aggiornamenti al database.</exception>
         /// <exception cref="DbUpdateConcurrencyException">Un comando di database non ha influito sul numero previsto di righe.Questo indica in genere una violazione della concorrenza ottimistica, ovvero che una riga è cambiata nel database rispetto a quando è stata eseguita la query.</exception>

@@ -354,25 +354,25 @@ namespace NewISE.Models.DBModel.dtObj
         {
             var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
 
-            //if (c != null && c.IDMAGGIORAZIONECONIUGE > 0)
-            //{
-            //    MemoryStream ms = new MemoryStream();
-            //    DOCUMENTI d = new DOCUMENTI();
-            //    dm.file.InputStream.CopyTo(ms);
+            if (c != null && c.IDCONIUGE > 0)
+            {
+                MemoryStream ms = new MemoryStream();
+                DOCUMENTI d = new DOCUMENTI();
+                dm.file.InputStream.CopyTo(ms);
 
-            //    d.NOMEDOCUMENTO = dm.nomeDocumento;
-            //    d.ESTENSIONE = dm.estensione;
-            //    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-            //    d.DATAINSERIMENTO = dm.dataInserimento;
-            //    d.FILEDOCUMENTO = ms.ToArray();
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
 
-            //    c.DOCUMENTI.Add(d);
+                c.DOCUMENTI.Add(d);
 
-            //    if (db.SaveChanges() > 0)
-            //    {
-            //        dm.idDocumenti = d.IDDOCUMENTO;
-            //    }
-            //}
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                }
+            }
 
 
         }

@@ -141,13 +141,14 @@
     function EliminaPensione() {
         //debugger;
         var idPensioneConiuge = $('#hdIdImportoPensione').val();
+        var idConiuge = parseInt('@idConiuge');
         var rotta = "/PensioneConiuge/EliminaPensione";
 
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idPensione: idPensioneConiuge },
+            data: { idPensione: idPensioneConiuge, idConiuge: idConiuge },
             dataType: 'html',
             async: true,
             beforeSend: function () {

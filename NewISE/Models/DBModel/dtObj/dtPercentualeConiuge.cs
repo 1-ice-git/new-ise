@@ -19,7 +19,21 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lpmc = db.CONIUGE.Find(idConiuge).PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+                //var lpmc = db.CONIUGE.Find(idConiuge).PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                var c = db.CONIUGE.Find(idConiuge);
+
+                var lpmc =
+                    c.PERCENTUALEMAGCONIUGE.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == c.IDTIPOLOGIACONIUGE &&
+                            dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
+
+
+
+
 
                 if (lpmc != null && lpmc.Count > 0)
                 {

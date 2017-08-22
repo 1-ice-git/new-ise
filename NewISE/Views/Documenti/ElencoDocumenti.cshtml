@@ -3,7 +3,8 @@
 
 
 @{
-    //decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+
+
     decimal id = (decimal)ViewData["id"];
 
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
@@ -17,7 +18,10 @@
         nDoc = Model.Count();
     }
 
+
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+
+
 
 
 }
@@ -222,7 +226,7 @@
     }
 
     function ConfermaEliminaDoc() {
-        //debugger;
+        debugger;
         var rotta = "/Documenti/EliminaDocumento";
         var idDoc = parseInt($("#hiEliminaDoc").val());
 

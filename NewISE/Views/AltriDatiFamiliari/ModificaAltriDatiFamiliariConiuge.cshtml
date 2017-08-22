@@ -4,7 +4,7 @@
 
 @{
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
-    var idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    var idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 }
 
 <link href="~/Content/css/CheckBoxRadio.css" rel="stylesheet" />
@@ -18,7 +18,7 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.idAltriDatiFam)
-            @Html.HiddenFor(model => model.idMaggiorazioneConiuge)
+            @Html.HiddenFor(model => model.idConiuge)
 
 
             <div class="form-group">
@@ -152,7 +152,7 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariConiuge", "AltriDatiFamiliari", new { idMaggiorazioneConiuge = Model.idMaggiorazioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariConiuge", "AltriDatiFamiliari", new { idConiuge = Model.idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 @if (comuni != null && comuni.Any())
 {

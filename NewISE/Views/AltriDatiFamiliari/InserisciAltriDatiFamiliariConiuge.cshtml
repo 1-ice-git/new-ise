@@ -9,7 +9,7 @@
 @{
 
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 
 }
 
@@ -22,8 +22,8 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            @Html.HiddenFor(model => model.idMaggiorazioneConiuge)
-            @Html.Hidden("idTrasferimento", idTrasferimento)
+            @Html.HiddenFor(model => model.idConiuge)
+            @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
 
             @Html.HiddenFor(model => model.residente)
             @Html.HiddenFor(model => model.ulterioreMagConiuge)
@@ -163,9 +163,9 @@
 
 }
 
-<div style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-</div>
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
 
 <datalist id="ListaComuni">
     @foreach (var d in comuni.OrderBy(a => a.nome).ToList())

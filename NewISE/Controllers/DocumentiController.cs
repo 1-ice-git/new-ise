@@ -154,7 +154,7 @@ namespace NewISE.Controllers
         public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id)
         {
             string titoloPagina = string.Empty;
-            decimal idTrasferimento = 0;
+            decimal idMaggiorazioniFamiliari = 0;
 
 
             switch (tipoDoc)
@@ -188,15 +188,10 @@ namespace NewISE.Controllers
                     break;
                 case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
                     titoloPagina = "Maggiorazione Familiare - Documento familiare (Coniuge)";
-                    using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                    using (dtConiuge dtc = new dtConiuge())
                     {
-                        MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
-
-                        //MaggiorazioniFamiliariModel mcm = dtmc.GetMaggiorazioneConiuge(id);
-                        if (mcm != null && mcm.HasValue())
-                        {
-                            idTrasferimento = mcm.idTrasferimento;
-                        }
+                        var cm = dtc.GetConiugebyID(id);
+                        idMaggiorazioniFamiliari = cm.idMaggiorazioneFamiliari;
                     }
                     break;
                 case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
@@ -215,7 +210,7 @@ namespace NewISE.Controllers
             ViewData.Add("titoloPagina", titoloPagina);
             ViewData.Add("tipoDoc", (decimal)tipoDoc);
             ViewData.Add("ID", id);
-            ViewData.Add("idTrasferimento", idTrasferimento);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
 
             return PartialView();
@@ -323,17 +318,12 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc)
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, decimal idMaggiorazioniFamiliari = 0)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
             try
             {
-                using (dtConiuge dtc = new dtConiuge())
-                {
-                    cm = dtc.GetConiugebyID(id);
-                }
-
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
                     switch (tipoDoc)
@@ -372,12 +362,11 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewData.Add("id", id);
             ViewData.Add("tipoDoc", tipoDoc);
-            ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             return PartialView(ldm);
         }
 

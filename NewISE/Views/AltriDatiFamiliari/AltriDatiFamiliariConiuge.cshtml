@@ -1,9 +1,10 @@
 ﻿@model NewISE.Models.DBModel.AltriDatiFamModel
 
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     //decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
 
+    //decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
 }
 
 
@@ -111,7 +112,7 @@
     </dl>
 </div>
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>

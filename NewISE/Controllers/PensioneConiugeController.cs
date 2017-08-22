@@ -88,60 +88,60 @@ namespace NewISE.Controllers
             return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
         }
 
-        public ActionResult ModificaPensione(decimal idPensioneConiuge)
-        {
-            PensioneConiugeModel pcm = new PensioneConiugeModel();
+        //public ActionResult ModificaPensione(decimal idPensioneConiuge)
+        //{
+        //    PensioneConiugeModel pcm = new PensioneConiugeModel();
 
-            try
-            {
-                using (dtPensione dtp = new dtPensione())
-                {
-                    pcm = dtp.GetPensioneByID(idPensioneConiuge);
+        //    try
+        //    {
+        //        using (dtPensione dtp = new dtPensione())
+        //        {
+        //            pcm = dtp.GetPensioneByID(idPensioneConiuge);
 
-                }
-            }
-            catch (Exception ex)
-            {
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
 
-            return PartialView(pcm);
-        }
+        //    return PartialView(pcm);
+        //}
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        [ValidateAntiForgeryToken]
-        public ActionResult ModificaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    using (dtPensione dtp = new dtPensione())
-                    {
-                        pcm.dataAggiornamento = DateTime.Now;
-                        pcm.annullato = false;
-                        if (!pcm.dataFineValidita.HasValue)
-                        {
-                            pcm.dataFineValidita = Utility.DataFineStop();
-                        }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult ModificaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            using (dtPensione dtp = new dtPensione())
+        //            {
+        //                pcm.dataAggiornamento = DateTime.Now;
+        //                pcm.annullato = false;
+        //                if (!pcm.dataFineValidita.HasValue)
+        //                {
+        //                    pcm.dataFineValidita = Utility.DataFineStop();
+        //                }
 
-                        dtp.EditImportoPensione(pcm, idConiuge);
-                    }
-                }
-                else
-                {
-                    return PartialView("ModificaPensione", pcm);
-                }
-            }
-            catch (Exception ex)
-            {
+        //                dtp.EditImportoPensione(pcm, idConiuge);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return PartialView("ModificaPensione", pcm);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
-        }
+        //    return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
+        //}
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EliminaPensione(decimal idPensione, decimal idConiuge)
