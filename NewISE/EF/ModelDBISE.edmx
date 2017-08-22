@@ -160,10 +160,10 @@
         <EntityType Name="CONIUGE_DOC">
           <Key>
             <PropertyRef Name="IDDOCUMENTO" />
-            <PropertyRef Name="ATTRIBUTE1" />
+            <PropertyRef Name="IDCONIUGE" />
           </Key>
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="ATTRIBUTE1" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -1071,7 +1071,7 @@
               <PropertyRef Name="IDCONIUGE" />
             </Principal>
             <Dependent Role="CONIUGE_DOC">
-              <PropertyRef Name="ATTRIBUTE1" />
+              <PropertyRef Name="IDCONIUGE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1174,7 +1174,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_D_CD">
-          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1" />
+          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CONIUGE_DOC" Type="Self.CONIUGE_DOC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DOCUMENTI">
@@ -3674,6 +3676,10 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONEFAMILIARI" EntitySet="MAGGIORAZIONEFAMILIARI" />
           </AssociationSet>
+          <AssociationSet Name="CONIUGE_DOC1" Association="DBISEPRO.CONIUGE_DOC1">
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -3825,6 +3831,7 @@
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.C_PC" FromRole="CONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
           <NavigationProperty Name="MAGGIORAZIONEFAMILIARI" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONEFAMILIARI" />
+          <NavigationProperty Name="DOCUMENTI1" Relationship="DBISEPRO.CONIUGE_DOC1" FromRole="CONIUGE" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -3896,6 +3903,7 @@
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTIRIENTRO" />
           <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTISIST" />
+          <NavigationProperty Name="CONIUGE1" Relationship="DBISEPRO.CONIUGE_DOC1" FromRole="DOCUMENTI" ToRole="CONIUGE" />
         </EntityType>
         <EntityType Name="ELAB_CONT">
           <Key>
@@ -5669,6 +5677,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="CONIUGE_DOC1">
+          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6490,14 +6502,6 @@
               <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="CONIUGE_DOC" TypeName="DBISEPRO.CONIUGE_DOC" StoreEntitySet="CONIUGE_DOC">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="CONIUGE">
-              <ScalarProperty Name="IDCONIUGE" ColumnName="ATTRIBUTE1" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
             <EndProperty Name="NORMACALCOLO">
               <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
@@ -6687,6 +6691,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="CONIUGE_DOC1" TypeName="DBISEPRO.CONIUGE_DOC1" StoreEntitySet="CONIUGE_DOC">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="CONIUGE">
+              <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

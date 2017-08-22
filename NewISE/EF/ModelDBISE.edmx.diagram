@@ -169,6 +169,7 @@
         <AssociationConnector Association="DBISEPRO.R_C_MC" />
         <AssociationConnector Association="DBISEPRO.R_MF_F" />
         <AssociationConnector Association="DBISEPRO.R_T_MC" />
+        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
