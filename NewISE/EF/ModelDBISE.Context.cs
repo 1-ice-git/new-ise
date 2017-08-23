@@ -39,7 +39,6 @@ namespace NewISE.EF
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
-        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ELAB_CONT> ELAB_CONT { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
@@ -94,5 +93,6 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
+        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

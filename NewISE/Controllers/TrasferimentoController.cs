@@ -489,7 +489,7 @@ namespace NewISE.Controllers
                 //trm.idTrasferimento = 0;
                 trm.idStatoTrasferimento = (decimal)EnumStatoTraferimento.Da_Attivare;
                 trm.dataAggiornamento = DateTime.Now;
-                trm.annullato = false;
+
 
                 if (ModelState.IsValid)
                 {

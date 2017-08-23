@@ -860,7 +860,6 @@
           <Property Name="DATALETTERA" Type="date" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <Key>
@@ -3241,7 +3240,6 @@
           <EntitySet Name="CONTABILITA" EntityType="DBISEPRO.CONTABILITA" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" />
           <EntitySet Name="DIPENDENTI" EntityType="DBISEPRO.DIPENDENTI" />
-          <EntitySet Name="DOCUMENTI" EntityType="DBISEPRO.DOCUMENTI" />
           <EntitySet Name="ELAB_CONT" EntityType="DBISEPRO.ELAB_CONT" />
           <EntitySet Name="FIGLI" EntityType="DBISEPRO.FIGLI" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="DBISEPRO.GRUPPIDOCUMENTI" />
@@ -3366,10 +3364,6 @@
           <AssociationSet Name="R_DIP_TRASF" Association="DBISEPRO.R_DIP_TRASF">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-          </AssociationSet>
-          <AssociationSet Name="R_TD_D" Association="DBISEPRO.R_TD_D">
-            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
           <AssociationSet Name="R_EC_T" Association="DBISEPRO.R_EC_T">
             <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
@@ -3559,10 +3553,6 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <AssociationSet Name="BIGLIETTI_DOCUMENTI" Association="DBISEPRO.BIGLIETTI_DOCUMENTI">
-            <End Role="BIGLIETTI" EntitySet="BIGLIETTI" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-          </AssociationSet>
           <AssociationSet Name="C_P" Association="DBISEPRO.C_P">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="PENSIONE" EntitySet="PENSIONE" />
@@ -3571,14 +3561,6 @@
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="PERCENTUALEMAGCONIUGE" EntitySet="PERCENTUALEMAGCONIUGE" />
           </AssociationSet>
-          <AssociationSet Name="CONIUGE_DOC" Association="DBISEPRO.CONIUGE_DOC">
-            <End Role="CONIUGE" EntitySet="CONIUGE" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISEPRO.DOCUMENTO_NORMACALCOLO">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
-          </AssociationSet>
           <AssociationSet Name="F_IPS" Association="DBISEPRO.F_IPS">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
@@ -3586,10 +3568,6 @@
           <AssociationSet Name="FASCIACHILOMETRICA" Association="DBISEPRO.FASCIACHILOMETRICA">
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="UFFICI" EntitySet="UFFICI" />
-          </AssociationSet>
-          <AssociationSet Name="FIGLI_DOC" Association="DBISEPRO.FIGLI_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="FIGLI" EntitySet="FIGLI" />
           </AssociationSet>
           <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISEPRO.IND_COEFFICENTESEDE">
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
@@ -3615,10 +3593,6 @@
             <End Role="INDENNITA" EntitySet="INDENNITA" />
             <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
-          <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="MAB_LIVDIP" Association="DBISEPRO.MAB_LIVDIP">
             <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
@@ -3639,29 +3613,13 @@
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
-          <AssociationSet Name="PASSAPORTI_DOCUMENTI" Association="DBISEPRO.PASSAPORTI_DOCUMENTI">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
-          </AssociationSet>
           <AssociationSet Name="PMF_F" Association="DBISEPRO.PMF_F">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
-          <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-          </AssociationSet>
           <AssociationSet Name="TRASPEFFETTIRIEN_COEFFIFKM" Association="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM">
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="TRASPEFFETTIRIENTRO_DOC" Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="TRASPEFFETTISIST_DOC" Association="DBISEPRO.TRASPEFFETTISIST_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
           </AssociationSet>
           <EntitySet Name="MAGGIORAZIONEFAMILIARI" EntityType="DBISEPRO.MAGGIORAZIONEFAMILIARI" />
           <AssociationSet Name="R_C_MC" Association="DBISEPRO.R_C_MC">
@@ -3676,9 +3634,46 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONEFAMILIARI" EntitySet="MAGGIORAZIONEFAMILIARI" />
           </AssociationSet>
-          <AssociationSet Name="CONIUGE_DOC1" Association="DBISEPRO.CONIUGE_DOC1">
+          <EntitySet Name="DOCUMENTI" EntityType="DBISEPRO.DOCUMENTI" />
+          <AssociationSet Name="R_TD_D" Association="DBISEPRO.R_TD_D">
+            <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="BIGLIETTI_DOCUMENTI" Association="DBISEPRO.BIGLIETTI_DOCUMENTI">
+            <End Role="BIGLIETTI" EntitySet="BIGLIETTI" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="CONIUGE_DOC" Association="DBISEPRO.CONIUGE_DOC">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
+          <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISEPRO.DOCUMENTO_NORMACALCOLO">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
+          </AssociationSet>
+          <AssociationSet Name="FIGLI_DOC" Association="DBISEPRO.FIGLI_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="FIGLI" EntitySet="FIGLI" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="PASSAPORTI_DOCUMENTI" Association="DBISEPRO.PASSAPORTI_DOCUMENTI">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
+          </AssociationSet>
+          <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="TRASPEFFETTIRIENTRO_DOC" Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
+          </AssociationSet>
+          <AssociationSet Name="TRASPEFFETTISIST_DOC" Association="DBISEPRO.TRASPEFFETTISIST_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -3829,9 +3824,8 @@
           <NavigationProperty Name="TIPOLOGIACONIUGE" Relationship="DBISEPRO.R_TC_C" FromRole="CONIUGE" ToRole="TIPOLOGIACONIUGE" />
           <NavigationProperty Name="PENSIONE" Relationship="DBISEPRO.C_P" FromRole="CONIUGE" ToRole="PENSIONE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.C_PC" FromRole="CONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
           <NavigationProperty Name="MAGGIORAZIONEFAMILIARI" Relationship="DBISEPRO.R_C_MC" FromRole="CONIUGE" ToRole="MAGGIORAZIONEFAMILIARI" />
-          <NavigationProperty Name="DOCUMENTI1" Relationship="DBISEPRO.CONIUGE_DOC1" FromRole="CONIUGE" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -3883,28 +3877,6 @@
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
-        <EntityType Name="DOCUMENTI">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
-          <NavigationProperty Name="BIGLIETTI" Relationship="DBISEPRO.BIGLIETTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="BIGLIETTI" />
-          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
-          <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
-          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="PASSAPORTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTIRIENTRO" />
-          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTISIST" />
-          <NavigationProperty Name="CONIUGE1" Relationship="DBISEPRO.CONIUGE_DOC1" FromRole="DOCUMENTI" ToRole="CONIUGE" />
-        </EntityType>
         <EntityType Name="ELAB_CONT">
           <Key>
             <PropertyRef Name="IDELABCONT" />
@@ -3937,9 +3909,9 @@
           <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="TIPOLOGIAFIGLIO" Relationship="DBISEPRO.R_TF_F" FromRole="FIGLI" ToRole="TIPOLOGIAFIGLIO" />
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.F_IPS" FromRole="FIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.PMF_F" FromRole="FIGLI" ToRole="PERCENTUALEMAGFIGLI" />
           <NavigationProperty Name="MAGGIORAZIONEFAMILIARI" Relationship="DBISEPRO.R_MF_F" FromRole="FIGLI" ToRole="MAGGIORAZIONEFAMILIARI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="GRUPPIDOCUMENTI">
           <Key>
@@ -4074,12 +4046,12 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="DOCUMENTI" />
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.MAB_LIVDIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.MAB_MAGANNUALI" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.MAB_PERCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
           <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.MAB_RUOLODIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="TFR" Relationship="DBISEPRO.MAB_TFR" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -4383,8 +4355,8 @@
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDGRUPPODOC" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="TIPODOCUMENTI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="GRUPPIDOCUMENTI" Relationship="DBISEPRO.R_GD_TDV" FromRole="TIPODOCUMENTI" ToRole="GRUPPIDOCUMENTI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="TIPODOCUMENTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TIPOELABORAZIONE">
           <Key>
@@ -4489,7 +4461,6 @@
           <Property Name="DATALETTERA" Type="DateTime" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
@@ -4501,8 +4472,8 @@
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISEPRO.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
           <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
           <NavigationProperty Name="MAGGIORAZIONEFAMILIARI" Relationship="DBISEPRO.R_T_MC" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEFAMILIARI" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TRASPORTOEFFETTIRIENTRO">
           <Key>
@@ -4843,20 +4814,6 @@
             </Principal>
             <Dependent Role="TRASFERIMENTO">
               <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TD_D">
-          <End Type="DBISEPRO.TIPODOCUMENTI" Role="TIPODOCUMENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPODOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
-            </Principal>
-            <Dependent Role="DOCUMENTI">
-              <PropertyRef Name="IDTIPODOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5516,10 +5473,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="BIGLIETTI_DOCUMENTI">
-          <End Type="DBISEPRO.BIGLIETTI" Role="BIGLIETTI" Multiplicity="*" />
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-        </Association>
         <Association Name="C_P">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
           <End Type="DBISEPRO.PENSIONE" Role="PENSIONE" Multiplicity="*" />
@@ -5528,14 +5481,6 @@
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGCONIUGE" Role="PERCENTUALEMAGCONIUGE" Multiplicity="*" />
         </Association>
-        <Association Name="CONIUGE_DOC">
-          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-        </Association>
-        <Association Name="DOCUMENTO_NORMACALCOLO">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
-        </Association>
         <Association Name="F_IPS">
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Role="INDENNITAPRIMOSEGRETARIO" Multiplicity="*" />
@@ -5543,10 +5488,6 @@
         <Association Name="FASCIACHILOMETRICA">
           <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="*" />
-        </Association>
-        <Association Name="FIGLI_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
         </Association>
         <Association Name="IND_COEFFICENTESEDE">
           <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
@@ -5572,10 +5513,6 @@
           <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
           <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
         </Association>
-        <Association Name="MAB_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-        </Association>
         <Association Name="MAB_LIVDIP">
           <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
@@ -5596,29 +5533,13 @@
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
         </Association>
-        <Association Name="PASSAPORTI_DOCUMENTI">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="*" />
-        </Association>
         <Association Name="PMF_F">
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
-        <Association Name="TRASF_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-        </Association>
         <Association Name="TRASPEFFETTIRIEN_COEFFIFKM">
           <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.TRASPORTOEFFETTIRIENTRO" Role="TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
-        </Association>
-        <Association Name="TRASPEFFETTIRIENTRO_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.TRASPORTOEFFETTIRIENTRO" Role="TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
-        </Association>
-        <Association Name="TRASPEFFETTISIST_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.TRASPORTOEFFETTISIST" Role="TRASPORTOEFFETTISIST" Multiplicity="*" />
         </Association>
         <EntityType Name="MAGGIORAZIONEFAMILIARI">
           <Key>
@@ -5677,9 +5598,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CONIUGE_DOC1">
+        <EntityType Name="DOCUMENTI">
+          <Key>
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDDOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="NOMEDOCUMENTO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESTENSIONE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
+          <NavigationProperty Name="BIGLIETTI" Relationship="DBISEPRO.BIGLIETTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="BIGLIETTI" />
+          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
+          <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="DOCUMENTI" ToRole="PASSAPORTI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTIRIENTRO" />
+          <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTISIST" />
+        </EntityType>
+        <Association Name="R_TD_D">
+          <End Type="DBISEPRO.TIPODOCUMENTI" Role="TIPODOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPODOCUMENTI">
+              <PropertyRef Name="IDTIPODOCUMENTO" />
+            </Principal>
+            <Dependent Role="DOCUMENTI">
+              <PropertyRef Name="IDTIPODOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BIGLIETTI_DOCUMENTI">
+          <End Type="DBISEPRO.BIGLIETTI" Role="BIGLIETTI" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="CONIUGE_DOC">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="*" />
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="DOCUMENTO_NORMACALCOLO">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
+        </Association>
+        <Association Name="FIGLI_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="PASSAPORTI_DOCUMENTI">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASF_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASPEFFETTIRIENTRO_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASPORTOEFFETTIRIENTRO" Role="TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASPEFFETTISIST_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASPORTOEFFETTISIST" Role="TRASPORTOEFFETTISIST" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -5870,18 +5858,6 @@
                 <ScalarProperty Name="NOME" ColumnName="NOME" />
                 <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DOCUMENTI">
-            <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
-              <MappingFragment StoreEntitySet="DOCUMENTI">
-                <ScalarProperty Name="DATAINSERIMENTO" ColumnName="DATAINSERIMENTO" />
-                <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
-                <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
-                <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
-                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
-                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6392,7 +6368,6 @@
           <EntitySetMapping Name="TRASFERIMENTO">
             <EntityTypeMapping TypeName="DBISEPRO.TRASFERIMENTO">
               <MappingFragment StoreEntitySet="TRASFERIMENTO">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="NOTIFICATRASFERIMENTO" ColumnName="NOTIFICATRASFERIMENTO" />
                 <ScalarProperty Name="DATALETTERA" ColumnName="DATALETTERA" />
@@ -6478,14 +6453,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="BIGLIETTI_DOCUMENTI" TypeName="DBISEPRO.BIGLIETTI_DOCUMENTI" StoreEntitySet="BIGLIETTI_DOCUMENTI">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="BIGLIETTI">
-              <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="C_P" TypeName="DBISEPRO.C_P" StoreEntitySet="C_P">
             <EndProperty Name="PENSIONE">
               <ScalarProperty Name="IDPENSIONE" ColumnName="IDPENSIONE" />
@@ -6502,14 +6469,6 @@
               <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
-            <EndProperty Name="NORMACALCOLO">
-              <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="F_IPS" TypeName="DBISEPRO.F_IPS" StoreEntitySet="F_IPS">
             <EndProperty Name="INDENNITAPRIMOSEGRETARIO">
               <ScalarProperty Name="IDINDPRIMOSEGR" ColumnName="IDINDPRIMOSEGR" />
@@ -6524,14 +6483,6 @@
             </EndProperty>
             <EndProperty Name="COEFFICIENTEFKM">
               <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="FIGLI_DOC" TypeName="DBISEPRO.FIGLI_DOC" StoreEntitySet="FIGLI_DOC">
-            <EndProperty Name="FIGLI">
-              <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
@@ -6582,14 +6533,6 @@
               <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_DOC" TypeName="DBISEPRO.MAB_DOC" StoreEntitySet="MAB_DOC">
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="MAB_LIVDIP" TypeName="DBISEPRO.MAB_LIVDIP" StoreEntitySet="MAB_LIVDIP">
             <EndProperty Name="MAGGIORAZIONEABITAZIONE">
               <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
@@ -6630,14 +6573,6 @@
               <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="DBISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
-            <EndProperty Name="PASSAPORTI">
-              <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="PMF_F" TypeName="DBISEPRO.PMF_F" StoreEntitySet="PMF_F">
             <EndProperty Name="PERCENTUALEMAGFIGLI">
               <ScalarProperty Name="IDPERCMAGFIGLI" ColumnName="IDPERCMAGFIGLI" />
@@ -6646,20 +6581,93 @@
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
-            <EndProperty Name="TRASFERIMENTO">
-              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="TRASPEFFETTIRIEN_COEFFIFKM" TypeName="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM" StoreEntitySet="TRASPEFFETTIRIEN_COEFFIFKM">
             <EndProperty Name="TRASPORTOEFFETTIRIENTRO">
               <ScalarProperty Name="IDTRASPORTOEFFETTISIST" ColumnName="IDTRASPORTOEFFETTISIST" />
             </EndProperty>
             <EndProperty Name="COEFFICIENTEFKM">
               <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="MAGGIORAZIONEFAMILIARI">
+            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEFAMILIARI">
+              <MappingFragment StoreEntitySet="MAGGIORAZIONEFAMILIARI">
+                <ScalarProperty Name="ATTIVAZIONEMAGGIOARAZIONI" ColumnName="ATTIVAZIONEMAGGIOARAZIONI" />
+                <ScalarProperty Name="RICHIESTAATTIVAZIONE" ColumnName="RICHIESTAATTIVAZIONE" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDMAGGIORAZIONEFAMILIARI" ColumnName="IDMAGGIORAZIONEFAMILIARI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
+              <MappingFragment StoreEntitySet="DOCUMENTI">
+                <ScalarProperty Name="DATAINSERIMENTO" ColumnName="DATAINSERIMENTO" />
+                <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />
+                <ScalarProperty Name="ESTENSIONE" ColumnName="ESTENSIONE" />
+                <ScalarProperty Name="NOMEDOCUMENTO" ColumnName="NOMEDOCUMENTO" />
+                <ScalarProperty Name="IDTIPODOCUMENTO" ColumnName="IDTIPODOCUMENTO" />
+                <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="BIGLIETTI_DOCUMENTI" TypeName="DBISEPRO.BIGLIETTI_DOCUMENTI" StoreEntitySet="BIGLIETTI_DOCUMENTI">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="BIGLIETTI">
+              <ScalarProperty Name="IDBIGLIETTO" ColumnName="IDBIGLIETTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CONIUGE_DOC" TypeName="DBISEPRO.CONIUGE_DOC" StoreEntitySet="CONIUGE_DOC">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="CONIUGE">
+              <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
+            <EndProperty Name="NORMACALCOLO">
+              <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FIGLI_DOC" TypeName="DBISEPRO.FIGLI_DOC" StoreEntitySet="FIGLI_DOC">
+            <EndProperty Name="FIGLI">
+              <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_DOC" TypeName="DBISEPRO.MAB_DOC" StoreEntitySet="MAB_DOC">
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PASSAPORTI_DOCUMENTI" TypeName="DBISEPRO.PASSAPORTI_DOCUMENTI" StoreEntitySet="PASSAPORTI_DOCUMENTI">
+            <EndProperty Name="PASSAPORTI">
+              <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
+            <EndProperty Name="TRASFERIMENTO">
+              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="TRASPEFFETTIRIENTRO_DOC" TypeName="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" StoreEntitySet="TRASPEFFETTIRIENTRO_DOC">
@@ -6676,27 +6684,6 @@
             </EndProperty>
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="MAGGIORAZIONEFAMILIARI">
-            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEFAMILIARI">
-              <MappingFragment StoreEntitySet="MAGGIORAZIONEFAMILIARI">
-                <ScalarProperty Name="ATTIVAZIONEMAGGIOARAZIONI" ColumnName="ATTIVAZIONEMAGGIOARAZIONI" />
-                <ScalarProperty Name="RICHIESTAATTIVAZIONE" ColumnName="RICHIESTAATTIVAZIONE" />
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDMAGGIORAZIONEFAMILIARI" ColumnName="IDMAGGIORAZIONEFAMILIARI" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="CONIUGE_DOC1" TypeName="DBISEPRO.CONIUGE_DOC1" StoreEntitySet="CONIUGE_DOC">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="CONIUGE">
-              <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

@@ -71,10 +71,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Agg.")]
         public DateTime dataAggiornamento { get; set; }
 
-        [Required(ErrorMessage = "Il flag annullato è richiesto.")]
-        [DefaultValue(false)]
-        [Display(AutoGenerateField = false)]
-        public bool annullato { get; set; }
 
         [Display(Name = "Ruolo ufficio")]
         public decimal idRuoloUfficio { get; set; }
@@ -92,11 +88,11 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Allega Lettera Trasferimento")]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase file { get; set; }
-        
+
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
-        
+
         public bool HasValue()
         {
             return idTrasferimento > 0 ? true : false;

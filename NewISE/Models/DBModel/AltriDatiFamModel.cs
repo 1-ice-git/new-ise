@@ -18,7 +18,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data di nascita è richiesta.")]
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:d}")]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
         public DateTime? dataNascita { get; set; }
         [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
         [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date, ErrorMessage = "La data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data aggiornamento")]
         [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }

@@ -13,12 +13,12 @@
 
     <title>@ViewBag.Title - ISE (Indennità sede estera)</title>
 
-    @*@Styles.Render("~/Content/jqueryuiCSS")*@
+
     @Styles.Render("~/Content/font-awesome")
     @Styles.Render("~/Content/css/select2CSS")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/moment")
-    @Scripts.Render("~/bundles/globalize")
+
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
 
@@ -231,10 +231,7 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
 
-        $(function () {
-            Globalize.culture("it-IT");
 
-        });
 
         function PosizioneFooter() {
             var f = $("footer");

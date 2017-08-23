@@ -5,7 +5,10 @@
     //decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
 
     //decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+
+
 }
+
 
 
 <div style="padding-left: 15px;">
@@ -24,10 +27,16 @@
         <dt>
             @Html.DisplayNameFor(model => model.dataNascita)
         </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.dataNascita)
-        </dd>
+        @if (Model.dataNascita.HasValue)
+        {
+            <dd>
+                <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+            </dd>
+        }
+        else
+        {
+            <dd></dd>
+        }
 
         <dt>
             @Html.DisplayNameFor(model => model.capNascita)

@@ -238,6 +238,9 @@ namespace NewISE.Models.DBModel.dtObj
                             };
 
                             this.SetConiuge(ref newc, db);
+
+                            //if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin)
+                            //{
                             using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                             {
                                 List<PercentualeMagConiugeModel> lpmcm =
@@ -298,17 +301,19 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                             }
+                            //}
+
 
 
                         }
                     }
                 }
 
-                db.Database.CurrentTransaction.Commit();
+                //db.Database.CurrentTransaction.Commit();
             }
             catch (Exception ex)
             {
-                db.Database.CurrentTransaction.Rollback();
+                //db.Database.CurrentTransaction.Rollback();
                 throw ex;
             }
         }

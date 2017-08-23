@@ -253,7 +253,7 @@ namespace NewISE.Models.DBModel.dtObj
             List<PensioneConiugeModel> lpcmInteressati = new List<PensioneConiugeModel>();
 
 
-            db.Database.BeginTransaction();
+            //db.Database.BeginTransaction();
 
             try
             {
@@ -309,11 +309,11 @@ namespace NewISE.Models.DBModel.dtObj
                     SetPensioneConiuge(ref pcm, idConiuge, db);
                 }
 
-                db.Database.CurrentTransaction.Commit();
+                //db.Database.CurrentTransaction.Commit();
             }
             catch (Exception ex)
             {
-                db.Database.CurrentTransaction.Rollback();
+                //db.Database.CurrentTransaction.Rollback();
                 throw ex;
             }
 

@@ -22,8 +22,8 @@ namespace NewISE.EF
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.MAGGIORAZIONEFAMILIARI = new HashSet<MAGGIORAZIONEFAMILIARI>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -39,7 +39,6 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATALETTERA { get; set; }
         public bool NOTIFICATRASFERIMENTO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
@@ -58,8 +57,8 @@ namespace NewISE.EF
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

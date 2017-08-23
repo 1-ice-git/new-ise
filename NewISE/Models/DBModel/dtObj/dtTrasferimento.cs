@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -175,8 +176,8 @@ namespace NewISE.Models.DBModel.dtObj
                             protocolloLettera = t.PROTOCOLLOLETTERA,
                             dataLettera = t.DATALETTERA,
                             notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
-                            dataAggiornamento = t.DATAAGGIORNAMENTO,
-                            annullato = t.ANNULLATO
+                            dataAggiornamento = t.DATAAGGIORNAMENTO
+
                         };
                     }
                     else
@@ -201,7 +202,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lt = db.TRASFERIMENTO.Where(a => a.IDDIPENDENTE == idDipendente && a.ANNULLATO == false && a.DATAPARTENZA < dataPartenza).ToList();
+                var lt = db.TRASFERIMENTO.Where(a => a.IDDIPENDENTE == idDipendente && a.DATAPARTENZA < dataPartenza).ToList();
 
                 ltm = (from t in lt
                        select new TrasferimentoModel()
@@ -219,7 +220,6 @@ namespace NewISE.Models.DBModel.dtObj
                            dataLettera = t.DATALETTERA,
                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                            dataAggiornamento = t.DATAAGGIORNAMENTO,
-                           annullato = t.ANNULLATO,
                            StatoTrasferimento = new StatoTrasferimentoModel()
                            {
                                idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
@@ -272,14 +272,13 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
-                if (ldp != null && ldp.Count() > 0)
+                if (ldp?.Any() ?? false)
                 {
-                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false).ToList();
+                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.DATAPARTENZA == ldp.First().TRASFERIMENTO.Max(b => b.DATAPARTENZA)).ToList();
 
-                    if (lt != null && lt.Count() > 0)
+                    if (lt?.Any() ?? false)
                     {
                         var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
-
 
                         tm = new TrasferimentoModel()
                         {
@@ -296,7 +295,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataLettera = t.DATALETTERA,
                             notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                             dataAggiornamento = t.DATAAGGIORNAMENTO,
-                            annullato = t.ANNULLATO
+
                         };
                     }
                 }
@@ -317,11 +316,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
 
-                    if (ldp != null && ldp.Count() > 0)
+                    if (ldp?.Any() ?? false)
                     {
-                        var lt = ldp.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false).ToList();
+                        var lt = ldp.First().TRASFERIMENTO.Where(a => a.DATAPARTENZA == ldp.First().TRASFERIMENTO.Max(b => b.DATAPARTENZA)).ToList();
 
-                        if (lt != null && lt.Count() > 0)
+                        if (lt?.Any() ?? false)
                         {
                             var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
 
@@ -341,7 +340,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataLettera = t.DATALETTERA,
                                 notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                                 dataAggiornamento = t.DATAAGGIORNAMENTO,
-                                annullato = t.ANNULLATO,
                                 StatoTrasferimento = new StatoTrasferimentoModel()
                                 {
                                     idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
@@ -402,11 +400,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
 
-                if (ldp != null && ldp.Count() > 0)
+                if (ldp?.Any() ?? false)
                 {
-                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.ANNULLATO == false).ToList();
+                    var lt = ldp.First().TRASFERIMENTO.Where(a => a.DATAPARTENZA == ldp.First().TRASFERIMENTO.Max(b => b.DATAPARTENZA)).ToList();
 
-                    if (lt != null && lt.Count() > 0)
+                    if (lt?.Any() ?? false)
                     {
                         List<IndennitaModel> lim = new List<IndennitaModel>();
                         var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
@@ -426,7 +424,6 @@ namespace NewISE.Models.DBModel.dtObj
                             dataLettera = t.DATALETTERA,
                             notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
                             dataAggiornamento = t.DATAAGGIORNAMENTO,
-                            annullato = t.ANNULLATO,
                             StatoTrasferimento = new StatoTrasferimentoModel()
                             {
                                 idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
@@ -550,7 +547,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATALETTERA = trm.dataLettera,
                 NOTIFICATRASFERIMENTO = trm.notificaTrasferimento,
                 DATAAGGIORNAMENTO = trm.dataAggiornamento,
-                ANNULLATO = trm.annullato
+
             };
 
             db.TRASFERIMENTO.Add(tr);
@@ -588,7 +585,6 @@ namespace NewISE.Models.DBModel.dtObj
                     tr.PROTOCOLLOLETTERA = trm.protocolloLettera;
                     tr.DATALETTERA = trm.dataLettera;
                     tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
-                    tr.ANNULLATO = trm.annullato;
 
                     if (db.SaveChanges() > 0)
                     {
@@ -607,18 +603,18 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (tr != null && tr.IDTRASFERIMENTO > 0)
             {
-                tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
-                tr.IDUFFICIO = trm.idUfficio;
-                tr.IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento;
-                tr.IDDIPENDENTE = trm.idDipendente;
-                tr.IDTIPOCOAN = trm.idTipoCoan;
-                tr.DATAPARTENZA = trm.dataPartenza;
-                tr.DATARIENTRO = trm.dataRientro;
-                tr.COAN = trm.coan;
-                tr.PROTOCOLLOLETTERA = trm.protocolloLettera;
-                tr.DATALETTERA = trm.dataLettera;
-                tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
-                tr.ANNULLATO = trm.annullato;
+                tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
+                tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
+                tr.IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento > 0 ? trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
+                tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
+                tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
+                tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
+                tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
+                tr.COAN = trm.coan ?? tr.COAN;
+                tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
+                tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
+                tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
+
 
                 if (db.SaveChanges() > 0)
                 {
@@ -652,7 +648,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataLettera = tr.DATALETTERA,
                         notificaTrasferimento = trm.notificaTrasferimento,
                         dataAggiornamento = tr.DATAAGGIORNAMENTO,
-                        annullato = tr.ANNULLATO
+
                     };
                 }
 
@@ -684,7 +680,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataLettera = tr.DATALETTERA,
                     notificaTrasferimento = trm.notificaTrasferimento,
                     dataAggiornamento = tr.DATAAGGIORNAMENTO,
-                    annullato = tr.ANNULLATO
+
                 };
             }
 
@@ -716,7 +712,6 @@ namespace NewISE.Models.DBModel.dtObj
                         dataLettera = tr.DATALETTERA,
                         notificaTrasferimento = trm.notificaTrasferimento,
                         dataAggiornamento = tr.DATAAGGIORNAMENTO,
-                        annullato = tr.ANNULLATO,
                         StatoTrasferimento = new StatoTrasferimentoModel()
                         {
                             idStatoTrasferimento = tr.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,

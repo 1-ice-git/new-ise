@@ -9,6 +9,10 @@
 
 <link href="~/Content/css/CheckBoxRadio.css" rel="stylesheet" />
 
+<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
+
+
 @using (@Ajax.BeginForm("ConfermaModificaAdf", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formEditADF" }))
 {
     @Html.AntiForgeryToken()
@@ -184,3 +188,10 @@
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    $.culture = Globalize.culture("it-IT");
+    $.validator.methods.date = function (value, element) {
+        return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    }
+</script>
