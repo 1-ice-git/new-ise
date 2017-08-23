@@ -67,12 +67,12 @@
     GestioneMenu();
 
     $("#Nominativo").change(function () {
-        debugger;
+        //debugger;
         FiltraDipendente();
     });
 
     function GestioneAbilitazioneMenu(matricola) {
-        debugger;
+        //debugger;
 
         if (MenuGestioneTrasferimento(matricola) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -88,7 +88,7 @@
     }
 
     function GestioneMenu() {
-        debugger;
+        //debugger;
         var matr = $("#Nominativo").val();
 
         if (matr != "" && matr != '0') {
@@ -154,7 +154,7 @@
     });
 
     function MenuGestioneTrasferimento(matricola) {
-        debugger;
+        //debugger;
         var rotta = "/Trasferimento/VerirficaCompilazioneTrasferimento";
         var valoreRitorno = 0;
 
@@ -202,7 +202,7 @@
     }
 
     function FiltraDipendente() {
-        debugger;
+        //debugger;
         var rotta = "/Dipendenti/DipendentiGepe";
         var matricola = $("#Nominativo").val();
 

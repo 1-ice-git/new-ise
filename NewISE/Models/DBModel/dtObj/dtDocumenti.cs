@@ -16,6 +16,8 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+
         public IList<DocumentiModel> GetDocumentiByIdConiuge(decimal idConiuge)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();

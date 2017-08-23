@@ -17,12 +17,17 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+
+                var f = db.FIGLI.Find(idFiglio);
+
                 var lpmf =
-                    db.FIGLI.Find(idFiglio)
-                        .PERCENTUALEMAGFIGLI.Where(
-                            a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    f.PERCENTUALEMAGFIGLI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == f.IDTIPOLOGIAFIGLIO &&
+                            dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                         .ToList();
+
 
                 if (lpmf?.Any() ?? false)
                 {

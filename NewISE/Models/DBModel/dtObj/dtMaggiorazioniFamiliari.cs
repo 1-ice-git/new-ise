@@ -75,6 +75,33 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliaribyFiglio(decimal idFiglio)
+        {
+            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI;
+
+                if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+                {
+
+                    mfm = new MaggiorazioniFamiliariModel()
+                    {
+                        idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                        idTrasferimento = mf.IDTRASFERIMENTO,
+                        rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
+                        richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
+                        attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                        dataAggiornamento = mf.DATAAGGIORNAMENTO,
+                        annullato = mf.ANNULLATO,
+                    };
+                }
+            }
+
+            return mfm;
+        }
+
         public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliaribyConiuge(decimal idConiuge)
         {
             MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();

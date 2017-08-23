@@ -37,11 +37,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-        }
+            }
     else
     {
         @:ElencoFigli();
-        }
+            }
 
     function ElencoConiuge() {
         //debugger;
@@ -85,12 +85,12 @@
     function ElencoFigli() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoFigli";
-        var idTrasferimento = parseInt('@idTrasferimento');
+        var idMafFam = parseInt('@idMafFam');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idMaggiorazioniFamiliari: idMafFam },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

@@ -16,55 +16,74 @@ namespace NewISE.Controllers
         public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
-            MaggiorazioniFigliModel mfm = new MaggiorazioniFigliModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
-            //try
-            //{
-            //    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-            //    {
-            //        //adf = dtadf.GetAltriDatiFamiliariFiglio(idFiglio);
-            //    }
-            //    using (dtMaggiorazioniFigli dtmf = new dtMaggiorazioniFigli())
-            //    {
-            //        mfm = dtmf.GetMaggiorazioneFigli(idFiglio);
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    //adf = dtadf.GetAltriDatiFamiliariFiglio(idFiglio);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
+                }
 
-            //    }
+                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                {
+                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
+                    if (pf != null && pf.HasValue())
+                    {
+                        switch (pf.idTipologiaFiglio)
+                        {
+                            case TipologiaFiglio.Minorenne:
+                                adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case TipologiaFiglio.Studente:
+                                adf.studente = true;
+                                adf.residente = true;
+                                break;
+                            case TipologiaFiglio.MaggiorenneInabile:
+                                adf.studente = false;
+                                adf.residente = true;
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
 
-            //    using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
-            //    {
-            //        PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-            //        if (pf != null && pf.HasValue())
-            //        {
-            //            switch (pf.idTipologiaFiglio)
-            //            {
-            //                case TipologiaFiglio.Minorenne:
-            //                    adf.residente = true;
-            //                    adf.studente = false;
-            //                    break;
-            //                case TipologiaFiglio.Studente:
-            //                    adf.studente = true;
-            //                    adf.residente = true;
-            //                    break;
-            //                case TipologiaFiglio.MaggiorenneInabile:
-            //                    adf.studente = false;
-            //                    adf.residente = true;
-            //                    break;
-            //                default:
-            //                    throw new ArgumentOutOfRangeException();
-            //            }
-            //        }
-            //    }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
-            //}
-
-            ViewData.Add("idTrasferimento", mfm.idTrasferimento);
+            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioneFamiliari);
 
             if (adf != null && adf.HasValue())
             {
+
+                using (dtFigli dtf = new dtFigli())
+                {
+                    if (adf.idFigli.HasValue)
+                    {
+                        var fm = dtf.GetFigliobyID(adf.idFigli.Value);
+                        adf.Figli = fm;
+                    }
+                }
+
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    if (adf.idConiuge.HasValue)
+                    {
+                        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                        adf.Coniuge = cm;
+                    }
+                }
+
+
                 return PartialView(adf);
             }
             else
@@ -79,9 +98,11 @@ namespace NewISE.Controllers
                     });
                 }
 
+                adf.idFigli = idFiglio;
+
                 ViewData.Add("Comuni", comuni);
 
-                return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
+                return PartialView("InserisciAltriDatiFamiliariFiglio", adf);
             }
 
 

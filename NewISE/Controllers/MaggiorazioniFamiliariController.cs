@@ -33,85 +33,56 @@ namespace NewISE.Controllers
         }
 
 
-        //[AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        //public ActionResult ElencoFigli(decimal idTrasferimento)
-        //{
-        //    List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
-        //    decimal idMaggiorazioneFiglio = 0;
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult ElencoFigli(decimal idMaggiorazioniFamiliari)
+        {
+            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
 
-        //    try
-        //    {
-        //        using (dtTrasferimento dtt = new dtTrasferimento())
-        //        {
-        //            var tr = dtt.GetSoloTrasferimentoById(idTrasferimento);
-        //            if (tr != null && tr.HasValue())
-        //            {
-        //                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-        //                {
-        //                    //MaggiorazioniFigliModel mfm = dtmf.GetMaggiorazioneFigli(idTrasferimento, tr.dataPartenza);
+            try
+            {
+                using (dtFigli dtf = new dtFigli())
+                {
+                    List<FigliModel> lfm = dtf.GetListaFigli(idMaggiorazioniFamiliari).ToList();
 
+                    if (lfm?.Any() ?? false)
+                    {
+                        using (dtDocumenti dtd = new dtDocumenti())
+                        {
+                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                            {
+                                foreach (var e in lfm)
+                                {
+                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                    {
+                                        idMaggiorazioniFamiliari = e.idMaggiorazioneFamiliari,
+                                        idFamiliare = e.idFigli,
+                                        Nominativo = e.cognome + " " + e.nome,
+                                        CodiceFiscale = e.codiceFiscale,
+                                        dataInizio = e.dataInizio,
+                                        dataFine = e.dataFine,
+                                        parentela = EnumParentela.Figlio,
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
+                                        Documenti = dtd.GetDocumentiByIdFiglio(e.idFigli)
+                                    };
 
-        //                    MaggiorazioniFamiliariModel mfm = dtmf.GetMaggiorazioniFamiliari()
+                                    lefm.Add(efm);
+                                }
+                            }
+                        }
+                    }
 
+                    //ViewData.Add("callConiuge", false);
 
+                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
-
-
-
-
-        //                    if (mfm != null && mfm.HasValue())
-        //                    {
-        //                        idMaggiorazioneFiglio = mfm.idMaggiorazioneFigli;
-        //                        using (dtFigli dtf = new dtFigli())
-        //                        {
-        //                            mfm.Figli = dtf.GetListaFigli(mfm.idMaggiorazioneFigli).ToList();
-
-        //                            if (mfm.Figli?.Any() ?? false)
-        //                            {
-        //                                using (dtDocumenti dtd = new dtDocumenti())
-        //                                {
-        //                                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-        //                                    {
-        //                                        //foreach (var figlio in mfm.Figli)
-        //                                        //{
-        //                                        //    var adf = dtadf.GetAltriDatiFamiliariFiglio(figlio.idMaggiorazioneFigli);
-        //                                        //    var ldm = dtd.GetDocumentiByIdFiglio(figlio.idMaggiorazioneFigli);
-
-        //                                        //    ElencoFamiliariModel efm = new ElencoFamiliariModel()
-        //                                        //    {
-        //                                        //        id = mfm.idMaggiorazioneFigli,
-        //                                        //        idTrasferimento = idTrasferimento,
-        //                                        //        idFamiliare = mfm.idMaggiorazioneFigli,
-        //                                        //        Nominativo = figlio.nominativo,
-        //                                        //        CodiceFiscale = figlio.codiceFiscale,
-        //                                        //        dataInizio = figlio.dataInizio,
-        //                                        //        dataFine = figlio.dataFine,
-        //                                        //        parentela = EnumParentela.Figlio,
-        //                                        //        idAltriDati = adf.idAltriDatiFam > 0 ? adf.idAltriDatiFam : 0,
-        //                                        //        Documenti = ldm,
-        //                                        //    };
-
-        //                                        //    lefm.Add(efm);
-        //                                        //}
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        //ViewData.Add("callConiuge", false);
-        //        ViewData.Add("idTrasferimento", idTrasferimento);
-        //        ViewData.Add("idMaggiorazioneFiglio", idMaggiorazioneFiglio);
-
-        //        return PartialView(lefm);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("ErrorPartial", new MsgErr() {msg = ex.Message});
-        //    }
-        //}
+                    return PartialView(lefm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
 
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
@@ -175,7 +146,7 @@ namespace NewISE.Controllers
         }
 
 
-        public ActionResult NuovoFiglio(decimal idTrasferimento, decimal idMaggiorazioneFigli)
+        public ActionResult NuovoFiglio(decimal idMaggiorazioniFamiliari)
         {
             Figli_V_Model fm = new Figli_V_Model();
             List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
@@ -208,10 +179,7 @@ namespace NewISE.Controllers
             }
 
             ViewData.Add("lTipologiaFiglio", lTipologiaFiglio);
-            ViewData.Add("idTrasferimento", idTrasferimento);
-            ViewData.Add("idMaggiorazioneFigli", idMaggiorazioneFigli);
-
-            fm.idMaggiorazioneFigli = idMaggiorazioneFigli;
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
             return PartialView(fm);
 

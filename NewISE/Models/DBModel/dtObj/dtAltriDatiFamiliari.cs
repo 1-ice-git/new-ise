@@ -57,6 +57,47 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public AltriDatiFamModel GetAlttriDatiFamiliariFiglio(decimal idFiglio)
+        {
+            AltriDatiFamModel adfm = new AltriDatiFamModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ladf = db.FIGLI.Find(idFiglio).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+
+                    if (ladf?.Any() ?? false)
+                    {
+                        var adf = ladf.First();
+
+                        adfm = new AltriDatiFamModel()
+                        {
+                            idAltriDatiFam = adf.IDALTRIDATIFAM,
+                            idFigli = adf.IDFIGLI,
+                            dataNascita = adf.DATANASCITA,
+                            capNascita = adf.CAPNASCITA,
+                            comuneNascita = adf.COMUNENASCITA,
+                            provinciaNascita = adf.PROVINCIANASCITA,
+                            nazionalita = adf.NAZIONALITA,
+                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                            capResidenza = adf.CAPRESIDENZA,
+                            comuneResidenza = adf.COMUNERESIDENZA,
+                            provinciaResidenza = adf.PROVINCIARESIDENZA,
+                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                            annullato = adf.ANNULLATO
+                        };
+                    }
+
+                    return adfm;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public AltriDatiFamModel GetAlttriDatiFamiliariConiuge(decimal idConiuge)
         {
             AltriDatiFamModel adfm = new AltriDatiFamModel();

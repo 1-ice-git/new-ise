@@ -116,55 +116,66 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public FigliModel GetFigliobyID(decimal idFiglio)
+        {
+            FigliModel fm = new FigliModel();
 
-        public IList<FigliModel> GetListaFigli(decimal idMaggiorazioneFigli)
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var f = db.FIGLI.Find(idFiglio);
+
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    fm = new FigliModel()
+                    {
+                        idFigli = f.IDFIGLI,
+                        idMaggiorazioneFamiliari = f.IDMAGGIORAZIONEFAMILIARI,
+                        idTipologiaFiglio = f.IDTIPOLOGIAFIGLIO,
+                        nome = f.NOME,
+                        cognome = f.COGNOME,
+                        codiceFiscale = f.CODICEFISCALE,
+                        dataInizio = f.DATAINIZIOVALIDITA,
+                        dataFine = f.DATAFINEVALIDITA,
+                        dataAggiornamento = f.DATAAGGIORNAMENTO,
+                        Annullato = f.ANNULLATO
+                    };
+                }
+            }
+
+            return fm;
+        }
+
+        public IList<FigliModel> GetListaFigli(decimal idMaggiorazioniFamiliari)
         {
             List<FigliModel> lfm = new List<FigliModel>();
 
-            //using (ModelDBISE db = new ModelDBISE())
-            //{
-            //    var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONEFIGLI == idMaggiorazioneFigli).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONEFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
 
-            //    if (lf != null && lf.Count > 0)
-            //    {
+                if (lf?.Any() ?? false)
+                {
 
-            //        foreach (var item in lf)
-            //        {
-            //            var fm = new FigliModel()
-            //            {
-            //                idFigli = item.IDFIGLI,
-            //                idMaggiorazioneFigli = item.IDMAGGIORAZIONEFIGLI,
-            //                nome = item.NOME,
-            //                cognome = item.COGNOME,
-            //                codiceFiscale = item.CODICEFISCALE,
-            //                //lAtriDatiFamiliari = (from e in item.ALTRIDATIFAM
-            //                //                      where e.ANNULLATO == false
-            //                //                      select new AltriDatiFamModel()
-            //                //                      {
-            //                //                          idAltriDatiFam = e.IDALTRIDATIFAM,
-            //                //                          idFigli = e.IDFIGLI,
-            //                //                          idMaggiorazioneConiuge = e.IDMAGGIORAZIONECONIUGE,
-            //                //                          dataNascita = e.DATANASCITA,
-            //                //                          capNascita = e.CAPNASCITA,
-            //                //                          comuneNascita = e.COMUNENASCITA,
-            //                //                          provinciaNascita = e.PROVINCIANASCITA,
-            //                //                          nazionalita = e.NAZIONALITA,
-            //                //                          indirizzoResidenza = e.INDIRIZZORESIDENZA,
-            //                //                          capResidenza = e.CAPRESIDENZA,
-            //                //                          comuneResidenza = e.COMUNERESIDENZA,
-            //                //                          provinciaResidenza = e.PROVINCIARESIDENZA,
-            //                //                          residente = e.RESIDENTE,
-            //                //                          studente = e.STUDENTE,
-            //                //                          ulterioreMagConiuge = e.ULTERIOREMAGCONIUGE,
-            //                //                          dataAggiornamento = e.DATAAGGIORNAMENTO,
-            //                //                          annullato = e.ANNULLATO
-            //                //                      }).ToList()
-            //            };
+                    foreach (var item in lf)
+                    {
+                        var fm = new FigliModel()
+                        {
+                            idFigli = item.IDFIGLI,
+                            idMaggiorazioneFamiliari = item.IDMAGGIORAZIONEFAMILIARI,
+                            idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
+                            nome = item.NOME,
+                            cognome = item.COGNOME,
+                            codiceFiscale = item.CODICEFISCALE,
+                            dataInizio = item.DATAINIZIOVALIDITA,
+                            dataFine = item.DATAFINEVALIDITA,
+                            dataAggiornamento = item.DATAAGGIORNAMENTO,
+                            Annullato = item.ANNULLATO
+                        };
 
-            //            lfm.Add(fm);
-            //        }
-            //    }
-            //}
+                        lfm.Add(fm);
+                    }
+                }
+            }
 
             return lfm;
 
