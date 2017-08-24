@@ -31,7 +31,7 @@
 
 <p style="padding-left: 15px;">
     @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
-    <a class="btn btn-success" href="#" onclick="NuovoDocumentoConiuge(@id)">Nuovo documento</a>
+    <a class="btn btn-success" href="#" onclick="NuovoDocumento(@id)">Nuovo documento</a>
 </p>
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
     <table id="tabElencoDoc" cellspacing="0">
@@ -105,6 +105,7 @@
             @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+            @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
             break;
@@ -226,7 +227,7 @@
     }
 
     function ConfermaEliminaDoc() {
-        debugger;
+        //debugger;
         var rotta = "/Documenti/EliminaDocumento";
         var idDoc = parseInt($("#hiEliminaDoc").val());
 
@@ -280,11 +281,12 @@
 
 
     function AggiornaElencoDoc() {
+        //debugger;
         var nDocOld = parseInt(@nDoc);
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc);
 
         if (newDoc != nDocOld) {
-            ElencoDocumenti(@id, @tipoDoc);
+            ElencoDocumenti(@id, @tipoDoc, @idMaggiorazioniFamiliari);
         }
     }
 
@@ -326,10 +328,10 @@
         return nDoc;
     }
 
-    function NuovoDocumentoConiuge(id) {
+    function NuovoDocumento(id) {
         //debugger;
         var rotta = "/Documenti/NuovoDocumento";
-        var TipoDocumento = parseInt(@tipoDoc);//Equivale a documento familiare (Coniuge)
+        var TipoDocumento = parseInt(@tipoDoc);
 
 
         $.ajax({

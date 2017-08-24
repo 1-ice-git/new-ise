@@ -62,7 +62,7 @@ namespace NewISE.Controllers
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Figlio,
                                         idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
-                                        Documenti = dtd.GetDocumentiByIdFiglio(e.idFigli)
+                                        Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4)
                                     };
 
                                     lefm.Add(efm);
@@ -117,7 +117,7 @@ namespace NewISE.Controllers
                                             dataFine = e.dataFine,
                                             parentela = EnumParentela.Coniuge,
                                             idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiByIdConiuge(e.idConiuge),
+                                            Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4),
                                             HasPensione = dtp.HasPensione(e.idConiuge)
                                         };
 

@@ -196,6 +196,11 @@ namespace NewISE.Controllers
                     break;
                 case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
                     titoloPagina = "Maggiorazione Familiare - Documento familiare (Figlio)";
+                    using (dtFigli dtf = new dtFigli())
+                    {
+                        var fm = dtf.GetFigliobyID(id);
+                        idMaggiorazioniFamiliari = fm.idMaggiorazioneFamiliari;
+                    }
                     break;
                 case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
                     titoloPagina = "Trasferimento - Lettera trasferimento";
@@ -277,6 +282,7 @@ namespace NewISE.Controllers
                                             dtd.AddDocumentoMagFamConiuge(ref dm, id, db);
                                             break;
                                         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                                            dtd.AddDocumentoMagFamFiglio(ref dm, id, db);
                                             break;
                                         case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
                                             break;
@@ -326,38 +332,7 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    switch (tipoDoc)
-                    {
-                        case EnumTipoDoc.CartaImbarco_Viaggi1:
-                            break;
-                        case EnumTipoDoc.TitoloViaggio_Viaggi1:
-                            break;
-                        case EnumTipoDoc.PrimaRataMab_MAB2:
-                            break;
-                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
-                            break;
-                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
-                            break;
-                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
-                            break;
-                        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
-                            break;
-                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
-                            break;
-                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
-                            break;
-                        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                            ldm = dtd.GetDocumentiByIdConiuge(id).OrderByDescending(a => a.dataInserimento).ToList();
-                            break;
-                        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-                            break;
-                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
-                            break;
-                        case EnumTipoDoc.PassaportiVisti_Viaggi1:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("tipoDoc");
-                    }
+                    ldm = dtd.GetDocumentiByIdTable(id, tipoDoc).OrderByDescending(a => a.dataInserimento).ToList();
                 }
             }
             catch (Exception ex)
@@ -379,38 +354,7 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    switch (tipoDoc)
-                    {
-                        case EnumTipoDoc.CartaImbarco_Viaggi1:
-                            break;
-                        case EnumTipoDoc.TitoloViaggio_Viaggi1:
-                            break;
-                        case EnumTipoDoc.PrimaRataMab_MAB2:
-                            break;
-                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
-                            break;
-                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
-                            break;
-                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
-                            break;
-                        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
-                            break;
-                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
-                            break;
-                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
-                            break;
-                        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                            nDoc = dtd.GetDocumentiByIdConiuge(id).Count;
-                            break;
-                        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-                            break;
-                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
-                            break;
-                        case EnumTipoDoc.PassaportiVisti_Viaggi1:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("tipoDoc");
-                    }
+                    nDoc = dtd.GetDocumentiByIdTable(id, tipoDoc).Count;
                 }
             }
             catch (Exception ex)

@@ -89,7 +89,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @idMaggiorazioniFamiliari ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 11, @idMaggiorazioniFamiliari ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -193,4 +193,41 @@
         });
 
     }
+
+    function ElencoDocumenti(id, tipoDoc, idMaggiorazioniFamiliari) {
+        //debugger;
+        var rotta = "/Documenti/ElencoDocumenti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { id: id, tipoDoc: tipoDoc, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabFigli").empty();
+                $("#tabFigli").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
 </script>

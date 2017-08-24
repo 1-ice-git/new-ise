@@ -16,53 +16,49 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-
-
-        public IList<DocumentiModel> GetDocumentiByIdConiuge(decimal idConiuge)
+        public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.CONIUGE.Find(idConiuge).DOCUMENTI.ToList();
-                if (ld != null && ld.Count > 0)
+                List<DOCUMENTI> ld = new List<DOCUMENTI>();
+
+                switch (tipodoc)
                 {
-
-                    foreach (var d in ld)
-                    {
-
-
-                        var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                        var dm = new DocumentiModel()
-                        {
-                            idDocumenti = d.IDDOCUMENTO,
-                            nomeDocumento = d.NOMEDOCUMENTO,
-                            estensione = d.ESTENSIONE,
-                            tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                            dataInserimento = d.DATAINSERIMENTO,
-                            file = f
-                        };
-
-                        ldm.Add(dm);
-                    }
-
-
-
+                    case EnumTipoDoc.CartaImbarco_Viaggi1:
+                        break;
+                    case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                        break;
+                    case EnumTipoDoc.PrimaRataMab_MAB2:
+                        break;
+                    case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                        break;
+                    case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                        break;
+                    case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                        break;
+                    case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                        break;
+                    case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                        break;
+                    case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                        break;
+                    case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                        ld = db.CONIUGE.Find(id).DOCUMENTI.ToList();
+                        break;
+                    case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                        ld = db.FIGLI.Find(id).DOCUMENTI.ToList();
+                        break;
+                    case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                        break;
+                    case EnumTipoDoc.PassaportiVisti_Viaggi1:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("tipodoc");
                 }
 
 
-            }
-
-            return ldm;
-        }
-
-        public IList<DocumentiModel> GetDocumentiByIdFiglio(decimal idFiglio)
-        {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var ld = db.FIGLI.Find(idFiglio).DOCUMENTI.ToList();
                 if (ld?.Any() ?? false)
                 {
                     ldm.AddRange(from d in ld
@@ -72,16 +68,44 @@ namespace NewISE.Models.DBModel.dtObj
                                      idDocumenti = d.IDDOCUMENTO,
                                      nomeDocumento = d.NOMEDOCUMENTO,
                                      estensione = d.ESTENSIONE,
-                                     dataInserimento = d.DATAINSERIMENTO,
                                      tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
                                      file = f
                                  });
                 }
+
 
             }
 
             return ldm;
         }
+
+        //public IList<DocumentiModel> GetDocumentiByIdFiglio(decimal idFiglio)
+        //{
+        //    List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var ld = db.FIGLI.Find(idFiglio).DOCUMENTI.ToList();
+        //        if (ld?.Any() ?? false)
+        //        {
+        //            ldm.AddRange(from d in ld
+        //                         let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+        //                         select new DocumentiModel()
+        //                         {
+        //                             idDocumenti = d.IDDOCUMENTO,
+        //                             nomeDocumento = d.NOMEDOCUMENTO,
+        //                             estensione = d.ESTENSIONE,
+        //                             dataInserimento = d.DATAINSERIMENTO,
+        //                             tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+        //                             file = f
+        //                         });
+        //        }
+
+        //    }
+
+        //    return ldm;
+        //}
 
 
 
@@ -352,9 +376,35 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AddDocumentoMagFamConiuge(ref DocumentiModel dm, decimal idMaggiorazioneConiuge, ModelDBISE db)
+        public void AddDocumentoMagFamFiglio(ref DocumentiModel dm, decimal idFiglio, ModelDBISE db)
         {
-            var c = db.CONIUGE.Find(idMaggiorazioneConiuge);
+            var f = db.FIGLI.Find(idFiglio);
+            if (f.IDFIGLI != null && f.IDFIGLI > 0)
+            {
+                MemoryStream ms = new MemoryStream();
+                DOCUMENTI d = new DOCUMENTI();
+                dm.file.InputStream.CopyTo(ms);
+
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+
+                f.DOCUMENTI.Add(d);
+
+                int i = db.SaveChanges();
+
+                if (i > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                }
+            }
+        }
+
+        public void AddDocumentoMagFamConiuge(ref DocumentiModel dm, decimal idConiuge, ModelDBISE db)
+        {
+            var c = db.CONIUGE.Find(idConiuge);
 
             if (c != null && c.IDCONIUGE > 0)
             {
