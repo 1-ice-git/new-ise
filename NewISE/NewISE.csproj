@@ -2053,6 +2053,8 @@
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFigli.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFiglio.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

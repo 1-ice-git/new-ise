@@ -76,7 +76,14 @@ namespace NewISE.Models.DBModel.dtObj
 
             return pmfm;
         }
-
+        /// <summary>
+        /// Preleva una lista delle percentuali per la maggiorazione dei figli in base ad un range di date.
+        /// </summary>
+        /// <param name="idTipologiaFiglio">enumeratore tipologia del figlio</param>
+        /// <param name="dtInizio">data inizio ricerca</param>
+        /// <param name="dtFine">data fine ricerca</param>
+        /// <param name="db">db ise</param>
+        /// <returns>Lista di PercentualeMagFigliModel</returns>
         public IList<PercentualeMagFigliModel> GetPercentualeMaggiorazioneFigli(TipologiaFiglio idTipologiaFiglio, DateTime dtInizio, DateTime dtFine, ModelDBISE db)
         {
             List<PercentualeMagFigliModel> lpmfm = new List<PercentualeMagFigliModel>();
@@ -88,6 +95,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a.DATAINIZIOVALIDITA <= dtFine && a.DATAFINEVALIDITA >= dtInizio)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
+
             if (lpmf?.Any() ?? false)
             {
                 lpmfm = (from e in lpmf

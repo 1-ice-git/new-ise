@@ -46,7 +46,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il campo annullatto è obbligatorio.")]
         [DefaultValue(false)]
         public bool Annullato { get; set; }
-
+        [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
         public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }

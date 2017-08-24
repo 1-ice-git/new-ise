@@ -31,11 +31,7 @@ namespace NewISE.Models.DBModel.dtObj
                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                         .ToList();
 
-
-
-
-
-                if (lpmc != null && lpmc.Count > 0)
+                if (lpmc?.Any() ?? false)
                 {
                     var pmc = lpmc.First();
 

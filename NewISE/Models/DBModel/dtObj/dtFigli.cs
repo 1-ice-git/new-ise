@@ -108,11 +108,24 @@ namespace NewISE.Models.DBModel.dtObj
             if (i > 0)
             {
                 fm.idFigli = f.IDFIGLI;
+                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(f.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del Figlio", "FIGLI", db,
+                    idTrasferimento, f.IDFIGLI);
             }
             else
             {
                 throw new Exception(string.Format("Il figlio {0} non è stato inserito.", fm.nominativo));
             }
+
+
+
+            //decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+            //cm.idConiuge = c.IDCONIUGE;
+
+            //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
+            //    idTrasferimento, c.IDCONIUGE);
+
+
 
         }
 

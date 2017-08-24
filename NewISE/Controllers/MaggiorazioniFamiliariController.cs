@@ -145,10 +145,10 @@ namespace NewISE.Controllers
             }
         }
 
-
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NuovoFiglio(decimal idMaggiorazioniFamiliari)
         {
-            Figli_V_Model fm = new Figli_V_Model();
+            FigliModel fm = new FigliModel();
             List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
             var r = new List<SelectListItem>();
 
@@ -179,7 +179,7 @@ namespace NewISE.Controllers
             }
 
             ViewData.Add("lTipologiaFiglio", lTipologiaFiglio);
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("idMaggiorazioneFamiliari", idMaggiorazioniFamiliari);
 
             return PartialView(fm);
 
@@ -228,15 +228,16 @@ namespace NewISE.Controllers
 
 
             ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("idMaggiorazioneFamiliari", idMaggiorazioniFamiliari);
 
 
             return PartialView();
         }
 
 
-
-        public ActionResult InserisciFiglio(Figli_V_Model fm, decimal idTrasferimento)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciFiglio(FigliModel fm)
         {
 
             try
@@ -244,10 +245,46 @@ namespace NewISE.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    using (dtFigli dtf = new dtFigli())
+                    try
                     {
-                        //dtf.IserisciFiglio(fm, idTrasferimento);
+                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                        {
+                            dtmf.InserisciFiglio(fm);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+
+                        ModelState.AddModelError("", ex.Message);
+
+                        List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
+
+                        var r = new List<SelectListItem>();
+
+                        using (dtTipologiaFiglio dttf = new dtTipologiaFiglio())
+                        {
+                            var ltfm = dttf.GetListTipologiaFiglio().ToList();
+
+                            if (ltfm?.Any() ?? false)
+                            {
+                                r = (from t in ltfm
+                                     select new SelectListItem()
+                                     {
+                                         Text = t.tipologiaFiglio,
+                                         Value = t.idTipologiaFiglio.ToString()
+                                     }).ToList();
+                                r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                            }
+
+                            lTipologiaFiglio = r;
+                        }
+
+
+                        ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
+                        ViewData.Add("idMaggiorazioneFamiliari", fm.idMaggiorazioneFamiliari);
+                        return PartialView("NuovoFiglio", fm);
+                    }
+
                 }
                 else
                 {
@@ -274,13 +311,12 @@ namespace NewISE.Controllers
 
 
                     ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
-                    ViewData.Add("idTrasferimento", idTrasferimento);
-                    ViewData.Add("idMaggiorazioneFigli", fm.idMaggiorazioneFigli);
+                    ViewData.Add("idMAggiorazioneFamiliari", fm.idMaggiorazioneFamiliari);
 
                     return PartialView("NuovoFiglio", fm);
                 }
 
-                return RedirectToAction("ElencoFiglio", new { idTrasferimento = idTrasferimento });
+                return RedirectToAction("ElencoFigli", new { idMAggiorazioniFamiliari = fm.idMaggiorazioneFamiliari });
             }
             catch (Exception ex)
             {
@@ -335,7 +371,7 @@ namespace NewISE.Controllers
 
 
                         ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-                        ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
+                        ViewData.Add("idMaggiorazioneFamiliari", cm.idMaggiorazioneFamiliari);
                         return PartialView("NuovoConiuge", cm);
                     }
                 }
@@ -365,7 +401,7 @@ namespace NewISE.Controllers
 
 
                     ViewBag.lTipologiaConiuge = lTipologiaConiuge;
-                    ViewData.Add("idMaggiorazioniFamiliari", cm.idMaggiorazioneFamiliari);
+                    ViewData.Add("idMaggiorazioneFamiliari", cm.idMaggiorazioneFamiliari);
 
                     return PartialView("NuovoConiuge", cm);
                 }

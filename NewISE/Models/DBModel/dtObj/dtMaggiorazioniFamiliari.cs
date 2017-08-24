@@ -153,7 +153,53 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void InserisciFiglio(FigliModel fm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
 
+                try
+                {
+                    using (dtFigli dtf = new dtFigli())
+                    {
+                        fm.dataAggiornamento = DateTime.Now;
+                        fm.Annullato = false;
+                        dtf.SetFiglio(ref fm, db);
+                        using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                        {
+                            DateTime dtIni = fm.dataInizio.Value;
+                            DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                            List<PercentualeMagFigliModel> lpmfm =
+                                dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni,
+                                    dtFin, db).ToList();
+
+                            if (lpmfm?.Any() ?? false)
+                            {
+                                foreach (var pmfm in lpmfm)
+                                {
+                                    dtpf.AssociaPercentualeMaggiorazioneFigli(fm.idFigli, pmfm.idPercMagFigli, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna percentuale per il figlio.");
+                            }
+                        }
+                    }
+
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
         public void InserisciConiuge(ConiugeModel cm)
         {
