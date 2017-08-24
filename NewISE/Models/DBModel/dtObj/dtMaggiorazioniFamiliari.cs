@@ -187,6 +187,27 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Non è presente nessuna percentuale per il figlio.");
                             }
                         }
+
+                        using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                        {
+                            DateTime dtIni = fm.dataInizio.Value;
+                            DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                            List<IndennitaPrimoSegretModel> lipsm =
+                                dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                            if (lipsm?.Any() ?? false)
+                            {
+                                foreach (var ipsm in lipsm)
+                                {
+                                    dtips.AssociaIndennitaPrimoSegretarioFiglio(fm.idFigli, ipsm.idIndPrimoSegr, db);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                            }
+                        }
                     }
 
 
