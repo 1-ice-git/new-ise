@@ -2,7 +2,6 @@
     border-right: solid;
     border-right-width: 2px;
     border-right-color: #237069;
-    /*border-color: #00B04E;*/
 }
 
 #divOperazioniAttivitaTrasf {
@@ -12,9 +11,9 @@
 }
 
 .col-xs-8 {
-    padding-left: 5px;
+    /*padding-left: 15px;*/
 }
 
 .col-xs-4 {
-    padding-right: 5px;
+    /*padding-right: 5px;*/
 }

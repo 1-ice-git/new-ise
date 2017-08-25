@@ -516,6 +516,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 dit.indennitaBase = ci.indennitaBaseRiduzione;
                                 dit.indennitaServizio = ci.indennitaServizio;
+                                dit.maggiorazioniFamiliari = ci.MaggiorazioneFamiliari;
                             }
                         }
                     }

@@ -56,7 +56,12 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PercentualeMagConiugeModel pmcm = new PercentualeMagConiugeModel();
 
-            var lpmc = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+            var lpmc =
+                db.PERCENTUALEMAGCONIUGE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && dt >= a.DATAINIZIOVALIDITA &&
+                        dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
 
             if (lpmc != null && lpmc.Count > 0)
             {

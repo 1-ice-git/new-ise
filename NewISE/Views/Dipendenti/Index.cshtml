@@ -57,91 +57,89 @@
     </div>
 </div>
 
-@section scripts
-{
-    <script type="text/javascript">
 
-        jQuery(document).ready(function ($) {
-            $('#tabsGestioneTrasferimento').tab();
+<script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+        $('#tabsGestioneTrasferimento').tab();
+    });
+
+
+
+    function NuovoTrasferimento() {
+        //debugger;
+
+        var matricola = $("#hMatricola").val();
+        rotta = "/Trasferimento/NuovoTrasferimento";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabNuovoTrasferimento").empty();
+                $("#tabNuovoTrasferimento").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
         });
 
+    }
 
+    function GestioneTrasferimento() {
+        var matricola = $("#hMatricola").val();
+        rotta = "/Trasferimento/GestioneTrasferimento";
 
-        function NuovoTrasferimento() {
-            //debugger;
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabGestioneTrasferimento").empty();
+                $("#tabGestioneTrasferimento").html(result);
 
-            var matricola = $("#hMatricola").val();
-            rotta = "/Trasferimento/NuovoTrasferimento";
+                //RicercaDocumenti();
 
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { matricola: matricola },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    //VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                },
-                success: function (result) {
-                    //debugger;
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    $("#tabNuovoTrasferimento").empty();
-                    $("#tabNuovoTrasferimento").html(result);
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
 
-                    //RicercaDocumenti();
-
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-
-            });
-
-        }
-
-        function GestioneTrasferimento() {
-            var matricola = $("#hMatricola").val();
-            rotta = "/Trasferimento/GestioneTrasferimento";
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { matricola: matricola },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                },
-                success: function (result) {
-                    //debugger;
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    $("#tabGestioneTrasferimento").empty();
-                    $("#tabGestioneTrasferimento").html(result);
-
-                    //RicercaDocumenti();
-
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-
-            });
-        }
-    </script>
-}
+        });
+    }
+</script>

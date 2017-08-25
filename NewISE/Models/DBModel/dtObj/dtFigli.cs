@@ -157,6 +157,47 @@ namespace NewISE.Models.DBModel.dtObj
 
             return fm;
         }
+        /// <summary>
+        /// Preleva i figli attivi alla data passata come paramentro.
+        /// </summary>
+        /// <param name="idMaggiorazioniFamiliari"></param>
+        /// <param name="dt"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public IList<FigliModel> GetFigliByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
+        {
+            List<FigliModel> lfm = new List<FigliModel>();
+
+            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+            if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+            {
+                var lf =
+                    mf.FIGLI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        .ToList();
+
+                if (lf?.Any() ?? false)
+                {
+                    lfm.AddRange(lf.Select(item => new FigliModel()
+                    {
+                        idFigli = item.IDFIGLI,
+                        idMaggiorazioneFamiliari = item.IDMAGGIORAZIONEFAMILIARI,
+                        idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
+                        nome = item.NOME,
+                        cognome = item.COGNOME,
+                        codiceFiscale = item.CODICEFISCALE,
+                        dataInizio = item.DATAINIZIOVALIDITA,
+                        dataFine = item.DATAFINEVALIDITA,
+                        dataAggiornamento = item.DATAAGGIORNAMENTO,
+                        Annullato = item.ANNULLATO
+                    }));
+                }
+            }
+
+            return lfm;
+
+
+        }
 
         public IList<FigliModel> GetListaFigli(decimal idMaggiorazioniFamiliari)
         {

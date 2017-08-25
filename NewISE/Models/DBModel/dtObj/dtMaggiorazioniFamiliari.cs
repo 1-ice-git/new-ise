@@ -38,7 +38,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
             return mcm;
-
         }
 
         public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento)
@@ -67,12 +66,38 @@ namespace NewISE.Models.DBModel.dtObj
                         annullato = mf.ANNULLATO,
                     };
                 }
-
-
             }
 
             return mfm;
+        }
 
+        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento, ModelDBISE db)
+        {
+            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+
+            var lmf =
+                db.MAGGIORAZIONEFAMILIARI.Where(
+                    a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento)
+                    .OrderByDescending(a => a.DATAAGGIORNAMENTO)
+                    .ToList();
+
+            if (lmf?.Any() ?? false)
+            {
+                var mf = lmf.First();
+                mfm = new MaggiorazioniFamiliariModel()
+                {
+                    idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                    idTrasferimento = mf.IDTRASFERIMENTO,
+                    rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
+                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
+                    attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                    dataAggiornamento = mf.DATAAGGIORNAMENTO,
+                    annullato = mf.ANNULLATO,
+                };
+            }
+
+
+            return mfm;
         }
 
         public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliaribyFiglio(decimal idFiglio)
@@ -85,7 +110,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
                 {
-
                     mfm = new MaggiorazioniFamiliariModel()
                     {
                         idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
@@ -112,7 +136,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
                 {
-
                     mfm = new MaggiorazioniFamiliariModel()
                     {
                         idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
@@ -126,7 +149,6 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
             return mfm;
-
         }
 
 
@@ -148,7 +170,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 mfm.idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI;
 
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  delle Maggiorazioni familiari", "MAGGIORAZIONEFAMILIARI", db, mfm.idTrasferimento, mf.IDMAGGIORAZIONEFAMILIARI);
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  delle Maggiorazioni familiari",
+                    "MAGGIORAZIONEFAMILIARI", db, mfm.idTrasferimento, mf.IDMAGGIORAZIONEFAMILIARI);
             }
         }
 
@@ -205,11 +228,11 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             else
                             {
-                                throw new Exception("Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                throw new Exception(
+                                    "Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
                             }
                         }
                     }
-
 
 
                     db.Database.CurrentTransaction.Commit();
@@ -249,7 +272,8 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var pmcm in lpmcm)
                                 {
-                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                    dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge,
+                                        db);
                                 }
                             }
                             else
@@ -257,7 +281,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new Exception("Non è presente nessuna percentuale del coniuge.");
                             }
                         }
-
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -290,7 +313,6 @@ namespace NewISE.Models.DBModel.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-
             }
         }
 
@@ -355,9 +377,5 @@ namespace NewISE.Models.DBModel.dtObj
 
         //    return mcm;
         //}
-
-
-
-
     }
 }

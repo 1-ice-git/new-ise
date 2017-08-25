@@ -80,6 +80,40 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
+        public ConiugeModel GetConiugeByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
+        {
+            ConiugeModel cm = new ConiugeModel();
+
+            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+            var lc =
+                mf.CONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    .ToList();
+
+            if (lc?.Any() ?? false)
+            {
+                var c = lc.First();
+
+                cm = new ConiugeModel()
+                {
+                    idConiuge = c.IDCONIUGE,
+                    idMaggiorazioneFamiliari = c.IDMAGGIORAZIONEFAMILIARI,
+                    idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                    nome = c.NOME,
+                    cognome = c.COGNOME,
+                    codiceFiscale = c.CODICEFISCALE,
+                    dataInizio = c.DATAINIZIOVALIDITA,
+                    dataFine = c.DATAFINEVALIDITA,
+                    dataAggiornamento = c.DATAAGGIORNAMENTO,
+                    annullato = c.ANNULLATO
+                };
+
+            }
+
+            return cm;
+        }
+
+
         public ConiugeModel GetConiugeByIdDoc(decimal idDocumento)
         {
             ConiugeModel cm = new ConiugeModel();

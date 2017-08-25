@@ -119,7 +119,13 @@ namespace NewISE.Models.DBModel.dtObj
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();
 
-            var lib = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+            var lib =
+                db.INDENNITA.Find(idTrasferimento)
+                    .INDENNITABASE.Where(
+                        a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
             if (lib != null && lib.Count > 0)
             {
                 var ib = lib.First();

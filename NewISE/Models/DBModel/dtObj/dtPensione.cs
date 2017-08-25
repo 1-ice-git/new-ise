@@ -42,6 +42,44 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+
+        /// <summary>
+        /// Preleva la pensione valida alla data passata.
+        /// </summary>
+        /// <param name="idConiuge"></param>
+        /// <param name="dt"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public PensioneConiugeModel GetPensioniByIdConiuge(decimal idConiuge, DateTime dt, ModelDBISE db)
+        {
+            PensioneConiugeModel pc = new PensioneConiugeModel();
+
+            var lp =
+                db.CONIUGE.Find(idConiuge)
+                    .PENSIONE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIO && dt <= a.DATAFINE)
+                    .OrderByDescending(a => a.DATAINIZIO)
+                    .ToList();
+            if (lp?.Any() ?? false)
+            {
+
+                var lpc = (from e in lp
+                           select new PensioneConiugeModel()
+                           {
+                               idPensioneConiuge = e.IDPENSIONE,
+                               importoPensione = e.IMPORTOPENSIONE,
+                               dataInizioValidita = e.DATAINIZIO,
+                               dataFineValidita = e.DATAFINE,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO
+                           }).ToList();
+
+                pc = lpc.First();
+            }
+
+            return pc;
+
+        }
+
         public IList<PensioneConiugeModel> GetPensioniByIdConiuge(decimal idConiuge, ModelDBISE db)
         {
             List<PensioneConiugeModel> lpc = new List<PensioneConiugeModel>();

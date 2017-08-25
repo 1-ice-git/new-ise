@@ -14,6 +14,38 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public IndennitaPrimoSegretModel GetIndennitaPrimoSegretario(decimal idFiglio, DateTime dt, ModelDBISE db)
+        {
+            IndennitaPrimoSegretModel ipsm = new IndennitaPrimoSegretModel();
+
+            var f = db.FIGLI.Find(idFiglio);
+
+            var lips =
+                f.INDENNITAPRIMOSEGRETARIO.Where(
+                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+
+            if (lips?.Any() ?? false)
+            {
+                var ips = lips.First();
+
+                ipsm = new IndennitaPrimoSegretModel()
+                {
+                    idIndPrimoSegr = ips.IDINDPRIMOSEGR,
+                    dataInizioValidita = ips.DATAINIZIOVALIDITA,
+                    dataFineValidita = ips.DATAFINEVALIDITA,
+                    indennita = ips.INDENNITA,
+                    dataAggiornamento = ips.DATAAGGIORNAMENTO,
+                    annullato = ips.ANNULLATO
+                };
+            }
+
+            return ipsm;
+
+        }
+
+
         public IList<IndennitaPrimoSegretModel> GetIndennitaPrimoSegretario(DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<IndennitaPrimoSegretModel> lipsm = new List<IndennitaPrimoSegretModel>();
