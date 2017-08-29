@@ -21,13 +21,13 @@ namespace NewISE.EF
             this.FIGLI = new HashSet<FIGLI>();
         }
     
-        public decimal IDMAGGIORAZIONEFAMILIARI { get; set; }
+        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
         public bool RICHIESTAATTIVAZIONE { get; set; }
         public bool ATTIVAZIONEMAGGIOARAZIONI { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }

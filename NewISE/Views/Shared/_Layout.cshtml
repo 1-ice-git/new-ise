@@ -339,9 +339,13 @@
             });
         }
 
-        function ErroreElaborazioneAjax(response) {
+        function ErroreElaborazioneAjax(messaggio) {
             //debugger;
-            $("#msgModalError").text("Errore nell'elaborazione.");
+            var msg = "Errore nell'elaborazione.";
+            if (messaggio != Undefined && messaggio != "") {
+                msg = messaggio;
+            }
+            $("#msgModalError").text(msg);
             $('#myModalError').modal('toggle');
         }
 

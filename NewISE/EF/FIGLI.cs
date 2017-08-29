@@ -19,12 +19,12 @@ namespace NewISE.EF
         {
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.INDENNITAPRIMOSEGRETARIO = new HashSet<INDENNITAPRIMOSEGRETARIO>();
-            this.PERCENTUALEMAGFIGLI = new HashSet<PERCENTUALEMAGFIGLI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.PERCENTUALEMAGFIGLI = new HashSet<PERCENTUALEMAGFIGLI>();
         }
     
         public decimal IDFIGLI { get; set; }
-        public decimal IDMAGGIORAZIONEFAMILIARI { get; set; }
+        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public decimal IDTIPOLOGIAFIGLIO { get; set; }
         public string NOME { get; set; }
         public string COGNOME { get; set; }
@@ -36,13 +36,13 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        public virtual MAGGIORAZIONEFAMILIARI MAGGIORAZIONEFAMILIARI { get; set; }
         public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
-        public virtual MAGGIORAZIONEFAMILIARI MAGGIORAZIONEFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
     }
 }

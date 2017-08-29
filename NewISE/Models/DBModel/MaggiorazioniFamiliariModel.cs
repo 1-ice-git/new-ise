@@ -17,7 +17,7 @@ namespace NewISE.Models.DBModel
     public class MaggiorazioniFamiliariModel
     {
         [Key]
-        public decimal idMaggiorazioneFamiliari { get; set; }
+        public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
         public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "Rinuncia maggiorazioni è obbligatorio.")]
@@ -42,7 +42,7 @@ namespace NewISE.Models.DBModel
 
         public bool HasValue()
         {
-            return idMaggiorazioneFamiliari > 0 ? true : false;
+            return idMaggiorazioniFamiliari > 0 ? true : false;
         }
 
 

@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal idFigli { get; set; }
         [Required(ErrorMessage = "La maggiorazione dei figli è richiesta.")]
         [Display(Name = "Magg. figli")]
-        public decimal idMaggiorazioneFamiliari { get; set; }
+        public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
         [Display(Name = "Tipologia figlio")]
         public decimal idTipologiaFiglio { get; set; }

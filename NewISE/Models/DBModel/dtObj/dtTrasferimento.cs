@@ -148,7 +148,39 @@ namespace NewISE.Models.DBModel.dtObj
         //    return vr;
         //}
 
+        public DateTime? DataInizioTrasferimento(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    return t.DATAPARTENZA.Date;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public DateTime? DataFineTrasferimento(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    return t.DATARIENTRO?.Date;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         public TrasferimentoModel GetTrasferimentoByIDMagFam(decimal idMaggiorazioniFamiliari)
         {

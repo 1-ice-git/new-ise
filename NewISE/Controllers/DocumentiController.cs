@@ -191,7 +191,7 @@ namespace NewISE.Controllers
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         var cm = dtc.GetConiugebyID(id);
-                        idMaggiorazioniFamiliari = cm.idMaggiorazioneFamiliari;
+                        idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
                     }
                     break;
                 case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
@@ -199,7 +199,7 @@ namespace NewISE.Controllers
                     using (dtFigli dtf = new dtFigli())
                     {
                         var fm = dtf.GetFigliobyID(id);
-                        idMaggiorazioniFamiliari = fm.idMaggiorazioneFamiliari;
+                        idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
                     }
                     break;
                 case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
@@ -334,6 +334,43 @@ namespace NewISE.Controllers
                 {
                     ldm = dtd.GetDocumentiByIdTable(id, tipoDoc).OrderByDescending(a => a.dataInserimento).ToList();
                 }
+
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    bool rinunciaMagFam = false;
+                    bool richiestaAttivazione = false;
+                    bool attivazione = false;
+                    bool datiConiuge = false;
+                    bool datiParzialiConiuge = false;
+                    bool datiFigli = false;
+                    bool datiParzialiFigli = false;
+                    bool siDocConiuge = false;
+                    bool siDocFigli = false;
+
+                    bool solaLettura = false;
+
+                    if (idMaggiorazioniFamiliari > 0)
+                    {
+                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+                        if (richiestaAttivazione == true)
+                        {
+                            solaLettura = true;
+                        }
+                        else
+                        {
+                            solaLettura = false;
+                        }
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                    ViewData.Add("solaLettura", solaLettura);
+                }
             }
             catch (Exception ex)
             {
@@ -342,6 +379,7 @@ namespace NewISE.Controllers
             ViewData.Add("id", id);
             ViewData.Add("tipoDoc", tipoDoc);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
             return PartialView(ldm);
         }
 

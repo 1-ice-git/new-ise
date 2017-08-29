@@ -18,14 +18,14 @@ namespace NewISE.EF
         public DOCUMENTI()
         {
             this.BIGLIETTI = new HashSet<BIGLIETTI>();
-            this.CONIUGE = new HashSet<CONIUGE>();
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
-            this.FIGLI = new HashSet<FIGLI>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.PASSAPORTI = new HashSet<PASSAPORTI>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
             this.TRASPORTOEFFETTIRIENTRO = new HashSet<TRASPORTOEFFETTIRIENTRO>();
             this.TRASPORTOEFFETTISIST = new HashSet<TRASPORTOEFFETTISIST>();
+            this.CONIUGE = new HashSet<CONIUGE>();
+            this.FIGLI = new HashSet<FIGLI>();
         }
     
         public decimal IDDOCUMENTO { get; set; }
@@ -39,11 +39,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BIGLIETTI> BIGLIETTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NORMACALCOLO> NORMACALCOLO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FIGLI> FIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,5 +50,9 @@ namespace NewISE.EF
         public virtual ICollection<TRASPORTOEFFETTIRIENTRO> TRASPORTOEFFETTIRIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASPORTOEFFETTISIST> TRASPORTOEFFETTISIST { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
     }
 }

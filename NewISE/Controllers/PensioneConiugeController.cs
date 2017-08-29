@@ -26,9 +26,41 @@ namespace NewISE.Controllers
                 }
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioneFamiliari;
+                    decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioniFamiliari;
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
+                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                    {
+                        bool rinunciaMagFam = false;
+                        bool richiestaAttivazione = false;
+                        bool attivazione = false;
+                        bool datiConiuge = false;
+                        bool datiParzialiConiuge = false;
+                        bool datiFigli = false;
+                        bool datiParzialiFigli = false;
+                        bool siDocConiuge = false;
+                        bool siDocFigli = false;
+
+                        bool solaLettura = false;
+
+                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                            out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+                        if (richiestaAttivazione == true)
+                        {
+                            solaLettura = true;
+                        }
+                        else
+                        {
+                            solaLettura = false;
+                        }
+
+                        ViewData.Add("solaLettura", solaLettura);
+                    }
                 }
+
+
 
 
             }

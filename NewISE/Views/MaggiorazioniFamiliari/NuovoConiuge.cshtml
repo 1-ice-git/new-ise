@@ -19,7 +19,7 @@
     @Html.AntiForgeryToken()
     <div style="padding-left:15px;">
         <div class="form-horizontal">
-            @Html.Hidden("idMaggiorazioneFamiliari", idMaggiorazioniFamiliari)
+            @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
 
 
             <div class="panel panel-body" style="padding-left:5px; padding-right:5px; margin-right:10px; margin-top:5px;">
@@ -121,12 +121,14 @@
 
 <script type="text/javascript">
 
+    PulsantiNotificaAttivaMagFam();
+
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                            break;
+                                            break;
         }
 
     }

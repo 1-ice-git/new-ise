@@ -16,6 +16,38 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+        //public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
+
+        //    var cm = context.ObjectInstance as ConiugeModel;
+
+        //    if (cm != null)
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var t = db.CONIUGE.Find(cm.idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO;
+
+        //            if (cm.dataInizio < t.DATAPARTENZA)
+        //            {
+        //                vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+        //            }
+        //            else
+        //            {
+        //                vr = ValidationResult.Success;
+        //            }
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("La data di inizio validità è richiesta.");
+        //    }
+
+        //    return vr;
+        //}
+
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -80,6 +112,8 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
+
+
         public ConiugeModel GetConiugeByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
         {
             ConiugeModel cm = new ConiugeModel();
@@ -97,7 +131,7 @@ namespace NewISE.Models.DBModel.dtObj
                 cm = new ConiugeModel()
                 {
                     idConiuge = c.IDCONIUGE,
-                    idMaggiorazioneFamiliari = c.IDMAGGIORAZIONEFAMILIARI,
+                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -125,7 +159,7 @@ namespace NewISE.Models.DBModel.dtObj
                 cm = new ConiugeModel()
                 {
                     idConiuge = c.IDCONIUGE,
-                    idMaggiorazioneFamiliari = c.IDMAGGIORAZIONEFAMILIARI,
+                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -153,7 +187,7 @@ namespace NewISE.Models.DBModel.dtObj
                     cm = new ConiugeModel()
                     {
                         idConiuge = c.IDCONIUGE,
-                        idMaggiorazioneFamiliari = c.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
                         nome = c.NOME,
                         cognome = c.COGNOME,
@@ -169,13 +203,13 @@ namespace NewISE.Models.DBModel.dtObj
             return cm;
         }
 
-        public IList<ConiugeModel> GetListaConiuge(decimal idMaggiorazioniFamiliari)
+        public IList<ConiugeModel> GetListaConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
             List<ConiugeModel> lcm = new List<ConiugeModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAFINEVALIDITA);
+                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAFINEVALIDITA);
 
                 if (lc?.Any() ?? false)
                 {
@@ -183,7 +217,7 @@ namespace NewISE.Models.DBModel.dtObj
                            select new ConiugeModel()
                            {
                                idConiuge = e.IDCONIUGE,
-                               idMaggiorazioneFamiliari = e.IDMAGGIORAZIONEFAMILIARI,
+                               idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
                                nome = e.NOME,
                                cognome = e.COGNOME,
@@ -204,7 +238,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             CONIUGE c = new CONIUGE()
             {
-                IDMAGGIORAZIONEFAMILIARI = cm.idMaggiorazioneFamiliari,
+                IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIACONIUGE = cm.idTipologiaConiuge,
                 NOME = cm.nome,
                 COGNOME = cm.cognome,
@@ -223,7 +257,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                 cm.idConiuge = c.IDCONIUGE;
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
@@ -257,12 +291,12 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+                            decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
 
                             ConiugeModel newc = new ConiugeModel()
                             {
-                                idMaggiorazioneFamiliari = cm.idMaggiorazioneFamiliari,
+                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
                                 idTipologiaConiuge = cm.idTipologiaConiuge,
                                 nome = cm.nome,
                                 cognome = cm.cognome,

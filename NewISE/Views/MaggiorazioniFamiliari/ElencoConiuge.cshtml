@@ -2,6 +2,7 @@
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
 
@@ -9,11 +10,27 @@
 <p style="padding-left: 15px;">
     @if (Model?.Any() ?? false)
     {
-        @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge" })
+        if (solaLettura)
+        {
+            <button href="#" class="btn btn-default disabled">Modifica coniuge</button>
+        }
+        else
+        {
+            @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
+        }
+
     }
     else
     {
-        @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })
+        if (solaLettura)
+        {
+            <button href="#" class="btn btn-default disabled">Nuovo coniuge</button>
+        }
+        else
+        {
+            @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
+        }
+
     }
 
 </p>
@@ -72,7 +89,7 @@
                     @if (item.HasPensione)
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); ">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
                                 <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
                             </a>
                         </td>
@@ -80,7 +97,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); ">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
                                 <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
                             </a>
                         </td>
@@ -88,7 +105,7 @@
                     @if (item.idAltriDati > 0)
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare);" id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -96,7 +113,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); " id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -199,6 +216,10 @@
         //]
     });
 
+    //PulsantiNotificaAttivaMadFam();
+
+
+
 
     function Pensione(idConiuge) {
         //debugger;
@@ -260,6 +281,9 @@
                 $("#tabConiuge").html(result);
 
             },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
             error: function (error) {
                 //debugger;
                 //Sblocca();
@@ -296,6 +320,9 @@
                 $("#tabConiuge").html(result);
 
             },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
             error: function (error) {
                 //debugger;
                 //Sblocca();
@@ -330,6 +357,9 @@
                 $("#tabConiuge").empty();
                 $("#tabConiuge").html(result);
 
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;

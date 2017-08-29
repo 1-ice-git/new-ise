@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal idConiuge { get; set; }
         [Required(ErrorMessage = "Maggiorazione familiari")]
         [Display(Name = "Maggiorazione familiari")]
-        public decimal idMaggiorazioneFamiliari { get; set; }
+        public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public decimal idTipologiaConiuge { get; set; }

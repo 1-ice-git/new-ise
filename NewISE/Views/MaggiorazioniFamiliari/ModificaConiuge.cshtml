@@ -21,7 +21,7 @@
             <hr />
             @*@Html.ValidationSummary(true, "", new {@class = "text-danger"})*@
             @Html.HiddenFor(model => model.idConiuge)
-            @Html.HiddenFor(model => model.idMaggiorazioneFamiliari)
+            @Html.HiddenFor(model => model.idMaggiorazioniFamiliari)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.idTipologiaConiuge, new { @class = "control-label col-xs-2" })
@@ -113,19 +113,22 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioneFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <script type="text/javascript">
+
+    PulsantiNotificaAttivaMagFam();
+
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                                                    break;
+                                                                            break;
         }
 
     }

@@ -3,14 +3,21 @@
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
-
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 
 
 }
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled" disabled="disabled">Nuovo figlio</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
+    }
 
 </p>
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
@@ -184,6 +191,9 @@
                 $("#tabFigli").html(result);
 
             },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
             error: function (error) {
                 //debugger;
                 //Sblocca();
@@ -218,6 +228,9 @@
                 $("#tabFigli").empty();
                 $("#tabFigli").html(result);
 
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;

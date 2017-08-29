@@ -28,7 +28,35 @@ namespace NewISE.Controllers
                 {
                     mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
                 }
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    bool rinunciaMagFam = false;
+                    bool richiestaAttivazione = false;
+                    bool attivazione = false;
+                    bool datiConiuge = false;
+                    bool datiParzialiConiuge = false;
+                    bool datiFigli = false;
+                    bool datiParzialiFigli = false;
+                    bool siDocConiuge = false;
+                    bool siDocFigli = false;
 
+                    bool solaLettura = false;
+
+                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+                    if (richiestaAttivazione == true)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                    ViewData.Add("solaLettura", solaLettura);
+                }
                 using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
                 {
                     PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
@@ -60,7 +88,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioneFamiliari);
+            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioniFamiliari);
 
             if (adf != null && adf.HasValue())
             {
@@ -131,6 +159,36 @@ namespace NewISE.Controllers
                     mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
                 }
 
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    bool rinunciaMagFam = false;
+                    bool richiestaAttivazione = false;
+                    bool attivazione = false;
+                    bool datiConiuge = false;
+                    bool datiParzialiConiuge = false;
+                    bool datiFigli = false;
+                    bool datiParzialiFigli = false;
+                    bool siDocConiuge = false;
+                    bool siDocFigli = false;
+
+                    bool solaLettura = false;
+
+                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+                    if (richiestaAttivazione == true)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                    ViewData.Add("solaLettura", solaLettura);
+                }
+
                 using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                 {
                     PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
@@ -166,7 +224,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioneFamiliari);
+            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioniFamiliari);
 
             if (adf != null && adf.HasValue())
             {

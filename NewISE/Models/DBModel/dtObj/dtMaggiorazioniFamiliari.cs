@@ -14,19 +14,264 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByID(decimal idMaggiorazioneFamiliari)
+
+        public void AttivaRichiesta(decimal idMaggiorazioniFamiliari)
+        {
+            bool rinunciaMagFam = false;
+            bool richiestaAttivazione = false;
+            bool attivazione = false;
+            bool datiConiuge = false;
+            bool datiParzialiConiuge = false;
+            bool datiFigli = false;
+            bool datiParzialiFigli = false;
+            bool siDocConiuge = false;
+            bool siDocFigli = false;
+            int i = 0;
+
+            this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
+                    {
+                        var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                        mf.ATTIVAZIONEMAGGIOARAZIONI = true;
+
+                        i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
+                        }
+                    }
+                    else if (rinunciaMagFam == false && richiestaAttivazione == true && attivazione == false)
+                    {
+                        if (datiConiuge == true || datiFigli == true)
+                        {
+                            if (datiParzialiConiuge == false && datiParzialiFigli == false)
+                            {
+                                if (datiConiuge == true && siDocConiuge == true || datiFigli == true && siDocFigli == true)
+                                {
+                                    var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                                    mf.ATTIVAZIONEMAGGIOARAZIONI = true;
+
+                                    i = db.SaveChanges();
+
+                                    if (i <= 0)
+                                    {
+                                        throw new Exception("Errore nella fase di attivazione delle maggiorazioni familiari.");
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void NotificaRichiesta(decimal idMaggiorazioniFamiliari)
+        {
+            bool rinunciaMagFam = false;
+            bool richiestaAttivazione = false;
+            bool attivazione = false;
+            bool datiConiuge = false;
+            bool datiParzialiConiuge = false;
+            bool datiFigli = false;
+            bool datiParzialiFigli = false;
+            bool siDocConiuge = false;
+            bool siDocFigli = false;
+            int i = 0;
+
+            this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                    if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
+                    {
+                        if (datiConiuge == false && datiFigli == false)
+                        {
+                            mf.RINUNCIAMAGGIORAZIONI = true;
+                            mf.RICHIESTAATTIVAZIONE = true;
+                            i = db.SaveChanges();
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore nella fase d'inserimento per la rinuncia delle maggiorazioni familiari.");
+                            }
+                        }
+                        else if (datiConiuge == true || datiFigli == true)
+                        {
+                            if (datiParzialiConiuge == false && datiParzialiFigli == false)
+                            {
+                                mf.RICHIESTAATTIVAZIONE = true;
+                                i = db.SaveChanges();
+                                if (i <= 0)
+                                {
+                                    throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public void SituazioneMagFam(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
+                                       out bool richiestaAttivazione, out bool Attivazione,
+                                       out bool datiConiuge, out bool datiParzialiConiuge,
+                                       out bool datiFigli, out bool datiParzialiFigli,
+                                       out bool siDocConiuge, out bool siDocFigli)
+        {
+            rinunciaMagFam = false;
+            richiestaAttivazione = false;
+            Attivazione = false;
+            datiConiuge = false;
+            datiParzialiConiuge = false;
+            datiFigli = false;
+            datiParzialiFigli = false;
+            siDocConiuge = false;
+            siDocFigli = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
+                {
+                    rinunciaMagFam = mf.RINUNCIAMAGGIORAZIONI;
+                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE;
+                    Attivazione = mf.ATTIVAZIONEMAGGIOARAZIONI;
+
+
+                    if (mf.CONIUGE != null)
+                    {
+                        var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                        if (lc?.Any() ?? false)
+                        {
+                            datiConiuge = true;
+                            foreach (var c in lc)
+                            {
+                                var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+
+                                if (nadc > 0)
+                                {
+                                    datiParzialiConiuge = false;
+                                }
+                                else
+                                {
+                                    datiParzialiConiuge = true;
+                                    break;
+                                }
+                            }
+
+                            foreach (var c in lc)
+                            {
+                                var ndocc = c.DOCUMENTI.Count;
+
+                                if (ndocc > 0)
+                                {
+                                    siDocConiuge = true;
+                                }
+                                else
+                                {
+                                    siDocConiuge = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            datiConiuge = false;
+                        }
+
+                    }
+
+                    if (mf.FIGLI != null)
+                    {
+                        var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+
+                        if (lf?.Any() ?? false)
+                        {
+                            datiFigli = true;
+                            foreach (var f in lf)
+                            {
+                                var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+
+                                if (nadf > 0)
+                                {
+                                    datiParzialiFigli = false;
+                                }
+                                else
+                                {
+                                    datiParzialiFigli = true;
+                                    break;
+                                }
+                            }
+
+                            foreach (var f in lf)
+                            {
+                                var ndocf = f.DOCUMENTI.Count;
+                                if (ndocf > 0)
+                                {
+                                    siDocFigli = true;
+                                }
+                                else
+                                {
+                                    siDocFigli = false;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            datiFigli = false;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+
+        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByID(decimal idMaggiorazioniFamiliari)
         {
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioneFamiliari);
+                var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+                if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
                     mcm = new MaggiorazioniFamiliariModel()
                     {
-                        idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
                         rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
@@ -39,6 +284,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             return mcm;
         }
+
+
+
 
         public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento)
         {
@@ -57,7 +305,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var mf = lmf.First();
                     mfm = new MaggiorazioniFamiliariModel()
                     {
-                        idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
                         rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
@@ -75,10 +323,16 @@ namespace NewISE.Models.DBModel.dtObj
         {
             MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
 
+            //var lmf =
+            //    db.MAGGIORAZIONEFAMILIARI.Where(
+            //        a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento)
+            //        .OrderByDescending(a => a.DATAAGGIORNAMENTO)
+            //        .ToList();
+
             var lmf =
-                db.MAGGIORAZIONEFAMILIARI.Where(
-                    a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento)
-                    .OrderByDescending(a => a.DATAAGGIORNAMENTO)
+                db.TRASFERIMENTO.Find(idTrasferimento)
+                    .MAGGIORAZIONEFAMILIARI.Where(a => a.ANNULLATO == false)
+                    .OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
                     .ToList();
 
             if (lmf?.Any() ?? false)
@@ -86,7 +340,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var mf = lmf.First();
                 mfm = new MaggiorazioniFamiliariModel()
                 {
-                    idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                     idTrasferimento = mf.IDTRASFERIMENTO,
                     rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                     richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
@@ -108,11 +362,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var mf = db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI;
 
-                if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+                if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
                     mfm = new MaggiorazioniFamiliariModel()
                     {
-                        idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
                         rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
@@ -134,11 +388,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var mf = db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI;
 
-                if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+                if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
                     mfm = new MaggiorazioniFamiliariModel()
                     {
-                        idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
                         rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
@@ -168,10 +422,10 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (db.SaveChanges() > 0)
             {
-                mfm.idMaggiorazioneFamiliari = mf.IDMAGGIORAZIONEFAMILIARI;
+                mfm.idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI;
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  delle Maggiorazioni familiari",
-                    "MAGGIORAZIONEFAMILIARI", db, mfm.idTrasferimento, mf.IDMAGGIORAZIONEFAMILIARI);
+                    "MAGGIORAZIONEFAMILIARI", db, mfm.idTrasferimento, mf.IDMAGGIORAZIONIFAMILIARI);
             }
         }
 

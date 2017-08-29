@@ -17,16 +17,16 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TIPOLOGIACONIUGE()
         {
-            this.CONIUGE = new HashSet<CONIUGE>();
             this.PERCENTUALEMAGCONIUGE = new HashSet<PERCENTUALEMAGCONIUGE>();
+            this.CONIUGE = new HashSet<CONIUGE>();
         }
     
         public decimal IDTIPOLOGIACONIUGE { get; set; }
         public string TIPOLOGIACONIUGE1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
     }
 }

@@ -90,7 +90,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             FIGLI f = new FIGLI()
             {
-                IDMAGGIORAZIONEFAMILIARI = fm.idMaggiorazioneFamiliari,
+                IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIAFIGLIO = fm.idTipologiaFiglio,
                 NOME = fm.nome,
                 COGNOME = fm.cognome,
@@ -108,7 +108,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (i > 0)
             {
                 fm.idFigli = f.IDFIGLI;
-                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(f.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del Figlio", "FIGLI", db,
                     idTrasferimento, f.IDFIGLI);
             }
@@ -119,7 +119,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-            //decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONEFAMILIARI).IDTRASFERIMENTO;
+            //decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.idMaggiorazioniFamiliari).IDTRASFERIMENTO;
             //cm.idConiuge = c.IDCONIUGE;
 
             //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
@@ -142,7 +142,7 @@ namespace NewISE.Models.DBModel.dtObj
                     fm = new FigliModel()
                     {
                         idFigli = f.IDFIGLI,
-                        idMaggiorazioneFamiliari = f.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = f.IDTIPOLOGIAFIGLIO,
                         nome = f.NOME,
                         cognome = f.COGNOME,
@@ -170,7 +170,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-            if (mf != null && mf.IDMAGGIORAZIONEFAMILIARI > 0)
+            if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
             {
                 var lf =
                     mf.FIGLI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
@@ -181,7 +181,7 @@ namespace NewISE.Models.DBModel.dtObj
                     lfm.AddRange(lf.Select(item => new FigliModel()
                     {
                         idFigli = item.IDFIGLI,
-                        idMaggiorazioneFamiliari = item.IDMAGGIORAZIONEFAMILIARI,
+                        idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
                         nome = item.NOME,
                         cognome = item.COGNOME,
@@ -205,7 +205,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONEFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
+                var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
 
                 if (lf?.Any() ?? false)
                 {
@@ -215,7 +215,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var fm = new FigliModel()
                         {
                             idFigli = item.IDFIGLI,
-                            idMaggiorazioneFamiliari = item.IDMAGGIORAZIONEFAMILIARI,
+                            idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                             idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
                             nome = item.NOME,
                             cognome = item.COGNOME,
@@ -236,14 +236,14 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public bool HasFigliAttivi(decimal idMaggiorazioneFamiliari, ModelDBISE db)
+        public bool HasFigliAttivi(decimal idMaggiorazioniFamiliari, ModelDBISE db)
         {
             bool ret = false;
 
             var lf =
                 db.FIGLI.Where(
                     a =>
-                        a.IDMAGGIORAZIONEFAMILIARI == idMaggiorazioneFamiliari && a.ANNULLATO == false &&
+                        a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari && a.ANNULLATO == false &&
                         a.DATAFINEVALIDITA == Utility.DataFineStop())
                     .OrderByDescending(a => a.DATAFINEVALIDITA)
                     .ToList();

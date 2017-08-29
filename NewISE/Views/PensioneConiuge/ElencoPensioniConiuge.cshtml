@@ -4,6 +4,7 @@
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
 @*<style>
@@ -16,7 +17,15 @@
 
 <p style="margin-top: 5px; padding-left:15px;">
 
-    @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled">Nuovo importo</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    }
+
 </p>
 <div style="padding-left:15px; padding-right:10px;">
     <table id="TabPensioni" cellspacing="0">
@@ -60,7 +69,14 @@
                     </td>
                     <td class="text-center">
                         @*@Ajax.ActionLink("Modifica", "ModificaPensione", new { idPensioneConiuge = item.idPensioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |*@
-                        <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
+                        @if (solaLettura)
+                        {
+                            <a href="#" style="pointer-events: none; cursor: default; opacity: 0.6; text-decoration: none;">Elimina</a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
+                        }
                     </td>
                 </tr>
             }
