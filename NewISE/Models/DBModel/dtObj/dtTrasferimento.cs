@@ -148,6 +148,31 @@ namespace NewISE.Models.DBModel.dtObj
         //    return vr;
         //}
 
+
+
+        public void GestioneAttivitaTrasferimento(decimal idTrasferimento, out bool richiestaMF, out bool attivazioneMF)
+        {
+            richiestaMF = false;
+            attivazioneMF = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                #region MaggiorazioniFamiliari
+                var lmf = t.MAGGIORAZIONEFAMILIARI.Where(a => a.ANNULLATO == false).ToList();
+                if (lmf?.Any() ?? false)
+                {
+                    var mf = lmf.First();
+
+                    richiestaMF = mf.RICHIESTAATTIVAZIONE;
+                    attivazioneMF = mf.ATTIVAZIONEMAGGIOARAZIONI;
+
+                }
+                #endregion
+            }
+        }
+
         public DateTime? DataInizioTrasferimento(decimal idTrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())

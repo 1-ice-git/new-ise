@@ -16,6 +16,36 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var fm = context.ObjectInstance as FigliModel;
+
+            if (fm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.MAGGIORAZIONEFAMILIARI.Find(fm.idMaggiorazioniFamiliari).TRASFERIMENTO;
+
+                    if (fm.dataInizio < t.DATAPARTENZA)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                }
+
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+
+            return vr;
+        }
 
         public static ValidationResult VerificaCodiceFiscale2(string v, ValidationContext context)
         {

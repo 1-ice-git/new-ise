@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime;
 using NewISE.Models.Tools;
@@ -12,6 +13,24 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+
+        public void VerificaDataInizioPensione(decimal idConiuge, DateTime dataInizioPensione)
+        {
+            //bool ret = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO;
+
+                if (dataInizioPensione < t.DATAPARTENZA)
+                {
+                    throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere inferiore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                }
+            }
+
+
         }
 
         public IList<PensioneConiugeModel> GetPensioniByIdConiuge(decimal idConiuge)

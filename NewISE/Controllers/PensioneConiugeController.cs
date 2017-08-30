@@ -60,9 +60,6 @@ namespace NewISE.Controllers
                     }
                 }
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -92,10 +89,21 @@ namespace NewISE.Controllers
 
             try
             {
+
                 if (ModelState.IsValid)
                 {
+
                     using (dtPensione dtp = new dtPensione())
                     {
+                        try
+                        {
+                            dtp.VerificaDataInizioPensione(idConiuge, pcm.dataInizioValidita);
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", ex.Message);
+                            return PartialView("NuovoImportoPensione", pcm);
+                        }
                         pcm.dataAggiornamento = DateTime.Now;
                         pcm.annullato = false;
                         if (!pcm.dataFineValidita.HasValue)

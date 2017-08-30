@@ -92,11 +92,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                    }
+                                                                                                                                }
     else
     {
         @:ElencoFigli();
-                                                                                    }
+                                                                                                                                }
 
     //PulsantiNotificaAttivaMagFam();
 
@@ -300,9 +300,14 @@
                         $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                         $("#btNotificaRichiestaMagFam").addClass("disabled");
 
+                        //$("#chkMagFamiliariR").attr('checked', true);
+
                         if (attivazione == true) {
                             $("#btAttivaMagFam").attr("disabled", "disabled");
                             $("#btAttivaMagFam").addClass("disabled");
+
+                            //$("#chkMagFamiliariSR").attr('checked', true);
+
                         } else {
                             if (admin == true) {
                                 $("#btAttivaMagFam").removeAttr("disabled");
@@ -311,15 +316,22 @@
                                 $("#btAttivaMagFam").attr("disabled", "disabled");
                                 $("#btAttivaMagFam").addClass("disabled");
                             }
+
+                            //$("#chkMagFamiliariSR").attr('checked', false);
                         }
                     } else {
                         if (richiesta == true) {
                             $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                             $("#btNotificaRichiestaMagFam").addClass("disabled");
 
+                            //$("#chkMagFamiliariR").attr('checked', true);
+
                             if (attivazione == true) {
                                 $("#btAttivaMagFam").attr("disabled", "disabled");
                                 $("#btAttivaMagFam").addClass("disabled");
+
+                                $("#chkMagFamiliariSR").attr('checked', true);
+
                             } else {
                                 if (admin == true) {
                                     $("#btAttivaMagFam").removeAttr("disabled");
@@ -328,6 +340,7 @@
                                     $("#btAttivaMagFam").attr("disabled", "disabled");
                                     $("#btAttivaMagFam").addClass("disabled");
                                 }
+                                //$("#chkMagFamiliariSR").attr('checked', false);
                             }
                         } else {
                             if (datiConiuge == true || datiFigli == true) {
@@ -355,8 +368,12 @@
                                 $("#btNotificaRichiestaMagFam").removeAttr("disabled");
                                 $("#btNotificaRichiestaMagFam").removeClass("disabled");
                             }
+
+                            //$("#chkMagFamiliariR").attr('checked', false);
                         }
                     }
+
+                    GestioneAttivitaTrasferimento();
 
 
                 } else {

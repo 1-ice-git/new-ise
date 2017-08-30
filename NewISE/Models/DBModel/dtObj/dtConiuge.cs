@@ -17,36 +17,36 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        //public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
 
-        //    var cm = context.ObjectInstance as ConiugeModel;
+            var cm = context.ObjectInstance as ConiugeModel;
 
-        //    if (cm != null)
-        //    {
-        //        using (ModelDBISE db = new ModelDBISE())
-        //        {
-        //            var t = db.CONIUGE.Find(cm.idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO;
+            if (cm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.MAGGIORAZIONEFAMILIARI.Find(cm.idMaggiorazioniFamiliari).TRASFERIMENTO;
 
-        //            if (cm.dataInizio < t.DATAPARTENZA)
-        //            {
-        //                vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
-        //            }
-        //            else
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //        }
+                    if (cm.dataInizio < t.DATAPARTENZA)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                }
 
-        //    }
-        //    else
-        //    {
-        //        vr = new ValidationResult("La data di inizio validità è richiesta.");
-        //    }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
 
-        //    return vr;
-        //}
+            return vr;
+        }
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {

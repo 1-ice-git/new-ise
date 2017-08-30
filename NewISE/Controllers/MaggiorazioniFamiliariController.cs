@@ -505,10 +505,7 @@ namespace NewISE.Controllers
                         using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                         {
                             var mf = dtmf.GetMaggiorazioniFamiliariByID(idMaggiorazioniFamiliari);
-                            //if (cm.dataInizio > mf.)
-                            //{
 
-                            //}
                             dtmf.InserisciConiuge(cm);
                         }
                     }

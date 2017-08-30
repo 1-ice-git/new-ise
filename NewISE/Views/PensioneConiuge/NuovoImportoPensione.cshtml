@@ -1,10 +1,13 @@
 ﻿@model NewISE.Models.DBModel.PensioneConiugeModel
 
+<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
+
+
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
 
     var errori = ViewData.ModelState;
-
 
 }
 
@@ -115,7 +118,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                    break;
+                                break;
         }
 
     }
@@ -137,7 +140,7 @@
         }
         else {
             var ip = $("#importoPensione").autoNumeric("get");
-            $("#importoPensione").val(ip.replace(".", ","))
+            $("#importoPensione").val(ip.replace(".", ","));
         }
 
     });
@@ -159,14 +162,14 @@
         aSign: ''
     });
 
+
+    $.culture = Globalize.culture("it-IT");
+    //$.validator.methods.date = function (value, element) {
+    //    return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    //}
+
+
     $.validator.methods.number = function (value, element) {
-        //debugger;
-        //var e = this.optional(element);
-        //var g = Globalize.parseFloat(value);
-        //element.value = g.toString().replace(".", ",");
-        //var n = isNaN(g);
-        //var r = e || !n;
-        //return r;
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
 

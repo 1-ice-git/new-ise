@@ -102,6 +102,30 @@ namespace NewISE.Controllers
 
         #endregion Metodi privati
 
+        [HttpPost]
+        public JsonResult GestioneAttivitaTrasferimento(decimal idTrasferimento)
+        {
+            string errore = string.Empty;
+            bool richiestaMF = false;
+            bool attivazioneMF = false;
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return Json(new { err = errore, richiestaMF = richiestaMF, attivazioneMF = attivazioneMF });
+
+        }
+
+
         public ActionResult InfoTrasferimento(string matricola)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();

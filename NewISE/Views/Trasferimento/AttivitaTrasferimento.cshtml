@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
 }
 
@@ -19,18 +20,17 @@
     <tbody>
         <tr>
             <th>
-                @Ajax.ActionLink("Richiesta Maggiorazioni Familiari", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-
+                @Ajax.ActionLink("Richiesta Maggiorazioni Familiari", "MaggiorazioniFamiliari", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "chkMagFam" })
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkMagFamiliariR" name="chkMagFamiliariR" type="checkbox" />
+                    <input id="chkMagFamiliariR" name="chkMagFamiliariR" type="checkbox" onclick="return false;" />
                     <label for="chkMagFamiliariR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkMagFamiliariSR" name="chkMagFamiliariSR" type="checkbox" />
+                    <input id="chkMagFamiliariSR" name="chkMagFamiliariSR" type="checkbox" onclick="return false;" />
                     <label for="chkMagFamiliariSR" class="label-success"></label>
                 </div>
             </td>
@@ -41,13 +41,13 @@
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkPratichePassaportoR" name="chkPratichePassaportoR" type="checkbox" />
+                    <input id="chkPratichePassaportoR" name="chkPratichePassaportoR" type="checkbox" onclick="return false;" />
                     <label for="chkPratichePassaportoR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkPratichePassaportoSR" name="chkPratichePassaportoSR" type="checkbox" />
+                    <input id="chkPratichePassaportoSR" name="chkPratichePassaportoSR" type="checkbox" onclick="return false;" />
                     <label for="chkPratichePassaportoSR" class="label-success"></label>
                 </div>
             </td>
@@ -58,13 +58,13 @@
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkTitoliViaggioR" name="chkTitoliViaggioR" type="checkbox" />
+                    <input id="chkTitoliViaggioR" name="chkTitoliViaggioR" type="checkbox" onclick="return false;" />
                     <label for="chkTitoliViaggioR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkTitoliViaggioSR" name="chkTitoliViaggioSR" type="checkbox" />
+                    <input id="chkTitoliViaggioSR" name="chkTitoliViaggioSR" type="checkbox" onclick="return false;" />
                     <label for="chkTitoliViaggioSR" class="label-success"></label>
                 </div>
             </td>
@@ -75,13 +75,13 @@
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkAnticipiR" name="chkAnticipiR" type="checkbox" />
+                    <input id="chkAnticipiR" name="chkAnticipiR" type="checkbox" onclick="return false;" />
                     <label for="chkAnticipiR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkAnticipiSR" name="chkAnticipiSR" type="checkbox" />
+                    <input id="chkAnticipiSR" name="chkAnticipiSR" type="checkbox" onclick="return false;" />
                     <label for="chkAnticipiSR" class="label-success"></label>
                 </div>
             </td>
@@ -92,13 +92,13 @@
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkTrasportoEffettiR" name="chkTrasportoEffettiR" type="checkbox" />
+                    <input id="chkTrasportoEffettiR" name="chkTrasportoEffettiR" type="checkbox" onclick="return false;" />
                     <label for="chkTrasportoEffettiR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkTrasportoEffettiSR" name="chkTrasportoEffettiSR" type="checkbox" />
+                    <input id="chkTrasportoEffettiSR" name="chkTrasportoEffettiSR" type="checkbox" onclick="return false;" />
                     <label for="chkTrasportoEffettiSR" class="label-success"></label>
                 </div>
             </td>
@@ -109,13 +109,13 @@
             </th>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkMABR" name="chkMABR" type="checkbox" />
+                    <input id="chkMABR" name="chkMABR" type="checkbox" onclick="return false;" />
                     <label for="chkMABR" class="label-success"></label>
                 </div>
             </td>
             <td>
                 <div class="material-switch pull-right">
-                    <input id="chkMABSR" name="chkMABSR" type="checkbox" />
+                    <input id="chkMABSR" name="chkMABSR" type="checkbox" onclick="return false;" />
                     <label for="chkMABSR" class="label-success"></label>
                 </div>
             </td>
@@ -134,3 +134,65 @@
     </button>
 </div>
 
+<script type="text/javascript">
+    //$("#chkMagFam").click();
+
+    GestioneAttivitaTrasferimento();
+
+    function GestioneAttivitaTrasferimento() {
+        //debugger;
+        var rotta = "/Trasferimento/GestioneAttivitaTrasferimento";
+        var idTrasf = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasf },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var richiestaMF = result.richiestaMF;
+                    var attivazioneMF = result.attivazioneMF;
+
+                    if (richiestaMF == true) {
+                        $("#chkMagFamiliariR").each(function () { this.checked = true; });
+                        if (attivazioneMF == true) {
+                            $("#chkMagFamiliariSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkMagFamiliariSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkMagFamiliariR").each(function () { this.checked = false; });
+                        $("#chkMagFamiliariSR").each(function () { this.checked = false; });
+                    }
+
+
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+</script>

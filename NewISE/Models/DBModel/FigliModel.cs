@@ -34,6 +34,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        [CustomValidation(typeof(dtFigli), "VerificaDataInizio")]
         public DateTime? dataInizio { get; set; }
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
