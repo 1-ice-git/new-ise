@@ -126,7 +126,7 @@ namespace NewISE.Controllers
         }
 
 
-        public ActionResult InfoTrasferimento(string matricola)
+        public ActionResult InfoTrasferimento(string matricola = "", decimal idTrasferimento = 0)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
@@ -134,7 +134,15 @@ namespace NewISE.Controllers
             {
                 using (dtTrasferimento dtdt = new dtTrasferimento())
                 {
-                    dit = dtdt.GetInfoTrasferimento(matricola);
+                    if (matricola != "")
+                    {
+                        dit = dtdt.GetInfoTrasferimento(matricola);
+                    }
+                    else if (idTrasferimento > 0)
+                    {
+                        dit = dtdt.GetInfoTrasferimento(idTrasferimento);
+                    }
+
 
                     if (dit.CDCDestinazione == string.Empty)
                     {

@@ -31,7 +31,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (cm.dataInizio < t.DATAPARTENZA)
                     {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                     }
                     else
                     {

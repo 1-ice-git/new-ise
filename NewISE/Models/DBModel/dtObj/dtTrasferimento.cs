@@ -532,6 +532,61 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+        public dipInfoTrasferimentoModel GetInfoTrasferimento(decimal idTrasferimento)
+        {
+            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            DateTime dtDatiParametri;
+
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                    if (tm != null && tm.idTrasferimento > 0)
+                    {
+                        dit.statoTrasferimento = (EnumStatoTraferimento)tm.idStatoTrasferimento;
+                        dit.UfficioDestinazione = tm.Ufficio;
+                        dit.Decorrenza = tm.dataPartenza;
+                        if (tm.dataRientro.HasValue)
+                        {
+                            dtDatiParametri = tm.dataRientro.Value;
+                        }
+                        else
+                        {
+                            dtDatiParametri = tm.dataPartenza > Utility.GetDtInizioMeseCorrente() ? tm.dataPartenza : Utility.GetDtInizioMeseCorrente();
+                        }
+
+                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                        {
+                            RuoloUfficioModel rum = new RuoloUfficioModel();
+                            rum = dtrd.GetRuoloDipendenteByIdTrasferimento(tm.idTrasferimento, dtDatiParametri).RuoloUfficio;
+
+                            dit.RuoloUfficio = rum;
+                        }
+
+                        if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare)
+                        {
+                            using (CalcoliIndennita ci = new CalcoliIndennita(tm.Dipendente.matricola.ToString()))
+                            {
+                                dit.indennitaBase = ci.indennitaBaseRiduzione;
+                                dit.indennitaServizio = ci.indennitaServizio;
+                                dit.maggiorazioniFamiliari = ci.MaggiorazioneFamiliari;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dit;
+        }
+
         public dipInfoTrasferimentoModel GetInfoTrasferimento(string matricola)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();

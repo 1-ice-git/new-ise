@@ -195,7 +195,7 @@ namespace NewISE.Controllers
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                             out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
 
-                        if (richiestaAttivazione == true)
+                        if (richiestaAttivazione == true || attivazione == true)
                         {
                             solaLettura = true;
                         }
@@ -286,7 +286,7 @@ namespace NewISE.Controllers
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
 
-                    if (richiestaAttivazione == true)
+                    if (richiestaAttivazione == true || attivazione == true)
                     {
                         solaLettura = true;
                     }

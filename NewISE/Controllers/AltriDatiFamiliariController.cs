@@ -64,16 +64,12 @@ namespace NewISE.Controllers
                     {
                         switch (pf.idTipologiaFiglio)
                         {
-                            case TipologiaFiglio.Minorenne:
+                            case TipologiaFiglio.Residente:
                                 adf.residente = true;
                                 adf.studente = false;
                                 break;
                             case TipologiaFiglio.Studente:
                                 adf.studente = true;
-                                adf.residente = true;
-                                break;
-                            case TipologiaFiglio.MaggiorenneInabile:
-                                adf.studente = false;
                                 adf.residente = true;
                                 break;
                             default:
@@ -371,16 +367,12 @@ namespace NewISE.Controllers
                             {
                                 switch (pf.idTipologiaFiglio)
                                 {
-                                    case TipologiaFiglio.Minorenne:
+                                    case TipologiaFiglio.Residente:
                                         adfm.residente = true;
                                         adfm.studente = false;
                                         break;
                                     case TipologiaFiglio.Studente:
                                         adfm.studente = true;
-                                        adfm.residente = true;
-                                        break;
-                                    case TipologiaFiglio.MaggiorenneInabile:
-                                        adfm.studente = false;
                                         adfm.residente = true;
                                         break;
                                     default:

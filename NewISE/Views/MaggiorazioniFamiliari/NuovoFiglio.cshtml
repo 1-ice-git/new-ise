@@ -116,14 +116,14 @@
 <script type="text/javascript">
     //debugger;
 
-    PulsantiNotificaAttivaMagFam();
+    //PulsantiNotificaAttivaMagFam();
 
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                                break;
+                                                        break;
         }
 
     }
@@ -143,7 +143,6 @@
         if (!form.valid()) {
             DialogModalError('True');
         }
-
     });
 
     $("#idTipologiaFiglio").select2({

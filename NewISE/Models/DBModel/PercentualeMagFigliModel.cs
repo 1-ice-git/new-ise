@@ -9,9 +9,9 @@ namespace NewISE.Models.DBModel
 {
     public enum TipologiaFiglio
     {
-        Minorenne = 1,
-        Studente = 2,
-        MaggiorenneInabile = 3
+        Residente = 1,
+        Studente = 2
+
 
     }
     public class PercentualeMagFigliModel

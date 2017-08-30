@@ -92,11 +92,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                                                }
+                                                                                                                                        }
     else
     {
         @:ElencoFigli();
-                                                                                                                                }
+                                                                                                                                        }
 
     //PulsantiNotificaAttivaMagFam();
 
@@ -206,7 +206,7 @@
                 }
             },
             complete: function () {
-                InfoTrasferimento($("#hMatricola").val());
+                //InfoTrasferimento($("#hMatricola").val());
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -382,8 +382,7 @@
 
             },
             complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
+
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -14,6 +15,72 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
+
+
+        public static ValidationResult VerificaEtaFiglio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var adm = context.ObjectInstance as AltriDatiFamModel;
+
+
+            if (adm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var f = db.FIGLI.Find(adm.idFigli);
+                    if (f != null && f.IDFIGLI > 0)
+                    {
+                        TipologiaFiglio idTipologiaFiglio = (TipologiaFiglio)f.IDTIPOLOGIAFIGLIO;
+
+                        if (adm.dataNascita.HasValue)
+                        {
+                            DateTime dataNascita = adm.dataNascita.Value;
+
+                            int AnnoNascita = dataNascita.Year;
+                            int AnnoAttuale = DateTime.Now.Year;
+                            int eta = AnnoAttuale - AnnoNascita;
+
+                            switch (idTipologiaFiglio)
+                            {
+                                case TipologiaFiglio.Residente:
+                                    if (eta > 18)
+                                    {
+                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio residente ({0}) con età superiore a 18 anni.", f.COGNOME + " " + f.NOME));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                    break;
+                                case TipologiaFiglio.Studente:
+                                    if (eta > 26)
+                                    {
+                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio studente ({0}) con età superiore a 26 anni.", f.COGNOME + " " + f.NOME));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                    }
+
+
+                }
+
+            }
+            else
+            {
+                vr = new ValidationResult("Altri dati familiari sono richiesti.");
+            }
+
+            return vr;
+        }
+
 
 
         public AltriDatiFamModel GetAltriDatiFamiliari(decimal idAltriDatiFam)

@@ -15,5 +15,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Figlio")]
         public string tipologiaFiglio { get; set; }
 
+
     }
 }
