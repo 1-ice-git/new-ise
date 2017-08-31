@@ -8,7 +8,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
 {
-    public class dtDipendenti :IDisposable
+    public class dtDipendenti : IDisposable
     {
         public void Dispose()
         {
@@ -112,6 +112,51 @@ namespace NewISE.Models.DBModel.dtObj
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        public DipendentiModel GetDipendenteByID(decimal id, ModelDBISE db)
+        {
+            DipendentiModel dm;
+
+
+            DIPENDENTI d = db.DIPENDENTI.Find(id);
+
+            dm = new DipendentiModel()
+            {
+                idDipendente = d.IDDIPENDENTE,
+                matricola = d.MATRICOLA,
+                nome = d.NOME,
+                cognome = d.COGNOME,
+                dataAssunzione = d.DATAASSUNZIONE,
+                dataCessazione = d.DATACESSAZIONE,
+                indirizzo = d.INDIRIZZO,
+                cap = d.CAP,
+                citta = d.CITTA,
+                provincia = d.PROVINCIA,
+                email = d.EMAIL,
+                telefono = d.TELEFONO,
+                fax = d.FAX,
+                abilitato = d.ABILITATO,
+                dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                cdcGepe = new CDCGepeModel()
+                {
+                    iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                    codiceCDC = d.CDCGEPE.CODICECDC,
+                    descCDC = d.CDCGEPE.DESCCDC,
+                    dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                }
+            };
+
+
+            return dm;
+        }
+
+
+
+
+        /// <summary>
+        /// preleva il dipendente in base all'id passato.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public DipendentiModel GetDipendenteByID(decimal id)
         {
             DipendentiModel dm;
@@ -150,13 +195,63 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+        public DipendentiModel GetDipendenteByMatricola(string matricola)
+        {
+            DipendentiModel dm = new DipendentiModel();
+            int matr = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    matr = Convert.ToInt32(matricola);
+
+                    DIPENDENTI d = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).First();
+
+                    dm = new DipendentiModel()
+                    {
+                        idDipendente = d.IDDIPENDENTE,
+                        matricola = d.MATRICOLA,
+                        nome = d.NOME,
+                        cognome = d.COGNOME,
+                        dataAssunzione = d.DATAASSUNZIONE,
+                        dataCessazione = d.DATACESSAZIONE,
+                        indirizzo = d.INDIRIZZO,
+                        cap = d.CAP,
+                        citta = d.CITTA,
+                        provincia = d.PROVINCIA,
+                        email = d.EMAIL,
+                        telefono = d.TELEFONO,
+                        fax = d.FAX,
+                        abilitato = d.ABILITATO,
+                        dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                        cdcGepe = new CDCGepeModel()
+                        {
+                            iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                            codiceCDC = d.CDCGEPE.CODICECDC,
+                            descCDC = d.CDCGEPE.DESCCDC,
+                            dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                        }
+                    };
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+
+
+            }
+
+            return dm;
+        }
+
         public DipendentiModel GetDipendenteByMatricola(int matricola)
         {
             DipendentiModel dm;
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                DIPENDENTI d = db.DIPENDENTI.Where(a=>a.MATRICOLA == matricola).First();
+                DIPENDENTI d = db.DIPENDENTI.Where(a => a.MATRICOLA == matricola).First();
 
                 dm = new DipendentiModel()
                 {
@@ -188,16 +283,20 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+
+
+
         public IList<DipendentiModel> GetDipendenti()
         {
             List<DipendentiModel> ldm = new List<DipendentiModel>();
 
-            using (ModelDBISE db=new ModelDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.DIPENDENTI.ToList();
 
                 ldm = (from e in ld
-                       select new DipendentiModel() {
+                       select new DipendentiModel()
+                       {
                            idDipendente = e.IDDIPENDENTE,
                            matricola = e.MATRICOLA,
                            nome = e.NOME,

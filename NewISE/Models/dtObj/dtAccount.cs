@@ -28,7 +28,7 @@ namespace NewISE.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    if (db.UTENTIAUTORIZZATI.Where(a=>a.UTENTE == matricola).Count()>0)
+                    if (db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).Count() > 0)
                     {
                         ret = true;
                     }
@@ -38,7 +38,7 @@ namespace NewISE.Models.dtObj
             {
 
                 throw ex;
-            }            
+            }
 
             return ret;
         }
@@ -46,15 +46,15 @@ namespace NewISE.Models.dtObj
         public UtenteAutorizzatoModel PrelevaUtenteLoggato(string matricola)
         {
             UtenteAutorizzatoModel ac = new UtenteAutorizzatoModel();
-            
+
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
-                {                    
+                {
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 
                     ac.idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
-                    ac.idRuoloUtente = ua.IDRUOLOUTENTE;
+                    ac.idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE;
                     ac.matricola = ua.UTENTE;
                     ac.ruoloAccesso = new RuoloAccesoModel()
                     {
@@ -70,10 +70,10 @@ namespace NewISE.Models.dtObj
 
                 throw ex;
             }
-            
+
         }
 
-        
+
 
 
     }

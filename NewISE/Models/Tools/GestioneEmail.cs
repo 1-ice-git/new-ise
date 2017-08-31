@@ -23,18 +23,32 @@ namespace NewISE.Models.Tools
 
             try
             {
+                AccountModel am = new AccountModel();
+                am = Utility.UtenteAutorizzato();
+                if (am.idRuoloUtente == 1)
+                {
+                    msgMail.destinatario.Clear();
+                    msgMail.destinatario.Add(new Destinatario()
+                    {
+                        Nominativo = am.nominativo,
+                        EmailDestinatario = am.eMail
+                    });
+
+                    msgMail.cc.Clear();
+                }
+
 
                 MailMessage messaggio = new MailMessage();
                 string NomeMittente = string.Empty;
 
-                if (msgMail.mittente == null || !string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
+                if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
                 {
-                    NomeMittente = "ISE";
+
                     messaggio.From = new MailAddress("ise@ice.it", "ISE");
                 }
                 else
                 {
-                    
+
                     messaggio.From = new MailAddress(msgMail.mittente.EmailMittente, msgMail.mittente.Nominativo);
                 }
 
@@ -44,12 +58,22 @@ namespace NewISE.Models.Tools
                     messaggio.To.Add(new MailAddress(d.EmailDestinatario, d.Nominativo));
                 }
 
+                if (msgMail.cc?.Any() ?? false)
+                {
+                    List<Destinatario> lcc = msgMail.cc.ToList();
+
+                    foreach (var cc in lcc)
+                    {
+                        messaggio.CC.Add(new MailAddress(cc.EmailDestinatario, cc.Nominativo));
+                    }
+                }
+
                 messaggio.Bcc.Add("mauro.arduini@ritspa.it");
 
                 messaggio.Subject = msgMail.oggetto;
                 messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
 
-                if (msgMail.allegato!= null && msgMail.allegato.Count>0)
+                if (msgMail.allegato != null && msgMail.allegato.Count > 0)
                 {
                     foreach (var item in msgMail.allegato)
                     {
@@ -60,7 +84,7 @@ namespace NewISE.Models.Tools
                 }
                 //FileStream fs = new FileStream(@"C:\Users\UTENTE\Downloads\CPME79-00-AF-01-01(Analisi Funzionale).pdf", FileMode.Open, FileAccess.Read);
                 //Attachment a = new Attachment(fs, "CPME79-00-AF-01-01(Analisi Funzionale).pdf", MediaTypeNames.Application.Octet);
-                
+
 
                 //// Code to send Multiple attachments
                 //messaggio.Attachments.Add(new Attachment(@"C:\..\..\Fante.txt"));
@@ -113,9 +137,9 @@ namespace NewISE.Models.Tools
         //    try
         //    {
 
-                
-                
-                
+
+
+
 
 
         //        string NomeMittente = string.Empty;
@@ -150,14 +174,14 @@ namespace NewISE.Models.Tools
         //                messaggio.Attachments.Add(allegato);
         //            }
         //        }
-                
+
         //        messaggio.Priority = msgMail.priorita;
 
         //        // Gestire campo vuoto del Body
         //        //messaggio.Body = @"Il mio messaggio di testo <b>in formato html</b>";
         //        if (logoPage)
         //        {
-                    
+
         //            //Crea un'istanza  AlternateView
         //            AlternateView altViewHtml = AlternateView.CreateAlternateViewFromString(msgMail.corpoMsg, null, MediaTypeNames.Text.Html);
         //            //Crea un'istanza LinkedResource
@@ -172,7 +196,7 @@ namespace NewISE.Models.Tools
 
         //            messaggio.AlternateViews.Add(altViewHtml);
         //            messaggio.AlternateViews.Add(altViewText);
-                    
+
 
 
         //        }
@@ -182,9 +206,9 @@ namespace NewISE.Models.Tools
         //            messaggio.IsBodyHtml = true;
         //            messaggio.Body = msgMail.corpoMsg;
         //        }
-                
 
-                
+
+
 
         //        SmtpClient server = new SmtpClient();
 

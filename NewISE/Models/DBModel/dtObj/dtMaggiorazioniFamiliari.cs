@@ -3,6 +3,9 @@ using NewISE.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
+using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
@@ -80,6 +83,131 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        private void InvioEmailMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+            TrasferimentoModel trm = new TrasferimentoModel();
+            DipendentiModel dipendente = new DipendentiModel();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+
+            try
+            {
+
+                mfm = this.GetMaggiorazioniFamiliariByID(idMaggiorazioniFamiliari);
+                if (mfm != null && mfm.HasValue())
+                {
+                    am = Utility.UtenteAutorizzato();
+
+                    mittente.Nominativo = am.nominativo;
+                    mittente.EmailMittente = am.eMail;
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        trm = dtt.GetSoloTrasferimentoById(mfm.idTrasferimento, db);
+
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dipendente = dtd.GetDipendenteByID(trm.idDipendente, db);
+                            if (dipendente != null && dipendente.HasValue())
+                            {
+                                Destinatario cc = new Destinatario()
+                                {
+                                    Nominativo = dipendente.Nominativo,
+                                    EmailDestinatario = dipendente.email
+                                };
+
+                                using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                                {
+                                    using (GestioneEmail gmail = new GestioneEmail())
+                                    {
+                                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
+                                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+
+                                        if (luam?.Any() ?? false)
+                                        {
+                                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                                            {
+                                                msgMail.mittente = mittente;
+
+                                                foreach (var uam in luam)
+                                                {
+                                                    //var uteConn = dtd.GetDipendenteByMatricola(uam.matricola);
+
+                                                    var client = new RestSharp.RestClient("http://128.1.50.97:82");
+                                                    var req = new RestSharp.RestRequest("api/dipendente", RestSharp.Method.POST);
+                                                    req.RequestFormat = RestSharp.DataFormat.Json;
+                                                    req.AddParameter("matricola", uam.matricola);
+
+                                                    RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
+
+                                                    RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
+
+                                                    RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
+
+                                                    if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                                                    {
+                                                        if (retDip.success == true)
+                                                        {
+                                                            if (retDip.items != null)
+                                                            {
+                                                                Destinatario dest = new Destinatario()
+                                                                {
+                                                                    Nominativo = retDip.items.nominativo,
+                                                                    EmailDestinatario = retDip.items.email
+                                                                };
+
+                                                            }
+                                                        }
+                                                    }
+
+
+                                                }
+
+                                                msgMail.cc.Add(cc);
+
+                                                msgMail.oggetto =
+                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
+                                                msgMail.corpoMsg =
+                                                    string.Format(
+                                                        Resources.msgEmail
+                                                            .MessaggioNotificaRichiestaMaggiorazioniFamiliari,
+                                                        dipendente.Nominativo);
+
+                                                gmail.sendMail(msgMail);
+
+
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    throw new Exception("Non è stato possibile inviare l'email.");
+                }
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+
         public void NotificaRichiesta(decimal idMaggiorazioniFamiliari)
         {
             bool rinunciaMagFam = false;
@@ -101,33 +229,54 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    db.Database.BeginTransaction();
 
-                    if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
+                    try
                     {
-                        if (datiConiuge == false && datiFigli == false)
+                        var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                        if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
                         {
-                            mf.RINUNCIAMAGGIORAZIONI = true;
-                            mf.RICHIESTAATTIVAZIONE = true;
-                            i = db.SaveChanges();
-                            if (i <= 0)
+                            if (datiConiuge == false && datiFigli == false)
                             {
-                                throw new Exception("Errore nella fase d'inserimento per la rinuncia delle maggiorazioni familiari.");
-                            }
-                        }
-                        else if (datiConiuge == true || datiFigli == true)
-                        {
-                            if (datiParzialiConiuge == false && datiParzialiFigli == false)
-                            {
+                                mf.RINUNCIAMAGGIORAZIONI = true;
                                 mf.RICHIESTAATTIVAZIONE = true;
                                 i = db.SaveChanges();
                                 if (i <= 0)
                                 {
-                                    throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
+                                    throw new Exception("Errore nella fase d'inserimento per la rinuncia delle maggiorazioni familiari.");
+                                }
+                                else
+                                {
+                                    this.InvioEmailMagFam(idMaggiorazioniFamiliari, db);
+                                }
+                            }
+                            else if (datiConiuge == true || datiFigli == true)
+                            {
+                                if (datiParzialiConiuge == false && datiParzialiFigli == false)
+                                {
+                                    mf.RICHIESTAATTIVAZIONE = true;
+                                    i = db.SaveChanges();
+                                    if (i <= 0)
+                                    {
+                                        throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
+                                    }
+                                    else
+                                    {
+                                        this.InvioEmailMagFam(idMaggiorazioniFamiliari, db);
+                                    }
                                 }
                             }
                         }
+
+                        db.Database.CurrentTransaction.Commit();
                     }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+
 
 
                 }
@@ -256,6 +405,33 @@ namespace NewISE.Models.DBModel.dtObj
 
             }
 
+        }
+
+
+
+        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByID(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+
+            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+            if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
+            {
+                mcm = new MaggiorazioniFamiliariModel()
+                {
+                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
+                    idTrasferimento = mf.IDTRASFERIMENTO,
+                    rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
+                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
+                    attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                    dataAggiornamento = mf.DATAAGGIORNAMENTO,
+                    annullato = mf.ANNULLATO,
+                };
+            }
+
+
+            return mcm;
         }
 
 

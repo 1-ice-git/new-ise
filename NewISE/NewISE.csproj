@@ -1622,6 +1622,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\msgEmail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>msgEmail.resx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
@@ -1945,6 +1950,7 @@
     <Compile Include="Models\Config\s_admin\sAdmin.cs" />
     <Compile Include="Models\Config\s_admin\utente_sAdmin.cs" />
     <Compile Include="Models\DBModel\dtObj\dtUffici.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtUtentiAutorizzati.cs" />
     <Compile Include="Models\DBModel\dtObj\dtValute.cs" />
     <Compile Include="Models\DBModel\FasciaChilometricaModel.cs" />
     <Compile Include="Models\DBModel\FigliModel.cs" />
@@ -2073,6 +2079,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\msgEmail.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>msgEmail.Designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

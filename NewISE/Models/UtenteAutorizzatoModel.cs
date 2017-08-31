@@ -6,14 +6,21 @@ using System.Web;
 
 namespace NewISE.Models
 {
+    public enum EnumRuoloAccesso
+    {
+        SuperAmministratore = 1,
+        Amministratore = 2,
+        Utente = 3
+    }
+
     public class UtenteAutorizzatoModel
     {
         [Key]
         public decimal idUtenteAutorizzato { get; set; }
         [Required(ErrorMessage = "il ruolo utente è richiesto.")]
-        public decimal idRuoloUtente { get; set; }
+        public EnumRuoloAccesso idRuoloUtente { get; set; }
         [Required(ErrorMessage = "L'utente è richiesto.")]
-        [StringLength(50, ErrorMessage ="L'utente accetta un massimo di 50 caratteri.")]
+        [StringLength(50, ErrorMessage = "L'utente accetta un massimo di 50 caratteri.")]
         [DataType(DataType.Text)]
         [Display(Name = "Utente")]
         public string matricola { get; set; }

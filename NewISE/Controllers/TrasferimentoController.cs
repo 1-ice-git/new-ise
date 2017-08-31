@@ -12,6 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using Resources;
 
 namespace NewISE.Controllers
 {
@@ -751,6 +752,7 @@ namespace NewISE.Controllers
             DocumentiModel dm = new DocumentiModel();
             string msgRet = string.Empty;
             Destinatario dest = new Destinatario();
+            UfficiModel um = new UfficiModel();
 
             try
             {
@@ -762,6 +764,10 @@ namespace NewISE.Controllers
 
                         if (trm != null && trm.idTrasferimento > 0)
                         {
+                            using (dtUffici dtu = new dtUffici())
+                            {
+                                um = dtu.GetUffici(trm.idUfficio);
+                            }
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dipendente = dtd.GetDipendenteByID(trm.idDipendente);
@@ -779,13 +785,14 @@ namespace NewISE.Controllers
                                         allegato.allegato = streamDoc;
 
                                         dest.Nominativo = dipendente.Nominativo;
-                                        dest.EmailDestinatario = "mauro.arduini@ritspa.it";
+                                        dest.EmailDestinatario = dipendente.email;
+
                                         using (ModelloMsgMail msgMail = new ModelloMsgMail())
                                         {
                                             msgMail.destinatario.Add(dest);
-                                            msgMail.oggetto = "Notifica trasferimento";
+                                            msgMail.oggetto = Resources.msgEmail.OggettoNotificaTrasferimento;
                                             msgMail.priorita = System.Net.Mail.MailPriority.High;
-                                            msgMail.corpoMsg = "Messaggio notifica trasferimento";
+                                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioNotificaTrasferimento, um.descUfficio + " (" + um.codiceUfficio + ")");
                                             msgMail.allegato.Add(allegato);
 
                                             if (dtt.NotificaTrasferimento(trm.idTrasferimento))

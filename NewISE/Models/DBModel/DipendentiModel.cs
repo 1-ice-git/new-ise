@@ -69,18 +69,23 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.Date)]
         [Display(Name = "Data assunzione")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
-        public DateTime? dataInizioRicalcoli { get; set; }  
-        
+        public DateTime? dataInizioRicalcoli { get; set; }
+
         [Display(Name = "Abilitato")]
         public bool abilitato { get; set; }
 
-        
+
         public string Nominativo
         {
             get
             {
                 return cognome + " " + nome;
             }
+        }
+
+        public bool HasValue()
+        {
+            return this.idDipendente > 0 ? true : false;
         }
 
         public IList<LivelloDipendenteModel> LivelloDipendenti { get; set; }

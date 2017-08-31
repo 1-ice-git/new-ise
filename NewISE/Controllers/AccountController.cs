@@ -94,7 +94,7 @@ namespace NewISE.Controllers
                                                 Claim[] identityClaims = new Claim[]
                                                 {
                                                 new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
-                                                new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
+                                                new Claim(ClaimTypes.Role, Convert.ToString((decimal)uam.idRuoloUtente)),
                                                 new Claim(ClaimTypes.GivenName, utsa.username),
                                                 new Claim(ClaimTypes.Name, utsa.nome),
                                                 new Claim(ClaimTypes.Surname, utsa.cognome),
@@ -169,7 +169,7 @@ namespace NewISE.Controllers
                                     Claim[] identityClaims = new Claim[]
                                     {
                                         new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
-                                        new Claim(ClaimTypes.Role, uam.idRuoloUtente.ToString()),
+                                        new Claim(ClaimTypes.Role, Convert.ToString((decimal)uam.idRuoloUtente)),
                                         new Claim(ClaimTypes.GivenName, retDip.items.matricola),
                                         new Claim(ClaimTypes.Name, retDip.items.nome),
                                         new Claim(ClaimTypes.Surname, retDip.items.cognome),
