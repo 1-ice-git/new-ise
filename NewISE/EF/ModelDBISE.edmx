@@ -97,6 +97,19 @@
           <Property Name="IDPERCMAGCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="CALENDARIOEVENTI">
+          <Key>
+            <PropertyRef Name="IDCALENDARIOEVENTI" />
+          </Key>
+          <Property Name="IDCALENDARIOEVENTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDLIVELLIVISIBILITA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFUNZIONIEVENTI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRIFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINSEVENTO" Type="date" Nullable="false" />
+          <Property Name="COMPLETATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATACOMPLETATO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
@@ -277,6 +290,14 @@
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="FUNZIONIEVENTI">
+          <Key>
+            <PropertyRef Name="IDFUNZIONIEVENTI" />
+          </Key>
+          <Property Name="IDFUNZIONIEVENTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMEFUNZIONE" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="MESSAGGIOEVENTO" Type="varchar2" MaxLength="1000" Nullable="false" />
+        </EntityType>
         <EntityType Name="GRUPPIDOCUMENTI">
           <Key>
             <PropertyRef Name="IDGRUPPODOC" />
@@ -396,6 +417,13 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LIVELLIVISIBILITAEVENTI">
+          <Key>
+            <PropertyRef Name="IDLIVELLIVISIBILITA" />
+          </Key>
+          <Property Name="IDLIVELLIVISIBILITA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCLIVELLOVISIBILITA" Type="varchar2" MaxLength="60" Nullable="false" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
           <Key>
@@ -1410,6 +1438,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_FE_CE">
+          <End Role="FUNZIONIEVENTI" Type="Self.FUNZIONIEVENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CALENDARIOEVENTI" Type="Self.CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONIEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_GD_TDV">
           <End Role="GRUPPIDOCUMENTI" Type="Self.GRUPPIDOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1645,6 +1687,20 @@
             </Principal>
             <Dependent Role="LIVELLIDIPENDENTI">
               <PropertyRef Name="IDLIVELLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_LVE_CE">
+          <End Role="LIVELLIVISIBILITAEVENTI" Type="Self.LIVELLIVISIBILITAEVENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CALENDARIOEVENTI" Type="Self.CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIVELLIVISIBILITAEVENTI">
+              <PropertyRef Name="IDLIVELLIVISIBILITA" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDLIVELLIVISIBILITA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2650,6 +2706,7 @@
           <EntitySet Name="BIGLIETTI_DOCUMENTI" EntityType="Self.BIGLIETTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTEFKM" EntityType="Self.COEFFICIENTEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
@@ -2666,6 +2723,7 @@
           <EntitySet Name="FASCIACHILOMETRICA" EntityType="Self.FASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="Self.GRUPPIDOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISEPRO" store:Type="Tables" />
@@ -2679,6 +2737,7 @@
           <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="Self.INDENNITASISTEMAZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="LIVELLI" EntityType="Self.LIVELLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="LIVELLIVISIBILITAEVENTI" EntityType="Self.LIVELLIVISIBILITAEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAB_ALIQCONTR" EntityType="Self.MAB_ALIQCONTR" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAB_DOC" EntityType="Self.MAB_DOC" Schema="ISEPRO" store:Type="Tables" />
@@ -2868,6 +2927,10 @@
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PMF_F" EntitySet="PMF_F" />
           </AssociationSet>
+          <AssociationSet Name="R_FE_CE" Association="Self.R_FE_CE">
+            <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
           <AssociationSet Name="R_GD_TDV" Association="Self.R_GD_TDV">
             <End Role="GRUPPIDOCUMENTI" EntitySet="GRUPPIDOCUMENTI" />
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
@@ -2935,6 +2998,10 @@
           <AssociationSet Name="R_LIV_LIVDIP" Association="Self.R_LIV_LIVDIP">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
             <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_LVE_CE" Association="Self.R_LVE_CE">
+            <End Role="LIVELLIVISIBILITAEVENTI" EntitySet="LIVELLIVISIBILITAEVENTI" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
           <AssociationSet Name="R_MA_MAB_MA" Association="Self.R_MA_MAB_MA">
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
@@ -3674,6 +3741,17 @@
           <AssociationSet Name="PMF_F" Association="DBISEPRO.PMF_F">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
+          </AssociationSet>
+          <EntitySet Name="CALENDARIOEVENTI" EntityType="DBISEPRO.CALENDARIOEVENTI" />
+          <EntitySet Name="FUNZIONIEVENTI" EntityType="DBISEPRO.FUNZIONIEVENTI" />
+          <EntitySet Name="LIVELLIVISIBILITAEVENTI" EntityType="DBISEPRO.LIVELLIVISIBILITAEVENTI" />
+          <AssociationSet Name="R_FE_CE" Association="DBISEPRO.R_FE_CE">
+            <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_LVE_CE" Association="DBISEPRO.R_LVE_CE">
+            <End Role="LIVELLIVISIBILITAEVENTI" EntitySet="LIVELLIVISIBILITAEVENTI" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -5669,6 +5747,66 @@
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
+        <EntityType Name="CALENDARIOEVENTI">
+          <Key>
+            <PropertyRef Name="IDCALENDARIOEVENTI" />
+          </Key>
+          <Property Name="IDCALENDARIOEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDLIVELLIVISIBILITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDRIFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINSEVENTO" Type="DateTime" Nullable="false" />
+          <Property Name="COMPLETATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATACOMPLETATO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FUNZIONIEVENTI" Relationship="DBISEPRO.R_FE_CE" FromRole="CALENDARIOEVENTI" ToRole="FUNZIONIEVENTI" />
+          <NavigationProperty Name="LIVELLIVISIBILITAEVENTI" Relationship="DBISEPRO.R_LVE_CE" FromRole="CALENDARIOEVENTI" ToRole="LIVELLIVISIBILITAEVENTI" />
+        </EntityType>
+        <EntityType Name="FUNZIONIEVENTI">
+          <Key>
+            <PropertyRef Name="IDFUNZIONIEVENTI" />
+          </Key>
+          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMEFUNZIONE" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="MESSAGGIOEVENTO" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_FE_CE" FromRole="FUNZIONIEVENTI" ToRole="CALENDARIOEVENTI" />
+        </EntityType>
+        <EntityType Name="LIVELLIVISIBILITAEVENTI">
+          <Key>
+            <PropertyRef Name="IDLIVELLIVISIBILITA" />
+          </Key>
+          <Property Name="IDLIVELLIVISIBILITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCLIVELLOVISIBILITA" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_LVE_CE" FromRole="LIVELLIVISIBILITAEVENTI" ToRole="CALENDARIOEVENTI" />
+        </EntityType>
+        <Association Name="R_FE_CE">
+          <End Type="DBISEPRO.FUNZIONIEVENTI" Role="FUNZIONIEVENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONIEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_LVE_CE">
+          <End Type="DBISEPRO.LIVELLIVISIBILITAEVENTI" Role="LIVELLIVISIBILITAEVENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIVELLIVISIBILITAEVENTI">
+              <PropertyRef Name="IDLIVELLIVISIBILITA" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDLIVELLIVISIBILITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6686,6 +6824,37 @@
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="CALENDARIOEVENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.CALENDARIOEVENTI">
+              <MappingFragment StoreEntitySet="CALENDARIOEVENTI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATACOMPLETATO" ColumnName="DATACOMPLETATO" />
+                <ScalarProperty Name="COMPLETATO" ColumnName="COMPLETATO" />
+                <ScalarProperty Name="DATAINSEVENTO" ColumnName="DATAINSEVENTO" />
+                <ScalarProperty Name="IDRIFERIMENTO" ColumnName="IDRIFERIMENTO" />
+                <ScalarProperty Name="IDFUNZIONIEVENTI" ColumnName="IDFUNZIONIEVENTI" />
+                <ScalarProperty Name="IDLIVELLIVISIBILITA" ColumnName="IDLIVELLIVISIBILITA" />
+                <ScalarProperty Name="IDCALENDARIOEVENTI" ColumnName="IDCALENDARIOEVENTI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNZIONIEVENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.FUNZIONIEVENTI">
+              <MappingFragment StoreEntitySet="FUNZIONIEVENTI">
+                <ScalarProperty Name="MESSAGGIOEVENTO" ColumnName="MESSAGGIOEVENTO" />
+                <ScalarProperty Name="NOMEFUNZIONE" ColumnName="NOMEFUNZIONE" />
+                <ScalarProperty Name="IDFUNZIONIEVENTI" ColumnName="IDFUNZIONIEVENTI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LIVELLIVISIBILITAEVENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.LIVELLIVISIBILITAEVENTI">
+              <MappingFragment StoreEntitySet="LIVELLIVISIBILITAEVENTI">
+                <ScalarProperty Name="DESCLIVELLOVISIBILITA" ColumnName="DESCLIVELLOVISIBILITA" />
+                <ScalarProperty Name="IDLIVELLIVISIBILITA" ColumnName="IDLIVELLIVISIBILITA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

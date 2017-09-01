@@ -169,6 +169,11 @@
         <AssociationConnector Association="DBISEPRO.F_IPS" />
         <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.PMF_F" />
+        <EntityTypeShape EntityType="DBISEPRO.CALENDARIOEVENTI" Width="1.5" PointX="3" PointY="5" />
+        <EntityTypeShape EntityType="DBISEPRO.FUNZIONIEVENTI" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="DBISEPRO.LIVELLIVISIBILITAEVENTI" Width="1.5" PointX="0.75" PointY="5.5" />
+        <AssociationConnector Association="DBISEPRO.R_FE_CE" />
+        <AssociationConnector Association="DBISEPRO.R_LVE_CE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
