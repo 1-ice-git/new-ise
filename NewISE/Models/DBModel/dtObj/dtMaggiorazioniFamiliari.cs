@@ -122,7 +122,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     using (GestioneEmail gmail = new GestioneEmail())
                                     {
-                                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
+                                        //luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
                                         luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
                                         if (luam?.Any() ?? false)

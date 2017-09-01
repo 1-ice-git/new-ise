@@ -8,6 +8,9 @@ using NewISE.Interfacce.Modelli;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
+using NewISE.Models.Config;
+using NewISE.Models.Config.s_admin;
+
 
 namespace NewISE.Models.Tools
 {
@@ -68,7 +71,20 @@ namespace NewISE.Models.Tools
                     }
                 }
 
-                messaggio.Bcc.Add("mauro.arduini@ritspa.it");
+                using (Config.Config cfg = new Config.Config())
+                {
+                    sAdmin sad = new sAdmin();
+                    sad = cfg.SuperAmministratore();
+                    if (sad.s_admin.Count > 0)
+                    {
+                        foreach (var sa in sad.s_admin)
+                        {
+                            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominatico));
+                        }
+                    }
+                }
+
+                //messaggio.Bcc.Add("mauro.arduini@ritspa.it");
 
                 messaggio.Subject = msgMail.oggetto;
                 messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
