@@ -32,7 +32,6 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-
                 errore = ex.Message;
             }
 
