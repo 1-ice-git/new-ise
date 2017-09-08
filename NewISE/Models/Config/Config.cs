@@ -16,10 +16,39 @@ namespace NewISE.Models.Config
             GC.SuppressFinalize(this);
         }
 
+
+        public sAdmin SuperAmministratore(string username)
+        {
+            sAdmin sa = new sAdmin();
+
+            try
+            {
+                //C:\Users\yoravas\documents\visual studio 2015\Projects\NewISE\NewISE\Models\Config\s_admin\s_admin.json
+                using (StreamReader sr = new StreamReader(VirtualPathProvider.OpenFile("/Models/Config/s_admin/s_admin.json")))
+                {
+                    string content = sr.ReadToEnd();
+                    sa = JsonConvert.DeserializeObject<sAdmin>(content);
+
+                    sa.s_admin = sa.s_admin.Where(a => a.username == username).ToList();
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return sa;
+
+        }
+
         public sAdmin SuperAmministratore()
         {
             sAdmin sa = new sAdmin();
-        
+
             try
             {
                 //C:\Users\yoravas\documents\visual studio 2015\Projects\NewISE\NewISE\Models\Config\s_admin\s_admin.json
@@ -29,7 +58,7 @@ namespace NewISE.Models.Config
                     sa = JsonConvert.DeserializeObject<sAdmin>(content);
                 }
 
-                
+
             }
             catch (Exception ex)
             {

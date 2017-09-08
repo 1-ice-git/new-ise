@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel
         DocumentoFamiliareConiuge_MaggiorazioniFamiliari4 = 10,
         DocumentoFamiliareFiglio_MaggiorazioniFamiliari4 = 11,
         LetteraTrasferimento_Trasferimento5 = 12,
-        PassaportiVisti_Viaggi1 = 13
+        CartaIdentita_Viaggi1 = 13
     }
 
 

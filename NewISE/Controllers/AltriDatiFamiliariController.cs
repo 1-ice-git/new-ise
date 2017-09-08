@@ -77,7 +77,6 @@ namespace NewISE.Controllers
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -88,7 +87,6 @@ namespace NewISE.Controllers
 
             if (adf != null && adf.HasValue())
             {
-
                 using (dtFigli dtf = new dtFigli())
                 {
                     if (adf.idFigli.HasValue)
@@ -134,9 +132,74 @@ namespace NewISE.Controllers
 
                 return PartialView("InserisciAltriDatiFamiliariFiglio", adf);
             }
-
         }
 
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariFiglioPassaporto(decimal idFiglio)
+        {
+            AltriDatiFamModel adf = new AltriDatiFamModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
+                }
+
+                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                {
+                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
+                    if (pf != null && pf.HasValue())
+                    {
+                        switch (pf.idTipologiaFiglio)
+                        {
+                            case TipologiaFiglio.Residente:
+                                adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case TipologiaFiglio.Studente:
+                                adf.studente = true;
+                                adf.residente = true;
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+
+
+            using (dtFigli dtf = new dtFigli())
+            {
+                if (adf.idFigli.HasValue)
+                {
+                    var fm = dtf.GetFigliobyID(adf.idFigli.Value);
+                    adf.Figli = fm;
+                }
+            }
+
+            using (dtConiuge dtc = new dtConiuge())
+            {
+                if (adf.idConiuge.HasValue)
+                {
+                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                    adf.Coniuge = cm;
+                }
+            }
+
+            return PartialView(adf);
+        }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
@@ -213,7 +276,6 @@ namespace NewISE.Controllers
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -232,7 +294,6 @@ namespace NewISE.Controllers
                         adf.Coniuge = cm;
                     }
                 }
-
 
 
                 return PartialView(adf);
@@ -257,6 +318,72 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariConiugePassaporti(decimal idConiuge)
+        {
+            AltriDatiFamModel adf = new AltriDatiFamModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                }
+
+
+                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                {
+                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
+
+                    if (pc != null && pc.HasValue())
+                    {
+                        switch (pc.idTipologiaConiuge)
+                        {
+                            case TipologiaConiuge.Residente:
+                                adf.residente = true;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidenteCarico:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = true;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+
+            using (dtConiuge dtc = new dtConiuge())
+            {
+                if (adf.idConiuge.HasValue)
+                {
+                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                    adf.Coniuge = cm;
+                }
+            }
+
+
+            return PartialView(adf);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -276,7 +403,6 @@ namespace NewISE.Controllers
                 }
                 else
                 {
-
                     List<Comuni> comuni = new List<Comuni>();
 
                     using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
@@ -289,6 +415,11 @@ namespace NewISE.Controllers
 
                     ViewData.Add("Comuni", comuni);
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+                    using (dtFigli dtf = new dtFigli())
+                    {
+                        string nominativo = dtf.GetFigliobyID(adf.idFigli.Value).nominativo.ToUpper();
+                        ViewData.Add("nominativo", nominativo);
+                    }
 
                     return PartialView("InserisciAltriDatiFamiliariFiglio", adf);
                 }
@@ -320,7 +451,6 @@ namespace NewISE.Controllers
                 }
                 else
                 {
-
                     List<Comuni> comuni = new List<Comuni>();
 
                     using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
@@ -343,8 +473,6 @@ namespace NewISE.Controllers
             }
 
             return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adf.idConiuge });
-
-
         }
 
         public ActionResult ModificaAltriDatiFamiliariFiglio(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
@@ -392,8 +520,6 @@ namespace NewISE.Controllers
 
             try
             {
-
-
                 using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
                 {
                     comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
@@ -401,12 +527,9 @@ namespace NewISE.Controllers
                         NullValueHandling = NullValueHandling.Ignore
                     });
                 }
-
-
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
@@ -456,16 +579,12 @@ namespace NewISE.Controllers
                                         break;
                                 }
                             }
-
                         }
-
-
                     }
                 }
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
@@ -473,8 +592,6 @@ namespace NewISE.Controllers
 
             try
             {
-
-
                 using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
                 {
                     comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
@@ -482,12 +599,9 @@ namespace NewISE.Controllers
                         NullValueHandling = NullValueHandling.Ignore
                     });
                 }
-
-
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
@@ -496,11 +610,11 @@ namespace NewISE.Controllers
 
             return PartialView(adfm);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ConfermaModificaAdf(AltriDatiFamModel adfm)
         {
-
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
@@ -541,7 +655,6 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = "Errore nella modifica altri dati familiari" });
             }
-
         }
 
         //public JsonResult DatiComuneNascita(string pComune = "", string pProvincia = "", string pCap = "")

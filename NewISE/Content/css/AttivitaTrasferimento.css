@@ -1,0 +1,15 @@
+﻿.disableLink {
+    color: grey;
+    text-decoration: none;
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
+.disableLink:hover {
+    color: grey;
+    text-decoration: none;
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}

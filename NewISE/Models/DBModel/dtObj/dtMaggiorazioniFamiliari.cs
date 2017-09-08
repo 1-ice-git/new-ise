@@ -7,6 +7,8 @@ using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
+using NewISE.Models.Config;
+using NewISE.Models.Config.s_admin;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -91,6 +93,7 @@ namespace NewISE.Models.DBModel.dtObj
             List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
             AccountModel am = new AccountModel();
             Mittente mittente = new Mittente();
+            Destinatario cc = new Destinatario();
 
             try
             {
@@ -112,11 +115,23 @@ namespace NewISE.Models.DBModel.dtObj
                             dipendente = dtd.GetDipendenteByID(trm.idDipendente, db);
                             if (dipendente != null && dipendente.HasValue())
                             {
-                                Destinatario cc = new Destinatario()
+                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
                                 {
-                                    Nominativo = dipendente.Nominativo,
-                                    EmailDestinatario = dipendente.email
-                                };
+                                    cc = new Destinatario()
+                                    {
+                                        Nominativo = am.nominativo,
+                                        EmailDestinatario = am.eMail
+                                    };
+                                }
+                                else
+                                {
+                                    cc = new Destinatario()
+                                    {
+                                        Nominativo = dipendente.Nominativo,
+                                        EmailDestinatario = dipendente.email
+                                    };
+                                }
+
 
                                 using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
                                 {
@@ -152,12 +167,58 @@ namespace NewISE.Models.DBModel.dtObj
                                                         {
                                                             if (retDip.items != null)
                                                             {
-                                                                Destinatario dest = new Destinatario()
-                                                                {
-                                                                    Nominativo = retDip.items.nominativo,
-                                                                    EmailDestinatario = retDip.items.email
-                                                                };
 
+                                                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
+                                                                {
+                                                                    Destinatario dest = new Destinatario()
+                                                                    {
+                                                                        Nominativo = am.nominativo,
+                                                                        EmailDestinatario = am.eMail
+                                                                    };
+
+                                                                    msgMail.destinatario.Add(dest);
+                                                                    return;
+                                                                }
+                                                                else
+                                                                {
+                                                                    Destinatario dest = new Destinatario()
+                                                                    {
+                                                                        Nominativo = retDip.items.nominativo,
+                                                                        EmailDestinatario = retDip.items.email
+                                                                    };
+
+                                                                    msgMail.destinatario.Add(dest);
+                                                                }
+
+
+
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        using (Config.Config cfg = new Config.Config())
+                                                        {
+                                                            sAdmin sad = new sAdmin();
+                                                            sad = cfg.SuperAmministratore();
+                                                            if (sad.s_admin?.Any() ?? false)
+                                                            {
+                                                                var lute =
+                                                                    sad.s_admin.Where(a => a.username == uam.matricola)
+                                                                        .ToList();
+                                                                if (lute?.Any() ?? false)
+                                                                {
+                                                                    var ute = lute.First();
+
+                                                                    Destinatario dest = new Destinatario()
+                                                                    {
+                                                                        Nominativo = ute.nominatico,
+                                                                        EmailDestinatario = ute.email
+                                                                    };
+
+                                                                    msgMail.destinatario.Add(dest);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -165,17 +226,24 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 }
 
-                                                msgMail.cc.Add(cc);
+                                                if (msgMail.destinatario?.Any() ?? false)
+                                                {
+                                                    msgMail.cc.Add(cc);
 
-                                                msgMail.oggetto =
-                                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
-                                                msgMail.corpoMsg =
-                                                    string.Format(
-                                                        Resources.msgEmail
-                                                            .MessaggioNotificaRichiestaMaggiorazioniFamiliari,
-                                                        dipendente.Nominativo);
+                                                    msgMail.oggetto =
+                                                        Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
+                                                    msgMail.corpoMsg =
+                                                        string.Format(
+                                                            Resources.msgEmail
+                                                                .MessaggioNotificaRichiestaMaggiorazioniFamiliari,
+                                                            dipendente.Nominativo);
 
-                                                gmail.sendMail(msgMail);
+                                                    gmail.sendMail(msgMail);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non è stato possibile inviare l'email.");
+                                                }
 
 
                                             }

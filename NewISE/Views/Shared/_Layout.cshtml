@@ -342,9 +342,15 @@
         function ErroreElaborazioneAjax(messaggio) {
             //debugger;
             var msg = "Errore nell'elaborazione.";
-            if (messaggio != Undefined && messaggio != "") {
-                msg = messaggio;
+            try {
+                if (messaggio != undefined && messaggio != "") {
+                    msg = messaggio;
+                }
             }
+            catch (e) {
+
+            }
+
             $("#msgModalError").text(msg);
             $('#myModalError').modal('toggle');
         }

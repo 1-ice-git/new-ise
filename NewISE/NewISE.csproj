@@ -278,6 +278,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\AttivitaTrasferimento.css" />
     <Content Include="Content\css\CheckBoxRadio.css" />
     <Content Include="Content\css\CssCheckBox.css" />
     <Content Include="Content\css\cssHome.css" />
@@ -1671,6 +1672,7 @@
     <Compile Include="Controllers\DocumentiController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
+    <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="DBComuniItalia\Cm.cs" />
     <Compile Include="DBComuniItalia\Comuni.cs" />
@@ -1937,6 +1939,7 @@
     <Compile Include="Models\DBModel\dtObj\dtPercentualeConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeDisagio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPercentualeMagFigli.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtPratichePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRiduzioni.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloDipendente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRuoloUfficio.cs" />
@@ -1973,6 +1976,7 @@
     <Compile Include="Models\DBModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniFigliModel.cs" />
     <Compile Include="Models\DBModel\NormaCalcoloModel.cs" />
+    <Compile Include="Models\DBModel\PassaportoModel.cs" />
     <Compile Include="Models\DBModel\PensioneConiugeModel.cs" />
     <Compile Include="Models\DBModel\PercentualeMagConiugeModel.cs" />
     <Compile Include="Models\DBModel\PercentualeMagFigliModel.cs" />
@@ -2032,7 +2036,6 @@
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\Figli_V_Model.cs" />
     <Compile Include="Models\ViewModel\MaggiorazioneConiugeVModel.cs" />
-    <Compile Include="Models\ViewModel\MaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2070,6 +2073,10 @@
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFiglio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\PratichePassaporto\ElencoFamiliariPassaporti.cshtml" />
+    <Content Include="Views\PratichePassaporto\Passaporti.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugePassaporti.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

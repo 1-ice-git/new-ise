@@ -11,6 +11,8 @@
 <input type="hidden" id="hMatricola" value="" />
 <input type="hidden" id="hAmministratore" value="@admin.ToString()" />
 
+<input type="hidden" id="hMenuInLavorazione" value="" />
+
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
         <div id="ContenitoreDipendentiGepe">
@@ -63,6 +65,8 @@
 
     jQuery(document).ready(function ($) {
         $('#tabsGestioneTrasferimento').tab();
+
+        $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
     });
 
 
@@ -132,8 +136,7 @@
 
             },
             complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
+                $("#hMenuInLavorazione").val("mnGestioneTrasferimento");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -143,4 +146,21 @@
 
         });
     }
+
+    function MenuDaVisualizzare() {
+        //debugger;
+        var mnuV = $("#hMenuInLavorazione").val();
+
+        switch (mnuV) {
+            case "mnNuovoTrasferimento":
+                $("#lkNuovoTrasferimento").click();
+                break;
+            case "mnGestioneTrasferimento":
+                $("#lkGestioneTrasferimento").click();
+                break;
+        }
+    }
+
+
+
 </script>

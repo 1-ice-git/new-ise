@@ -133,6 +133,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                    idPassaporto = c.IDPASSAPORTO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
                     codiceFiscale = c.CODICEFISCALE,
@@ -161,6 +162,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                    idPassaporto = c.IDPASSAPORTO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
                     codiceFiscale = c.CODICEFISCALE,
@@ -189,6 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idConiuge = c.IDCONIUGE,
                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                        idPassaporto = c.IDPASSAPORTO,
                         nome = c.NOME,
                         cognome = c.COGNOME,
                         codiceFiscale = c.CODICEFISCALE,
@@ -209,7 +212,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAFINEVALIDITA);
+                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAINIZIOVALIDITA);
 
                 if (lc?.Any() ?? false)
                 {
@@ -219,6 +222,7 @@ namespace NewISE.Models.DBModel.dtObj
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                               idPassaporto = e.IDPASSAPORTO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
@@ -240,9 +244,10 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIACONIUGE = cm.idTipologiaConiuge,
-                NOME = cm.nome,
-                COGNOME = cm.cognome,
-                CODICEFISCALE = cm.codiceFiscale,
+                IDPASSAPORTO = cm.idPassaporto,
+                NOME = cm.nome.ToUpper(),
+                COGNOME = cm.cognome.ToUpper(),
+                CODICEFISCALE = cm.codiceFiscale.ToUpper(),
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
@@ -278,7 +283,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin ||
                         c.IDTIPOLOGIACONIUGE != cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
-                        c.CODICEFISCALE != cm.codiceFiscale)
+                        c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTO != cm.idPassaporto)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;
                         c.ANNULLATO = true;
@@ -298,6 +303,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
                                 idTipologiaConiuge = cm.idTipologiaConiuge,
+                                idPassaporto = cm.idPassaporto,
                                 nome = cm.nome,
                                 cognome = cm.cognome,
                                 codiceFiscale = cm.codiceFiscale,

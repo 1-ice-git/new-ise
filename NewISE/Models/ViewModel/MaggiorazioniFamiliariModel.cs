@@ -10,7 +10,8 @@ namespace NewISE.Models.ViewModel
     public enum EnumParentela
     {
         Coniuge = 0,
-        Figlio = 1
+        Figlio = 1,
+        Richiedente = 2
     }
     public class MaggiorazioniFamiliariModel
     {

@@ -160,13 +160,14 @@ namespace NewISE.Controllers
                                     {
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idFigli,
+                                        idPassaporto = e.idPassaporto,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Figlio,
                                         idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
-                                        Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4)
+                                        Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4, EnumParentela.Figlio)
                                     };
 
                                     lefm.Add(efm);
@@ -245,13 +246,14 @@ namespace NewISE.Controllers
                                         {
                                             idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                             idFamiliare = e.idConiuge,
+                                            idPassaporto = e.idPassaporto,
                                             Nominativo = e.cognome + " " + e.nome,
                                             CodiceFiscale = e.codiceFiscale,
                                             dataInizio = e.dataInizio,
                                             dataFine = e.dataFine,
                                             parentela = EnumParentela.Coniuge,
                                             idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4),
+                                            Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4, EnumParentela.Coniuge),
                                             HasPensione = dtp.HasPensione(e.idConiuge)
                                         };
 

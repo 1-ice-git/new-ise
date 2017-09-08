@@ -31,7 +31,6 @@
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" Width="1.5" PointX="5.25" PointY="46.5" />
         <EntityTypeShape EntityType="DBISEPRO.NORMACALCOLO" Width="1.5" PointX="14.25" PointY="59.125" />
         <EntityTypeShape EntityType="DBISEPRO.OA" Width="1.5" PointX="19.5" PointY="47" />
-        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="14.25" PointY="61.5" />
         <EntityTypeShape EntityType="DBISEPRO.PENSIONE" Width="1.5" PointX="12" PointY="55.125" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEDISAGIO" Width="1.5" PointX="10.75" PointY="42" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAB" Width="1.5" PointX="23.25" PointY="40.625" />
@@ -148,7 +147,6 @@
         <AssociationConnector Association="DBISEPRO.BIGLIETTI_DOCUMENTI" />
         <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
         <AssociationConnector Association="DBISEPRO.MAB_DOC" />
-        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
@@ -174,7 +172,12 @@
         <EntityTypeShape EntityType="DBISEPRO.LIVELLIVISIBILITAEVENTI" Width="1.5" PointX="0.75" PointY="5.5" />
         <AssociationConnector Association="DBISEPRO.R_FE_CE" />
         <AssociationConnector Association="DBISEPRO.R_LVE_CE" />
-      </Diagram>
+        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="7.5" PointY="47" />
+        <AssociationConnector Association="DBISEPRO.R_P_C" />
+        <AssociationConnector Association="DBISEPRO.R_P_F" />
+        <AssociationConnector Association="DBISEPRO.R_T_P" />
+        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

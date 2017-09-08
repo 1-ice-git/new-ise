@@ -17,13 +17,22 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PASSAPORTI()
         {
+            this.CONIUGE = new HashSet<CONIUGE>();
+            this.FIGLI = new HashSet<FIGLI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDPASSAPORTO { get; set; }
-        public decimal NOTIFICARICHIESTA { get; set; }
-        public decimal PRATICACONCLUSA { get; set; }
+        public bool NOTIFICARICHIESTA { get; set; }
+        public System.DateTime DATANOTIFICARICHIESTA { get; set; }
+        public bool PRATICACONCLUSA { get; set; }
+        public System.DateTime DATAPRATICACONCLUSA { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

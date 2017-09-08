@@ -655,8 +655,8 @@ namespace NewISE.Models.DBModel.dtObj
                 IDTIPOCOAN = trm.idTipoCoan,
                 DATAPARTENZA = trm.dataPartenza,
                 DATARIENTRO = trm.dataRientro,
-                COAN = trm.coan,
-                PROTOCOLLOLETTERA = trm.protocolloLettera,
+                COAN = trm.coan?.ToUpper(),
+                PROTOCOLLOLETTERA = trm.protocolloLettera?.ToUpper(),
                 DATALETTERA = trm.dataLettera,
                 NOTIFICATRASFERIMENTO = trm.notificaTrasferimento,
                 DATAAGGIORNAMENTO = trm.dataAggiornamento,
@@ -694,8 +694,8 @@ namespace NewISE.Models.DBModel.dtObj
                     tr.IDTIPOCOAN = trm.idTipoCoan;
                     tr.DATAPARTENZA = trm.dataPartenza;
                     tr.DATARIENTRO = trm.dataRientro;
-                    tr.COAN = trm.coan;
-                    tr.PROTOCOLLOLETTERA = trm.protocolloLettera;
+                    tr.COAN = trm.coan.ToUpper();
+                    tr.PROTOCOLLOLETTERA = trm.protocolloLettera.ToUpper();
                     tr.DATALETTERA = trm.dataLettera;
                     tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
 

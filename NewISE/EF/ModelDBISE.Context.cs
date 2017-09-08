@@ -51,7 +51,6 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<OA> OA { get; set; }
-        public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PENSIONE> PENSIONE { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
@@ -97,5 +96,6 @@ namespace NewISE.EF
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<LIVELLIVISIBILITAEVENTI> LIVELLIVISIBILITAEVENTI { get; set; }
+        public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
     }
 }

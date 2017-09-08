@@ -18,6 +18,8 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
         [Display(Name = "Tipologia figlio")]
         public decimal idTipologiaFiglio { get; set; }
+        [Display(Name = "Passaporto")]
+        public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]
@@ -53,6 +55,6 @@ namespace NewISE.Models.DBModel
         public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
 
-
+        public PassaportoModel passaporto { get; set; }
     }
 }

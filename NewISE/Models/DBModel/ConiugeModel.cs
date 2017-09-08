@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.DBModel.dtObj;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public decimal idTipologiaConiuge { get; set; }
+        [Display(Name = "Passaporto")]
+        public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]
@@ -53,13 +56,15 @@ namespace NewISE.Models.DBModel
 
         public IList<AltriDatiFamModel> lAltriDatiFamiliari { get; set; }
 
+        public PassaportoModel passaporto { get; set; }
+
         public bool HasValue()
         {
             return idConiuge > 0 ? true : false;
         }
 
         [Display(Name = "Nominativo")]
-        public string nominativo => nome + " " + cognome;
+        public string nominativo => cognome + " " + nome;
 
 
     }

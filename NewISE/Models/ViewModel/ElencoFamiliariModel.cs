@@ -1,6 +1,7 @@
 ﻿using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,7 @@ namespace NewISE.Models.ViewModel
     {
         public decimal idMaggiorazioniFamiliari { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
+        public decimal? idPassaporto { get; set; }
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]
         public string CodiceFiscale { get; set; }
@@ -29,6 +31,14 @@ namespace NewISE.Models.ViewModel
 
         [Display(Name = "Documenti")]
         public IList<DocumentiModel> Documenti { get; set; }
+
+        [Display(Name = "Richiedi")]
+        [DefaultValue(false)]
+        public bool richiediPassaporto
+        {
+            get { return idPassaporto > 0 ? true : false; }
+            set { richiediPassaporto = value; }
+        }
 
     }
 }

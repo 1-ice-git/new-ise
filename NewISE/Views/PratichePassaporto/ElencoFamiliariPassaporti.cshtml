@@ -1,28 +1,9 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.ViewModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
-
-@{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
-    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-
-
-}
-
-
-<p style="padding-left: 15px;">
-    @if (solaLettura)
-    {
-        <button class="btn btn-default disabled" disabled="disabled">Nuovo figlio</button>
-    }
-    else
-    {
-        @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
-    }
-
-</p>
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
-    <table id="tabElencoFigli" class="table">
+    <table cellspacing="0" id="tabElencoFamiliari">
         <thead>
             <tr>
                 <th>
@@ -38,58 +19,88 @@
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.parentela)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Documenti)
+                    @Html.DisplayNameFor(model => model.richiediPassaporto)
                 </th>
-
-
+                <th></th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                        @Html.DisplayFor(modelItem => item.Nominativo)
                     </td>
                     <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
+                        @Html.DisplayFor(modelItem => item.CodiceFiscale)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataFine)
+                    </td>
+                    <td>
+                        @switch (item.parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                <span>Coniuge</span>
+                                break;
+                            case EnumParentela.Figlio:
+                                <span>Figlio</span>
+                                break;
+                            case EnumParentela.Richiedente:
+                                <span>Richiedente</span>
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    </td>
+                    @if (item.idAltriDati > 0)
                     {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.dataFine)
-                        </td>
+                        switch (item.parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                <td style="text-align: center;">
+                                    <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idFamiliare); ">
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                    </a>
+                                </td>
+                                break;
+                            case EnumParentela.Figlio:
+                                <td style="text-align: center;">
+                                    <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariFiglio(@item.idFamiliare); ">
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                    </a>
+                                </td>
+                                break;
+                            case EnumParentela.Richiedente:
+                                <td></td>
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
                     }
                     else
                     {
                         <td style="text-align: center;"></td>
                     }
-                    @if (item.idAltriDati > 0)
-                    {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
-                                <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
-                            </a>
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); ">
-                                <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
-                            </a>
-                        </td>
-                    }
+
+                    <td>
+                        @Html.CheckBoxFor(modelItem => item.richiediPassaporto)
+                    </td>
+
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare,@Convert.ToDecimal(EnumGruppiDoc.MaggiorazioniFamiliari), @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @idMaggiorazioniFamiliari ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi) , @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @item.idMaggiorazioniFamiliari ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -97,7 +108,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare,@Convert.ToDecimal(EnumGruppiDoc.MaggiorazioniFamiliari), 11, @Convert.ToDecimal(item.parentela) , @idMaggiorazioniFamiliari ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare,@Convert.ToDecimal(EnumGruppiDoc.Viaggi), 13, @Convert.ToDecimal(item.parentela) , @item.idMaggiorazioniFamiliari ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -112,8 +123,7 @@
 </div>
 
 <script type="text/javascript">
-
-    $("#tabElencoFigli").DataTable({
+    $("#tabElencoFamiliari").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -164,11 +174,86 @@
         //]
     });
 
-    PulsantiNotificaAttivaMagFam();
-
-    function AltriDatiFamiliari(idFiglio) {
+    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
         //debugger;
-        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglio";
+        var rotta = "/Documenti/ElencoDocumenti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                id: id, gruppoDocumento: gruppoDoc, tipoDoc: tipoDoc, parentela: idParentela, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto").empty();
+                $("#divPassaporto").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariConiuge(idConiuge) {
+        //debugger;
+        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiugePassaporti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idConiuge: idConiuge },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto").empty();
+                $("#divPassaporto").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariFiglio(idFiglio) {
+        //debugger;
+        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglioPassaporto";
 
         $.ajax({
             url: rotta,
@@ -187,12 +272,12 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabFigli").empty();
-                $("#tabFigli").html(result);
+                $("#divPassaporto").empty();
+                $("#divPassaporto").html(result);
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+
             },
             error: function (error) {
                 //debugger;
@@ -203,44 +288,5 @@
         });
 
     }
-
-    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
-        //debugger;
-        var rotta = "/Documenti/ElencoDocumenti";
-
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, gruppoDocumento: gruppoDoc, tipoDoc: tipoDoc, parentela: idParentela, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
-            dataType: 'html',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //Blocca();
-
-                //$('#DocModal').modal('show');
-            },
-            success: function (result) {
-                //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
-                $("#tabFigli").empty();
-                $("#tabFigli").html(result);
-
-            },
-            complete: function () {
-                PulsantiNotificaAttivaMagFam();
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-
-    }
-
 
 </script>

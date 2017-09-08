@@ -7,9 +7,13 @@
 
     decimal id = (decimal)ViewData["id"];
 
+    decimal gruppoDoc = Convert.ToDecimal(ViewData["gruppiDoc"]);
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
 
+    EnumGruppiDoc enGruppoDoc = (EnumGruppiDoc)ViewData["gruppiDoc"];
     EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
+    EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
 
     int nDoc = 0;
 
@@ -126,7 +130,7 @@
             break;
         case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
             break;
-        case EnumTipoDoc.PassaportiVisti_Viaggi1:
+        case EnumTipoDoc.CartaIdentita_Viaggi1:
             break;
         default:
             throw new ArgumentOutOfRangeException();
@@ -180,7 +184,19 @@
 
 
 <script type="text/javascript">
-    $("#tabElencoDoc").DataTable({
+    //debugger;
+    var guid = jQuery.guid++;
+
+    var nuovoIDTable = "tabElencoDoc" + guid;
+    var nuovoIdModalDelete = "DelDocModal" + guid;
+    var nuovoModalIns = "NewDocModal" + guid;
+
+    $("#tabElencoDoc").prop("id", nuovoIDTable);
+    $("#DelDocModal").prop("id", nuovoIdModalDelete);
+    $("#NewDocModal").prop("id", nuovoModalIns);
+
+
+    $("#" + nuovoIDTable).DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -211,6 +227,7 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "destroy": true,
         //"columnDefs": [
         //    {
         //        "targets": [0],
@@ -237,12 +254,136 @@
 
         //]
     });
+    //if (!$.fn.DataTable.isDataTable( '#tabElencoDoc' )) {
+    //    $("#tabElencoDoc").DataTable({
+    //        "language": {
+    //            "sEmptyTable": "Nessun dato presente nella tabella",
+    //            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    //            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+    //            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+    //            "sInfoPostFix": "",
+    //            "sInfoThousands": ".",
+    //            "sLengthMenu": "Visualizza _MENU_ elementi",
+    //            "sLoadingRecords": "Caricamento...",
+    //            "sProcessing": "Elaborazione...",
+    //            "sSearch": "Cerca:",
+    //            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+    //            "oPaginate": {
+    //                "sFirst": "Inizio",
+    //                "sPrevious": "Precedente",
+    //                "sNext": "Successivo",
+    //                "sLast": "Fine"
+    //            },
+    //            "oAria": {
+    //                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+    //                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    //            }
+    //        },
+    //        "info": false,
+    //        "lengthChange": false,
+    //        "pageLength": 3,
+    //        "searching": false,
+    //        "paging": true,
+    //        "bJQueryUI": true,
+    //        "sDom": 'lfrtip',
+    //        //"destroy": true,
+    //        //"columnDefs": [
+    //        //    {
+    //        //        "targets": [0],
+    //        //        "width": "150px"
+    //        //    }
+
+    //        //]
+    //        //dom: 'Bfrtip',
+    //        //buttons: [
+    //        //    {
+    //        //        text: 'Nuovo Coniuge',
+    //        //        className: 'green',
+    //        //        action: function (e, dt, node, config) {
+    //        //            NuovoConiuge();
+    //        //        }
+    //        //    }
+    //        //],
+    //        //"columnDefs": [
+    //        //    {
+    //        //        "targets": [0],
+    //        //        "visible": false,
+    //        //        "searchable": false
+    //        //    },
+
+    //        //]
+    //    });
+    //}
+    //else {
+    //    $('#tabElencoDoc').DataTable().clear();
+    //    $('#tabElencoDoc').DataTable().draw();
+    //    //$('#tabElencoDoc tbody').empty();
+
+    //    //$("#tabElencoDoc").DataTable({
+    //    //    "language": {
+    //    //        "sEmptyTable": "Nessun dato presente nella tabella",
+    //    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    //    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+    //    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+    //    //        "sInfoPostFix": "",
+    //    //        "sInfoThousands": ".",
+    //    //        "sLengthMenu": "Visualizza _MENU_ elementi",
+    //    //        "sLoadingRecords": "Caricamento...",
+    //    //        "sProcessing": "Elaborazione...",
+    //    //        "sSearch": "Cerca:",
+    //    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+    //    //        "oPaginate": {
+    //    //            "sFirst": "Inizio",
+    //    //            "sPrevious": "Precedente",
+    //    //            "sNext": "Successivo",
+    //    //            "sLast": "Fine"
+    //    //        },
+    //    //        "oAria": {
+    //    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+    //    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    //    //        }
+    //    //    },
+    //    //    "info": false,
+    //    //    "lengthChange": false,
+    //    //    "pageLength": 3,
+    //    //    "searching": false,
+    //    //    "paging": true,
+    //    //    "bJQueryUI": true,
+    //    //    "sDom": 'lfrtip',
+    //    //    //"columnDefs": [
+    //    //    //    {
+    //    //    //        "targets": [0],
+    //    //    //        "width": "150px"
+    //    //    //    }
+
+    //    //    //]
+    //    //    //dom: 'Bfrtip',
+    //    //    //buttons: [
+    //    //    //    {
+    //    //    //        text: 'Nuovo Coniuge',
+    //    //    //        className: 'green',
+    //    //    //        action: function (e, dt, node, config) {
+    //    //    //            NuovoConiuge();
+    //    //    //        }
+    //    //    //    }
+    //    //    //],
+    //    //    //"columnDefs": [
+    //    //    //    {
+    //    //    //        "targets": [0],
+    //    //    //        "visible": false,
+    //    //    //        "searchable": false
+    //    //    //    },
+
+    //    //    //]
+    //    //});
+    //}
+
 
 
 
 
     function EliminaDoc(idDocumento) {
-        $('#DelDocModal').modal('show');
+        $('#' + nuovoIdModalDelete).modal('show');
         $('#hiEliminaDoc').val(idDocumento);
     }
 
@@ -268,7 +409,7 @@
             success: function (result) {
                 //debugger;
                 if (result.errore === "") {
-                    $('#DelDocModal').modal('hide');
+                    $('#'+ nuovoIdModalDelete).modal('hide');
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }
@@ -289,36 +430,38 @@
 
     }
 
-    $('#DelDocModal').on('hidden.bs.modal', function(e) {
+    $('#' + nuovoIdModalDelete).on('hidden.bs.modal', function(e) {
         //debugger;
         AggiornaElencoDoc();
+        //$(this).remove();
     });
 
-    $('#NewDocModal').on('hidden.bs.modal', function(e) {
+    $('#' + nuovoModalIns).on('hidden.bs.modal', function(e) {
         //debugger;
         AggiornaElencoDoc();
+        //$(this).remove();
     });
 
 
     function AggiornaElencoDoc() {
         //debugger;
         var nDocOld = parseInt(@nDoc);
-        var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc);
+        var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
 
         if (newDoc != nDocOld) {
-            ElencoDocumenti(@id, @tipoDoc, @idMaggiorazioniFamiliari);
+            ElencoDocumenti(@id, @gruppoDoc, @tipoDoc, @parentela, @idMaggiorazioniFamiliari);
         }
     }
 
 
-    function PrelevaNumeroDocumentiAttuali(id, tipoDoc ) {
+    function PrelevaNumeroDocumentiAttuali(id, tipoDoc, parentela ) {
         //debugger;
         var rotta = "/Documenti/NumeroDocumentiSalvati";
         var nDoc = 0;
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc },
+            data: { id: id, tipoDoc: tipoDoc, parentela: parentela },
             dataType: 'json',
             async: false,
             beforeSend: function () {
@@ -364,7 +507,7 @@
                 //debugger;
                 VerificaAutenticazione();
                 //Blocca();
-                $('#NewDocModal').modal('show');
+                $('#'+ nuovoModalIns).modal('show');
             },
             success: function (result) {
                 //debugger;
