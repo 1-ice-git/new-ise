@@ -151,7 +151,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id)
+        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
         {
             string titoloPagina = string.Empty;
             decimal idMaggiorazioniFamiliari = 0;
@@ -216,13 +216,13 @@ namespace NewISE.Controllers
             ViewData.Add("tipoDoc", (decimal)tipoDoc);
             ViewData.Add("ID", id);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-
+            ViewData.Add("parentela", (decimal)parentela);
 
             return PartialView();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SalvaDocumento(EnumTipoDoc tipoDoc, decimal id)
+        public ActionResult SalvaDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -279,14 +279,28 @@ namespace NewISE.Controllers
                                         case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
                                             break;
                                         case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                                            dtd.AddDocumentoMagFamConiuge(ref dm, id, db);
+                                            dtd.AddDocumentoFromConiuge(ref dm, id, db);
                                             break;
                                         case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-                                            dtd.AddDocumentoMagFamFiglio(ref dm, id, db);
+                                            dtd.AddDocumentoFromFiglio(ref dm, id, db);
                                             break;
                                         case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
                                             break;
                                         case EnumTipoDoc.CartaIdentita_Viaggi1:
+                                            switch (parentela)
+                                            {
+                                                case EnumParentela.Coniuge:
+                                                    dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Figlio:
+                                                    dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Richiedente:
+                                                    dtd.AddDocumentoFromRichiedente(ref dm, id, db);
+                                                    break;
+                                                default:
+                                                    throw new ArgumentOutOfRangeException("parentela");
+                                            }
                                             break;
                                         default:
                                             throw new ArgumentOutOfRangeException("tipoDoc");
@@ -329,10 +343,24 @@ namespace NewISE.Controllers
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
             bool solaLettura = false;
-
+            decimal idTrasferimento = 0;
 
             try
             {
+                using (dtTrasferimento dttr = new dtTrasferimento())
+                {
+                    if (idMaggiorazioniFamiliari > 0)
+                    {
+                        var trm = dttr.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
+                        idTrasferimento = trm.idTrasferimento;
+                    }
+                    else
+                    {
+                        idTrasferimento = id;
+                    }
+                }
+
+
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
                     ldm = dtd.GetDocumentiByIdTable(id, tipoDoc, parentela).OrderByDescending(a => a.dataInserimento).ToList();
@@ -405,6 +433,7 @@ namespace NewISE.Controllers
             ViewData.Add("parentela", parentela);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             ViewData.Add("solaLettura", solaLettura);
+            ViewData.Add("idTrasferimento", idTrasferimento);
 
             return PartialView(ldm);
         }

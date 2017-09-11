@@ -6,6 +6,7 @@
 
 
     decimal id = (decimal)ViewData["id"];
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
 
     decimal gruppoDoc = Convert.ToDecimal(ViewData["gruppiDoc"]);
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
@@ -131,6 +132,7 @@
         case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
             break;
         case EnumTipoDoc.CartaIdentita_Viaggi1:
+            @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         default:
             throw new ArgumentOutOfRangeException();
@@ -495,12 +497,12 @@
         //debugger;
         var rotta = "/Documenti/NuovoDocumento";
         var TipoDocumento = parseInt(@tipoDoc);
-
+        var Parentela = parseInt(@parentela);
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { tipoDoc: TipoDocumento, id: id },
+            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela },
             dataType: 'html',
             async: false,
             beforeSend: function () {

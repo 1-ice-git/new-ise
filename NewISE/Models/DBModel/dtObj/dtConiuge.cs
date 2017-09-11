@@ -132,7 +132,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                    idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
                     idPassaporto = c.IDPASSAPORTO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -161,7 +161,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                    idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
                     idPassaporto = c.IDPASSAPORTO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -190,7 +190,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idConiuge = c.IDCONIUGE,
                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                        idTipologiaConiuge = c.IDTIPOLOGIACONIUGE,
+                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
                         idPassaporto = c.IDPASSAPORTO,
                         nome = c.NOME,
                         cognome = c.COGNOME,
@@ -221,7 +221,7 @@ namespace NewISE.Models.DBModel.dtObj
                            {
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
-                               idTipologiaConiuge = e.IDTIPOLOGIACONIUGE,
+                               idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                idPassaporto = e.IDPASSAPORTO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
@@ -243,7 +243,7 @@ namespace NewISE.Models.DBModel.dtObj
             CONIUGE c = new CONIUGE()
             {
                 IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
-                IDTIPOLOGIACONIUGE = cm.idTipologiaConiuge,
+                IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
                 IDPASSAPORTO = cm.idPassaporto,
                 NOME = cm.nome.ToUpper(),
                 COGNOME = cm.cognome.ToUpper(),
@@ -282,7 +282,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (c != null && c.IDCONIUGE > 0)
                 {
                     if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin ||
-                        c.IDTIPOLOGIACONIUGE != cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
+                        c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
                         c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTO != cm.idPassaporto)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;

@@ -52,14 +52,14 @@ namespace NewISE.Models.DBModel.dtObj
             return pmcm;
         }
 
-        public PercentualeMagConiugeModel GetPercentualeMaggiorazioneConiuge(decimal idTipologiaConiuge, DateTime dt, ModelDBISE db)
+        public PercentualeMagConiugeModel GetPercentualeMaggiorazioneConiuge(EnumTipologiaConiuge idTipologiaConiuge, DateTime dt, ModelDBISE db)
         {
             PercentualeMagConiugeModel pmcm = new PercentualeMagConiugeModel();
 
             var lpmc =
                 db.PERCENTUALEMAGCONIUGE.Where(
                     a =>
-                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && dt >= a.DATAINIZIOVALIDITA &&
+                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == (decimal)idTipologiaConiuge && dt >= a.DATAINIZIOVALIDITA &&
                         dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
 
@@ -92,14 +92,14 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="dtFin"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public IList<PercentualeMagConiugeModel> GetListaPercentualiMagConiugeByRangeDate(decimal idTipologiaConiuge, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        public IList<PercentualeMagConiugeModel> GetListaPercentualiMagConiugeByRangeDate(EnumTipologiaConiuge idTipologiaConiuge, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<PercentualeMagConiugeModel> lpmcm = new List<PercentualeMagConiugeModel>();
 
             var lpmc =
                 db.PERCENTUALEMAGCONIUGE.Where(
                     a =>
-                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idTipologiaConiuge &&
+                        a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == (decimal)idTipologiaConiuge &&
                         a.DATAINIZIOVALIDITA <= dtFin && a.DATAFINEVALIDITA >= dtIni)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();

@@ -136,7 +136,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                         {
                                             idMaggiorazioniFamiliari = 0,
-                                            idFamiliare = dm.idDipendente,
+                                            idFamiliare = idTrasferimento,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
                                             idPassaporto = pm.idPassaporto,
                                             Nominativo = dm.Nominativo,
                                             CodiceFiscale = string.Empty,
@@ -168,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 using (dtConiuge dtc = new dtConiuge())
                                                 {
                                                     var lcm =
-                                                        dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari)
+                                                        dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari).Where(a => a.idTipologiaConiuge == EnumTipologiaConiuge.Residente)
                                                             .ToList();
                                                     if (lcm?.Any() ?? false)
                                                     {
@@ -204,7 +204,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 using (dtFigli dtf = new dtFigli())
                                                 {
-                                                    var lfm = dtf.GetListaFigli(mf.idMaggiorazioniFamiliari).ToList();
+                                                    var lfm = dtf.GetListaFigli(mf.idMaggiorazioniFamiliari).Where(a => new[] { EnumTipologiaFiglio.Residente, EnumTipologiaFiglio.StudenteResidente, }.Contains(a.idTipologiaFiglio)).ToList();
                                                     if (lfm?.Any() ?? false)
                                                     {
                                                         foreach (var fm in lfm)

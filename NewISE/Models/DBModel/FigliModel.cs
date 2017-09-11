@@ -8,8 +8,16 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
+    public enum EnumTipologiaFiglio
+    {
+        Residente = 1,
+        StudenteResidente = 2,
+        StudenteNonResidente = 3
+    }
+
     public class FigliModel
     {
+
         [Key]
         public decimal idFigli { get; set; }
         [Required(ErrorMessage = "La maggiorazione dei figli è richiesta.")]
@@ -17,7 +25,7 @@ namespace NewISE.Models.DBModel
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
         [Display(Name = "Tipologia figlio")]
-        public decimal idTipologiaFiglio { get; set; }
+        public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
         [Display(Name = "Passaporto")]
         public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
@@ -49,6 +57,13 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il campo annullatto è obbligatorio.")]
         [DefaultValue(false)]
         public bool Annullato { get; set; }
+
+        [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
+        [Display(Name = "Escludi P.")]
+        [DefaultValue(false)]
+        public bool escludiPassaporto { get; set; }
+
+
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
@@ -56,5 +71,7 @@ namespace NewISE.Models.DBModel
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
 
         public PassaportoModel passaporto { get; set; }
+
+
     }
 }

@@ -433,7 +433,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AddDocumentoMagFamFiglio(ref DocumentiModel dm, decimal idFiglio, ModelDBISE db)
+
+
+        public void AddDocumentoFromFiglio(ref DocumentiModel dm, decimal idFiglio, ModelDBISE db)
         {
             var f = db.FIGLI.Find(idFiglio);
             if (f.IDFIGLI != null && f.IDFIGLI > 0)
@@ -459,7 +461,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AddDocumentoMagFamConiuge(ref DocumentiModel dm, decimal idConiuge, ModelDBISE db)
+
+
+        public void AddDocumentoFromConiuge(ref DocumentiModel dm, decimal idConiuge, ModelDBISE db)
         {
             var c = db.CONIUGE.Find(idConiuge);
 
@@ -484,6 +488,34 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
+        }
+
+        public void AddDocumentoFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
+        {
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (t != null && t.IDTRASFERIMENTO > 0)
+            {
+                var p = t.PASSAPORTI;
+                if (p != null && p.IDPASSAPORTO > 0)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    DOCUMENTI d = new DOCUMENTI();
+                    dm.file.InputStream.CopyTo(ms);
+
+                    d.NOMEDOCUMENTO = dm.nomeDocumento;
+                    d.ESTENSIONE = dm.estensione;
+                    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                    d.DATAINSERIMENTO = dm.dataInserimento;
+                    d.FILEDOCUMENTO = ms.ToArray();
+
+                    p.DOCUMENTI.Add(d);
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        dm.idDocumenti = d.IDDOCUMENTO;
+                    }
+                }
+            }
         }
 
         public void DeleteDocumento(decimal idDocumento)

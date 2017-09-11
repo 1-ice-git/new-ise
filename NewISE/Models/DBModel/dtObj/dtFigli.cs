@@ -121,7 +121,7 @@ namespace NewISE.Models.DBModel.dtObj
             FIGLI f = new FIGLI()
             {
                 IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
-                IDTIPOLOGIAFIGLIO = fm.idTipologiaFiglio,
+                IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
                 IDPASSAPORTO = fm.idPassaporto,
                 NOME = fm.nome.ToUpper(),
                 COGNOME = fm.cognome.ToUpper(),
@@ -174,7 +174,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idFigli = f.IDFIGLI,
                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
-                        idTipologiaFiglio = f.IDTIPOLOGIAFIGLIO,
+                        idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
                         idPassaporto = f.IDPASSAPORTO,
                         nome = f.NOME,
                         cognome = f.COGNOME,
@@ -214,7 +214,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idFigli = item.IDFIGLI,
                         idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
-                        idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
+                        idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
                         idPassaporto = item.IDPASSAPORTO,
                         nome = item.NOME,
                         cognome = item.COGNOME,
@@ -249,7 +249,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             idFigli = item.IDFIGLI,
                             idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
-                            idTipologiaFiglio = item.IDTIPOLOGIAFIGLIO,
+                            idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
                             idPassaporto = item.IDPASSAPORTO,
                             nome = item.NOME,
                             cognome = item.COGNOME,

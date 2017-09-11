@@ -32,13 +32,14 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Documenti")]
         public IList<DocumentiModel> Documenti { get; set; }
 
-        [Display(Name = "Richiedi")]
-        [DefaultValue(false)]
-        public bool richiediPassaporto
-        {
-            get { return idPassaporto > 0 ? true : false; }
-            set { richiediPassaporto = value; }
-        }
+
+        //[Display(Name = "Richiedi")]
+        //[DefaultValue(true)]
+        //public bool richiediPassaporto
+        //{
+        //    get { return idPassaporto > 0 ? true : false; }
+        //    set { richiediPassaporto = value; }
+        //}
 
     }
 }

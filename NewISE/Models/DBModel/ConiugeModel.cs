@@ -2,12 +2,18 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace NewISE.Models.DBModel
 {
+    public enum EnumTipologiaConiuge
+    {
+        Residente = 1,
+        NonResidente_A_Carico = 2
+    }
     public class ConiugeModel
     {
         [Key]
@@ -18,7 +24,7 @@ namespace NewISE.Models.DBModel
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
         [Display(Name = "Tipologia coniuge")]
-        public decimal idTipologiaConiuge { get; set; }
+        public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
         [Display(Name = "Passaporto")]
         public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
@@ -50,6 +56,10 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Annullato")]
         public bool annullato { get; set; }
 
+        [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
+        [Display(Name = "Escludi P.")]
+        [DefaultValue(false)]
+        public bool escludiPassaporto { get; set; }
 
 
         public MaggiorazioniFamiliariModel MaggiorazioniFasmiliari { get; set; }

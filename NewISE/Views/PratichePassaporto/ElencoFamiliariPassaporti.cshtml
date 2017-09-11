@@ -24,9 +24,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.richiediPassaporto)
-                </th>
+
                 <th></th>
             </tr>
         </thead>
@@ -93,9 +91,6 @@
                         <td style="text-align: center;"></td>
                     }
 
-                    <td>
-                        @Html.CheckBoxFor(modelItem => item.richiediPassaporto)
-                    </td>
 
                     @if (item.Documenti.Any())
                     {
