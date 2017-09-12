@@ -169,7 +169,7 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONIUGE_DOC">
@@ -283,7 +283,7 @@
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
@@ -1852,7 +1852,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_P_C">
-          <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="0..1">
+          <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="CONIUGE" Type="Self.CONIUGE" Multiplicity="*" />
@@ -1880,7 +1880,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_P_F">
-          <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="0..1">
+          <End Role="PASSAPORTI" Type="Self.PASSAPORTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="*" />

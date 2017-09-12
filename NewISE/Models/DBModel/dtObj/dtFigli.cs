@@ -47,38 +47,38 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        public static ValidationResult VerificaCodiceFiscale2(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
+        //public static ValidationResult VerificaCodiceFiscale2(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
 
-            var fm = context.ObjectInstance as Figli_V_Model;
+        //    var fm = context.ObjectInstance as Figli_V_Model;
 
-            if (fm != null)
-            {
+        //    if (fm != null)
+        //    {
 
-                if (fm.codiceFiscale != null && fm.codiceFiscale != string.Empty)
-                {
-                    if (Utility.CheckCodiceFiscale(fm.codiceFiscale))
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("Il Codice Fiscale non è corretto.");
-                    }
-                }
-                else
-                {
-                    vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-                }
-            }
-            else
-            {
-                vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-            }
+        //        if (fm.codiceFiscale != null && fm.codiceFiscale != string.Empty)
+        //        {
+        //            if (Utility.CheckCodiceFiscale(fm.codiceFiscale))
+        //            {
+        //                vr = ValidationResult.Success;
+        //            }
+        //            else
+        //            {
+        //                vr = new ValidationResult("Il Codice Fiscale non è corretto.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+        //    }
 
-            return vr;
-        }
+        //    return vr;
+        //}
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {

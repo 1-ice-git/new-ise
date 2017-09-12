@@ -16,6 +16,100 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public GestPulsantiPassaportoModel GestionePulsantiPassaporto(decimal idTrasferimento)
+        {
+            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
+            bool esistonoRichiesteRichiedente = false;
+            bool esistonoRichiesteConiuge = false;
+            bool esistonoRichiesteFigli = false;
+            bool EsistonoRichiesteAttive = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    var p = t.PASSAPORTI;
+
+                    if (p != null && p.IDPASSAPORTO > 0)
+                    {
+                        var ldRichiedente = p.DOCUMENTI;
+                        if (ldRichiedente?.Any() ?? false)
+                        {
+                            esistonoRichiesteRichiedente = false;
+                        }
+                        else
+                        {
+                            esistonoRichiesteRichiedente = true;
+                        }
+
+                        var lc = p.CONIUGE.Where(a => a.ANNULLATO == false);
+                        if (lc?.Any() ?? false)
+                        {
+                            foreach (var c in lc)
+                            {
+                                var ldConiuge =
+                                    c.DOCUMENTI.Where(
+                                        a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                if (ldConiuge?.Any() ?? false)
+                                {
+                                    esistonoRichiesteConiuge = false;
+                                }
+                                else
+                                {
+                                    esistonoRichiesteConiuge = true;
+                                    return;
+                                }
+                            }
+                        }
+
+                        var lf = p.FIGLI.Where(a => a.ANNULLATO == false);
+                        if (lf?.Any() ?? false)
+                        {
+                            foreach (var f in lf)
+                            {
+                                var ldFiglio =
+                                    f.DOCUMENTI.Where(
+                                        a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                if (ldFiglio?.Any() ?? false)
+                                {
+                                    esistonoRichiesteFigli = false;
+                                }
+                                else
+                                {
+                                    esistonoRichiesteFigli = true;
+                                }
+                            }
+                        }
+
+                        if (esistonoRichiesteRichiedente || esistonoRichiesteConiuge || esistonoRichiesteFigli)
+                        {
+                            EsistonoRichiesteAttive = true;
+                        }
+                        else
+                        {
+                            EsistonoRichiesteAttive = false;
+                        }
+
+                        if (p != null && p.IDPASSAPORTO > 0)
+                        {
+                            gppm = new GestPulsantiPassaportoModel()
+                            {
+                                esistonoRichiesteAttive = EsistonoRichiesteAttive,
+                                notificaRichiesta = p.NOTIFICARICHIESTA,
+                                praticaConclusa = p.PRATICACONCLUSA,
+
+                            };
+                        }
+
+                    }
+
+
+                }
+
+
+            }
+        }
 
         public void SetEscludiPassaporto(decimal idTrasferimento, ref bool chk)
         {
@@ -25,7 +119,6 @@ namespace NewISE.Models.DBModel.dtObj
                 if (p != null && p.IDPASSAPORTO > 0)
                 {
                     p.ESCLUDIPASSAPORTO = p.ESCLUDIPASSAPORTO == false ? true : false;
-
                     int i = db.SaveChanges();
 
                     if (i <= 0)
@@ -35,6 +128,7 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         chk = p.ESCLUDIPASSAPORTO;
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Esclusione dalla richiesta di passaporto/visto.", "Passaporti", db, idTrasferimento, idTrasferimento);
                     }
                 }
             }
@@ -85,6 +179,47 @@ namespace NewISE.Models.DBModel.dtObj
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento dei dati di gestione del passaporto.", "Passaporti", db, idPassaporto, idPassaporto);
                 }
             }
+        }
+
+
+        public PassaportoModel GetPassaportoByIdMagFam(decimal idMaggiorazioniFamiliari)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO.PASSAPORTI;
+                if (p != null && p.IDPASSAPORTO > 0)
+                {
+                    pm = new PassaportoModel()
+                    {
+                        idPassaporto = p.IDPASSAPORTO,
+                        notificaRichiesta = p.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                        praticaConclusa = p.PRATICACONCLUSA,
+                        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                        escludiPassaporto = p.ESCLUDIPASSAPORTO,
+                        //trasferimento = new TrasferimentoModel()
+                        //{
+                        //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+                        //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                        //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+                        //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                        //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+                        //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+                        //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+                        //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+                        //    coan = p.TRASFERIMENTO.COAN,
+                        //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+                        //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+                        //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+                        //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+                        //}
+                    };
+                }
+            }
+
+            return pm;
         }
 
         public PassaportoModel GetPassaportoByID(decimal idPassaporto)

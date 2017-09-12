@@ -339,7 +339,6 @@ namespace NewISE.Controllers
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
@@ -353,7 +352,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult NuovoConiuge(decimal idMaggiorazioniFamiliari)
         {
-            ConiugeModel cm = new ConiugeModel();
+            //ConiugeModel cm = new ConiugeModel();
             List<SelectListItem> lTipologiaConiuge = new List<SelectListItem>();
 
             var r = new List<SelectListItem>();
@@ -378,11 +377,11 @@ namespace NewISE.Controllers
                     lTipologiaConiuge = r;
                 }
 
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
+                //using (dtTrasferimento dtt = new dtTrasferimento())
+                //{
+                //    var tm = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
 
-                }
+                //}
             }
             catch (Exception ex)
             {

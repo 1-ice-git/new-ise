@@ -102,71 +102,81 @@ namespace NewISE.Controllers
 
         }
 
-        public JsonResult NominativoEscludiPassaporto(decimal id, EnumParentela parentela, bool boolChk)
+        public ActionResult GestionePulsantiNotificaPraticaConclusa(decimal idTrasferimento)
         {
-            string errore = string.Empty;
-            string msg = string.Empty;
-            string nominativo = string.Empty;
-
-            try
-            {
-
-                if (boolChk)
-                {
-                    msg = "Procedere con l'esclusione per {0} dalla richiesta di passaporto/visto?";
-                }
-                else
-                {
-                    msg = "Procedere con l'inclusione per {0} per la richiesta di passaporto/visto?";
-                }
 
 
-                switch (parentela)
-                {
-                    case EnumParentela.Coniuge:
-                        using (dtConiuge dtc = new dtConiuge())
-                        {
-                            var c = dtc.GetConiugebyID(id);
-                            nominativo = c.nominativo;
-                        }
-                        break;
-                    case EnumParentela.Figlio:
-                        using (dtFigli dtf = new dtFigli())
-                        {
-                            var f = dtf.GetFigliobyID(id);
-                            nominativo = f.nominativo;
-                        }
-                        break;
-                    case EnumParentela.Richiedente:
-                        using (dtDipendenti dtd = new dtDipendenti())
-                        {
-                            var d = dtd.GetDipendenteByIDTrasf(id);
-                            nominativo = d.Nominativo;
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
-                }
-
-                msg = string.Format(msg, nominativo);
-
-
-            }
-            catch (Exception ex)
-            {
-                errore = ex.Message;
-            }
-
-            return
-                Json(
-                    new
-                    {
-                        msg = msg,
-                        err = errore
-                    });
-
-
-
+            return PartialView();
         }
+
+
+
+
+        //public JsonResult NominativoEscludiPassaporto(decimal id, EnumParentela parentela, bool boolChk)
+        //{
+        //    string errore = string.Empty;
+        //    string msg = string.Empty;
+        //    string nominativo = string.Empty;
+
+        //    try
+        //    {
+
+        //        if (boolChk)
+        //        {
+        //            msg = "Procedere con l'esclusione per {0} dalla richiesta di passaporto/visto?";
+        //        }
+        //        else
+        //        {
+        //            msg = "Procedere con l'inclusione per {0} per la richiesta di passaporto/visto?";
+        //        }
+
+
+        //        switch (parentela)
+        //        {
+        //            case EnumParentela.Coniuge:
+        //                using (dtConiuge dtc = new dtConiuge())
+        //                {
+        //                    var c = dtc.GetConiugebyID(id);
+        //                    nominativo = c.nominativo;
+        //                }
+        //                break;
+        //            case EnumParentela.Figlio:
+        //                using (dtFigli dtf = new dtFigli())
+        //                {
+        //                    var f = dtf.GetFigliobyID(id);
+        //                    nominativo = f.nominativo;
+        //                }
+        //                break;
+        //            case EnumParentela.Richiedente:
+        //                using (dtDipendenti dtd = new dtDipendenti())
+        //                {
+        //                    var d = dtd.GetDipendenteByIDTrasf(id);
+        //                    nominativo = d.Nominativo;
+        //                }
+        //                break;
+        //            default:
+        //                throw new ArgumentOutOfRangeException("parentela");
+        //        }
+
+        //        msg = string.Format(msg, nominativo);
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errore = ex.Message;
+        //    }
+
+        //    return
+        //        Json(
+        //            new
+        //            {
+        //                msg = msg,
+        //                err = errore
+        //            });
+
+
+
+        //}
     }
 }

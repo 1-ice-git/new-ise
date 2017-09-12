@@ -27,6 +27,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Tipologia figlio")]
         public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
         [Display(Name = "Passaporto")]
+        [Required(ErrorMessage = "Il passaporto è richiesto.")]
         public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]

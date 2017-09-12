@@ -25,6 +25,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
+        [Required(ErrorMessage = "Il passaporto è richiesto.")]
         [Display(Name = "Passaporto")]
         public decimal? idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]

@@ -2034,8 +2034,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
-    <Compile Include="Models\ViewModel\Figli_V_Model.cs" />
-    <Compile Include="Models\ViewModel\MaggiorazioneConiugeVModel.cs" />
+    <Compile Include="Models\ViewModel\GestPulsantiPassaportoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

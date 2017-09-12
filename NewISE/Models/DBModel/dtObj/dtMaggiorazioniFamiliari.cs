@@ -686,6 +686,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         fm.dataAggiornamento = DateTime.Now;
                         fm.Annullato = false;
+                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                        {
+                            var pm = dtpp.GetPassaportoByIdMagFam(fm.idMaggiorazioniFamiliari);
+                            fm.idPassaporto = pm.idPassaporto;
+                        }
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                         {
@@ -755,6 +760,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         cm.dataAggiornamento = DateTime.Now;
                         cm.annullato = false;
+                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                        {
+                            var pm = dtpp.GetPassaportoByIdMagFam(cm.idMaggiorazioniFamiliari);
+                            cm.idPassaporto = pm.idPassaporto;
+                        }
                         dtc.SetConiuge(ref cm, db);
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                         {
