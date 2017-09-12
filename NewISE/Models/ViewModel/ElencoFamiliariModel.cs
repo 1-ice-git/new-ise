@@ -29,6 +29,11 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Altri dati")]
         public decimal idAltriDati { get; set; }
 
+
+        [Display(Name = "Escludi P.")]
+        [DefaultValue(false)]
+        public bool escludiPassaporto { get; set; }
+
         [Display(Name = "Documenti")]
         public IList<DocumentiModel> Documenti { get; set; }
 

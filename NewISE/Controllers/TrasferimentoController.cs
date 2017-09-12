@@ -558,7 +558,7 @@ namespace NewISE.Controllers
 
                                     using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                                     {
-                                        dtpp.SetPassaporto(trm.idTrasferimento, db);
+                                        dtpp.PreSetPassaporto(trm.idTrasferimento, db);
                                     }
 
                                     using (dtIndennita dti = new dtIndennita())

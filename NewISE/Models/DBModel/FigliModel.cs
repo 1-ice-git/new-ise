@@ -72,6 +72,10 @@ namespace NewISE.Models.DBModel
 
         public PassaportoModel passaporto { get; set; }
 
+        public bool HasValue()
+        {
+            return idFigli > 0 ? true : false;
+        }
 
     }
 }

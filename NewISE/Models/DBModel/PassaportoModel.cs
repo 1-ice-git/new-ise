@@ -29,5 +29,10 @@ namespace NewISE.Models.DBModel
         public bool escludiPassaporto { get; set; }
 
         public TrasferimentoModel trasferimento { get; set; }
+
+        public bool HasValue()
+        {
+            return idPassaporto > 0 ? true : false;
+        }
     }
 }

@@ -140,7 +140,8 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    annullato = c.ANNULLATO
+                    annullato = c.ANNULLATO,
+                    escludiPassaporto = c.ESCLUDIPASSAPORTO
                 };
 
             }
@@ -169,7 +170,8 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    annullato = c.ANNULLATO
+                    annullato = c.ANNULLATO,
+                    escludiPassaporto = c.ESCLUDIPASSAPORTO
                 };
             }
 
@@ -198,7 +200,8 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                        annullato = c.ANNULLATO
+                        annullato = c.ANNULLATO,
+                        escludiPassaporto = c.ESCLUDIPASSAPORTO
                     };
                 }
             }
@@ -229,7 +232,8 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizio = e.DATAINIZIOVALIDITA,
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO
+                               annullato = e.ANNULLATO,
+                               escludiPassaporto = e.ESCLUDIPASSAPORTO
                            }).ToList();
                 }
             }
@@ -237,6 +241,28 @@ namespace NewISE.Models.DBModel.dtObj
             return lcm;
         }
 
+        public void SetEscludiPassaporto(decimal idConiuge, ref bool chk)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+                if (c != null && c.IDCONIUGE > 0)
+                {
+                    c.ESCLUDIPASSAPORTO = c.ESCLUDIPASSAPORTO == false ? true : false;
+
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto.");
+                    }
+                    else
+                    {
+                        chk = c.ESCLUDIPASSAPORTO;
+                    }
+                }
+            }
+        }
 
         public void SetConiuge(ref ConiugeModel cm, ModelDBISE db)
         {
@@ -251,7 +277,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                ANNULLATO = cm.annullato
+                ANNULLATO = cm.annullato,
+                ESCLUDIPASSAPORTO = cm.escludiPassaporto
             };
 
             db.CONIUGE.Add(c);
@@ -308,7 +335,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 cognome = cm.cognome,
                                 codiceFiscale = cm.codiceFiscale,
                                 dataInizio = cm.dataInizio.Value,
-                                dataFine = dtFin
+                                dataFine = dtFin,
+                                escludiPassaporto = cm.escludiPassaporto
                             };
 
                             this.SetConiuge(ref newc, db);

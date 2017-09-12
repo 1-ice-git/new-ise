@@ -170,6 +170,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONIUGE_DOC">
           <Key>
@@ -283,6 +284,7 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
           <Key>
@@ -570,6 +572,7 @@
           <Property Name="DATANOTIFICARICHIESTA" Type="date" Nullable="false" />
           <Property Name="PRATICACONCLUSA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAPRATICACONCLUSA" Type="date" Nullable="false" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PASSAPORTI_DOCUMENTI">
           <Key>
@@ -5648,6 +5651,7 @@
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
           <Property Name="IDPASSAPORTO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_P_C" FromRole="CONIUGE" ToRole="PASSAPORTI" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -5671,6 +5675,7 @@
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.PMF_F" FromRole="FIGLI" ToRole="PERCENTUALEMAGFIGLI" />
           <Property Name="IDPASSAPORTO" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_P_F" FromRole="FIGLI" ToRole="PASSAPORTI" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONEFAMILIARI">
           <Key>
@@ -5882,6 +5887,7 @@
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_P_F" FromRole="PASSAPORTI" ToRole="FIGLI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_P" FromRole="PASSAPORTI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.PASSAPORTI_DOCUMENTI" FromRole="PASSAPORTI" ToRole="DOCUMENTI" />
+          <Property Name="ESCLUDIPASSAPORTO" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="R_P_C">
           <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="0..1">
@@ -6839,6 +6845,7 @@
           <EntitySetMapping Name="CONIUGE">
             <EntityTypeMapping TypeName="DBISEPRO.CONIUGE">
               <MappingFragment StoreEntitySet="CONIUGE">
+                <ScalarProperty Name="ESCLUDIPASSAPORTO" ColumnName="ESCLUDIPASSAPORTO" />
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
@@ -6856,6 +6863,7 @@
           <EntitySetMapping Name="FIGLI">
             <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
               <MappingFragment StoreEntitySet="FIGLI">
+                <ScalarProperty Name="ESCLUDIPASSAPORTO" ColumnName="ESCLUDIPASSAPORTO" />
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
@@ -6965,6 +6973,7 @@
           <EntitySetMapping Name="PASSAPORTI">
             <EntityTypeMapping TypeName="DBISEPRO.PASSAPORTI">
               <MappingFragment StoreEntitySet="PASSAPORTI">
+                <ScalarProperty Name="ESCLUDIPASSAPORTO" ColumnName="ESCLUDIPASSAPORTO" />
                 <ScalarProperty Name="DATAPRATICACONCLUSA" ColumnName="DATAPRATICACONCLUSA" />
                 <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
                 <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />

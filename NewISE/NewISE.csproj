@@ -2077,6 +2077,7 @@
     <Content Include="Views\PratichePassaporto\Passaporti.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugePassaporti.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioPassaporto.cshtml" />
+    <Content Include="Views\PratichePassaporto\ColonnaElencoDoc.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

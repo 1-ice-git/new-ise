@@ -27,6 +27,7 @@ namespace NewISE.EF
         public System.DateTime DATANOTIFICARICHIESTA { get; set; }
         public bool PRATICACONCLUSA { get; set; }
         public System.DateTime DATAPRATICACONCLUSA { get; set; }
+        public bool ESCLUDIPASSAPORTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }

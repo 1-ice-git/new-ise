@@ -3,7 +3,7 @@
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
-    <table cellspacing="0" id="tabElencoFamiliari">
+    <table cellspacing="0" id="tabElencoFamiliariPass">
         <thead>
             <tr>
                 <th>
@@ -26,6 +26,9 @@
                 </th>
 
                 <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.escludiPassaporto)
+                </th>
             </tr>
         </thead>
 
@@ -62,10 +65,10 @@
                         }
                     </td>
                     @if (item.idAltriDati > 0)
+                {
+                    switch (item.parentela)
                     {
-                        switch (item.parentela)
-                        {
-                            case EnumParentela.Coniuge:
+                        case EnumParentela.Coniuge:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idFamiliare); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
@@ -91,23 +94,26 @@
                         <td style="text-align: center;"></td>
                     }
 
+                    <td style="text-align: center;">
+                        <input id="hColElencoDoc" type="hidden" value="@item.idFamiliare" />
+                        <div id="divColElencoDoc">
+                            @Html.Action("ColonnaElencoDoc", "PratichePassaporto", new { idFamiliare = item.idFamiliare, parentela = item.parentela })
+                        </div>
+                    </td>
 
-                    @if (item.Documenti.Any())
+                    @if (item.Documenti?.Any() ?? false)
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi) , @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @item.idMaggiorazioniFamiliari ) ">
-                                <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
-                            </a>
+                            @Html.CheckBoxFor(modelItem => item.escludiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
                         </td>
                     }
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare,@Convert.ToDecimal(EnumGruppiDoc.Viaggi), 13, @Convert.ToDecimal(item.parentela) , @item.idMaggiorazioniFamiliari ) ">
-                                <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
-                            </a>
+                            @Html.CheckBoxFor(modelItem => item.escludiPassaporto, new { @onclick = "ConfermaEscludiPassaporto(this," + @item.idFamiliare + ", " + Convert.ToDecimal(item.parentela) + ");" })
                         </td>
                     }
+
 
                 </tr>
             }
@@ -117,8 +123,34 @@
     </table>
 </div>
 
+@*<div class="modal fade" id="ModalEscludiPassaporto" tabindex="-1" role="dialog" aria-labelledby="ModalEscludiPassaportoLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <p id="viewEscludiPassaporto">
+                        <label id="lblTestoEscludiPassaporto">Procedere con l'esclusione del nominativo dalla richiesta di passaporto/visto?</label>
+                    </p>
+                    @Html.Hidden("hBoolEscludi")
+                    @Html.Hidden("hId")
+                    @Html.Hidden("hParentela")
+                    @Html.Hidden("hidChk")
+                </div>
+                <div class="modal-footer">
+                    <button id="btConfermaEscludi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaEscludiPassaporto();">Procedi</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
 <script type="text/javascript">
-    $("#tabElencoFamiliari").DataTable({
+    $("#tabElencoFamiliariPass").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -168,6 +200,176 @@
 
         //]
     });
+
+
+
+    function AggiornaColElencoDoc(result, idFamiliare) {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass tr");
+        var obj = row.find("#hColElencoDoc");
+        var ldiv = row.find("#divColElencoDoc");
+
+        try {
+            for (var i = 0; i < obj.length - 1; i++) {
+                var valore = obj[i].value;
+
+                if (valore == idFamiliare) {
+                    //var id = obj[i].id;
+                    //var unicoId = obj[i].uniqueID;
+                    var div = ldiv[i];
+
+                    $(div).empty();
+                    $(div).html(result);
+
+                    return;
+                }
+            }
+        }
+        catch (e) {
+            throw e;
+        }
+
+    }
+
+    function ColElencoDoc(idFamiliare, parentela) {
+        var rotta = "/PratichePassaporto/ColonnaElencoDoc";
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idFamiliare: idFamiliare, parentela: parentela },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+
+
+                AggiornaColElencoDoc(result, idFamiliare);
+
+
+                //$("#divColElencoDoc").empty();
+                //$("#divColElencoDoc").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function ConfermaEscludiPassaporto(chkEscludi, id, parentela) {
+        //debugger;
+        //var boolEscludi = chkEscludi.checked;
+        //var idFam = parseInt(id);
+        //var parentela = parseInt($("#hParentela").val());
+        //var idChk = $("#hidChk").val();
+        //var chkEscludi = $("#" + idChk);
+
+        var rotta = "/PratichePassaporto/ConfermaEscludiPassaporto";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { id: id, parentela: parentela },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                if (result.err == "") {
+                    chkEscludi.checked = result.chk;
+                    ColElencoDoc(id, parentela);
+
+                } else {
+                    chkEscludi.checked = !chkEscludi.checked;
+                    ErroreElaborazioneAjax(result.err);
+                }
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    //function EscludiPassaporto(chkEscludi, id, parentela) {
+    //    //debugger;
+
+    //    var boolEscludi = chkEscludi.checked;
+    //    $("#hBoolEscludi").val(boolEscludi);
+    //    $("#hId").val(id);
+    //    $("#hParentela").val(parentela);
+
+    //    msgEscludiPassaportoModal(id, parentela, boolEscludi);
+
+
+    //}
+
+    //function msgEscludiPassaportoModal(id, parentela, boolChk) {
+    //    //debugger;
+    //    var rotta = "/PratichePassaporto/NominativoEscludiPassaporto";
+
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: { id: id, parentela: parentela, boolChk: boolChk },
+    //        dataType: 'json',
+    //        beforeSend: function () {
+    //            //debugger;
+
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+
+    //            if (result.err == "") {
+    //                var msg = result.msg;
+    //                $('#lblTestoEscludiPassaporto').text(msg);
+    //                $('#ModalEscludiPassaporto').modal().show();
+
+
+    //            } else {
+    //                ErroreElaborazioneAjax(result.err);
+    //            }
+    //        },
+    //        complete: function () {
+
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+
+    //    });
+    //}
+
 
     function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
         //debugger;

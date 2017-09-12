@@ -113,7 +113,27 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
+        public void SetEscludiPassaporto(decimal idFiglio, ref bool chk)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var f = db.FIGLI.Find(idFiglio);
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    f.ESCLUDIPASSAPORTO = f.ESCLUDIPASSAPORTO == false ? true : false;
+                    int i = db.SaveChanges();
 
+                    if (i <= 0)
+                    {
+                        throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto.");
+                    }
+                    else
+                    {
+                        chk = f.ESCLUDIPASSAPORTO;
+                    }
+                }
+            }
+        }
 
 
         public void SetFiglio(ref FigliModel fm, ModelDBISE db)
@@ -129,7 +149,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                ANNULLATO = fm.Annullato
+                ANNULLATO = fm.Annullato,
+                ESCLUDIPASSAPORTO = fm.escludiPassaporto
             };
 
             db.FIGLI.Add(f);
@@ -182,7 +203,8 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = f.DATAINIZIOVALIDITA,
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                        Annullato = f.ANNULLATO
+                        Annullato = f.ANNULLATO,
+                        escludiPassaporto = f.ESCLUDIPASSAPORTO
                     };
                 }
             }
@@ -222,7 +244,8 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = item.DATAINIZIOVALIDITA,
                         dataFine = item.DATAFINEVALIDITA,
                         dataAggiornamento = item.DATAAGGIORNAMENTO,
-                        Annullato = item.ANNULLATO
+                        Annullato = item.ANNULLATO,
+                        escludiPassaporto = item.ESCLUDIPASSAPORTO
                     }));
                 }
             }
@@ -257,7 +280,8 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = item.DATAINIZIOVALIDITA,
                             dataFine = item.DATAFINEVALIDITA,
                             dataAggiornamento = item.DATAAGGIORNAMENTO,
-                            Annullato = item.ANNULLATO
+                            Annullato = item.ANNULLATO,
+                            escludiPassaporto = item.ESCLUDIPASSAPORTO
                         };
 
                         lfm.Add(fm);
