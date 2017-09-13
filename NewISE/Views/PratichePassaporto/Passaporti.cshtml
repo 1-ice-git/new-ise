@@ -1,8 +1,7 @@
 ﻿@{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-
 }
-
+<h4>Pratiche passaporto</h4>
 <div class="row">
     <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
         <div id="divPassaporto" style="padding-top: 5px;">
@@ -10,19 +9,23 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
-        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti" onclick="ModelNotificaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Notifica richiesta
-        </button>
 
-        <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti" onclick="">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Pratica conclusa
-        </button>
-    </div>
+<div id="divPusantiNotificaAndConcludiPassaporto">
+    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "PratichePassaporto", new { idTrasferimento = idTrasferimento })
 </div>
+@*<div class="row">
+        <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti" onclick="ModelNotificaRichiesta();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Pratica conclusa
+            </button>
+        </div>
+    </div>*@
 
 <script type="text/javascript">
 
@@ -59,7 +62,45 @@
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
                 var msg = errorThrow.err;
-                AlertDialog(msg);
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function GestionePulsantiNotificaAndConcludiPassaporto() {
+        //debugger;
+        var rotta = "/PratichePassaporto/GestPulsantiNotificaAndPraticaConclusa";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPusantiNotificaAndConcludiPassaporto").empty();
+                $("#divPusantiNotificaAndConcludiPassaporto").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
             }
 
         });

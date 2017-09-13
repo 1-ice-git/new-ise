@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "Il passaporto è richiesto.")]
         [Display(Name = "Passaporto")]
-        public decimal? idPassaporto { get; set; }
+        public decimal idPassaporto { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]

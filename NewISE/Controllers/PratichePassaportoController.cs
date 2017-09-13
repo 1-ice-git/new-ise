@@ -102,11 +102,23 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult GestionePulsantiNotificaPraticaConclusa(decimal idTrasferimento)
+        public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTrasferimento)
         {
+            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
 
+            try
+            {
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    gppm = dtpp.GestionePulsantiPassaporto(idTrasferimento);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
-            return PartialView();
+            return PartialView(gppm);
         }
 
 

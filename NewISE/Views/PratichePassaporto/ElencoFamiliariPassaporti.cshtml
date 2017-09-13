@@ -95,7 +95,8 @@
                     }
 
                     <td style="text-align: center;">
-                        <input id="hColElencoDoc" type="hidden" value="@item.idFamiliare" />
+                        <input id="hColElencoDocIdFamiliare" type="hidden" value="@item.idFamiliare" />
+                        <input id="hColElencoDocParentela" type="hidden" value="@Convert.ToDecimal(item.parentela)" />
                         <div id="divColElencoDoc">
                             @Html.Action("ColonnaElencoDoc", "PratichePassaporto", new { idFamiliare = item.idFamiliare, parentela = item.parentela })
                         </div>
@@ -203,17 +204,18 @@
 
 
 
-    function AggiornaColElencoDoc(result, idFamiliare) {
+    function AggiornaColElencoDoc(result, idFamiliare, parentela) {
         //debugger;
         var row = $("#tabElencoFamiliariPass tr");
-        var obj = row.find("#hColElencoDoc");
+        var objIdFamiliare = row.find("#hColElencoDocIdFamiliare");
+        var objParentela = row.find("#hColElencoDocParentela");
         var ldiv = row.find("#divColElencoDoc");
 
         try {
-            for (var i = 0; i < obj.length - 1; i++) {
-                var valore = obj[i].value;
-
-                if (valore == idFamiliare) {
+            for (var i = 0; i < objIdFamiliare.length; i++) {
+                var valIdFam = objIdFamiliare[i].value;
+                var valParentela = objParentela[i].value;
+                if (valIdFam == idFamiliare && valParentela == parentela) {
                     //var id = obj[i].id;
                     //var unicoId = obj[i].uniqueID;
                     var div = ldiv[i];
@@ -226,7 +228,8 @@
             }
         }
         catch (e) {
-            throw e;
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
         }
 
     }
@@ -250,7 +253,7 @@
                 //debugger;
 
 
-                AggiornaColElencoDoc(result, idFamiliare);
+                AggiornaColElencoDoc(result, idFamiliare, parentela);
 
 
                 //$("#divColElencoDoc").empty();
@@ -297,6 +300,7 @@
                 if (result.err == "") {
                     chkEscludi.checked = result.chk;
                     ColElencoDoc(id, parentela);
+                    GestionePulsantiNotificaAndConcludiPassaporto();
 
                 } else {
                     chkEscludi.checked = !chkEscludi.checked;
@@ -396,6 +400,7 @@
                 //$("#viewPensione").html(result);
                 $("#divPassaporto").empty();
                 $("#divPassaporto").html(result);
+                GestionePulsantiNotificaAndConcludiPassaporto();
             },
             complete: function () {
 

@@ -90,12 +90,12 @@ namespace NewISE.EF
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
-        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
-        public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<LIVELLIVISIBILITAEVENTI> LIVELLIVISIBILITAEVENTI { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
+        public virtual DbSet<CONIUGE> CONIUGE { get; set; }
+        public virtual DbSet<FIGLI> FIGLI { get; set; }
     }
 }

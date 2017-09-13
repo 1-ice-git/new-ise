@@ -19,10 +19,14 @@ namespace NewISE.Models.DBModel.dtObj
         public GestPulsantiPassaportoModel GestionePulsantiPassaporto(decimal idTrasferimento)
         {
             GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
-            bool esistonoRichiesteRichiedente = false;
-            bool esistonoRichiesteConiuge = false;
-            bool esistonoRichiesteFigli = false;
+            bool esistonoRichiesteRichiedente = false;///Vero se ancora non si è inserito il documento
+            bool esistonoRichiesteRichiedenteSalvate = false;///Vero se non escluso, ovvero, se è stato inserito il documento
+            bool esistonoRichiesteConiuge = false;///Vero se ancora non è stato inserito il documento per il coniuge.
+            bool esistonoRichiesteConiugeSalvate = false;///Vero se il coniuge non è stato escluso ed è stato inserito il documento.
+            bool esistonoRichiesteFigli = false;///Vero se ancora per i figli non sono stati inseriti i documenti.
+            bool esistonoRichiesteFigliSalvate = false;///Vero se i/o i/il figlio/i non sono stati esclusi
             bool EsistonoRichiesteAttive = false;
+            bool EsistonoRichiesteSalvate = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -33,17 +37,27 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (p != null && p.IDPASSAPORTO > 0)
                     {
-                        var ldRichiedente = p.DOCUMENTI;
-                        if (ldRichiedente?.Any() ?? false)
+                        if (p.ESCLUDIPASSAPORTO == false)
                         {
-                            esistonoRichiesteRichiedente = false;
+                            var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1);
+                            if (ldRichiedente?.Any() ?? false)
+                            {
+                                esistonoRichiesteRichiedente = false;
+                                esistonoRichiesteRichiedenteSalvate = true;
+                            }
+                            else
+                            {
+                                esistonoRichiesteRichiedente = true;
+                                esistonoRichiesteRichiedenteSalvate = false;
+                            }
                         }
                         else
                         {
-                            esistonoRichiesteRichiedente = true;
+                            esistonoRichiesteRichiedente = false;
+                            esistonoRichiesteRichiedenteSalvate = false;
                         }
 
-                        var lc = p.CONIUGE.Where(a => a.ANNULLATO == false);
+                        var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
                         if (lc?.Any() ?? false)
                         {
                             foreach (var c in lc)
@@ -53,17 +67,26 @@ namespace NewISE.Models.DBModel.dtObj
                                         a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
                                 if (ldConiuge?.Any() ?? false)
                                 {
-                                    esistonoRichiesteConiuge = false;
+                                    if (esistonoRichiesteConiuge == false)
+                                        esistonoRichiesteConiuge = false;
+
+                                    esistonoRichiesteConiugeSalvate = true;
                                 }
                                 else
                                 {
                                     esistonoRichiesteConiuge = true;
-                                    return;
+
                                 }
                             }
                         }
+                        else
+                        {
+                            ///Questo caso si verifica se il coniuge non è presente, non a carico o se escluso dalla richiesta di passaporto.
+                            esistonoRichiesteConiuge = false;
+                            esistonoRichiesteConiugeSalvate = false;
+                        }
 
-                        var lf = p.FIGLI.Where(a => a.ANNULLATO == false);
+                        var lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
                         if (lf?.Any() ?? false)
                         {
                             foreach (var f in lf)
@@ -73,13 +96,21 @@ namespace NewISE.Models.DBModel.dtObj
                                         a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
                                 if (ldFiglio?.Any() ?? false)
                                 {
-                                    esistonoRichiesteFigli = false;
+                                    if (esistonoRichiesteFigli == false)
+                                        esistonoRichiesteFigli = false;
+
+                                    esistonoRichiesteFigliSalvate = true;
                                 }
                                 else
                                 {
                                     esistonoRichiesteFigli = true;
                                 }
                             }
+                        }
+                        else
+                        {
+                            esistonoRichiesteFigli = false;
+                            esistonoRichiesteFigliSalvate = false;
                         }
 
                         if (esistonoRichiesteRichiedente || esistonoRichiesteConiuge || esistonoRichiesteFigli)
@@ -91,24 +122,34 @@ namespace NewISE.Models.DBModel.dtObj
                             EsistonoRichiesteAttive = false;
                         }
 
+                        if (esistonoRichiesteRichiedenteSalvate || esistonoRichiesteConiugeSalvate || esistonoRichiesteFigliSalvate)
+                        {
+                            EsistonoRichiesteSalvate = true;
+                        }
+                        else
+                        {
+                            EsistonoRichiesteSalvate = false;
+                        }
+
                         if (p != null && p.IDPASSAPORTO > 0)
                         {
                             gppm = new GestPulsantiPassaportoModel()
                             {
                                 esistonoRichiesteAttive = EsistonoRichiesteAttive,
+                                esistonoRichiesteSalvate = EsistonoRichiesteSalvate,
                                 notificaRichiesta = p.NOTIFICARICHIESTA,
-                                praticaConclusa = p.PRATICACONCLUSA,
+                                praticaConclusa = p.PRATICACONCLUSA
 
                             };
                         }
 
                     }
 
-
                 }
 
-
             }
+
+            return gppm;
         }
 
         public void SetEscludiPassaporto(decimal idTrasferimento, ref bool chk)

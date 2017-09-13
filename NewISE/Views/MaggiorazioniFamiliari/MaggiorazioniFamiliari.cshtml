@@ -92,11 +92,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                                                        }
+                                                                                                                                                        }
     else
     {
         @:ElencoFigli();
-                                                                                                                                        }
+                                                                                                                                                        }
 
     //PulsantiNotificaAttivaMagFam();
 
@@ -344,26 +344,28 @@
                             }
                         } else {
                             if (datiConiuge == true || datiFigli == true) {
-                                if (datiParzialiConiuge == true || datiParzialiFigli == true || (siDocConiuge == false && siDocFigli == false)) {
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
-
+                                if (datiParzialiConiuge == true || datiParzialiFigli == true) {
                                     $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                                     $("#btNotificaRichiestaMagFam").addClass("disabled");
 
                                     $("#btAttivaMagFam").attr("disabled", "disabled");
                                     $("#btAttivaMagFam").addClass("disabled");
-
                                 } else {
-                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
+                                    if (siDocConiuge == false || siDocFigli == false) {
+                                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                        $("#btNotificaRichiestaMagFam").addClass("disabled");
 
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                                        $("#btAttivaMagFam").attr("disabled", "disabled");
+                                        $("#btAttivaMagFam").addClass("disabled");
+                                    } else {
+                                        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                                        $("#btNotificaRichiestaMagFam").removeClass("disabled");
 
-                                    //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
-                                    //$("#btAttivaMagFam").removeClass("disabled");
+                                        //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
+                                        //$("#btAttivaMagFam").removeClass("disabled");
+                                    }
                                 }
+
                             } else {
                                 $("#btNotificaRichiestaMagFam").removeAttr("disabled");
                                 $("#btNotificaRichiestaMagFam").removeClass("disabled");

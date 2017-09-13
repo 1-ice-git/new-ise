@@ -8,10 +8,9 @@ namespace NewISE.Models.ViewModel
     public class GestPulsantiPassaportoModel
     {
         public bool esistonoRichiesteAttive { get; set; }
-        public bool documentiInseriti { get; set; }
         public bool notificaRichiesta { get; set; }
         public bool praticaConclusa { get; set; }
-        public bool EscludiPassaporto { get; set; }
+        public bool esistonoRichiesteSalvate { get; set; }
 
     }
 }
