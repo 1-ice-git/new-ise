@@ -35,6 +35,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
         public decimal IDPASSAPORTO { get; set; }
         public bool ESCLUDIPASSAPORTO { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICAPP { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }

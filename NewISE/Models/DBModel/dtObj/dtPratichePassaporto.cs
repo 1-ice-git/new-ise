@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
 using Newtonsoft.Json.Schema;
 using NewISE.Models.Tools;
 
@@ -14,6 +16,157 @@ namespace NewISE.Models.DBModel.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+        }
+
+        private void InvioEmailPratichePassaporto(decimal idPassaporto, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            PassaportoModel pm = new PassaportoModel();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+            string nominativiDellaRichiesta = string.Empty;
+
+            try
+            {
+                pm = this.GetPassaportoByID(idPassaporto, db);
+                if (pm != null && pm.idPassaporto > 0)
+                {
+                    if (pm.notificaRichiesta == true && pm.praticaConclusa == false)
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            {
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    var destUggs = System.Configuration.ConfigurationManager.AppSettings["EmailUfficioGestioneGiuridicaEsviluppo"];
+                                    msgMail.destinatario.Add(new Destinatario() { Nominativo = "Ufficio Gestione Giuridica e Sviluppo", EmailDestinatario = destUggs });
+
+                                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                                    {
+                                        luam = dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore, db).ToList();
+                                        if (luam?.Any() ?? false)
+                                        {
+
+                                            foreach (var uam in luam)
+                                            {
+                                                var dm = dtd.GetDipendenteByMatricola(uam.matricola, db);
+
+                                                if (dm != null && dm.HasValue() && dm.email != string.Empty)
+                                                {
+                                                    msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
+                                                }
+
+                                            }
+
+
+                                        }
+                                    }
+
+                                    am = Utility.UtenteAutorizzato();
+                                    msgMail.cc.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
+
+                                    using (dtTrasferimento dttr = new dtTrasferimento())
+                                    {
+                                        var trm = dttr.GetSoloTrasferimentoById(pm.idPassaporto);
+                                        if (trm != null && trm.idTrasferimento > 0)
+                                        {
+                                            var dm = dtd.GetDipendenteByID(trm.idDipendente, db);
+                                            if (dm != null && dm.idDipendente > 0)
+                                            {
+                                                nominativiDellaRichiesta = dm.Nominativo;
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                using (dtConiuge dtc = new dtConiuge())
+                                {
+                                    var cm = dtc.
+                                }
+
+
+
+                                msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaporto;
+                                msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaporto, "");
+
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public void SetNotificaRichiesta(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var p = db.TRASFERIMENTO.Find(idTrasferimento).PASSAPORTI;
+                    if (p != null && p.IDPASSAPORTO > 0)
+                    {
+                        p.NOTIFICARICHIESTA = true;
+                        p.DATANOTIFICARICHIESTA = DateTime.Now;
+
+                        var lc =
+                            p.CONIUGE.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
+                                    a.DATANOTIFICAPP.HasValue == false).ToList();
+                        if (lc?.Any() ?? false)
+                        {
+                            foreach (var c in lc)
+                            {
+                                c.DATANOTIFICAPP = DateTime.Now;
+                            }
+                        }
+
+                        var lf =
+                            p.FIGLI.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
+                                    a.DATANOTIFICAPP.HasValue == false).ToList();
+                        if (lf?.Any() ?? false)
+                        {
+                            foreach (var f in lf)
+                            {
+                                f.DATANOTIFICAPP = DateTime.Now;
+                            }
+                        }
+
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
+                        }
+                        else
+                        {
+                            this.InvioEmailPratichePassaporto(p.IDPASSAPORTO, db);
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+            }
         }
 
         public GestPulsantiPassaportoModel GestionePulsantiPassaporto(decimal idTrasferimento)
@@ -262,6 +415,45 @@ namespace NewISE.Models.DBModel.dtObj
 
             return pm;
         }
+
+
+        public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+
+            var p = db.PASSAPORTI.Find(idPassaporto);
+
+            pm = new PassaportoModel()
+            {
+                idPassaporto = p.IDPASSAPORTO,
+                notificaRichiesta = p.NOTIFICARICHIESTA,
+                dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                praticaConclusa = p.PRATICACONCLUSA,
+                dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                escludiPassaporto = p.ESCLUDIPASSAPORTO,
+                //trasferimento = new TrasferimentoModel()
+                //{
+                //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+                //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+                //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+                //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+                //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+                //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+                //    coan = p.TRASFERIMENTO.COAN,
+                //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+                //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+                //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+                //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+                //}
+            };
+
+
+            return pm;
+        }
+
 
         public PassaportoModel GetPassaportoByID(decimal idPassaporto)
         {

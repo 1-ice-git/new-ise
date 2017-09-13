@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per {0}..
+        /// </summary>
+        internal static string MessaggioRichiestaPratichePassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioRichiestaPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per le maggiorazioni familiari.
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
@@ -93,6 +102,15 @@ namespace Resources {
         internal static string OggettoNotificaTrasferimento {
             get {
                 return ResourceManager.GetString("OggettoNotificaTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per le pratiche passaporto/visti.
+        /// </summary>
+        internal static string OggettoRichiestaPratichePassaporto {
+            get {
+                return ResourceManager.GetString("OggettoRichiestaPratichePassaporto", resourceCulture);
             }
         }
     }

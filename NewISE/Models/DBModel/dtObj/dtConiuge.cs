@@ -112,6 +112,40 @@ namespace NewISE.Models.DBModel.dtObj
         //    return vr;
         //}
 
+        public IList<ConiugeModel> GetListaConiugeByIdPassaporto(decimal idPassaporto)
+        {
+            List<ConiugeModel> lcm = new List<ConiugeModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.PASSAPORTI.Find(idPassaporto);
+
+                var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA);
+
+                if (lc?.Any() ?? false)
+                {
+                    lcm = (from e in lc
+                           select new ConiugeModel()
+                           {
+                               idConiuge = e.IDCONIUGE,
+                               idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                               idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                               idPassaporto = e.IDPASSAPORTO,
+                               nome = e.NOME,
+                               cognome = e.COGNOME,
+                               codiceFiscale = e.CODICEFISCALE,
+                               dataInizio = e.DATAINIZIOVALIDITA,
+                               dataFine = e.DATAFINEVALIDITA,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO,
+                               escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                               dataNotificaPP = e.DATANOTIFICAPP
+                           }).ToList();
+                }
+            }
+
+            return lcm;
+        }
 
 
         public ConiugeModel GetConiugeByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
@@ -141,7 +175,8 @@ namespace NewISE.Models.DBModel.dtObj
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
                     annullato = c.ANNULLATO,
-                    escludiPassaporto = c.ESCLUDIPASSAPORTO
+                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
+                    dataNotificaPP = c.DATANOTIFICAPP
                 };
 
             }
@@ -171,7 +206,8 @@ namespace NewISE.Models.DBModel.dtObj
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
                     annullato = c.ANNULLATO,
-                    escludiPassaporto = c.ESCLUDIPASSAPORTO
+                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
+                    dataNotificaPP = c.DATANOTIFICAPP
                 };
             }
 
@@ -201,7 +237,8 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
                         annullato = c.ANNULLATO,
-                        escludiPassaporto = c.ESCLUDIPASSAPORTO
+                        escludiPassaporto = c.ESCLUDIPASSAPORTO,
+                        dataNotificaPP = c.DATANOTIFICAPP
                     };
                 }
             }
@@ -233,7 +270,8 @@ namespace NewISE.Models.DBModel.dtObj
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                annullato = e.ANNULLATO,
-                               escludiPassaporto = e.ESCLUDIPASSAPORTO
+                               escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                               dataNotificaPP = e.DATANOTIFICAPP
                            }).ToList();
                 }
             }
@@ -278,7 +316,9 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
                 ANNULLATO = cm.annullato,
-                ESCLUDIPASSAPORTO = cm.escludiPassaporto
+                ESCLUDIPASSAPORTO = cm.escludiPassaporto,
+                DATANOTIFICAPP = cm.dataNotificaPP
+
             };
 
             db.CONIUGE.Add(c);
@@ -336,7 +376,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 codiceFiscale = cm.codiceFiscale,
                                 dataInizio = cm.dataInizio.Value,
                                 dataFine = dtFin,
-                                escludiPassaporto = cm.escludiPassaporto
+                                escludiPassaporto = cm.escludiPassaporto,
+                                dataNotificaPP = cm.dataNotificaPP
                             };
 
                             this.SetConiuge(ref newc, db);

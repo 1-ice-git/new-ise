@@ -121,7 +121,26 @@ namespace NewISE.Controllers
             return PartialView(gppm);
         }
 
+        public JsonResult NotificaRichiesta(decimal idTrasferimento)
+        {
+            string errore = "";
+            string msg = string.Empty;
 
+            try
+            {
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    dtpp.SetNotificaRichiesta(idTrasferimento);
+                    msg = "Notifica effettuata con successo";
+                }
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return Json(new { err = errore, msg = msg });
+        }
 
 
         //public JsonResult NominativoEscludiPassaporto(decimal id, EnumParentela parentela, bool boolChk)

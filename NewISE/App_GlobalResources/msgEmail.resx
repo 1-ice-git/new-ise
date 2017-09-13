@@ -123,10 +123,16 @@
   <data name="MessaggioNotificaTrasferimento" xml:space="preserve">
     <value>Notifica del trasferimento per la sede di {0}.</value>
   </data>
+  <data name="MessaggioRichiestaPratichePassaporto" xml:space="preserve">
+    <value>Notifica della richiesta per il passaporto/visto per {0}.</value>
+  </data>
   <data name="OggettoNotificaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica della richiesta per le maggiorazioni familiari</value>
   </data>
   <data name="OggettoNotificaTrasferimento" xml:space="preserve">
     <value>Notifica del trasferimento</value>
+  </data>
+  <data name="OggettoRichiestaPratichePassaporto" xml:space="preserve">
+    <value>Notifica della richiesta per le pratiche passaporto/visti</value>
   </data>
 </root>

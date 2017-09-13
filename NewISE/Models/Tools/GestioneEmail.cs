@@ -46,8 +46,8 @@ namespace NewISE.Models.Tools
 
                 if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
                 {
-
-                    messaggio.From = new MailAddress("ise@ice.it", "ISE");
+                    string mittenteIse = System.Configuration.ConfigurationManager.AppSettings["EmailISE"];
+                    messaggio.From = new MailAddress(mittenteIse, "ISE");
                 }
                 else
                 {

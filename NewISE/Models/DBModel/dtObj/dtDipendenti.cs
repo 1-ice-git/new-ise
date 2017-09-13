@@ -295,6 +295,57 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+
+        public DipendentiModel GetDipendenteByMatricola(string matricola, ModelDBISE db)
+        {
+            DipendentiModel dm = new DipendentiModel();
+            int matr = 0;
+
+            try
+            {
+                matr = Convert.ToInt32(matricola);
+
+                DIPENDENTI d = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).First();
+
+                dm = new DipendentiModel()
+                {
+                    idDipendente = d.IDDIPENDENTE,
+                    matricola = d.MATRICOLA,
+                    nome = d.NOME,
+                    cognome = d.COGNOME,
+                    dataAssunzione = d.DATAASSUNZIONE,
+                    dataCessazione = d.DATACESSAZIONE,
+                    indirizzo = d.INDIRIZZO,
+                    cap = d.CAP,
+                    citta = d.CITTA,
+                    provincia = d.PROVINCIA,
+                    email = d.EMAIL,
+                    telefono = d.TELEFONO,
+                    fax = d.FAX,
+                    abilitato = d.ABILITATO,
+                    dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                    cdcGepe = new CDCGepeModel()
+                    {
+                        iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                        codiceCDC = d.CDCGEPE.CODICECDC,
+                        descCDC = d.CDCGEPE.DESCCDC,
+                        dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
+
+
+            return dm;
+        }
+
+
         public DipendentiModel GetDipendenteByMatricola(int matricola)
         {
             DipendentiModel dm;
@@ -333,6 +384,44 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+
+
+        public DipendentiModel GetDipendenteByMatricola(int matricola, ModelDBISE db)
+        {
+            DipendentiModel dm;
+
+
+            DIPENDENTI d = db.DIPENDENTI.Where(a => a.MATRICOLA == matricola).First();
+
+            dm = new DipendentiModel()
+            {
+                idDipendente = d.IDDIPENDENTE,
+                matricola = d.MATRICOLA,
+                nome = d.NOME,
+                cognome = d.COGNOME,
+                dataAssunzione = d.DATAASSUNZIONE,
+                dataCessazione = d.DATACESSAZIONE,
+                indirizzo = d.INDIRIZZO,
+                cap = d.CAP,
+                citta = d.CITTA,
+                provincia = d.PROVINCIA,
+                email = d.EMAIL,
+                telefono = d.TELEFONO,
+                fax = d.FAX,
+                abilitato = d.ABILITATO,
+                dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                cdcGepe = new CDCGepeModel()
+                {
+                    iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                    codiceCDC = d.CDCGEPE.CODICECDC,
+                    descCDC = d.CDCGEPE.DESCCDC,
+                    dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                }
+            };
+
+
+            return dm;
+        }
 
 
 

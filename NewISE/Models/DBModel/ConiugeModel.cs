@@ -62,6 +62,9 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool escludiPassaporto { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime? dataNotificaPP { get; set; }
+
 
         public MaggiorazioniFamiliariModel MaggiorazioniFasmiliari { get; set; }
 

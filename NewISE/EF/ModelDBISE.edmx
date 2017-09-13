@@ -171,6 +171,7 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATANOTIFICAPP" Type="date" />
         </EntityType>
         <EntityType Name="CONIUGE_DOC">
           <Key>
@@ -285,6 +286,7 @@
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ESCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATANOTIFICAPP" Type="date" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
           <Key>
@@ -5774,6 +5776,7 @@
           <NavigationProperty Name="PENSIONE" Relationship="DBISEPRO.C_P" FromRole="CONIUGE" ToRole="PENSIONE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.C_PC" FromRole="CONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
+          <Property Name="DATANOTIFICAPP" Type="DateTime" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -5798,6 +5801,7 @@
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.F_IPS" FromRole="FIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.PMF_F" FromRole="FIGLI" ToRole="PERCENTUALEMAGFIGLI" />
+          <Property Name="DATANOTIFICAPP" Type="DateTime" />
         </EntityType>
         <Association Name="R_C_ADF">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
@@ -6909,6 +6913,7 @@
           <EntitySetMapping Name="CONIUGE">
             <EntityTypeMapping TypeName="DBISEPRO.CONIUGE">
               <MappingFragment StoreEntitySet="CONIUGE">
+                <ScalarProperty Name="DATANOTIFICAPP" ColumnName="DATANOTIFICAPP" />
                 <ScalarProperty Name="ESCLUDIPASSAPORTO" ColumnName="ESCLUDIPASSAPORTO" />
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
@@ -6927,6 +6932,7 @@
           <EntitySetMapping Name="FIGLI">
             <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
               <MappingFragment StoreEntitySet="FIGLI">
+                <ScalarProperty Name="DATANOTIFICAPP" ColumnName="DATANOTIFICAPP" />
                 <ScalarProperty Name="ESCLUDIPASSAPORTO" ColumnName="ESCLUDIPASSAPORTO" />
                 <ScalarProperty Name="IDPASSAPORTO" ColumnName="IDPASSAPORTO" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
