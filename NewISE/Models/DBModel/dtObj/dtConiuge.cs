@@ -80,47 +80,33 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        //public static ValidationResult VerificaCodFiscMaggiorazioneConiugeVModel(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
 
-        //    var cm = context.ObjectInstance as MaggiorazioneConiugeVModel;
 
-        //    if (cm != null)
-        //    {
-        //        if (cm.codiceFiscale != null && cm.codiceFiscale != string.Empty)
-        //        {
-        //            if (Utility.CheckCodiceFiscale(cm.codiceFiscale))
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("Il Codice Fiscale non è corretto.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-        //    }
 
-        //    return vr;
-        //}
 
-        public IList<ConiugeModel> GetListaConiugeByIdPassaporto(decimal idPassaporto)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idPassaporto"></param>
+        /// <param name="AllOnlyNotify">Se vero preleva tutte le righe se false preleva solo quelli con data notifica nulla.</param>
+        /// <returns></returns>
+        public IList<ConiugeModel> GetListaConiugeByIdPassaporto(decimal idPassaporto, bool AllOnlyNotify = false)
         {
             List<ConiugeModel> lcm = new List<ConiugeModel>();
+            List<CONIUGE> lc = new List<CONIUGE>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var p = db.PASSAPORTI.Find(idPassaporto);
+                if (AllOnlyNotify)
+                {
+                    lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                }
+                else
+                {
+                    lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                }
 
-                var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA);
 
                 if (lc?.Any() ?? false)
                 {
@@ -142,6 +128,52 @@ namespace NewISE.Models.DBModel.dtObj
                                dataNotificaPP = e.DATANOTIFICAPP
                            }).ToList();
                 }
+            }
+
+            return lcm;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idPassaporto"></param>
+        /// <param name="AllOnlyNotify">Se vero preleva tutte le righe se false (false è di default) preleva solo quelli con data notifica nulla.</param>
+        /// <returns></returns>
+        public IList<ConiugeModel> GetListaConiugeByIdPassaporto(decimal idPassaporto, ModelDBISE db, bool AllOnlyNotify = false)
+        {
+            List<ConiugeModel> lcm = new List<ConiugeModel>();
+            List<CONIUGE> lc = new List<CONIUGE>();
+
+            var p = db.PASSAPORTI.Find(idPassaporto);
+            if (AllOnlyNotify)
+            {
+                lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+            else
+            {
+                lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+
+            if (lc?.Any() ?? false)
+            {
+                lcm = (from e in lc
+                       select new ConiugeModel()
+                       {
+                           idConiuge = e.IDCONIUGE,
+                           idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                           idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                           idPassaporto = e.IDPASSAPORTO,
+                           nome = e.NOME,
+                           cognome = e.COGNOME,
+                           codiceFiscale = e.CODICEFISCALE,
+                           dataInizio = e.DATAINIZIOVALIDITA,
+                           dataFine = e.DATAFINEVALIDITA,
+                           dataAggiornamento = e.DATAAGGIORNAMENTO,
+                           annullato = e.ANNULLATO,
+                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                           dataNotificaPP = e.DATANOTIFICAPP
+                       }).ToList();
             }
 
             return lcm;

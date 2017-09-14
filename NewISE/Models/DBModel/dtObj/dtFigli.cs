@@ -16,6 +16,55 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idPassaporto"></param>
+        /// <param name="AllOnlyNotify">Se vero preleva tutte le righe se false (false è di default) preleva solo quelli con data notifica nulla.</param>
+        /// <returns></returns>
+        public IList<FigliModel> GetListaFigliByIdPassaporto(decimal idPassaporto, ModelDBISE db, bool AllOnlyNotify = false)
+        {
+            List<FigliModel> lfm = new List<FigliModel>();
+            List<FIGLI> lf = new List<FIGLI>();
+
+            var p = db.PASSAPORTI.Find(idPassaporto);
+            if (AllOnlyNotify)
+            {
+                lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+            else
+            {
+                lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+
+            if (lf?.Any() ?? false)
+            {
+                lfm = (from e in lf
+                       select new FigliModel()
+                       {
+                           idFigli = e.IDFIGLI,
+                           idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                           idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                           idPassaporto = e.IDPASSAPORTO,
+                           nome = e.NOME,
+                           cognome = e.COGNOME,
+                           codiceFiscale = e.CODICEFISCALE,
+                           dataInizio = e.DATAINIZIOVALIDITA,
+                           dataFine = e.DATAFINEVALIDITA,
+                           dataAggiornamento = e.DATAAGGIORNAMENTO,
+                           Annullato = e.ANNULLATO,
+                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                           dataNotificaPP = e.DATANOTIFICAPP
+                       }).ToList();
+            }
+
+            return lfm;
+        }
+
+
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -47,38 +96,7 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        //public static ValidationResult VerificaCodiceFiscale2(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
 
-        //    var fm = context.ObjectInstance as Figli_V_Model;
-
-        //    if (fm != null)
-        //    {
-
-        //        if (fm.codiceFiscale != null && fm.codiceFiscale != string.Empty)
-        //        {
-        //            if (Utility.CheckCodiceFiscale(fm.codiceFiscale))
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("Il Codice Fiscale non è corretto.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-        //    }
-
-        //    return vr;
-        //}
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {

@@ -228,6 +228,25 @@
         </div>
     </div>
 
+    <div class="modal fade" id="myModalInfoGenerale" tabindex="-5" role="dialog" aria-labelledby="myModalInfoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title alert alert-info text-info" id="myModalInfoLabel">Attenzione!!!</h4>
+                </div>
+                <div class="modal-body alert alert-info text-info">
+                    <p id="msgModalInfoGenerale" class="text-info"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btOkInfo" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
 
@@ -353,6 +372,22 @@
 
             $("#msgModalError").text(msg);
             $('#myModalError').modal('toggle');
+        }
+
+        function InfoElaborazioneAjax(messaggio) {
+            //debugger;
+            var msg = "Elaborazione effettuata con successo.";
+            try {
+                if (messaggio != undefined && messaggio != "") {
+                    msg = messaggio;
+                }
+            }
+            catch (e) {
+
+            }
+
+            $("#msgModalInfoGenerale").text(msg);
+            $('#myModalInfoGenerale').modal('toggle');
         }
 
         function number_format(number, decimals, dec_point, thousands_sep) {

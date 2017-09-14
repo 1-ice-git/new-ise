@@ -24,6 +24,7 @@ namespace NewISE.EF
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.MAGGIORAZIONEFAMILIARI = new HashSet<MAGGIORAZIONEFAMILIARI>();
+            this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -61,5 +62,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEFAMILIARI> MAGGIORAZIONEFAMILIARI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
     }
 }

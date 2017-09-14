@@ -369,6 +369,10 @@ namespace NewISE.Controllers
                 switch (gruppoDocumento)
                 {
                     case EnumGruppiDoc.Viaggi:
+                        if (tipoDoc == EnumTipoDoc.CartaIdentita_Viaggi1)
+                        {
+
+                        }
                         break;
                     case EnumGruppiDoc.MaggiorazioneAbitazione:
                         break;

@@ -1,6 +1,7 @@
 ﻿using NewISE.Models.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
@@ -82,13 +83,36 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 using (dtConiuge dtc = new dtConiuge())
                                 {
-                                    var cm = dtc.
+                                    var lcm = dtc.GetListaConiugeByIdPassaporto(pm.idPassaporto, db).ToList();
+                                    if (lcm?.Any() ?? false)
+                                    {
+                                        nominativiDellaRichiesta = lcm.Aggregate(nominativiDellaRichiesta,
+                                            (current, cm) => current + (", " + cm.nominativo));
+                                    }
                                 }
 
+                                using (dtFigli dtf = new dtFigli())
+                                {
+                                    var lfm = dtf.GetListaFigliByIdPassaporto(pm.idPassaporto, db).ToList();
+                                    if (lfm?.Any() ?? false)
+                                    {
+                                        nominativiDellaRichiesta += lfm.Aggregate(nominativiDellaRichiesta,
+                                            (current, fm) => current + (", " + fm.nominativo));
+                                    }
+                                }
 
+                                if (msgMail.destinatario?.Any() ?? false)
+                                {
+                                    msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaporto;
+                                    msgMail.corpoMsg = string.Format(
+                                        Resources.msgEmail.MessaggioRichiestaPratichePassaporto, nominativiDellaRichiesta);
+                                    gmail.sendMail(msgMail);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non è stato possibile inviare l'email.");
+                                }
 
-                                msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaporto;
-                                msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaporto, "");
 
                             }
                         }
@@ -119,33 +143,6 @@ namespace NewISE.Models.DBModel.dtObj
                         p.NOTIFICARICHIESTA = true;
                         p.DATANOTIFICARICHIESTA = DateTime.Now;
 
-                        var lc =
-                            p.CONIUGE.Where(
-                                a =>
-                                    a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
-                                    a.DATANOTIFICAPP.HasValue == false).ToList();
-                        if (lc?.Any() ?? false)
-                        {
-                            foreach (var c in lc)
-                            {
-                                c.DATANOTIFICAPP = DateTime.Now;
-                            }
-                        }
-
-                        var lf =
-                            p.FIGLI.Where(
-                                a =>
-                                    a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
-                                    a.DATANOTIFICAPP.HasValue == false).ToList();
-                        if (lf?.Any() ?? false)
-                        {
-                            foreach (var f in lf)
-                            {
-                                f.DATANOTIFICAPP = DateTime.Now;
-                            }
-                        }
-
-
                         int i = db.SaveChanges();
 
                         if (i <= 0)
@@ -155,6 +152,43 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             this.InvioEmailPratichePassaporto(p.IDPASSAPORTO, db);
+
+                            var lc =
+                            p.CONIUGE.Where(
+                                a =>
+                                    a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
+                                    a.DATANOTIFICAPP.HasValue == false).ToList();
+                            if (lc?.Any() ?? false)
+                            {
+                                foreach (var c in lc)
+                                {
+                                    c.DATANOTIFICAPP = DateTime.Now;
+                                }
+                            }
+
+                            var lf =
+                                p.FIGLI.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false &&
+                                        a.DATANOTIFICAPP.HasValue == false).ToList();
+                            if (lf?.Any() ?? false)
+                            {
+                                foreach (var f in lf)
+                                {
+                                    f.DATANOTIFICAPP = DateTime.Now;
+                                }
+                            }
+                            if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
+                            {
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
+                                }
+                            }
+
+
                         }
                     }
 
