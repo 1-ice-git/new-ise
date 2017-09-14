@@ -32,7 +32,6 @@ namespace NewISE.Controllers
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
                     lefm = dtpp.GetDipendentiRichiestaPassaporto(idTrasferimento).ToList();
-
                 }
             }
             catch (Exception ex)
@@ -120,6 +119,59 @@ namespace NewISE.Controllers
 
             return PartialView(gppm);
         }
+
+        public JsonResult LeggiStatusPratichePassaporto(decimal idPassaporto)
+        {
+            string errore = string.Empty;
+            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
+            bool notificaRichiesta = false;
+            bool praticaConclusa = false;
+
+
+            try
+            {
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    gppm = dtpp.GestionePulsantiPassaporto(idPassaporto);
+                    if (gppm != null)
+                    {
+                        notificaRichiesta = gppm.notificaRichiesta;
+                        praticaConclusa = gppm.praticaConclusa;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore,
+                        notificaRichiesta = notificaRichiesta,
+                        praticaConclusa = praticaConclusa
+                    });
+        }
+
+        public ActionResult ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        {
+            GestioneChkEscludiPassaportoModel gcep;
+
+            gcep = new GestioneChkEscludiPassaportoModel()
+            {
+                idFamiliare = idFamiliare,
+                parentela = parentela,
+                esisteDoc = esisteDoc,
+                escludiPassaporto = escludiPassaporto
+            };
+
+            return PartialView(gcep);
+
+        }
+
 
         public JsonResult NotificaRichiesta(decimal idTrasferimento)
         {

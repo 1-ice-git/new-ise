@@ -2034,6 +2034,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
+    <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiPassaportoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2078,6 +2079,7 @@
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioPassaporto.cshtml" />
     <Content Include="Views\PratichePassaporto\ColonnaElencoDoc.cshtml" />
     <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
+    <Content Include="Views\PratichePassaporto\ChkEscludiPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
