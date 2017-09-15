@@ -315,6 +315,10 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             this.InvioEmailPraticaPassaportoConclusa(p.IDPASSAPORTO, db);
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Chiusura della richiesta del passaporto/visto.", "PASSAPORTI", db,
+                                idTrasferimento, p.IDPASSAPORTO);
+
                         }
                     }
 
@@ -350,6 +354,10 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                "Notifica della richiesta del passaporto/visto.", "PASSAPORTI", db,
+                                idTrasferimento, p.IDPASSAPORTO);
+
                             this.InvioEmailPratichePassaportoRichiesta(p.IDPASSAPORTO, db);
 
                             var lc =
@@ -362,6 +370,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var c in lc)
                                 {
                                     c.DATANOTIFICAPP = DateTime.Now;
+
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                        "Notifica della richiesta del passaporto/visto.", "CONIUGE", db,
+                                        idTrasferimento, c.IDCONIUGE);
+
                                 }
                             }
 
@@ -375,6 +388,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var f in lf)
                                 {
                                     f.DATANOTIFICAPP = DateTime.Now;
+
                                 }
                             }
                             if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
@@ -390,6 +404,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                         }
                     }
+
+
+
+
 
                     db.Database.CurrentTransaction.Commit();
                 }

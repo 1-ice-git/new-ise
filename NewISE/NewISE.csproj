@@ -1674,6 +1674,7 @@
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
+    <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="DBComuniItalia\Cm.cs" />
     <Compile Include="DBComuniItalia\Comuni.cs" />
@@ -2092,6 +2093,7 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Log\" />
+    <Folder Include="Views\TitoliViaggio\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

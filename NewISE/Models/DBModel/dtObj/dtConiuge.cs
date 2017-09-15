@@ -329,6 +329,12 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         chk = c.ESCLUDIPASSAPORTO;
+                        decimal idTrasferimento =
+                            db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Esclusione del coniuge dalla richiesta del passaporto/visto.", "CONIUGE", db,
+                            idTrasferimento, c.IDCONIUGE);
                     }
                 }
             }

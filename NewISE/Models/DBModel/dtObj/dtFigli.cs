@@ -148,6 +148,12 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         chk = f.ESCLUDIPASSAPORTO;
+                        decimal idTrasferimento =
+                            db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Esclusione del figlio dalla richiesta del passaporto/visto.", "FIGLI", db,
+                            idTrasferimento, f.IDFIGLI);
                     }
                 }
             }
