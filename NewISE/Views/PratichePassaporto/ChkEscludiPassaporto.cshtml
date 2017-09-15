@@ -1,6 +1,6 @@
 ﻿@model NewISE.Models.ViewModel.GestioneChkEscludiPassaportoModel
 
-@if (Model.esisteDoc)
+@if (Model.esisteDoc || Model.disabilitaChk)
 {
 
     @Html.CheckBoxFor(model => model.escludiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })

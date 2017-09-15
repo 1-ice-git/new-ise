@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per {0} sono concluse..
+        /// </summary>
+        internal static string MessaggioRichiestaPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("MessaggioRichiestaPratichePassaportoConcluse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per le maggiorazioni familiari.
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
@@ -111,6 +120,15 @@ namespace Resources {
         internal static string OggettoRichiestaPratichePassaporto {
             get {
                 return ResourceManager.GetString("OggettoRichiestaPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica per la richiesta dei passaporto/visti.
+        /// </summary>
+        internal static string OggettoRichiestaPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("OggettoRichiestaPratichePassaportoConcluse", resourceCulture);
             }
         }
     }

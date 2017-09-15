@@ -19,7 +19,171 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        private void InvioEmailPratichePassaporto(decimal idPassaporto, ModelDBISE db)
+        public PassaportoModel GetPassaportoByIdFiglio(decimal idFiglio)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.FIGLI.Find(idFiglio).PASSAPORTI;
+
+                if (p != null && p.IDPASSAPORTO > 0)
+                {
+                    pm = new PassaportoModel()
+                    {
+                        idPassaporto = p.IDPASSAPORTO,
+                        notificaRichiesta = p.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                        praticaConclusa = p.PRATICACONCLUSA,
+                        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                        escludiPassaporto = p.ESCLUDIPASSAPORTO
+                    };
+                }
+
+            }
+
+            return pm;
+        }
+
+        public PassaportoModel GetPassaportoByIdConiuge(decimal idConiuge)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.CONIUGE.Find(idConiuge).PASSAPORTI;
+
+                if (p != null && p.IDPASSAPORTO > 0)
+                {
+                    pm = new PassaportoModel()
+                    {
+                        idPassaporto = p.IDPASSAPORTO,
+                        notificaRichiesta = p.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                        praticaConclusa = p.PRATICACONCLUSA,
+                        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                        escludiPassaporto = p.ESCLUDIPASSAPORTO
+                    };
+                }
+
+            }
+
+            return pm;
+        }
+
+        private void InvioEmailPraticaPassaportoConclusa(decimal idPassaporto, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            PassaportoModel pm = new PassaportoModel();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+            string nominativiDellaRichiesta = string.Empty;
+
+            try
+            {
+                pm = this.GetPassaportoByID(idPassaporto, db);
+                if (pm != null && pm.idPassaporto > 0)
+                {
+                    if (pm.notificaRichiesta == true && pm.praticaConclusa == true)
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            {
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                                    {
+                                        am = Utility.UtenteAutorizzato();
+
+                                        luam = dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore, db).ToList();
+                                        if (luam?.Any() ?? false)
+                                        {
+
+                                            foreach (var uam in luam)
+                                            {
+                                                var dm = dtd.GetDipendenteByMatricola(uam.matricola, db);
+
+                                                if (dm != null && dm.HasValue() && dm.email != string.Empty)
+                                                {
+                                                    msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
+                                                }
+                                                else
+                                                {
+                                                    if (am.idRuoloUtente == 1)
+                                                    {
+                                                        msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
+                                                    }
+
+                                                }
+
+                                            }
+
+
+                                            msgMail.cc.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
+
+                                            using (dtTrasferimento dttr = new dtTrasferimento())
+                                            {
+                                                var trm = dttr.GetSoloTrasferimentoById(pm.idPassaporto);
+                                                if (trm != null && trm.idTrasferimento > 0)
+                                                {
+                                                    var dm = dtd.GetDipendenteByID(trm.idDipendente, db);
+                                                    if (dm != null && dm.idDipendente > 0)
+                                                    {
+                                                        nominativiDellaRichiesta = dm.Nominativo;
+                                                        msgMail.cc.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
+
+                                                    }
+                                                }
+                                            }
+
+                                            using (dtConiuge dtc = new dtConiuge())
+                                            {
+                                                var lcm = dtc.GetListaConiugeByIdPassaporto(pm.idPassaporto, db).ToList();
+                                                if (lcm?.Any() ?? false)
+                                                {
+                                                    nominativiDellaRichiesta = lcm.Aggregate(nominativiDellaRichiesta,
+                                                        (current, cm) => current + (", " + cm.nominativo));
+                                                }
+                                            }
+
+                                            using (dtFigli dtf = new dtFigli())
+                                            {
+                                                var lfm = dtf.GetListaFigliByIdPassaporto(pm.idPassaporto, db).ToList();
+                                                if (lfm?.Any() ?? false)
+                                                {
+                                                    nominativiDellaRichiesta += lfm.Aggregate(nominativiDellaRichiesta,
+                                                        (current, fm) => current + (", " + fm.nominativo));
+                                                }
+                                            }
+
+                                            if (msgMail.destinatario?.Any() ?? false)
+                                            {
+                                                msgMail.oggetto = Resources.msgEmail.OggettoRichiestaPratichePassaportoConcluse;
+                                                msgMail.corpoMsg = string.Format(
+                                                    Resources.msgEmail.MessaggioRichiestaPratichePassaportoConcluse, nominativiDellaRichiesta);
+                                                gmail.sendMail(msgMail);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non è stato possibile inviare l'email.");
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        private void InvioEmailPratichePassaportoRichiesta(decimal idPassaporto, ModelDBISE db)
         {
             AccountModel am = new AccountModel();
             PassaportoModel pm = new PassaportoModel();
@@ -128,6 +292,41 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void SetConcludiPassaporto(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var p = db.TRASFERIMENTO.Find(idTrasferimento).PASSAPORTI;
+                    if (p != null && p.IDPASSAPORTO > 0)
+                    {
+                        p.PRATICACONCLUSA = true;
+                        p.DATAPRATICACONCLUSA = DateTime.Now;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Non è stato posssibile chiudere la richiesta per le pratiche del passaporto.");
+                        }
+                        else
+                        {
+                            this.InvioEmailPraticaPassaportoConclusa(p.IDPASSAPORTO, db);
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
 
         public void SetNotificaRichiesta(decimal idTrasferimento)
         {
@@ -151,7 +350,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            this.InvioEmailPratichePassaporto(p.IDPASSAPORTO, db);
+                            this.InvioEmailPratichePassaportoRichiesta(p.IDPASSAPORTO, db);
 
                             var lc =
                             p.CONIUGE.Where(

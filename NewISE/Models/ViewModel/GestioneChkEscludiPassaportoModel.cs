@@ -12,5 +12,6 @@ namespace NewISE.Models.ViewModel
         public EnumParentela parentela { get; set; }
         public bool esisteDoc { get; set; }
         public bool escludiPassaporto { get; set; }
+        public bool disabilitaChk { get; set; }
     }
 }

@@ -159,14 +159,44 @@ namespace NewISE.Controllers
         public ActionResult ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
         {
             GestioneChkEscludiPassaportoModel gcep;
-
-            gcep = new GestioneChkEscludiPassaportoModel()
+            PassaportoModel pm = new PassaportoModel();
+            bool dchk = false;
+            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
             {
-                idFamiliare = idFamiliare,
-                parentela = parentela,
-                esisteDoc = esisteDoc,
-                escludiPassaporto = escludiPassaporto
-            };
+
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        pm = dtpp.GetPassaportoByIdConiuge(idFamiliare);
+                        break;
+                    case EnumParentela.Figlio:
+                        pm = dtpp.GetPassaportoByIdFiglio(idFamiliare);
+                        break;
+                    case EnumParentela.Richiedente:
+                        pm = dtpp.GetPassaportoByID(idFamiliare);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("parentela");
+                }
+
+                if (pm != null && pm.idPassaporto > 0)
+                {
+                    if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
+                    {
+                        dchk = true;
+                    }
+                }
+
+                gcep = new GestioneChkEscludiPassaportoModel()
+                {
+                    idFamiliare = idFamiliare,
+                    parentela = parentela,
+                    esisteDoc = esisteDoc,
+                    escludiPassaporto = escludiPassaporto,
+                    disabilitaChk = dchk,
+                };
+            }
+
 
             return PartialView(gcep);
 
@@ -194,6 +224,28 @@ namespace NewISE.Controllers
             return Json(new { err = errore, msg = msg });
         }
 
+        public JsonResult ConcludiPraticaPassaporto(decimal idTrasferimento)
+        {
+            string errore = "";
+            string msg = string.Empty;
+
+            try
+            {
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    dtpp.SetConcludiPassaporto(idTrasferimento);
+                    msg = "Pratica conclusa con successo";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return Json(new { err = errore, msg = msg });
+
+        }
 
         //public JsonResult NominativoEscludiPassaporto(decimal id, EnumParentela parentela, bool boolChk)
         //{

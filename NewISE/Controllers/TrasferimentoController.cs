@@ -109,11 +109,15 @@ namespace NewISE.Controllers
             string errore = string.Empty;
             bool richiestaMF = false;
             bool attivazioneMF = false;
+
+            bool richiestaPP = false;
+            bool conclusePP = false;
+
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF);
+                    dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF, out richiestaPP, out conclusePP);
                 }
 
             }
@@ -122,7 +126,7 @@ namespace NewISE.Controllers
                 errore = ex.Message;
             }
 
-            return Json(new { err = errore, richiestaMF = richiestaMF, attivazioneMF = attivazioneMF });
+            return Json(new { err = errore, richiestaMF = richiestaMF, attivazioneMF = attivazioneMF, richiestaPP = richiestaPP, conclusePP = conclusePP });
 
         }
 

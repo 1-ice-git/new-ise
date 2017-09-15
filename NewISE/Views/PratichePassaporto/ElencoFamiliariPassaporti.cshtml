@@ -46,7 +46,10 @@
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.dataFine)
+                        @if (item.dataFine != Convert.ToDateTime("31/12/9999"))
+                        {
+                            @Html.DisplayFor(modelItem => item.dataFine)
+                        }
                     </td>
                     <td>
                         @switch (item.parentela)
@@ -180,7 +183,7 @@
         //]
     });
 
-    @*function GestioneChkEscludiPassaporto() {
+    function GestioneChkEscludiPassaporto() {
         var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
         var idPassaporto = parseInt('@Model.First().idPassaporto');
 
@@ -201,10 +204,10 @@
                 //debugger;
                 if (result.err == "") {
                     if (result.praticaConclusa == true || result.notificaRichiesta == true) {
-                        DsabilitaCheckBox();
+                        DisabilitaCheckBox();
                     }
                     else {
-
+                        AbilitaCheckBox();
                     }
                 }
 
@@ -220,24 +223,24 @@
             }
         });
 
-    }*@
+    }
 
-    //function DsabilitaCheckBox() {
-    //    debugger;
-    //    var row = $("#tabElencoFamiliariPass tr");
-    //    var objChk = row.find("#escludiPassaporto");
+    function DisabilitaCheckBox() {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass tr");
+        var objChk = row.find("#escludiPassaporto");
 
-    //    try {
-    //        for (var i = 0; i < objChk.length; i++) {
-    //            $(objChk).attr("disabled", "disabled");
-    //            $(objChk).addClass("disabled");
-    //        }
-    //    }
-    //    catch (e) {
-    //        var msg = e;
-    //        ErroreElaborazioneAjax(msg);
-    //    }
-    //}
+        try {
+            for (var i = 0; i < objChk.length; i++) {
+                $(objChk[i]).attr("disabled", "disabled");
+                $(objChk[i]).addClass("disabled");
+            }
+        }
+        catch (e) {
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
+        }
+    }
 
     //function AbilitaCheckBox() {
     //    debugger;
@@ -246,8 +249,9 @@
 
     //    try {
     //        for (var i = 0; i < objChk.length; i++) {
-    //            $(objChk).removeAttr("disabled");
-    //            $(objChk).removeClass("disabled");
+
+    //            $(objChk[i]).removeAttr("disabled");
+    //            $(objChk[i]).removeClass("disabled");
     //        }
     //    }
     //    catch (e) {

@@ -180,7 +180,7 @@
 
 
     GestioneAttivitaTrasferimento();
-
+    ///Tale funzione gestisce l'abilitazione delle checkbox per la gestione delle attività di trasferimento e la sequenza di abilitazione dei link.
     function GestioneAttivitaTrasferimento() {
         //debugger;
         var rotta = "/Trasferimento/GestioneAttivitaTrasferimento";
@@ -204,6 +204,8 @@
                     var admin = result.admin;
                     var richiestaMF = result.richiestaMF;
                     var attivazioneMF = result.attivazioneMF;
+                    var richiestaPP = result.richiestaPP;
+                    var conclusePP = result.conclusePP;
 
                     if (richiestaMF == true) {
                         $("#chkMagFamiliariR").each(function () { this.checked = true; });
@@ -219,6 +221,18 @@
                         $("#chkMagFamiliariSR").each(function () { this.checked = false; });
 
                         EnableDisableLinkPassaporto(false);
+                    }
+
+                    if (richiestaPP == true) {
+                        $("#chkPratichePassaportoR").each(function () { this.checked = true; });
+                        if (conclusePP == true) {
+                            $("#chkPratichePassaportoSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkPratichePassaportoR").each(function () { this.checked = false; });
+                        $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
                     }
 
 

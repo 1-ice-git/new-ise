@@ -150,10 +150,13 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void GestioneAttivitaTrasferimento(decimal idTrasferimento, out bool richiestaMF, out bool attivazioneMF)
+        public void GestioneAttivitaTrasferimento(decimal idTrasferimento, out bool richiestaMF, out bool attivazioneMF, out bool richiestaPP, out bool conclusePP)
         {
             richiestaMF = false;
             attivazioneMF = false;
+
+            richiestaPP = false;
+            conclusePP = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -168,6 +171,15 @@ namespace NewISE.Models.DBModel.dtObj
                     richiestaMF = mf.RICHIESTAATTIVAZIONE;
                     attivazioneMF = mf.ATTIVAZIONEMAGGIOARAZIONI;
 
+                }
+                #endregion
+
+                #region Pratiche passaporto
+                var p = t.PASSAPORTI;
+                if (p != null && p.IDPASSAPORTO > 0)
+                {
+                    richiestaPP = p.NOTIFICARICHIESTA;
+                    conclusePP = p.PRATICACONCLUSA;
                 }
                 #endregion
             }

@@ -196,13 +196,14 @@
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/MyValidateDate.js"></script>
 
 <script type="text/javascript">
 
-    $.culture = Globalize.culture("it-IT");
-    $.validator.methods.date = function (value, element) {
-        return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
-    }
+    //$.culture = Globalize.culture("it-IT");
+    //$.validator.methods.date = function (value, element) {
+    //    return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    //}
 
 
 

@@ -27,7 +27,7 @@ body {
     background-color: whitesmoke;
     margin-top: 5px;
     height: 5%;
-    margin-bottom:5px;
+    margin-bottom: 5px;
 }
 
 #RealeSimulazione {
@@ -45,14 +45,14 @@ body {
     font-weight: bold;
 }
 
-    #menuIse a:hover {
-        background-color: #237069;
-        cursor: pointer;
-    }
+#menuIse a:hover {
+    background-color: #237069;
+    cursor: pointer;
+}
 
 .container {
-   max-width: none !important;
-   width: 1200px;
+    max-width: none !important;
+    width: 1200px;
 }
 
 footer {
@@ -120,28 +120,31 @@ footer {
     background-color: #00B04E;
 }
 
-.btn_link:hover{
-    color:mintcream;
-    background-color:cadetblue;
+.btn_link:hover {
+    color: mintcream;
+    background-color: cadetblue;
     text-decoration: none;
 }
 
 
 
 
-hr{
-    border-color:#00B04E;
+hr {
+    border-color: #00B04E;
 }
 
-a.disabled{
-    cursor:not-allowed;
+a.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration: none;
+    opacity: 0.5;
+    color: grey;
 }
 
 .SfondoBordoImg {
-	box-shadow: 7px 4px 10px #808080; 
-}﻿
+    box-shadow: 7px 4px 10px #808080;
+}
 
- .BordoRosso{
-     border: 1px solid red;
- }
-
+﻿ .BordoRosso {
+    border: 1px solid red;
+}
