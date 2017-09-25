@@ -201,6 +201,75 @@ namespace NewISE.Controllers
             return PartialView(adf);
         }
 
+
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariFiglioTitoliViaggio(decimal idFiglio)
+        {
+            AltriDatiFamModel adf = new AltriDatiFamModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
+                }
+
+                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                {
+                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
+                    if (pf != null && pf.HasValue())
+                    {
+                        switch (pf.idTipologiaFiglio)
+                        {
+                            case TipologiaFiglio.Residente:
+                                adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case TipologiaFiglio.Studente:
+                                adf.studente = true;
+                                adf.residente = true;
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+
+
+            using (dtFigli dtf = new dtFigli())
+            {
+                if (adf.idFigli.HasValue)
+                {
+                    var fm = dtf.GetFigliobyID(adf.idFigli.Value);
+                    adf.Figli = fm;
+                }
+            }
+
+            using (dtConiuge dtc = new dtConiuge())
+            {
+                if (adf.idConiuge.HasValue)
+                {
+                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                    adf.Coniuge = cm;
+                }
+            }
+
+            return PartialView(adf);
+        }
+
+
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
@@ -384,6 +453,76 @@ namespace NewISE.Controllers
 
             return PartialView(adf);
         }
+
+
+
+        [HttpPost]
+        public ActionResult AltriDatiFamiliariConiugeTitoliViaggio(decimal idConiuge)
+        {
+            AltriDatiFamModel adf = new AltriDatiFamModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                }
+
+
+                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                {
+                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
+
+                    if (pc != null && pc.HasValue())
+                    {
+                        switch (pc.idTipologiaConiuge)
+                        {
+                            case TipologiaConiuge.Residente:
+                                adf.residente = true;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidenteCarico:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = true;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+
+            using (dtConiuge dtc = new dtConiuge())
+            {
+                if (adf.idConiuge.HasValue)
+                {
+                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                    adf.Coniuge = cm;
+                }
+            }
+
+
+            return PartialView(adf);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

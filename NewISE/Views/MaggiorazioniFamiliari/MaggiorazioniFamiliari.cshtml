@@ -92,11 +92,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                                                                        }
+                                                                                                                                                                    }
     else
     {
         @:ElencoFigli();
-                                                                                                                                                        }
+                                                                                                                                                                    }
 
     //PulsantiNotificaAttivaMagFam();
 
@@ -351,7 +351,7 @@
                                     $("#btAttivaMagFam").attr("disabled", "disabled");
                                     $("#btAttivaMagFam").addClass("disabled");
                                 } else {
-                                    if (siDocConiuge == false || siDocFigli == false) {
+                                    if ((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) {
                                         $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                                         $("#btNotificaRichiestaMagFam").addClass("disabled");
 

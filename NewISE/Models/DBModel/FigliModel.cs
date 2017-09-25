@@ -29,6 +29,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Passaporto")]
         [Required(ErrorMessage = "Il passaporto è richiesto.")]
         public decimal idPassaporto { get; set; }
+        [Display(Name = "Titolo Viaggio")]
+        [Required(ErrorMessage = "Il titolo di viaggio è richiesto.")]
+        public decimal idTitoloViaggio { get; set; }
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]
@@ -63,10 +66,15 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Escludi P.")]
         [DefaultValue(false)]
         public bool escludiPassaporto { get; set; }
+        [Required(ErrorMessage = "Il campo Escludi titolo viaggio è richiesto.")]
+        [Display(Name = "Escludi T.V.")]
+        [DefaultValue(false)]
+        public bool escludiTitoloViaggio { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataNotificaPP { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime? dataNotificaTV { get; set; }
 
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;

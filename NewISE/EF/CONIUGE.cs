@@ -36,6 +36,9 @@ namespace NewISE.EF
         public decimal IDPASSAPORTO { get; set; }
         public bool ESCLUDIPASSAPORTO { get; set; }
         public Nullable<System.DateTime> DATANOTIFICAPP { get; set; }
+        public decimal IDTITOLOVIAGGIO { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICATV { get; set; }
+        public bool ESCLUDITITOLOVIAGGIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
@@ -48,5 +51,6 @@ namespace NewISE.EF
         public virtual ICollection<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using NewISE.Models.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,7 @@ using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using Newtonsoft.Json.Schema;
 using NewISE.Models.Tools;
+using RestSharp.Extensions;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -354,7 +356,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                 "Notifica della richiesta del passaporto/visto.", "PASSAPORTI", db,
                                 idTrasferimento, p.IDPASSAPORTO);
 
@@ -369,9 +371,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var c in lc)
                                 {
+
                                     c.DATANOTIFICAPP = DateTime.Now;
 
-                                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                         "Notifica della richiesta del passaporto/visto.", "CONIUGE", db,
                                         idTrasferimento, c.IDCONIUGE);
 
@@ -389,14 +392,20 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     f.DATANOTIFICAPP = DateTime.Now;
 
+                                    Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
+                                       "Notifica della richiesta del passaporto/visto.", "Figli", db,
+                                       idTrasferimento, f.IDFIGLI);
                                 }
                             }
                             if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
                             {
+
                                 int j = db.SaveChanges();
 
                                 if (j <= 0)
                                 {
+                                    //var log = db.Database.Log;
+
                                     throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
                                 }
                             }
@@ -420,9 +429,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public GestPulsantiPassaportoModel GestionePulsantiPassaporto(decimal idTrasferimento)
+        public GestPulsantiAttConclModel GestionePulsantiPassaporto(decimal idTrasferimento)
         {
-            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
+            GestPulsantiAttConclModel gppm = new GestPulsantiAttConclModel();
             bool esistonoRichiesteRichiedente = false;///Vero se ancora non si è inserito il documento
             bool esistonoRichiesteRichiedenteSalvate = false;///Vero se non escluso, ovvero, se è stato inserito il documento
             bool esistonoRichiesteConiuge = false;///Vero se ancora non è stato inserito il documento per il coniuge.
@@ -537,7 +546,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (p != null && p.IDPASSAPORTO > 0)
                         {
-                            gppm = new GestPulsantiPassaportoModel()
+                            gppm = new GestPulsantiAttConclModel()
                             {
                                 esistonoRichiesteAttive = EsistonoRichiesteAttive,
                                 esistonoRichiesteSalvate = EsistonoRichiesteSalvate,
@@ -624,6 +633,48 @@ namespace NewISE.Models.DBModel.dtObj
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento dei dati di gestione del passaporto.", "Passaporti", db, idPassaporto, idPassaporto);
                 }
             }
+        }
+
+
+
+
+        public PassaportoModel GetPassaportoByIdMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+
+            var p = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO.PASSAPORTI;
+            if (p != null && p.IDPASSAPORTO > 0)
+            {
+                pm = new PassaportoModel()
+                {
+                    idPassaporto = p.IDPASSAPORTO,
+                    notificaRichiesta = p.NOTIFICARICHIESTA,
+                    dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                    praticaConclusa = p.PRATICACONCLUSA,
+                    dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                    escludiPassaporto = p.ESCLUDIPASSAPORTO,
+                    //trasferimento = new TrasferimentoModel()
+                    //{
+                    //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+                    //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                    //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+                    //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                    //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+                    //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+                    //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+                    //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+                    //    coan = p.TRASFERIMENTO.COAN,
+                    //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+                    //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+                    //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+                    //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+                    //}
+                };
+            }
+
+
+            return pm;
         }
 
 
@@ -976,7 +1027,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 using (dtFigli dtf = new dtFigli())
                                                 {
-                                                    var lfm = dtf.GetListaFigli(mf.idMaggiorazioniFamiliari).Where(a => new[] { EnumTipologiaFiglio.Residente, EnumTipologiaFiglio.StudenteResidente, }.Contains(a.idTipologiaFiglio)).ToList();
+                                                    var lfm =
+                                                        dtf.GetListaFigli(mf.idMaggiorazioniFamiliari)
+                                                            .Where(
+                                                                a =>
+                                                                    new[]
+                                                                    {
+                                                                        EnumTipologiaFiglio.Residente,
+                                                                        EnumTipologiaFiglio.StudenteResidente,
+                                                                    }.Contains
+                                                                        (a.idTipologiaFiglio))
+                                                            .ToList();
                                                     if (lfm?.Any() ?? false)
                                                     {
                                                         foreach (var fm in lfm)

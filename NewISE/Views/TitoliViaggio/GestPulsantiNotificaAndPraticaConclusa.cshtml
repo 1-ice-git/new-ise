@@ -1,0 +1,58 @@
+﻿@model NewISE.Models.ViewModel.GestPulsantiAttConclRvModel
+
+<div class="row">
+    <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
+
+        @if (Model.chkPesonalmente == true)
+            {
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+
+
+            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Pratica conclusa
+            </button>
+        }
+        else if (Model.pulsanteNotificaRichiesta == true)
+        {
+            <button class="btn btn-default btn-sm " id="btNotificaRichiestaTitoliViaggi" onclick="NotificaRichiestaTitoliViaggi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Pratica conclusa
+            </button>
+        }
+        else if (Model.pulsantePraticaConclusa == true)
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+
+            <button class="btn btn-default btn-sm " id="btPraticaConclusaTitoliViaggi" onclick="ConcludiRichiestaTitoliViaggi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Pratica conclusa
+            </button>
+        }
+        else
+        {
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Notifica richiesta
+            </button>
+
+
+            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaTitoliViaggi">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Pratica conclusa
+            </button>
+        }
+
+    </div>
+</div>

@@ -1,0 +1,135 @@
+﻿@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+}
+
+<h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
+<div class="row">
+    <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
+        <div id="divTitoliViaggio" style="padding-top: 5px;">
+            @Html.Action("ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento })
+        </div>
+    </div>
+</div>
+
+<div id="divPusantiNotificaAndConcludiTitoliViaggio">
+    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "TitoliViaggio", new { idTrasferimento = idTrasferimento })
+</div>
+
+<script type="text/javascript">
+
+    function ElencoFamiliariTitoliViaggio() {
+        //debugger;
+        var rotta = "/PratichePassaporto/ElencoFamiliariPassaporti";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTitoliViaggio").empty();
+                $("#divTitoliViaggio").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function GestionePulsantiNotificaAndConcludiTitoliViaggio() {
+        //debugger;
+        var rotta = "/TitoliViaggio/GestPulsantiNotificaAndPraticaConclusa";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPusantiNotificaAndConcludiTitoliViaggio").empty();
+                $("#divPusantiNotificaAndConcludiTitoliViaggio").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function NotificaRichiestaTitoliViaggi() {
+        //debugger;
+        var rotta = "/TitoliViaggio/NotificaRichiesta";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    GestionePulsantiNotificaAndConcludiTitoliViaggio();
+                    //GestioneChkEscludiPassaporto();
+                    //GestioneAttivitaTrasferimento();
+                    //InfoElaborazioneAjax(result.msg);
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+</script>

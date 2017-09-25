@@ -57,7 +57,8 @@
         </tr>
         <tr>
             <th>
-                Richiesta Titoli di Viaggio
+                @Ajax.ActionLink("Richiesta Titoli di Viaggio", "TitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkTitoliViaggio" })
+
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -206,6 +207,9 @@
                     var attivazioneMF = result.attivazioneMF;
                     var richiestaPP = result.richiestaPP;
                     var conclusePP = result.conclusePP;
+                    var richiesteTV = result.richiesteTV;
+                    var concluseTV = result.concluseTV;
+
 
                     if (richiestaMF == true) {
                         $("#chkMagFamiliariR").each(function () { this.checked = true; });
@@ -227,12 +231,29 @@
                         $("#chkPratichePassaportoR").each(function () { this.checked = true; });
                         if (conclusePP == true) {
                             $("#chkPratichePassaportoSR").each(function () { this.checked = true; });
+                            EnableDisableLinkTitoliViaggio(true);
                         } else {
                             $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
+                            EnableDisableLinkTitoliViaggio(false);
                         }
                     } else {
                         $("#chkPratichePassaportoR").each(function () { this.checked = false; });
                         $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
+                        EnableDisableLinkTitoliViaggio(false);
+                    }
+
+
+                    //chkTitoliViaggioR
+                    if (richiesteTV == true) {
+                        $("#chkTitoliViaggioR").each(function () { this.checked = true; });
+                        if (concluseTV == true) {
+                            $("#chkTitoliViaggioSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkTitoliViaggioSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkTitoliViaggioR").each(function () { this.checked = false; });
+                        $("#chkTitoliViaggioSR").each(function () { this.checked = false; });
                     }
 
 
@@ -264,6 +285,18 @@
             //disableLink
             $("#linkPratichePassaporto").attr("disabled", "disabled");
             $("#linkPratichePassaporto").addClass("disableLink");
+        }
+    }
+
+    function EnableDisableLinkTitoliViaggio(abilitato) {
+        //debugger;
+        if (abilitato == true) {
+            $("#linkTitoliViaggio").removeAttr("disabled");
+            $("#linkTitoliViaggio").removeClass("disableLink");
+        } else {
+            //disableLink
+            $("#linkTitoliViaggio").attr("disabled", "disabled");
+            $("#linkTitoliViaggio").addClass("disableLink");
         }
     }
 

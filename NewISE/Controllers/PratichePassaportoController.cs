@@ -21,7 +21,7 @@ namespace NewISE.Controllers
 
         }
 
-
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult ElencoFamiliariPassaporti(decimal idTrasferimento)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
@@ -41,6 +41,7 @@ namespace NewISE.Controllers
             return PartialView(lefm);
         }
 
+        [HttpPost]
         public ActionResult ColonnaElencoDoc(decimal idFamiliare, EnumParentela parentela)
         {
             ElencoFamiliariModel efm = new ElencoFamiliariModel();
@@ -102,7 +103,7 @@ namespace NewISE.Controllers
 
         public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTrasferimento)
         {
-            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
+            GestPulsantiAttConclModel gppm = new GestPulsantiAttConclModel();
 
             try
             {
@@ -122,7 +123,7 @@ namespace NewISE.Controllers
         public JsonResult LeggiStatusPratichePassaporto(decimal idPassaporto)
         {
             string errore = string.Empty;
-            GestPulsantiPassaportoModel gppm = new GestPulsantiPassaportoModel();
+            GestPulsantiAttConclModel gppm = new GestPulsantiAttConclModel();
             bool notificaRichiesta = false;
             bool praticaConclusa = false;
 

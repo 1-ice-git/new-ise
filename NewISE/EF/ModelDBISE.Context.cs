@@ -29,7 +29,6 @@ namespace NewISE.EF
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
-        public virtual DbSet<BIGLIETTI> BIGLIETTI { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
@@ -97,5 +96,6 @@ namespace NewISE.EF
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<LIVELLIVISIBILITAEVENTI> LIVELLIVISIBILITAEVENTI { get; set; }
+        public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
     }
 }

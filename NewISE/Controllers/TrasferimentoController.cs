@@ -112,12 +112,15 @@ namespace NewISE.Controllers
 
             bool richiestaPP = false;
             bool conclusePP = false;
+            bool richiesteTV = false;
+            bool concluseTV = false;
 
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF, out richiestaPP, out conclusePP);
+                    dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
+                        out richiestaPP, out conclusePP, out richiesteTV, out concluseTV);
                 }
 
             }
@@ -126,7 +129,18 @@ namespace NewISE.Controllers
                 errore = ex.Message;
             }
 
-            return Json(new { err = errore, richiestaMF = richiestaMF, attivazioneMF = attivazioneMF, richiestaPP = richiestaPP, conclusePP = conclusePP });
+            return
+                Json(
+                    new
+                    {
+                        err = errore,
+                        richiestaMF = richiestaMF,
+                        attivazioneMF = attivazioneMF,
+                        richiestaPP = richiestaPP,
+                        conclusePP = conclusePP,
+                        richiesteTV = richiesteTV,
+                        concluseTV = concluseTV,
+                    });
 
         }
 
@@ -563,6 +577,11 @@ namespace NewISE.Controllers
                                     using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                                     {
                                         dtpp.PreSetPassaporto(trm.idTrasferimento, db);
+                                    }
+
+                                    using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                                    {
+                                        dttv.PreSetTitoloViaggio(trm.idTrasferimento, db);
                                     }
 
                                     using (dtIndennita dti = new dtIndennita())

@@ -1697,9 +1697,6 @@
     <Compile Include="EF\ATTIVITACRUD.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\BIGLIETTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\CALENDARIOEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -1889,6 +1886,9 @@
     <Compile Include="EF\TIPOVOCE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TRASFERIMENTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -1913,6 +1913,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
@@ -1951,6 +1952,7 @@
     <Compile Include="Models\DBModel\dtObj\dtTipologiaConiuge.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipologiaFiglio.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTipoTrasferimento.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtTitoliViaggi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasferimento.cs" />
     <Compile Include="Interfacce\Iemail.cs" />
     <Compile Include="Interfacce\Modelli\Destinatario.cs" />
@@ -2037,7 +2039,9 @@
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
-    <Compile Include="Models\ViewModel\GestPulsantiPassaportoModel.cs" />
+    <Compile Include="Models\ViewModel\GestioneChkEscludiTitoliViaggioModel.cs" />
+    <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
+    <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2082,6 +2086,13 @@
     <Content Include="Views\PratichePassaporto\ColonnaElencoDoc.cshtml" />
     <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <Content Include="Views\PratichePassaporto\ChkEscludiPassaporto.cshtml" />
+    <Content Include="Views\TitoliViaggio\TitoliViaggio.cshtml" />
+    <Content Include="Views\TitoliViaggio\ElencoFamiliariTitoliViaggio.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
+    <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />
+    <Content Include="Views\TitoliViaggio\ChkEscludiTitoloViaggio.cshtml" />
+    <Content Include="Views\TitoliViaggio\ColonnaElencoDoc.cshtml" />
+    <Content Include="Views\TitoliViaggio\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2093,7 +2104,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Log\" />
-    <Folder Include="Views\TitoliViaggio\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

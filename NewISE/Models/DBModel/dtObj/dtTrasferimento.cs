@@ -150,13 +150,19 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void GestioneAttivitaTrasferimento(decimal idTrasferimento, out bool richiestaMF, out bool attivazioneMF, out bool richiestaPP, out bool conclusePP)
+        public void GestioneAttivitaTrasferimento(decimal idTrasferimento,
+                                                      out bool richiestaMF, out bool attivazioneMF,
+                                                      out bool richiestaPP, out bool conclusePP,
+                                                      out bool richiesteTV, out bool concluseTV)
         {
             richiestaMF = false;
             attivazioneMF = false;
 
             richiestaPP = false;
             conclusePP = false;
+
+            richiesteTV = false;
+            concluseTV = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -181,6 +187,17 @@ namespace NewISE.Models.DBModel.dtObj
                     richiestaPP = p.NOTIFICARICHIESTA;
                     conclusePP = p.PRATICACONCLUSA;
                 }
+                #endregion
+
+                #region Titoli di viaggio
+
+                var tv = t.TITOLIVIAGGIO;
+                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                {
+                    richiesteTV = tv.NOTIFICARICHIESTA;
+                    concluseTV = tv.PRATICACONCLUSA;
+                }
+
                 #endregion
             }
         }

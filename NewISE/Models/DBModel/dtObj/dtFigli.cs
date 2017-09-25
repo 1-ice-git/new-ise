@@ -57,7 +57,60 @@ namespace NewISE.Models.DBModel.dtObj
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
                            Annullato = e.ANNULLATO,
                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                           dataNotificaPP = e.DATANOTIFICAPP
+                           dataNotificaPP = e.DATANOTIFICAPP,
+                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
+                           dataNotificaTV = e.DATANOTIFICATV
+                       }).ToList();
+            }
+
+            return lfm;
+        }
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idPassaporto"></param>
+        /// <param name="AllOnlyNotify">Se vero preleva tutte le righe se false (false è di default) preleva solo quelli con data notifica nulla.</param>
+        /// <returns></returns>
+        public IList<FigliModel> GetListaFigliByIdTitoloViaggio(decimal idTitoloViaggio, ModelDBISE db, bool AllOnlyNotify = false)
+        {
+            List<FigliModel> lfm = new List<FigliModel>();
+            List<FIGLI> lf = new List<FIGLI>();
+
+            var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+            if (AllOnlyNotify)
+            {
+                lf = tv.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+            else
+            {
+                lf = tv.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+            }
+
+            if (lf?.Any() ?? false)
+            {
+                lfm = (from e in lf
+                       select new FigliModel()
+                       {
+                           idFigli = e.IDFIGLI,
+                           idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                           idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                           idPassaporto = e.IDPASSAPORTO,
+                           nome = e.NOME,
+                           cognome = e.COGNOME,
+                           codiceFiscale = e.CODICEFISCALE,
+                           dataInizio = e.DATAINIZIOVALIDITA,
+                           dataFine = e.DATAFINEVALIDITA,
+                           dataAggiornamento = e.DATAAGGIORNAMENTO,
+                           Annullato = e.ANNULLATO,
+                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                           dataNotificaPP = e.DATANOTIFICAPP,
+                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
+                           dataNotificaTV = e.DATANOTIFICATV
                        }).ToList();
             }
 
@@ -160,6 +213,35 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void SetEscludiTitoloViaggio(decimal idFiglio, ref bool chk)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var f = db.FIGLI.Find(idFiglio);
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    f.ESCLUDITITOLOVIAGGIO = f.ESCLUDITITOLOVIAGGIO == false ? true : false;
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception("Non è stato possibile modificare lo stato di escludi titolo viaggio.");
+                    }
+                    else
+                    {
+                        chk = f.ESCLUDITITOLOVIAGGIO;
+                        decimal idTrasferimento =
+                            db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                            "Esclusione del figlio dalla richiesta del titolo di viaggio.", "FIGLI", db,
+                            idTrasferimento, f.IDFIGLI);
+                    }
+                }
+            }
+        }
+
+
         public void SetFiglio(ref FigliModel fm, ModelDBISE db)
         {
             FIGLI f = new FIGLI()
@@ -167,6 +249,7 @@ namespace NewISE.Models.DBModel.dtObj
                 IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
                 IDPASSAPORTO = fm.idPassaporto,
+                IDTITOLOVIAGGIO = fm.idTitoloViaggio,
                 NOME = fm.nome.ToUpper(),
                 COGNOME = fm.cognome.ToUpper(),
                 CODICEFISCALE = fm.codiceFiscale.ToUpper(),
@@ -174,7 +257,12 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
                 ANNULLATO = fm.Annullato,
-                ESCLUDIPASSAPORTO = fm.escludiPassaporto
+                ESCLUDIPASSAPORTO = fm.escludiPassaporto,
+                DATANOTIFICAPP = fm.dataNotificaPP,
+                ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
+                DATANOTIFICATV = fm.dataNotificaTV
+
+
             };
 
             db.FIGLI.Add(f);
@@ -221,6 +309,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
                         idPassaporto = f.IDPASSAPORTO,
+                        idTitoloViaggio = f.IDTITOLOVIAGGIO,
                         nome = f.NOME,
                         cognome = f.COGNOME,
                         codiceFiscale = f.CODICEFISCALE,
@@ -228,7 +317,10 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
                         Annullato = f.ANNULLATO,
-                        escludiPassaporto = f.ESCLUDIPASSAPORTO
+                        escludiPassaporto = f.ESCLUDIPASSAPORTO,
+                        dataNotificaPP = f.DATANOTIFICAPP,
+                        escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO,
+                        dataNotificaTV = f.DATANOTIFICATV
                     };
                 }
             }
@@ -262,6 +354,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
                         idPassaporto = item.IDPASSAPORTO,
+                        idTitoloViaggio = item.IDTITOLOVIAGGIO,
                         nome = item.NOME,
                         cognome = item.COGNOME,
                         codiceFiscale = item.CODICEFISCALE,
@@ -269,7 +362,9 @@ namespace NewISE.Models.DBModel.dtObj
                         dataFine = item.DATAFINEVALIDITA,
                         dataAggiornamento = item.DATAAGGIORNAMENTO,
                         Annullato = item.ANNULLATO,
-                        escludiPassaporto = item.ESCLUDIPASSAPORTO
+                        escludiPassaporto = item.ESCLUDIPASSAPORTO,
+                        dataNotificaPP = item.DATANOTIFICAPP,
+                        escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO
                     }));
                 }
             }
@@ -298,6 +393,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                             idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
                             idPassaporto = item.IDPASSAPORTO,
+                            idTitoloViaggio = item.IDTITOLOVIAGGIO,
                             nome = item.NOME,
                             cognome = item.COGNOME,
                             codiceFiscale = item.CODICEFISCALE,
@@ -305,7 +401,10 @@ namespace NewISE.Models.DBModel.dtObj
                             dataFine = item.DATAFINEVALIDITA,
                             dataAggiornamento = item.DATAAGGIORNAMENTO,
                             Annullato = item.ANNULLATO,
-                            escludiPassaporto = item.ESCLUDIPASSAPORTO
+                            escludiPassaporto = item.ESCLUDIPASSAPORTO,
+                            dataNotificaPP = item.DATANOTIFICAPP,
+                            escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO,
+                            dataNotificaTV = item.DATANOTIFICATV
                         };
 
                         lfm.Add(fm);

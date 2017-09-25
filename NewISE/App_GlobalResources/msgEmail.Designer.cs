@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica la richiesta per i biglietti di viaggio per {0}.
+        /// </summary>
+        internal static string MessaggioRichiestaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioRichiestaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per le maggiorazioni familiari.
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
@@ -129,6 +138,15 @@ namespace Resources {
         internal static string OggettoRichiestaPratichePassaportoConcluse {
             get {
                 return ResourceManager.GetString("OggettoRichiestaPratichePassaportoConcluse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per il titolo di viaggio.
+        /// </summary>
+        internal static string OggettoRichiestaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoRichiestaTitoloViaggio", resourceCulture);
             }
         }
     }

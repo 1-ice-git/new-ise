@@ -688,9 +688,16 @@ namespace NewISE.Models.DBModel.dtObj
                         fm.Annullato = false;
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
-                            var pm = dtpp.GetPassaportoByIdMagFam(fm.idMaggiorazioniFamiliari);
+                            var pm = dtpp.GetPassaportoByIdMagFam(fm.idMaggiorazioniFamiliari, db);
                             fm.idPassaporto = pm.idPassaporto;
                         }
+
+                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                        {
+                            var tvm = dttv.GetTitoloViaggioByIdMagFam(fm.idMaggiorazioniFamiliari, db);
+                            fm.idTitoloViaggio = tvm.idTitoloViaggio;
+                        }
+
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                         {
@@ -762,9 +769,16 @@ namespace NewISE.Models.DBModel.dtObj
                         cm.annullato = false;
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
-                            var pm = dtpp.GetPassaportoByIdMagFam(cm.idMaggiorazioniFamiliari);
+                            var pm = dtpp.GetPassaportoByIdMagFam(cm.idMaggiorazioniFamiliari, db);
                             cm.idPassaporto = pm.idPassaporto;
                         }
+
+                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                        {
+                            var tvm = dttv.GetTitoloViaggioByIdMagFam(cm.idMaggiorazioniFamiliari, db);
+                            cm.idTitoloViaggio = tvm.idTitoloViaggio;
+                        }
+
                         dtc.SetConiuge(ref cm, db);
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                         {

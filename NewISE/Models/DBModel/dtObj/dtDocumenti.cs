@@ -34,8 +34,60 @@ namespace NewISE.Models.DBModel.dtObj
                 switch (tipodoc)
                 {
                     case EnumTipoDoc.CartaImbarco_Viaggi1:
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                ld =
+                                    db.CONIUGE.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            case EnumParentela.Figlio:
+                                ld =
+                                    db.FIGLI.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            case EnumParentela.Richiedente:
+                                ld =
+                                    db.TITOLIVIAGGIO.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
                         break;
                     case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                ld =
+                                    db.CONIUGE.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            case EnumParentela.Figlio:
+                                ld =
+                                    db.FIGLI.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            case EnumParentela.Richiedente:
+                                ld =
+                                    db.TITOLIVIAGGIO.Find(id)
+                                        .DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                        .ToList();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
                         break;
                     case EnumTipoDoc.PrimaRataMab_MAB2:
                         break;
@@ -52,10 +104,10 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
                         break;
                     case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                        ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4).ToList();
+                        ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                         break;
                     case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-                        ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4).ToList();
+                        ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                         break;
                     case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
                         break;
@@ -63,17 +115,17 @@ namespace NewISE.Models.DBModel.dtObj
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 break;
                             case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 break;
                             case EnumParentela.Richiedente:
                                 //ld = db.PASSAPORTI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
                                 var p = db.PASSAPORTI.Find(id);
                                 var ldoc =
                                     p.DOCUMENTI.Where(
-                                        a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1);
+                                        a => a.IDTIPODOCUMENTO == (decimal)tipodoc);
                                 if (ldoc?.Any() ?? false)
                                 {
                                     ld = ldoc.ToList();
@@ -490,7 +542,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AddDocumentoFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
+        public void AddDocumentoPassaportoFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
         {
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
             if (t != null && t.IDTRASFERIMENTO > 0)
@@ -517,6 +569,36 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+
+
+        public void AddDocumentoTitoloViaggioFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
+        {
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (t != null && t.IDTRASFERIMENTO > 0)
+            {
+                var tv = t.TITOLIVIAGGIO;
+                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    DOCUMENTI d = new DOCUMENTI();
+                    dm.file.InputStream.CopyTo(ms);
+
+                    d.NOMEDOCUMENTO = dm.nomeDocumento;
+                    d.ESTENSIONE = dm.estensione;
+                    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                    d.DATAINSERIMENTO = dm.dataInserimento;
+                    d.FILEDOCUMENTO = ms.ToArray();
+
+                    tv.DOCUMENTI.Add(d);
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        dm.idDocumenti = d.IDDOCUMENTO;
+                    }
+                }
+            }
+        }
+
 
         public void DeleteDocumento(decimal idDocumento)
         {

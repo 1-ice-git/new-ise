@@ -4,7 +4,6 @@
 
 @{
 
-
     decimal id = (decimal)ViewData["id"];
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
 
@@ -23,11 +22,9 @@
         nDoc = Model.Count();
     }
 
-
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-
 
 }
 
@@ -106,8 +103,10 @@
     @switch (enTipoDoc)
     {
         case EnumTipoDoc.CartaImbarco_Viaggi1:
+            @Ajax.ActionLink("Torna indietro", "ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         case EnumTipoDoc.TitoloViaggio_Viaggi1:
+            @Ajax.ActionLink("Torna indietro", "ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         case EnumTipoDoc.PrimaRataMab_MAB2:
             break;

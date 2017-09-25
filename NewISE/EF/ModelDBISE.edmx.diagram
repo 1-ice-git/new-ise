@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="DBISEPRO.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="DBISEPRO.ANTICIPI" Width="1.5" PointX="9.75" PointY="25.875" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITACRUD" Width="1.5" PointX="8.25" PointY="20.75" />
-        <EntityTypeShape EntityType="DBISEPRO.BIGLIETTI" Width="1.5" PointX="9.75" PointY="53.5" />
         <EntityTypeShape EntityType="DBISEPRO.CDCGEPE" Width="1.5" PointX="5.25" PointY="20.5" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEFKM" Width="1.5" PointX="0.75" PointY="34.75" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="8.25" PointY="17" />
@@ -144,7 +143,6 @@
         <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM" />
         <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="12" PointY="50.125" />
         <AssociationConnector Association="DBISEPRO.R_TD_D" />
-        <AssociationConnector Association="DBISEPRO.BIGLIETTI_DOCUMENTI" />
         <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
         <AssociationConnector Association="DBISEPRO.MAB_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
@@ -178,6 +176,11 @@
         <AssociationConnector Association="DBISEPRO.R_FE_CE" />
         <AssociationConnector Association="DBISEPRO.R_LVE_CE" />
         <AssociationConnector Association="DBISEPRO.R_T_CE" />
+        <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIO" Width="1.5" PointX="7.5" PointY="10" />
+        <AssociationConnector Association="DBISEPRO.R_B_C" />
+        <AssociationConnector Association="DBISEPRO.R_B_F" />
+        <AssociationConnector Association="DBISEPRO.R_T_B" />
+        <AssociationConnector Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

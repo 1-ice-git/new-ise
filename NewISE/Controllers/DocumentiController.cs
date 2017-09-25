@@ -262,8 +262,21 @@ namespace NewISE.Controllers
                                     switch (tipoDoc)
                                     {
                                         case EnumTipoDoc.CartaImbarco_Viaggi1:
-                                            break;
                                         case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                                            switch (parentela)
+                                            {
+                                                case EnumParentela.Coniuge:
+                                                    dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Figlio:
+                                                    dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Richiedente:
+                                                    dtd.AddDocumentoTitoloViaggioFromRichiedente(ref dm, id, db);
+                                                    break;
+                                                default:
+                                                    throw new ArgumentOutOfRangeException("parentela");
+                                            }
                                             break;
                                         case EnumTipoDoc.PrimaRataMab_MAB2:
                                             break;
@@ -297,7 +310,7 @@ namespace NewISE.Controllers
                                                     dtd.AddDocumentoFromFiglio(ref dm, id, db);
                                                     break;
                                                 case EnumParentela.Richiedente:
-                                                    dtd.AddDocumentoFromRichiedente(ref dm, id, db);
+                                                    dtd.AddDocumentoPassaportoFromRichiedente(ref dm, id, db);
                                                     break;
                                                 default:
                                                     throw new ArgumentOutOfRangeException("parentela");
@@ -370,88 +383,133 @@ namespace NewISE.Controllers
                 switch (gruppoDocumento)
                 {
                     case EnumGruppiDoc.Viaggi:
-                        if (tipoDoc == EnumTipoDoc.CartaIdentita_Viaggi1)
+                        switch (tipoDoc)
                         {
-                            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                            {
-                                PassaportoModel pm;
-                                GestPulsantiPassaportoModel gppm;
-
-                                switch (parentela)
+                            case EnumTipoDoc.CartaImbarco_Viaggi1:
+                                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                                 {
-                                    case EnumParentela.Coniuge:
-                                        pm = dtpp.GetPassaportoByIdConiuge(id);
-                                        if (pm != null && pm.idPassaporto > 0)
-                                        {
-                                            gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
-                                            if (gppm != null)
-                                            {
-                                                bool notificaRichiesta = gppm.notificaRichiesta;
-                                                bool praticaConclusa = gppm.praticaConclusa;
-
-                                                if (notificaRichiesta == true || praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    case EnumParentela.Figlio:
-                                        pm = dtpp.GetPassaportoByIdFiglio(id);
-                                        if (pm != null && pm.idPassaporto > 0)
-                                        {
-                                            gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
-                                            if (gppm != null)
-                                            {
-                                                bool notificaRichiesta = gppm.notificaRichiesta;
-                                                bool praticaConclusa = gppm.praticaConclusa;
-
-                                                if (notificaRichiesta == true || praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    case EnumParentela.Richiedente:
-                                        pm = dtpp.GetPassaportoByID(id);
-                                        if (pm != null && pm.idPassaporto > 0)
-                                        {
-                                            gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
-                                            if (gppm != null)
-                                            {
-                                                bool notificaRichiesta = gppm.notificaRichiesta;
-                                                bool praticaConclusa = gppm.praticaConclusa;
-
-                                                if (notificaRichiesta == true || praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                        throw new ArgumentOutOfRangeException("parentela");
+                                    switch (parentela)
+                                    {
+                                        case EnumParentela.Coniuge:
+                                            break;
+                                        case EnumParentela.Figlio:
+                                            break;
+                                        case EnumParentela.Richiedente:
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException("parentela");
+                                    }
                                 }
 
+                                break;
+                            case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                                break;
+                            case EnumTipoDoc.PrimaRataMab_MAB2:
+                                break;
+                            case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                                break;
+                            case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                                break;
+                            case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                                break;
+                            case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                                break;
+                            case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                                break;
+                            case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                                break;
+                            case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                                break;
+                            case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                                break;
+                            case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                                break;
+                            case EnumTipoDoc.CartaIdentita_Viaggi1:
+                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                                {
+                                    PassaportoModel pm;
+                                    GestPulsantiAttConclModel gppm;
+
+                                    switch (parentela)
+                                    {
+                                        case EnumParentela.Coniuge:
+                                            pm = dtpp.GetPassaportoByIdConiuge(id);
+                                            if (pm != null && pm.idPassaporto > 0)
+                                            {
+                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                if (gppm != null)
+                                                {
+                                                    bool notificaRichiesta = gppm.notificaRichiesta;
+                                                    bool praticaConclusa = gppm.praticaConclusa;
+
+                                                    if (notificaRichiesta == true || praticaConclusa == true)
+                                                    {
+                                                        solaLettura = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        solaLettura = false;
+                                                    }
+                                                }
+                                            }
+
+                                            break;
+                                        case EnumParentela.Figlio:
+                                            pm = dtpp.GetPassaportoByIdFiglio(id);
+                                            if (pm != null && pm.idPassaporto > 0)
+                                            {
+                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                if (gppm != null)
+                                                {
+                                                    bool notificaRichiesta = gppm.notificaRichiesta;
+                                                    bool praticaConclusa = gppm.praticaConclusa;
+
+                                                    if (notificaRichiesta == true || praticaConclusa == true)
+                                                    {
+                                                        solaLettura = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        solaLettura = false;
+                                                    }
+                                                }
+                                            }
+
+                                            break;
+                                        case EnumParentela.Richiedente:
+                                            pm = dtpp.GetPassaportoByID(id);
+                                            if (pm != null && pm.idPassaporto > 0)
+                                            {
+                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                if (gppm != null)
+                                                {
+                                                    bool notificaRichiesta = gppm.notificaRichiesta;
+                                                    bool praticaConclusa = gppm.praticaConclusa;
+
+                                                    if (notificaRichiesta == true || praticaConclusa == true)
+                                                    {
+                                                        solaLettura = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        solaLettura = false;
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException("parentela");
+                                    }
 
 
-                            }
+
+                                }
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("tipoDoc");
                         }
+
+
                         break;
                     case EnumGruppiDoc.MaggiorazioneAbitazione:
                         break;

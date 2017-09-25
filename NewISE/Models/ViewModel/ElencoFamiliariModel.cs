@@ -13,6 +13,7 @@ namespace NewISE.Models.ViewModel
         public decimal idMaggiorazioniFamiliari { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
         public decimal? idPassaporto { get; set; }
+        public decimal? idTitoloViaggio { get; set; }
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]
         public string CodiceFiscale { get; set; }
@@ -34,8 +35,17 @@ namespace NewISE.Models.ViewModel
         [DefaultValue(false)]
         public bool escludiPassaporto { get; set; }
 
+        [Display(Name = "Personal.")]
+        [DefaultValue(false)]
+        public bool personalmente { get; set; }
+        [Display(Name = "Escludi t.v.")]
+        [DefaultValue(false)]
+        public bool escludiTitoloViaggio { get; set; }
+
         [Display(Name = "Documenti")]
         public IList<DocumentiModel> Documenti { get; set; }
+
+
 
 
         //[Display(Name = "Richiedi")]

@@ -1,0 +1,33 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.ViewModel.ElencoFamiliariModel
+
+@*<span>@Model.idFamiliare</span>*@
+@if (Model.Documenti?.Any() ?? false)
+{
+    if (Model.escludiTitoloViaggio)
+    {
+        @*<img class="SfondoBordoImg " src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30px" height="30px" disabled="disabled" />*@
+    }
+    else
+    {
+        <a href="#" onclick="ModalDoc(@Model.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi), @Convert.ToDecimal(Model.parentela), @Model.idMaggiorazioniFamiliari);">
+            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+        </a>
+    }
+}
+else
+{
+    if (Model.escludiTitoloViaggio)
+    {
+        @*<img class="SfondoBordoImg " src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30px" height="30px" disabled="disabled" />*@
+    }
+    else
+    {
+        <a href="#" onclick="ModalDoc(@Model.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi), @Convert.ToDecimal(Model.parentela), @Model.idMaggiorazioniFamiliari);">
+            <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
+        </a>
+    }
+}
+
+
+

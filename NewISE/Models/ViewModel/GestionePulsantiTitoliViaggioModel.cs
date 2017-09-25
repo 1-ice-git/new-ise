@@ -5,12 +5,11 @@ using System.Web;
 
 namespace NewISE.Models.ViewModel
 {
-    public class GestPulsantiPassaportoModel
+    public class GestionePulsantiTitoliViaggioModel
     {
         public bool esistonoRichiesteAttive { get; set; }
         public bool notificaRichiesta { get; set; }
         public bool praticaConclusa { get; set; }
         public bool esistonoRichiesteSalvate { get; set; }
-
     }
 }

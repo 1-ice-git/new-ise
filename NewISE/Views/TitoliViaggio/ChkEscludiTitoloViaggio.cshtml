@@ -1,0 +1,14 @@
+﻿@model NewISE.Models.ViewModel.GestioneChkEscludiTitoliViaggioModel
+
+@if (Model.esisteDoc || Model.disabilitaChk)
+{
+
+    @Html.CheckBoxFor(model => model.escludiTitoloViaggio, new { @onclick = "return null;", @disabled = "disabled" })
+
+}
+else
+{
+
+    @Html.CheckBoxFor(model => model.escludiTitoloViaggio, new { @onclick = "ConfermaEscludiTitoloViaggio(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
+
+}

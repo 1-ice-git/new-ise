@@ -64,5 +64,6 @@ namespace NewISE.EF
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
+        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
     }
 }
