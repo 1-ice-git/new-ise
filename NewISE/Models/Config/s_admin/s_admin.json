@@ -13,6 +13,13 @@
       "nome": "Daniele",
       "cognome": "Fantini",
       "email": "daniele.fantini@ritspa.it"
+    },
+    {
+      "username": "francesco",
+      "password": "ise",
+      "nome": "Francesco",
+      "cognome": "Salierno",
+      "email": "francesco.salierno@ritspa.it"
     }
   ]
 
