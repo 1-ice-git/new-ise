@@ -123,6 +123,9 @@
   <data name="MessaggioNotificaTrasferimento" xml:space="preserve">
     <value>Notifica del trasferimento per la sede di {0}.</value>
   </data>
+  <data name="MessaggioPraticaConclusaTitoloViaggio" xml:space="preserve">
+    <value>Si notifica che la pratica per la richiesta dei titoli di viaggio per {0} sono concluse.</value>
+  </data>
   <data name="MessaggioRichiestaPratichePassaporto" xml:space="preserve">
     <value>Notifica della richiesta per il passaporto/visto per {0}.</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="OggettoNotificaTrasferimento" xml:space="preserve">
     <value>Notifica del trasferimento</value>
+  </data>
+  <data name="OggettoPraticaConclusaTitoloViaggio" xml:space="preserve">
+    <value>Notifica della chiusura della pratica per i titoli di viaggio</value>
   </data>
   <data name="OggettoRichiestaPratichePassaporto" xml:space="preserve">
     <value>Notifica della richiesta per le pratiche passaporto/visti</value>

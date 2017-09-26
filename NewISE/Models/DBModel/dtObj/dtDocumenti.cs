@@ -34,56 +34,29 @@ namespace NewISE.Models.DBModel.dtObj
                 switch (tipodoc)
                 {
                     case EnumTipoDoc.CartaImbarco_Viaggi1:
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                ld =
-                                    db.CONIUGE.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                ld =
-                                    db.FIGLI.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
-                                break;
-                            case EnumParentela.Richiedente:
-                                ld =
-                                    db.TITOLIVIAGGIO.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-                        break;
                     case EnumTipoDoc.TitoloViaggio_Viaggi1:
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
-                                ld =
-                                    db.CONIUGE.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
+                                var c = db.CONIUGE.Find(id);
+                                if (c != null && c.IDCONIUGE > 0)
+                                {
+                                    ld = c.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                }
                                 break;
                             case EnumParentela.Figlio:
-                                ld =
-                                    db.FIGLI.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
+                                var f = db.FIGLI.Find(id);
+                                if (f != null && f.IDFIGLI > 0)
+                                {
+                                    ld = f.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                }
                                 break;
                             case EnumParentela.Richiedente:
-                                ld =
-                                    db.TITOLIVIAGGIO.Find(id)
-                                        .DOCUMENTI.Where(
-                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                        .ToList();
+                                var tv = db.TITOLIVIAGGIO.Find(id);
+                                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                                {
+                                    ld = tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                }
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException("parentela");

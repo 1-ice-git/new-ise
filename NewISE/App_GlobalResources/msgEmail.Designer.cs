@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei titoli di viaggio per {0} sono concluse..
+        /// </summary>
+        internal static string MessaggioPraticaConclusaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioPraticaConclusaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per {0}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
@@ -120,6 +129,15 @@ namespace Resources {
         internal static string OggettoNotificaTrasferimento {
             get {
                 return ResourceManager.GetString("OggettoNotificaTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica per i titoli di viaggio.
+        /// </summary>
+        internal static string OggettoPraticaConclusaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoPraticaConclusaTitoloViaggio", resourceCulture);
             }
         }
         

@@ -192,5 +192,28 @@ namespace NewISE.Controllers
         }
 
 
+        public JsonResult ConcludiPratica(decimal idTrasferimento)
+        {
+            string errore = "";
+            string msg = string.Empty;
+
+            try
+            {
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    dttv.SetPraticaConclusa(idTrasferimento);
+                    msg = "Pratica conclusa con successo";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return Json(new { err = errore, msg = msg });
+        }
+
+
     }
 }

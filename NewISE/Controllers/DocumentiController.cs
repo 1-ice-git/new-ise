@@ -386,23 +386,71 @@ namespace NewISE.Controllers
                         switch (tipoDoc)
                         {
                             case EnumTipoDoc.CartaImbarco_Viaggi1:
+                            case EnumTipoDoc.TitoloViaggio_Viaggi1:
                                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                                 {
+                                    TitoloViaggioModel tvm;
+
                                     switch (parentela)
                                     {
                                         case EnumParentela.Coniuge:
+                                            tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+                                            if (tvm != null && tvm.HasValue())
+                                            {
+                                                bool notificaRichiesta = tvm.notificaRichiesta;
+                                                bool praticaConclusa = tvm.praticaConclusa;
+
+                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                {
+                                                    solaLettura = true;
+                                                }
+                                                else
+                                                {
+                                                    solaLettura = false;
+                                                }
+
+                                            }
                                             break;
                                         case EnumParentela.Figlio:
+                                            tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+                                            if (tvm != null && tvm.HasValue())
+                                            {
+                                                bool notificaRichiesta = tvm.notificaRichiesta;
+                                                bool praticaConclusa = tvm.praticaConclusa;
+
+                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                {
+                                                    solaLettura = true;
+                                                }
+                                                else
+                                                {
+                                                    solaLettura = false;
+                                                }
+
+                                            }
                                             break;
                                         case EnumParentela.Richiedente:
+                                            tvm = dttv.GetTitoloViaggioByID(id);
+                                            if (tvm != null && tvm.HasValue())
+                                            {
+                                                bool notificaRichiesta = tvm.notificaRichiesta;
+                                                bool praticaConclusa = tvm.praticaConclusa;
+
+                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                {
+                                                    solaLettura = true;
+                                                }
+                                                else
+                                                {
+                                                    solaLettura = false;
+                                                }
+
+                                            }
                                             break;
                                         default:
                                             throw new ArgumentOutOfRangeException("parentela");
                                     }
                                 }
-
-                                break;
-                            case EnumTipoDoc.TitoloViaggio_Viaggi1:
                                 break;
                             case EnumTipoDoc.PrimaRataMab_MAB2:
                                 break;
