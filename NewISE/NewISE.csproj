@@ -1448,13 +1448,11 @@
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\assets\css\font\FontAwesome.otf" />
     <Content Include="Content\jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47\README.md" />
     <Content Include="Areas\Parametri\Views\CoefficientiSede\CoefficientiSede.cshtml" />
-    <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\PercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercDisagio\NuovaPercentualeDisagio.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamRiduzioni\Riduzioni.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValute\Valute.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\PrimoSegretario.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamIndRichiamo\IndennitaRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamIndSistemaz\IndennitaSistemazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamAliquoteContr\AliquoteContributive.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamCoeffFasciaKm\CoefficienteFasciaKm.cshtml" />
@@ -1472,7 +1470,6 @@
     <Content Include="Areas\Parametri\Views\ParamRiduzioni\NuoveRiduzioni.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamFasciaKm\NuovaFasciaKm.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\NuovaIndennitaPrimoSegretario.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamIndRichiamo\NuovaIndennitaRichiamo.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
@@ -1504,6 +1501,8 @@
     <Content Include="DBComuniItalia\json-schemaComuniItalia.json" />
     <Content Include="DBComuniItalia\jsonComuniItalia.json" />
     <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
+    <None Include="Properties\PublishProfiles\Mauro.pubxml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1649,7 +1648,7 @@
     <Compile Include="Areas\Parametri\Controllers\ParamPrimoIndSegrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamRiduzioniController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValuteController.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParParAliquoteContr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParAliquoteContr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficientiSede.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParFasciaKm.cs" />
@@ -1913,6 +1912,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
     <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
@@ -2103,6 +2103,7 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Parametri\Views\ParamIndRichiamo\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

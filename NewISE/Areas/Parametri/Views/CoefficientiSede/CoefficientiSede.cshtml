@@ -24,7 +24,7 @@
 
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ufficio.DescUfficio)
+                @Html.DisplayNameFor(model => model.Ufficio.descUfficio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -49,7 +49,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => item.Ufficio.DescUfficio)
+                    @Html.DisplayFor(model => item.Ufficio.descUfficio)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtCoefficientiSede dtib = new dtCoefficientiSede())
+                    @using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -78,7 +78,7 @@
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                     }
-                    
+
                 </td>
             </tr>
         }
@@ -178,7 +178,7 @@
 
     function NuovoCoefficienteSede() {
         //debugger;
-       
+
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
@@ -231,7 +231,7 @@
     function EliminaCoefficientiSede(id) {
         //debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
-        
+
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 

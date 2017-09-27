@@ -10,7 +10,7 @@ using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtParParAliquoteContr : IDisposable
+    public class dtParAliquoteContr : IDisposable
     {
         public void Dispose()
         {

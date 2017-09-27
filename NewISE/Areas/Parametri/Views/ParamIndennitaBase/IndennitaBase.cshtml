@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtIndennitaBase dtib=new dtIndennitaBase())
+                    @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -75,11 +75,11 @@
                         }
                         else
                         {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a> 
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                     }
 
-                    
+
                 </td>
             </tr>
         }
@@ -261,7 +261,7 @@
                                 //VerificaAutenticazione();
                                 //$("#DialogNewDoc").dialog("destroy");
                                 //$("#divEffettoLoadAutNoDoc").show("slow");
-                                
+
                             },
                             success: function (result) {
                                 //debugger;

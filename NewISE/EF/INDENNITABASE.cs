@@ -22,7 +22,7 @@ namespace NewISE.EF
     
         public decimal IDINDENNITABASE { get; set; }
         public decimal IDLIVELLO { get; set; }
-        public decimal IDRIDUZIONI { get; set; }
+        public Nullable<decimal> IDRIDUZIONI { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal VALORE { get; set; }

@@ -45,7 +45,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                
+
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -62,7 +62,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtAliquoteContr dtib = new dtAliquoteContr())
+                    @using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {

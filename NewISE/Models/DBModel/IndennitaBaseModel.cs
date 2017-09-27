@@ -14,8 +14,8 @@ namespace NewISE.Models.DBModel
         public decimal idIndennitaBase { get; set; }
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
-        [Required(ErrorMessage = "La riduzione è richiesta.")]
-        public decimal idRiduzioni { get; set; }
+
+        public decimal? idRiduzioni { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

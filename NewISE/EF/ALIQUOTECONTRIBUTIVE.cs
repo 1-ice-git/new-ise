@@ -14,6 +14,12 @@ namespace NewISE.EF
     
     public partial class ALIQUOTECONTRIBUTIVE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ALIQUOTECONTRIBUTIVE()
+        {
+            this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
+        }
+    
         public decimal IDALIQCONTR { get; set; }
         public decimal IDTIPOCONTRIBUTO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
@@ -24,5 +30,7 @@ namespace NewISE.EF
     
         public virtual MAB_ALIQCONTR MAB_ALIQCONTR { get; set; }
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
     }
 }

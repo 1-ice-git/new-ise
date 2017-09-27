@@ -18,7 +18,7 @@ namespace NewISE.Areas.Parametri.Controllers
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
-
+            List<RiduzioniModel> lrm = new List<RiduzioniModel>();
             try
             {
                 using (dtParLivelli dtl = new dtParLivelli())
@@ -47,6 +47,11 @@ namespace NewISE.Areas.Parametri.Controllers
 
                     ViewBag.LivelliList = r;
                 }
+
+                //using (dtParRiduzioni dtpr = new dtParRiduzioni())
+                //{
+                //    lrm = dtpr.getListRiduzioni()
+                //}
 
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {

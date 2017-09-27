@@ -25,7 +25,6 @@ namespace NewISE.EF
         public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
     
         public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }

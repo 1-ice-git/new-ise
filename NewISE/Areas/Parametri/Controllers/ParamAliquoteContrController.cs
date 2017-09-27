@@ -52,7 +52,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
+                using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
@@ -103,7 +103,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
+                using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
@@ -157,7 +157,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
+                    using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                     {
 
                         dtib.SetAliquoteContributive(ibm);
@@ -189,7 +189,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParParAliquoteContr dtib = new dtParParAliquoteContr())
+                using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                 {
                     dtib.DelAliquoteContributive(idTipoAliqContr);
                 }

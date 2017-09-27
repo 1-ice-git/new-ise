@@ -35,13 +35,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
-                                annullato = e.ANNULLATO,
-                                //Livello = new LivelloModel()
-                                //{
-                                //    idLivello = e.LIVELLI.IDLIVELLO,
-                                //    DescLivello = e.LIVELLI.LIVELLO
-                                //}
+                                annullato = e.ANNULLATO
                             }).ToList();
+
+                    foreach (var ibm in libm)
+                    {
+                        //ibm.
+                    }
                 }
 
                 return libm;

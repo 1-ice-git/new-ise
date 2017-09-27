@@ -31,6 +31,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -67,6 +68,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -103,6 +105,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -139,6 +142,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
+                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
