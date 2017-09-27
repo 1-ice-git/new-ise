@@ -37,9 +37,13 @@ namespace NewISE.Models.Tools
 
         public decimal indennitaBaseRiduzione { get; set; } = 0;
         public decimal indennitaServizio { get; set; } = 0;
-        public decimal MaggiorazioneConiuge { get; set; } = 0;
-        public decimal MaggiorazioneFigli { get; set; } = 0;
-        public decimal MaggiorazioneFamiliari { get; set; } = 0;
+        public decimal maggiorazioneConiuge { get; set; } = 0;
+        public decimal maggiorazioneFigli { get; set; } = 0;
+        public decimal maggiorazioneFamiliari { get; set; } = 0;
+        public decimal indennitaPersonaleTeorica { get; set; } = 0;
+        public decimal indennitaSistemazioneLorda { get; set; } = 0;
+
+
 
 
         public void Dispose()
@@ -49,261 +53,259 @@ namespace NewISE.Models.Tools
 
         public CalcoliIndennita(string matricola, DateTime? dataCalcoloIndennita = null)
         {
+            DateTime? dt;
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
                     db.Database.BeginTransaction();
 
+                    if (dataCalcoloIndennita.HasValue)
+                    {
+                        dt = dataCalcoloIndennita;
+                    }
+                    else
+                    {
+                        dt = DateTime.Now;
+                    }
+
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         trasferimento = dtt.GetUltimoTrasferimentoByMatricola(matricola, db);
 
-                        if (dataCalcoloIndennita.HasValue)
+                        if (trasferimento != null && trasferimento.HasValue())
                         {
                             if (trasferimento.dataRientro.HasValue)
                             {
-                                if (trasferimento.dataRientro.Value < dataCalcoloIndennita.Value)
+                                if (trasferimento.dataRientro.Value < dt.Value)
                                 {
                                     dtDatiParametri = trasferimento.dataRientro.Value;
                                 }
                                 else
                                 {
-                                    if (trasferimento.dataPartenza > dataCalcoloIndennita.Value)
+                                    if (trasferimento.dataPartenza > dt.Value)
                                     {
                                         dtDatiParametri = trasferimento.dataPartenza;
                                     }
                                     else
                                     {
-                                        dtDatiParametri = dataCalcoloIndennita.Value;
+                                        dtDatiParametri = dt.Value;
                                     }
                                 }
                             }
                             else
                             {
-                                if (trasferimento.dataPartenza > dataCalcoloIndennita.Value)
+                                if (trasferimento.dataPartenza > dt.Value)
                                 {
                                     dtDatiParametri = trasferimento.dataPartenza;
                                 }
                                 else
                                 {
-                                    dtDatiParametri = dataCalcoloIndennita.Value;
+                                    dtDatiParametri = dt.Value;
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (trasferimento.dataRientro.HasValue)
-                            {
-                                if (trasferimento.dataRientro.Value < DateTime.Now)
-                                {
-                                    dtDatiParametri = trasferimento.dataRientro.Value;
-                                }
-                                else
-                                {
-                                    if (trasferimento.dataPartenza > DateTime.Now)
-                                    {
-                                        dtDatiParametri = trasferimento.dataPartenza;
-                                    }
-                                    else
-                                    {
-                                        dtDatiParametri = DateTime.Now;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                //dtDatiParametri = trasferimento.dataPartenza > Utility.GetDtInizioMeseCorrente() ? trasferimento.dataPartenza : Utility.GetDtInizioMeseCorrente();
-                                if (trasferimento.dataPartenza > DateTime.Now)
-                                {
-                                    dtDatiParametri = trasferimento.dataPartenza;
-                                }
-                                else
-                                {
-                                    dtDatiParametri = DateTime.Now;
-                                }
-                            }
-                        }
-
-
-                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                        {
-                            RuoloUfficioModel rum = new RuoloUfficioModel();
-                            ruoloUfficio =
-                                dtrd.GetRuoloDipendenteByIdTrasferimento(trasferimento.idTrasferimento, dtDatiParametri,
-                                    db).RuoloUfficio;
-                        }
-
-                        using (dtIndennita dti = new dtIndennita())
-                        {
-                            IndennitaModel indennita = dti.GetIndennitaByIdTrasferimento(trasferimento.idTrasferimento,
-                                db);
 
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
-                                List<RuoloDipendenteModel> lrdm = new List<RuoloDipendenteModel>();
-
-                                lrdm.Add(dtrd.GetRuoloDipendenteByIdTrasferimento(trasferimento.idTrasferimento,
-                                    dtDatiParametri, db));
-                                if (lrdm != null && lrdm.Count > 0)
-                                {
-                                    indennita.RuoloDipendente = lrdm;
-                                }
-                                else
-                                {
-                                    throw new Exception("Il ruolo del dipendente non risulta registrato per l'utente " +
-                                                        trasferimento.Dipendente.Nominativo + " (" +
-                                                        trasferimento.Dipendente.matricola + ")");
-                                }
+                                RuoloUfficioModel rum = new RuoloUfficioModel();
+                                ruoloUfficio =
+                                    dtrd.GetRuoloDipendenteByIdTrasferimento(trasferimento.idTrasferimento,
+                                        dtDatiParametri,
+                                        db).RuoloUfficio;
                             }
 
-                            #region IndennitaDiBase
 
-                            using (dtIndennitaBase dtib = new dtIndennitaBase())
+                            using (dtIndennita dti = new dtIndennita())
                             {
-                                if (ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Dirigente ||
-                                    ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Responsabile)
+                                IndennitaModel indennita =
+                                    dti.GetIndennitaByIdTrasferimento(trasferimento.idTrasferimento,
+                                        db);
+
+                                using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                 {
-                                    indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
-                                        dtDatiParametri, db);
-                                    if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
+                                    List<RuoloDipendenteModel> lrdm = new List<RuoloDipendenteModel>();
+
+                                    lrdm.Add(dtrd.GetRuoloDipendenteByIdTrasferimento(trasferimento.idTrasferimento,
+                                        dtDatiParametri, db));
+                                    if (lrdm != null && lrdm.Count > 0)
                                     {
-                                        indennitaBaseNoRiduzione = indennitaBase.valoreResponsabile;
-                                        if (indennitaBase.Riduzioni.percentuale > 0)
-                                        {
-                                            indennitaBaseRiduzione = indennitaBaseNoRiduzione *
-                                                                     indennitaBase.Riduzioni.percentuale / 100;
-                                        }
-                                        else
-                                        {
-                                            indennitaBaseRiduzione = indennitaBaseNoRiduzione;
-                                        }
+                                        indennita.RuoloDipendente = lrdm;
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Il ruolo del dipendente non risulta registrato per l'utente " +
+                                            trasferimento.Dipendente.Nominativo + " (" +
+                                            trasferimento.Dipendente.matricola + ")");
                                     }
                                 }
 
-                                else if (ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Collaboratore ||
-                                         ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Assistente)
+                                #region IndennitaDiBase
+
+                                using (dtIndennitaBase dtib = new dtIndennitaBase())
                                 {
-                                    indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
-                                        dtDatiParametri, db);
-                                    if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
+                                    if (ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Dirigente ||
+                                        ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Responsabile)
                                     {
-                                        indennitaBaseNoRiduzione = indennitaBase.valore;
-                                        if (indennitaBase.Riduzioni.percentuale > 0)
+                                        indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
+                                            dtDatiParametri, db);
+                                        if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
                                         {
-                                            indennitaBaseRiduzione = indennitaBaseNoRiduzione *
-                                                                     indennitaBase.Riduzioni.percentuale / 100;
-                                        }
-                                        else
-                                        {
-                                            indennitaBaseRiduzione = indennitaBaseNoRiduzione;
-                                        }
-                                    }
-                                }
-                            }
-
-                            #endregion
-
-                            #region Indennità di servizio
-
-                            using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
-                            {
-                                coefficenteSede = dtcs.GetCoefficenteSedeByIdTrasf(indennita.idTrasfIndennita,
-                                    dtDatiParametri, db);
-                            }
-
-                            using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
-                            {
-                                percentualeDisagio = dtpd.GetPercentualeDisagioByIdTrasf(indennita.idTrasfIndennita,
-                                    dtDatiParametri, db);
-                            }
-
-                            indennitaServizio = (((indennitaBaseRiduzione * coefficenteSede.valore) +
-                                                  indennitaBaseRiduzione) +
-                                                 (((indennitaBaseRiduzione * coefficenteSede.valore) +
-                                                   indennitaBaseRiduzione) / 100 * percentualeDisagio.percentuale));
-
-                            #endregion
-                        }
-
-                        #region Maggiorazioni familiari
-
-                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                        {
-                            maggiorazioniFamiliari =
-                                dtmf.GetMaggiorazioniFamiliariByIDTrasf(trasferimento.idTrasferimento, db);
-                            if (maggiorazioniFamiliari?.HasValue() ?? false)
-                            {
-                                if (maggiorazioniFamiliari.attivazioneMaggiorazioni)
-                                {
-                                    using (dtConiuge dtc = new dtConiuge())
-                                    {
-                                        coniuge =
-                                            dtc.GetConiugeByIdMagFam(maggiorazioniFamiliari.idMaggiorazioniFamiliari,
-                                                dtDatiParametri, db);
-                                        if (coniuge.HasValue())
-                                        {
-                                            using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                                            indennitaBaseNoRiduzione = indennitaBase.valoreResponsabile;
+                                            if (indennitaBase.Riduzioni.percentuale > 0)
                                             {
-                                                percentualeMaggiorazioneConiuge =
-                                                    dtpc.GetPercentualeMaggiorazioneConiuge(coniuge.idTipologiaConiuge,
-                                                        dtDatiParametri, db);
+                                                indennitaBaseRiduzione = indennitaBaseNoRiduzione *
+                                                                         indennitaBase.Riduzioni.percentuale / 100;
                                             }
-
-                                            using (dtPensione dtp = new dtPensione())
+                                            else
                                             {
-                                                pensioneConiuge = dtp.GetPensioniByIdConiuge(coniuge.idConiuge,
+                                                indennitaBaseRiduzione = indennitaBaseNoRiduzione;
+                                            }
+                                        }
+                                    }
+
+                                    else if (ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Collaboratore ||
+                                             ruoloUfficio.idRuoloUfficio == (decimal)EnumRuoloUfficio.Assistente)
+                                    {
+                                        indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
+                                            dtDatiParametri, db);
+                                        if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
+                                        {
+                                            indennitaBaseNoRiduzione = indennitaBase.valore;
+                                            if (indennitaBase.Riduzioni.percentuale > 0)
+                                            {
+                                                indennitaBaseRiduzione = indennitaBaseNoRiduzione *
+                                                                         indennitaBase.Riduzioni.percentuale / 100;
+                                            }
+                                            else
+                                            {
+                                                indennitaBaseRiduzione = indennitaBaseNoRiduzione;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                #endregion
+
+                                #region Indennità di servizio
+
+                                using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                                {
+                                    coefficenteSede = dtcs.GetCoefficenteSedeByIdTrasf(indennita.idTrasfIndennita,
+                                        dtDatiParametri, db);
+                                }
+
+                                using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                                {
+                                    percentualeDisagio = dtpd.GetPercentualeDisagioByIdTrasf(indennita.idTrasfIndennita,
+                                        dtDatiParametri, db);
+                                }
+
+                                indennitaServizio = (((indennitaBaseRiduzione * coefficenteSede.valore) +
+                                                      indennitaBaseRiduzione) +
+                                                     (((indennitaBaseRiduzione * coefficenteSede.valore) +
+                                                       indennitaBaseRiduzione) / 100 * percentualeDisagio.percentuale));
+
+                                #endregion
+                            }
+
+                            #region Maggiorazioni familiari
+
+                            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                            {
+                                maggiorazioniFamiliari =
+                                    dtmf.GetMaggiorazioniFamiliariByIDTrasf(trasferimento.idTrasferimento, db);
+                                if (maggiorazioniFamiliari?.HasValue() ?? false)
+                                {
+                                    if (maggiorazioniFamiliari.attivazioneMaggiorazioni)
+                                    {
+                                        using (dtConiuge dtc = new dtConiuge())
+                                        {
+                                            coniuge =
+                                                dtc.GetConiugeByIdMagFam(
+                                                    maggiorazioniFamiliari.idMaggiorazioniFamiliari,
                                                     dtDatiParametri, db);
-                                            }
-                                            if (percentualeMaggiorazioneConiuge.percentualeConiuge > 0)
+                                            if (coniuge.HasValue())
                                             {
-                                                MaggiorazioneConiuge = (indennitaServizio *
-                                                                        percentualeMaggiorazioneConiuge
-                                                                            .percentualeConiuge / 100);
+                                                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                                                {
+                                                    percentualeMaggiorazioneConiuge =
+                                                        dtpc.GetPercentualeMaggiorazioneConiuge(
+                                                            coniuge.idTipologiaConiuge,
+                                                            dtDatiParametri, db);
+                                                }
+
+                                                using (dtPensione dtp = new dtPensione())
+                                                {
+                                                    pensioneConiuge = dtp.GetPensioniByIdConiuge(coniuge.idConiuge,
+                                                        dtDatiParametri, db);
+                                                }
+                                                if (percentualeMaggiorazioneConiuge != null &&
+                                                    percentualeMaggiorazioneConiuge.percentualeConiuge > 0)
+                                                {
+                                                    maggiorazioneConiuge = (indennitaServizio *
+                                                                            percentualeMaggiorazioneConiuge
+                                                                                .percentualeConiuge / 100);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception(
+                                                        "La percentuale maggiorazione coniuge non è presente.");
+                                                }
                                             }
                                         }
-                                    }
 
 
-                                    using (dtFigli dtf = new dtFigli())
-                                    {
-                                        figli =
-                                            dtf.GetFigliByIdMagFam(maggiorazioniFamiliari.idMaggiorazioniFamiliari,
-                                                dtDatiParametri, db).ToList();
-                                        if (figli?.Any() ?? false)
+                                        using (dtFigli dtf = new dtFigli())
                                         {
-                                            using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                                            figli =
+                                                dtf.GetFigliByIdMagFam(maggiorazioniFamiliari.idMaggiorazioniFamiliari,
+                                                    dtDatiParametri, db).ToList();
+                                            if (figli?.Any() ?? false)
                                             {
-                                                using (
-                                                    dtIndennitaPrimoSegretario dtps = new dtIndennitaPrimoSegretario())
+                                                using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                                                 {
-                                                    foreach (var f in figli)
+                                                    using (
+                                                        dtIndennitaPrimoSegretario dtps =
+                                                            new dtIndennitaPrimoSegretario())
                                                     {
-                                                        PercentualeMagFigliModel pmfm =
-                                                            dtpf.GetPercentualeMaggiorazioneFigli(f.idFigli,
-                                                                dtDatiParametri,
-                                                                db);
-                                                        IndennitaPrimoSegretModel ipsm =
-                                                            dtps.GetIndennitaPrimoSegretario(f.idFigli, dtDatiParametri,
-                                                                db);
-
-                                                        if (pmfm.percentualeFigli > 0)
+                                                        foreach (var f in figli)
                                                         {
-                                                            MaggiorazioneFigli += ipsm.indennita * pmfm.percentualeFigli /
-                                                                                  100;
+                                                            PercentualeMagFigliModel pmfm =
+                                                                dtpf.GetPercentualeMaggiorazioneFigli(f.idFigli,
+                                                                    dtDatiParametri,
+                                                                    db);
+                                                            IndennitaPrimoSegretModel ipsm =
+                                                                dtps.GetIndennitaPrimoSegretario(f.idFigli,
+                                                                    dtDatiParametri,
+                                                                    db);
+
+                                                            if (pmfm.percentualeFigli > 0)
+                                                            {
+                                                                maggiorazioneFigli += ipsm.indennita *
+                                                                                      pmfm.percentualeFigli /
+                                                                                      100;
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
 
-                                    MaggiorazioneFamiliari = MaggiorazioneConiuge + MaggiorazioneFigli;
+                                        maggiorazioneFamiliari = maggiorazioneConiuge + maggiorazioneFigli;
+                                    }
                                 }
                             }
-                        }
 
-                        #endregion
+                            #endregion
+
+                            #region IndennitaPersonale
+
+                            indennitaPersonaleTeorica = indennitaServizio + maggiorazioneFamiliari;
+
+
+                            #endregion
+                        }
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -314,6 +316,26 @@ namespace NewISE.Models.Tools
                     throw ex;
                 }
             }
+        }
+
+        public decimal IndennitaPersonalePeriodo(int periodo = 30)
+        {
+            decimal ipp = 0;
+
+            try
+            {
+                if (indennitaPersonaleTeorica > 0)
+                {
+                    ipp = indennitaPersonaleTeorica / 30 * periodo;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ipp;
         }
     }
 }

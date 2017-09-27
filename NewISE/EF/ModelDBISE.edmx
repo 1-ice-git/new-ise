@@ -45,18 +45,6 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="ANTICIPI">
-          <Key>
-            <PropertyRef Name="IDANTICIPO" />
-          </Key>
-          <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IMPORTOANTICIPO" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="NOTIFICARICHIESTA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="PRATICACONCLUSA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="ATTIVITACRUD">
           <Key>
             <PropertyRef Name="IDATTIVITACRUD" />
@@ -642,16 +630,6 @@
           <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="PRIMASITEMAZIONE">
-          <Key>
-            <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-          </Key>
-          <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDINDSIST" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="RICALCOLATA" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="REGOLECALCOLO">
           <Key>
             <PropertyRef Name="IDREGOLA" />
@@ -994,20 +972,6 @@
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
-        <Association Name="R_A_T">
-          <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ANTICIPI">
-              <PropertyRef Name="IDANTICIPO" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDANTICIPO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_AC_LA">
           <End Role="ATTIVITACRUD" Type="Self.ATTIVITACRUD" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1624,20 +1588,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_INDPRIMSIST_PRIMASIST">
-          <End Role="INDENNITASISTEMAZIONE" Type="Self.INDENNITASISTEMAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITASISTEMAZIONE">
-              <PropertyRef Name="IDINDSIST" />
-            </Principal>
-            <Dependent Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDINDSIST" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_IPS_F_IPS">
           <End Role="INDENNITAPRIMOSEGRETARIO" Type="Self.INDENNITAPRIMOSEGRETARIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1999,48 +1949,6 @@
             </Principal>
             <Dependent Role="PMF_F">
               <PropertyRef Name="IDPERCMAGFIGLI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PS_A">
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ANTICIPI" Type="Self.ANTICIPI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Principal>
-            <Dependent Role="ANTICIPI">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PS_E_C">
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_PS_TE">
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPORTOEFFETTISIST" Type="Self.TRASPORTOEFFETTISIST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Principal>
-            <Dependent Role="TRASPORTOEFFETTISIST">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2518,20 +2426,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TRASF_PRIMASIST">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TRASF_RICHIAMO">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2816,7 +2710,6 @@
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="ANTICIPI" EntityType="Self.ANTICIPI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISEPRO" store:Type="Tables" />
@@ -2873,7 +2766,6 @@
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="Self.PERCENTUALEMAGFIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PMF_F" EntityType="Self.PMF_F" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISEPRO" store:Type="Tables" />
@@ -2911,10 +2803,6 @@
           <EntitySet Name="VALUTAUFFICIO" EntityType="Self.VALUTAUFFICIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="VALUTE" EntityType="Self.VALUTE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="VOCI" EntityType="Self.VOCI" Schema="ISEPRO" store:Type="Tables" />
-          <AssociationSet Name="R_A_T" Association="Self.R_A_T">
-            <End Role="ANTICIPI" EntitySet="ANTICIPI" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-          </AssociationSet>
           <AssociationSet Name="R_AC_LA" Association="Self.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
@@ -3091,10 +2979,6 @@
             <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
             <End Role="INDENNITA_INDENNITABASE" EntitySet="INDENNITA_INDENNITABASE" />
           </AssociationSet>
-          <AssociationSet Name="R_INDPRIMSIST_PRIMASIST" Association="Self.R_INDPRIMSIST_PRIMASIST">
-            <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-          </AssociationSet>
           <AssociationSet Name="R_IPS_F_IPS" Association="Self.R_IPS_F_IPS">
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
             <End Role="F_IPS" EntitySet="F_IPS" />
@@ -3198,18 +3082,6 @@
           <AssociationSet Name="R_PMF_PMF_F" Association="Self.R_PMF_PMF_F">
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
             <End Role="PMF_F" EntitySet="PMF_F" />
-          </AssociationSet>
-          <AssociationSet Name="R_PS_A" Association="Self.R_PS_A">
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-            <End Role="ANTICIPI" EntitySet="ANTICIPI" />
-          </AssociationSet>
-          <AssociationSet Name="R_PS_E_C" Association="Self.R_PS_E_C">
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-          </AssociationSet>
-          <AssociationSet Name="R_PS_TE" Association="Self.R_PS_TE">
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-            <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
           </AssociationSet>
           <AssociationSet Name="R_R_E_C" Association="Self.R_R_E_C">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -3346,10 +3218,6 @@
           <AssociationSet Name="R_TM_T" Association="Self.R_TM_T">
             <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
             <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TRASF_PRIMASIST" Association="Self.R_TRASF_PRIMASIST">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_RICHIAMO" Association="Self.R_TRASF_RICHIAMO">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3963,6 +3831,8 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ELAB_CONT" Relationship="DBISEPRO.R_A_T" FromRole="ANTICIPI" ToRole="ELAB_CONT" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_A" FromRole="ANTICIPI" ToRole="PRIMASITEMAZIONE" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="DATAPRATICACONCLUSA" Type="DateTime" />
         </EntityType>
         <EntityType Name="ATTIVITACRUD">
           <Key>
@@ -6138,19 +6008,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ANTICIPI">
-            <EntityTypeMapping TypeName="DBISEPRO.ANTICIPI">
-              <MappingFragment StoreEntitySet="ANTICIPI">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
-                <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
-                <ScalarProperty Name="IMPORTOANTICIPO" ColumnName="IMPORTOANTICIPO" />
-                <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
-                <ScalarProperty Name="IDANTICIPO" ColumnName="IDANTICIPO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ATTIVITACRUD">
             <EntityTypeMapping TypeName="DBISEPRO.ATTIVITACRUD">
               <MappingFragment StoreEntitySet="ATTIVITACRUD">
@@ -6488,17 +6345,6 @@
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDTIPOLOGIAFIGLIO" ColumnName="IDTIPOLOGIAFIGLIO" />
                 <ScalarProperty Name="IDPERCMAGFIGLI" ColumnName="IDPERCMAGFIGLI" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PRIMASITEMAZIONE">
-            <EntityTypeMapping TypeName="DBISEPRO.PRIMASITEMAZIONE">
-              <MappingFragment StoreEntitySet="PRIMASITEMAZIONE">
-                <ScalarProperty Name="RICALCOLATA" ColumnName="RICALCOLATA" />
-                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
