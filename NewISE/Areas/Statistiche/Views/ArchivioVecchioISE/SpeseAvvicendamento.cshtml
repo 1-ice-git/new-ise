@@ -1,0 +1,150 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Spese__di_avvicendamento>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+        <div class="select2-container select2-container--classic">
+            Consuntivo Spese di Avvicendamento
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa Consuntivo Spese di Avvicendamento </a>
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TIPO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MATRICOLA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NOMINATIVO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CODLIVELLO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CODSEDE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SEDE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VALUTA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DT_TRASFERIMENTO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPESA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IMPORTOSPESA)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TIPO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MATRICOLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CODLIVELLO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CODSEDE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SEDE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VALUTA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DT_TRASFERIMENTO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPESA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IMPORTOSPESA)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptSpeseAvvicendamento";
+        };
+
+</script>
+
+
+
+
+
+

@@ -1,0 +1,146 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Presenze_Livelli>
+
+
+<div style="margin: 15px"></div>
+<table border="0" class="display" cellpadding="2" cellspacing="2">
+    <tbody>
+        <tr>
+            <td>&nbsp;Da (Operazioni E)&nbsp;</td>
+            <td><input type="text" id="min" name="min" ></td>
+            <td>&nbsp;A (Operazioni E)&nbsp;</td>
+            <td><input type="text" id="max" name="max" value="gna"></td>
+        </tr>
+
+        <tr>
+            <td>
+                <input id="Text1" type="text" />
+
+            </td>
+
+        </tr>
+    </tbody>
+</table>
+
+<br /><br />
+
+@*@Html.ActionLink(@"\Areas\Statistiche\RPT\Report1.rdlc", "ReportEmployee", "AltreStatisticheController", new { id = 1 }, new { target = "_blank" })*@
+@Html.ActionLink("Stampa le Presenze dei Livelli all'Estero", "ReportEmployee3", "AltreStatisticheController", new { scrolling = "yes", target = "_blank", @style = "background-image:url(/Image/edit.png); width:50px; height:30px;" })
+
+<div style="margin: 15px"></div>
+
+<table id="tbOperazioniEffettuate" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.codQualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.qualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_Trasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_Rientro)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codQualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.qualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_Trasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_Rientro)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('tbLogAttivita').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+
+    /* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var min = parseInt($('#min').val(), 10);
+            var max = parseInt($('#max').val(), 10);
+            var age = parseFloat(data[1]) || 0; // use data for the age column
+
+            if ((isNaN(min) && isNaN(max)) ||
+                 (isNaN(min) && age <= max) ||
+                 (min <= age && isNaN(max)) ||
+                 (min <= age && age <= max)) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $(document).ready(function () {
+        var table = $('#tbOperazioniEffettuate').DataTable();
+
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup(function () {
+            table.draw();
+        });
+    });
+
+
+
+</script>
+

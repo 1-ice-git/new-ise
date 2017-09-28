@@ -1,0 +1,72 @@
+﻿@model IEnumerable<NewISE.Models.LogAttivitaModel>
+
+
+<table id="tbIndBase" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.utenteAutorizzato.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idLog)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idUtenteLoggato)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idTrasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idAttivitaCrud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataOperazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descAttivitaSvolta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tabellaCoinvolta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idTabellaCoinvolta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.utenteAutorizzato.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idLog)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idUtenteLoggato)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idTrasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idAttivitaCrud)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataOperazione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descAttivitaSvolta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tabellaCoinvolta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idTabellaCoinvolta)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

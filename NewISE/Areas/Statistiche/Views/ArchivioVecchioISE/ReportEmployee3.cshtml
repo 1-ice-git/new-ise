@@ -1,0 +1,12 @@
+﻿@using ReportViewerForMvc;
+
+
+@using Microsoft.Reporting.WebForms;
+@{
+    ViewBag.Title = "ReportEmployee3";
+}
+
+
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "yes", target = "_blank" })
+
+

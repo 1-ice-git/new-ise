@@ -1,0 +1,125 @@
+﻿<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Statistiche";
+    Layout = "~/Areas/Statistiche/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin: 15px"></div>
+<div class="form-horizontal" id="divRiga1">
+
+    <div class="form-group">
+        @Html.Label("lblStampa", "Modalità estrazione", new { @class = "control-label col-xs-2" })
+        <div id="divCombo" class="col-xs-3 ">
+            <div class="select2-container select2-container--classic" id="test">
+                @Html.DropDownList("idStampa", ViewBag.VecchioIse as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();", @onclick = "prelevaPartiaViewStatistiche();" })
+            </div>
+            @Html.ValidationMessage("idStampa", "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="divContentpartial" class="row">
+    <div id="divPViewParametri" class="col-xs-12">
+
+    </div>
+</div>
+
+<div id="dialog-message" title="Attenzione!!!" style="display:none;">
+    <div>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        <strong><span id="msgDialog"></span></strong>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#idStampa").select2({
+                placeholder: "Seleziona la Tabella per la Stampa",
+                allowClear: true,
+                language: "it"
+            });
+
+        });
+
+        function prelevaPartiaViewStatistiche() {
+            //debugger;
+            var rotta = "";
+
+            var tabParam = parseInt($("#idStampa").select2('val'));
+
+
+            switch (tabParam) {
+                case 0:// Consuntivo dei Costi
+                    rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCosti";
+                    break;
+                case 1:// Consuntivo dei Costi per codice Co.An.
+                    rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCostiCoAn";
+                    break;
+                case 2:// Dislocazione dei dipendenti all'estero
+                    rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
+                    break;
+                case 3:// Operazioni effettuate nel periodo
+                    //rotta = "/Statistiche/AltreStatistiche/ReportEmployee";
+                    rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
+                    break;
+                case 4:// Presenze dei livelli in servizio all'estero
+                    rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
+                    break;
+                case 5:// Spese diverse
+                    rotta = "/Statistiche/ArchivioVecchioISE/SpeseDiverse";
+                    break;
+                case 6:// Spese di avvicendamento
+                    rotta = "/Statistiche/ArchivioVecchioISE/SpeseAvvicendamento";
+                    break;
+                case 7:// Storia del dipendente
+                    rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+                    break;
+                default:
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                //data: { escludiAnnullati: chk },
+                data: {},
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+    </script>
+}
+
+

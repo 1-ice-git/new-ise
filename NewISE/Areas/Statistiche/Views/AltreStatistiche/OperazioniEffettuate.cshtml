@@ -1,0 +1,201 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Operazioni_Effettuate>
+
+@*@{
+            ViewBag.Title = "Stp_Operazioni_Effettuate";
+}
+
+<h2>Stp_Operazioni_Effettuate</h2>
+
+@foreach (var item in Model)
+{
+    <div>
+        <li>
+            @item.nominativo
+        </li>
+        
+    </div>
+}*@
+
+
+
+<div style="margin: 15px"></div>
+<table border="0" class="display" cellpadding="2" cellspacing="2">
+    <tbody>
+        <tr>
+            <td>&nbsp;Da (Operazioni E)&nbsp;</td>
+            <td><input type="text" id="min" name="min"></td>
+            <td>&nbsp;A (Operazioni E)&nbsp;</td>
+            <td><input type="text" id="max" name="max"></td>
+        </tr>
+        <tr></tr>
+    </tbody>
+</table>
+
+<br /><br />
+
+@*@Html.ActionLink(@"\Areas\Statistiche\RPT\Report1.rdlc", "ReportEmployee", "AltreStatisticheController", new { id = 1 }, new { target = "_blank" })*@
+@Html.ActionLink("Stampa le Operazioni Effettuate", "ReportEmployee", "AltreStatisticheController", new { scrolling = "yes", target = "_blank" , @style = "background-image:url(/Image/edit.png); width:50px; height:30px;" })
+
+<div style="margin: 15px"></div>
+
+<table id="tbOperazioniEffettuate" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipomovimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataDecorrenza)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataLettera)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataOperazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.codLivello)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoRecord)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoSpesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.utente)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipomovimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataDecorrenza)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataLettera)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataOperazione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codLivello)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipoRecord)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipoSpesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.utente)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('tbLogAttivita').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+
+    /* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var min = parseInt($('#min').val(), 10);
+            var max = parseInt($('#max').val(), 10);
+            var age = parseFloat(data[1]) || 0; // use data for the age column
+
+            if ((isNaN(min) && isNaN(max)) ||
+                 (isNaN(min) && age <= max) ||
+                 (min <= age && isNaN(max)) ||
+                 (min <= age && age <= max)) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $(document).ready(function () {
+        var table = $('#tbOperazioniEffettuate').DataTable();
+
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup(function () {
+            table.draw();
+        });
+    });
+
+
+
+</script>

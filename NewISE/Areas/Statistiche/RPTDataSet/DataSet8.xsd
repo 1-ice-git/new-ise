@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet8" targetNamespace="http://tempuri.org/DataSet8.xsd" xmlns:mstns="http://tempuri.org/DataSet8.xsd" xmlns="http://tempuri.org/DataSet8.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet8" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet8" msprop:Generator_UserDSName="DataSet8">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="V_OP_EFFETTUATE_CONTR_ABITAZ" msprop:Generator_TableClassName="V_OP_EFFETTUATE_CONTR_ABITAZDataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_CONTR_ABITAZ" msprop:Generator_TablePropName="V_OP_EFFETTUATE_CONTR_ABITAZ" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_CONTR_ABITAZRowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_CONTR_ABITAZRowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_CONTR_ABITAZRowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_CONTR_ABITAZRowDeleted" msprop:Generator_UserTableName="V_OP_EFFETTUATE_CONTR_ABITAZ" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_CONTR_ABITAZRowChanged" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_CONTR_ABITAZRowChangeEvent" msprop:Generator_RowClassName="V_OP_EFFETTUATE_CONTR_ABITAZRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="101" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CON_MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnCON_MATRICOLA" msprop:Generator_ColumnPropNameInRow="CON_MATRICOLA" msprop:Generator_ColumnPropNameInTable="CON_MATRICOLAColumn" msprop:Generator_UserColumnName="CON_MATRICOLA" type="xs:short" />
+              <xs:element name="SED_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnSED_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="SED_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="SED_DESCRIZIONEColumn" msprop:Generator_UserColumnName="SED_DESCRIZIONE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="35" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VAL_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnVAL_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="VAL_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="VAL_DESCRIZIONEColumn" msprop:Generator_UserColumnName="VAL_DESCRIZIONE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CON_DT_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnCON_DT_DECORRENZA" msprop:Generator_ColumnPropNameInRow="CON_DT_DECORRENZA" msprop:Generator_ColumnPropNameInTable="CON_DT_DECORRENZAColumn" msprop:Generator_UserColumnName="CON_DT_DECORRENZA" type="xs:dateTime" />
+              <xs:element name="CON_DT_LETTERA" msprop:Generator_ColumnVarNameInTable="columnCON_DT_LETTERA" msprop:Generator_ColumnPropNameInRow="CON_DT_LETTERA" msprop:Generator_ColumnPropNameInTable="CON_DT_LETTERAColumn" msprop:Generator_UserColumnName="CON_DT_LETTERA" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CON_DT_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnCON_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="CON_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="CON_DT_OPERAZIONEColumn" msprop:Generator_UserColumnName="CON_DT_OPERAZIONE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CON_CONTRIBUTO_VALUTA" msprop:Generator_ColumnVarNameInTable="columnCON_CONTRIBUTO_VALUTA" msprop:Generator_ColumnPropNameInRow="CON_CONTRIBUTO_VALUTA" msprop:Generator_ColumnPropNameInTable="CON_CONTRIBUTO_VALUTAColumn" msprop:Generator_UserColumnName="CON_CONTRIBUTO_VALUTA" type="xs:double" minOccurs="0" />
+              <xs:element name="CON_CANONE" msprop:Generator_ColumnVarNameInTable="columnCON_CANONE" msprop:Generator_ColumnPropNameInRow="CON_CANONE" msprop:Generator_ColumnPropNameInTable="CON_CANONEColumn" msprop:Generator_UserColumnName="CON_CANONE" type="xs:double" />
+              <xs:element name="CON_VALUTA_UFFICIALE" msprop:Generator_ColumnVarNameInTable="columnCON_VALUTA_UFFICIALE" msprop:Generator_ColumnPropNameInRow="CON_VALUTA_UFFICIALE" msprop:Generator_ColumnPropNameInTable="CON_VALUTA_UFFICIALEColumn" msprop:Generator_UserColumnName="CON_VALUTA_UFFICIALE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CON_PERCENTUALE" msprop:Generator_ColumnVarNameInTable="columnCON_PERCENTUALE" msprop:Generator_ColumnPropNameInRow="CON_PERCENTUALE" msprop:Generator_ColumnPropNameInTable="CON_PERCENTUALEColumn" msprop:Generator_UserColumnName="CON_PERCENTUALE" type="xs:short" />
+              <xs:element name="CON_CONTRIBUTO_LIRE" msprop:Generator_ColumnVarNameInTable="columnCON_CONTRIBUTO_LIRE" msprop:Generator_ColumnPropNameInRow="CON_CONTRIBUTO_LIRE" msprop:Generator_ColumnPropNameInTable="CON_CONTRIBUTO_LIREColumn" msprop:Generator_UserColumnName="CON_CONTRIBUTO_LIRE" type="xs:double" />
+              <xs:element name="CON_PROG_CONTRIBUTO_ABITAZIONE" msprop:Generator_ColumnVarNameInTable="columnCON_PROG_CONTRIBUTO_ABITAZIONE" msprop:Generator_ColumnPropNameInRow="CON_PROG_CONTRIBUTO_ABITAZIONE" msprop:Generator_ColumnPropNameInTable="CON_PROG_CONTRIBUTO_ABITAZIONEColumn" msprop:Generator_UserColumnName="CON_PROG_CONTRIBUTO_ABITAZIONE" type="xs:short" />
+              <xs:element name="CON_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnCON_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="CON_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="CON_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="CON_PROG_TRASFERIMENTO" type="xs:short" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,223 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Presenze_Livelli>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+ <div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+        <div class="select2-container select2-container--classic">
+            @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaQualifica(this.value);", @onclick = "PrelevaQualifica(this.value);" })
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
+        </div>
+
+        <div class="col-md-3">
+            <input type="submit" value="Stampa" class="btn btn-default" />
+            <input type="button" value="StampaLivelli" class="btn btn-default" onclick="location.href='@Url.Action("StampaLivelli", "ArchivioVecchioISE", new { @class = "btn btn-default" })'" />
+
+            @*@Html.ActionLink("Button text", "ActionName", "ControllerName", new { @class = "btn btn-primary" })*@
+
+            <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("MyAction", "MyController", new { @class = "btn btn-default" })'" />
+
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+    <table id="tbDipEsteroLivello" class="display" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.codQualifica)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.qualifica)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nominativo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.matricola)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.sede)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dt_Trasferimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dt_Rientro)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dt_Decorrenza)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.progr_trasferimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.progr_movimento)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codQualifica)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.qualifica)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nominativo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.matricola)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sede)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dt_Trasferimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dt_Rientro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dt_Decorrenza)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.progr_trasferimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.progr_movimento)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('#tbDipEsteroLivello').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+            var codicequalifica = parseInt($("#COD_QUALIFICA").select2('val'));
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli?codicequalifica=" + codicequalifica;
+        };
+
+
+        function PrelevaQualifica(codicequalifica) {
+            //debugger;
+            
+            rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
+
+            //var codicequalifica = parseInt($("#COD_QUALIFICA").select2('val'));
+            var chk = true;
+            //$("#codicedipendente").val = idMatricola;
+
+            //if (isNaN(codicequalifica)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            //if (isNaN(null)) {
+            //    alert("null is not a number");
+            //} else {
+            //    alert("i think null is a number");
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { codicequalifica: codicequalifica },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        $("#COD_QUALIFICA").select2({
+            placeholder: "Seleziona il Gigius ",
+            allowClear: true,
+            language: "it",
+            width: '350'
+
+        });
+    </script>
+
+

@@ -92,6 +92,18 @@
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -106,6 +118,10 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ReportViewerForMvc, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReportViewerForMvc.1.1.1\lib\net45\ReportViewerForMvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -169,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Parametri\Contenuti\CSS\Parametri.css" />
+    <Content Include="Areas\Statistiche\Content\Statistiche.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.min.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput.css" />
@@ -1038,6 +1055,7 @@
     <Content Include="Immagini\Simbolo euro green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Red.png" />
+    <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1501,8 +1519,108 @@
     <Content Include="DBComuniItalia\json-schemaComuniItalia.json" />
     <Content Include="DBComuniItalia\jsonComuniItalia.json" />
     <Content Include="Content\bootstrap-fileinput\sass\fileinput.scss" />
-    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
-    <None Include="Properties\PublishProfiles\Mauro.pubxml" />
+    <Content Include="Areas\Statistiche\Views\web.config" />
+    <Content Include="Areas\Statistiche\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Statistiche\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet6.xsc">
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet15.xsc">
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet10.xsc">
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet10.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet10.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet10.xss">
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet13.xsc">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet11.xsc">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet11.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet11.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet11.xss">
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet12.xsc">
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet12.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet12.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet12.xss">
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet13.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet13.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet13.xss">
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet15.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet15.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet15.xss">
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet6.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet6.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet6.xss">
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet9.xsc">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet7.xsc">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet7.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet7.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet7.xss">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet8.xsc">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet8.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet8.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet8.xss">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet9.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet9.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet9.xss">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1667,6 +1785,84 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
+    <Compile Include="Areas\Statistiche\Connessione.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\AltreStatisticheController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\LogAttivitaController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
+    <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\CodiceCoanModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\DAL\OperazioniEffettuate.cs" />
+    <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\DipEsteroModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtDipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtOperazioniEffettuate.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtUtentiAutorizzati.cs" />
+    <Compile Include="Areas\Statistiche\Models\ModelStoriaDipendente.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi_per_codice_Coan.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Dislocazione_dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Operazioni_Effettuate.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Canone_Anticipato.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Contributo_Abitazione.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Indennita_Estera.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Magg_Abitaz.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Spese_Diverse.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Op_Uso_Abitazione.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Presenze_Livelli.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Spese_ di_avvicendamento.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Spese_diverse.cs" />
+    <Compile Include="Areas\Statistiche\Models\Stp_Storia_Dipendente.cs" />
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet10.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet10.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet11.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet12.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet12.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet13.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet13.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet15.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet15.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet6.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet7.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet8.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet9.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
@@ -2105,7 +2301,11 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Parametri\Views\ParamIndRichiamo\" />
+    <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
+    <Folder Include="Areas\Statistiche\Views\ArchivioVecchioISE\" />
+    <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
+    <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
+    <Folder Include="Areas\Statistiche\Views\Statistiche\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
@@ -2120,6 +2320,28 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>msgEmail.Designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report1.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report10.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report11.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report13.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report14.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report15.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report16.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report17.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report18.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report2.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report3.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report4.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report5.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report6.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

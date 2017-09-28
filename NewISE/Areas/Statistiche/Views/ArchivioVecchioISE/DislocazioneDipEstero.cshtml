@@ -1,0 +1,255 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Dislocazione_dipendenti>
+@using NewISE.Areas.Statistiche.Models;
+<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+@{
+//List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
+
+}
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            
+            @*@Html.Editor("", new { htmlAttributes = new { @class = "form-control", @id = "txtMyField" } })*@
+            @Html.TextBox("IdData" ,"", new { @class = "form-control" })
+            @*@Html.Editor("Dal", new { htmlAttributes = new {Id= "@DataDislocazione", @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+        </div>
+        
+        <div class="select2-container select2-container--classic">
+            @Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+
+
+
+<table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataTrasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.qualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.coniuge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.figli)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isep)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contributo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.uso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.totale)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataTrasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.qualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.coniuge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.figli)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isep)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contributo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.uso)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totale)
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tbDislocazioneDipEstero').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+        };
+
+        function invia() {
+            //debugger
+            //rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+            //var descr_ufficio = $("#codicesede").select2('val');
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?codicesede=" + codicesede;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+
+            
+        };
+        
+       
+
+
+        function PrelevaGigius(codicesede, txtMyField) {
+            //debugger;
+            //rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+            rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
+            
+            //var idMatricola = parseInt($("#lstCategory").select2('val'));
+            var descr_ufficio = $("#codicesede").select2('val');
+            //var descr_ufficio = $("#codicesede").select2('data').text;
+            var data = $("#IdData").val();
+            //var textarea = document.getElementById('txtMyField').value;
+            //var data = $("#DataDislocazione").select2('val');
+            var chk = true;
+            //$("#codicedipendente").val = idMatricola;
+
+            //if (isNaN(codicesede)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            //var data = $("#DataDislocazione").val
+            
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicesede: codicesede,
+                    V_UTENTE: 'fantomas',
+                    V_DATA: data,
+                    V_UFFICIO: descr_ufficio
+                    //V_DATA: '15/09/2017',
+                    //data: DataDislocazione,
+                    //V_UFFICIO: 'ACCRA'                    
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        $("#codicesede").select2({
+            placeholder: "Seleziona il Gigius ",
+            allowClear: true,
+            language: "it",
+            width: '350'
+
+        });
+
+</script>
+
+

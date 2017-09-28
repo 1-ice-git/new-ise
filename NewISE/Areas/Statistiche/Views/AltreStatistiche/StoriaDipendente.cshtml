@@ -1,0 +1,279 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Storia_Dipendente>
+
+@*@model NewISE.Areas.Statistiche.Models.Stp_Storia_Dipendente*@
+
+
+<div style="margin: 15px"></div>
+
+    <table border="0" class="display" cellpadding="15" cellspacing="15">
+        <tbody>
+            <tr>
+                <td>
+                    <input type="text" id="min" name="min">
+                </td>
+                <td>
+                    <input type="text" id="max" name="max">
+                </td>
+                <td>
+                    <div class="select2-container select2-container--classic">
+                        @Html.DropDownList("Stampe", ViewData["Stampe"] as List<SelectListItem>)
+                    </div>
+                        @*@Html.DropDownListFor(x => x.selected, Model.Dipendenti)*@
+
+                        @*@Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "BindWithDbValues();", @onClick = "BindWithDbValues();" })*@
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <br /><br />
+
+    @*@Html.ActionLink(@"\Areas\Statistiche\RPT\Report1.rdlc", "ReportEmployee", "AltreStatisticheController", new { id = 1 }, new { target = "_blank" })*@
+    @Html.ActionLink("Stampa la Storia del Dipendente ", "RptStoriaDipendente", "AltreStatisticheController", new { scrolling = "yes", target = "_blank", @style = "background-image:url(/Image/edit.png); width:50px; height:30px;" })
+
+    <div style="margin: 15px"></div>
+
+    <table id="tbStoriaDipendente" class="display" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.matricola)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nominativo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.sede)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.valuta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.qualifica)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tipomovimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataDecorrenza)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataLettera)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.indennitaBase)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.coeffSede)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.percDisagio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.percAbbattimento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.percConiuge)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.pensioneConiuge)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.numeroFigli)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tassoCambio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.indennitaPersonale)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SistRientro)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.anticipo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SistNetta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.progrTrasferimento)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.matricola)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nominativo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.sede)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.valuta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.qualifica)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipomovimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataDecorrenza)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.dataLettera)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.indennitaBase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.coeffSede)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.percDisagio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.percAbbattimento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.percConiuge)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.percConiuge)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.numeroFigli)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tassoCambio)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.indennitaPersonale)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SistRientro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.anticipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SistNetta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.progrTrasferimento)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('tbLogAttivita').DataTable({
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+            }
+        });
+
+
+        /* Custom filtering function which will search data in column four between two values */
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = parseInt($('#min').val(), 10);
+                var max = parseInt($('#max').val(), 10);
+                var age = parseFloat(data[1]) || 0; // use data for the age column
+
+                if ((isNaN(min) && isNaN(max)) ||
+                     (isNaN(min) && age <= max) ||
+                     (min <= age && isNaN(max)) ||
+                     (min <= age && age <= max)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $(document).ready(function () {
+            var table = $('#tbStoriaDipendente').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').keyup(function () {
+                table.draw();
+            });
+        });
+
+        function PrelevaPVCoefficientiSede() {
+            //debugger;
+            rotta = "/Statistiche/AltreStatistiche/BindWithDbValues";
+
+            var idUfficio = parseInt($("#idUfficio").select2('val'));
+            var chk = true;
+
+            if (isNaN(idUfficio)) {
+                $("#divPViewParametri").empty();
+                return false;
+            }
+
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idUfficio: idUfficio },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+    </script>

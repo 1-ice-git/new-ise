@@ -1,0 +1,149 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Spese_diverse>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+        <div class="select2-container select2-container--classic">
+            Spese Diverse Seleziona
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa Spese Diverse </a>
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.codlivello)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.codsede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_trasferiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.spesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importospesa)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codlivello)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codsede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_trasferiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.spesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importospesa)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
+        };
+
+</script>
+
+
+
+
+

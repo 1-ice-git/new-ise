@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet15" targetNamespace="http://tempuri.org/DataSet15.xsd" xmlns:mstns="http://tempuri.org/DataSet15.xsd" xmlns="http://tempuri.org/DataSet15.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet15" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet15" msprop:Generator_UserDSName="DataSet15">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="V_ISE_STP_ELENCO_TRASF" msprop:Generator_TableClassName="V_ISE_STP_ELENCO_TRASFDataTable" msprop:Generator_TableVarName="tableV_ISE_STP_ELENCO_TRASF" msprop:Generator_TablePropName="V_ISE_STP_ELENCO_TRASF" msprop:Generator_RowDeletingName="V_ISE_STP_ELENCO_TRASFRowDeleting" msprop:Generator_RowChangingName="V_ISE_STP_ELENCO_TRASFRowChanging" msprop:Generator_RowEvHandlerName="V_ISE_STP_ELENCO_TRASFRowChangeEventHandler" msprop:Generator_RowDeletedName="V_ISE_STP_ELENCO_TRASFRowDeleted" msprop:Generator_UserTableName="V_ISE_STP_ELENCO_TRASF" msprop:Generator_RowChangedName="V_ISE_STP_ELENCO_TRASFRowChanged" msprop:Generator_RowEvArgName="V_ISE_STP_ELENCO_TRASFRowChangeEvent" msprop:Generator_RowClassName="V_ISE_STP_ELENCO_TRASFRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:long" minOccurs="0" />
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DT_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnDT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="DT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="DT_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="DT_TRASFERIMENTO" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="QUALIFICA" msprop:Generator_ColumnVarNameInTable="columnQUALIFICA" msprop:Generator_ColumnPropNameInRow="QUALIFICA" msprop:Generator_ColumnPropNameInTable="QUALIFICAColumn" msprop:Generator_UserColumnName="QUALIFICA" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CONIUGE" msprop:Generator_ColumnVarNameInTable="columnCONIUGE" msprop:Generator_ColumnPropNameInRow="CONIUGE" msprop:Generator_ColumnPropNameInTable="CONIUGEColumn" msprop:Generator_UserColumnName="CONIUGE" type="xs:long" minOccurs="0" />
+              <xs:element name="FIGLI" msprop:Generator_ColumnVarNameInTable="columnFIGLI" msprop:Generator_ColumnPropNameInRow="FIGLI" msprop:Generator_ColumnPropNameInTable="FIGLIColumn" msprop:Generator_UserColumnName="FIGLI" type="xs:long" minOccurs="0" />
+              <xs:element name="ISEP" msprop:Generator_ColumnVarNameInTable="columnISEP" msprop:Generator_ColumnPropNameInRow="ISEP" msprop:Generator_ColumnPropNameInTable="ISEPColumn" msprop:Generator_UserColumnName="ISEP" type="xs:double" minOccurs="0" />
+              <xs:element name="CONTRIBUTO" msprop:Generator_ColumnVarNameInTable="columnCONTRIBUTO" msprop:Generator_ColumnPropNameInRow="CONTRIBUTO" msprop:Generator_ColumnPropNameInTable="CONTRIBUTOColumn" msprop:Generator_UserColumnName="CONTRIBUTO" type="xs:double" minOccurs="0" />
+              <xs:element name="USO" msprop:Generator_ColumnVarNameInTable="columnUSO" msprop:Generator_ColumnPropNameInRow="USO" msprop:Generator_ColumnPropNameInTable="USOColumn" msprop:Generator_UserColumnName="USO" type="xs:double" minOccurs="0" />
+              <xs:element name="TOTALE" msprop:Generator_ColumnVarNameInTable="columnTOTALE" msprop:Generator_ColumnPropNameInRow="TOTALE" msprop:Generator_ColumnPropNameInTable="TOTALEColumn" msprop:Generator_UserColumnName="TOTALE" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

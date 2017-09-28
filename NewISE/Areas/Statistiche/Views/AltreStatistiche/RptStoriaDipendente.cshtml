@@ -1,0 +1,12 @@
+﻿@using ReportViewerForMvc;
+
+
+@using Microsoft.Reporting.WebForms;
+@{
+    ViewBag.Title = "Report Storia del Dipendente";
+}
+
+
+@*@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)*@
+
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no", target = "_blank" })

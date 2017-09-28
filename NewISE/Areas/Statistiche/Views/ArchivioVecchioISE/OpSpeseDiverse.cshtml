@@ -1,0 +1,163 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Spese_Diverse>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-2">
+            @Html.Editor("Al", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+<table id="tb_Stp_Op_Spese_Diverse" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipo_spesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.data_decorrenza)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.data_operazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo_spesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.partenza_rientro)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipo_spesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_decorrenza)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_operazione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo_spesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.partenza_rientro)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Stp_Op_Spese_Diverse').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            var matricola = parseInt($("#MATRICOLA").select2('val'));
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+        };
+
+        /* Custom filtering function which will search data in column four between two values */
+        $.fn.dataTable.ext.search.push(
+            function (settings, data_operazione, dataIndex) {
+                var min = parseInt($('#min').val(), 10);
+                var max = parseInt($('#max').val(), 10);
+                var data_operazione = parseFloat(data_operazione[6]) || 0; // use data for the age column
+
+                if ((isNaN(min) && isNaN(max)) ||
+                     (isNaN(min) && data_operazione <= max) ||
+                     (min <= data_operazione && isNaN(max)) ||
+                     (min <= data_operazione && data_operazione <= max)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $(document).ready(function () {
+            var table = $('#tb_Stp_Op_Spese_Diverse').DataTable();
+
+            // Event listener to the two range filtering inputs to redraw on input
+            $('#min, #max').keyup(function () {
+                table.draw();
+            });
+        });
+
+</script>
+
+
+
+

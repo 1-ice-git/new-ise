@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Bind MVC DropDownList with Model - dotnetmentors.com";
+}
+
+
+@model NewISE.Areas.Statistiche.Models.Stp_Dipendenti
+
+
+<h1>Bind MVC DropDownList with Model</h1>
+
+@Html.DropDownListFor(x => x.selected, Model.Dipendenti)

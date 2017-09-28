@@ -1,0 +1,234 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Storia_Dipendente>
+@using NewISE.Areas.Statistiche.Models;
+<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+@{ 
+    //List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
+
+}
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+        </div>
+
+        <div class="select2-container select2-container--classic">
+            @*@Html.DropDownList("Stampe", ViewData["Stampe"] as List<SelectListItem>, new { @class = "form-control select2 select2-select" })*@
+
+            @Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })
+        </div>
+
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <a href="#" target="_blank" onclick="invia()">Stampa la Storia del Dipendente </a> 
+        </div>
+    </div>
+
+    <hr />
+</div>
+
+    <table id="tbStoriaDipendente" class="display" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NOMINATIVO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MATRICOLA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LIVELLO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TIPO_MOVIMENTO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DATA_DECORRENZA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DATA_LETTERA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.COEF_SEDE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PERC_DISAGIO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PERC_SPETTANTE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PERC_CONIUGE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PENSIONE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.N_FIGLI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TFR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DESCR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.INDENNITA)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MATRICOLA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LIVELLO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TIPO_MOVIMENTO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DATA_DECORRENZA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DATA_LETTERA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.COEF_SEDE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERC_DISAGIO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERC_SPETTANTE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERC_CONIUGE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PENSIONE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.N_FIGLI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TFR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DESCR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.INDENNITA)
+                    </td>
+                  </tr>
+         }
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('#tbStoriaDipendente').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+                
+            }
+        });
+
+        function invia() {
+            //debugger
+            var matricola = parseInt($("#MATRICOLA").select2('val'));
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+        };
+       
+
+        function PrelevaGigius(matricola) {
+            //debugger;
+            rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+
+            //var idMatricola = parseInt($("#lstCategory").select2('val'));
+            var chk = true;
+            //$("#codicedipendente").val = idMatricola;
+
+            if (isNaN(matricola)) {
+                $("#divPViewParametri").empty();
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        $("#MATRICOLA").select2({
+            placeholder: "Seleziona il Gigius ",
+            allowClear: true,
+            language: "it",
+            width: '350'
+
+        });
+    </script>
+

@@ -1,0 +1,77 @@
+﻿
+@model NewISE.Areas.Statistiche.Models.CategoryModel
+
+
+
+    <div class="form-group">
+        @Html.Label("lblDipendente", "Seleziona Dipendente", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+               @*@Html.DropDownListFor(x => x.selected, Model.lstCategory, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius();" })*@
+
+               @Html.DropDownList("lstCategory", Model.lstCategory, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius();" })
+
+            </div>
+        </div>
+    </div>
+</p>
+
+
+<script type="text/javascript">
+
+    function PrelevaGigius() {
+        //debugger;
+        rotta = "/Statistiche/ArchivioVecchioISE/StoriaDipendente";
+        
+        var idMatricola = parseInt($("#lstCategory").select2('val'));
+        var chk = true;
+        //$("#codicedipendente").val = idMatricola;
+
+        if (isNaN(idMatricola)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMatricola: idMatricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+    
+    $("#lstCategory").select2({
+        placeholder: "Seleziona il Gigius ",
+        allowClear: true,
+        language: "it",
+        width: '350'
+
+    });
+
+</script>

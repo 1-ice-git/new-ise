@@ -1,0 +1,169 @@
+﻿@model IEnumerable<NewISE.Models.LogAttivitaModel>
+
+@using NewISE.Areas.Statistiche.Models.dtObj;
+
+<p>
+    <div class="form-group">
+       
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUtenteAutorizzato", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVLogAttivita();", @onClick = "PrelevaPVLogAttivita();" })
+            </div>
+        </div>
+    </div>
+</p>
+
+<table id="tbIndBase" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.utenteAutorizzato.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idLog)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idUtenteLoggato)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idTrasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idAttivitaCrud)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataOperazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descAttivitaSvolta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tabellaCoinvolta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.idTabellaCoinvolta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.utenteAutorizzato.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idLog)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idUtenteLoggato)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idTrasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idAttivitaCrud)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataOperazione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descAttivitaSvolta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tabellaCoinvolta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idTabellaCoinvolta)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    //$("#idUtenteAutorizzato").select2({
+    //    placeholder: "Seleziona l'Ufficio ",
+    //    allowClear: true,
+    //    language: "it",
+    //    width: '150'
+
+    //});
+
+    //function PrelevaPVLogAttivita() {
+    //    //debugger;
+    //    rotta = "/Statistiche/Statistiche/LogAttivita";
+
+    //    var idUtenteAutorizzato = parseInt($("#idUtenteAutorizzato").select2('val'));
+    //    var chk = true;
+
+    //    if (isNaN(idUtenteAutorizzato)) {
+    //        $("#divPViewParametri").empty();
+    //        return false;
+    //    }
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: rotta,
+    //        data: { idUtenteAutorizzato: idUtenteAutorizzato },
+    //        dataType: 'html',
+    //        beforeSend: function () {
+    //            //debugger;
+    //            //VerificaAutenticazione();
+    //            //$("#DialogNewDoc").dialog("destroy");
+    //            //$("#divEffettoLoadAutNoDoc").show("slow");
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            //$("#divEffettoLoadAutNoDoc").hide("slow");
+    //            $("#divPViewParametri").empty();
+    //            $("#divPViewParametri").html(result);
+
+    //            //RicercaDocumenti();
+
+    //        },
+    //        complete: function () {
+    //            //$("#divEffettoLoadAutNoDoc").hide("slow");
+    //            //                $("#Centro").getNiceScroll().resize();
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrow) {
+    //            //debugger;
+    //            var msg = errorThrow.err;
+    //            AlertDialog(msg);
+    //        }
+
+    //    });
+
+    //}
+
+</script>
+
+

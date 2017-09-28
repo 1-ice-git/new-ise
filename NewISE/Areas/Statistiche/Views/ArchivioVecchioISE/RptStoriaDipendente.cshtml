@@ -1,0 +1,27 @@
+﻿@using ReportViewerForMvc;
+@using Microsoft.Reporting.WebForms;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>Storia del Dipendente</title>
+</head>
+<body>
+    @{
+        ViewBag.Title = "Report Storia del Dipendenteaaa";
+    }
+
+
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+
+    @*@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "yes", target = "_blank", width = "100%" })*@
+
+
+
+    @*<div class="col-md-4">
+        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { frameborder = "1", width = "1000", height = "1000", style = "overflow:hidden;", scrolling = "yes" })
+    </div>*@
+</body>
+</html>

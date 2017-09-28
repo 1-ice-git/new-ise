@@ -1,0 +1,110 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Spese_diverse>
+
+<a href="#" target="_blank" onclick="invia()">Stampa Spese Diverse </a>
+<br /><br>
+<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipo_spesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.data_decorrenza)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.data_operazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo_spesa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.partenza_rientro)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipo_spesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_decorrenza)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.data_operazione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo_spesa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.partenza_rientro)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        function invia() {
+            //debugger
+            var matricola = parseInt($("#MATRICOLA").select2('val'));
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+        };
+
+</script>

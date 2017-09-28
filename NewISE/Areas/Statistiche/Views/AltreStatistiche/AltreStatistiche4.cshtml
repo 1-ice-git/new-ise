@@ -1,0 +1,6 @@
+﻿@using (Html.BeginForm())
+{
+    <div class="select2-container select2-container--classic">
+        @Html.DropDownList("Country", ViewData["country"] as List<SelectListItem>)
+    </div>
+ }
