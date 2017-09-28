@@ -13,7 +13,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
-using StampeISE;
+
 
 namespace NewISE.Areas.Statistiche.Controllers
 {

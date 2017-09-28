@@ -1792,6 +1792,9 @@
     <Compile Include="Areas\Statistiche\Models\DAL\OperazioniEffettuate.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroModel.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtDipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtUtentiAutorizzati.cs" />
     <Compile Include="Areas\Statistiche\Models\ModelStoriaDipendente.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi_per_codice_Coan.cs" />
