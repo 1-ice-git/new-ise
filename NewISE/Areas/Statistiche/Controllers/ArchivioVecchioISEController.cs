@@ -625,7 +625,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Storia_Dipendente> lsd = new List<Stp_Storia_Dipendente>();
             List<Stp_Storia_Dipendente> model = new List<Stp_Storia_Dipendente>();
 
-            lcm = Dipendenti.GetAllDipendenti().ToList();
+            //lcm = Dipendenti.GetAllDipendenti().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -941,7 +941,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Dislocazione_dipendenti> lsd = new List<Stp_Dislocazione_dipendenti>();
             List<Stp_Dislocazione_dipendenti> model = new List<Stp_Dislocazione_dipendenti>();
 
-            lcm = Dipendenti.GetAllSedi().ToList();
+            //lcm = Dipendenti.GetAllSedi().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -1279,7 +1279,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Consuntivo_dei_costi_per_codice_Coan> lsd = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
             List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
 
-            lcm = Dipendenti.GetAllCostiCoan().ToList();
+            //lcm = Dipendenti.GetAllCostiCoan().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -1981,7 +1981,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                      
 
-            lcm = Dipendenti.GetAllQualifiche().ToList();
+            //lcm = Dipendenti.GetAllQualifiche().ToList();
 
             if (lcm != null && lcm.Any())
             {
