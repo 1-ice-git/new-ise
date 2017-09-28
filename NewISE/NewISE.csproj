@@ -1621,6 +1621,38 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet9.xss">
       <DependentUpon>DataSet9.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\BindWithDbValues.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\BindWithViewBag.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ConsuntivoCosti.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ConsuntivoCostiCoAn.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\DislocazioneDipEstero.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpCanoneAnticipato.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpContributoAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OperazioniEffettuate.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpIndennitaEstera.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpSpeseDiverse.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\OpUsoAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\PartialView.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\PresenzeLivelli.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ReportEmployee.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ReportEmployee1.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ReportEmployee3.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\ReportViewer.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptConsuntivoCosti.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptConsuntivoCostiCoAn.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptDislocazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpIndennitaEstera.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptPresenzeLivelli.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptSpeseAvvicendamento.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptSpeseDiverse.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptStoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseAvvicendamento.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse1.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse3.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\StoriaDipendente.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -2294,7 +2326,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
-    <Folder Include="Areas\Statistiche\Views\ArchivioVecchioISE\" />
     <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
     <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
     <Folder Include="Areas\Statistiche\Views\Statistiche\" />
