@@ -1786,10 +1786,8 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtParValute.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Statistiche\Connessione.cs" />
-    <Compile Include="Areas\Statistiche\Controllers\AltreStatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
-    <Compile Include="Areas\Statistiche\Controllers\LogAttivitaController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\RiepiloghiController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
@@ -1797,10 +1795,6 @@
     <Compile Include="Areas\Statistiche\Models\DAL\OperazioniEffettuate.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroModel.cs" />
-    <Compile Include="Areas\Statistiche\Models\dtObj\dtDipendenti.cs" />
-    <Compile Include="Areas\Statistiche\Models\dtObj\dtLogAttivita.cs" />
-    <Compile Include="Areas\Statistiche\Models\dtObj\dtOperazioniEffettuate.cs" />
-    <Compile Include="Areas\Statistiche\Models\dtObj\dtUtentiAutorizzati.cs" />
     <Compile Include="Areas\Statistiche\Models\ModelStoriaDipendente.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi_per_codice_Coan.cs" />
