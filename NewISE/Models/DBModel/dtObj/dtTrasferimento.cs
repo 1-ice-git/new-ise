@@ -351,6 +351,53 @@ namespace NewISE.Models.DBModel.dtObj
             return ltm;
         }
 
+
+        public TrasferimentoModel GetTrasferimentoAttivoNotificato(string matricola)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+            int matr = Convert.ToInt16(matricola);
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ldp = db.DIPENDENTI.Where(a => a.MATRICOLA == matr).ToList();
+                if (ldp?.Any() ?? false)
+                {
+                    var lt =
+                        ldp.First()
+                            .TRASFERIMENTO.Where(
+                                a =>
+                                    a.DATAPARTENZA == ldp.First().TRASFERIMENTO.Max(b => b.DATAPARTENZA) &&
+                                    a.NOTIFICATRASFERIMENTO == true)
+                            .ToList();
+
+                    if (lt?.Any() ?? false)
+                    {
+                        var t = lt.OrderBy(a => a.DATAPARTENZA).Last();
+
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO,
+
+                        };
+                    }
+                }
+            }
+
+            return tm;
+        }
+
+
         public TrasferimentoModel GetUltimoSoloTrasferimentoByMatricola(string matricola)
         {
             TrasferimentoModel tm = new TrasferimentoModel();

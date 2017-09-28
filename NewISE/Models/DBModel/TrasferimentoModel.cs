@@ -92,6 +92,8 @@ namespace NewISE.Models.DBModel
 
         public RuoloUfficioModel RuoloUfficio { get; set; }
 
+        public PrimaSistemazioneModel PrimaSistemazione { get; set; }
+
 
         public bool HasValue()
         {

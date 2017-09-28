@@ -18,8 +18,8 @@ namespace NewISE.EF
         public PRIMASITEMAZIONE()
         {
             this.ANTICIPI = new HashSet<ANTICIPI>();
-            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
+            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
         }
     
         public decimal IDPRIMASISTEMAZIONE { get; set; }
@@ -30,8 +30,8 @@ namespace NewISE.EF
         public virtual ICollection<ANTICIPI> ANTICIPI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
     }
 }

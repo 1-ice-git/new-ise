@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="DBISEPRO.GRUPPIDOCUMENTI" Width="1.5" PointX="7.5" PointY="51.125" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITA" Width="1.5" PointX="7.5" PointY="42.75" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="19.5" PointY="55.125" />
-        <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="5.25" PointY="25.875" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLI" Width="1.5" PointX="11.5" PointY="58.375" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLIDIPENDENTI" Width="1.5" PointX="13.75" PointY="41.875" />
         <EntityTypeShape EntityType="DBISEPRO.LOGATTIVITA" Width="1.5" PointX="10.5" PointY="29.75" />
@@ -82,7 +81,6 @@
         <AssociationConnector Association="DBISEPRO.R_R_E_C" />
         <AssociationConnector Association="DBISEPRO.R_GD_TDV" />
         <AssociationConnector Association="DBISEPRO.R_T_I" />
-        <AssociationConnector Association="DBISEPRO.R_TT_IS" />
         <AssociationConnector Association="DBISEPRO.R_L_PMAB" />
         <AssociationConnector Association="DBISEPRO.R_LIV_LIVDIP" />
         <AssociationConnector Association="DBISEPRO.R_T_LA" />
@@ -173,12 +171,15 @@
         <EntityTypeShape EntityType="DBISEPRO.PRIMASITEMAZIONE" Width="1.5" PointX="10.5" PointY="19.5" />
         <AssociationConnector Association="DBISEPRO.R_PS_A" />
         <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
-        <AssociationConnector Association="DBISEPRO.IS_PS" />
         <AssociationConnector Association="DBISEPRO.PS_AC" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="22" PointY="51.5" />
         <AssociationConnector Association="DBISEPRO.R_L_I" />
         <AssociationConnector Association="DBISEPRO.R_RIDUZIONI_INDBASE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_INDENNITABASE" />
+        <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="25" PointY="49.875" />
+        <AssociationConnector Association="DBISEPRO.R_R_IS" />
+        <AssociationConnector Association="DBISEPRO.R_TT_IS" />
+        <AssociationConnector Association="DBISEPRO.IS_PS" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

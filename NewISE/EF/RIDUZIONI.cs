@@ -18,6 +18,7 @@ namespace NewISE.EF
         public RIDUZIONI()
         {
             this.INDENNITABASE = new HashSet<INDENNITABASE>();
+            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
         }
     
         public decimal IDRIDUZIONI { get; set; }
@@ -31,5 +32,7 @@ namespace NewISE.EF
         public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
     }
 }

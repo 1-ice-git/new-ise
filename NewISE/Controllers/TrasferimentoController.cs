@@ -558,6 +558,19 @@ namespace NewISE.Controllers
 
                                     dttr.SetTrasferimento(ref trm, db);
 
+                                    using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                                    {
+                                        PrimaSistemazioneModel psm = new PrimaSistemazioneModel()
+                                        {
+                                            idPrimaSistemazione = trm.idTrasferimento,
+                                            dataOperazione = DateTime.Now,
+                                            ricalcolata = false
+                                        };
+
+                                        dtps.SetPrimaSistemazione(psm, db);
+
+                                    }
+
                                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                     {
                                         MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel()
@@ -867,7 +880,7 @@ namespace NewISE.Controllers
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
                     if (trm != null && trm.HasValue())
                     {
                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())

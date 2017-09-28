@@ -15,6 +15,8 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il tipo tasferimento è richiesto.")]
         public decimal idTipoTrasferimento { get; set; }
 
+        public decimal? idRiduzioni { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -43,6 +45,8 @@ namespace NewISE.Models.DBModel
         public bool annullato { get; set; } = false;
 
         public TipoTrasferimentoModel TipoTrasferimento { get; set; }
+
+        public RiduzioniModel Riduzioni { get; set; }
 
     }
 }

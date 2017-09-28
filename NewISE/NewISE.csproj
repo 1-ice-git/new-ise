@@ -1912,7 +1912,10 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
+    <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
@@ -2067,7 +2070,6 @@
     <Content Include="Views\MaggiorazioniFamiliari\MaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\PensioneConiuge\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\PensioneConiuge\NuovoImportoPensione.cshtml" />
-    <Content Include="Views\PensioneConiuge\ModificaPensione.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
