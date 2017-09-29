@@ -21,6 +21,7 @@ namespace NewISE.Areas.Statistiche.Models
         public string contributo { get; set; }
         public string uso { get; set; }
         public string totale { get; set; }
-                
+
+
     }
 }

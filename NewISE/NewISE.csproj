@@ -1653,6 +1653,7 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse1.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse3.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\StoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Statistiche\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1819,6 +1820,8 @@
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Statistiche\Connessione.cs" />
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
     <Compile Include="Areas\Statistiche\Models\CodiceCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DAL\OperazioniEffettuate.cs" />
@@ -2328,7 +2331,6 @@
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
     <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
     <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
-    <Folder Include="Areas\Statistiche\Views\Statistiche\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
