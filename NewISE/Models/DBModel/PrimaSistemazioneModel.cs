@@ -15,8 +15,8 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
         public DateTime dataOperazione { get; set; }
-        [Required]
-        [DefaultValue(false)]
-        public bool ricalcolata { get; set; }
+
+
+        public TrasferimentoModel Trasferimento { get; set; }
     }
 }

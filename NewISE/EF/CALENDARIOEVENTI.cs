@@ -15,7 +15,6 @@ namespace NewISE.EF
     public partial class CALENDARIOEVENTI
     {
         public decimal IDCALENDARIOEVENTI { get; set; }
-        public decimal IDLIVELLIVISIBILITA { get; set; }
         public decimal IDFUNZIONIEVENTI { get; set; }
         public Nullable<decimal> IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINSEVENTO { get; set; }
@@ -24,7 +23,6 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual FUNZIONIEVENTI FUNZIONIEVENTI { get; set; }
-        public virtual LIVELLIVISIBILITAEVENTI LIVELLIVISIBILITAEVENTI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

@@ -24,9 +24,11 @@ namespace NewISE.EF
         public decimal IDUTENTEAUTORIZZATO { get; set; }
         public decimal IDRUOLOUTENTE { get; set; }
         public string UTENTE { get; set; }
+        public Nullable<decimal> IDDIPENDENTE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACCESSI> ACCESSI { get; set; }
+        public virtual DIPENDENTI DIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual RUOLOACCESSO RUOLOACCESSO { get; set; }

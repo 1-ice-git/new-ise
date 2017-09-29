@@ -17,6 +17,7 @@ using System.Web.Mvc;
 using System.Collections;
 using System.Collections.Generic;
 using NewISE.Models.dtObj.objB;
+using NewISE.Models.DBModel.dtObj;
 
 namespace NewISE.Controllers
 {
@@ -90,22 +91,57 @@ namespace NewISE.Controllers
                                                 UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
 
                                                 uam = dta.PrelevaUtenteLoggato(account.username);
-
-                                                Claim[] identityClaims = new Claim[]
+                                                using (dtDipendenti dtd = new dtDipendenti())
                                                 {
-                                                new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
-                                                new Claim(ClaimTypes.Role, Convert.ToString((decimal)uam.idRuoloUtente)),
-                                                new Claim(ClaimTypes.GivenName, utsa.username),
-                                                new Claim(ClaimTypes.Name, utsa.nome),
-                                                new Claim(ClaimTypes.Surname, utsa.cognome),
-                                                new Claim(ClaimTypes.PostalCode, ""),
-                                                new Claim(ClaimTypes.Country, ""),
-                                                new Claim(ClaimTypes.StateOrProvince, ""),
-                                                new Claim(ClaimTypes.StreetAddress, ""),
-                                                new Claim(ClaimTypes.Email, utsa.email),
-                                                };
+                                                    if (uam.idDipendente.HasValue)
+                                                    {
+                                                        uam.Dipendenti = dtd.GetDipendenteByID(uam.idDipendente.Value);
+                                                    }
+                                                }
 
-                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+                                                Claim[] identityClaims;
+
+                                                if (uam.idDipendente.HasValue)
+                                                {
+                                                    identityClaims = new Claim[]
+                                                    {
+                                                        new Claim(ClaimTypes.NameIdentifier,
+                                                            uam.idUtenteAutorizzato.ToString()),
+                                                        new Claim(ClaimTypes.Role,
+                                                            Convert.ToString((decimal) uam.idRuoloUtente)),
+                                                        new Claim(ClaimTypes.GivenName, utsa.username),
+                                                        new Claim(ClaimTypes.Name, utsa.nome),
+                                                        new Claim(ClaimTypes.Surname, utsa.cognome),
+                                                        new Claim(ClaimTypes.PostalCode, uam.Dipendenti.cap),
+                                                        new Claim(ClaimTypes.Country, uam.Dipendenti.citta),
+                                                        new Claim(ClaimTypes.StateOrProvince, uam.Dipendenti.provincia),
+                                                        new Claim(ClaimTypes.StreetAddress, uam.Dipendenti.indirizzo),
+                                                        new Claim(ClaimTypes.Email, utsa.email),
+                                                    };
+                                                }
+                                                else
+                                                {
+                                                    identityClaims = new Claim[]
+                                                    {
+                                                        new Claim(ClaimTypes.NameIdentifier,
+                                                            uam.idUtenteAutorizzato.ToString()),
+                                                        new Claim(ClaimTypes.Role,
+                                                            Convert.ToString((decimal) uam.idRuoloUtente)),
+                                                        new Claim(ClaimTypes.GivenName, utsa.username),
+                                                        new Claim(ClaimTypes.Name, utsa.nome),
+                                                        new Claim(ClaimTypes.Surname, utsa.cognome),
+                                                        new Claim(ClaimTypes.PostalCode, ""),
+                                                        new Claim(ClaimTypes.Country, ""),
+                                                        new Claim(ClaimTypes.StateOrProvince, ""),
+                                                        new Claim(ClaimTypes.StreetAddress, ""),
+                                                        new Claim(ClaimTypes.Email, utsa.email),
+                                                    };
+                                                }
+
+
+                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                                    DefaultAuthenticationTypes.ApplicationCookie,
+                                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
 
                                                 Authentication.SignIn(new AuthenticationProperties
                                                 {
@@ -123,7 +159,8 @@ namespace NewISE.Controllers
                                             else
                                             {
                                                 ViewBag.ModelStateCount = 1;
-                                                ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                                ModelState.AddModelError("",
+                                                    "Le credenziali del super amministratore sono errate.");
                                                 return View(account);
                                             }
                                         }
@@ -131,7 +168,8 @@ namespace NewISE.Controllers
                                     else
                                     {
                                         ViewBag.ModelStateCount = 1;
-                                        ModelState.AddModelError("", "Le credenziali del super amministratore sono errate.");
+                                        ModelState.AddModelError("",
+                                            "Le credenziali del super amministratore sono errate.");
                                         return View(account);
                                     }
                                 }
@@ -169,7 +207,7 @@ namespace NewISE.Controllers
                                     Claim[] identityClaims = new Claim[]
                                     {
                                         new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
-                                        new Claim(ClaimTypes.Role, Convert.ToString((decimal)uam.idRuoloUtente)),
+                                        new Claim(ClaimTypes.Role, Convert.ToString((decimal) uam.idRuoloUtente)),
                                         new Claim(ClaimTypes.GivenName, retDip.items.matricola),
                                         new Claim(ClaimTypes.Name, retDip.items.nome),
                                         new Claim(ClaimTypes.Surname, retDip.items.cognome),
@@ -180,7 +218,9 @@ namespace NewISE.Controllers
                                         new Claim(ClaimTypes.Email, retDip.items.email),
                                     };
 
-                                    ClaimsIdentity identity = new ClaimsIdentity(identityClaims, DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+                                    ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                        DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
+                                        ClaimTypes.Role);
 
                                     Authentication.SignIn(new AuthenticationProperties
                                     {
@@ -307,7 +347,8 @@ namespace NewISE.Controllers
                                     </div>
                                     <p>&nbsp;</p>";
 
-                corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password, DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
+                corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password,
+                    DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
 
                 using (GestioneEmail gem = new GestioneEmail())
                 {

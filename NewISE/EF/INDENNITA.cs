@@ -19,11 +19,11 @@ namespace NewISE.EF
         {
             this.ELAB_CONT = new HashSet<ELAB_CONT>();
             this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
+            this.INDENNITABASE = new HashSet<INDENNITABASE>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
             this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.TFR = new HashSet<TFR>();
-            this.INDENNITABASE = new HashSet<INDENNITABASE>();
         }
     
         public decimal IDTRASFINDENNITA { get; set; }
@@ -37,6 +37,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
@@ -44,7 +46,5 @@ namespace NewISE.EF
         public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
     }
 }

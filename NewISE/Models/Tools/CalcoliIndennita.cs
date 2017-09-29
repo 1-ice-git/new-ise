@@ -23,6 +23,7 @@ namespace NewISE.Models.Tools
         private PercentualeMagConiugeModel percentualeMaggiorazioneConiuge { get; set; }
         private PensioneConiugeModel pensioneConiuge { get; set; }
         private List<FigliModel> figli { get; set; }
+        private IndennitaSistemazioneModel indennitaSistemazione { get; set; }
 
         //private DateTime? _dataCalcoloIndennita;
         ///// <summary>
@@ -303,6 +304,21 @@ namespace NewISE.Models.Tools
 
                             indennitaPersonaleTeorica = indennitaServizio + maggiorazioneFamiliari;
 
+
+                            #endregion
+
+                            #region Prima sistemazione
+
+                            using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                            {
+                                var psm = dtps.GetPrimaSistemazione(trasferimento.idTrasferimento, db);
+                                using (dtIndennitaSistemazione dtis = new dtIndennitaSistemazione())
+                                {
+                                    var ism = dtis.GetIndennitaSistemazione(psm.idPrimaSistemazione,
+                                        (EnumTipoTrasferimento)trasferimento.idTipoTrasferimento, dtDatiParametri, db);
+
+                                }
+                            }
 
                             #endregion
                         }
