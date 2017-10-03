@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Dislocazione_dipendenti>
 @using NewISE.Areas.Statistiche.Models;
+
 <link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+
+
 @{
-//List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
+    //List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
 
 }
 
@@ -12,7 +15,7 @@
         <hr />
 
         <div class="col-md-2">
-            @Html.TextBox("Data da inserire" ,null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", })
+            @Html.TextBox("Data da inserire" ,null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data" })
         </div>
         
         <div class="select2-container select2-container--classic">
@@ -171,7 +174,8 @@
                 
                 changeMonth :true,   
                 changeYear: true,   
-                yearRange: "-15:+0" 
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
             });  
         });
 

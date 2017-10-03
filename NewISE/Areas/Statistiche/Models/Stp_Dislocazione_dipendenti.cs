@@ -22,6 +22,5 @@ namespace NewISE.Areas.Statistiche.Models
         public string uso { get; set; }
         public string totale { get; set; }
 
-
     }
 }
