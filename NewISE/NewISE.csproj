@@ -1979,9 +1979,6 @@
     <Compile Include="EF\LIVELLIDIPENDENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\LIVELLIVISIBILITAEVENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\LOGATTIVITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

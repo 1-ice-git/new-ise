@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Models
 {
@@ -25,6 +26,10 @@ namespace NewISE.Models
         [Display(Name = "Utente")]
         public string matricola { get; set; }
 
+        public decimal? idDipendente { get; set; }
+
         public RuoloAccesoModel ruoloAccesso { get; set; }
+
+        public DipendentiModel Dipendenti { get; set; }
     }
 }

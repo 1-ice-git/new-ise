@@ -17,19 +17,19 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LIVELLI()
         {
+            this.INDENNITABASE = new HashSet<INDENNITABASE>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
-            this.INDENNITABASE = new HashSet<INDENNITABASE>();
         }
     
         public decimal IDLIVELLO { get; set; }
         public string LIVELLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
     }
 }

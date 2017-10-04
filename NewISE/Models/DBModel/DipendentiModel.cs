@@ -96,6 +96,7 @@ namespace NewISE.Models.DBModel
 
         public LivelloDipendenteModel livelloDipendenteValido { get; set; }
 
+        public UtenteAutorizzatoModel UtenteAutorizzato { get; set; }
 
 
     }
