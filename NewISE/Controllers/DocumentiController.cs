@@ -385,8 +385,8 @@ namespace NewISE.Controllers
                     case EnumGruppiDoc.Viaggi:
                         switch (tipoDoc)
                         {
-                            case EnumTipoDoc.CartaImbarco_Viaggi1:
-                            case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                            case EnumTipoDoc.CartaImbarco_Viaggi_1:
+                            case EnumTipoDoc.TitoloViaggio_Viaggi_1:
                                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                                 {
                                     TitoloViaggioModel tvm;
@@ -452,25 +452,25 @@ namespace NewISE.Controllers
                                     }
                                 }
                                 break;
-                            case EnumTipoDoc.PrimaRataMab_MAB2:
+                            case EnumTipoDoc.PrimaRataMab_MAB_2:
                                 break;
-                            case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                            case EnumTipoDoc.DichiarazioneCostoLocazione_MAB_2:
                                 break;
-                            case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                            case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB_2:
                                 break;
-                            case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                            case EnumTipoDoc.ClausoleContrattoAlloggio_MAB_2:
                                 break;
-                            case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                            case EnumTipoDoc.CopiaContrattoLocazione_MAB_2:
                                 break;
-                            case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                            case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti_3:
                                 break;
-                            case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                            case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti_3:
                                 break;
-                            case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                            case EnumTipoDoc.DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4:
                                 break;
-                            case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                            case EnumTipoDoc.DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4:
                                 break;
-                            case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                            case EnumTipoDoc.LetteraTrasferimento_Trasferimento_5:
                                 break;
                             case EnumTipoDoc.CartaIdentita_Viaggi1:
                                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())

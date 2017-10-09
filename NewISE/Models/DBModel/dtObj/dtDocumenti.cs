@@ -33,8 +33,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                 switch (tipodoc)
                 {
-                    case EnumTipoDoc.CartaImbarco_Viaggi1:
-                    case EnumTipoDoc.TitoloViaggio_Viaggi1:
+                    case EnumTipoDoc.CartaImbarco_Viaggi_1:
+                    case EnumTipoDoc.TitoloViaggio_Viaggi_1:
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
