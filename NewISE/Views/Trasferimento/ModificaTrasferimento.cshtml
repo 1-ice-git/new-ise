@@ -142,14 +142,16 @@
     }
 
     <div class="form-group ">
-        <div class="col-xs-offset-8 col-xs-1">
-            <button type="button" class="btn btn-default btn-sm" id="btModifica">
-                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
-                Salva
-            </button>
-        </div>
+
         @if (AbilitaNotifica)
         {
+            <div class="col-xs-offset-8 col-xs-1">
+                <button type="button" class="btn btn-default btn-sm" id="btModifica">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
+
             <div class="col-xs-1">
                 <button class="btn btn-default btn-sm " id="btNotifica" data-toggle="modal" data-target="#notificaModal">
                     <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
@@ -159,6 +161,13 @@
         }
         else
         {
+            <div class="col-xs-offset-8 col-xs-1">
+                <button type="button" class="btn btn-default btn-sm disabled" disabled id="btModifica">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
+
             <div class="col-xs-1">
                 <button class="btn btn-default btn-sm disabled" disabled id="btNotifica">
                     <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
@@ -227,7 +236,7 @@
                 <p>Procedere con la notifica del trasferimento?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" onclick="NotificaTrasferimento();">Invia notifica</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="NotificaTrasferimento();">Invia notifica</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>

@@ -20,6 +20,62 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public void PreSetMaggiorazioniFamiliari(decimal idTrasferimento, ModelDBISE db)
+        {
+            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel()
+            {
+                idTrasferimento = idTrasferimento,
+                richiestaAttivazione = false,
+                attivazioneMaggiorazioni = false,
+                dataAggiornamento = DateTime.Now,
+            };
+
+            this.SetMaggiorazioneFamiliari(ref mfm, db);
+
+            RinunciaMaggiorazioniFamiliariModel rmfm = new RinunciaMaggiorazioniFamiliariModel()
+            {
+                idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
+                rinunciaMaggiorazioni = false,
+                dataAggiornamento = DateTime.Now,
+                annullato = false
+            };
+
+            this.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
+        }
+
+
+
+
+        public void SetRinunciaMaggiorazioniFamiliari(ref RinunciaMaggiorazioniFamiliariModel rmfm, ModelDBISE db)
+        {
+            RINUNCIAMAGGIORAZIONIFAMILIARI rmf = new RINUNCIAMAGGIORAZIONIFAMILIARI()
+            {
+                IDMAGGIORAZIONIFAMILIARI = rmfm.idMaggiorazioniFamiliari,
+                RINUNCIAMAGGIORAZIONI = rmfm.rinunciaMaggiorazioni,
+                DATAAGGIORNAMENTO = rmfm.dataAggiornamento,
+                ANNULLATO = rmfm.annullato
+            };
+
+            db.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmf);
+
+            int i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Errore nella fase d'inserimento dei dati per la gestione della rinuncia maggiorazioni familiari.");
+            }
+            else
+            {
+                rmfm.idRinunciaMagFam = rmf.IDRINUNCIAMAGFAM;
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(rmfm.idMaggiorazioniFamiliari);
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  della rinuncia maggiorazioni familiari.",
+                    "RINUNCIAMAGGIORAZIONIFAMILIARI", db, mf.IDTRASFERIMENTO, rmf.IDRINUNCIAMAGFAM);
+            }
+
+
+        }
+
         public void AttivaRichiesta(decimal idMaggiorazioniFamiliari)
         {
             bool rinunciaMagFam = false;
@@ -43,9 +99,9 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
                     {
-                        var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                        mf.ATTIVAZIONEMAGGIOARAZIONI = true;
+                        mf.ATTIVAMAGGIORAZIONI = true;
 
                         i = db.SaveChanges();
 
@@ -62,9 +118,9 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 if (datiConiuge == true && siDocConiuge == true || datiFigli == true && siDocFigli == true)
                                 {
-                                    var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                                    mf.ATTIVAZIONEMAGGIOARAZIONI = true;
+                                    mf.ATTIVAMAGGIORAZIONI = true;
 
                                     i = db.SaveChanges();
 
@@ -301,14 +357,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-                        var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
                         if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
                         {
                             if (datiConiuge == false && datiFigli == false)
                             {
-                                mf.RINUNCIAMAGGIORAZIONI = true;
-                                mf.RICHIESTAATTIVAZIONE = true;
+                                var rmf =
+                                    mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                        .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                        .First();
+
+
+                                rmf.RINUNCIAMAGGIORAZIONI = true;
+
+                                //mf.RICHIESTAATTIVAZIONE = true;
+
                                 i = db.SaveChanges();
                                 if (i <= 0)
                                 {
@@ -376,14 +440,19 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
                 if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
-                    rinunciaMagFam = mf.RINUNCIAMAGGIORAZIONI;
-                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE;
-                    Attivazione = mf.ATTIVAZIONEMAGGIOARAZIONI;
 
+                    var rmf =
+                        mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                            .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                            .First();
+
+                    rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
+                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE;
+                    Attivazione = mf.ATTIVAMAGGIORAZIONI;
 
                     if (mf.CONIUGE != null)
                     {
@@ -482,7 +551,7 @@ namespace NewISE.Models.DBModel.dtObj
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
 
-            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
             if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
             {
@@ -490,11 +559,9 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                     idTrasferimento = mf.IDTRASFERIMENTO,
-                    rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                     richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                    attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
-                    dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                    annullato = mf.ANNULLATO,
+                    attivazioneMaggiorazioni = mf.ATTIVAMAGGIORAZIONI,
+                    dataAggiornamento = mf.DATAAGGIORNAMENTO
                 };
             }
 
@@ -509,7 +576,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
                 if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
@@ -517,11 +584,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
-                        rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                        attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                        attivazioneMaggiorazioni = mf.ATTIVAMAGGIORAZIONI,
                         dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                        annullato = mf.ANNULLATO,
+
                     };
                 }
             }
@@ -532,70 +598,61 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento)
+        public IList<MaggiorazioniFamiliariModel> GetListaMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento)
         {
-            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+
+            List<MaggiorazioniFamiliariModel> lmfm = new List<MaggiorazioniFamiliariModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lmf =
-                    db.MAGGIORAZIONEFAMILIARI.Where(
-                        a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento)
-                        .OrderByDescending(a => a.DATAAGGIORNAMENTO)
-                        .ToList();
+
+                var lmf = db.TRASFERIMENTO.Find(idTrasferimento).MAGGIORAZIONIFAMILIARI;
 
                 if (lmf?.Any() ?? false)
                 {
-                    var mf = lmf.First();
-                    mfm = new MaggiorazioniFamiliariModel()
-                    {
-                        idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
-                        idTrasferimento = mf.IDTRASFERIMENTO,
-                        rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
-                        richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                        attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
-                        dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                        annullato = mf.ANNULLATO,
-                    };
+
+                    lmfm = (from e in lmf
+                            select new MaggiorazioniFamiliariModel()
+                            {
+                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                                idTrasferimento = e.IDTRASFERIMENTO,
+                                richiestaAttivazione = e.RICHIESTAATTIVAZIONE,
+                                attivazioneMaggiorazioni = e.ATTIVAMAGGIORAZIONI,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+
+                            }).ToList();
+
+
                 }
             }
 
-            return mfm;
+            return lmfm;
         }
 
-        public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento, ModelDBISE db)
+        public IList<MaggiorazioniFamiliariModel> GetListaMaggiorazioniFamiliariByIDTrasf(decimal idTrasferimento, ModelDBISE db)
         {
-            MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+            List<MaggiorazioniFamiliariModel> lmfm = new List<MaggiorazioniFamiliariModel>();
 
-            //var lmf =
-            //    db.MAGGIORAZIONEFAMILIARI.Where(
-            //        a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento)
-            //        .OrderByDescending(a => a.DATAAGGIORNAMENTO)
-            //        .ToList();
-
-            var lmf =
-                db.TRASFERIMENTO.Find(idTrasferimento)
-                    .MAGGIORAZIONEFAMILIARI.Where(a => a.ANNULLATO == false)
-                    .OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
-                    .ToList();
+            var lmf = db.TRASFERIMENTO.Find(idTrasferimento).MAGGIORAZIONIFAMILIARI;
 
             if (lmf?.Any() ?? false)
             {
-                var mf = lmf.First();
-                mfm = new MaggiorazioniFamiliariModel()
-                {
-                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
-                    idTrasferimento = mf.IDTRASFERIMENTO,
-                    rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
-                    richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                    attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
-                    dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                    annullato = mf.ANNULLATO,
-                };
+
+                lmfm = (from e in lmf
+                        select new MaggiorazioniFamiliariModel()
+                        {
+                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                            idTrasferimento = e.IDTRASFERIMENTO,
+                            richiestaAttivazione = e.RICHIESTAATTIVAZIONE,
+                            attivazioneMaggiorazioni = e.ATTIVAMAGGIORAZIONI,
+                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+
+                        }).ToList();
+
+
             }
 
-
-            return mfm;
+            return lmfm;
         }
 
         public MaggiorazioniFamiliariModel GetMaggiorazioniFamiliaribyFiglio(decimal idFiglio)
@@ -604,7 +661,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI;
+                var mf = db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI;
 
                 if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
@@ -612,11 +669,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
-                        rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                        attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                        attivazioneMaggiorazioni = mf.ATTIVAMAGGIORAZIONI,
                         dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                        annullato = mf.ANNULLATO,
+
                     };
                 }
             }
@@ -630,7 +686,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI;
+                var mf = db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI;
 
                 if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
@@ -638,11 +694,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
                         idTrasferimento = mf.IDTRASFERIMENTO,
-                        rinunciaMaggiorazioni = mf.RINUNCIAMAGGIORAZIONI,
                         richiestaAttivazione = mf.RICHIESTAATTIVAZIONE,
-                        attivazioneMaggiorazioni = mf.ATTIVAZIONEMAGGIOARAZIONI,
+                        attivazioneMaggiorazioni = mf.ATTIVAMAGGIORAZIONI,
                         dataAggiornamento = mf.DATAAGGIORNAMENTO,
-                        annullato = mf.ANNULLATO,
+
                     };
                 }
             }
@@ -652,24 +707,20 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void SetMaggiorazioneFamiliari(ref MaggiorazioniFamiliariModel mfm, ModelDBISE db)
         {
-            MAGGIORAZIONEFAMILIARI mf = new MAGGIORAZIONEFAMILIARI()
+            MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI()
             {
                 IDTRASFERIMENTO = mfm.idTrasferimento,
-                RINUNCIAMAGGIORAZIONI = mfm.rinunciaMaggiorazioni,
                 RICHIESTAATTIVAZIONE = mfm.richiestaAttivazione,
-                ATTIVAZIONEMAGGIOARAZIONI = mfm.attivazioneMaggiorazioni,
+                ATTIVAMAGGIORAZIONI = mfm.attivazioneMaggiorazioni,
                 DATAAGGIORNAMENTO = mfm.dataAggiornamento,
-                ANNULLATO = mfm.annullato
             };
 
-            db.MAGGIORAZIONEFAMILIARI.Add(mf);
+            db.MAGGIORAZIONIFAMILIARI.Add(mf);
 
             if (db.SaveChanges() > 0)
             {
                 mfm.idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI;
 
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  delle Maggiorazioni familiari",
-                    "MAGGIORAZIONEFAMILIARI", db, mfm.idTrasferimento, mf.IDMAGGIORAZIONIFAMILIARI);
             }
         }
 
@@ -686,17 +737,9 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         fm.dataAggiornamento = DateTime.Now;
                         fm.Annullato = false;
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var pm = dtpp.GetPassaportoByIdMagFam(fm.idMaggiorazioniFamiliari, db);
-                            fm.idPassaporto = pm.idPassaporto;
-                        }
 
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            var tvm = dttv.GetTitoloViaggioByIdMagFam(fm.idMaggiorazioniFamiliari, db);
-                            fm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
+
+
 
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -767,17 +810,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         cm.dataAggiornamento = DateTime.Now;
                         cm.annullato = false;
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var pm = dtpp.GetPassaportoByIdMagFam(cm.idMaggiorazioniFamiliari, db);
-                            cm.idPassaporto = pm.idPassaporto;
-                        }
 
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            var tvm = dttv.GetTitoloViaggioByIdMagFam(cm.idMaggiorazioniFamiliari, db);
-                            cm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
 
                         dtc.SetConiuge(ref cm, db);
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())

@@ -56,7 +56,7 @@ namespace NewISE.Models.DBModel
 
                 if (i > 0)
                 {
-                    decimal idTrasf = p.CONIUGE.First().MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                    decimal idTrasf = p.CONIUGE.First().MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica della pensione", "PENSIONE", db, idTrasf, p.IDPENSIONE);
                 }
 

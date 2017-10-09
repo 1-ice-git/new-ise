@@ -12,27 +12,28 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MAGGIORAZIONEFAMILIARI
+    public partial class MAGGIORAZIONIFAMILIARI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MAGGIORAZIONEFAMILIARI()
+        public MAGGIORAZIONIFAMILIARI()
         {
+            this.RINUNCIAMAGGIORAZIONIFAMILIARI = new HashSet<RINUNCIAMAGGIORAZIONIFAMILIARI>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.FIGLI = new HashSet<FIGLI>();
         }
     
-        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
-        public bool RINUNCIAMAGGIORAZIONI { get; set; }
+        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public bool RICHIESTAATTIVAZIONE { get; set; }
-        public bool ATTIVAZIONEMAGGIOARAZIONI { get; set; }
+        public bool ATTIVAMAGGIORAZIONI { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLI> FIGLI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

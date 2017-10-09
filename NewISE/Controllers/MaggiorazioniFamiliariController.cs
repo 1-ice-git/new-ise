@@ -126,7 +126,11 @@ namespace NewISE.Controllers
 
             using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
             {
-                mfm = dtmf.GetMaggiorazioniFamiliariByIDTrasf(idTrasferimento);
+                var lmfm = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(idTrasferimento);
+                if (lmfm?.Any() ?? false)
+                {
+                    mfm = lmfm.OrderBy(a => a.idMaggiorazioniFamiliari).First();
+                }
 
             }
 
@@ -159,7 +163,7 @@ namespace NewISE.Controllers
                                     {
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idFigli,
-                                        idPassaporto = e.idPassaporto,
+                                        idPassaporti = e.idPassaporti,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,
@@ -245,7 +249,7 @@ namespace NewISE.Controllers
                                         {
                                             idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                             idFamiliare = e.idConiuge,
-                                            idPassaporto = e.idPassaporto,
+                                            idPassaporti = e.idPassaporti,
                                             Nominativo = e.cognome + " " + e.nome,
                                             CodiceFiscale = e.codiceFiscale,
                                             dataInizio = e.dataInizio,

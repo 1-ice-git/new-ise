@@ -40,7 +40,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (dtTrasferimento dttr = new dtTrasferimento())
             {
-                var trm = dttr.GetTrasferimentoById(psm.idPrimaSistemazione);
+                var trm = dttr.GetTrasferimentoById(psm.idPrimaSistemazione, db);
 
                 if (trm != null && trm.HasValue())
                 {

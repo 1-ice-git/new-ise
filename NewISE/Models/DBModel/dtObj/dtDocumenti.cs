@@ -168,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var p = db.PASSAPORTI.Find(idPassaporto);
-                if (p != null && p.IDPASSAPORTO > 0)
+                if (p != null && p.IDPASSAPORTI > 0)
                 {
                     var ld = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
                     if (ld?.Any() ?? false)
@@ -520,26 +520,35 @@ namespace NewISE.Models.DBModel.dtObj
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
             if (t != null && t.IDTRASFERIMENTO > 0)
             {
-                var p = t.PASSAPORTI;
-                if (p != null && p.IDPASSAPORTO > 0)
+
+                var lp =
+                    t.PASSAPORTI.Where(
+                        a => a.ESCLUDIPASSAPORTO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
+                if (lp?.Any() ?? false)
                 {
-                    MemoryStream ms = new MemoryStream();
-                    DOCUMENTI d = new DOCUMENTI();
-                    dm.file.InputStream.CopyTo(ms);
-
-                    d.NOMEDOCUMENTO = dm.nomeDocumento;
-                    d.ESTENSIONE = dm.estensione;
-                    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-                    d.DATAINSERIMENTO = dm.dataInserimento;
-                    d.FILEDOCUMENTO = ms.ToArray();
-
-                    p.DOCUMENTI.Add(d);
-
-                    if (db.SaveChanges() > 0)
+                    var p = lp.First();
+                    if (p != null && p.IDPASSAPORTI > 0)
                     {
-                        dm.idDocumenti = d.IDDOCUMENTO;
+                        MemoryStream ms = new MemoryStream();
+                        DOCUMENTI d = new DOCUMENTI();
+                        dm.file.InputStream.CopyTo(ms);
+
+                        d.NOMEDOCUMENTO = dm.nomeDocumento;
+                        d.ESTENSIONE = dm.estensione;
+                        d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                        d.DATAINSERIMENTO = dm.dataInserimento;
+                        d.FILEDOCUMENTO = ms.ToArray();
+
+                        p.DOCUMENTI.Add(d);
+
+                        if (db.SaveChanges() > 0)
+                        {
+                            dm.idDocumenti = d.IDDOCUMENTO;
+                        }
                     }
                 }
+
+
             }
         }
 
@@ -549,7 +558,7 @@ namespace NewISE.Models.DBModel.dtObj
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
             if (t != null && t.IDTRASFERIMENTO > 0)
             {
-                var tv = t.TITOLIVIAGGIO;
+                var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
                     MemoryStream ms = new MemoryStream();

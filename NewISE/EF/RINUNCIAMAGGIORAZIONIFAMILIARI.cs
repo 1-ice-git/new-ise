@@ -12,17 +12,14 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class SOSPENSIONE
+    public partial class RINUNCIAMAGGIORAZIONIFAMILIARI
     {
-        public decimal IDSOSPENSIONE { get; set; }
-        public decimal IDTIPOSOSPENSIONE { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
-        public System.DateTime DATAINIZIO { get; set; }
-        public System.DateTime DATAFINE { get; set; }
+        public decimal IDRINUNCIAMAGFAM { get; set; }
+        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
+        public bool RINUNCIAMAGGIORAZIONI { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual TIPOSOSPENSIONE TIPOSOSPENSIONE { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
     }
 }

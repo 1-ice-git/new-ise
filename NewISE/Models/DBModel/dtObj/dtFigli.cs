@@ -48,7 +48,7 @@ namespace NewISE.Models.DBModel.dtObj
                            idFigli = e.IDFIGLI,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
-                           idPassaporto = e.IDPASSAPORTO,
+                           idPassaporti = e.IDPASSAPORTI,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
@@ -99,7 +99,7 @@ namespace NewISE.Models.DBModel.dtObj
                            idFigli = e.IDFIGLI,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
-                           idPassaporto = e.IDPASSAPORTO,
+                           idPassaporti = e.IDPASSAPORTI,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
@@ -128,7 +128,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var t = db.MAGGIORAZIONEFAMILIARI.Find(fm.idMaggiorazioniFamiliari).TRASFERIMENTO;
+                    var t = db.MAGGIORAZIONIFAMILIARI.Find(fm.idMaggiorazioniFamiliari).TRASFERIMENTO;
 
                     if (fm.dataInizio < t.DATAPARTENZA)
                     {
@@ -202,7 +202,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         chk = f.ESCLUDIPASSAPORTO;
                         decimal idTrasferimento =
-                            db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                             "Esclusione del figlio dalla richiesta del passaporto/visto.", "FIGLI", db,
@@ -231,7 +231,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         chk = f.ESCLUDITITOLOVIAGGIO;
                         decimal idTrasferimento =
-                            db.FIGLI.Find(idFiglio).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                             "Esclusione del figlio dalla richiesta del titolo di viaggio.", "FIGLI", db,
@@ -248,7 +248,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
-                IDPASSAPORTO = fm.idPassaporto,
+                IDPASSAPORTI = fm.idPassaporti,
                 IDTITOLOVIAGGIO = fm.idTitoloViaggio,
                 NOME = fm.nome.ToUpper(),
                 COGNOME = fm.cognome.ToUpper(),
@@ -272,7 +272,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (i > 0)
             {
                 fm.idFigli = f.IDFIGLI;
-                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del Figlio", "FIGLI", db,
                     idTrasferimento, f.IDFIGLI);
             }
@@ -308,7 +308,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idFigli = f.IDFIGLI,
                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
-                        idPassaporto = f.IDPASSAPORTO,
+                        idPassaporti = f.IDPASSAPORTI,
                         idTitoloViaggio = f.IDTITOLOVIAGGIO,
                         nome = f.NOME,
                         cognome = f.COGNOME,
@@ -338,7 +338,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<FigliModel> lfm = new List<FigliModel>();
 
-            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
             if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
             {
@@ -353,7 +353,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idFigli = item.IDFIGLI,
                         idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
-                        idPassaporto = item.IDPASSAPORTO,
+                        idPassaporti = item.IDPASSAPORTI,
                         idTitoloViaggio = item.IDTITOLOVIAGGIO,
                         nome = item.NOME,
                         cognome = item.COGNOME,
@@ -392,7 +392,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idFigli = item.IDFIGLI,
                             idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                             idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
-                            idPassaporto = item.IDPASSAPORTO,
+                            idPassaporti = item.IDPASSAPORTI,
                             idTitoloViaggio = item.IDTITOLOVIAGGIO,
                             nome = item.NOME,
                             cognome = item.COGNOME,

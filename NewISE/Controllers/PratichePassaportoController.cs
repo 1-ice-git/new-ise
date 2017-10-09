@@ -78,7 +78,7 @@ namespace NewISE.Controllers
                     case EnumParentela.Richiedente:
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
-                            dtpp.SetEscludiPassaporto(id, ref chk);
+                            dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
                         }
                         break;
                     default:
@@ -109,7 +109,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiPassaporto(idTrasferimento);
+                    gppm = dtpp.GestionePulsantiPassaportoByIdTrasf(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiPassaporto(idPassaporto);
+                    gppm = dtpp.GestionePulsantiPassaportoById(idPassaporto);
                     if (gppm != null)
                     {
                         notificaRichiesta = gppm.notificaRichiesta;

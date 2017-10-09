@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var t = db.MAGGIORAZIONEFAMILIARI.Find(cm.idMaggiorazioniFamiliari).TRASFERIMENTO;
+                    var t = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari).TRASFERIMENTO;
 
                     if (cm.dataInizio < t.DATAPARTENZA)
                     {
@@ -116,7 +116,7 @@ namespace NewISE.Models.DBModel.dtObj
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                               idPassaporto = e.IDPASSAPORTO,
+                               idPassaporti = e.IDPASSAPORTI,
                                idTitoloViaggio = e.IDTITOLOVIAGGIO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
@@ -166,7 +166,7 @@ namespace NewISE.Models.DBModel.dtObj
                            idConiuge = e.IDCONIUGE,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                           idPassaporto = e.IDPASSAPORTO,
+                           idPassaporti = e.IDPASSAPORTI,
                            idTitoloViaggio = e.IDTITOLOVIAGGIO,
                            nome = e.NOME,
                            cognome = e.COGNOME,
@@ -216,7 +216,7 @@ namespace NewISE.Models.DBModel.dtObj
                            idConiuge = e.IDCONIUGE,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                           idPassaporto = e.IDPASSAPORTO,
+                           idPassaporti = e.IDPASSAPORTI,
                            idTitoloViaggio = e.IDTITOLOVIAGGIO,
                            nome = e.NOME,
                            cognome = e.COGNOME,
@@ -240,7 +240,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             ConiugeModel cm = new ConiugeModel();
 
-            var mf = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari);
+            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
             var lc =
                 mf.CONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
@@ -255,7 +255,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                    idPassaporto = c.IDPASSAPORTO,
+                    idPassaporti = c.IDPASSAPORTI,
                     idTitoloViaggio = c.IDTITOLOVIAGGIO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -289,7 +289,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                    idPassaporto = c.IDPASSAPORTO,
+                    idPassaporti = c.IDPASSAPORTI,
                     idTitoloViaggio = c.IDTITOLOVIAGGIO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
@@ -323,7 +323,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idConiuge = c.IDCONIUGE,
                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                        idPassaporto = c.IDPASSAPORTO,
+                        idPassaporti = c.IDPASSAPORTI,
                         idTitoloViaggio = c.IDTITOLOVIAGGIO,
                         nome = c.NOME,
                         cognome = c.COGNOME,
@@ -359,7 +359,7 @@ namespace NewISE.Models.DBModel.dtObj
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                               idPassaporto = e.IDPASSAPORTO,
+                               idPassaporti = e.IDPASSAPORTI,
                                idTitoloViaggio = e.IDTITOLOVIAGGIO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
@@ -398,7 +398,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         chk = c.ESCLUDIPASSAPORTO;
                         decimal idTrasferimento =
-                            db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                             "Esclusione del coniuge dalla richiesta del passaporto/visto.", "CONIUGE", db,
@@ -428,7 +428,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         chk = c.ESCLUDITITOLOVIAGGIO;
                         decimal idTrasferimento =
-                            db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                            db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                             "Esclusione del coniuge dalla richiesta del titolo di viaggio.", "CONIUGE", db,
@@ -445,7 +445,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
-                IDPASSAPORTO = cm.idPassaporto,
+                IDPASSAPORTI = cm.idPassaporti,
                 IDTITOLOVIAGGIO = cm.idTitoloViaggio,
                 NOME = cm.nome.ToUpper(),
                 COGNOME = cm.cognome.ToUpper(),
@@ -469,7 +469,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-                decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                 cm.idConiuge = c.IDCONIUGE;
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
@@ -490,7 +490,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin ||
                         c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
-                        c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTO != cm.idPassaporto || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
+                        c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;
                         c.ANNULLATO = true;
@@ -503,14 +503,14 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
 
                             ConiugeModel newc = new ConiugeModel()
                             {
                                 idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
                                 idTipologiaConiuge = cm.idTipologiaConiuge,
-                                idPassaporto = cm.idPassaporto,
+                                idPassaporti = cm.idPassaporti,
                                 idTitoloViaggio = cm.idTitoloViaggio,
                                 nome = cm.nome,
                                 cognome = cm.cognome,

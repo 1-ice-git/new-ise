@@ -12,7 +12,7 @@ namespace NewISE.Models.ViewModel
     {
         public decimal idMaggiorazioniFamiliari { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
-        public decimal? idPassaporto { get; set; }
+        public decimal? idPassaporti { get; set; }
         public decimal? idTitoloViaggio { get; set; }
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]

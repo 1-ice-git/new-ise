@@ -169,20 +169,21 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 #region MaggiorazioniFamiliari
-                var lmf = t.MAGGIORAZIONEFAMILIARI.Where(a => a.ANNULLATO == false).ToList();
+
+                var lmf = t.MAGGIORAZIONIFAMILIARI.OrderBy(a => a.IDMAGGIORAZIONIFAMILIARI);
                 if (lmf?.Any() ?? false)
                 {
                     var mf = lmf.First();
 
                     richiestaMF = mf.RICHIESTAATTIVAZIONE;
-                    attivazioneMF = mf.ATTIVAZIONEMAGGIOARAZIONI;
+                    attivazioneMF = mf.ATTIVAMAGGIORAZIONI;
 
                 }
                 #endregion
 
                 #region Pratiche passaporto
-                var p = t.PASSAPORTI;
-                if (p != null && p.IDPASSAPORTO > 0)
+                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+                if (p != null && p.IDPASSAPORTI > 0)
                 {
                     richiestaPP = p.NOTIFICARICHIESTA;
                     conclusePP = p.PRATICACONCLUSA;
@@ -191,7 +192,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region Titoli di viaggio
 
-                var tv = t.TITOLIVIAGGIO;
+                var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
                     richiesteTV = tv.NOTIFICARICHIESTA;
@@ -244,7 +245,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var t = db.MAGGIORAZIONEFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO;
+                    var t = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO;
 
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
@@ -901,7 +902,7 @@ namespace NewISE.Models.DBModel.dtObj
                         coan = tr.COAN,
                         protocolloLettera = tr.PROTOCOLLOLETTERA,
                         dataLettera = tr.DATALETTERA,
-                        notificaTrasferimento = trm.notificaTrasferimento,
+                        notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
                         dataAggiornamento = tr.DATAAGGIORNAMENTO,
                         StatoTrasferimento = new StatoTrasferimentoModel()
                         {
@@ -950,6 +951,67 @@ namespace NewISE.Models.DBModel.dtObj
             return trm;
 
         }
+
+
+        public TrasferimentoModel GetTrasferimentoById(decimal idTrasferimento, ModelDBISE db)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+
+            var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+            if (tr != null && tr.IDTRASFERIMENTO > 0)
+            {
+                trm = new TrasferimentoModel()
+                {
+                    idTrasferimento = tr.IDTRASFERIMENTO,
+                    idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                    idUfficio = tr.IDUFFICIO,
+                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idDipendente = tr.IDDIPENDENTE,
+                    idTipoCoan = tr.IDTIPOCOAN,
+                    dataPartenza = tr.DATAPARTENZA,
+                    dataRientro = tr.DATARIENTRO,
+                    coan = tr.COAN,
+                    protocolloLettera = tr.PROTOCOLLOLETTERA,
+                    dataLettera = tr.DATALETTERA,
+                    notificaTrasferimento = trm.notificaTrasferimento,
+                    dataAggiornamento = tr.DATAAGGIORNAMENTO
+
+                };
+
+
+                using (dtStatoTrasferimento dtst = new dtStatoTrasferimento())
+                {
+                    trm.StatoTrasferimento = dtst.GetStatoTrasferimentoByID(trm.idStatoTrasferimento);
+                }
+
+                using (dtTipoTrasferimento dttt = new dtTipoTrasferimento())
+                {
+                    trm.TipoTrasferimento = dttt.GetTipoTrasferimentoByID(trm.idTipoTrasferimento);
+                }
+
+                using (dtUffici dtu = new dtUffici())
+                {
+                    trm.Ufficio = dtu.GetUffici(trm.idUfficio);
+                }
+
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    trm.Dipendente = dtd.GetDipendenteByID(trm.idDipendente);
+                }
+
+                using (dtTipologiaCoan dttc = new dtTipologiaCoan())
+                {
+                    trm.TipoCoan = dttc.GetTipologiaCoanByID(trm.idTipoCoan);
+                }
+            }
+
+
+
+            return trm;
+
+        }
+
 
         public bool NotificaTrasferimento(decimal idTrasferimento)
         {

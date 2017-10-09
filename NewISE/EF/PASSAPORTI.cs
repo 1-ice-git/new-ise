@@ -17,24 +17,25 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PASSAPORTI()
         {
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.FIGLI = new HashSet<FIGLI>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
-        public decimal IDPASSAPORTO { get; set; }
+        public decimal IDPASSAPORTI { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public System.DateTime DATANOTIFICARICHIESTA { get; set; }
         public bool PRATICACONCLUSA { get; set; }
         public System.DateTime DATAPRATICACONCLUSA { get; set; }
         public bool ESCLUDIPASSAPORTO { get; set; }
     
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLI> FIGLI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

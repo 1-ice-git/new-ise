@@ -24,7 +24,7 @@ namespace NewISE.EF
         public Nullable<decimal> IDTABELLACOINVOLTA { get; set; }
     
         public virtual ATTIVITACRUD ATTIVITACRUD { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual UTENTIAUTORIZZATI UTENTIAUTORIZZATI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

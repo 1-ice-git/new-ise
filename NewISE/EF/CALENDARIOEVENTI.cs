@@ -16,10 +16,11 @@ namespace NewISE.EF
     {
         public decimal IDCALENDARIOEVENTI { get; set; }
         public decimal IDFUNZIONIEVENTI { get; set; }
-        public Nullable<decimal> IDTRASFERIMENTO { get; set; }
-        public System.DateTime DATAINSEVENTO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public System.DateTime DATAINIZIOEVENTO { get; set; }
         public bool COMPLETATO { get; set; }
         public System.DateTime DATACOMPLETATO { get; set; }
+        public Nullable<System.DateTime> DATASCADENZA { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual FUNZIONIEVENTI FUNZIONIEVENTI { get; set; }

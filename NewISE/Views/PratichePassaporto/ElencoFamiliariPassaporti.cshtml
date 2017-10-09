@@ -105,19 +105,6 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        @*@if (item.Documenti?.Any() ?? false)
-                            {
-
-                                @Html.CheckBoxFor(modelItem => item.escludiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
-
-                            }
-                            else
-                            {
-
-                                @Html.CheckBoxFor(modelItem => item.escludiPassaporto, new { @onclick = "ConfermaEscludiPassaporto(this," + @item.idFamiliare + ", " + Convert.ToDecimal(item.parentela) + ");" })
-
-                            }*@
-
                         @Html.Action("ChkEscludiPassaporto", "PratichePassaporto", new { idFamiliare = item.idFamiliare, parentela = item.parentela, esisteDoc = item.Documenti?.Any() ?? false, escludiPassaporto = item.escludiPassaporto })
                     </td>
 

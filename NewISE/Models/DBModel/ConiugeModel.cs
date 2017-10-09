@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "Il passaporto è richiesto.")]
         [Display(Name = "Passaporto")]
-        public decimal idPassaporto { get; set; }
+        public decimal? idPassaporti { get; set; }
         [Required(ErrorMessage = "Il titolo di viaggio è richiesto.")]
         [Display(Name = "Titolo di viaggio")]
         public decimal idTitoloViaggio { get; set; }
@@ -81,6 +81,8 @@ namespace NewISE.Models.DBModel
         public IList<AltriDatiFamModel> lAltriDatiFamiliari { get; set; }
 
         public PassaportoModel passaporto { get; set; }
+
+        public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
 
         public bool HasValue()
         {

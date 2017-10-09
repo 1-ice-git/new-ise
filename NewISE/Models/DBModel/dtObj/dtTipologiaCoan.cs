@@ -18,16 +18,37 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<TipologiaCoanModel> ltc = new List<TipologiaCoanModel>();
 
-            using (ModelDBISE db=new ModelDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 ltc = (from e in db.TIPOLOGIACOAN
-                       select new TipologiaCoanModel() {
+                       select new TipologiaCoanModel()
+                       {
                            idTipoCoan = e.IDTIPOCOAN,
                            descrizione = e.DESCRIZIONE
                        }).ToList();
             }
 
             return ltc;
+        }
+
+        public TipologiaCoanModel GetTipologiaCoanByID(decimal idTipoCoan)
+        {
+            TipologiaCoanModel tcm = new TipologiaCoanModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tc = db.TIPOLOGIACOAN.Find(idTipoCoan);
+                if (tc != null && tc.IDTIPOCOAN > 0)
+                {
+                    tcm = new TipologiaCoanModel()
+                    {
+                        idTipoCoan = tc.IDTIPOCOAN,
+                        descrizione = tc.DESCRIZIONE
+                    };
+                }
+            }
+
+            return tcm;
         }
 
 

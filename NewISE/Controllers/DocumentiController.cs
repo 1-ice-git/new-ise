@@ -484,7 +484,7 @@ namespace NewISE.Controllers
                                             pm = dtpp.GetPassaportoByIdConiuge(id);
                                             if (pm != null && pm.idPassaporto > 0)
                                             {
-                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                gppm = dtpp.GestionePulsantiPassaportoById(pm.idPassaporto);
                                                 if (gppm != null)
                                                 {
                                                     bool notificaRichiesta = gppm.notificaRichiesta;
@@ -506,7 +506,7 @@ namespace NewISE.Controllers
                                             pm = dtpp.GetPassaportoByIdFiglio(id);
                                             if (pm != null && pm.idPassaporto > 0)
                                             {
-                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                gppm = dtpp.GestionePulsantiPassaportoById(pm.idPassaporto);
                                                 if (gppm != null)
                                                 {
                                                     bool notificaRichiesta = gppm.notificaRichiesta;
@@ -525,10 +525,10 @@ namespace NewISE.Controllers
 
                                             break;
                                         case EnumParentela.Richiedente:
-                                            pm = dtpp.GetPassaportoByID(id);
+                                            pm = dtpp.GetPassaportoRichiedente(id);
                                             if (pm != null && pm.idPassaporto > 0)
                                             {
-                                                gppm = dtpp.GestionePulsantiPassaporto(pm.idPassaporto);
+                                                gppm = dtpp.GestionePulsantiPassaportoById(pm.idPassaporto);
                                                 if (gppm != null)
                                                 {
                                                     bool notificaRichiesta = gppm.notificaRichiesta;

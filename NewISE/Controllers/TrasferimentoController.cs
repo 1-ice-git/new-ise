@@ -277,6 +277,10 @@ namespace NewISE.Controllers
                 {
                     var trm = dttr.GetTrasferimentoById(idTrasferimento);
 
+
+
+
+
                     using (dtDipendenti dtd = new dtDipendenti())
                     {
                         var d = dtd.GetDipendenteByID(trm.idDipendente);
@@ -572,17 +576,7 @@ namespace NewISE.Controllers
 
                                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                     {
-                                        MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel()
-                                        {
-                                            idTrasferimento = trm.idTrasferimento,
-                                            rinunciaMaggiorazioni = false,
-                                            richiestaAttivazione = false,
-                                            attivazioneMaggiorazioni = false,
-                                            dataAggiornamento = DateTime.Now,
-                                            annullato = false
-                                        };
-
-                                        dtmf.SetMaggiorazioneFamiliari(ref mfm, db);
+                                        dtmf.PreSetMaggiorazioniFamiliari(trm.idTrasferimento, db);
 
                                     }
 

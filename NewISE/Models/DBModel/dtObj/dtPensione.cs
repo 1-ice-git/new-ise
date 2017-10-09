@@ -22,7 +22,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var t = db.CONIUGE.Find(idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO;
+                var t = db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (dataInizioPensione < t.DATAPARTENZA)
                 {
@@ -543,7 +543,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     pcm.idPensioneConiuge = pc.IDPENSIONE;
 
-                    decimal idTrasferimento = pc.CONIUGE.First().MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                    decimal idTrasferimento = pc.CONIUGE.First().MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo pensione", "PENSIONE", db, idTrasferimento, pc.IDPENSIONE);
                 }
 

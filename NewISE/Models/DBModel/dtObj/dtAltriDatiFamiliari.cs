@@ -238,12 +238,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
                             {
-                                idTrasf = adf.CONIUGE.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                                idTrasf = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
                                 vConiugeFiglio = "Coniuge";
                             }
                             else if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
                             {
-                                idTrasf = adf.FIGLI.MAGGIORAZIONEFAMILIARI.IDTRASFERIMENTO;
+                                idTrasf = adf.FIGLI.MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
                                 vConiugeFiglio = "Figlio";
                             }
 
@@ -330,7 +330,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (db.SaveChanges() > 0)
                 {
-                    decimal idTrasf = db.FIGLI.Find(adfm.idFigli).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                    decimal idTrasf = db.FIGLI.Find(adfm.idFigli).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Figlio).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
                 }
@@ -365,7 +365,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (db.SaveChanges() > 0)
                 {
-                    decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONEFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                    decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
                 }

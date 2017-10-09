@@ -21,9 +21,6 @@ namespace NewISE.Models.DBModel
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
         public decimal idTrasferimento { get; set; }
-        [Required(ErrorMessage = "Rinuncia maggiorazioni è obbligatorio.")]
-        [DefaultValue(false)]
-        public bool rinunciaMaggiorazioni { get; set; }
         [Required(ErrorMessage = "il campo richiesta attivazione è richiesto.")]
         [DefaultValue(false)]
         public bool richiestaAttivazione { get; set; }
@@ -34,11 +31,12 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data conclusione.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dataAggiornamento { get; set; }
-        [Display(Name = "Annullato")]
-        public bool annullato { get; set; }
 
 
         public TrasferimentoModel Trasferimento { get; set; }
+
+        public IList<ConiugeModel> ListaConiuge { get; set; }
+        public IList<FigliModel> ListaFigli { get; set; }
 
 
         public bool HasValue()

@@ -1953,10 +1953,10 @@
     <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\MAGGIORAZIONEFAMILIARI.cs">
+    <Compile Include="EF\MAGGIORAZIONIANNUALI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\MAGGIORAZIONIANNUALI.cs">
+    <Compile Include="EF\MAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\ModelDBISE.Context.cs">
@@ -2008,6 +2008,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RIDUZIONI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RUOLOACCESSO.cs">
@@ -2101,6 +2104,7 @@
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
     <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
+    <Compile Include="Models\DBModel\RinunciaMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />

@@ -51,5 +51,35 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+
+
+        public StatoTrasferimentoModel GetStatoTrasferimentoByID(decimal idStatoTrasferimento)
+        {
+            StatoTrasferimentoModel stm = new StatoTrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var st = db.STATOTRASFERIMENTO.Find(idStatoTrasferimento);
+                if (st != null && st.IDSTATOTRASFERIMENTO > 0)
+                {
+                    stm = new StatoTrasferimentoModel()
+                    {
+                        idStatoTrasferimento = st.IDSTATOTRASFERIMENTO,
+                        descrizioneStatoTrasferimento = st.DESCRIZIONE
+                    };
+                }
+                else
+                {
+                    throw new Exception("Lo stato di trasferimento non risulta registrato su database.");
+                }
+
+            }
+
+            return stm;
+        }
+
+
+
+
     }
 }

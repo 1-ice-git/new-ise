@@ -23,6 +23,7 @@ namespace NewISE.EF
         }
     
         public decimal IDTITOLOVIAGGIO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool PRATICACONCLUSA { get; set; }
