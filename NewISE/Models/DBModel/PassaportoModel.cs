@@ -11,6 +11,8 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idPassaporto { get; set; }
+        [Required(ErrorMessage = "Il trasferimento è richiesto.")]
+        public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "Il campo notifica richiesta è richiesto.")]
         [DefaultValue(false)]
         public bool notificaRichiesta { get; set; }

@@ -18,19 +18,21 @@ namespace NewISE.Models.DBModel
 
     public enum EnumTipoDoc
     {
-        CartaImbarco_Viaggi1 = 1,
-        TitoloViaggio_Viaggi1 = 2,
-        PrimaRataMab_MAB2 = 3,
-        DichiarazioneCostoLocazione_MAB2 = 4,
-        AttestazioneSpeseAbitazione_MAB2 = 5,
-        ClausoleContrattoAlloggio_MAB2 = 6,
-        CopiaContrattoLocazione_MAB2 = 7,
-        ContributoFissoOmnicomprensivo_TrasportoEffetti3 = 8,
-        AttestazioneTrasloco_TrasportoEffetti3 = 9,
-        DocumentoFamiliareConiuge_MaggiorazioniFamiliari4 = 10,
-        DocumentoFamiliareFiglio_MaggiorazioniFamiliari4 = 11,
-        LetteraTrasferimento_Trasferimento5 = 12,
-        CartaIdentita_Viaggi1 = 13
+        CartaImbarco_Viaggi_1 = 1,
+        TitoloViaggio_Viaggi_1 = 2,
+        PrimaRataMab_MAB_2 = 3,
+        DichiarazioneCostoLocazione_MAB_2 = 4,
+        AttestazioneSpeseAbitazione_MAB_2 = 5,
+        ClausoleContrattoAlloggio_MAB_2 = 6,
+        CopiaContrattoLocazione_MAB_2 = 7,
+        ContributoFissoOmnicomprensivo_TrasportoEffetti_3 = 8,
+        AttestazioneTrasloco_TrasportoEffetti_3 = 9,
+        DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4 = 10,
+        DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4 = 11,
+        LetteraTrasferimento_Trasferimento_5 = 12,
+        FormularioMaggiorazioniFamiliari_4 = 13,
+        FormularioTitoliViaggio_1 = 14
+
     }
 
 

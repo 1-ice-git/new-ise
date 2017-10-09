@@ -38,7 +38,7 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATANOTIFICATV { get; set; }
         public bool ESCLUDITITOLOVIAGGIO { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
-        public Nullable<decimal> IDPASSAPORTI { get; set; }
+        public decimal IDPASSAPORTI { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }

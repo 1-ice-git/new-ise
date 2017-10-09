@@ -1162,35 +1162,32 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        //public TitoloViaggioModel GetTitoloViaggioByIdMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
-        //{
-        //    TitoloViaggioModel bm = new TitoloViaggioModel();
+        public TitoloViaggioModel GetTitoloViaggioInLavorazioneByIdTrasf(decimal idTrasferimento)
+        {
+            TitoloViaggioModel tvm = new TitoloViaggioModel();
 
-        //    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-        //    if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
-        //    {
-        //        var tr = mf.TRASFERIMENTO;
-        //        if (tr != null && tr.IDTRASFERIMENTO > 0)
-        //        {
-        //            var b = tr.TITOLIVIAGGIO;
-        //            if (b != null && b.IDTITOLOVIAGGIO > 0)
-        //            {
-        //                bm = new TitoloViaggioModel()
-        //                {
-        //                    idTitoloViaggio = b.IDTITOLOVIAGGIO,
-        //                    notificaRichiesta = b.NOTIFICARICHIESTA,
-        //                    dataNotificaRichiesta = b.DATANOTIFICARICHIESTA,
-        //                    praticaConclusa = b.PRATICACONCLUSA,
-        //                    dataPraticaConclusa = b.DATAPRATICACONCLUSA,
-        //                    personalmente = b.PERSONALMENTE,
-        //                    escludiTitoloViaggio = b.ESCLUDITITOLOVIAGGIO
-        //                };
-        //            }
-        //        }
-        //    }
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var tv =
+                    t.TITOLIVIAGGIO.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
+                        .OrderByDescending(a => a.IDTITOLOVIAGGIO)
+                        .First();
 
-        //    return bm;
-        //}
+                tvm = new TitoloViaggioModel()
+                {
+                    idTitoloViaggio = tv.IDTITOLOVIAGGIO,
+                    idTrasferimento = tv.IDTRASFERIMENTO,
+                    notificaRichiesta = tv.NOTIFICARICHIESTA,
+                    dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
+                    praticaConclusa = tv.PRATICACONCLUSA,
+                    personalmente = tv.PERSONALMENTE,
+                    escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO
+                };
+            }
+
+            return tvm;
+        }
 
 
     }

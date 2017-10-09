@@ -94,8 +94,8 @@ namespace NewISE.EF
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
+        public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
-        public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
     }
 }

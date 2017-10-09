@@ -26,8 +26,15 @@
         </div>
     </div>
 </div>
+
 <div class="row">
-    <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
+    <div class="col-xs-3" style="margin-top: 10px; margin-bottom: 10px;">
+        <a class="btn btn-default btn-sm" id="btDownloadFormulario" href="~/FormulariMaster/Formulario_Maggiorazioni_Familiari.pdf" target="_blank">
+            <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+            Download formulario
+        </a>
+    </div>
+    <div class="col-xs-5 col-xs-offset-4" style="margin-top: 10px; margin-bottom: 10px;">
         <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModelNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
@@ -92,11 +99,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                                                                                        }
+                                                                                                                                                                                    }
     else
     {
         @:ElencoFigli();
-                                                                                                                                                                        }
+                                                                                                                                                                                    }
 
     //PulsantiNotificaAttivaMagFam();
 

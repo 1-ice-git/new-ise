@@ -1621,6 +1621,7 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet9.xss">
       <DependentUpon>DataSet9.xsd</DependentUpon>
     </Content>
+    <Content Include="FormulariMaster\Formulario_Maggiorazioni_Familiari.pdf" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />

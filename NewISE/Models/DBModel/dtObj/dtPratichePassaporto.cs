@@ -21,6 +21,35 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+        public PassaportoModel GetPassaportoInLavorazioneByIdTrasf(decimal idTrasferimento)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var p =
+                    t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
+                        .OrderByDescending(a => a.IDPASSAPORTI).First();
+
+                pm = new PassaportoModel()
+                {
+                    idPassaporto = p.IDPASSAPORTI,
+                    idTrasferimento = p.IDTRASFERIMENTO,
+                    notificaRichiesta = p.NOTIFICARICHIESTA,
+                    dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+                    praticaConclusa = p.PRATICACONCLUSA,
+                    dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+                    escludiPassaporto = p.ESCLUDIPASSAPORTO
+                };
+
+            }
+
+            return pm;
+        }
+
         public PassaportoModel GetPassaportoByIdFiglio(decimal idFiglio)
         {
             PassaportoModel pm = new PassaportoModel();
@@ -986,7 +1015,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(cm.idConiuge);
                                             trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
-                                            pm = dtpp.GetPassaportoByID(cm.idPassaporti.Value);
+                                            pm = dtpp.GetPassaportoByID(cm.idPassaporti);
                                             efm = new ElencoFamiliariModel()
                                             {
                                                 idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
@@ -1018,7 +1047,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(fm.idFigli);
                                             trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
-                                            pm = dtpp.GetPassaportoByID(fm.idPassaporti.Value);
+                                            pm = dtpp.GetPassaportoByID(fm.idPassaporti);
 
                                             efm = new ElencoFamiliariModel()
                                             {

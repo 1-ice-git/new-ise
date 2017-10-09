@@ -12,6 +12,8 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTitoloViaggio { get; set; }
+        [Required(ErrorMessage = "Il trasferimento è richiesto.")]
+        public decimal idTrasferimento { get; set; }
         [Required()]
         [DefaultValue(false)]
         [Display(Name = "Notifica rich.")]

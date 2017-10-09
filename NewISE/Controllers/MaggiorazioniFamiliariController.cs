@@ -508,9 +508,8 @@ namespace NewISE.Controllers
                     {
                         using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                         {
-                            var mf = dtmf.GetMaggiorazioniFamiliariByID(idMaggiorazioniFamiliari);
 
-                            dtmf.InserisciConiuge(cm);
+                            dtmf.InserisciConiugeMagFam(cm);
                         }
                     }
                     catch (Exception ex)

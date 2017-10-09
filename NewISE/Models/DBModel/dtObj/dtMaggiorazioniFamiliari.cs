@@ -798,7 +798,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void InserisciConiuge(ConiugeModel cm)
+        public void InserisciConiugeMagFam(ConiugeModel cm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -806,6 +806,27 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoByIDMagFam(cm.idMaggiorazioniFamiliari);
+
+                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                        {
+                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            cm.idPassaporti = p.idPassaporto;
+                        }
+
+                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                        {
+                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            cm.idTitoloViaggio = tvm.idTitoloViaggio;
+                        }
+
+                    }
+
+
+
+
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         cm.dataAggiornamento = DateTime.Now;
