@@ -1820,6 +1820,8 @@
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Statistiche\Connessione.cs" />
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
     <Compile Include="Areas\Statistiche\Models\CodiceCoanModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DAL\OperazioniEffettuate.cs" />
