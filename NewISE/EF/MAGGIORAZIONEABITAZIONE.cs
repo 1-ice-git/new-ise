@@ -17,12 +17,14 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEABITAZIONE()
         {
+            this.CANOMEMAB = new HashSet<CANOMEMAB>();
+            this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
             this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.TFR = new HashSet<TFR>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDMAB { get; set; }
@@ -30,12 +32,16 @@ namespace NewISE.EF
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public bool ANTICIPOANNUALE { get; set; }
-        public bool CONDIVISO { get; set; }
-        public bool PAGATOCONDIVISO { get; set; }
-        public decimal CANONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -46,8 +52,5 @@ namespace NewISE.EF
         public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

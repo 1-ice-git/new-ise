@@ -22,18 +22,20 @@ namespace NewISE.EF
         }
     
         public decimal IDTEORICI { get; set; }
-        public decimal IDELABCONT { get; set; }
         public decimal IDVOCI { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public byte MESERIFERIMENTO { get; set; }
+        public short ANNORIFERIMENTO { get; set; }
         public decimal IMPORTO { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
-        public virtual ELAB_CONT ELAB_CONT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<STIPENDI> STIPENDI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
     }

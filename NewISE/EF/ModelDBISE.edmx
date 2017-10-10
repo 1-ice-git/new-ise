@@ -95,6 +95,18 @@
           <Property Name="DATASCADENZA" Type="date" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="CANOMEMAB">
+          <Key>
+            <PropertyRef Name="IDCANONE" />
+          </Key>
+          <Property Name="IDCANONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="IMPORTOCANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CDCGEPE">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
@@ -127,6 +139,7 @@
           <Property Name="COEFFICIENTEINDBASE" Type="number" Precision="10" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IDRIDUZIONI" Type="number" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="COEFFICIENTESEDE">
           <Key>
@@ -232,16 +245,6 @@
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="ELAB_CONT">
-          <Key>
-            <PropertyRef Name="IDELABCONT" />
-          </Key>
-          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDANTICIPO" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
-        </EntityType>
         <EntityType Name="F_IPS">
           <Key>
             <PropertyRef Name="IDFIGLI" />
@@ -315,8 +318,6 @@
             <PropertyRef Name="IDTRASFINDENNITA" />
           </Key>
           <Property Name="IDTRASFINDENNITA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIO" Type="date" Nullable="false" />
-          <Property Name="DATAFINE" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="INDENNITA_INDENNITABASE">
@@ -501,9 +502,6 @@
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="ANTICIPOANNUALE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="CONDIVISO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="PAGATOCONDIVISO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="CANONE" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -555,6 +553,18 @@
           <Property Name="CTB_DTFIN_MAB" Type="date" />
           <Property Name="CTB_GIORNI_MAB" Type="number" Precision="4" Scale="0" />
           <Property Name="CTB_DT_CONTABILE" Type="date" />
+        </EntityType>
+        <EntityType Name="PAGATOCONDIVISOMAB">
+          <Key>
+            <PropertyRef Name="IDPAGATOCONDIVISO" />
+          </Key>
+          <Property Name="IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="PAGATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="PASSAPORTI">
           <Key>
@@ -675,13 +685,26 @@
         </EntityType>
         <EntityType Name="RICHIAMO">
           <Key>
-            <PropertyRef Name="IDRICHIAMO" />
+            <PropertyRef Name="IDTRASFRICHIAMO" />
           </Key>
-          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
-          <Property Name="RICALCOLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RICHIAMO_ALIQCONTR">
+          <Key>
+            <PropertyRef Name="IDALIQCONTR" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
+          </Key>
+          <Property Name="IDALIQCONTR" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RICHIAMO_COEFFRICH">
+          <Key>
+            <PropertyRef Name="IDCOEFINDRICHIAMO" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
+          </Key>
+          <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="RIDUZIONI">
           <Key>
@@ -772,9 +795,11 @@
             <PropertyRef Name="IDTEORICI" />
           </Key>
           <Property Name="IDTEORICI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDELABCONT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDVOCI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTIPOMOVIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="MESERIFERIMENTO" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="ANNORIFERIMENTO" Type="number" Precision="4" Scale="0" Nullable="false" />
           <Property Name="IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -1056,6 +1081,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_AC_RAC">
+          <End Role="ALIQUOTECONTRIBUTIVE" Type="Self.ALIQUOTECONTRIBUTIVE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_ALIQCONTR" Type="Self.RICHIAMO_ALIQCONTR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALIQUOTECONTRIBUTIVE">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Principal>
+            <Dependent Role="RICHIAMO_ALIQCONTR">
+              <PropertyRef Name="IDALIQCONTR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_B_B_D">
           <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1196,20 +1235,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_COEFFRICHIAMO_RICHIAMO">
-          <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COEFFICIENTEINDRICHIAMO">
-              <PropertyRef Name="IDCOEFINDRICHIAMO" />
-            </Principal>
-            <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDCOEFINDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_COEFKM_TRASPEFFSIST">
           <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1221,6 +1246,20 @@
             </Principal>
             <Dependent Role="TRASPORTOEFFETTISIST">
               <PropertyRef Name="IDCFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_CR_RCR">
+          <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_COEFFRICH" Type="Self.RICHIAMO_COEFFRICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COEFFICIENTEINDRICHIAMO">
+              <PropertyRef Name="IDCOEFINDRICHIAMO" />
+            </Principal>
+            <Dependent Role="RICHIAMO_COEFFRICH">
+              <PropertyRef Name="IDCOEFINDRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1434,20 +1473,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_EC_T">
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELAB_CONT">
-              <PropertyRef Name="IDELABCONT" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDELABCONT" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_F_ADF">
           <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1529,20 +1554,6 @@
             </Principal>
             <Dependent Role="TIPODOCUMENTI">
               <PropertyRef Name="IDGRUPPODOC" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_I_E_C">
-          <End Role="INDENNITA" Type="Self.INDENNITA" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1658,20 +1669,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_IR_TER">
-          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TRASPORTOEFFETTIRIENTRO" Type="Self.TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Principal>
-            <Dependent Role="TRASPORTOEFFETTIRIENTRO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_IS_ISPS">
           <End Role="INDENNITASISTEMAZIONE" Type="Self.INDENNITASISTEMAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1770,6 +1767,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_MAB_CMAB">
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CANOMEMAB" Type="Self.CANOMEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="CANOMEMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_MAB_MAB_DOC">
           <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1850,6 +1861,20 @@
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="MAB_TFR">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAB_PCMAB">
+          <End Role="MAGGIORAZIONEABITAZIONE" Type="Self.MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAGATOCONDIVISOMAB" Type="Self.PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
               <PropertyRef Name="IDMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -2078,17 +2103,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_R_E_C">
-          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="0..1">
+        <Association Name="R_R_CR">
+          <End Role="RIDUZIONI" Type="Self.RIDUZIONI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="ELAB_CONT" Type="Self.ELAB_CONT" Multiplicity="*" />
+          <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
+            <Principal Role="RIDUZIONI">
+              <PropertyRef Name="IDRIDUZIONI" />
             </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDRICHIAMO" />
+            <Dependent Role="COEFFICIENTEINDRICHIAMO">
+              <PropertyRef Name="IDRIDUZIONI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2103,6 +2128,34 @@
             </Principal>
             <Dependent Role="INDENNITASISTEMAZIONE">
               <PropertyRef Name="IDRIDUZIONI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_R_RAC">
+          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_ALIQCONTR" Type="Self.RICHIAMO_ALIQCONTR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RICHIAMO">
+              <PropertyRef Name="IDTRASFRICHIAMO" />
+            </Principal>
+            <Dependent Role="RICHIAMO_ALIQCONTR">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_R_RCR">
+          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_COEFFRICH" Type="Self.RICHIAMO_COEFFRICH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RICHIAMO">
+              <PropertyRef Name="IDTRASFRICHIAMO" />
+            </Principal>
+            <Dependent Role="RICHIAMO_COEFFRICH">
+              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2325,6 +2378,20 @@
             </Principal>
             <Dependent Role="STIPENDI">
               <PropertyRef Name="IDTEORICI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_T">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TEORICI" Type="Self.TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2584,13 +2651,13 @@
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="*" />
+          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="TRASFERIMENTO">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
+              <PropertyRef Name="IDTRASFRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2869,6 +2936,7 @@
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CANOMEMAB" EntityType="Self.CANOMEMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTEFKM" EntityType="Self.COEFFICIENTEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
@@ -2880,7 +2948,6 @@
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="ELAB_CONT" EntityType="Self.ELAB_CONT" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FASCIACHILOMETRICA" EntityType="Self.FASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
@@ -2913,6 +2980,7 @@
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="OA" EntityType="Self.OA" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="Self.PAGATOCONDIVISOMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI_DOCUMENTI" EntityType="Self.PASSAPORTI_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISEPRO" store:Type="Tables" />
@@ -2925,6 +2993,8 @@
           <EntitySet Name="PS_AC" EntityType="Self.PS_AC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="RICHIAMO_ALIQCONTR" EntityType="Self.RICHIAMO_ALIQCONTR" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISEPRO" store:Type="Tables" />
@@ -2973,6 +3043,10 @@
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
             <End Role="PS_AC" EntitySet="PS_AC" />
           </AssociationSet>
+          <AssociationSet Name="R_AC_RAC" Association="Self.R_AC_RAC">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="RICHIAMO_ALIQCONTR" EntitySet="RICHIAMO_ALIQCONTR" />
+          </AssociationSet>
           <AssociationSet Name="R_B_B_D" Association="Self.R_B_B_D">
             <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
             <End Role="TITOLIVIAGGIO_DOCUMENTI" EntitySet="TITOLIVIAGGIO_DOCUMENTI" />
@@ -3013,13 +3087,13 @@
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
           </AssociationSet>
-          <AssociationSet Name="R_COEFFRICHIAMO_RICHIAMO" Association="Self.R_COEFFRICHIAMO_RICHIAMO">
-            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-          </AssociationSet>
           <AssociationSet Name="R_COEFKM_TRASPEFFSIST" Association="Self.R_COEFKM_TRASPEFFSIST">
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TRASPORTOEFFETTISIST" EntitySet="TRASPORTOEFFETTISIST" />
+          </AssociationSet>
+          <AssociationSet Name="R_CR_RCR" Association="Self.R_CR_RCR">
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
+            <End Role="RICHIAMO_COEFFRICH" EntitySet="RICHIAMO_COEFFRICH" />
           </AssociationSet>
           <AssociationSet Name="R_CS_ICS" Association="Self.R_CS_ICS">
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
@@ -3081,10 +3155,6 @@
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="R_EC_T" Association="Self.R_EC_T">
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
           <AssociationSet Name="R_F_ADF" Association="Self.R_F_ADF">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="ALTRIDATIFAM" EntitySet="ALTRIDATIFAM" />
@@ -3108,10 +3178,6 @@
           <AssociationSet Name="R_GD_TDV" Association="Self.R_GD_TDV">
             <End Role="GRUPPIDOCUMENTI" EntitySet="GRUPPIDOCUMENTI" />
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_I_E_C" Association="Self.R_I_E_C">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_I_ICS" Association="Self.R_I_ICS">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -3145,10 +3211,6 @@
             <End Role="INDENNITAPRIMOSEGRETARIO" EntitySet="INDENNITAPRIMOSEGRETARIO" />
             <End Role="F_IPS" EntitySet="F_IPS" />
           </AssociationSet>
-          <AssociationSet Name="R_IR_TER" Association="Self.R_IR_TER">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
-          </AssociationSet>
           <AssociationSet Name="R_IS_ISPS" Association="Self.R_IS_ISPS">
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="IS_PS" EntitySet="IS_PS" />
@@ -3177,6 +3239,10 @@
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
             <End Role="MAB_MAGANNUALI" EntitySet="MAB_MAGANNUALI" />
           </AssociationSet>
+          <AssociationSet Name="R_MAB_CMAB" Association="Self.R_MAB_CMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_MAB_MAB_DOC" Association="Self.R_MAB_MAB_DOC">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="MAB_DOC" EntitySet="MAB_DOC" />
@@ -3200,6 +3266,10 @@
           <AssociationSet Name="R_MAB_MABTFR" Association="Self.R_MAB_MABTFR">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="MAB_TFR" EntitySet="MAB_TFR" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAB_PCMAB" Association="Self.R_MAB_PCMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_MF_C" Association="Self.R_MF_C">
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
@@ -3265,13 +3335,21 @@
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="PS_AC" EntitySet="PS_AC" />
           </AssociationSet>
-          <AssociationSet Name="R_R_E_C" Association="Self.R_R_E_C">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
+          <AssociationSet Name="R_R_CR" Association="Self.R_R_CR">
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="R_R_IS" Association="Self.R_R_IS">
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="R_R_RAC" Association="Self.R_R_RAC">
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="RICHIAMO_ALIQCONTR" EntitySet="RICHIAMO_ALIQCONTR" />
+          </AssociationSet>
+          <AssociationSet Name="R_R_RCR" Association="Self.R_R_RCR">
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="RICHIAMO_COEFFRICH" EntitySet="RICHIAMO_COEFFRICH" />
           </AssociationSet>
           <AssociationSet Name="R_RD_IRD" Association="Self.R_RD_IRD">
             <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
@@ -3336,6 +3414,10 @@
           <AssociationSet Name="R_T_S" Association="Self.R_T_S">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="STIPENDI" EntitySet="STIPENDI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_T" Association="Self.R_T_T">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_T_T_D" Association="Self.R_T_T_D">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3502,15 +3584,12 @@
           <EntitySet Name="ATTIVITACRUD" EntityType="DBISEPRO.ATTIVITACRUD" />
           <EntitySet Name="CDCGEPE" EntityType="DBISEPRO.CDCGEPE" />
           <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISEPRO.COEFFICIENTEFKM" />
-          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" />
           <EntitySet Name="COEFFICIENTESEDE" EntityType="DBISEPRO.COEFFICIENTESEDE" />
           <EntitySet Name="CONTABILITA" EntityType="DBISEPRO.CONTABILITA" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" />
           <EntitySet Name="DIPENDENTI" EntityType="DBISEPRO.DIPENDENTI" />
-          <EntitySet Name="ELAB_CONT" EntityType="DBISEPRO.ELAB_CONT" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="DBISEPRO.FUNZIONIEVENTI" />
           <EntitySet Name="GRUPPIDOCUMENTI" EntityType="DBISEPRO.GRUPPIDOCUMENTI" />
-          <EntitySet Name="INDENNITA" EntityType="DBISEPRO.INDENNITA" />
           <EntitySet Name="INDENNITABASE" EntityType="DBISEPRO.INDENNITABASE" />
           <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" />
           <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="DBISEPRO.INDENNITASISTEMAZIONE" />
@@ -3518,7 +3597,6 @@
           <EntitySet Name="LIVELLIDIPENDENTI" EntityType="DBISEPRO.LIVELLIDIPENDENTI" />
           <EntitySet Name="LOGATTIVITA" EntityType="DBISEPRO.LOGATTIVITA" />
           <EntitySet Name="MAB_ALIQCONTR" EntityType="DBISEPRO.MAB_ALIQCONTR" />
-          <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" />
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="NORMACALCOLO" EntityType="DBISEPRO.NORMACALCOLO" />
           <EntitySet Name="OA" EntityType="DBISEPRO.OA" />
@@ -3529,7 +3607,6 @@
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" />
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="DBISEPRO.PRIMASITEMAZIONE" />
           <EntitySet Name="REGOLECALCOLO" EntityType="DBISEPRO.REGOLECALCOLO" />
-          <EntitySet Name="RICHIAMO" EntityType="DBISEPRO.RICHIAMO" />
           <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISEPRO.RUOLOACCESSO" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
@@ -3537,7 +3614,6 @@
           <EntitySet Name="SOSPENSIONE" EntityType="DBISEPRO.SOSPENSIONE" />
           <EntitySet Name="STATOTRASFERIMENTO" EntityType="DBISEPRO.STATOTRASFERIMENTO" />
           <EntitySet Name="STIPENDI" EntityType="DBISEPRO.STIPENDI" />
-          <EntitySet Name="TEORICI" EntityType="DBISEPRO.TEORICI" />
           <EntitySet Name="TFR" EntityType="DBISEPRO.TFR" />
           <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="DBISEPRO.TIPOALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="TIPODOCUMENTI" EntityType="DBISEPRO.TIPODOCUMENTI" />
@@ -3590,10 +3666,6 @@
             <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
           </AssociationSet>
-          <AssociationSet Name="R_COEFFRICHIAMO_RICHIAMO" Association="DBISEPRO.R_COEFFRICHIAMO_RICHIAMO">
-            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-          </AssociationSet>
           <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
@@ -3602,10 +3674,6 @@
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
           </AssociationSet>
-          <AssociationSet Name="R_T_C" Association="DBISEPRO.R_T_C">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-          </AssociationSet>
           <AssociationSet Name="R_D_UA" Association="DBISEPRO.R_D_UA">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
@@ -3613,18 +3681,6 @@
           <AssociationSet Name="R_DIP_LIVDIP" Association="DBISEPRO.R_DIP_LIVDIP">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="R_EC_T" Association="DBISEPRO.R_EC_T">
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
-          <AssociationSet Name="R_I_E_C" Association="DBISEPRO.R_I_E_C">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
-          </AssociationSet>
-          <AssociationSet Name="R_R_E_C" Association="DBISEPRO.R_R_E_C">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="ELAB_CONT" EntitySet="ELAB_CONT" />
           </AssociationSet>
           <AssociationSet Name="R_GD_TDV" Association="DBISEPRO.R_GD_TDV">
             <End Role="GRUPPIDOCUMENTI" EntitySet="GRUPPIDOCUMENTI" />
@@ -3690,10 +3746,6 @@
             <End Role="TIPOREGOLACALCOLO" EntitySet="TIPOREGOLACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
           </AssociationSet>
-          <AssociationSet Name="R_IR_TER" Association="DBISEPRO.R_IR_TER">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="TRASPORTOEFFETTIRIENTRO" EntitySet="TRASPORTOEFFETTIRIENTRO" />
-          </AssociationSet>
           <AssociationSet Name="R_RU_UA" Association="DBISEPRO.R_RU_UA">
             <End Role="RUOLOACCESSO" EntitySet="RUOLOACCESSO" />
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
@@ -3705,18 +3757,6 @@
           <AssociationSet Name="R_TS_S" Association="DBISEPRO.R_TS_S">
             <End Role="TIPOSOSPENSIONE" EntitySet="TIPOSOSPENSIONE" />
             <End Role="SOSPENSIONE" EntitySet="SOSPENSIONE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_S" Association="DBISEPRO.R_T_S">
-            <End Role="TEORICI" EntitySet="TEORICI" />
-            <End Role="STIPENDI" EntitySet="STIPENDI" />
-          </AssociationSet>
-          <AssociationSet Name="R_TM_T" Association="DBISEPRO.R_TM_T">
-            <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
-          </AssociationSet>
-          <AssociationSet Name="R_V_T" Association="DBISEPRO.R_V_T">
-            <End Role="VOCI" EntitySet="VOCI" />
-            <End Role="TEORICI" EntitySet="TEORICI" />
           </AssociationSet>
           <AssociationSet Name="R_VALUTE_TFR" Association="DBISEPRO.R_VALUTE_TFR">
             <End Role="VALUTE" EntitySet="VALUTE" />
@@ -3754,53 +3794,9 @@
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
-          <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISEPRO.IND_COEFFICENTESEDE">
-            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_INDENNITABASE" Association="DBISEPRO.INDENNITA_INDENNITABASE">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_LIVELLIDIPENDENTI" Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_PERCDISAGIO" Association="DBISEPRO.INDENNITA_PERCDISAGIO">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_RUOLODIPENDENTE" Association="DBISEPRO.INDENNITA_RUOLODIPENDENTE">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="INDENNITA_TFR" Association="DBISEPRO.INDENNITA_TFR">
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-            <End Role="TFR" EntitySet="TFR" />
-          </AssociationSet>
           <AssociationSet Name="IS_PS" Association="DBISEPRO.IS_PS">
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_LIVDIP" Association="DBISEPRO.MAB_LIVDIP">
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_MAGANNUALI" Association="DBISEPRO.MAB_MAGANNUALI">
-            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_PERCMAB" Association="DBISEPRO.MAB_PERCMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_RUOLODIP" Association="DBISEPRO.MAB_RUOLODIP">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_TFR" Association="DBISEPRO.MAB_TFR">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="TFR" EntitySet="TFR" />
           </AssociationSet>
           <AssociationSet Name="PS_AC" Association="DBISEPRO.PS_AC">
             <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
@@ -3826,17 +3822,9 @@
             <End Role="TIPODOCUMENTI" EntitySet="TIPODOCUMENTI" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="R_T_I" Association="DBISEPRO.R_T_I">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="INDENNITA" EntitySet="INDENNITA" />
-          </AssociationSet>
           <AssociationSet Name="R_T_LA" Association="DBISEPRO.R_T_LA">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MB" Association="DBISEPRO.R_T_MB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="R_T_MF" Association="DBISEPRO.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3845,10 +3833,6 @@
           <AssociationSet Name="R_TRASF_PRIMASIST" Association="DBISEPRO.R_TRASF_PRIMASIST">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="R_TRASF_RICHIAMO" Association="DBISEPRO.R_TRASF_RICHIAMO">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_SOSP" Association="DBISEPRO.R_TRASF_SOSP">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -3873,10 +3857,6 @@
           <AssociationSet Name="DOCUMENTO_NORMACALCOLO" Association="DBISEPRO.DOCUMENTO_NORMACALCOLO">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
           <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -3983,6 +3963,113 @@
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
+          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" />
+          <AssociationSet Name="R_R_CR" Association="DBISEPRO.R_R_CR">
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
+          </AssociationSet>
+          <EntitySet Name="CANOMEMAB" EntityType="DBISEPRO.CANOMEMAB" />
+          <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" />
+          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
+          <EntitySet Name="RICHIAMO" EntityType="DBISEPRO.RICHIAMO" />
+          <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAB_PCMAB" Association="DBISEPRO.R_MAB_PCMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_MB" Association="DBISEPRO.R_T_MB">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="R_TRASF_RICHIAMO" Association="DBISEPRO.R_TRASF_RICHIAMO">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_LIVDIP" Association="DBISEPRO.MAB_LIVDIP">
+            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_MAGANNUALI" Association="DBISEPRO.MAB_MAGANNUALI">
+            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_PERCMAB" Association="DBISEPRO.MAB_PERCMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_RUOLODIP" Association="DBISEPRO.MAB_RUOLODIP">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_TFR" Association="DBISEPRO.MAB_TFR">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="TFR" EntitySet="TFR" />
+          </AssociationSet>
+          <AssociationSet Name="RICHIAMO_ALIQCONTR" Association="DBISEPRO.RICHIAMO_ALIQCONTR">
+            <End Role="ALIQUOTECONTRIBUTIVE" EntitySet="ALIQUOTECONTRIBUTIVE" />
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="RICHIAMO_COEFFRICH" Association="DBISEPRO.RICHIAMO_COEFFRICH">
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <EntitySet Name="INDENNITA" EntityType="DBISEPRO.INDENNITA" />
+          <AssociationSet Name="R_T_I" Association="DBISEPRO.R_T_I">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISEPRO.IND_COEFFICENTESEDE">
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_INDENNITABASE" Association="DBISEPRO.INDENNITA_INDENNITABASE">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_LIVELLIDIPENDENTI" Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_PERCDISAGIO" Association="DBISEPRO.INDENNITA_PERCDISAGIO">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_RUOLODIPENDENTE" Association="DBISEPRO.INDENNITA_RUOLODIPENDENTE">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="INDENNITA_TFR" Association="DBISEPRO.INDENNITA_TFR">
+            <End Role="INDENNITA" EntitySet="INDENNITA" />
+            <End Role="TFR" EntitySet="TFR" />
+          </AssociationSet>
+          <EntitySet Name="TEORICI" EntityType="DBISEPRO.TEORICI" />
+          <AssociationSet Name="R_T_C" Association="DBISEPRO.R_T_C">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="CONTABILITA" EntitySet="CONTABILITA" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_S" Association="DBISEPRO.R_T_S">
+            <End Role="TEORICI" EntitySet="TEORICI" />
+            <End Role="STIPENDI" EntitySet="STIPENDI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_T" Association="DBISEPRO.R_T_T">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TM_T" Association="DBISEPRO.R_TM_T">
+            <End Role="TIPOMOVIMENTO" EntitySet="TIPOMOVIMENTO" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_T" Association="DBISEPRO.R_V_T">
+            <End Role="VOCI" EntitySet="VOCI" />
+            <End Role="TEORICI" EntitySet="TEORICI" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -4008,6 +4095,7 @@
           <NavigationProperty Name="MAB_ALIQCONTR" Relationship="DBISEPRO.R_AC_MAB_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="MAB_ALIQCONTR" />
           <NavigationProperty Name="TIPOALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.R_TC_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="TIPOALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.PS_AC" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="PRIMASITEMAZIONE" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.RICHIAMO_ALIQCONTR" FromRole="ALIQUOTECONTRIBUTIVE" ToRole="RICHIAMO" />
         </EntityType>
         <EntityType Name="ALTRIDATIFAM">
           <Key>
@@ -4079,19 +4167,6 @@
           <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.FASCIACHILOMETRICA" FromRole="COEFFICIENTEFKM" ToRole="UFFICI" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM" FromRole="COEFFICIENTEFKM" ToRole="TRASPORTOEFFETTIRIENTRO" />
         </EntityType>
-        <EntityType Name="COEFFICIENTEINDRICHIAMO">
-          <Key>
-            <PropertyRef Name="IDCOEFINDRICHIAMO" />
-          </Key>
-          <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="COEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="COEFFICIENTEINDBASE" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_COEFFRICHIAMO_RICHIAMO" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RICHIAMO" />
-        </EntityType>
         <EntityType Name="COEFFICIENTESEDE">
           <Key>
             <PropertyRef Name="IDCOEFFICIENTESEDE" />
@@ -4157,19 +4232,6 @@
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
-        <EntityType Name="ELAB_CONT">
-          <Key>
-            <PropertyRef Name="IDELABCONT" />
-          </Key>
-          <Property Name="IDELABCONT" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDANTICIPO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_EC_T" FromRole="ELAB_CONT" ToRole="TEORICI" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_I_E_C" FromRole="ELAB_CONT" ToRole="INDENNITA" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_R_E_C" FromRole="ELAB_CONT" ToRole="RICHIAMO" />
-        </EntityType>
         <EntityType Name="FUNZIONIEVENTI">
           <Key>
             <PropertyRef Name="IDFUNZIONIEVENTI" />
@@ -4186,23 +4248,6 @@
           <Property Name="IDGRUPPODOC" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCGRUPPO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_GD_TDV" FromRole="GRUPPIDOCUMENTI" ToRole="TIPODOCUMENTI" />
-        </EntityType>
-        <EntityType Name="INDENNITA">
-          <Key>
-            <PropertyRef Name="IDTRASFINDENNITA" />
-          </Key>
-          <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIO" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="ELAB_CONT" Relationship="DBISEPRO.R_I_E_C" FromRole="INDENNITA" ToRole="ELAB_CONT" />
-          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.IND_COEFFICENTESEDE" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
-          <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.INDENNITA_INDENNITABASE" FromRole="INDENNITA" ToRole="INDENNITABASE" />
-          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="INDENNITA" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.INDENNITA_PERCDISAGIO" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
-          <NavigationProperty Name="TFR" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="INDENNITA" ToRole="TFR" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="INDENNITABASE">
           <Key>
@@ -4272,8 +4317,8 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISEPRO.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="LIVELLIDIPENDENTI" ToRole="INDENNITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="LIVELLIDIPENDENTI" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
           <Key>
@@ -4298,28 +4343,6 @@
           <Property Name="IDALIQCONTR" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.R_AC_MAB_AC" FromRole="MAB_ALIQCONTR" ToRole="ALIQUOTECONTRIBUTIVE" />
-        </EntityType>
-        <EntityType Name="MAGGIORAZIONEABITAZIONE">
-          <Key>
-            <PropertyRef Name="IDMAB" />
-          </Key>
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
-          <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
-          <Property Name="PAGATOCONDIVISO" Type="Boolean" Nullable="false" />
-          <Property Name="CANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.MAB_LIVDIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.MAB_MAGANNUALI" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
-          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.MAB_PERCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.MAB_RUOLODIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
-          <NavigationProperty Name="TFR" Relationship="DBISEPRO.MAB_TFR" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="MAGGIORAZIONIANNUALI">
           <Key>
@@ -4463,20 +4486,6 @@
           <NavigationProperty Name="RIDUZIONI" Relationship="DBISEPRO.R_REGOLECALCOLO_RIDUZIONI" FromRole="REGOLECALCOLO" ToRole="RIDUZIONI" />
           <NavigationProperty Name="TIPOREGOLACALCOLO" Relationship="DBISEPRO.R_TRC_RC" FromRole="REGOLECALCOLO" ToRole="TIPOREGOLACALCOLO" />
         </EntityType>
-        <EntityType Name="RICHIAMO">
-          <Key>
-            <PropertyRef Name="IDRICHIAMO" />
-          </Key>
-          <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="RICALCOLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.R_COEFFRICHIAMO_RICHIAMO" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
-          <NavigationProperty Name="ELAB_CONT" Relationship="DBISEPRO.R_R_E_C" FromRole="RICHIAMO" ToRole="ELAB_CONT" />
-          <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.R_IR_TER" FromRole="RICHIAMO" ToRole="TRASPORTOEFFETTIRIENTRO" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_RICHIAMO" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="RIDUZIONI">
           <Key>
             <PropertyRef Name="IDRIDUZIONI" />
@@ -4491,6 +4500,7 @@
           <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.R_RIDUZIONI_INDBASE" FromRole="RIDUZIONI" ToRole="INDENNITABASE" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.R_R_IS" FromRole="RIDUZIONI" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.R_REGOLECALCOLO_RIDUZIONI" FromRole="RIDUZIONI" ToRole="REGOLECALCOLO" />
+          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.R_R_CR" FromRole="RIDUZIONI" ToRole="COEFFICIENTEINDRICHIAMO" />
         </EntityType>
         <EntityType Name="RUOLOACCESSO">
           <Key>
@@ -4511,8 +4521,8 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISEPRO.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_RUOLODIP" FromRole="RUOLODIPENDENTE" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="RUOLODIPENDENTE" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="RUOLOUFFICIO">
           <Key>
@@ -4563,23 +4573,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_S" FromRole="STIPENDI" ToRole="TEORICI" />
         </EntityType>
-        <EntityType Name="TEORICI">
-          <Key>
-            <PropertyRef Name="IDTEORICI" />
-          </Key>
-          <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDELABCONT" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CONTABILITA" Relationship="DBISEPRO.R_T_C" FromRole="TEORICI" ToRole="CONTABILITA" />
-          <NavigationProperty Name="ELAB_CONT" Relationship="DBISEPRO.R_EC_T" FromRole="TEORICI" ToRole="ELAB_CONT" />
-          <NavigationProperty Name="STIPENDI" Relationship="DBISEPRO.R_T_S" FromRole="TEORICI" ToRole="STIPENDI" />
-          <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISEPRO.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
-          <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
-        </EntityType>
         <EntityType Name="TFR">
           <Key>
             <PropertyRef Name="IDTFR" />
@@ -4592,8 +4585,8 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="VALUTE" Relationship="DBISEPRO.R_VALUTE_TFR" FromRole="TFR" ToRole="VALUTE" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="TFR" ToRole="INDENNITA" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_TFR" FromRole="TFR" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="TFR" ToRole="INDENNITA" />
         </EntityType>
         <EntityType Name="TIPOALIQUOTECONTRIBUTIVE">
           <Key>
@@ -4706,7 +4699,6 @@
           </Key>
           <Property Name="IDTRASPORTOEFFETTISIST" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDRICHIAMO" Type="Decimal" Precision="38" Scale="0" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_IR_TER" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="RICHIAMO" />
           <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.R_TES_TER" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="TRASPORTOEFFETTISIST" />
           <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TRASPEFFETTIRIEN_COEFFIFKM" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="TRASPORTOEFFETTIRIENTRO" ToRole="DOCUMENTI" />
@@ -4787,9 +4779,9 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="DBISEPRO.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
           <NavigationProperty Name="TIPOVOCE" Relationship="DBISEPRO.R_TV_V" FromRole="VOCI" ToRole="TIPOVOCE" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
         </EntityType>
         <Association Name="R_UL_C">
           <End Type="DBISEPRO.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="1">
@@ -4903,20 +4895,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_COEFFRICHIAMO_RICHIAMO">
-          <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COEFFICIENTEINDRICHIAMO">
-              <PropertyRef Name="IDCOEFINDRICHIAMO" />
-            </Principal>
-            <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDCOEFINDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_UFFICI_COEFFICIENTESEDE">
           <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4945,20 +4923,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_C">
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CONTABILITA" Role="CONTABILITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="CONTABILITA">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_D_UA">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -4984,48 +4948,6 @@
             </Principal>
             <Dependent Role="LIVELLIDIPENDENTI">
               <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_EC_T">
-          <End Type="DBISEPRO.ELAB_CONT" Role="ELAB_CONT" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ELAB_CONT">
-              <PropertyRef Name="IDELABCONT" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDELABCONT" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_I_E_C">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.ELAB_CONT" Role="ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_R_E_C">
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.ELAB_CONT" Role="ELAB_CONT" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Principal>
-            <Dependent Role="ELAB_CONT">
-              <PropertyRef Name="IDRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5253,20 +5175,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_IR_TER">
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASPORTOEFFETTIRIENTRO" Role="TRASPORTOEFFETTIRIENTRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RICHIAMO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Principal>
-            <Dependent Role="TRASPORTOEFFETTIRIENTRO">
-              <PropertyRef Name="IDRICHIAMO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_RU_UA">
           <End Type="DBISEPRO.RUOLOACCESSO" Role="RUOLOACCESSO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -5306,46 +5214,6 @@
             </Principal>
             <Dependent Role="SOSPENSIONE">
               <PropertyRef Name="IDTIPOSOSPENSIONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_S">
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="1" />
-          <End Type="DBISEPRO.STIPENDI" Role="STIPENDI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEORICI">
-              <PropertyRef Name="IDTEORICI" />
-            </Principal>
-            <Dependent Role="STIPENDI">
-              <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TM_T">
-          <End Type="DBISEPRO.TIPOMOVIMENTO" Role="TIPOMOVIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOMOVIMENTO">
-              <PropertyRef Name="IDTIPOMOVIMENTO" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDTIPOMOVIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_V_T">
-          <End Type="DBISEPRO.VOCI" Role="VOCI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VOCI">
-              <PropertyRef Name="IDVOCI" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDVOCI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5465,53 +5333,9 @@
           <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="*" />
         </Association>
-        <Association Name="IND_COEFFICENTESEDE">
-          <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_INDENNITABASE">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <End Type="DBISEPRO.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_LIVELLIDIPENDENTI">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_PERCDISAGIO">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <End Type="DBISEPRO.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_RUOLODIPENDENTE">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-        </Association>
-        <Association Name="INDENNITA_TFR">
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
-          <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
-        </Association>
         <Association Name="IS_PS">
           <End Type="DBISEPRO.INDENNITASISTEMAZIONE" Role="INDENNITASISTEMAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_LIVDIP">
-          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_MAGANNUALI">
-          <End Type="DBISEPRO.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_PERCMAB">
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_RUOLODIP">
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_TFR">
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
         </Association>
         <Association Name="PS_AC">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -5572,7 +5396,6 @@
           <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TRASPORTOEFFETTIRIENTRO" Relationship="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTIRIENTRO" />
           <NavigationProperty Name="TRASPORTOEFFETTISIST" Relationship="DBISEPRO.TRASPEFFETTISIST_DOC" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTISIST" />
@@ -5580,6 +5403,7 @@
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" FromRole="DOCUMENTI" ToRole="TITOLIVIAGGIO" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
         </EntityType>
         <EntityType Name="TRASFERIMENTO">
           <Key>
@@ -5599,12 +5423,9 @@
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_T_MB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_TRASF_RICHIAMO" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="DBISEPRO.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISEPRO.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
@@ -5614,6 +5435,10 @@
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_T_MB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_TRASF_RICHIAMO" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
         </EntityType>
         <Association Name="R_DIP_TRASF">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
@@ -5643,20 +5468,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_T_I">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_T_LA">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -5667,20 +5478,6 @@
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="LOGATTIVITA">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MB">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -5710,20 +5507,6 @@
             </Principal>
             <Dependent Role="PRIMASITEMAZIONE">
               <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TRASF_RICHIAMO">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5800,10 +5583,6 @@
         <Association Name="DOCUMENTO_NORMACALCOLO">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISEPRO.NORMACALCOLO" Role="NORMACALCOLO" Multiplicity="*" />
-        </Association>
-        <Association Name="MAB_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
         </Association>
         <Association Name="TRASF_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
@@ -6151,6 +5930,319 @@
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
+        <EntityType Name="COEFFICIENTEINDRICHIAMO">
+          <Key>
+            <PropertyRef Name="IDCOEFINDRICHIAMO" />
+          </Key>
+          <Property Name="IDCOEFINDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="COEFFICIENTERICHIAMO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="COEFFICIENTEINDBASE" Type="Decimal" Nullable="false" Precision="10" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDRIDUZIONI" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="RIDUZIONI" Relationship="DBISEPRO.R_R_CR" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RIDUZIONI" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.RICHIAMO_COEFFRICH" FromRole="COEFFICIENTEINDRICHIAMO" ToRole="RICHIAMO" />
+        </EntityType>
+        <Association Name="R_R_CR">
+          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RIDUZIONI">
+              <PropertyRef Name="IDRIDUZIONI" />
+            </Principal>
+            <Dependent Role="COEFFICIENTEINDRICHIAMO">
+              <PropertyRef Name="IDRIDUZIONI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CANOMEMAB">
+          <Key>
+            <PropertyRef Name="IDCANONE" />
+          </Key>
+          <Property Name="IDCANONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="CANOMEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+        </EntityType>
+        <EntityType Name="MAGGIORAZIONEABITAZIONE">
+          <Key>
+            <PropertyRef Name="IDMAB" />
+          </Key>
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="CANOMEMAB" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MAB_DOC" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.MAB_LIVDIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="LIVELLIDIPENDENTI" />
+          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.MAB_MAGANNUALI" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
+          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.MAB_PERCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.MAB_RUOLODIP" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="RUOLODIPENDENTE" />
+          <NavigationProperty Name="TFR" Relationship="DBISEPRO.MAB_TFR" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TFR" />
+        </EntityType>
+        <EntityType Name="PAGATOCONDIVISOMAB">
+          <Key>
+            <PropertyRef Name="IDPAGATOCONDIVISO" />
+          </Key>
+          <Property Name="IDPAGATOCONDIVISO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PAGATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+        </EntityType>
+        <EntityType Name="RICHIAMO">
+          <Key>
+            <PropertyRef Name="IDTRASFRICHIAMO" />
+          </Key>
+          <Property Name="IDTRASFRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_RICHIAMO" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.RICHIAMO_ALIQCONTR" FromRole="RICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
+          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.RICHIAMO_COEFFRICH" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
+        </EntityType>
+        <Association Name="R_MAB_CMAB">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CANOMEMAB" Role="CANOMEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="CANOMEMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAB_PCMAB">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_MB">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TRASF_RICHIAMO">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="RICHIAMO">
+              <PropertyRef Name="IDTRASFRICHIAMO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MAB_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_LIVDIP">
+          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_MAGANNUALI">
+          <End Type="DBISEPRO.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_PERCMAB">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_RUOLODIP">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+        </Association>
+        <Association Name="MAB_TFR">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
+        </Association>
+        <Association Name="RICHIAMO_ALIQCONTR">
+          <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
+        </Association>
+        <Association Name="RICHIAMO_COEFFRICH">
+          <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
+        </Association>
+        <EntityType Name="INDENNITA">
+          <Key>
+            <PropertyRef Name="IDTRASFINDENNITA" />
+          </Key>
+          <Property Name="IDTRASFINDENNITA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_I" FromRole="INDENNITA" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.IND_COEFFICENTESEDE" FromRole="INDENNITA" ToRole="COEFFICIENTESEDE" />
+          <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.INDENNITA_INDENNITABASE" FromRole="INDENNITA" ToRole="INDENNITABASE" />
+          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="INDENNITA" ToRole="LIVELLIDIPENDENTI" />
+          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.INDENNITA_PERCDISAGIO" FromRole="INDENNITA" ToRole="PERCENTUALEDISAGIO" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.INDENNITA_RUOLODIPENDENTE" FromRole="INDENNITA" ToRole="RUOLODIPENDENTE" />
+          <NavigationProperty Name="TFR" Relationship="DBISEPRO.INDENNITA_TFR" FromRole="INDENNITA" ToRole="TFR" />
+        </EntityType>
+        <Association Name="R_T_I">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="INDENNITA">
+              <PropertyRef Name="IDTRASFINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IND_COEFFICENTESEDE">
+          <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_INDENNITABASE">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_LIVELLIDIPENDENTI">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_PERCDISAGIO">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_RUOLODIPENDENTE">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+        </Association>
+        <Association Name="INDENNITA_TFR">
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="*" />
+          <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
+        </Association>
+        <EntityType Name="TEORICI">
+          <Key>
+            <PropertyRef Name="IDTEORICI" />
+          </Key>
+          <Property Name="IDTEORICI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDVOCI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTIPOMOVIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="MESERIFERIMENTO" Type="Byte" Nullable="false" />
+          <Property Name="ANNORIFERIMENTO" Type="Int16" Nullable="false" />
+          <Property Name="IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAOPERAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CONTABILITA" Relationship="DBISEPRO.R_T_C" FromRole="TEORICI" ToRole="CONTABILITA" />
+          <NavigationProperty Name="STIPENDI" Relationship="DBISEPRO.R_T_S" FromRole="TEORICI" ToRole="STIPENDI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_T" FromRole="TEORICI" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="TIPOMOVIMENTO" Relationship="DBISEPRO.R_TM_T" FromRole="TEORICI" ToRole="TIPOMOVIMENTO" />
+          <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_V_T" FromRole="TEORICI" ToRole="VOCI" />
+        </EntityType>
+        <Association Name="R_T_C">
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONTABILITA" Role="CONTABILITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="CONTABILITA">
+              <PropertyRef Name="IDTEORICI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_S">
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="1" />
+          <End Type="DBISEPRO.STIPENDI" Role="STIPENDI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TEORICI">
+              <PropertyRef Name="IDTEORICI" />
+            </Principal>
+            <Dependent Role="STIPENDI">
+              <PropertyRef Name="IDTEORICI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_T">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TM_T">
+          <End Type="DBISEPRO.TIPOMOVIMENTO" Role="TIPOMOVIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOMOVIMENTO">
+              <PropertyRef Name="IDTIPOMOVIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTIPOMOVIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_T">
+          <End Type="DBISEPRO.VOCI" Role="VOCI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VOCI">
+              <PropertyRef Name="IDVOCI" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDVOCI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6246,19 +6338,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="COEFFICIENTEINDRICHIAMO">
-            <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTEINDRICHIAMO">
-              <MappingFragment StoreEntitySet="COEFFICIENTEINDRICHIAMO">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="COEFFICIENTEINDBASE" ColumnName="COEFFICIENTEINDBASE" />
-                <ScalarProperty Name="COEFFICIENTERICHIAMO" ColumnName="COEFFICIENTERICHIAMO" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="COEFFICIENTESEDE">
             <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTESEDE">
               <MappingFragment StoreEntitySet="COEFFICIENTESEDE">
@@ -6319,17 +6398,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ELAB_CONT">
-            <EntityTypeMapping TypeName="DBISEPRO.ELAB_CONT">
-              <MappingFragment StoreEntitySet="ELAB_CONT">
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
-                <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
-                <ScalarProperty Name="IDANTICIPO" ColumnName="IDANTICIPO" />
-                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FUNZIONIEVENTI">
             <EntityTypeMapping TypeName="DBISEPRO.FUNZIONIEVENTI">
               <MappingFragment StoreEntitySet="FUNZIONIEVENTI">
@@ -6344,16 +6412,6 @@
               <MappingFragment StoreEntitySet="GRUPPIDOCUMENTI">
                 <ScalarProperty Name="DESCGRUPPO" ColumnName="DESCGRUPPO" />
                 <ScalarProperty Name="IDGRUPPODOC" ColumnName="IDGRUPPODOC" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="INDENNITA">
-            <EntityTypeMapping TypeName="DBISEPRO.INDENNITA">
-              <MappingFragment StoreEntitySet="INDENNITA">
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
-                <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
-                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6438,22 +6496,6 @@
               <MappingFragment StoreEntitySet="MAB_ALIQCONTR">
                 <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
                 <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MAGGIORAZIONEABITAZIONE">
-            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEABITAZIONE">
-              <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="CANONE" ColumnName="CANONE" />
-                <ScalarProperty Name="PAGATOCONDIVISO" ColumnName="PAGATOCONDIVISO" />
-                <ScalarProperty Name="CONDIVISO" ColumnName="CONDIVISO" />
-                <ScalarProperty Name="ANTICIPOANNUALE" ColumnName="ANTICIPOANNUALE" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6587,17 +6629,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RICHIAMO">
-            <EntityTypeMapping TypeName="DBISEPRO.RICHIAMO">
-              <MappingFragment StoreEntitySet="RICHIAMO">
-                <ScalarProperty Name="RICALCOLATO" ColumnName="RICALCOLATO" />
-                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="RIDUZIONI">
             <EntityTypeMapping TypeName="DBISEPRO.RIDUZIONI">
               <MappingFragment StoreEntitySet="RIDUZIONI">
@@ -6676,19 +6707,6 @@
                 <ScalarProperty Name="MESEELABORAZIONE" ColumnName="MESEELABORAZIONE" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
                 <ScalarProperty Name="IDELABORAZIONEMENSILE" ColumnName="IDELABORAZIONEMENSILE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TEORICI">
-            <EntityTypeMapping TypeName="DBISEPRO.TEORICI">
-              <MappingFragment StoreEntitySet="TEORICI">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
-                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
-                <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
-                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
-                <ScalarProperty Name="IDELABCONT" ColumnName="IDELABCONT" />
-                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6883,100 +6901,12 @@
               <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTESEDE">
-              <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_INDENNITABASE" TypeName="DBISEPRO.INDENNITA_INDENNITABASE" StoreEntitySet="INDENNITA_INDENNITABASE">
-            <EndProperty Name="INDENNITABASE">
-              <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_LIVELLIDIPENDENTI" TypeName="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" StoreEntitySet="INDENNITA_LIVELLIDIPENDENTI">
-            <EndProperty Name="LIVELLIDIPENDENTI">
-              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_PERCDISAGIO" TypeName="DBISEPRO.INDENNITA_PERCDISAGIO" StoreEntitySet="INDENNITA_PERCDISAGIO">
-            <EndProperty Name="PERCENTUALEDISAGIO">
-              <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_RUOLODIPENDENTE" TypeName="DBISEPRO.INDENNITA_RUOLODIPENDENTE" StoreEntitySet="INDENNITA_RUOLODIPENDENTE">
-            <EndProperty Name="RUOLODIPENDENTE">
-              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="INDENNITA_TFR" TypeName="DBISEPRO.INDENNITA_TFR" StoreEntitySet="INDENNITA_TFR">
-            <EndProperty Name="TFR">
-              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
-            </EndProperty>
-            <EndProperty Name="INDENNITA">
-              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="IS_PS" TypeName="DBISEPRO.IS_PS" StoreEntitySet="IS_PS">
             <EndProperty Name="PRIMASITEMAZIONE">
               <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
             </EndProperty>
             <EndProperty Name="INDENNITASISTEMAZIONE">
               <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_LIVDIP" TypeName="DBISEPRO.MAB_LIVDIP" StoreEntitySet="MAB_LIVDIP">
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-            </EndProperty>
-            <EndProperty Name="LIVELLIDIPENDENTI">
-              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_MAGANNUALI" TypeName="DBISEPRO.MAB_MAGANNUALI" StoreEntitySet="MAB_MAGANNUALI">
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONIANNUALI">
-              <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_PERCMAB" TypeName="DBISEPRO.MAB_PERCMAB" StoreEntitySet="MAB_PERCMAB">
-            <EndProperty Name="PERCENTUALEMAB">
-              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_RUOLODIP" TypeName="DBISEPRO.MAB_RUOLODIP" StoreEntitySet="MAB_RUOLODIP">
-            <EndProperty Name="RUOLODIPENDENTE">
-              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_TFR" TypeName="DBISEPRO.MAB_TFR" StoreEntitySet="MAB_TFR">
-            <EndProperty Name="TFR">
-              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
-            </EndProperty>
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="PS_AC" TypeName="DBISEPRO.PS_AC" StoreEntitySet="PS_AC">
@@ -7051,14 +6981,6 @@
           <AssociationSetMapping Name="DOCUMENTO_NORMACALCOLO" TypeName="DBISEPRO.DOCUMENTO_NORMACALCOLO" StoreEntitySet="DOCUMENTO_NORMACALCOLO">
             <EndProperty Name="NORMACALCOLO">
               <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="MAB_DOC" TypeName="DBISEPRO.MAB_DOC" StoreEntitySet="MAB_DOC">
-            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
-              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -7237,6 +7159,202 @@
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="COEFFICIENTEINDRICHIAMO">
+            <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTEINDRICHIAMO">
+              <MappingFragment StoreEntitySet="COEFFICIENTEINDRICHIAMO">
+                <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="COEFFICIENTEINDBASE" ColumnName="COEFFICIENTEINDBASE" />
+                <ScalarProperty Name="COEFFICIENTERICHIAMO" ColumnName="COEFFICIENTERICHIAMO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CANOMEMAB">
+            <EntityTypeMapping TypeName="DBISEPRO.CANOMEMAB">
+              <MappingFragment StoreEntitySet="CANOMEMAB">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="IMPORTOCANONE" ColumnName="IMPORTOCANONE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDCANONE" ColumnName="IDCANONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MAGGIORAZIONEABITAZIONE">
+            <EntityTypeMapping TypeName="DBISEPRO.MAGGIORAZIONEABITAZIONE">
+              <MappingFragment StoreEntitySet="MAGGIORAZIONEABITAZIONE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="ANTICIPOANNUALE" ColumnName="ANTICIPOANNUALE" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAGATOCONDIVISOMAB">
+            <EntityTypeMapping TypeName="DBISEPRO.PAGATOCONDIVISOMAB">
+              <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="PAGATO" ColumnName="PAGATO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDPAGATOCONDIVISO" ColumnName="IDPAGATOCONDIVISO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RICHIAMO">
+            <EntityTypeMapping TypeName="DBISEPRO.RICHIAMO">
+              <MappingFragment StoreEntitySet="RICHIAMO">
+                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IDTRASFRICHIAMO" ColumnName="IDTRASFRICHIAMO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="MAB_DOC" TypeName="DBISEPRO.MAB_DOC" StoreEntitySet="MAB_DOC">
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_LIVDIP" TypeName="DBISEPRO.MAB_LIVDIP" StoreEntitySet="MAB_LIVDIP">
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+            <EndProperty Name="LIVELLIDIPENDENTI">
+              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_MAGANNUALI" TypeName="DBISEPRO.MAB_MAGANNUALI" StoreEntitySet="MAB_MAGANNUALI">
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONIANNUALI">
+              <ScalarProperty Name="IDMAGANNUALI" ColumnName="IDMAGANNUALI" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_PERCMAB" TypeName="DBISEPRO.MAB_PERCMAB" StoreEntitySet="MAB_PERCMAB">
+            <EndProperty Name="PERCENTUALEMAB">
+              <ScalarProperty Name="IDPERCMAB" ColumnName="IDPERCMAB" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_RUOLODIP" TypeName="DBISEPRO.MAB_RUOLODIP" StoreEntitySet="MAB_RUOLODIP">
+            <EndProperty Name="RUOLODIPENDENTE">
+              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MAB_TFR" TypeName="DBISEPRO.MAB_TFR" StoreEntitySet="MAB_TFR">
+            <EndProperty Name="TFR">
+              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
+            </EndProperty>
+            <EndProperty Name="MAGGIORAZIONEABITAZIONE">
+              <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RICHIAMO_ALIQCONTR" TypeName="DBISEPRO.RICHIAMO_ALIQCONTR" StoreEntitySet="RICHIAMO_ALIQCONTR">
+            <EndProperty Name="RICHIAMO">
+              <ScalarProperty Name="IDTRASFRICHIAMO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="ALIQUOTECONTRIBUTIVE">
+              <ScalarProperty Name="IDALIQCONTR" ColumnName="IDALIQCONTR" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RICHIAMO_COEFFRICH" TypeName="DBISEPRO.RICHIAMO_COEFFRICH" StoreEntitySet="RICHIAMO_COEFFRICH">
+            <EndProperty Name="RICHIAMO">
+              <ScalarProperty Name="IDTRASFRICHIAMO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="COEFFICIENTEINDRICHIAMO">
+              <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="INDENNITA">
+            <EntityTypeMapping TypeName="DBISEPRO.INDENNITA">
+              <MappingFragment StoreEntitySet="INDENNITA">
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+            <EndProperty Name="COEFFICIENTESEDE">
+              <ScalarProperty Name="IDCOEFFICIENTESEDE" ColumnName="IDCOEFFICIENTESEDE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_INDENNITABASE" TypeName="DBISEPRO.INDENNITA_INDENNITABASE" StoreEntitySet="INDENNITA_INDENNITABASE">
+            <EndProperty Name="INDENNITABASE">
+              <ScalarProperty Name="IDINDENNITABASE" ColumnName="IDINDENNITABASE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_LIVELLIDIPENDENTI" TypeName="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" StoreEntitySet="INDENNITA_LIVELLIDIPENDENTI">
+            <EndProperty Name="LIVELLIDIPENDENTI">
+              <ScalarProperty Name="IDLIVDIPENDENTE" ColumnName="IDLIVDIPENDENTE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_PERCDISAGIO" TypeName="DBISEPRO.INDENNITA_PERCDISAGIO" StoreEntitySet="INDENNITA_PERCDISAGIO">
+            <EndProperty Name="PERCENTUALEDISAGIO">
+              <ScalarProperty Name="IDPERCENTUALEDISAGIO" ColumnName="IDPERCENTUALEDISAGIO" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_RUOLODIPENDENTE" TypeName="DBISEPRO.INDENNITA_RUOLODIPENDENTE" StoreEntitySet="INDENNITA_RUOLODIPENDENTE">
+            <EndProperty Name="RUOLODIPENDENTE">
+              <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="INDENNITA_TFR" TypeName="DBISEPRO.INDENNITA_TFR" StoreEntitySet="INDENNITA_TFR">
+            <EndProperty Name="TFR">
+              <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
+            </EndProperty>
+            <EndProperty Name="INDENNITA">
+              <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="TEORICI">
+            <EntityTypeMapping TypeName="DBISEPRO.TEORICI">
+              <MappingFragment StoreEntitySet="TEORICI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAOPERAZIONE" ColumnName="DATAOPERAZIONE" />
+                <ScalarProperty Name="IMPORTO" ColumnName="IMPORTO" />
+                <ScalarProperty Name="ANNORIFERIMENTO" ColumnName="ANNORIFERIMENTO" />
+                <ScalarProperty Name="MESERIFERIMENTO" ColumnName="MESERIFERIMENTO" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDTIPOMOVIMENTO" ColumnName="IDTIPOMOVIMENTO" />
+                <ScalarProperty Name="IDVOCI" ColumnName="IDVOCI" />
+                <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -26,9 +26,9 @@ namespace NewISE.EF
         public string CODICEVOCE { get; set; }
         public string DESCRIZIONE { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TIPOLIQUIDAZIONE TIPOLIQUIDAZIONE { get; set; }
         public virtual TIPOVOCE TIPOVOCE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
     }
 }

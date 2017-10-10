@@ -18,14 +18,14 @@ namespace NewISE.EF
         public TRASFERIMENTO()
         {
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.MAGGIORAZIONIFAMILIARI = new HashSet<MAGGIORAZIONIFAMILIARI>();
-            this.RICHIAMO = new HashSet<RICHIAMO>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.PASSAPORTI = new HashSet<PASSAPORTI>();
             this.TITOLIVIAGGIO = new HashSet<TITOLIVIAGGIO>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.TEORICI = new HashSet<TEORICI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -43,16 +43,11 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
         public virtual DIPENDENTI DIPENDENTI { get; set; }
-        public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
@@ -67,5 +62,11 @@ namespace NewISE.EF
         public virtual ICollection<PASSAPORTI> PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual RICHIAMO RICHIAMO { get; set; }
+        public virtual INDENNITA INDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
     }
 }

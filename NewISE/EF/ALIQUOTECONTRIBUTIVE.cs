@@ -18,6 +18,7 @@ namespace NewISE.EF
         public ALIQUOTECONTRIBUTIVE()
         {
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
+            this.RICHIAMO = new HashSet<RICHIAMO>();
         }
     
         public decimal IDALIQCONTR { get; set; }
@@ -32,5 +33,7 @@ namespace NewISE.EF
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
     }
 }

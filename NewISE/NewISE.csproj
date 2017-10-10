@@ -1888,6 +1888,9 @@
     <Compile Include="EF\CALENDARIOEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\CANOMEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\CDCGEPE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -1913,9 +1916,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\DOCUMENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\ELAB_CONT.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\FIGLI.cs">
@@ -1979,6 +1979,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\OA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\PAGATOCONDIVISOMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\PASSAPORTI.cs">

@@ -62,52 +62,29 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new ArgumentOutOfRangeException("parentela");
                         }
                         break;
-                    case EnumTipoDoc.PrimaRataMab_MAB2:
+                    case EnumTipoDoc.PrimaRataMab_MAB_2:
                         break;
-                    case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
+                    case EnumTipoDoc.DichiarazioneCostoLocazione_MAB_2:
                         break;
-                    case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
+                    case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB_2:
                         break;
-                    case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
+                    case EnumTipoDoc.ClausoleContrattoAlloggio_MAB_2:
                         break;
-                    case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
+                    case EnumTipoDoc.CopiaContrattoLocazione_MAB_2:
                         break;
-                    case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
+                    case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti_3:
                         break;
-                    case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
+                    case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti_3:
                         break;
-                    case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
+                    case EnumTipoDoc.DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4:
                         ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                         break;
-                    case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
+                    case EnumTipoDoc.DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4:
                         ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                         break;
-                    case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                    case EnumTipoDoc.LetteraTrasferimento_Trasferimento_5:
                         break;
-                    case EnumTipoDoc.CartaIdentita_Viaggi1:
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Richiedente:
-                                //ld = db.PASSAPORTI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
-                                var p = db.PASSAPORTI.Find(id);
-                                var ldoc =
-                                    p.DOCUMENTI.Where(
-                                        a => a.IDTIPODOCUMENTO == (decimal)tipodoc);
-                                if (ldoc?.Any() ?? false)
-                                {
-                                    ld = ldoc.ToList();
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-                        break;
+
                     default:
                         throw new ArgumentOutOfRangeException("tipodoc");
                 }
@@ -132,63 +109,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
             return ldm;
-        }
-
-        //public IList<DocumentiModel> GetDocumentiByIdFiglio(decimal idFiglio)
-        //{
-        //    List<DocumentiModel> ldm = new List<DocumentiModel>();
-
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        var ld = db.FIGLI.Find(idFiglio).DOCUMENTI.ToList();
-        //        if (ld?.Any() ?? false)
-        //        {
-        //            ldm.AddRange(from d in ld
-        //                         let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-        //                         select new DocumentiModel()
-        //                         {
-        //                             idDocumenti = d.IDDOCUMENTO,
-        //                             nomeDocumento = d.NOMEDOCUMENTO,
-        //                             estensione = d.ESTENSIONE,
-        //                             dataInserimento = d.DATAINSERIMENTO,
-        //                             tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-        //                             file = f
-        //                         });
-        //        }
-
-        //    }
-
-        //    return ldm;
-        //}
-
-        public DocumentiModel GetDocumentoByIdPassaporto(decimal idPassaporto)
-        {
-            DocumentiModel dm = new DocumentiModel();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var p = db.PASSAPORTI.Find(idPassaporto);
-                if (p != null && p.IDPASSAPORTI > 0)
-                {
-                    var ld = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
-                    if (ld?.Any() ?? false)
-                    {
-                        var d = ld.First();
-                        var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
-                        dm = new DocumentiModel()
-                        {
-                            idDocumenti = d.IDDOCUMENTO,
-                            tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                            nomeDocumento = d.NOMEDOCUMENTO,
-                            estensione = d.ESTENSIONE,
-                            file = f,
-                            dataInserimento = d.DATAINSERIMENTO
-                        };
-                    }
-                }
-            }
-
-            return dm;
         }
 
         public DocumentiModel GetDocumento(decimal idDocumento, ModelDBISE db)

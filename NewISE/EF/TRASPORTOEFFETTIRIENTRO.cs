@@ -24,7 +24,6 @@ namespace NewISE.EF
         public decimal IDTRASPORTOEFFETTISIST { get; set; }
         public Nullable<decimal> IDRICHIAMO { get; set; }
     
-        public virtual RICHIAMO RICHIAMO { get; set; }
         public virtual TRASPORTOEFFETTISIST TRASPORTOEFFETTISIST { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }

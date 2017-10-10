@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITA()
         {
-            this.ELAB_CONT = new HashSet<ELAB_CONT>();
             this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
             this.INDENNITABASE = new HashSet<INDENNITABASE>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
@@ -27,12 +26,9 @@ namespace NewISE.EF
         }
     
         public decimal IDTRASFINDENNITA { get; set; }
-        public System.DateTime DATAINIZIO { get; set; }
-        public System.DateTime DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ELAB_CONT> ELAB_CONT { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -45,6 +41,5 @@ namespace NewISE.EF
         public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

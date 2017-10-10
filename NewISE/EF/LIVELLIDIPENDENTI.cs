@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public LIVELLIDIPENDENTI()
         {
-            this.INDENNITA = new HashSet<INDENNITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDLIVDIPENDENTE { get; set; }
@@ -32,8 +32,8 @@ namespace NewISE.EF
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         public virtual LIVELLI LIVELLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
     }
 }
