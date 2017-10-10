@@ -17,7 +17,6 @@
         <EntityTypeShape EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" Width="1.5" PointX="1.5" PointY="23.625" />
         <EntityTypeShape EntityType="DBISEPRO.DIPENDENTI" Width="1.5" PointX="0.75" PointY="39.75" />
         <EntityTypeShape EntityType="DBISEPRO.FUNZIONIEVENTI" Width="1.5" PointX="9" PointY="25" />
-        <EntityTypeShape EntityType="DBISEPRO.GRUPPIDOCUMENTI" Width="1.5" PointX="8.25" PointY="59" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="13.5" PointY="47.375" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="22.5" PointY="54.875" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="21.75" PointY="65.875" />
@@ -44,7 +43,6 @@
         <EntityTypeShape EntityType="DBISEPRO.STIPENDI" Width="1.5" PointX="24" PointY="40.125" />
         <EntityTypeShape EntityType="DBISEPRO.TFR" Width="1.5" PointX="16.5" PointY="41.625" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOALIQUOTECONTRIBUTIVE" Width="1.5" PointX="20.5" PointY="59" />
-        <EntityTypeShape EntityType="DBISEPRO.TIPODOCUMENTI" Width="1.5" PointX="10.5" PointY="58.875" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOELABORAZIONE" Width="1.5" PointX="15" PointY="33.125" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOLIQUIDAZIONE" Width="1.5" PointX="17.25" PointY="30.75" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOLOGIACOAN" Width="1.5" PointX="3.75" PointY="53" />
@@ -74,7 +72,6 @@
         <AssociationConnector Association="DBISEPRO.R_C_AQ" />
         <AssociationConnector Association="DBISEPRO.R_D_UA" />
         <AssociationConnector Association="DBISEPRO.R_DIP_LIVDIP" />
-        <AssociationConnector Association="DBISEPRO.R_GD_TDV" />
         <AssociationConnector Association="DBISEPRO.R_L_I" />
         <AssociationConnector Association="DBISEPRO.R_RIDUZIONI_INDBASE" />
         <AssociationConnector Association="DBISEPRO.R_R_IS" />
@@ -108,31 +105,10 @@
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="8.25" PointY="53.625" />
         <EntityTypeShape EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Width="1.5" PointX="10.5" PointY="53.875" />
         <AssociationConnector Association="DBISEPRO.R_MF_RMF" />
-        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="15.75" PointY="58.375" />
-        <EntityTypeShape EntityType="DBISEPRO.TRASFERIMENTO" Width="1.5" PointX="6" PointY="38.625" />
-        <AssociationConnector Association="DBISEPRO.R_DIP_TRASF" />
-        <AssociationConnector Association="DBISEPRO.R_TD_D" />
-        <AssociationConnector Association="DBISEPRO.R_T_LA" />
-        <AssociationConnector Association="DBISEPRO.R_T_MF" />
-        <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
-        <AssociationConnector Association="DBISEPRO.R_TRASF_SOSP" />
-        <AssociationConnector Association="DBISEPRO.R_ST_T" />
-        <AssociationConnector Association="DBISEPRO.R_TIPCOAN_TRASF" />
-        <AssociationConnector Association="DBISEPRO.R_TT_T" />
-        <AssociationConnector Association="DBISEPRO.R_U_T" />
-        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
-        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
-        <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
-        <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.CALENDARIOEVENTI" Width="1.5" PointX="14.25" PointY="29.375" />
         <AssociationConnector Association="DBISEPRO.R_FE_CE" />
-        <AssociationConnector Association="DBISEPRO.R_T_CE" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="18" PointY="48.875" />
-        <AssociationConnector Association="DBISEPRO.R_T_P" />
-        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
         <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIO" Width="1.5" PointX="8.25" PointY="44" />
-        <AssociationConnector Association="DBISEPRO.R_T_B" />
-        <AssociationConnector Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="20.25" PointY="49.625" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="27.25" PointY="56.5" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
@@ -147,9 +123,7 @@
         <AssociationConnector Association="DBISEPRO.R_TF_F" />
         <AssociationConnector Association="DBISEPRO.C_P" />
         <AssociationConnector Association="DBISEPRO.C_PC" />
-        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
         <AssociationConnector Association="DBISEPRO.F_IPS" />
-        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.PMF_F" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="21.75" PointY="70" />
         <AssociationConnector Association="DBISEPRO.R_R_CR" />
@@ -159,9 +133,6 @@
         <EntityTypeShape EntityType="DBISEPRO.RICHIAMO" Width="1.5" PointX="25" PointY="55.625" />
         <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
         <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
-        <AssociationConnector Association="DBISEPRO.R_T_MB" />
-        <AssociationConnector Association="DBISEPRO.R_TRASF_RICHIAMO" />
-        <AssociationConnector Association="DBISEPRO.MAB_DOC" />
         <AssociationConnector Association="DBISEPRO.MAB_LIVDIP" />
         <AssociationConnector Association="DBISEPRO.MAB_MAGANNUALI" />
         <AssociationConnector Association="DBISEPRO.MAB_PERCMAB" />
@@ -170,7 +141,6 @@
         <AssociationConnector Association="DBISEPRO.RICHIAMO_ALIQCONTR" />
         <AssociationConnector Association="DBISEPRO.RICHIAMO_COEFFRICH" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITA" Width="1.5" PointX="14.25" PointY="40.25" />
-        <AssociationConnector Association="DBISEPRO.R_T_I" />
         <AssociationConnector Association="DBISEPRO.IND_COEFFICENTESEDE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_INDENNITABASE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" />
@@ -180,9 +150,37 @@
         <EntityTypeShape EntityType="DBISEPRO.TEORICI" Width="1.5" PointX="23.75" PointY="35.5" />
         <AssociationConnector Association="DBISEPRO.R_T_C" />
         <AssociationConnector Association="DBISEPRO.R_T_S" />
-        <AssociationConnector Association="DBISEPRO.R_T_T" />
         <AssociationConnector Association="DBISEPRO.R_TM_T" />
         <AssociationConnector Association="DBISEPRO.R_V_T" />
+        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="28.5" PointY="47.5" />
+        <EntityTypeShape EntityType="DBISEPRO.TIPODOCUMENTI" Width="1.5" PointX="26.25" PointY="48.5" />
+        <EntityTypeShape EntityType="DBISEPRO.TRASFERIMENTO" Width="1.5" PointX="6" PointY="38.5" />
+        <AssociationConnector Association="DBISEPRO.R_T_CE" />
+        <AssociationConnector Association="DBISEPRO.R_DIP_TRASF" />
+        <AssociationConnector Association="DBISEPRO.R_TD_D" />
+        <AssociationConnector Association="DBISEPRO.R_T_I" />
+        <AssociationConnector Association="DBISEPRO.R_T_LA" />
+        <AssociationConnector Association="DBISEPRO.R_T_MB" />
+        <AssociationConnector Association="DBISEPRO.R_T_MF" />
+        <AssociationConnector Association="DBISEPRO.R_T_P" />
+        <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
+        <AssociationConnector Association="DBISEPRO.R_TRASF_RICHIAMO" />
+        <AssociationConnector Association="DBISEPRO.R_TRASF_SOSP" />
+        <AssociationConnector Association="DBISEPRO.R_ST_T" />
+        <AssociationConnector Association="DBISEPRO.R_T_T" />
+        <AssociationConnector Association="DBISEPRO.R_TIPCOAN_TRASF" />
+        <AssociationConnector Association="DBISEPRO.R_TT_T" />
+        <AssociationConnector Association="DBISEPRO.R_T_B" />
+        <AssociationConnector Association="DBISEPRO.R_U_T" />
+        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
+        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
+        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
+        <AssociationConnector Association="DBISEPRO.MAB_DOC" />
+        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
+        <AssociationConnector Association="DBISEPRO.TRASPEFFETTIRIENTRO_DOC" />
+        <AssociationConnector Association="DBISEPRO.TRASPEFFETTISIST_DOC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

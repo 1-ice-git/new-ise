@@ -1958,9 +1958,6 @@
     <Compile Include="EF\FUNZIONIEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\GRUPPIDOCUMENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\INDENNITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

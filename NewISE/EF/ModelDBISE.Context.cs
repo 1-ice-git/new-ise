@@ -37,7 +37,6 @@ namespace NewISE.EF
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
-        public virtual DbSet<GRUPPIDOCUMENTI> GRUPPIDOCUMENTI { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
@@ -64,7 +63,6 @@ namespace NewISE.EF
         public virtual DbSet<STIPENDI> STIPENDI { get; set; }
         public virtual DbSet<TFR> TFR { get; set; }
         public virtual DbSet<TIPOALIQUOTECONTRIBUTIVE> TIPOALIQUOTECONTRIBUTIVE { get; set; }
-        public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
         public virtual DbSet<TIPOELABORAZIONE> TIPOELABORAZIONE { get; set; }
         public virtual DbSet<TIPOLIQUIDAZIONE> TIPOLIQUIDAZIONE { get; set; }
         public virtual DbSet<TIPOLOGIACOAN> TIPOLOGIACOAN { get; set; }
@@ -84,8 +82,6 @@ namespace NewISE.EF
         public virtual DbSet<VOCI> VOCI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
@@ -98,5 +94,8 @@ namespace NewISE.EF
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<TEORICI> TEORICI { get; set; }
+        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DbSet<TIPODOCUMENTI> TIPODOCUMENTI { get; set; }
+        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }
