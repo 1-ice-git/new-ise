@@ -625,7 +625,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Storia_Dipendente> lsd = new List<Stp_Storia_Dipendente>();
             List<Stp_Storia_Dipendente> model = new List<Stp_Storia_Dipendente>();
 
-            //lcm = Dipendenti.GetAllDipendenti().ToList();
+            lcm = Dipendenti.GetAllDipendenti().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -941,7 +941,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Dislocazione_dipendenti> lsd = new List<Stp_Dislocazione_dipendenti>();
             List<Stp_Dislocazione_dipendenti> model = new List<Stp_Dislocazione_dipendenti>();
 
-            //lcm = Dipendenti.GetAllSedi().ToList();
+            lcm = Dipendenti.GetAllSedi().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -1077,10 +1077,12 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 cn.Open();
                 cmd1.ExecuteNonQuery();
-                
+
                 //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA,        CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='@V_UTENTE' Order By SEDE, NOMINATIVO";
 
-                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA,        CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='"+ V_UTENTE + "' Order By SEDE, NOMINATIVO";
+                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='"+ V_UTENTE + "' Order By SEDE, NOMINATIVO";
+
+                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='" + V_UTENTE + "' Order By SEDE, NOMINATIVO";
 
                 using (OracleCommand cmd = new OracleCommand())
                 {
@@ -1100,7 +1102,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.valuta = rdr["VALUTA"].ToString();
                                 details.matricola = rdr["MATRICOLA"].ToString();
                                 details.nominativo = rdr["NOMINATIVO"].ToString();
-                                details.dataTrasferimento = rdr["DT_TRASFERIMENTO"].ToString();
+                                //details.dataTrasferimento = rdr["DT_TRASFERIMENTO"].ToString();
+                                details.dataTrasferimento = Convert.ToDateTime(rdr["DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
                                 details.qualifica = rdr["QUALIFICA"].ToString();
                                 details.coniuge = rdr["CONIUGE"].ToString();
                                 details.figli = rdr["FIGLI"].ToString();
@@ -1279,7 +1282,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<Stp_Consuntivo_dei_costi_per_codice_Coan> lsd = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
             List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
 
-            //lcm = Dipendenti.GetAllCostiCoan().ToList();
+            lcm = Dipendenti.GetAllCostiCoan().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -1460,7 +1463,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Indennità di Sede Estera
-        public ActionResult OpIndennitaEstera()
+        public ActionResult OpIndennitaEstera(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1491,8 +1494,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "And IES_COD_VALUTA = VAL_COD_VALUTA ";
                 Sql += "And IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO ";
                 Sql += "And IES_MATRICOLA = AND_MATRICOLA ";
-                Sql += "And(IES_DT_OPERAZIONE >= To_Date('01-gen-2017', 'DD-MON-RRRR') And ";
-                Sql += "IES_DT_OPERAZIONE <= To_Date('25-set-2017', 'DD-MON-RRRR')) ";
+                //Sql += "And(IES_DT_OPERAZIONE >= To_Date('01-gen-2017', 'DD-MON-RRRR') And ";
+                Sql += "And(IES_DT_OPERAZIONE >= To_Date (" + VDATA + ")  And";
+                //Sql += "IES_DT_OPERAZIONE <= To_Date('25-set-2017', 'DD-MON-RRRR')) ";
+                Sql += "IES_DT_OPERAZIONE <= To_Date (" + VDATA1 + ")) ";
                 //Sql += "IES_DT_OPERAZIONE <= To_Date(SysDate)) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "IES_PROG_TRASFERIMENTO, ";
@@ -1968,7 +1973,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Presenze Livelli in servizio all' Estero
-        public ActionResult PresenzeLivelli(string codicequalifica = "")
+        public ActionResult PresenzeLivelli(string codicequalifica = "", string V_DATA= "", string V_DATA1= "")
         {
             // Combo Qualifiche
             //Select Distinct IBS_DESCRIZIONE From INDENNITABASE Order By IBS_DESCRIZIONE
@@ -1978,10 +1983,8 @@ namespace NewISE.Areas.Statistiche.Controllers
             List<SelectListItem> lr = new List<SelectListItem>();
             List<Stp_Presenze_Livelli> lsd = new List<Stp_Presenze_Livelli>();
             List<Stp_Presenze_Livelli> model = new List<Stp_Presenze_Livelli>();
-
-                     
-
-            //lcm = Dipendenti.GetAllQualifiche().ToList();
+            
+            lcm = Dipendenti.GetAllQualifiche().ToList();
 
             if (lcm != null && lcm.Any())
             {
@@ -1998,7 +2001,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 if (codicequalifica == string.Empty)
                 {
-                    lr.First().Selected = true;
+
+                    //lr.First().Selected = true;
+                    lr.First().Value = "";
                     codicequalifica = lr.First().Value;
                 }
                 else
@@ -2020,7 +2025,14 @@ namespace NewISE.Areas.Statistiche.Controllers
             {
                 // Insert into ISE_STP_LIVELLIESTERI
                 //String Sql = "Select distinct CODQUALIFICA, QUALIFICA, NOMINATIVO, MATRICOLA, SEDE, DT_TRASFERIMENTO, DT_RIENTRO, DT_DECORRENZA From ISE_STP_LIVELLIESTERI Order By QUALIFICA, NOMINATIVO";
+                //string Data_Oracle = VDATA;
 
+                if (V_DATA == "")
+                {
+                    V_DATA = "01/01/" + DateTime.Now.Year;
+                }
+            
+                
                 String Sql = "Select Distinct IES_COD_QUALIFICA, ";
                 Sql += "IBS_DESCRIZIONE, ";
                 Sql += "IES_MATRICOLA, ";
@@ -2040,14 +2052,14 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "From INDESTERA A, INDESTERA B ";
                 Sql += "Where A.IES_MATRICOLA = B.IES_MATRICOLA ";
                 Sql += "And A.IES_PROG_TRASFERIMENTO = B.IES_PROG_TRASFERIMENTO ";
-                Sql += "And A.IES_DT_DECORRENZA <= To_Date('01-gen-2017', 'DD-MON-RRRR') ";
+                Sql += "And A.IES_DT_DECORRENZA <= To_Date ('" + V_DATA + "', 'DD-MM-YYYY')  ";
                 Sql += "GROUP BY A.IES_MATRICOLA) MAXDATA ";
-                Sql += "Where(IES_DT_TRASFERIMENTO <= To_Date('28-ago-2017', 'DD-MON-RRRR')) ";
-                Sql += "And(TRA_DT_FIN_TRASFERIMENTO Is Null Or ";
-                Sql += "To_Date(TRA_DT_FIN_TRASFERIMENTO) > ";
-                Sql += "To_Date('01-gen-2017', 'DD-MON-RRRR')) ";
+                Sql += "Where(IES_DT_TRASFERIMENTO <= To_Date ('" + V_DATA + "','DD-MM-YYYY')) ";
+                Sql += "And (TRA_DT_FIN_TRASFERIMENTO Is Null Or ";
+                Sql += "To_Date (TRA_DT_FIN_TRASFERIMENTO) > ";
+                Sql += "To_Date( '" + V_DATA + "', 'DD-MM-YYYY')) ";
                 Sql += "And MAXDATA.MATR(+) = IES_MATRICOLA ";
-                Sql += "And(IES_DT_DECORRENZA > To_Date('01-gen-2017', 'DD-MON-RRRR') Or ";
+                Sql += "And (IES_DT_DECORRENZA > To_Date('" + V_DATA + "', 'DD-MM-YYYY') Or ";
                 Sql += "IES_DT_DECORRENZA = MAXDATA.DATAM) ";
                 Sql += "And IES_FLAG_RICALCOLATO Is Null ";
                 Sql += "And IES_COD_QUALIFICA = IBS_COD_QUALIFICA ";
@@ -2055,14 +2067,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "And IES_COD_SEDE = SED_COD_SEDE ";
                 Sql += "And IES_MATRICOLA = TRA_MATRICOLA ";
                 Sql += "And IES_PROG_TRASFERIMENTO = TRA_PROG_TRASFERIMENTO ";
-                Sql += "And IES_COD_QUALIFICA = :codqualifica ";
+                if (codicequalifica != "")
+                    Sql += "And IES_COD_QUALIFICA = :codqualifica ";
                 //Sql += "And IBS_DESCRIZIONE = 'DIRIGENTE' ";
                 Sql += "Order By IES_MATRICOLA, ";
                 Sql += "IES_PROG_TRASFERIMENTO Desc, ";
                 Sql += "IES_DT_DECORRENZA Desc, ";
                 Sql += "IES_PROG_MOVIMENTO Desc ";
-
-
 
                 using (OracleCommand cmd = new OracleCommand())
                 {
@@ -2083,9 +2094,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.nominativo = rdr["NOMINATIVO"].ToString();
                                 details.matricola = rdr["IES_MATRICOLA"].ToString();
                                 details.sede = rdr["SED_DESCRIZIONE"].ToString();
-                                details.dt_Trasferimento = rdr["IES_DT_TRASFERIMENTO"].ToString();
+                                details.dt_Trasferimento = Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
                                 details.dt_Rientro = rdr["TRA_DT_FIN_TRASFERIMENTO"].ToString();
-                                details.dt_Decorrenza = rdr["IES_DT_DECORRENZA"].ToString();
+                                details.dt_Decorrenza = Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
                                 details.progr_trasferimento = rdr["IES_PROG_TRASFERIMENTO"].ToString();
                                 details.progr_movimento = rdr["IES_PROG_MOVIMENTO"].ToString();
                                 model.Add(details);
@@ -2102,7 +2113,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Report Presenze Livelli
-        public ActionResult RptPresenzeLivelli()
+        public ActionResult RptPresenzeLivelli(string codicequalifica="", string V_DATA="", string V_DATA1="")
         {
             DataSet13 ds13 = new DataSet13();
 
@@ -2121,6 +2132,49 @@ namespace NewISE.Areas.Statistiche.Controllers
                 OracleConnection conx = new OracleConnection(connectionString);
 
                 String Sql = "Select distinct CODQUALIFICA, QUALIFICA, NOMINATIVO, MATRICOLA, SEDE, DT_TRASFERIMENTO, DT_RIENTRO, DT_DECORRENZA From ISE_STP_LIVELLIESTERI Order By QUALIFICA, NOMINATIVO";
+
+                //String Sql = "Select Distinct IES_COD_QUALIFICA, ";
+                //Sql += "IBS_DESCRIZIONE, ";
+                //Sql += "IES_MATRICOLA, ";
+                //Sql += "IES_DT_DECORRENZA, ";
+                //Sql += "AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
+                //Sql += "SED_DESCRIZIONE, ";
+                //Sql += "IES_DT_TRASFERIMENTO, ";
+                //Sql += "TRA_DT_FIN_TRASFERIMENTO, ";
+                //Sql += "IES_PROG_TRASFERIMENTO, ";
+                //Sql += "IES_PROG_MOVIMENTO ";
+                //Sql += "From INDESTERA T1, ";
+                //Sql += "SEDIESTERE, ";
+                //Sql += "INDENNITABASE, ";
+                //Sql += "ANADIPE, ";
+                //Sql += "TRASFERIMENTO, ";
+                //Sql += "(Select A.IES_MATRICOLA MATR, Max(A.IES_DT_DECORRENZA) DATAM ";
+                //Sql += "From INDESTERA A, INDESTERA B ";
+                //Sql += "Where A.IES_MATRICOLA = B.IES_MATRICOLA ";
+                //Sql += "And A.IES_PROG_TRASFERIMENTO = B.IES_PROG_TRASFERIMENTO ";
+                //Sql += "And A.IES_DT_DECORRENZA <= To_Date ('" + V_DATA + "', 'DD-MM-YYYY')  ";
+                //Sql += "GROUP BY A.IES_MATRICOLA) MAXDATA ";
+                //Sql += "Where(IES_DT_TRASFERIMENTO <= To_Date ('" + V_DATA + "','DD-MM-YYYY')) ";
+                //Sql += "And (TRA_DT_FIN_TRASFERIMENTO Is Null Or ";
+                //Sql += "To_Date (TRA_DT_FIN_TRASFERIMENTO) > ";
+                //Sql += "To_Date( '" + V_DATA + "', 'DD-MM-YYYY')) ";
+                //Sql += "And MAXDATA.MATR(+) = IES_MATRICOLA ";
+                //Sql += "And (IES_DT_DECORRENZA > To_Date('" + V_DATA + "', 'DD-MM-YYYY') Or ";
+                //Sql += "IES_DT_DECORRENZA = MAXDATA.DATAM) ";
+                //Sql += "And IES_FLAG_RICALCOLATO Is Null ";
+                //Sql += "And IES_COD_QUALIFICA = IBS_COD_QUALIFICA ";
+                //Sql += "And IES_MATRICOLA = AND_MATRICOLA ";
+                //Sql += "And IES_COD_SEDE = SED_COD_SEDE ";
+                //Sql += "And IES_MATRICOLA = TRA_MATRICOLA ";
+                //Sql += "And IES_PROG_TRASFERIMENTO = TRA_PROG_TRASFERIMENTO ";
+                //if (codicequalifica != "")
+                //    Sql += "And IES_COD_QUALIFICA = :codqualifica ";
+                ////Sql += "And IBS_DESCRIZIONE = 'DIRIGENTE' ";
+                //Sql += "Order By IES_MATRICOLA, ";
+                //Sql += "IES_PROG_TRASFERIMENTO Desc, ";
+                //Sql += "IES_DT_DECORRENZA Desc, ";
+                //Sql += "IES_PROG_MOVIMENTO Desc ";
+
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 

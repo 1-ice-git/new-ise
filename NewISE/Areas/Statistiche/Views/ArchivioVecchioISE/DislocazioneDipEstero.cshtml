@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Dislocazione_dipendenti>
 @using NewISE.Areas.Statistiche.Models;
+
 <link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+
+
 @{
-//List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
+    //List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
 
 }
+
 
 <div class="form-horizontal">
     <div class="form-group">
         <hr />
 
         <div class="col-md-2">
-            
-            @*@Html.Editor("", new { htmlAttributes = new { @class = "form-control", @id = "txtMyField" } })*@
-            @Html.TextBox("IdData" ,"", new { @class = "form-control" })
-            @*@Html.Editor("Dal", new { htmlAttributes = new {Id= "@DataDislocazione", @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+            @Html.TextBox("Data da inserire" ,null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data" })
         </div>
         
         <div class="select2-container select2-container--classic">
@@ -35,12 +35,12 @@
 
 
 
-
 <table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.sede)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.valuta)
@@ -84,6 +84,7 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.sede)
+                   
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.valuta)
@@ -155,14 +156,7 @@
             }
         });
 
-        function invia() {
-            //debugger
-            //var matricola = parseInt($("#MATRICOLA").select2('val'));
-            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
-
-            window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
-        };
-
+   
         function invia() {
             //debugger
             //rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
@@ -173,31 +167,27 @@
 
             
         };
-        
-       
-
+    
+    // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function() {  
+            $(".datepicker").datepicker({  
+                
+                changeMonth :true,   
+                changeYear: true,   
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });  
+        });
 
         function PrelevaGigius(codicesede, txtMyField) {
             //debugger;
-            //rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+            
             rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
             
-            //var idMatricola = parseInt($("#lstCategory").select2('val'));
             var descr_ufficio = $("#codicesede").select2('val');
-            //var descr_ufficio = $("#codicesede").select2('data').text;
-            var data = $("#IdData").val();
-            //var textarea = document.getElementById('txtMyField').value;
-            //var data = $("#DataDislocazione").select2('val');
-            var chk = true;
-            //$("#codicedipendente").val = idMatricola;
-
-            //if (isNaN(codicesede)) {
-            //    $("#divPViewParametri").empty();
-            //    return false;
-            //}
-
-            //var data = $("#DataDislocazione").val
+            var data = $("#datepicker").val();
             
+            var chk = true;
 
             $.ajax({
                 type: "POST",
@@ -243,13 +233,13 @@
         }
 
         $("#codicesede").select2({
-            placeholder: "Seleziona il Gigius ",
+            placeholder: "Seleziona una sede",
             allowClear: true,
             language: "it",
             width: '350'
 
         });
-
+   
 </script>
 
 
