@@ -110,7 +110,7 @@ namespace NewISE.Controllers
 
                             Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
                                 out dimensioneConsentita, out dimensioneMaxConsentita,
-                                EnumTipoDoc.LetteraTrasferimento_Trasferimento5);
+                                EnumTipoDoc.Lettera_Trasferimento);
 
                             if (esisteFile)
                             {
@@ -152,7 +152,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
+        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
         {
             string titoloPagina = string.Empty;
             decimal idMaggiorazioniFamiliari = 0;
@@ -160,54 +160,62 @@ namespace NewISE.Controllers
 
             switch (tipoDoc)
             {
-                case EnumTipoDoc.CartaImbarco_Viaggi1:
-                    titoloPagina = "Viaggi - Carta d'imbarco";
+                case EnumTipoDoc.Carta_Imbarco:
+                    titoloPagina = "Carta d'imbarco";
                     break;
-                case EnumTipoDoc.TitoloViaggio_Viaggi1:
-                    titoloPagina = "Viaggi - Titolo viaggio";
+                case EnumTipoDoc.Titolo_Viaggio:
+                    titoloPagina = "Titolo viaggio";
                     break;
-                case EnumTipoDoc.PrimaRataMab_MAB2:
-                    titoloPagina = "Maggiorazione Abitazione - Prima rata";
+                case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
+                    titoloPagina = "Prima rata";
                     break;
-                case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
-                    titoloPagina = "Maggiorazione Abitazione - Costo locazione";
+                case EnumTipoDoc.Dichiarazione_Costo_Locazione:
+                    titoloPagina = "Costo locazione";
                     break;
-                case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
-                    titoloPagina = "Maggiorazione Abitazione - Spese abitazione";
+                case EnumTipoDoc.Attestazione_Spese_Abitazione:
+                    titoloPagina = "Spese abitazione";
                     break;
-                case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
-                    titoloPagina = "Maggiorazione Abitazione - Clausole alloggio";
+                case EnumTipoDoc.Clausole_Contratto_Alloggio:
+                    titoloPagina = "Clausole alloggio";
                     break;
-                case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
-                    titoloPagina = "Maggiorazione Abitazione - Copia contratto locazione";
+                case EnumTipoDoc.Copia_Contratto_Locazione:
+                    titoloPagina = "Copia contratto locazione";
                     break;
-                case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
-                    titoloPagina = "Trasporto Effetti - Contributo omnicomprensivo";
+                case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
+                    titoloPagina = "Contributo omnicomprensivo";
                     break;
-                case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
-                    titoloPagina = "Trasporto Effetti - Attestazione trasloco";
+                case EnumTipoDoc.Attestazione_Trasloco:
+                    titoloPagina = "Attestazione trasloco";
                     break;
-                case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-                    titoloPagina = "Maggiorazione Familiare - Documento familiare (Coniuge)";
-                    using (dtConiuge dtc = new dtConiuge())
+                case EnumTipoDoc.Documento_Identita:
+                    switch (parentela)
                     {
-                        var cm = dtc.GetConiugebyID(id);
-                        idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                        case EnumParentela.Coniuge:
+                            titoloPagina = "Documento d'identità (Coniuge)";
+                            using (dtConiuge dtc = new dtConiuge())
+                            {
+                                var cm = dtc.GetConiugebyID(id);
+                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Figlio:
+                            titoloPagina = "Documento d'identità (Figlio)";
+                            using (dtFigli dtf = new dtFigli())
+                            {
+                                var fm = dtf.GetFigliobyID(id);
+                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Richiedente:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("parentela");
                     }
+
+
                     break;
-                case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-                    titoloPagina = "Maggiorazione Familiare - Documento familiare (Figlio)";
-                    using (dtFigli dtf = new dtFigli())
-                    {
-                        var fm = dtf.GetFigliobyID(id);
-                        idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
-                    }
-                    break;
-                case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
+                case EnumTipoDoc.Lettera_Trasferimento:
                     titoloPagina = "Trasferimento - Lettera trasferimento";
-                    break;
-                case EnumTipoDoc.CartaIdentita_Viaggi1:
-                    titoloPagina = "Viaggi - Passaporti visti";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("tipoDoc");
@@ -261,8 +269,8 @@ namespace NewISE.Controllers
                                 {
                                     switch (tipoDoc)
                                     {
-                                        case EnumTipoDoc.CartaImbarco_Viaggi_1:
-                                        case EnumTipoDoc.TitoloViaggio_Viaggi_1:
+                                        case EnumTipoDoc.Carta_Imbarco:
+                                        case EnumTipoDoc.Titolo_Viaggio:
                                             switch (parentela)
                                             {
                                                 case EnumParentela.Coniuge:
@@ -278,27 +286,37 @@ namespace NewISE.Controllers
                                                     throw new ArgumentOutOfRangeException("parentela");
                                             }
                                             break;
-                                        case EnumTipoDoc.PrimaRataMab_MAB_2:
+                                        case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                                             break;
-                                        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB_2:
+                                        case EnumTipoDoc.Dichiarazione_Costo_Locazione:
                                             break;
-                                        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB_2:
+                                        case EnumTipoDoc.Attestazione_Spese_Abitazione:
                                             break;
-                                        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB_2:
+                                        case EnumTipoDoc.Clausole_Contratto_Alloggio:
                                             break;
-                                        case EnumTipoDoc.CopiaContrattoLocazione_MAB_2:
+                                        case EnumTipoDoc.Copia_Contratto_Locazione:
                                             break;
-                                        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti_3:
+                                        case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                                             break;
-                                        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti_3:
+                                        case EnumTipoDoc.Attestazione_Trasloco:
                                             break;
-                                        case EnumTipoDoc.DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4:
-                                            dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                        case EnumTipoDoc.Documento_Identita:
+                                            switch (parentela)
+                                            {
+                                                case EnumParentela.Coniuge:
+                                                    dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Figlio:
+                                                    dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                    break;
+                                                case EnumParentela.Richiedente:
+                                                    dtd.AddDocumentoPassaportoFromRichiedente(ref dm, id, db);//ID è riferito all'idTrasferimento.
+                                                    break;
+                                                default:
+                                                    throw new ArgumentOutOfRangeException("parentela");
+                                            }
                                             break;
-                                        case EnumTipoDoc.DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4:
-                                            dtd.AddDocumentoFromFiglio(ref dm, id, db);
-                                            break;
-                                        case EnumTipoDoc.LetteraTrasferimento_Trasferimento_5:
+                                        case EnumTipoDoc.Lettera_Trasferimento:
                                             break;
 
                                         default:
@@ -337,7 +355,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumGruppiDoc gruppoDocumento, EnumTipoDoc tipoDoc, EnumParentela parentela, decimal idMaggiorazioniFamiliari = 0)
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari = 0)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
@@ -365,110 +383,10 @@ namespace NewISE.Controllers
                     ldm = dtd.GetDocumentiByIdTable(id, tipoDoc, parentela).OrderByDescending(a => a.dataInserimento).ToList();
                 }
 
-                switch (gruppoDocumento)
+
+                switch (chiamante)
                 {
-                    case EnumGruppiDoc.Viaggi:
-                        switch (tipoDoc)
-                        {
-                            case EnumTipoDoc.CartaImbarco_Viaggi_1:
-                            case EnumTipoDoc.TitoloViaggio_Viaggi_1:
-                                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                                {
-                                    TitoloViaggioModel tvm;
-
-                                    switch (parentela)
-                                    {
-                                        case EnumParentela.Coniuge:
-                                            tvm = dttv.GetTitoloViaggioByIdConiuge(id);
-                                            if (tvm != null && tvm.HasValue())
-                                            {
-                                                bool notificaRichiesta = tvm.notificaRichiesta;
-                                                bool praticaConclusa = tvm.praticaConclusa;
-
-                                                if (notificaRichiesta == true && praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-
-                                            }
-                                            break;
-                                        case EnumParentela.Figlio:
-                                            tvm = dttv.GetTitoloViaggioByIdFiglio(id);
-                                            if (tvm != null && tvm.HasValue())
-                                            {
-                                                bool notificaRichiesta = tvm.notificaRichiesta;
-                                                bool praticaConclusa = tvm.praticaConclusa;
-
-                                                if (notificaRichiesta == true && praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-
-                                            }
-                                            break;
-                                        case EnumParentela.Richiedente:
-                                            tvm = dttv.GetTitoloViaggioByID(id);
-                                            if (tvm != null && tvm.HasValue())
-                                            {
-                                                bool notificaRichiesta = tvm.notificaRichiesta;
-                                                bool praticaConclusa = tvm.praticaConclusa;
-
-                                                if (notificaRichiesta == true && praticaConclusa == true)
-                                                {
-                                                    solaLettura = true;
-                                                }
-                                                else
-                                                {
-                                                    solaLettura = false;
-                                                }
-
-                                            }
-                                            break;
-                                        default:
-                                            throw new ArgumentOutOfRangeException("parentela");
-                                    }
-                                }
-                                break;
-                            case EnumTipoDoc.PrimaRataMab_MAB_2:
-                                break;
-                            case EnumTipoDoc.DichiarazioneCostoLocazione_MAB_2:
-                                break;
-                            case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB_2:
-                                break;
-                            case EnumTipoDoc.ClausoleContrattoAlloggio_MAB_2:
-                                break;
-                            case EnumTipoDoc.CopiaContrattoLocazione_MAB_2:
-                                break;
-                            case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti_3:
-                                break;
-                            case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti_3:
-                                break;
-                            case EnumTipoDoc.DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4:
-                                break;
-                            case EnumTipoDoc.DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4:
-                                break;
-                            case EnumTipoDoc.LetteraTrasferimento_Trasferimento_5:
-                                break;
-
-                            default:
-                                throw new ArgumentOutOfRangeException("tipoDoc");
-                        }
-
-
-                        break;
-                    case EnumGruppiDoc.MaggiorazioneAbitazione:
-                        break;
-                    case EnumGruppiDoc.TrasportoEffetti:
-                        break;
-                    case EnumGruppiDoc.MaggiorazioniFamiliari:
+                    case EnumChiamante.Maggiorazioni_Familiari:
                         using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                         {
                             bool rinunciaMagFam = false;
@@ -503,16 +421,84 @@ namespace NewISE.Controllers
                                 solaLettura = false;
                             }
 
-
                         }
                         break;
-                    case EnumGruppiDoc.Trasferimento:
+                    case EnumChiamante.Titoli_Viaggio:
+                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                        {
+                            TitoloViaggioModel tvm;
+
+                            switch (parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+                                    if (tvm != null && tvm.HasValue())
+                                    {
+                                        bool notificaRichiesta = tvm.notificaRichiesta;
+                                        bool praticaConclusa = tvm.praticaConclusa;
+
+                                        if (notificaRichiesta == true && praticaConclusa == true)
+                                        {
+                                            solaLettura = true;
+                                        }
+                                        else
+                                        {
+                                            solaLettura = false;
+                                        }
+
+                                    }
+                                    break;
+                                case EnumParentela.Figlio:
+                                    tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+                                    if (tvm != null && tvm.HasValue())
+                                    {
+                                        bool notificaRichiesta = tvm.notificaRichiesta;
+                                        bool praticaConclusa = tvm.praticaConclusa;
+
+                                        if (notificaRichiesta == true && praticaConclusa == true)
+                                        {
+                                            solaLettura = true;
+                                        }
+                                        else
+                                        {
+                                            solaLettura = false;
+                                        }
+
+                                    }
+                                    break;
+                                case EnumParentela.Richiedente:
+                                    tvm = dttv.GetTitoloViaggioByID(id);
+                                    if (tvm != null && tvm.HasValue())
+                                    {
+                                        bool notificaRichiesta = tvm.notificaRichiesta;
+                                        bool praticaConclusa = tvm.praticaConclusa;
+
+                                        if (notificaRichiesta == true && praticaConclusa == true)
+                                        {
+                                            solaLettura = true;
+                                        }
+                                        else
+                                        {
+                                            solaLettura = false;
+                                        }
+
+                                    }
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("parentela");
+                            }
+                        }
+                        break;
+                    case EnumChiamante.Trasporto_Effetti:
+                        break;
+                    case EnumChiamante.Trasferimento:
+                        break;
+                    case EnumChiamante.Passaporti:
+
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("gruppoDocumento");
+                        throw new ArgumentOutOfRangeException("chiamante");
                 }
-
-
 
 
 
@@ -522,7 +508,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewData.Add("id", id);
-            ViewData.Add("gruppiDoc", gruppoDocumento);
+            ViewData.Add("chiamante", chiamante);
             ViewData.Add("tipoDoc", tipoDoc);
             ViewData.Add("parentela", parentela);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);

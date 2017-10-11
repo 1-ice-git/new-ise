@@ -558,10 +558,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.CartaImbarco_Viaggi_1, EnumParentela.Coniuge));
+                                                EnumTipoDoc.Carta_Imbarco, EnumParentela.Coniuge));
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.TitoloViaggio_Viaggi_1, EnumParentela.Coniuge));
-
+                                                EnumTipoDoc.Titolo_Viaggio, EnumParentela.Coniuge));
 
                                             efm = new ElencoFamiliariModel()
                                             {
@@ -587,8 +586,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         var fm = dtf.GetFigliobyID(idFamiliare);
                                         if (fm != null && fm.HasValue())
                                         {
-
-
                                             mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(fm.idFigli);
                                             trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
                                             tvm = dttv.GetTitoloViaggioByID(trm.idTrasferimento);
@@ -596,9 +593,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.CartaImbarco_Viaggi_1, EnumParentela.Figlio));
+                                                EnumTipoDoc.Carta_Imbarco, EnumParentela.Figlio));
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.TitoloViaggio_Viaggi_1, EnumParentela.Figlio));
+                                                EnumTipoDoc.Titolo_Viaggio, EnumParentela.Figlio));
 
                                             efm = new ElencoFamiliariModel()
                                             {
@@ -621,8 +618,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 case EnumParentela.Richiedente:
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-
-
                                         trm = dttr.GetTrasferimentoById(idFamiliare);
                                         var lmfm = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(trm.idTrasferimento).OrderBy(a => a.idMaggiorazioniFamiliari);
                                         mfm = lmfm.First();
@@ -632,9 +627,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                         ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                            EnumTipoDoc.CartaImbarco_Viaggi_1, EnumParentela.Richiedente));
+                                            EnumTipoDoc.Carta_Imbarco, EnumParentela.Richiedente));
                                         ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                            EnumTipoDoc.TitoloViaggio_Viaggi_1, EnumParentela.Richiedente));
+                                            EnumTipoDoc.Titolo_Viaggio, EnumParentela.Richiedente));
 
                                         efm = new ElencoFamiliariModel()
                                         {
@@ -793,9 +788,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.CartaImbarco_Viaggi_1, EnumParentela.Richiedente));
+                                                EnumTipoDoc.Carta_Imbarco, EnumParentela.Richiedente));
                                             ldm.AddRange(dtdoc.GetDocumentiByIdTable(tvm.idTitoloViaggio,
-                                                EnumTipoDoc.TitoloViaggio_Viaggi_1, EnumParentela.Richiedente));
+                                                EnumTipoDoc.Titolo_Viaggio, EnumParentela.Richiedente));
                                             ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                             {
                                                 idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
@@ -844,10 +839,10 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                                                 ldm.AddRange(dtdoc.GetDocumentiByIdTable(
-                                                                    tvm.idTitoloViaggio, EnumTipoDoc.CartaImbarco_Viaggi_1,
+                                                                    tvm.idTitoloViaggio, EnumTipoDoc.Carta_Imbarco,
                                                                     EnumParentela.Coniuge));
                                                                 ldm.AddRange(dtdoc.GetDocumentiByIdTable(
-                                                                    tvm.idTitoloViaggio, EnumTipoDoc.TitoloViaggio_Viaggi_1,
+                                                                    tvm.idTitoloViaggio, EnumTipoDoc.Titolo_Viaggio,
                                                                     EnumParentela.Coniuge));
 
                                                                 ElencoFamiliariModel efm = new ElencoFamiliariModel()
@@ -897,10 +892,10 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 List<DocumentiModel> ldm = new List<DocumentiModel>();
 
                                                                 ldm.AddRange(dtdoc.GetDocumentiByIdTable(
-                                                                    tvm.idTitoloViaggio, EnumTipoDoc.CartaImbarco_Viaggi_1,
+                                                                    tvm.idTitoloViaggio, EnumTipoDoc.Carta_Imbarco,
                                                                     EnumParentela.Figlio));
                                                                 ldm.AddRange(dtdoc.GetDocumentiByIdTable(
-                                                                    tvm.idTitoloViaggio, EnumTipoDoc.TitoloViaggio_Viaggi_1,
+                                                                    tvm.idTitoloViaggio, EnumTipoDoc.Titolo_Viaggio,
                                                                     EnumParentela.Figlio));
 
                                                                 ElencoFamiliariModel efm = new ElencoFamiliariModel()

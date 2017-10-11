@@ -59,6 +59,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="jQuery.Validation.Unobtrusive.Native, Version=1.1.5809.17463, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jQuery.Validation.Unobtrusive.Native.MVC5.1.3.0\lib\net45\jQuery.Validation.Unobtrusive.Native.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -2313,11 +2317,8 @@
     <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <Content Include="Views\PratichePassaporto\ChkEscludiPassaporto.cshtml" />
     <Content Include="Views\TitoliViaggio\TitoliViaggio.cshtml" />
-    <Content Include="Views\TitoliViaggio\ElencoFamiliariTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />
-    <Content Include="Views\TitoliViaggio\ChkEscludiTitoloViaggio.cshtml" />
-    <Content Include="Views\TitoliViaggio\ColonnaElencoDoc.cshtml" />
     <Content Include="Views\TitoliViaggio\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

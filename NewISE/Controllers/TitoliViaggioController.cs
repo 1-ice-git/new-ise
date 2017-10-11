@@ -19,72 +19,10 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
-        public ActionResult ElencoFamiliariTitoliViaggio(decimal idTrasferimento)
-        {
-            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
-
-            try
-            {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                {
-                    lefm = dttv.GetDipendentiTitoliViaggio(idTrasferimento).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-
-            return PartialView(lefm);
-        }
 
 
-        public ActionResult ChkEscludiTitoloViaggio(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiTitoloViaggio)
-        {
-            GestioneChkEscludiTitoliViaggioModel gcetv;
-            TitoloViaggioModel tvm = new TitoloViaggioModel();
-            bool dchk = false;
-
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-            {
-
-                switch (parentela)
-                {
-                    case EnumParentela.Coniuge:
-                        tvm = dttv.GetTitoloViaggioByIdConiuge(idFamiliare);
-                        break;
-                    case EnumParentela.Figlio:
-                        tvm = dttv.GetTitoloViaggioByIdFiglio(idFamiliare);
-                        break;
-                    case EnumParentela.Richiedente:
-                        tvm = dttv.GetTitoloViaggioByID(idFamiliare);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
-                }
-
-                if (tvm != null && tvm.idTitoloViaggio > 0)
-                {
-                    if (tvm.notificaRichiesta == true || tvm.praticaConclusa == true)
-                    {
-                        dchk = true;
-                    }
-                }
-
-                gcetv = new GestioneChkEscludiTitoliViaggioModel()
-                {
-                    idFamiliare = idFamiliare,
-                    parentela = parentela,
-                    esisteDoc = esisteDoc,
-                    escludiTitoloViaggio = escludiTitoloViaggio,
-                    disabilitaChk = dchk,
-                };
-            }
 
 
-            return PartialView(gcetv);
-
-        }
 
         [HttpPost]
         public JsonResult ConfermaEscludiTitoloViaggio(decimal id, EnumParentela parentela)
@@ -136,17 +74,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult ColonnaElencoDoc(decimal idFamiliare, EnumParentela parentela)
-        {
-            ElencoFamiliariModel efm = new ElencoFamiliariModel();
 
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-            {
-                efm = dttv.GetDatiForColElencoDoc(idFamiliare, parentela);
-            }
-
-            return PartialView(efm);
-        }
 
         public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTrasferimento)
         {

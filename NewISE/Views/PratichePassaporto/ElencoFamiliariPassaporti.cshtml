@@ -172,7 +172,7 @@
 
     function GestioneChkEscludiPassaporto() {
         var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
-        var idPassaporto = parseInt('@Model.First().idPassaporto');
+        var idPassaporto = parseInt('@Model.First().idPassaporti');
 
         $.ajax({
             url: rotta,
@@ -363,7 +363,7 @@
     }
 
 
-    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
+    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
@@ -371,7 +371,9 @@
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                id: id, gruppoDocumento: gruppoDoc, tipoDoc: tipoDoc, parentela: idParentela, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                id: id,
+                tipoDoc: tipoDoc,
+                parentela: idParentela, chiamante: chiamante, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
             },
             dataType: 'html',
             async: false,

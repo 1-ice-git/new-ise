@@ -487,7 +487,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (p.ESCLUDIPASSAPORTO == false)
                     {
-                        var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1);
+                        var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                         if (ldRichiedente?.Any() ?? false)
                         {
                             esistonoRichiesteRichiedente = false;
@@ -512,7 +512,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var ldConiuge =
                                 c.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
                             if (ldConiuge?.Any() ?? false)
                             {
                                 if (esistonoRichiesteConiuge == false)
@@ -541,7 +541,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var ldFiglio =
                                 f.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
                             if (ldFiglio?.Any() ?? false)
                             {
                                 if (esistonoRichiesteFigli == false)
@@ -621,7 +621,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (p.ESCLUDIPASSAPORTO == false)
                     {
-                        var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1);
+                        var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                         if (ldRichiedente?.Any() ?? false)
                         {
                             esistonoRichiesteRichiedente = false;
@@ -646,7 +646,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var ldConiuge =
                                 c.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
                             if (ldConiuge?.Any() ?? false)
                             {
                                 if (esistonoRichiesteConiuge == false)
@@ -675,7 +675,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var ldFiglio =
                                 f.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.CartaIdentita_Viaggi1).ToList();
+                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
                             if (ldFiglio?.Any() ?? false)
                             {
                                 if (esistonoRichiesteFigli == false)
@@ -810,13 +810,6 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-
-
-
-
-
-
-
         public PassaportoModel GetPassaportoRichiedente(decimal idTrasferimento)
         {
             PassaportoModel pm = new PassaportoModel();
@@ -824,7 +817,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).OrderBy(a => a.IDPASSAPORTI).First();
 
                 pm = new PassaportoModel()
                 {
@@ -846,7 +839,7 @@ namespace NewISE.Models.DBModel.dtObj
             PassaportoModel pm = new PassaportoModel();
 
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+            var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).OrderBy(a => a.IDPASSAPORTI).First();
 
             pm = new PassaportoModel()
             {
@@ -1028,7 +1021,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 parentela = EnumParentela.Coniuge,
                                                 idAltriDati = 0,
                                                 Documenti = dtdoc.GetDocumentiByIdTable(cm.idConiuge,
-                                                            EnumTipoDoc.CartaIdentita_Viaggi1,
+                                                            EnumTipoDoc.Documento_Identita,
                                                             EnumParentela.Coniuge),
                                                 escludiPassaporto = cm.escludiPassaporto
                                             };
@@ -1061,7 +1054,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 parentela = EnumParentela.Figlio,
                                                 idAltriDati = 0,
                                                 Documenti = dtdoc.GetDocumentiByIdTable(fm.idFigli,
-                                                                    EnumTipoDoc.CartaIdentita_Viaggi1,
+                                                                    EnumTipoDoc.Documento_Identita,
                                                                     EnumParentela.Figlio),
                                                 escludiPassaporto = fm.escludiPassaporto
                                             };
@@ -1088,7 +1081,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             parentela = EnumParentela.Richiedente,
                                             idAltriDati = 0,
                                             Documenti = dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
-                                                                    EnumTipoDoc.CartaIdentita_Viaggi1, EnumParentela.Richiedente)
+                                                                    EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
                                                                     .ToList(),
                                             escludiPassaporto = pm.escludiPassaporto
                                         };
@@ -1159,7 +1152,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             idAltriDati = 0,
                                             Documenti =
                                                 dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
-                                                    EnumTipoDoc.CartaIdentita_Viaggi1, EnumParentela.Richiedente)
+                                                    EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
                                                     .ToList(),
                                             escludiPassaporto = pm.escludiPassaporto
                                         };
@@ -1203,7 +1196,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                                         .idAltriDatiFam,
                                                                 Documenti =
                                                                     dtdoc.GetDocumentiByIdTable(cm.idConiuge,
-                                                                        EnumTipoDoc.CartaIdentita_Viaggi1,
+                                                                        EnumTipoDoc.Documento_Identita,
                                                                         EnumParentela.Coniuge),
                                                                 escludiPassaporto = cm.escludiPassaporto
                                                             };
@@ -1245,11 +1238,11 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 dataFine = fm.dataFine,
                                                                 parentela = EnumParentela.Figlio,
                                                                 idAltriDati =
-                                                                    dtadf.GetAlttriDatiFamiliariConiuge(fm.idFigli)
+                                                                    dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli)
                                                                         .idAltriDatiFam,
                                                                 Documenti =
                                                                     dtdoc.GetDocumentiByIdTable(fm.idFigli,
-                                                                        EnumTipoDoc.CartaIdentita_Viaggi1,
+                                                                        EnumTipoDoc.Documento_Identita,
                                                                         EnumParentela.Figlio),
                                                                 escludiPassaporto = fm.escludiPassaporto
                                                             };

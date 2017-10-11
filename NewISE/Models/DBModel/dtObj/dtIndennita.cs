@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             IndennitaModel indennita = new IndennitaModel();
             //RuoloDipendenteModel rdm = new RuoloDipendenteModel();
-            
+
 
             var i = db.INDENNITA.Find(idTrasferimento);
             //rdm = (from e in i.RUOLODIPENDENTE
@@ -43,10 +43,8 @@ namespace NewISE.Models.DBModel.dtObj
                 indennita = new IndennitaModel()
                 {
                     idTrasfIndennita = i.IDTRASFINDENNITA,
-                    dataInizio = i.DATAINIZIO,
-                    dataFine = i.DATAFINE,
                     dataAggiornamento = i.DATAAGGIORNAMENTO
-                    
+
                 };
             }
 
@@ -62,26 +60,22 @@ namespace NewISE.Models.DBModel.dtObj
             INDENNITA i = new INDENNITA();
 
             i.IDTRASFINDENNITA = im.idTrasfIndennita;
-            i.DATAINIZIO = im.dataInizio;
-            i.DATAFINE = im.dataFine.HasValue ? im.dataFine.Value : Utility.DataFineStop();
             i.DATAAGGIORNAMENTO = im.dataAggiornamento;
 
             db.INDENNITA.Add(i);
 
-            if(db.SaveChanges() > 0)
+            if (db.SaveChanges() > 0)
             {
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, im.idTrasfIndennita, im.idTrasfIndennita);
             }
 
-            
+
 
         }
 
         public void EditIndennita(IndennitaModel im, ModelDBISE db)
         {
             INDENNITA i = db.INDENNITA.Find(im.idTrasfIndennita);
-            i.DATAINIZIO = im.dataInizio;
-            i.DATAFINE = im.dataFine.HasValue ? im.dataFine.Value : Utility.DataFineStop();
             i.DATAAGGIORNAMENTO = im.dataAggiornamento;
 
             if (db.SaveChanges() > 0)

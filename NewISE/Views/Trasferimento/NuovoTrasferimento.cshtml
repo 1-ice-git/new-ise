@@ -31,10 +31,11 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-3">
-                    <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                    <div class="select2-container select2-container--classic ">
+                    @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
+                    
                 </div>
             </div>
 

@@ -21,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// </summary>
         /// <param name="id"></param>
         /// <param name="tipodoc"></param>
-        /// <param name="parentela">Utilizzato solo per i documenti di identità (per i viaggi)</param>
+        /// <param name="parentela"></param>
         /// <returns></returns>
         public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
         {
@@ -33,8 +33,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                 switch (tipodoc)
                 {
-                    case EnumTipoDoc.CartaImbarco_Viaggi_1:
-                    case EnumTipoDoc.TitoloViaggio_Viaggi_1:
+                    case EnumTipoDoc.Carta_Imbarco:
+                    case EnumTipoDoc.Titolo_Viaggio:
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
@@ -62,27 +62,38 @@ namespace NewISE.Models.DBModel.dtObj
                                 throw new ArgumentOutOfRangeException("parentela");
                         }
                         break;
-                    case EnumTipoDoc.PrimaRataMab_MAB_2:
+                    case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                         break;
-                    case EnumTipoDoc.DichiarazioneCostoLocazione_MAB_2:
+                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
                         break;
-                    case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB_2:
+                    case EnumTipoDoc.Attestazione_Spese_Abitazione:
                         break;
-                    case EnumTipoDoc.ClausoleContrattoAlloggio_MAB_2:
+                    case EnumTipoDoc.Clausole_Contratto_Alloggio:
                         break;
-                    case EnumTipoDoc.CopiaContrattoLocazione_MAB_2:
+                    case EnumTipoDoc.Copia_Contratto_Locazione:
                         break;
-                    case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti_3:
+                    case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                         break;
-                    case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti_3:
+                    case EnumTipoDoc.Attestazione_Trasloco:
                         break;
-                    case EnumTipoDoc.DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4:
-                        ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                    case EnumTipoDoc.Documento_Identita:
+
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            case EnumParentela.Figlio:
+                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            case EnumParentela.Richiedente:
+                                ld = db.PASSAPORTI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
                         break;
-                    case EnumTipoDoc.DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4:
-                        ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                        break;
-                    case EnumTipoDoc.LetteraTrasferimento_Trasferimento_5:
+                    case EnumTipoDoc.Lettera_Trasferimento:
                         break;
 
                     default:
@@ -332,7 +343,6 @@ namespace NewISE.Models.DBModel.dtObj
                 dm.idDocumenti = d.IDDOCUMENTO;
             }
 
-
         }
 
         public void SetLetteraTrasferimento(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
@@ -349,7 +359,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d = ld.First();
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento_Trasferimento5;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Lettera_Trasferimento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
 
@@ -365,7 +375,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.LetteraTrasferimento_Trasferimento5;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Lettera_Trasferimento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
                 ld.Add(d);

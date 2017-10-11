@@ -7,31 +7,34 @@ using Microsoft.Ajax.Utilities;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumGruppiDoc
+
+
+    public enum EnumChiamante
     {
-        Viaggi = 1,
-        MaggiorazioneAbitazione = 2,
-        TrasportoEffetti = 3,
-        MaggiorazioniFamiliari = 4,
-        Trasferimento = 5
+        Maggiorazioni_Familiari = 1,
+        Titoli_Viaggio = 2,
+        Trasporto_Effetti = 3,
+        Trasferimento = 4,
+        Passaporti = 5,
+
     }
 
     public enum EnumTipoDoc
     {
-        CartaImbarco_Viaggi_1 = 1,
-        TitoloViaggio_Viaggi_1 = 2,
-        PrimaRataMab_MAB_2 = 3,
-        DichiarazioneCostoLocazione_MAB_2 = 4,
-        AttestazioneSpeseAbitazione_MAB_2 = 5,
-        ClausoleContrattoAlloggio_MAB_2 = 6,
-        CopiaContrattoLocazione_MAB_2 = 7,
-        ContributoFissoOmnicomprensivo_TrasportoEffetti_3 = 8,
-        AttestazioneTrasloco_TrasportoEffetti_3 = 9,
-        DocumentoIdentitaConiuge_MaggiorazioniFamiliari_4 = 10,
-        DocumentoIdentitaFiglio_MaggiorazioniFamiliari_4 = 11,
-        LetteraTrasferimento_Trasferimento_5 = 12,
-        FormularioMaggiorazioniFamiliari_4 = 13,
-        FormularioTitoliViaggio_1 = 14
+        Carta_Imbarco = 1,
+        Titolo_Viaggio = 2,
+        Prima_Rata_Maggiorazione_abitazione = 3,
+        Dichiarazione_Costo_Locazione = 4,
+        Attestazione_Spese_Abitazione = 5,
+        Clausole_Contratto_Alloggio = 6,
+        Copia_Contratto_Locazione = 7,
+        Contributo_Fisso_Omnicomprensivo = 8,
+        Attestazione_Trasloco = 9,
+        Documento_Identita = 10,
+        Lettera_Trasferimento = 11,
+        Formulario_Maggiorazioni_Familiari = 12,
+        Formulario_Titoli_Viaggio = 13,
+
 
     }
 

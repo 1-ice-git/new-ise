@@ -10,7 +10,7 @@
     }
     else
     {
-        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi) , @Convert.ToDecimal(Model.Documenti.First().tipoDocumento) , @Convert.ToDecimal(Model.parentela) , @Model.idMaggiorazioniFamiliari ) ">
+        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, @Convert.ToDecimal(Model.Documenti.First().tipoDocumento) , @Convert.ToDecimal(Model.parentela) , @Convert.ToDecimal(EnumChiamante.Passaporti) , @Model.idMaggiorazioniFamiliari ) ">
             <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
         </a>
     }
@@ -23,7 +23,7 @@ else
     }
     else
     {
-        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, @Convert.ToDecimal(EnumGruppiDoc.Viaggi) , 13, @Convert.ToDecimal(Model.parentela) , @Model.idMaggiorazioniFamiliari ) ">
+        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, 10, @Convert.ToDecimal(Model.parentela) , @Convert.ToDecimal(EnumChiamante.Passaporti) , @Model.idMaggiorazioniFamiliari ) ">
             <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
         </a>
     }

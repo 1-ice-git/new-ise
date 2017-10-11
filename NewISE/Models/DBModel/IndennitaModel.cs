@@ -8,18 +8,6 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idTrasfIndennita { get; set; }
-
-        [Required(ErrorMessage = "La data di inizio è richiesta.")]
-        [Display(Name = "Data inizio")]
-        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
-        public DateTime dataInizio { get; set; }
-
-        [Display(Name = "Data fine")]
-        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
-        public DateTime? dataFine { get; set; }
-
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true)]

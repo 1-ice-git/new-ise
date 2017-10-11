@@ -1,4 +1,5 @@
-﻿@using NewISE.Models.DBModel
+﻿@using System.Diagnostics
+@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
 
 
@@ -7,11 +8,11 @@
     decimal id = (decimal)ViewData["id"];
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
 
-    decimal gruppoDoc = Convert.ToDecimal(ViewData["gruppiDoc"]);
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
+    decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
 
-    EnumGruppiDoc enGruppoDoc = (EnumGruppiDoc)ViewData["gruppiDoc"];
+    EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
     EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
     EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
 
@@ -40,7 +41,7 @@
     }
     else
     {
-        <button class="btn btn-success" onclick="NuovoDocumento(@id)">Nuovo documento</button>
+        <button class="btn btn-success" onclick="NuovoDocumento(@id, @chiamante)">Nuovo documento</button>
     }
 
 </p>
@@ -100,40 +101,35 @@
     </table>
 </div>
 <p style="padding-left: 15px;">
-    @switch (enTipoDoc)
+    @switch (enChiamante)
     {
-        case EnumTipoDoc.CartaImbarco_Viaggi1:
-        case EnumTipoDoc.TitoloViaggio_Viaggi1:
+        case EnumChiamante.Maggiorazioni_Familiari:
+            switch (enParentela)
+            {
+                case EnumParentela.Coniuge:
+                    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+                    break;
+                case EnumParentela.Figlio:
+                    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+                    break;
+                case EnumParentela.Richiedente:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            break;
+        case EnumChiamante.Titoli_Viaggio:
             @Ajax.ActionLink("Torna indietro", "ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
-        case EnumTipoDoc.PrimaRataMab_MAB2:
+        case EnumChiamante.Trasporto_Effetti:
+
             break;
-        case EnumTipoDoc.DichiarazioneCostoLocazione_MAB2:
-            break;
-        case EnumTipoDoc.AttestazioneSpeseAbitazione_MAB2:
-            break;
-        case EnumTipoDoc.ClausoleContrattoAlloggio_MAB2:
-            break;
-        case EnumTipoDoc.CopiaContrattoLocazione_MAB2:
-            break;
-        case EnumTipoDoc.ContributoFissoOmnicomprensivo_TrasportoEffetti3:
-            break;
-        case EnumTipoDoc.AttestazioneTrasloco_TrasportoEffetti3:
-            break;
-        case EnumTipoDoc.DocumentoFamiliareConiuge_MaggiorazioniFamiliari4:
-            @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-            break;
-        case EnumTipoDoc.DocumentoFamiliareFiglio_MaggiorazioniFamiliari4:
-            @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-            break;
-        case EnumTipoDoc.LetteraTrasferimento_Trasferimento5:
-            break;
-        case EnumTipoDoc.CartaIdentita_Viaggi1:
-            @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+        case EnumChiamante.Trasferimento:
             break;
         default:
             throw new ArgumentOutOfRangeException();
     }
+
 
 </p>
 
@@ -448,7 +444,7 @@
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
 
         if (newDoc != nDocOld) {
-            ElencoDocumenti(@id, @gruppoDoc, @tipoDoc, @parentela, @idMaggiorazioniFamiliari);
+            ElencoDocumenti(@id, @tipoDoc, @parentela, @chiamante, @idMaggiorazioniFamiliari);
         }
     }
 
@@ -490,7 +486,7 @@
         return nDoc;
     }
 
-    function NuovoDocumento(id) {
+    function NuovoDocumento(id, Chiamante) {
         //debugger;
         var rotta = "/Documenti/NuovoDocumento";
         var TipoDocumento = parseInt(@tipoDoc);
@@ -499,7 +495,7 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela },
+            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante },
             dataType: 'html',
             async: false,
             beforeSend: function () {

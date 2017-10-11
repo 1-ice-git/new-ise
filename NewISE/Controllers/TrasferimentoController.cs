@@ -367,8 +367,7 @@ namespace NewISE.Controllers
                                 {
                                     IndennitaModel im = dti.GetIndennitaByIdTrasferimento(trm.idTrasferimento, db);
 
-                                    im.dataInizio = trm.dataPartenza;
-                                    im.dataFine = trm.dataRientro;
+
                                     im.dataAggiornamento = DateTime.Now;
 
                                     dti.EditIndennita(im, db);
@@ -596,8 +595,7 @@ namespace NewISE.Controllers
                                         LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
                                         im.idTrasfIndennita = trm.idTrasferimento;
-                                        im.dataInizio = trm.dataPartenza;
-                                        im.dataFine = Utility.DataFineStop();
+
                                         im.dataAggiornamento = DateTime.Now;
 
                                         dti.SetIndennita(im, db);
