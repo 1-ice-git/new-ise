@@ -1772,6 +1772,7 @@
     <Content Include="Scripts\plugins\sortable.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\ValidationWithBoot.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2109,6 +2110,9 @@
     <Compile Include="EF\TIPOTRASFERIMENTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TIPOTRASPORTO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TIPOVOCE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2118,10 +2122,7 @@
     <Compile Include="EF\TRASFERIMENTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\TRASPORTOEFFETTIRIENTRO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TRASPORTOEFFETTISIST.cs">
+    <Compile Include="EF\TRASPORTOEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\UFFICI.cs">
@@ -2320,6 +2321,8 @@
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />
     <Content Include="Views\TitoliViaggio\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\FormularioMF.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

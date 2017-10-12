@@ -33,8 +33,16 @@
             <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
             Download formulario
         </a>
+
+
     </div>
-    <div class="col-xs-5 col-xs-offset-4" style="margin-top: 10px; margin-bottom: 10px;">
+    <div class="col-xs-4" style="margin-top: 5px; margin-bottom: 5px;">
+        <div id="divDocumentoFormulario">
+            @Html.Action("FormularioMF", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMafFam })
+        </div>
+    </div>
+
+    <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
         <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModelNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
@@ -99,11 +107,47 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                                                                                                        }
+                                                                }
     else
     {
         @:ElencoFigli();
-                                                                                                                                                                                        }
+                                                                }
+
+
+    function FormularioMF() {
+        debugger;
+        var rotta = "/MaggiorazioniFamiliari/FormularioMF";
+        var idMaggiorazioniFamiliari = parseInt($("#idMafFam").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDocumentoFormulario").empty();
+                $("#divDocumentoFormulario").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
 
     //PulsantiNotificaAttivaMagFam();
 

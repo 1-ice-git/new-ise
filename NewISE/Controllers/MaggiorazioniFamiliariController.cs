@@ -18,6 +18,43 @@ namespace NewISE.Controllers
     public class MaggiorazioniFamiliariController : Controller
     {
         [HttpPost]
+        public ActionResult NuovoFormularioMF(decimal idMaggiorazioniFamiliari)
+        {
+
+
+            ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
+
+            return PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult FormularioMF(decimal idMaggiorazioniFamiliari)
+        {
+            DocumentiModel dm = new DocumentiModel();
+
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    dm = dtd.GetFormularioMaggiorazioniFamiliari(idMaggiorazioniFamiliari);
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+            ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
+
+            return PartialView(dm);
+        }
+
+
+        [HttpPost]
         [Authorize(Roles = "1 ,2")]
         public JsonResult AttivaRichiesta(decimal idMaggiorazioniFamiliari)
         {

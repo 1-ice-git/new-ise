@@ -21,6 +21,9 @@ namespace NewISE.Controllers
     public class DocumentiController : Controller
     {
 
+
+
+
         public ActionResult LeggiDocumento(decimal id)
         {
             byte[] Blob;
@@ -64,6 +67,62 @@ namespace NewISE.Controllers
             }
         }
 
+        public JsonResult InserisciFormularioMF(decimal idMaggiorazioniFamiliari, HttpPostedFileBase file)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        DocumentiModel dm = new DocumentiModel();
+                        bool esisteFile = false;
+                        bool gestisceEstensioni = false;
+                        bool dimensioneConsentita = false;
+                        string dimensioneMaxConsentita = string.Empty;
+
+                        Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                            out dimensioneConsentita, out dimensioneMaxConsentita,
+                            EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+
+                        if (esisteFile)
+                        {
+                            if (gestisceEstensioni == false)
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                            }
+
+                            if (dimensioneConsentita)
+                            {
+                                //dtd.SetLetteraTrasferimento(ref dm, trm.idTrasferimento, db);
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato supera la dimensione massima consentita (" +
+                                    dimensioneMaxConsentita + " Mb).");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Il documento è obbligatorio.");
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata inserito." });
+                }
+                catch (Exception ex)
+                {
+
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post)]

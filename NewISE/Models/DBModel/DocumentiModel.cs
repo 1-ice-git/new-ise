@@ -70,6 +70,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Il Documento è richiesto.")]
         [DataType(DataType.Upload)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Documento")]
+        [FileExtensions(Extensions = ".pdf", ErrorMessage = "Sono accettati solo documenti PDF.")]
         public HttpPostedFileBase file { get; set; }
 
         public TrasferimentoModel Trasferimento { get; set; }

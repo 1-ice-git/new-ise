@@ -26,6 +26,7 @@ namespace NewISE.EF
             this.TEORICI = new HashSet<TEORICI>();
             this.TITOLIVIAGGIO = new HashSet<TITOLIVIAGGIO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -68,5 +69,7 @@ namespace NewISE.EF
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
     }
 }

@@ -12,22 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TRASPORTOEFFETTIRIENTRO
+    public partial class TIPOTRASPORTO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TRASPORTOEFFETTIRIENTRO()
+        public TIPOTRASPORTO()
         {
-            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
         }
     
-        public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public Nullable<decimal> IDRICHIAMO { get; set; }
+        public decimal IDTIPOTRASPORTO { get; set; }
+        public string DESCTIPOTRASPORTO { get; set; }
     
-        public virtual TRASPORTOEFFETTISIST TRASPORTOEFFETTISIST { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
     }
 }

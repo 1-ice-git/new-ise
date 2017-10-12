@@ -12,21 +12,26 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TRASPORTOEFFETTISIST
+    public partial class TRASPORTOEFFETTI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TRASPORTOEFFETTISIST()
+        public TRASPORTOEFFETTI()
         {
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
         }
     
-        public decimal IDTRASPORTOEFFETTISIST { get; set; }
-        public decimal IDCFKM { get; set; }
-        public Nullable<decimal> IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDTRASPORTOEFFETTI { get; set; }
+        public decimal IDTIPOTRASPORTO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
-        public virtual COEFFICIENTEFKM COEFFICIENTEFKM { get; set; }
-        public virtual TRASPORTOEFFETTIRIENTRO TRASPORTOEFFETTIRIENTRO { get; set; }
+        public virtual TIPOTRASPORTO TIPOTRASPORTO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
     }
 }
