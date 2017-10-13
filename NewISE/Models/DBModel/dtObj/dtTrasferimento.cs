@@ -880,6 +880,79 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public TrasferimentoModel GetTrasferimentoByIdPassaporto(decimal idPassaporto)
+        {
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.PASSAPORTI.Find(idPassaporto);
+                var tr = p.TRASFERIMENTO;
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    trm = new TrasferimentoModel()
+                    {
+                        idTrasferimento = tr.IDTRASFERIMENTO,
+                        idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                        idUfficio = tr.IDUFFICIO,
+                        idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                        idDipendente = tr.IDDIPENDENTE,
+                        idTipoCoan = tr.IDTIPOCOAN,
+                        dataPartenza = tr.DATAPARTENZA,
+                        dataRientro = tr.DATARIENTRO,
+                        coan = tr.COAN,
+                        protocolloLettera = tr.PROTOCOLLOLETTERA,
+                        dataLettera = tr.DATALETTERA,
+                        notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
+                        dataAggiornamento = tr.DATAAGGIORNAMENTO,
+                        StatoTrasferimento = new StatoTrasferimentoModel()
+                        {
+                            idStatoTrasferimento = tr.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                            descrizioneStatoTrasferimento = tr.STATOTRASFERIMENTO.DESCRIZIONE
+                        },
+                        TipoTrasferimento = new TipoTrasferimentoModel()
+                        {
+                            idTipoTrasferimento = tr.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                            descTipoTrasf = tr.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                        },
+                        Ufficio = new UfficiModel()
+                        {
+                            idUfficio = tr.UFFICI.IDUFFICIO,
+                            codiceUfficio = tr.UFFICI.CODICEUFFICIO,
+                            descUfficio = tr.UFFICI.DESCRIZIONEUFFICIO
+                        },
+                        Dipendente = new DipendentiModel()
+                        {
+                            idDipendente = tr.DIPENDENTI.IDDIPENDENTE,
+                            matricola = tr.DIPENDENTI.MATRICOLA,
+                            nome = tr.DIPENDENTI.NOME,
+                            cognome = tr.DIPENDENTI.COGNOME,
+                            dataAssunzione = tr.DIPENDENTI.DATAASSUNZIONE,
+                            dataCessazione = tr.DIPENDENTI.DATACESSAZIONE,
+                            indirizzo = tr.DIPENDENTI.INDIRIZZO,
+                            cap = tr.DIPENDENTI.CAP,
+                            citta = tr.DIPENDENTI.CITTA,
+                            provincia = tr.DIPENDENTI.PROVINCIA,
+                            email = tr.DIPENDENTI.EMAIL,
+                            telefono = tr.DIPENDENTI.TELEFONO,
+                            fax = tr.DIPENDENTI.FAX,
+                            abilitato = tr.DIPENDENTI.ABILITATO,
+                            dataInizioRicalcoli = tr.DIPENDENTI.DATAINIZIORICALCOLI
+                        },
+                        TipoCoan = new TipologiaCoanModel()
+                        {
+                            idTipoCoan = tr.TIPOLOGIACOAN.IDTIPOCOAN,
+                            descrizione = tr.TIPOLOGIACOAN.DESCRIZIONE
+                        }
+                    };
+                }
+
+            }
+
+            return trm;
+
+        }
+
         public TrasferimentoModel GetTrasferimentoById(decimal idTrasferimento)
         {
             TrasferimentoModel trm = new TrasferimentoModel();

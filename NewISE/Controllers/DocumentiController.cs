@@ -267,6 +267,8 @@ namespace NewISE.Controllers
                             }
                             break;
                         case EnumParentela.Richiedente:
+                            titoloPagina = "Documento d'identità (Richiedente)";
+
                             break;
                         default:
                             throw new ArgumentOutOfRangeException("parentela");

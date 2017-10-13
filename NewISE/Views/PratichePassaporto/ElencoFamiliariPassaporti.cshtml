@@ -363,8 +363,8 @@
     }
 
 
-    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
-        //debugger;
+    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+        debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
@@ -373,7 +373,9 @@
             data: {
                 id: id,
                 tipoDoc: tipoDoc,
-                parentela: idParentela, chiamante: chiamante, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                parentela: idParentela,
+                chiamante: chiamante,
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
             },
             dataType: 'html',
             async: false,

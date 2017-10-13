@@ -736,16 +736,18 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void SetEscludiPassaportoRichiedente(decimal idTrasferimento, ref bool chk)
+        public void SetEscludiPassaportoRichiedente(decimal idPassaporto, ref bool chk)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var p = t.PASSAPORTI.First();
+
+                var p = db.PASSAPORTI.Find(idPassaporto);
+                var t = p.TRASFERIMENTO;
 
                 if (p != null && p.IDPASSAPORTI > 0)
                 {
                     p.ESCLUDIPASSAPORTO = p.ESCLUDIPASSAPORTO == false ? true : false;
+
                     int i = db.SaveChanges();
 
                     if (i <= 0)
@@ -755,7 +757,7 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         chk = p.ESCLUDIPASSAPORTO;
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Esclusione dalla richiesta di passaporto/visto.", "Passaporti", db, idTrasferimento, p.IDPASSAPORTI);
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Esclusione dalla richiesta di passaporto/visto.", "Passaporti", db, t.IDTRASFERIMENTO, p.IDPASSAPORTI);
                     }
                 }
             }
@@ -817,7 +819,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).OrderBy(a => a.IDPASSAPORTI).First();
+                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
 
                 pm = new PassaportoModel()
                 {
@@ -839,7 +841,7 @@ namespace NewISE.Models.DBModel.dtObj
             PassaportoModel pm = new PassaportoModel();
 
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).OrderBy(a => a.IDPASSAPORTI).First();
+            var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
 
             pm = new PassaportoModel()
             {
@@ -1062,15 +1064,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 case EnumParentela.Richiedente:
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        trm = dttr.GetTrasferimentoById(idFamiliare);
+                                        trm = dttr.GetTrasferimentoByIdPassaporto(idFamiliare);
                                         var lmfm = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(trm.idTrasferimento).OrderBy(a => a.idMaggiorazioniFamiliari);
                                         mfm = lmfm.First();
                                         var dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
-                                        pm = dtpp.GetPassaportoByID(trm.idTrasferimento);
+                                        pm = dtpp.GetPassaportoByID(idFamiliare);
                                         efm = new ElencoFamiliariModel()
                                         {
                                             idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
-                                            idFamiliare = trm.idTrasferimento,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere molti trasferimenti.
+                                            idFamiliare = idFamiliare,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere molti trasferimenti.
                                             idPassaporti = pm.idPassaporto,
                                             Nominativo = dm.Nominativo,
                                             CodiceFiscale = string.Empty,
@@ -1140,7 +1142,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                         {
                                             idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
-                                            idFamiliare = idTrasferimento,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
+                                            idFamiliare = pm.idPassaporto,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
                                             idPassaporti = pm.idPassaporto,
                                             Nominativo = dm.Nominativo,
                                             CodiceFiscale = string.Empty,

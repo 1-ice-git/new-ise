@@ -562,42 +562,33 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AddDocumentoPassaportoFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
+        public void AddDocumentoPassaportoFromRichiedente(ref DocumentiModel dm, decimal idPassaporto, ModelDBISE db)
         {
-            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            if (t != null && t.IDTRASFERIMENTO > 0)
+            var p = db.PASSAPORTI.Find(idPassaporto);
+
+            if (p != null && p.IDPASSAPORTI > 0)
             {
+                MemoryStream ms = new MemoryStream();
+                DOCUMENTI d = new DOCUMENTI();
+                dm.file.InputStream.CopyTo(ms);
 
-                var lp =
-                    t.PASSAPORTI.Where(
-                        a => a.ESCLUDIPASSAPORTO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
-                if (lp?.Any() ?? false)
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+
+                p.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
                 {
-                    var p = lp.First();
-                    if (p != null && p.IDPASSAPORTI > 0)
-                    {
-                        MemoryStream ms = new MemoryStream();
-                        DOCUMENTI d = new DOCUMENTI();
-                        dm.file.InputStream.CopyTo(ms);
-
-                        d.NOMEDOCUMENTO = dm.nomeDocumento;
-                        d.ESTENSIONE = dm.estensione;
-                        d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-                        d.DATAINSERIMENTO = dm.dataInserimento;
-                        d.FILEDOCUMENTO = ms.ToArray();
-
-                        p.DOCUMENTI.Add(d);
-
-                        if (db.SaveChanges() > 0)
-                        {
-                            dm.idDocumenti = d.IDDOCUMENTO;
-                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
-                        }
-                    }
+                    var t = p.TRASFERIMENTO;
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
                 }
-
-
             }
+
+
         }
 
 
