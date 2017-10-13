@@ -1,5 +1,12 @@
 ﻿@model NewISE.Models.DBModel.DocumentiModel
-
+<style>
+    .BordoRosso {
+        border-style: double;
+        border-color: red;
+        border-width: 1px;
+        display: inline-block;
+    }
+</style>
 
 @{
     decimal idMaggiorazioniFamiliari = (decimal)ViewData["idMaggiorazioniFamiliari"];
@@ -39,7 +46,7 @@
 
 <div class="modal fade" id="inviaFormularioMFModal" tabindex="-1" role="dialog" aria-labelledby="inviaFormularioMFModalLabel" aria-hidden="true">
     <div id="divDialogFromularioMF" class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 500px;">
+        <div class="modal-content" style="width: 600px;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -53,7 +60,7 @@
 
             </div>
             <div class="modal-footer">
-                <button id="btUpload" type="button" class="btn btn-info" onclick=" SalvaFormularioMF(); ">Salva</button>
+                <button id="btUpload" type="button" class="btn btn-info" onclick="SalvaFormularioMF();">Salva</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
@@ -97,17 +104,17 @@
     }
 
     function SalvaFormularioMF() {
-        debugger;
+        //debugger;
         var datiForm = new FormData();
-        var rotta = "/Documenti/InserisciLetteraTrasferimento";
-
+        var rotta = "/Documenti/InserisciFormularioMF";
+        var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
 
         var file = $("#file")[0].files[0];
 
         if (Validazione()) {
 
 
-
+            datiForm.append("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             datiForm.append("file", file);
 
             $.ajax({
@@ -121,8 +128,8 @@
                     //debugger;
                     VerificaAutenticazione();
                     //Blocca();
-                    $("#btUpload").attr("disabled", "disabled");
-                    $("#btUpload").addClass("disabled");
+                    $("#btUploadFMF").attr("disabled", "disabled");
+                    $("#btUploadFMF").addClass("disabled");
                 },
                 processData: false, //Serve per NON far convertire l’oggetto
                 //FormData in una stringa, preservando il file
@@ -130,20 +137,23 @@
                 //un content type errato
                 success: function (result) {
                     //debugger;
+                    $('#inviaFormularioMFModal').modal('hide');
 
                     if (result.err != "" && result.err != undefined) {
-                        MsgErroreJson(result.err);
+                        ErroreElaborazioneAjax(result.err);
                     }
                     else {
-                        MsgErroreJson(result.msg);
-
-                        $('#inviaFormularioMFModal').modal('hide');
                         FormularioMF();
+                        InfoElaborazioneAjax(result.msg);
+                        PulsantiNotificaAttivaMagFam();
                     }
+
 
                 },
                 complete: function () {
-                    //$("#btUpload").removeAttr("disabled");
+                    //$('#inviaFormularioMFModal').modal('hide');
+
+
                 },
                 error: function (error) {
                     //debugger;
@@ -160,5 +170,9 @@
         //}
 
     }
+
+    $("#inviaFormularioMFModal").on('hide.bs.modal', function () {
+        $('.modal-backdrop').hide();
+    });
 
 </script>

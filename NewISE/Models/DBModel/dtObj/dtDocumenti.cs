@@ -371,7 +371,47 @@ namespace NewISE.Models.DBModel.dtObj
             if (db.SaveChanges() > 0)
             {
                 dm.idDocumenti = d.IDDOCUMENTO;
-                //Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, mf.IDTRASFERIMENTO, dm.idDocumenti);
+                TRASFERIMENTO t = new TRASFERIMENTO();
+
+                switch ((EnumTipoDoc)d.IDTIPODOCUMENTO)
+                {
+                    case EnumTipoDoc.Carta_Imbarco:
+                    case EnumTipoDoc.Titolo_Viaggio:
+                    case EnumTipoDoc.Formulario_Titoli_Viaggio:
+                        t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
+                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
+                    case EnumTipoDoc.Attestazione_Spese_Abitazione:
+                    case EnumTipoDoc.Clausole_Contratto_Alloggio:
+                    case EnumTipoDoc.Copia_Contratto_Locazione:
+                        t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
+                        t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Attestazione_Trasloco:
+                        break;
+                    case EnumTipoDoc.Documento_Identita:
+                        t = d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Lettera_Trasferimento:
+                        t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
+                        break;
+                    case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
+                        t =
+                            d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
+                                .First()
+                                .TRASFERIMENTO;
+                        break;
+                    default:
+                        t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
+                        break;
+
+                }
+
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
             }
 
         }
@@ -616,7 +656,7 @@ namespace NewISE.Models.DBModel.dtObj
                             t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
-                            //t = d.TRASPORTOEFFETTIRIENTRO
+                            t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Attestazione_Trasloco:
                             break;

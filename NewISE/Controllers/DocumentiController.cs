@@ -67,6 +67,7 @@ namespace NewISE.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult InserisciFormularioMF(decimal idMaggiorazioniFamiliari, HttpPostedFileBase file)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -97,7 +98,7 @@ namespace NewISE.Controllers
 
                             if (dimensioneConsentita)
                             {
-                                //dtd.SetLetteraTrasferimento(ref dm, trm.idTrasferimento, db);
+                                dtd.SetFormularioMaggiorazioniFamiliari(ref dm, idMaggiorazioniFamiliari, db);
                             }
                             else
                             {
@@ -457,14 +458,14 @@ namespace NewISE.Controllers
                             bool datiParzialiFigli = false;
                             bool siDocConiuge = false;
                             bool siDocFigli = false;
-
+                            bool docFormulario = false;
 
 
                             if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
                             {
                                 dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
                                 if (richiestaAttivazione == true)
                                 {

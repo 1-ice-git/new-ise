@@ -27,4 +27,49 @@
         $("#file").empty();
         $("#file").click();
     });
+
+    $("#file").change(function () {
+        //debugger;
+        var file = $("#file").val();
+        if (file != null && file != undefined) {
+            var splitFile = file.split("\\");
+            var nomeFile = splitFile[splitFile.length - 1];
+
+            var estensioniValide = new Array(".pdf");
+            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+            if (estensioniValide.contiene(estensione)) {
+
+                //$("#NomeFile").val(nomeFile);
+                //$("#EstensioneFile").val(estensione);
+
+                $("#spanNomeFile").html(nomeFile);
+                return true;
+            } else {
+
+                MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il .pdf");
+
+                return false;
+            }
+        }
+
+    });
+
+    function Validazione() {
+        //debugger;
+        var ret = false;
+
+        var file = $("#file").val();
+
+        if (file != null && file != undefined && file != "") {
+            $("#divFile").removeClass('BordoRosso');
+            ret = true;
+        }
+        else {
+            $("#divFile").addClass('BordoRosso');
+            ret = false;
+        }
+
+        return ret;
+    }
+
 </script>

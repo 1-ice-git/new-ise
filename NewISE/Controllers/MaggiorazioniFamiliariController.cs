@@ -120,6 +120,7 @@ namespace NewISE.Controllers
             bool datiParzialiFigli = false;
             bool siDocConiuge = false;
             bool siDocFigli = false;
+            bool docFormulario = false;
 
             try
             {
@@ -128,7 +129,7 @@ namespace NewISE.Controllers
                 {
                     dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
                 }
 
             }
@@ -152,6 +153,7 @@ namespace NewISE.Controllers
                         datiParzialiFigli = datiParzialiFigli,
                         siDocConiuge = siDocConiuge,
                         siDocFigli = siDocFigli,
+                        docFormulario = docFormulario,
                         err = errore
                     });
 
@@ -229,12 +231,13 @@ namespace NewISE.Controllers
                         bool datiParzialiFigli = false;
                         bool siDocConiuge = false;
                         bool siDocFigli = false;
+                        bool docFormulario = false;
 
                         bool solaLettura = false;
 
                         dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
                         if (richiestaAttivazione == true || attivazione == true)
                         {
@@ -321,12 +324,13 @@ namespace NewISE.Controllers
                     bool datiParzialiFigli = false;
                     bool siDocConiuge = false;
                     bool siDocFigli = false;
+                    bool docFormulario = false;
 
                     bool solaLettura = false;
 
                     dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
                     if (richiestaAttivazione == true || attivazione == true)
                     {

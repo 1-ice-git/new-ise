@@ -387,7 +387,18 @@
 
             $("#msgModalInfoGenerale").text(msg);
             $('#myModalInfoGenerale').modal('toggle');
+
         }
+
+        $("#msgModalInfoGenerale").on('hide.bs.modal', function () {
+            //debugger;
+            $('.modal-backdrop').hide();
+        });
+
+        $("#msgModalError").on('hide.bs.modal', function () {
+            //debugger;
+            $('.modal-backdrop').hide();
+        });
 
         function number_format(number, decimals, dec_point, thousands_sep) {
             // Strip all characters but numerical ones.

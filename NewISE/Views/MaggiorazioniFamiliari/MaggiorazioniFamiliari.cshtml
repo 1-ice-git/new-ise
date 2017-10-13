@@ -107,17 +107,17 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                }
+                                }
     else
     {
         @:ElencoFigli();
-                                                                }
+                                }
 
 
     function FormularioMF() {
-        debugger;
+        //debugger;
         var rotta = "/MaggiorazioniFamiliari/FormularioMF";
-        var idMaggiorazioniFamiliari = parseInt($("#idMafFam").val());
+        var idMaggiorazioniFamiliari = parseInt('@idMafFam');
 
         $.ajax({
             url: rotta,
@@ -328,7 +328,7 @@
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-                //debugger;
+                debugger;
 
                 if (result.err == "") {
                     var admin = result.admin;
@@ -341,6 +341,7 @@
                     var datiParzialiFigli = result.datiParzialiFigli;
                     var siDocConiuge = result.siDocConiuge;
                     var siDocFigli = result.siDocFigli;
+                    var docFormulario = result.docFormulario;
 
                     $("#btAttivaMagFam").attr("disabled", "disabled");
                     $("#btAttivaMagFam").addClass("disabled");
@@ -394,7 +395,7 @@
                                 //$("#chkMagFamiliariSR").attr('checked', false);
                             }
                         } else {
-                            if (datiConiuge == true || datiFigli == true) {
+                            if ((datiConiuge == true || datiFigli == true)) {
                                 if (datiParzialiConiuge == true || datiParzialiFigli == true) {
                                     $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                                     $("#btNotificaRichiestaMagFam").addClass("disabled");
@@ -402,15 +403,23 @@
                                     $("#btAttivaMagFam").attr("disabled", "disabled");
                                     $("#btAttivaMagFam").addClass("disabled");
                                 } else {
-                                    if ((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) {
+                                    if (((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) && docFormulario == false) {
                                         $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                                         $("#btNotificaRichiestaMagFam").addClass("disabled");
 
                                         $("#btAttivaMagFam").attr("disabled", "disabled");
                                         $("#btAttivaMagFam").addClass("disabled");
                                     } else {
-                                        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                        $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                                        if ((datiConiuge == true || datiFigli == true) && docFormulario == false) {
+                                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                                            $("#btAttivaMagFam").attr("disabled", "disabled");
+                                            $("#btAttivaMagFam").addClass("disabled");
+                                        } else {
+                                            $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                                            $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                                        }
 
                                         //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
                                         //$("#btAttivaMagFam").removeClass("disabled");
@@ -418,8 +427,16 @@
                                 }
 
                             } else {
-                                $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                                if (docFormulario == false) {
+                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+
+
+                                } else {
+                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
+                                }
+
                             }
 
                             //$("#chkMagFamiliariR").attr('checked', false);

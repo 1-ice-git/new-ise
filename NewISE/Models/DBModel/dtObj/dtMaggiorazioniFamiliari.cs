@@ -87,11 +87,13 @@ namespace NewISE.Models.DBModel.dtObj
             bool datiParzialiFigli = false;
             bool siDocConiuge = false;
             bool siDocFigli = false;
+            bool docFormulario = false;
+
             int i = 0;
 
             this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
             try
             {
@@ -343,11 +345,12 @@ namespace NewISE.Models.DBModel.dtObj
             bool datiParzialiFigli = false;
             bool siDocConiuge = false;
             bool siDocFigli = false;
+            bool docFormulario = false;
             int i = 0;
 
             this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
             try
             {
@@ -426,7 +429,8 @@ namespace NewISE.Models.DBModel.dtObj
                                        out bool richiestaAttivazione, out bool Attivazione,
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
-                                       out bool siDocConiuge, out bool siDocFigli)
+                                       out bool siDocConiuge, out bool siDocFigli,
+                                       out bool docFormulario)
         {
             rinunciaMagFam = false;
             richiestaAttivazione = false;
@@ -437,6 +441,7 @@ namespace NewISE.Models.DBModel.dtObj
             datiParzialiFigli = false;
             siDocConiuge = false;
             siDocFigli = false;
+            docFormulario = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -453,6 +458,13 @@ namespace NewISE.Models.DBModel.dtObj
                     rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
                     richiestaAttivazione = mf.RICHIESTAATTIVAZIONE;
                     Attivazione = mf.ATTIVAMAGGIORAZIONI;
+
+                    var ld = mf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                    if (ld?.Any() ?? false)
+                    {
+                        docFormulario = true;
+                    }
+
 
                     if (mf.CONIUGE != null)
                     {
