@@ -332,7 +332,7 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var lp = t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == true).OrderBy(a => a.IDPASSAPORTI);
+                    var lp = t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
 
                     var p = lp.First();
                     if (p != null && p.IDPASSAPORTI > 0)
@@ -376,7 +376,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
                     var lp =
-                        t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == true)
+                        t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
                             .OrderBy(a => a.IDPASSAPORTI);
 
                     var p = lp.First();

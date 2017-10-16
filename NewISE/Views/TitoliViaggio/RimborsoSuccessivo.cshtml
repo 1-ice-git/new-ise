@@ -1,0 +1,58 @@
+﻿
+@{
+    bool rimborsoSuccessivo = Convert.ToBoolean(ViewData["rimborsoSuccessivo"]);
+    decimal idTitoloViaggio = Convert.ToDecimal(ViewData["idTitoloViaggio"]);
+}
+<div class="row">
+    <div class="col-xs-9">
+        <label class="control-label">Provvederò personalmente all'acquisto dei titoli di viaggio chiedendo il rimborso successivamente</label>
+        <div class="material-switch pull-right">
+            <input id="someSwitchOptionDefault" name="someSwitchOption001" type="checkbox" checked="@rimborsoSuccessivo" onclick="ConfermaOAnnullaRimborsoSuccessivo();" />
+            <label for="someSwitchOptionDefault" class="label-success"></label>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function ConfermaOAnnullaRimborsoSuccessivo() {
+        //debugger;
+        var rotta = "/TitoliViaggio/ConfermaOAnnullaRimborsoSuccessivo";
+        var idTitoloViaggio = parseInt('@idTitoloViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoloViaggio: idTitoloViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divRimborsoSuccessivo").empty();
+                $("#divRimborsoSuccessivo").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+</script>
+
+
+
+

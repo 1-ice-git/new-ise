@@ -17,7 +17,25 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public DocumentiModel GetFormularioTitoliViaggio(decimal idTitoloViaggio)
+        {
+            DocumentiModel dm = new DocumentiModel();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+                var ld =
+                    tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio)
+                        .OrderByDescending(a => a.IDDOCUMENTO);
+                if (ld?.Any() ?? false)
+                {
+                    var d = ld.First();
 
+                    dm = this.GetDocumento(d.IDDOCUMENTO, db);
+                }
+            }
+
+            return dm;
+        }
 
         public DocumentiModel GetFormularioMaggiorazioniFamiliari(decimal idMaggiorazioniFamiliari)
         {

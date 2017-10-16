@@ -1658,6 +1658,8 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse3.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\StoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\Statistiche\Index.cshtml" />
+    <Content Include="FormulariMaster\Formulario_Maggiorazioni_Familiari.pdf" />
+    <Content Include="FormulariMaster\Formulario_titoli_viaggio.pdf" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -2271,7 +2273,6 @@
     </Compile>
     <Compile Include="Models\ViewModel\ElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
-    <Compile Include="Models\ViewModel\GestioneChkEscludiTitoliViaggioModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2323,6 +2324,8 @@
     <Content Include="Views\TitoliViaggio\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\FormularioMF.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
+    <Content Include="Views\TitoliViaggio\RimborsoSuccessivo.cshtml" />
+    <Content Include="Views\TitoliViaggio\GestioneFormularioTitoliViaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

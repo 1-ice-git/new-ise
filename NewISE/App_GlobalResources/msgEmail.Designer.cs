@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}..
+        /// </summary>
+        internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioRimborsoSuccessivoTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per le maggiorazioni familiari.
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
@@ -165,6 +174,15 @@ namespace Resources {
         internal static string OggettoRichiestaTitoloViaggio {
             get {
                 return ResourceManager.GetString("OggettoRichiestaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta rimborso successivo titoli di viaggio.
+        /// </summary>
+        internal static string OggettoRimborsoSuccessivoTitoliViaggio {
+            get {
+                return ResourceManager.GetString("OggettoRimborsoSuccessivoTitoliViaggio", resourceCulture);
             }
         }
     }

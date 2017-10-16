@@ -135,6 +135,9 @@
   <data name="MessaggioRichiestaTitoloViaggio" xml:space="preserve">
     <value>Si notifica la richiesta per i biglietti di viaggio per {0}</value>
   </data>
+  <data name="MessaggioRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}.</value>
+  </data>
   <data name="OggettoNotificaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica della richiesta per le maggiorazioni familiari</value>
   </data>
@@ -152,5 +155,8 @@
   </data>
   <data name="OggettoRichiestaTitoloViaggio" xml:space="preserve">
     <value>Notifica della richiesta per il titolo di viaggio</value>
+  </data>
+  <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
+    <value>Notifica richiesta rimborso successivo titoli di viaggio</value>
   </data>
 </root>

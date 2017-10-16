@@ -12,70 +12,75 @@ namespace NewISE.Controllers
 {
     public class TitoliViaggioController : Controller
     {
-        // GET: TitoliViaggio
+        [HttpPost]
         public ActionResult TitoliViaggio(decimal idTrasferimento)
         {
+
+
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            {
+                var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(idTrasferimento);
+                ViewData.Add("idTitoloViaggio", tvm.idTitoloViaggio);
+            }
+
             ViewData.Add("idTrasferimento", idTrasferimento);
             return PartialView();
         }
 
-
-
-
-
-
-        [HttpPost]
-        public JsonResult ConfermaEscludiTitoloViaggio(decimal id, EnumParentela parentela)
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult RimborsoSuccessivo(decimal idTitoloViaggio)
         {
-            string errore = string.Empty;
-            bool chk = false;
+            bool rimborsoSuccessivo = false;
 
-            try
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
             {
-                switch (parentela)
-                {
-                    case EnumParentela.Coniuge:
-                        using (dtConiuge dtc = new dtConiuge())
-                        {
-                            dtc.SetEscludiTitoloViaggio(id, ref chk);
-                        }
-                        break;
-                    case EnumParentela.Figlio:
-                        using (dtFigli dtf = new dtFigli())
-                        {
-                            dtf.SetEscludiTitoloViaggio(id, ref chk);
-                        }
-                        break;
-                    case EnumParentela.Richiedente:
+                var tvm = dttv.GetTitoloViaggioByID(idTitoloViaggio);
 
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            dttv.SetEscludiTitoloViaggio(id, ref chk);
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
-                }
-            }
-            catch (Exception ex)
-            {
+                rimborsoSuccessivo = tvm.personalmente;
 
-                errore = ex.Message;
+                ViewData.Add("idTitoloViaggio", tvm.idTitoloViaggio);
             }
 
-            return
-                Json(
-                    new
-                    {
-                        chk = chk,
-                        err = errore
-                    });
+            ViewData.Add("rimborsoSuccessivo", rimborsoSuccessivo);
 
+
+            return PartialView();
         }
 
         [HttpPost]
+        public ActionResult ConfermaOAnnullaRimborsoSuccessivo(decimal idTitoloViaggio)
+        {
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            {
+                dttv.ModificaRimborsoSuccessivo(idTitoloViaggio);
+            }
+
+            return RedirectToAction("RimborsoSuccessivo", new { idTitoloViaggio = idTitoloViaggio });
+        }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult GestioneFormularioTitoliViaggio(decimal idTitoloViaggio)
+        {
+            DocumentiModel dm = new DocumentiModel();
+
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                var tm = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoloViaggio);
+
+                ViewData.Add("Coan", tm.coan);
+            }
+
+            using (dtDocumenti dtd = new dtDocumenti())
+            {
+                dm = dtd.GetFormularioTitoliViaggio(idTitoloViaggio);
+            }
+
+            return PartialView(dm);
+        }
 
 
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTrasferimento)
         {
             GestPulsantiAttConclRvModel gptv = new GestPulsantiAttConclRvModel();
@@ -98,7 +103,7 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        public JsonResult NotificaRichiesta(decimal idTrasferimento)
+        public JsonResult NotificaRichiesta(decimal idTitoloViaggio)
         {
             string errore = "";
             string msg = string.Empty;
@@ -107,7 +112,7 @@ namespace NewISE.Controllers
             {
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    dttv.SetNotificaRichiesta(idTrasferimento);
+                    dttv.SetNotificaRichiesta(idTitoloViaggio);
                     msg = "Notifica effettuata con successo";
                 }
             }
@@ -120,7 +125,7 @@ namespace NewISE.Controllers
         }
 
 
-        public JsonResult ConcludiPratica(decimal idTrasferimento)
+        public JsonResult ConcludiPratica(decimal idTitoloViaggio)
         {
             string errore = "";
             string msg = string.Empty;
@@ -129,7 +134,7 @@ namespace NewISE.Controllers
             {
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    dttv.SetPraticaConclusa(idTrasferimento);
+                    dttv.SetPraticaConclusa(idTitoloViaggio);
                     msg = "Pratica conclusa con successo";
                 }
             }

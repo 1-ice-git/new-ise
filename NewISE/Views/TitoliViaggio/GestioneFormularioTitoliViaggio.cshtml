@@ -1,0 +1,59 @@
+﻿@model NewISE.Models.DBModel.DocumentiModel
+
+
+@{
+    string coan = ViewData["Coan"].ToString();
+}
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("COAN", new { @class = "control-label col-xs-1" })
+        <div class="col-xs-4">
+            @Html.TextBox("Coan", coan, new { @class = "form-control", @readonly = "true" })
+        </div>
+    </div>
+    <div style="margin-top: 10px;">
+        <div class="form-group">
+            <div class="col-xs-3">
+                <a class="btn btn-default btn-sm" id="btDownloadFormulario" href="~/FormulariMaster/Formulario_titoli_viaggio.pdf" target="_blank">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Download formulario
+                </a>
+            </div>
+
+
+            <div class="form-group">
+                @*@Html.Label("Visualizza Formulario Maggiorazioni familiari", new { @class = "control-label col-xs-3" })*@
+                @if (Model != null && Model.idDocumenti > 0)
+            {
+                    <div class="col-xs-1">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = Model.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-1">
+                        <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Utlizzare il pulsante per inserire il formulario." />
+                    </div>
+                }
+                <div class="col-xs-3">
+                    @if (Model != null && Model.idDocumenti > 0)
+                    {
+                        <button type="button" class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
+                            <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                            Sostituisci Formulario
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
+                            <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                            Inserisci Formulario
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

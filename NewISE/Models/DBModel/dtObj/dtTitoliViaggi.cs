@@ -18,6 +18,168 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public void ModificaRimborsoSuccessivo(decimal idTitoloViaggio)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+                    var tr = tv.TRASFERIMENTO;
+
+                    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                    {
+                        if (tv.PERSONALMENTE == true)
+                        {
+                            tv.PERSONALMENTE = false;
+                        }
+                        else
+                        {
+                            tv.PERSONALMENTE = true;
+                        }
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile modificare il valore nella check per provvedere personalmente all'acquisto dei titoli di viaggio.");
+                        }
+                        else
+                        {
+                            Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
+                                        "Notifica della richiesta di rimborso successivo dei titoli di viaggio.", "TITOLIVIAGGIO", db,
+                                        tr.IDTRASFERIMENTO, tv.IDTITOLOVIAGGIO);
+
+                            this.InvioEmailRimborsoSuccessivo(tv.IDTITOLOVIAGGIO, db);
+
+                        }
+
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+
+
+            }
+        }
+
+
+        private void InvioEmailRimborsoSuccessivo(decimal idTitoloViaggio, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+            TitoloViaggioModel tvm = new TitoloViaggioModel();
+            string nominativiDellaRichiesta = string.Empty;
+            TrasferimentoModel trm = new TrasferimentoModel();
+
+            try
+            {
+                tvm = this.GetTitoloViaggioByID(idTitoloViaggio, db);
+                if (tvm != null && tvm.HasValue())
+                {
+                    if (tvm.personalmente)
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            {
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                                    {
+                                        luam = dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore, db).ToList();
+                                        if (luam?.Any() ?? false)
+                                        {
+
+                                            foreach (var uam in luam)
+                                            {
+                                                var dm = dtd.GetDipendenteByMatricola(uam.matricola, db);
+
+                                                if (dm != null && dm.HasValue() && dm.email != string.Empty)
+                                                {
+                                                    msgMail.destinatario.Add(new Destinatario() { Nominativo = dm.Nominativo, EmailDestinatario = dm.email });
+                                                }
+
+                                            }
+
+
+                                        }
+
+                                    }
+
+                                    am = Utility.UtenteAutorizzato();
+                                    msgMail.cc.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
+
+                                    if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
+                                    {
+                                        msgMail.destinatario.Clear();
+                                        msgMail.destinatario.Add(new Destinatario() { Nominativo = am.nominativo, EmailDestinatario = am.eMail });
+                                        nominativiDellaRichiesta = am.nominativo;
+                                    }
+
+
+                                    using (dtTrasferimento dttr = new dtTrasferimento())
+                                    {
+                                        trm = dttr.GetSoloTrasferimentoById(tvm.idTrasferimento);
+                                        if (trm != null && trm.idTrasferimento > 0)
+                                        {
+                                            var dm = dtd.GetDipendenteByID(trm.idDipendente, db);
+                                            if (dm != null && dm.idDipendente > 0)
+                                            {
+                                                nominativiDellaRichiesta = dm.Nominativo;
+
+                                            }
+                                        }
+                                    }
+
+
+                                    using (dtUffici dtu = new dtUffici())
+                                    {
+                                        var um = dtu.GetUffici(trm.idUfficio, db);
+
+                                        if (msgMail.destinatario?.Any() ?? false)
+                                        {
+                                            msgMail.oggetto = Resources.msgEmail.OggettoRimborsoSuccessivoTitoliViaggio;
+                                            msgMail.corpoMsg = string.Format(
+                                                Resources.msgEmail.MessaggioRimborsoSuccessivoTitoliViaggio, nominativiDellaRichiesta, um.descUfficio + " (" + um.codiceUfficio + ")");
+                                            gmail.sendMail(msgMail);
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non è stato possibile inviare l'email.");
+                                        }
+                                    }
+
+
+
+
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception(string.Format("Nessun titolo viaggio presente per l'ID passato come parametro {0}", idTitoloViaggio));
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
         private void InvioEmailPraticaConclusaTitoliViaggio(decimal idTitoloViaggio, ModelDBISE db)
         {
             AccountModel am = new AccountModel();
@@ -245,7 +407,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetPraticaConclusa(decimal idTrasferimento)
+        public void SetPraticaConclusa(decimal idTitoloViaggio)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -253,9 +415,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
 
-                    var tv = tr.TITOLIVIAGGIO.Where(a => a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false).OrderByDescending(a => a.IDTITOLOVIAGGIO).First();
+
+                    var tr = tv.TRASFERIMENTO;
 
                     if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                     {
@@ -272,7 +435,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                 "Conclusione della pratica per i titoli di viaggio", "TITOLIVIAGGIO", db,
-                                idTrasferimento, tv.IDTITOLOVIAGGIO);
+                                tr.IDTRASFERIMENTO, tv.IDTITOLOVIAGGIO);
 
                             this.InvioEmailPraticaConclusaTitoliViaggio(tv.IDTITOLOVIAGGIO, db);
 
@@ -290,7 +453,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void SetNotificaRichiesta(decimal idTrasferimento)
+        public void SetNotificaRichiesta(decimal idTitoloViaggio)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -298,9 +461,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    var tr = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
 
-                    var tv = tr.TITOLIVIAGGIO.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false).OrderByDescending(a => a.IDTITOLOVIAGGIO).First();
+                    var tr = tv.TRASFERIMENTO;
 
                     if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                     {
@@ -317,7 +480,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                 "Notifica della richiesta dei titoli di viaggio.", "TITOLIVIAGGIO", db,
-                                idTrasferimento, tv.IDTITOLOVIAGGIO);
+                                tr.IDTRASFERIMENTO, tv.IDTITOLOVIAGGIO);
 
                             this.InvioEmailTitoliViaggioRichiesta(tv.IDTITOLOVIAGGIO, db);
 
@@ -335,7 +498,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                         "Notifica della richiesta dei titoli di viaggio.", "CONIUGE", db,
-                                        idTrasferimento, c.IDCONIUGE);
+                                        tr.IDTRASFERIMENTO, c.IDCONIUGE);
 
                                 }
                             }
@@ -353,7 +516,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
                                        "Notifica della richiesta dei titoli di viaggio.", "Figli", db,
-                                       idTrasferimento, f.IDFIGLI);
+                                       tr.IDTRASFERIMENTO, f.IDFIGLI);
                                 }
                             }
                             if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
@@ -386,7 +549,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public GestPulsantiAttConclRvModel GestionePulsantiTitoliViaggi(decimal idTrasferimento)
+        public GestPulsantiAttConclRvModel GestionePulsantiTitoliViaggi(decimal idTitoloViaggio)
         {
             GestPulsantiAttConclRvModel gptv = new GestPulsantiAttConclRvModel();
 
@@ -411,11 +574,14 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (t != null && t.IDTRASFERIMENTO > 0)
+                var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+
+                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
 
-
+                    personalmente = tv.PERSONALMENTE;
+                    notificaRichiesta = tv.NOTIFICARICHIESTA;
+                    praticaConclusa = tv.PRATICACONCLUSA;
 
                     if (personalmente == true)
                     {
@@ -427,79 +593,75 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         chkPesonalmente = false;
 
-                        if (notificaRichiesta == true)
+                        if (notificaRichiesta == false)
                         {
-                            pulsanteNotificaRichiesta = false;
-                            if (praticaConclusa == true)
-                            {
-                                pulsantePraticaConclusa = false;
-                            }
-                            else
-                            {
-
-                                if (escludiTitoloViaggioRichiedente == false)
-                                {
-                                    if (docTitoliViaggiInseritiRichiedente == true)
-                                    {
-                                        pulsantePraticaConclusa = true;
-                                    }
-                                    else
-                                    {
-                                        pulsantePraticaConclusa = false;
-
-                                        goto Finish;
-                                    }
-
-                                }
-
-                                if (richiestaAttivaConiuge == true)
-                                {
-                                    if (esistonoDocumentiConiuge == true)
-                                    {
-                                        pulsantePraticaConclusa = true;
-                                    }
-                                    else
-                                    {
-                                        pulsantePraticaConclusa = false;
-                                        goto Finish;
-                                    }
-                                }
-
-                                if (richiestaAttivaFiglio == true)
-                                {
-                                    if (esistonoDocumentiFiglio == true)
-                                    {
-                                        pulsantePraticaConclusa = true;
-                                    }
-                                    else
-                                    {
-                                        pulsantePraticaConclusa = false;
-                                        goto Finish;
-                                    }
-                                }
-
-
-
-
-
-
-                            }
-                        }
-                        else
-                        {
-                            pulsantePraticaConclusa = false;
-
-                            if (escludiTitoloViaggioRichiedente == false || richiestaAttivaConiuge == true || richiestaAttivaFiglio == true)
-                            {
-                                pulsanteNotificaRichiesta = true;
-                            }
-                            else
-                            {
-                                pulsanteNotificaRichiesta = false;
-                            }
-
 
                         }
+
+
+                        //if (notificaRichiesta == true)
+                        //{
+                        //    pulsanteNotificaRichiesta = false;
+                        //    if (praticaConclusa == true)
+                        //    {
+                        //        pulsantePraticaConclusa = false;
+                        //    }
+                        //    else
+                        //    {
+
+                        //        if (escludiTitoloViaggioRichiedente == false)
+                        //        {
+                        //            if (docTitoliViaggiInseritiRichiedente == true)
+                        //            {
+                        //                pulsantePraticaConclusa = true;
+                        //            }
+                        //            else
+                        //            {
+                        //                pulsantePraticaConclusa = false;
+
+                        //                goto Finish;
+                        //            }
+
+                        //        }
+
+                        //        if (richiestaAttivaConiuge == true)
+                        //        {
+                        //            if (esistonoDocumentiConiuge == true)
+                        //            {
+                        //                pulsantePraticaConclusa = true;
+                        //            }
+                        //            else
+                        //            {
+                        //                pulsantePraticaConclusa = false;
+                        //                goto Finish;
+                        //            }
+                        //        }
+
+                        //        if (richiestaAttivaFiglio == true)
+                        //        {
+                        //            if (esistonoDocumentiFiglio == true)
+                        //            {
+                        //                pulsantePraticaConclusa = true;
+                        //            }
+                        //            else
+                        //            {
+                        //                pulsantePraticaConclusa = false;
+                        //                goto Finish;
+                        //            }
+                        //        }
+
+
+
+
+
+
+                        //    }
+                        //}
+                        //else
+                        //{
+
+
+                        //}
                     }
 
                 }
@@ -973,22 +1135,22 @@ namespace NewISE.Models.DBModel.dtObj
             TitoloViaggioModel bm = new TitoloViaggioModel();
 
 
-            var b = db.TITOLIVIAGGIO.Find(idBiglietto);
+            var tv = db.TITOLIVIAGGIO.Find(idBiglietto);
 
-            if (b != null && b.IDTITOLOVIAGGIO > 0)
+            if (tv != null && tv.IDTITOLOVIAGGIO > 0)
             {
                 bm = new TitoloViaggioModel()
                 {
-                    idTitoloViaggio = b.IDTITOLOVIAGGIO,
-                    notificaRichiesta = b.NOTIFICARICHIESTA,
-                    dataNotificaRichiesta = b.DATANOTIFICARICHIESTA,
-                    praticaConclusa = b.PRATICACONCLUSA,
-                    dataPraticaConclusa = b.DATAPRATICACONCLUSA,
-                    personalmente = b.PERSONALMENTE,
-                    escludiTitoloViaggio = b.ESCLUDITITOLOVIAGGIO,
+                    idTitoloViaggio = tv.IDTITOLOVIAGGIO,
+                    idTrasferimento = tv.IDTRASFERIMENTO,
+                    notificaRichiesta = tv.NOTIFICARICHIESTA,
+                    dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
+                    praticaConclusa = tv.PRATICACONCLUSA,
+                    dataPraticaConclusa = tv.DATAPRATICACONCLUSA,
+                    personalmente = tv.PERSONALMENTE,
+                    escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO,
                 };
             }
-
 
             return bm;
         }
@@ -1027,7 +1189,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
                 var tv =
-                    t.TITOLIVIAGGIO.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
+                    t.TITOLIVIAGGIO.Where(a => a.PRATICACONCLUSA == false)
                         .OrderByDescending(a => a.IDTITOLOVIAGGIO)
                         .First();
 

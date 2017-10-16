@@ -1,12 +1,32 @@
 ﻿@{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTitoloViaggio = Convert.ToDecimal(ViewData["idTitoloViaggio"]);
 }
 
+<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+
+
 <h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
+
 <div class="row">
-    <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
-        <div id="divTitoliViaggio" style="padding-top: 5px;">
-            @Html.Action("ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento })
+    <div class="col-xs-12" style="padding-right: 20px;">
+        <div id="divRimborsoSuccessivo" style="padding-top: 5px;">
+            @Html.Action("RimborsoSuccessivo", "TitoliViaggio", new { idTitoloViaggio = idTitoloViaggio })
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div style="margin-right: 20px;">
+            <hr />
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" style="padding-right: 20px;">
+        <div id="divGestioneFormularioTitoliViaggio" style="padding-top: 5px;">
+            @Html.Action("GestioneFormularioTitoliViaggio", "TitoliViaggio", new { idTitoloViaggio = idTitoloViaggio })
         </div>
     </div>
 </div>
@@ -96,12 +116,12 @@
     function NotificaRichiestaTitoliViaggi() {
         //debugger;
         var rotta = "/TitoliViaggio/NotificaRichiesta";
-        var idTrasferimento = parseInt('@idTrasferimento');
+        var idTitoloViaggio = parseInt('@idTitoloViaggio');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTitoloViaggio: idTitoloViaggio },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
