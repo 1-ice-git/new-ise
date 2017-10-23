@@ -17,10 +17,35 @@ namespace NewISE.Controllers
 {
     public class MaggiorazioniFamiliariController : Controller
     {
+
+        public ActionResult ElencoDocumentiFormulario()
+        {
+            return PartialView();
+        }
+
+        public ActionResult ElencoFormulariInseriti(decimal idMaggiorazioniFamiliari)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(ldm);
+        }
+
+
+
         [HttpPost]
         public ActionResult NuovoFormularioMF(decimal idMaggiorazioniFamiliari)
         {
-
 
             ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
 
@@ -30,15 +55,13 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult FormularioMF(decimal idMaggiorazioniFamiliari)
         {
-            DocumentiModel dm = new DocumentiModel();
-
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             try
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    dm = dtd.GetFormularioMaggiorazioniFamiliari(idMaggiorazioniFamiliari);
-
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
                 }
             }
             catch (Exception ex)
@@ -50,7 +73,7 @@ namespace NewISE.Controllers
 
             ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
 
-            return PartialView(dm);
+            return PartialView(ldm);
         }
 
 

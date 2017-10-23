@@ -13,6 +13,15 @@ namespace NewISE.Controllers
     public class TitoliViaggioController : Controller
     {
         [HttpPost]
+        public ActionResult NuovoFormularioTV(decimal idTitoloViaggio)
+        {
+
+            ViewData.Add("idTitoloViaggio", idTitoloViaggio);
+            return PartialView();
+
+        }
+
+        [HttpPost]
         public ActionResult TitoliViaggio(decimal idTrasferimento)
         {
 
@@ -67,7 +76,7 @@ namespace NewISE.Controllers
             {
                 var tm = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoloViaggio);
 
-                ViewData.Add("Coan", tm.coan);
+                ViewData.Add("trasferimento", tm);
             }
 
             using (dtDocumenti dtd = new dtDocumenti())
@@ -75,13 +84,22 @@ namespace NewISE.Controllers
                 dm = dtd.GetFormularioTitoliViaggio(idTitoloViaggio);
             }
 
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            {
+                var tvm = dttv.GetTitoloViaggioByID(idTitoloViaggio);
+                ViewData.Add("titoliViaggio", tvm);
+            }
+
+
+            //ViewData.Add("idTitoloViaggio", idTitoloViaggio);
+
             return PartialView(dm);
         }
 
 
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTrasferimento)
+        public ActionResult GestPulsantiNotificaAndPraticaConclusa(decimal idTitoloViaggio)
         {
             GestPulsantiAttConclRvModel gptv = new GestPulsantiAttConclRvModel();
 
@@ -89,7 +107,7 @@ namespace NewISE.Controllers
             {
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    gptv = dttv.GestionePulsantiTitoliViaggi(idTrasferimento);
+                    gptv = dttv.GestionePulsantiTitoliViaggi(idTitoloViaggio);
                 }
 
             }
@@ -124,7 +142,7 @@ namespace NewISE.Controllers
             return Json(new { err = errore, msg = msg });
         }
 
-
+        [HttpPost]
         public JsonResult ConcludiPratica(decimal idTitoloViaggio)
         {
             string errore = "";
@@ -146,6 +164,22 @@ namespace NewISE.Controllers
 
             return Json(new { err = errore, msg = msg });
         }
+
+
+        public ActionResult UploadTitoliViaggio(decimal idTitoloViaggio)
+        {
+
+
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            {
+                var tvm = dttv.GetTitoloViaggioByID(idTitoloViaggio);
+                ViewData.Add("titoliViaggio", tvm);
+            }
+
+            return PartialView();
+        }
+
+
 
 
     }

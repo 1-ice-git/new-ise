@@ -1660,6 +1660,13 @@
     <Content Include="Areas\Statistiche\Views\Statistiche\Index.cshtml" />
     <Content Include="FormulariMaster\Formulario_Maggiorazioni_Familiari.pdf" />
     <Content Include="FormulariMaster\Formulario_titoli_viaggio.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 1.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 3.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 4.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 5.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 6.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 7.pdf" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -2145,8 +2152,10 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMaggiorazioniFamiliariModel.cs" />
+    <Compile Include="Models\DBModel\TipoTrasportoModel.cs" />
     <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
@@ -2234,6 +2243,7 @@
     <Compile Include="Models\DBModel\TipoRegolaCalcoloModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
+    <Compile Include="Models\DBModel\TrasportoEffettiModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
@@ -2326,6 +2336,10 @@
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
     <Content Include="Views\TitoliViaggio\RimborsoSuccessivo.cshtml" />
     <Content Include="Views\TitoliViaggio\GestioneFormularioTitoliViaggio.cshtml" />
+    <Content Include="Views\TitoliViaggio\NuovoFormularioTV.cshtml" />
+    <Content Include="Views\TitoliViaggio\UploadTitoliViaggio.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

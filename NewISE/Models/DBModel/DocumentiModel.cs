@@ -75,6 +75,10 @@ namespace NewISE.Models.DBModel
 
         public TrasferimentoModel Trasferimento { get; set; }
 
+        public bool HasValue()
+        {
+            return this.idDocumenti > 0 ? true : false;
+        }
 
     }
 }

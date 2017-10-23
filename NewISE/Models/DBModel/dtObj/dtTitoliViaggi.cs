@@ -1122,6 +1122,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dataPraticaConclusa = b.DATAPRATICACONCLUSA,
                         personalmente = b.PERSONALMENTE,
                         escludiTitoloViaggio = b.ESCLUDITITOLOVIAGGIO,
+                        idTrasferimento = b.IDTRASFERIMENTO,
                     };
                 }
             }

@@ -37,9 +37,9 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public DocumentiModel GetFormularioMaggiorazioniFamiliari(decimal idMaggiorazioniFamiliari)
+        public IList<DocumentiModel> GetFormulariMaggiorazioniFamiliari(decimal idMaggiorazioniFamiliari)
         {
-            DocumentiModel dm = new DocumentiModel();
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -50,16 +50,17 @@ namespace NewISE.Models.DBModel.dtObj
                         .OrderByDescending(a => a.IDDOCUMENTO);
                 if (ld?.Any() ?? false)
                 {
-                    var d = ld.First();
+                    foreach (var d in ld)
+                    {
+                        var dm = this.GetDocumento(d.IDDOCUMENTO, db);
 
-                    dm = this.GetDocumento(d.IDDOCUMENTO, db);
-
-
+                        ldm.Add(dm);
+                    }
                 }
 
             }
 
-            return dm;
+            return ldm;
 
         }
 
@@ -143,7 +144,22 @@ namespace NewISE.Models.DBModel.dtObj
                         break;
                     case EnumTipoDoc.Lettera_Trasferimento:
                         break;
-
+                    case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            case EnumParentela.Figlio:
+                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            case EnumParentela.Richiedente:
+                                ld = db.MAGGIORAZIONIFAMILIARI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException("tipodoc");
                 }
@@ -431,6 +447,51 @@ namespace NewISE.Models.DBModel.dtObj
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
             }
+
+        }
+
+
+        public void SetFormularioTitoliViaggio(ref DocumentiModel dm, decimal idTitoloViaggio, ModelDBISE db)
+        {
+            MemoryStream ms = new MemoryStream();
+            DOCUMENTI d = new DOCUMENTI();
+
+            dm.file.InputStream.CopyTo(ms);
+
+            var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+            var ld = tv.DOCUMENTI;
+
+            if (ld?.Any() ?? false)
+            {
+                d = ld.First();
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
+                }
+            }
+            else
+            {
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+                ld.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
+                }
+            }
+
 
         }
 

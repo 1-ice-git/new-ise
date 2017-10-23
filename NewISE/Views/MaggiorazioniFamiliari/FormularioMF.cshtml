@@ -1,10 +1,15 @@
-﻿@model NewISE.Models.DBModel.DocumentiModel
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
 <style>
     .BordoRosso {
         border-style: double;
         border-color: red;
         border-width: 1px;
         display: inline-block;
+    }
+
+    #imgElencoFormulari:hover {
+        cursor: pointer;
     }
 </style>
 
@@ -13,63 +18,111 @@
 }
 
 <div class="form-group">
-    @*@Html.Label("Visualizza Formulario Maggiorazioni familiari", new { @class = "control-label col-xs-3" })*@
-    @if (Model != null && Model.idDocumenti > 0)
+
+    @*<table class="table">
+            <thead>
+
+            </thead>
+            <tbody>
+                @foreach (DocumentiModel d in Model)
+                {
+                    <tr>
+                        <td>
+                            @d.nomeDocumento
+                        </td>
+                        <td>
+                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = d.idDocumenti })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+
+
+
+
+    @if (Model?.Any() ?? false)
     {
         <div class="col-xs-1">
-            <a href="@Url.RouteUrl("LeggiDocumento", new { id = Model.idDocumenti })" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idMaggiorazioniFamiliari ); " src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
     else
     {
         <div class="col-xs-1">
-            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Utlizzare il pulsante per inserire il formulario." />
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idMaggiorazioniFamiliari ); " src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
-    <div class="col-xs-3 col-xs-offset-1">
-        @if (Model != null && Model.idDocumenti > 0)
-        {
-            <button type="button" class="btn btn-default btn-sm" onclick="NuovoFormulario();">
-                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
-                Sostituisci Formulario
-            </button>
-        }
-        else
-        {
-            <button type="button" class="btn btn-default btn-sm" onclick="NuovoFormulario();">
-                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
-                Inserisci Formulario
-            </button>
-        }
-    </div>
+
 </div>
 
-<div class="modal fade" id="inviaFormularioMFModal" tabindex="-1" role="dialog" aria-labelledby="inviaFormularioMFModalLabel" aria-hidden="true">
-    <div id="divDialogFromularioMF" class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 600px;">
+<div class="modal fade" id="ModalElencoFormulari" tabindex="-1" role="dialog" aria-labelledby="ModalElencoFormulariLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Formulario maggiorazioni familiari</h3>
+                <h3 class="modal-title alert alert-info text-info" id="ModalElencoFormulariLabel">Formulari Maggiorazioni Familiari</h3>
             </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em; height: 100px; ">
-                <div id="viewDocumentoFormMF">
-                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divModalElencoFormulari">
+                    @*@Html.Action("ElencoFormulariInseriti", "MaggiorazioniFamiliari", new {idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari})*@
                 </div>
-
             </div>
             <div class="modal-footer">
-                <button id="btUpload" type="button" class="btn btn-info" onclick="SalvaFormularioMF();">Salva</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
+
 <script type="text/javascript">
 
-    function NuovoFormulario() {
+
+    function ElencoDocumentiMF(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+        debugger;
+        var rotta = "/Documenti/ElencoDocumenti";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divModalElencoFormulari").empty();
+                $("#divModalElencoFormulari").html(result);
+                $('#ModalElencoFormulari').modal().show();
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+    @*function NuovoFormulario() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/NuovoFormularioMF";
         var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
@@ -101,9 +154,9 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
-    }
+    }*@
 
-    function SalvaFormularioMF() {
+    @*function SalvaFormularioMF() {
         //debugger;
         var datiForm = new FormData();
         var rotta = "/Documenti/InserisciFormularioMF";
@@ -169,10 +222,10 @@
         //    DialogInfo("Prima di inviare la lettera di trasferimento è necessario compilare i campi con asterisco.");
         //}
 
-    }
+    }*@
 
-    $("#inviaFormularioMFModal").on('hide.bs.modal', function () {
-        $('.modal-backdrop').hide();
-    });
+    //$("#inviaFormularioMFModal").on('hide.bs.modal', function () {
+    //    $('.modal-backdrop').hide();
+    //});
 
 </script>

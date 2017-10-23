@@ -67,6 +67,65 @@ namespace NewISE.Controllers
             }
         }
 
+
+        public JsonResult InserisciFormularioTV(decimal idTitoloViaggio, HttpPostedFileBase file)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        DocumentiModel dm = new DocumentiModel();
+                        bool esisteFile = false;
+                        bool gestisceEstensioni = false;
+                        bool dimensioneConsentita = false;
+                        string dimensioneMaxConsentita = string.Empty;
+
+                        Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                            out dimensioneConsentita, out dimensioneMaxConsentita,
+                            EnumTipoDoc.Formulario_Titoli_Viaggio);
+
+                        if (esisteFile)
+                        {
+                            if (gestisceEstensioni == false)
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                            }
+
+                            if (dimensioneConsentita)
+                            {
+                                dtd.SetFormularioTitoliViaggio(ref dm, idTitoloViaggio, db);
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato supera la dimensione massima consentita (" +
+                                    dimensioneMaxConsentita + " Mb).");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Il documento è obbligatorio.");
+                        }
+                    }
+
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata inserito." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
+
         [HttpPost]
         public JsonResult InserisciFormularioMF(decimal idMaggiorazioniFamiliari, HttpPostedFileBase file)
         {
@@ -433,10 +492,7 @@ namespace NewISE.Controllers
                         var trm = dttr.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
                         idTrasferimento = trm.idTrasferimento;
                     }
-                    else
-                    {
-                        idTrasferimento = id;
-                    }
+
                 }
 
 
@@ -449,6 +505,34 @@ namespace NewISE.Controllers
                 switch (chiamante)
                 {
                     case EnumChiamante.Maggiorazioni_Familiari:
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                {
+                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(id);
+                                    idTrasferimento = mfm.idTrasferimento;
+                                }
+                                break;
+                            case EnumParentela.Figlio:
+                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                {
+                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(id);
+                                    idTrasferimento = mfm.idTrasferimento;
+                                }
+                                break;
+                            case EnumParentela.Richiedente:
+                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                {
+                                    var mfm = dtmf.GetMaggiorazioniFamiliariByID(id);
+                                    idTrasferimento = mfm.idTrasferimento;
+                                }
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
+
+
                         using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                         {
                             bool rinunciaMagFam = false;
@@ -494,6 +578,7 @@ namespace NewISE.Controllers
                             {
                                 case EnumParentela.Coniuge:
                                     tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+                                    idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
                                         bool notificaRichiesta = tvm.notificaRichiesta;
@@ -512,6 +597,7 @@ namespace NewISE.Controllers
                                     break;
                                 case EnumParentela.Figlio:
                                     tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+                                    idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
                                         bool notificaRichiesta = tvm.notificaRichiesta;
@@ -530,6 +616,7 @@ namespace NewISE.Controllers
                                     break;
                                 case EnumParentela.Richiedente:
                                     tvm = dttv.GetTitoloViaggioByID(id);
+                                    idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
                                         bool notificaRichiesta = tvm.notificaRichiesta;
@@ -552,10 +639,43 @@ namespace NewISE.Controllers
                         }
                         break;
                     case EnumChiamante.Trasporto_Effetti:
+                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                        {
+                            var tem = dtte.GetTrasportoEffettiByID(id);
+                            idTrasferimento = tem.idTrasferimento;
+                        }
                         break;
                     case EnumChiamante.Trasferimento:
+                        idTrasferimento = id;
                         break;
                     case EnumChiamante.Passaporti:
+
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                                {
+                                    var ppm = dtpp.GetPassaportoByIdConiuge(id);
+                                    idTrasferimento = ppm.idTrasferimento;
+                                }
+                                break;
+                            case EnumParentela.Figlio:
+                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                                {
+                                    var ppm = dtpp.GetPassaportoByIdFiglio(id);
+                                    idTrasferimento = ppm.idTrasferimento;
+                                }
+                                break;
+                            case EnumParentela.Richiedente:
+                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                                {
+                                    var ppm = dtpp.GetPassaportoByID(id);
+                                    idTrasferimento = ppm.idTrasferimento;
+                                }
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
 
                         break;
                     default:

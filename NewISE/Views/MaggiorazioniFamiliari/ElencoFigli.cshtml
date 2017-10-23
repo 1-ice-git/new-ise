@@ -204,14 +204,14 @@
 
     }
 
-    function ElencoDocumenti(id, gruppoDoc, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
+    function ElencoDocumenti(id, tipoDoc, idParentela, idMaggiorazioniFamiliari) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, gruppoDocumento: gruppoDoc, tipoDoc: tipoDoc, parentela: idParentela, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
             dataType: 'html',
             async: false,
             beforeSend: function () {

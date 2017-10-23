@@ -31,21 +31,32 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-xs-6">
+        <div id="divUploadTitoli">
+            @Html.Action("UploadTitoliViaggio", "TitoliViaggio", new { idTitoloViaggio = idTitoloViaggio })
+        </div>
+    </div>
+    <div class="col-xs-6">
+
+    </div>
+</div>
+
 <div id="divPusantiNotificaAndConcludiTitoliViaggio">
-    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "TitoliViaggio", new { idTrasferimento = idTrasferimento })
+    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "TitoliViaggio", new { idTitoloViaggio = idTitoloViaggio })
 </div>
 
 <script type="text/javascript">
 
-    function ElencoFamiliariTitoliViaggio() {
-        //debugger;
-        var rotta = "/PratichePassaporto/ElencoFamiliariPassaporti";
-        var idTrasferimento = parseInt('@idTrasferimento');
+    function GestioneFormularioTitoliViaggio() {
+        debugger;
+        var rotta = "/TitoliViaggio/GestioneFormularioTitoliViaggio";
+        var idTitoloViaggio = parseInt('@idTitoloViaggio');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idTitoloViaggio: idTitoloViaggio },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -56,8 +67,8 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divTitoliViaggio").empty();
-                $("#divTitoliViaggio").html(result);
+                $("#divGestioneFormularioTitoliViaggio").empty();
+                $("#divGestioneFormularioTitoliViaggio").html(result);
 
                 //RicercaDocumenti();
 
