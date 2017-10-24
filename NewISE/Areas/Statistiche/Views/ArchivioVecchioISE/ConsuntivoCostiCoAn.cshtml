@@ -5,13 +5,15 @@
         <hr />
 
         <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
 
         <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
         <div class="select2-container select2-container--classic">
             @Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoan(this.value);", @onclick = "PrelevaCoan(this.value);" })
@@ -132,6 +134,34 @@
 
             }
         });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '2001:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker1").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '1920:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
 
         function invia() {
             //debugger

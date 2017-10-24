@@ -5,16 +5,11 @@
         <hr />
 
         <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
 
         <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
-        </div>
-        <div class="select2-container select2-container--classic">
-            Spese Diverse Seleziona
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy"), @onchange = "Visualizza(this.value);" })
         </div>
 
     </div>
@@ -28,12 +23,9 @@
     <hr />
 </div>
 
-<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+<table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.tipo)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.matricola)
             </th>
@@ -50,26 +42,21 @@
                 @Html.DisplayNameFor(model => model.sede)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.vocedispesa)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.valuta)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dt_trasferiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.spesa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.importospesa)
-            </th>
+            
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
             {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipo)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.matricola)
                 </td>
@@ -86,16 +73,13 @@
                     @Html.DisplayFor(modelItem => item.sede)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.vocedispesa)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.valuta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dt_trasferiento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.spesa)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.importospesa)
                 </td>
             </tr>
         }
@@ -103,7 +87,7 @@
 </table>
 
 <script type="text/javascript">
-    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+    $('#tb_Stp_Spese_Diverse').DataTable({
             "order": [],
             "scrollY": 220,
             "scrollX": true,
@@ -140,6 +124,88 @@
 
             window.location.href = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
         };
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+            });
+        });
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker1").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+            });
+        });
+
+
+        function Visualizza() {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/SpeseDiverse";
+
+            //var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").val();
+            var data1 = $("#datepicker1").val();
+
+            var chk = true;
+
+            //$("#codicedipendente").val = idMatricola;
+
+            //if (isNaN(codicequalifica)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            //if (isNaN(null)) {
+            //    alert("null is not a number");
+            //} else {
+            //    alert("i think null is a number");
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    //codicequalifica: codicequalifica,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
 
 </script>
 

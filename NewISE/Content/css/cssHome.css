@@ -15,8 +15,39 @@
     margin-left:-400px;
 
 }
+
+#divStatistiche{
+    width:400px;
+    height:300px;
+    background-color:gainsboro;
+    border:double;
+    border-color:#00B04E;
+    overflow-x:hidden;
+    overflow-y:auto;
+    text-align:center;
+
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:150px;
+    margin-left:-400px;
+
+}
+
 #divMsgUtente div{
     width: 200px;
+    height: 25px;
+    background: #00B04E;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -100px;
+    color:maroon;
+}
+
+#divStatistiche div{
+    width: 75px;
     height: 25px;
     background: #00B04E;
     position: absolute;

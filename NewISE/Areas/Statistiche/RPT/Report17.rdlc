@@ -581,7 +581,7 @@
         <Top>7.14057cm</Top>
         <Left>0.2863cm</Left>
         <Height>1.2cm</Height>
-        <Width>20.55562cm</Width>
+        <Width>20.5556cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -669,6 +669,38 @@
         <Width>3.46197cm</Width>
         <ZIndex>3</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())</ToolTip>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Scrivere il periodo di riferimento</Value>
+                <Style>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>5.63245cm</Top>
+        <Left>0.2863cm</Left>
+        <Height>0.6cm</Height>
+        <Width>7.70835cm</Width>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>

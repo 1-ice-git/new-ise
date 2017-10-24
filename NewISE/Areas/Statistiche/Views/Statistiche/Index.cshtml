@@ -9,37 +9,49 @@
 
 }
 
-<div class="row"> 
-    <div id="divPanelDipendenti" class="col-xs-3">
 
-        <div id="ContenitoreStatistiche">
+@*<div class="row">
+    <div class="col-xs-12">
+        <div id="divMsgUtente" class="DivSfondoBordo border_radius">
+            <div>Non ci sono messaggi.</div>
+        </div>
+    </div>
+</div>*@
+<div style="margin: 15px"></div>
+<div class="row">
+    @*<div id="divPanelDipendenti" class="col-xs-3">*@
+
+    @*<div id="ContenitoreStatistiche">*@
+    <div class="col-xs-6">
+        <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <br /><br />
-            <ul>                
-                <li><a href="#" onclick="callpartial();">Tabella Log Attivita</a></li>                
-            </ul>          
+            <ul>
+                <li><a href="#" onclick="callpartial();">Tabella Log Attivita</a></li>
+            </ul>
             <ul>
                 <li><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></li>
             </ul>
             <ul>
-                <li><a href="#" onclick="callpartial();">ISE</a>
-                <ul class="no-bullets">
-                    <li><a href="#" onclick="callpartial();">Interrogazione dipendente</a></li>
-                    <li><a href="#" onclick="callpartial3();">Riepiloghi</a></li>
-                    <li><a href="#" onclick="callpartial2();">Altre Statistiche</a></li>
-                    <li><a href="#" onclick="callpartial3();">Test (Gigius)</a></li>
-                    @*<li><a href="#" onclick="callpartial4();">Test4 (Gigius)</a></li>*@
-                </ul>
-                
+                <li>
+                    <a href="#" onclick="callpartial();">ISE</a>
+                    <ul class="no-bullets">
+                        <li><a href="#" onclick="callpartial();">Interrogazione dipendente</a></li>
+                        <li><a href="#" onclick="callpartial3();">Riepiloghi</a></li>
+                        <li><a href="#" onclick="callpartial2();">Altre Statistiche</a></li>
+                        <li><a href="#" onclick="callpartial3();">Test</a></li>
+
+                    </ul>
+
                 </li>
             </ul>
         </div>
     </div>
-    
+
     <div id="divPartialView" class="col-xs-12">
-        
+
         @Html.Hidden("codicedipendente")
     </div>
-    
+
 </div>
 
 <script type="text/javascript">

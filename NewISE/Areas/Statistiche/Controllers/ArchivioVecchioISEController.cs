@@ -1494,18 +1494,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "And IES_COD_VALUTA = VAL_COD_VALUTA ";
                 Sql += "And IES_COD_TIPO_MOVIMENTO = TMO_COD_TIPO_MOVIMENTO ";
                 Sql += "And IES_MATRICOLA = AND_MATRICOLA ";
-                //Sql += "And(IES_DT_OPERAZIONE >= To_Date('01-gen-2017', 'DD-MON-RRRR') And ";
-                Sql += "And(IES_DT_OPERAZIONE >= To_Date (" + VDATA + ")  And";
-                //Sql += "IES_DT_OPERAZIONE <= To_Date('25-set-2017', 'DD-MON-RRRR')) ";
-                Sql += "IES_DT_OPERAZIONE <= To_Date (" + VDATA1 + ")) ";
-                //Sql += "IES_DT_OPERAZIONE <= To_Date(SysDate)) ";
+                Sql += "And(IES_DT_OPERAZIONE >= To_Date ('" + VDATA + "','DD-MM-YYYY')  ";
+                Sql += "And IES_DT_OPERAZIONE <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "IES_PROG_TRASFERIMENTO, ";
                 Sql += "IES_COD_TIPO_MOVIMENTO, ";
                 Sql += "IES_DT_DECORRENZA, ";
                 Sql += "IES_PROG_MOVIMENTO ";
 
-
+           
                 OracleCommand cmd = new OracleCommand(Sql, cn);
                 cn.Open();
                 OracleDataReader rdr = cmd.ExecuteReader();
@@ -1608,7 +1605,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Contributo Abitazione
-        public ActionResult OpContributoAbitazione()
+        public ActionResult OpContributoAbitazione(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1630,8 +1627,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "Where CON_COD_SEDE = SED_COD_SEDE ";
                 Sql += "And CON_VALUTA_UFFICIALE = VAL_COD_VALUTA ";
                 Sql += "And CON_MATRICOLA = AND_MATRICOLA ";
-                Sql += "And(CON_DT_OPERAZIONE >= To_Date('01-gen-2000', 'DD-MON-RRRR') And ";
-                Sql += "CON_DT_OPERAZIONE <= To_Date(SysDate)) ";
+                Sql += "And(CON_DT_OPERAZIONE >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
+                Sql += "And CON_DT_OPERAZIONE <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "CON_PROG_TRASFERIMENTO, ";
                 Sql += "CON_DT_DECORRENZA, ";
@@ -1726,7 +1723,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Uso Abitazione
-        public ActionResult OpUsoAbitazione()
+        public ActionResult OpUsoAbitazione(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1747,8 +1744,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "Where USO_COD_SEDE = SED_COD_SEDE ";
                 Sql += "And USO_VALUTA_CANONE = VAL_COD_VALUTA ";
                 Sql += "And USO_MATRICOLA = AND_MATRICOLA ";
-                Sql += "And(USO_DT_OPERAZIONE >= To_Date('01-gen-2000', 'DD-MON-RRRR') And ";
-                Sql += "USO_DT_OPERAZIONE <= To_Date(SysDate)) ";
+                Sql += "And(USO_DT_OPERAZIONE >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
+                Sql += "And USO_DT_OPERAZIONE <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "USO_PROG_TRASFERIMENTO, ";
                 Sql += "USO_DT_DECORRENZA, ";
@@ -1786,7 +1783,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Canone Anticipato
-        public ActionResult OpCanoneAnticipato()
+        public ActionResult OpCanoneAnticipato(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1810,8 +1807,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "Where CAN_COD_SEDE = SED_COD_SEDE ";
                 Sql += "And CAN_VALUTA_CANONE = VAL_COD_VALUTA ";
                 Sql += "And CAN_MATRICOLA = AND_MATRICOLA ";
-                Sql += "And(CAN_DT_OPERAZIONE >= To_Date('01-gen-2000', 'DD-MON-RRRR') And ";
-                Sql += "CAN_DT_OPERAZIONE <= To_Date('31-lug-2017', 'DD-MON-RRRR')) ";
+                Sql += "And(CAN_DT_OPERAZIONE >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
+                Sql += "And CAN_DT_OPERAZIONE <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "CAN_PROG_TRASFERIMENTO, ";
                 Sql += "CAN_DT_DECORRENZA, ";
@@ -1849,7 +1846,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Spese Diverse
-        public ActionResult OpSpeseDiverse()
+        public ActionResult OpSpeseDiverse(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1870,8 +1867,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "Where SPD_COD_SEDE = SED_COD_SEDE ";
                 Sql += "And SPD_COD_SPESA = TSP_COD_SPESA ";
                 Sql += "And SPD_MATRICOLA = AND_MATRICOLA ";
-                Sql += "And(SPD_DT_OPERAZIONE >= To_Date('01-gen-2017', 'DD-MON-RRRR') And ";
-                Sql += "SPD_DT_OPERAZIONE <= To_Date('31-lug-2017', 'DD-MON-RRRR')) ";
+                Sql += "And(SPD_DT_OPERAZIONE >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
+                Sql += "And SPD_DT_OPERAZIONE <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "Order By NOMINATIVO, ";
                 Sql += "SPD_PROG_TRASFERIMENTO, ";
                 Sql += "SPD_DT_DECORRENZA, ";
@@ -1907,7 +1904,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Maggiorazione Abitazione
-        public ActionResult OpMaggiorazioneAbitazione()
+        public ActionResult OpMaggiorazioneAbitazione(string VDATA = "", string VDATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -1936,8 +1933,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND MAB.MAB_FLAG_ANNULLATO = 0 ";
                 Sql += "AND RMAB.MAB_RAT_FLAG_ANNULLATO = 0 ";
                 Sql += "AND MAB.MAB_CESSAZIONE = 0 ";
-                Sql += "AND(RMAB.MAB_RAT_DATARATA >= To_Date('01-gen-2017', 'DD-MON-RRRR') AND ";
-                Sql += "RMAB.MAB_RAT_DATARATA <= To_Date(SysDate)) ";
+                Sql += "AND(RMAB.MAB_RAT_DATARATA >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
+                Sql += "AND RMAB.MAB_RAT_DATARATA <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
                 Sql += "ORDER BY NOMINATIVO, MAB.IES_PROG_TRASFERIMENTO, MAB.MAB_DT_DATADECORRENZA ";
 
 
@@ -2175,10 +2172,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //Sql += "IES_DT_DECORRENZA Desc, ";
                 //Sql += "IES_PROG_MOVIMENTO Desc ";
 
+               
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 adp.Fill(ds13, ds13.V_ISE_STP_LIVELLI_ESTERI.TableName);
+
+                //ReportParameter[] parameters = new ReportParameter[2];
+                //parameters[0] = new ReportParameter("datepicker", V_DATA);
+                //parameters[1] = new ReportParameter("datepicker1", V_DATA1);
+                //reportViewer.LocalReport.SetParameters(parameters);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report17.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
@@ -2195,7 +2198,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Spese Diverse
-        public ActionResult SpeseDiverse()
+        public ActionResult SpeseDiverse(string V_DATA = "", string V_DATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -2217,19 +2220,19 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 //String Sql = "Select DECODE(TIPO,'P', 'SPESE DI TRASFERIMENTO', 'SPESE DI RIENTRO') TIPO, MATRICOLA, NOMINATIVO, CODLIVELLO, CODSEDE,        SEDE, VALUTA, DT_TRASFERIMENTO, INITCAP(SPESA) SPESA, IMPORTOSPESA From ISE_STP_SPESEDIVERSE Where UTENTE = 'uteadm' Order By TIPO Desc, NOMINATIVO, VALUTA ";
 
-                // Query da modificare
+                
                 String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
-                Sql += "ANADIPE.AND_LIVELLO, ";
-                Sql += "SED_DESCRIZIONE, ";
+                Sql += "ANADIPE.AND_LIVELLO LIVELLO, ";
+                Sql += "SED_DESCRIZIONE SEDE, ";
                 Sql += "TSP_DESCRIZIONE, ";
                 Sql += "SPESEDIVERSE.* ";
                 Sql += "From ANADIPE, TIPISPESE, SPESEDIVERSE, SEDIESTERE ";
                 Sql += "Where TSP_COD_SPESA = SPD_COD_SPESA ";
                 Sql += "And SPD_MATRICOLA = AND_MATRICOLA ";
                 Sql += "And SPD_COD_SEDE = SED_COD_SEDE ";
-                Sql += "And (SPD_DT_DECORRENZA >= To_Date('01-gen-2017', 'DD-MON-RRRR') ";
-                Sql += "And SPD_DT_DECORRENZA <= To_Date('25-set-2017', 'DD-MON-RRRR')) ";
-  
+                Sql += "And (SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY')  ";
+                Sql += "And SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY'))  ";
+
 
                 OracleCommand cmd = new OracleCommand(Sql, cn);
                 cn.Open();
@@ -2238,16 +2241,14 @@ namespace NewISE.Areas.Statistiche.Controllers
                 while (rdr.Read())
                 {
                     var details = new Stp_Spese_diverse();
-                    //details.tipo = rdr["TIPO"].ToString();
-                    details.matricola = rdr["MATRICOLA"].ToString();
-                    details.nominativo = rdr["NOMINATIVO"].ToString();
-                    details.codlivello = rdr["CODLIVELLO"].ToString();
-                    details.codsede = rdr["CODSEDE"].ToString();
-                    details.sede = rdr["SEDE"].ToString();
-                    details.valuta = rdr["VALUTA"].ToString();
-                    details.dt_trasferiento = rdr["DT_TRASFERIMENTO"].ToString();
-                    details.spesa = rdr["SPESA"].ToString();
-                    details.importospesa = rdr["IMPORTOSPESA"].ToString();
+                        details.matricola = rdr["SPD_MATRICOLA"].ToString();
+                        details.nominativo = rdr["NOMINATIVO"].ToString();
+                        details.codlivello = rdr["LIVELLO"].ToString();
+                        details.codsede = rdr["SPD_COD_SEDE"].ToString();
+                        details.sede = rdr["SEDE"].ToString();
+                        details.data = Convert.ToDateTime(rdr["SPD_DT_DECORRENZA"]).ToString("dd/mm/yyyy");
+                        details.vocedispesa = rdr["TSP_DESCRIZIONE"].ToString();
+                        details.valuta = rdr["SPD_IMPORTO_VALUTA"].ToString();
                     model.Add(details);
                 }
                 //return View("ViewName", model);
@@ -2308,24 +2309,50 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Spese Avvicendamento
-        public ActionResult SpeseAvvicendamento()
+        public ActionResult SpeseAvvicendamento(string V_DATA = "", string V_DATA1 = "")
         {
 
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
 
-                String Sql = "Select DECODE(TIPO, 'P', 'SPESE DI TRASFERIMENTO', 'SPESE DI RIENTRO') TIPO, ";
-                Sql += "MATRICOLA, ";
-                Sql += "NOMINATIVO, ";
-                Sql += "CODLIVELLO, ";
-                Sql += "CODSEDE, ";
-                Sql += "SEDE, ";
-                Sql += "VALUTA, ";
-                Sql += "DT_TRASFERIMENTO, ";
-                Sql += "INITCAP(SPESA) SPESA, ";
-                Sql += "IMPORTOSPESA ";
-                Sql += "From ISE_STP_CONSUNTIVOSPESEDIVERSE ";
-                Sql += "Order By TIPO Desc, NOMINATIVO, VALUTA ";
+                //String Sql = "Select DECODE(TIPO, 'P', 'SPESE DI TRASFERIMENTO', 'SPESE DI RIENTRO') TIPO, ";
+                //Sql += "MATRICOLA, ";
+                //Sql += "NOMINATIVO, ";
+                //Sql += "CODLIVELLO, ";
+                //Sql += "CODSEDE, ";
+                //Sql += "SEDE, ";
+                //Sql += "VALUTA, ";
+                //Sql += "DT_TRASFERIMENTO, ";
+                //Sql += "INITCAP(SPESA) SPESA, ";
+                //Sql += "IMPORTOSPESA ";
+                //Sql += "From ISE_STP_CONSUNTIVOSPESEDIVERSE ";
+                //Sql += "Order By TIPO Desc, NOMINATIVO, VALUTA ";
+
+
+                String Sql = "Select Distinct IES_MATRICOLA, ";
+                    Sql += "IES_PROG_TRASFERIMENTO, ";
+                    Sql += "IES_COD_TIPO_MOVIMENTO, ";
+                    Sql += "IES_ANTICIPO, ";
+                    Sql += "IES_COD_QUALIFICA, ";
+                    Sql += "IES_COD_SEDE CODSEDE, ";
+                    Sql += "SED_DESCRIZIONE, ";
+                    Sql += "VAL_DESCRIZIONE, ";
+                    Sql += "IES_DT_TRASFERIMENTO, ";
+                    Sql += "decode(IES_flag_valuta, ";
+                    Sql += "'E', ";
+                    Sql += "IES_INDEN_SIS_RIE * IES_CAMBIO, ";
+                    Sql += "IES_INDEN_SIS_RIE / IES_CAMBIO) SISRIE, ";
+                    Sql += "AND_COGNOME ||' '||AND_NOME NOMINATIVO ";
+                    Sql += "From INDESTERA, SEDIESTERE, VALUTE, ANADIPE ";
+                    Sql += "Where IES_COD_SEDE = SED_COD_SEDE ";
+                    Sql += "And IES_COD_VALUTA = VAL_COD_VALUTA ";
+                    Sql += "And IES_MATRICOLA = AND_MATRICOLA ";
+                    Sql += "And (IES_COD_TIPO_MOVIMENTO = 1 Or IES_COD_TIPO_MOVIMENTO = 2) ";
+                    Sql += "And IES_FLAG_RICALCOLATO Is Null ";
+                    Sql += "And IES_DT_TRASFERIMENTO >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY') ";
+                    Sql += "And IES_DT_TRASFERIMENTO <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY') ";
+                    Sql += "Order By IES_MATRICOLA, IES_PROG_TRASFERIMENTO, IES_COD_TIPO_MOVIMENTO ";
+                
 
                 OracleCommand cmd = new OracleCommand(Sql, cn);
                 cn.Open();
@@ -2334,16 +2361,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                 while (rdr.Read())
                 {
                     var details = new Stp_Spese__di_avvicendamento();
-                    details.TIPO = rdr["TIPO"].ToString();
-                    details.MATRICOLA = rdr["MATRICOLA"].ToString();
+                    //details.TIPO = rdr["TIPO"].ToString();
+                    details.MATRICOLA = rdr["IES_MATRICOLA"].ToString();
                     details.NOMINATIVO = rdr["NOMINATIVO"].ToString();
-                    details.CODLIVELLO = rdr["CODLIVELLO"].ToString();
+                    //details.LIVELLO = rdr["CODLIVELLO"].ToString();
                     details.CODSEDE = rdr["CODSEDE"].ToString();
-                    details.SEDE = rdr["SEDE"].ToString();
-                    details.VALUTA = rdr["VALUTA"].ToString();
-                    details.DT_TRASFERIMENTO = rdr["DT_TRASFERIMENTO"].ToString();
-                    details.SPESA = rdr["SPESA"].ToString();
-                    details.IMPORTOSPESA = rdr["IMPORTOSPESA"].ToString();
+                    details.SEDE = rdr["SED_DESCRIZIONE"].ToString();
+                    details.VALUTA = rdr["VAL_DESCRIZIONE"].ToString();
+                    details.DT_TRASFERIMENTO = rdr["IES_DT_TRASFERIMENTO"].ToString();
+                    //details.SPESA = rdr["SPESA"].ToString();
+                    //details.IMPORTOSPESA = rdr["IMPORTOSPESA"].ToString();
                     model.Add(details);
                 }
                 //return View("ViewName", model);
@@ -2401,7 +2428,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return View();
         }
-
 
         public ActionResult StampaLivelli()
         {

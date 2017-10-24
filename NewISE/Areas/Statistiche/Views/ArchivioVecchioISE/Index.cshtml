@@ -7,7 +7,7 @@
 
 <div style="margin: 15px"></div>
 <div class="form-horizontal" id="divRiga1">
-
+    <hr />
     <div class="form-group">
         @Html.Label("lblStampa", "Modalità estrazione", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
@@ -80,6 +80,12 @@
                     rotta = "/Statistiche/ArchivioVecchioISE/SpeseAvvicendamento";
                     break;
                 case 7:// Storia del dipendente
+                    rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+                    break;
+                case 8:// Storia del dipendente
+                    rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+                    break;
+                case 9:// Storia del dipendente
                     rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
                     break;
                 default:
