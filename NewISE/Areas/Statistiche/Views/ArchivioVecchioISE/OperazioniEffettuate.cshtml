@@ -8,46 +8,27 @@
 <div style="margin: 15px"></div>
 <div class="form-horizontal" id="divRiga1">
 
-    <div class="form-group">
-        @Html.Label("lblOperazione", "Inserire la Data per effettuare la Ricerca", new { @class = "control-label col-xs-2" })
-        <div id="divCombo" class="col-xs-3 ">
-            <div class="select2-container select2-container--classic" id="test">
-                @Html.TextBox("myTextBox", "This is value", new { @class = "form-control" })
-            </div>
-            @Html.ValidationMessage("idOperazione", "", new { @class = "text-danger" })
-        </div>
-        <div id="divCombo" class="col-xs-3 ">
-            <div class="select2-container select2-container--classic" id="test">
-                @Html.TextBox("myTextBox", "This is value1", new { @class = "form-control" })
-            </div>
-            @Html.ValidationMessage("idOperazione", "", new { @class = "text-danger" })
-        </div>
-    </div>
+     <div class="form-group">
+         <hr />
 
-    <div style="clear: both"></div>
-    <div class="form-group">
-        @Html.Label("lblOperazione", "Selezionare su quale tipologia effettuare la Ricerca ", new { @class = "control-label col-xs-2" })
+         <div class="col-md-2">
+             @*@Html.TextBox("Data dal", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })*@
+             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+         </div>
+         <div class="col-md-2">
+             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+             @*@Html.TextBox("Data al", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })*@
+         </div>
+
+        @*@Html.Label("lblOperazione", "Selezionare su quale tabella effettuare la Ricerca ", new { @class = "control-label col-xs-2" })*@
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic" id="test">
                 @Html.DropDownList("idOperazione", ViewBag.OperazioniEffettuate as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();", @onclick = "prelevaPartiaViewStatistiche();" })
+                
             </div>
-            @Html.ValidationMessage("idOperazione", "", new { @class = "text-danger" })
+           
         </div>
     </div>
-
-</div>
-
-
-<div class="form-group">
-    <hr />
-
-    <div class="col-md-2">
-        @Html.TextBox("Data dal", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })
-    </div>
-    <div class="col-md-2">
-        @Html.TextBox("Data al", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })
-    </div>
-
 
 </div>
 
@@ -71,18 +52,56 @@
 
         $(function () {
             $("#idOperazione").select2({
-                placeholder: "Seleziona la Tabella per la Stampa",
+                placeholder: "Seleziona la Tabella per effettuare la Ricerca",
                 allowClear: true,
-                language: "it"
+                language: "it",
+                width: '400'
             });
 
         });
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '2001:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker1").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '1920:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
 
         function prelevaPartiaViewStatistiche() {
             //debugger;
             var rotta = "";
 
             var tabParam = parseInt($("#idOperazione").select2('val'));
+
+            //rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
+
+            //var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").val();
+            var data1 = $("#datepicker1").val();
+
+            var chk = true;
 
 
             switch (tabParam) {
@@ -111,7 +130,11 @@
                 type: "POST",
                 url: rotta,
                 //data: { escludiAnnullati: chk },
-                data: {},
+                data: {
+                    //tabParam: idOperazione,
+                    VDATA: data,
+                    VDATA1: data1
+                },
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
@@ -141,5 +164,6 @@
             });
 
         }
+
     </script>
 }

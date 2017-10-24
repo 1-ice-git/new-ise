@@ -14,9 +14,6 @@ namespace NewISE.Areas.Statistiche.Models
         public string MATRICOLA { get; set; }
         public string LIVELLO { get; set; }
         public string TIPO_MOVIMENTO { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Decorrenza")]
         public string DATA_DECORRENZA { get; set; }
         public string DATA_LETTERA { get; set; }
         public string COEF_SEDE { get; set; }
