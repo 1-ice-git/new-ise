@@ -75,9 +75,6 @@ namespace NewISE.Models.DBModel
         public DateTime? dataNotificaTV { get; set; }
 
 
-
-        public MaggiorazioniFamiliariModel MaggiorazioniFasmiliari { get; set; }
-
         public IList<AltriDatiFamModel> lAltriDatiFamiliari { get; set; }
 
         public PassaportoModel passaporto { get; set; }

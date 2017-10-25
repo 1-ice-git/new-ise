@@ -44,13 +44,13 @@
     @if (Model?.Any() ?? false)
     {
         <div class="col-xs-1">
-            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idMaggiorazioniFamiliari ); " src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare l'elenco formulari." />
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
     else
     {
         <div class="col-xs-1">
-            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idMaggiorazioniFamiliari ); " src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Click per visualizzare l'elenco formulari." />
+            <img id="imgElencoFormulari" class="SfondoBordoImg" width="30px" height="30px" onclick=" ElencoDocumentiMF(@idMaggiorazioniFamiliari, @Convert.ToDecimal(EnumTipoDoc.Formulario_Maggiorazioni_Familiari) , @Convert.ToDecimal(EnumParentela.Richiedente) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ); " src="../../Immagini/IconeDocumenti/PDF-icon-Disable.png" title="Click per visualizzare l'elenco formulari." />
         </div>
     }
 
@@ -81,14 +81,14 @@
 <script type="text/javascript">
 
 
-    function ElencoDocumentiMF(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+    function ElencoDocumentiMF(id, tipoDoc, idParentela, chiamante) {
         debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante },
             dataType: 'html',
             async: false,
             beforeSend: function () {

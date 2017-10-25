@@ -236,7 +236,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public ConiugeModel GetConiugeByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
+        public ConiugeModel GetConiugeByIdMagFamAttivo(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
         {
             ConiugeModel cm = new ConiugeModel();
 
@@ -250,25 +250,38 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var c = lc.First();
 
-                cm = new ConiugeModel()
+                var lamf = c.ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+
+                if (lamf?.Any() ?? false)
                 {
-                    idConiuge = c.IDCONIUGE,
-                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                    idPassaporti = c.IDPASSAPORTI,
-                    idTitoloViaggio = c.IDTITOLOVIAGGIO,
-                    nome = c.NOME,
-                    cognome = c.COGNOME,
-                    codiceFiscale = c.CODICEFISCALE,
-                    dataInizio = c.DATAINIZIOVALIDITA,
-                    dataFine = c.DATAFINEVALIDITA,
-                    dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    annullato = c.ANNULLATO,
-                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
-                    dataNotificaPP = c.DATANOTIFICAPP,
-                    escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
-                    dataNotificaTV = c.DATANOTIFICATV
-                };
+                    var amf = lamf.First();
+
+                    if (amf.RICHIESTAATTIVAZIONE == true && amf.ATTIVAZIONEMAGFAM == true)
+                    {
+                        cm = new ConiugeModel()
+                        {
+                            idConiuge = c.IDCONIUGE,
+                            idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                            idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                            idPassaporti = c.IDPASSAPORTI,
+                            idTitoloViaggio = c.IDTITOLOVIAGGIO,
+                            nome = c.NOME,
+                            cognome = c.COGNOME,
+                            codiceFiscale = c.CODICEFISCALE,
+                            dataInizio = c.DATAINIZIOVALIDITA,
+                            dataFine = c.DATAFINEVALIDITA,
+                            dataAggiornamento = c.DATAAGGIORNAMENTO,
+                            annullato = c.ANNULLATO,
+                            escludiPassaporto = c.ESCLUDIPASSAPORTO,
+                            dataNotificaPP = c.DATANOTIFICAPP,
+                            escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
+                            dataNotificaTV = c.DATANOTIFICATV
+                        };
+                    }
+
+                }
+
+
 
             }
 
@@ -469,7 +482,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                 cm.idConiuge = c.IDCONIUGE;
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
@@ -503,7 +516,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
 
                             ConiugeModel newc = new ConiugeModel()

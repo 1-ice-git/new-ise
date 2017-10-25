@@ -272,7 +272,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (i > 0)
             {
                 fm.idFigli = f.IDFIGLI;
-                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).IDTRASFERIMENTO;
+                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del Figlio", "FIGLI", db,
                     idTrasferimento, f.IDFIGLI);
             }
@@ -334,7 +334,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="dt"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public IList<FigliModel> GetFigliByIdMagFam(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
+        public IList<FigliModel> GetFigliByIdMagFamAttivi(decimal idMaggiorazioniFamiliari, DateTime dt, ModelDBISE db)
         {
             List<FigliModel> lfm = new List<FigliModel>();
 
@@ -348,24 +348,29 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (lf?.Any() ?? false)
                 {
-                    lfm.AddRange(lf.Select(item => new FigliModel()
-                    {
-                        idFigli = item.IDFIGLI,
-                        idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
-                        idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
-                        idPassaporti = item.IDPASSAPORTI,
-                        idTitoloViaggio = item.IDTITOLOVIAGGIO,
-                        nome = item.NOME,
-                        cognome = item.COGNOME,
-                        codiceFiscale = item.CODICEFISCALE,
-                        dataInizio = item.DATAINIZIOVALIDITA,
-                        dataFine = item.DATAFINEVALIDITA,
-                        dataAggiornamento = item.DATAAGGIORNAMENTO,
-                        Annullato = item.ANNULLATO,
-                        escludiPassaporto = item.ESCLUDIPASSAPORTO,
-                        dataNotificaPP = item.DATANOTIFICAPP,
-                        escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO
-                    }));
+                    lfm.AddRange(from f in lf
+                                 let lamf = f.ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM)
+                                 where lamf?.Any() ?? false
+                                 let amf = lamf.First()
+                                 where amf.RICHIESTAATTIVAZIONE == true && amf.ATTIVAZIONEMAGFAM == true
+                                 select new FigliModel()
+                                 {
+                                     idFigli = f.IDFIGLI,
+                                     idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
+                                     idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
+                                     idPassaporti = f.IDPASSAPORTI,
+                                     idTitoloViaggio = f.IDTITOLOVIAGGIO,
+                                     nome = f.NOME,
+                                     cognome = f.COGNOME,
+                                     codiceFiscale = f.CODICEFISCALE,
+                                     dataInizio = f.DATAINIZIOVALIDITA,
+                                     dataFine = f.DATAFINEVALIDITA,
+                                     dataAggiornamento = f.DATAAGGIORNAMENTO,
+                                     Annullato = f.ANNULLATO,
+                                     escludiPassaporto = f.ESCLUDIPASSAPORTO,
+                                     dataNotificaPP = f.DATANOTIFICAPP,
+                                     escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO
+                                 });
                 }
             }
 

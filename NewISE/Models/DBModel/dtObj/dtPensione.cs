@@ -543,7 +543,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     pcm.idPensioneConiuge = pc.IDPENSIONE;
 
-                    decimal idTrasferimento = pc.CONIUGE.First().MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
+                    decimal idTrasferimento = pc.CONIUGE.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo pensione", "PENSIONE", db, idTrasferimento, pc.IDPENSIONE);
                 }
 

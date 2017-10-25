@@ -170,13 +170,25 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region MaggiorazioniFamiliari
 
-                var lmf = t.MAGGIORAZIONIFAMILIARI.OrderBy(a => a.IDMAGGIORAZIONIFAMILIARI);
-                if (lmf?.Any() ?? false)
+                var mf = t.MAGGIORAZIONIFAMILIARI;
+                if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
-                    var mf = lmf.First();
+                    var lamf = mf.ATTIVAZIONIMAGFAM.OrderBy(a => a.IDATTIVAZIONEMAGFAM);
 
-                    richiestaMF = mf.RICHIESTAATTIVAZIONE;
-                    attivazioneMF = mf.ATTIVAMAGGIORAZIONI;
+                    if (lamf?.Any() ?? false)
+                    {
+                        var amf = lamf.First();
+
+                        richiestaMF = amf.RICHIESTAATTIVAZIONE;
+                        attivazioneMF = amf.ATTIVAZIONEMAGFAM;
+
+                    }
+                    else
+                    {
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIMAGFAM non trovato.");
+                    }
+
+
 
                 }
                 #endregion
@@ -272,6 +284,50 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Non è stato possibile intercettare il trasferimento con l'id maggiorazione familiare: (" + idMaggiorazioniFamiliari + ")");
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return tm;
+        }
+        public TrasferimentoModel GetTrasferimentoByIDMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+
+                var t = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari).TRASFERIMENTO;
+
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    tm = new TrasferimentoModel()
+                    {
+                        idTrasferimento = t.IDTRASFERIMENTO,
+                        idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                        idUfficio = t.IDUFFICIO,
+                        idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                        idDipendente = t.IDDIPENDENTE,
+                        idTipoCoan = t.IDTIPOCOAN,
+                        dataPartenza = t.DATAPARTENZA,
+                        dataRientro = t.DATARIENTRO,
+                        coan = t.COAN,
+                        protocolloLettera = t.PROTOCOLLOLETTERA,
+                        dataLettera = t.DATALETTERA,
+                        notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                        dataAggiornamento = t.DATAAGGIORNAMENTO
+
+                    };
+                }
+                else
+                {
+                    throw new Exception("Non è stato possibile intercettare il trasferimento con l'id maggiorazione familiare: (" + idMaggiorazioniFamiliari + ")");
+                }
+
             }
             catch (Exception ex)
             {

@@ -238,12 +238,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (adf.IDCONIUGE != null && adf.IDCONIUGE > 0)
                             {
-                                idTrasf = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
+                                idTrasf = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
                                 vConiugeFiglio = "Coniuge";
                             }
                             else if (adf.IDFIGLI != null && adf.IDFIGLI > 0)
                             {
-                                idTrasf = adf.FIGLI.MAGGIORAZIONIFAMILIARI.IDTRASFERIMENTO;
+                                idTrasf = adf.FIGLI.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
                                 vConiugeFiglio = "Figlio";
                             }
 

@@ -15,7 +15,7 @@ namespace NewISE.EF
     public partial class RINUNCIAMAGGIORAZIONIFAMILIARI
     {
         public decimal IDRINUNCIAMAGFAM { get; set; }
-        public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
+        public Nullable<decimal> IDMAGGIORAZIONIFAMILIARI { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }

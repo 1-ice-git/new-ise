@@ -22,7 +22,7 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual TIPOSOSPENSIONE TIPOSOSPENSIONE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual TIPOSOSPENSIONE TIPOSOSPENSIONE { get; set; }
     }
 }

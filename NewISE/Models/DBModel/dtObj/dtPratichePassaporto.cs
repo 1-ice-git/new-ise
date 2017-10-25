@@ -1065,8 +1065,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
                                         trm = dttr.GetTrasferimentoByIdPassaporto(idFamiliare);
-                                        var lmfm = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(trm.idTrasferimento).OrderBy(a => a.idMaggiorazioniFamiliari);
-                                        mfm = lmfm.First();
+                                        mfm = dtmf.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
+
                                         var dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
                                         pm = dtpp.GetPassaportoByID(idFamiliare);
                                         efm = new ElencoFamiliariModel()
@@ -1113,6 +1113,7 @@ namespace NewISE.Models.DBModel.dtObj
             TrasferimentoModel trm = new TrasferimentoModel();
             DipendentiModel dm = new DipendentiModel();
             MaggiorazioniFamiliariModel mf = new MaggiorazioniFamiliariModel();
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
             PassaportoModel pm = new PassaportoModel();
 
             using (dtDipendenti dtd = new dtDipendenti())
@@ -1125,140 +1126,145 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             using (dtDocumenti dtdoc = new dtDocumenti())
                             {
-                                trm = dttr.GetTrasferimentoById(idTrasferimento);
-
-                                if (trm != null && trm.HasValue())
+                                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                                 {
-                                    dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
-                                    var lmf = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(trm.idTrasferimento).OrderBy(a => a.idMaggiorazioniFamiliari);
-                                    mf = lmf.First();
-                                    pm = dtpp.GetPassaportoRichiedente(trm.idTrasferimento);
-                                    ///la tabella passaporti è referenziata con la tabella trasferimento 1 a 1 pertanto l'id del trasferimento è anche l'id del passaporto.
+                                    trm = dttr.GetTrasferimentoById(idTrasferimento);
 
-                                    #region Passaporto richiedente
-
-                                    if (dm != null && dm.HasValue())
+                                    if (trm != null && trm.HasValue())
                                     {
-                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                        dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
+                                        mf = dtmf.GetMaggiorazioniFamiliariByID(idTrasferimento);
+
+                                        pm = dtpp.GetPassaportoRichiedente(trm.idTrasferimento);
+                                        amfm = dtamf.GetUltimaAttivazioneMagFam(mf.idMaggiorazioniFamiliari);
+
+                                        #region Passaporto richiedente
+
+                                        if (dm != null && dm.HasValue())
                                         {
-                                            idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
-                                            idFamiliare = pm.idPassaporto,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
-                                            idPassaporti = pm.idPassaporto,
-                                            Nominativo = dm.Nominativo,
-                                            CodiceFiscale = string.Empty,
-                                            dataInizio = trm.dataPartenza,
-                                            dataFine = trm.dataRientro,
-                                            parentela = EnumParentela.Richiedente,
-                                            idAltriDati = 0,
-                                            Documenti =
-                                                dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
-                                                    EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
-                                                    .ToList(),
-                                            escludiPassaporto = pm.escludiPassaporto
-                                        };
-
-                                        lefm.Add(efm);
-                                    }
-
-                                    #endregion
-
-                                    #region Passaporto familiari
-
-                                    if (mf != null && mf.HasValue())
-                                    {
-                                        if (mf.attivazioneMaggiorazioni == true)
-                                        {
-                                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                            ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                             {
-                                                #region Coniuge
+                                                idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
+                                                idFamiliare = pm.idPassaporto,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
+                                                idPassaporti = pm.idPassaporto,
+                                                Nominativo = dm.Nominativo,
+                                                CodiceFiscale = string.Empty,
+                                                dataInizio = trm.dataPartenza,
+                                                dataFine = trm.dataRientro,
+                                                parentela = EnumParentela.Richiedente,
+                                                idAltriDati = 0,
+                                                Documenti =
+                                                    dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
+                                                        EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
+                                                        .ToList(),
+                                                escludiPassaporto = pm.escludiPassaporto
+                                            };
 
-                                                using (dtConiuge dtc = new dtConiuge())
+                                            lefm.Add(efm);
+                                        }
+
+                                        #endregion
+
+                                        #region Passaporto familiari
+
+                                        if (mf != null && mf.HasValue())
+                                        {
+                                            if (amfm.attivazioneMagFam == true)
+                                            {
+                                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                                                 {
-                                                    var lcm =
-                                                        dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari).Where(a => a.idTipologiaConiuge == EnumTipologiaConiuge.Residente)
-                                                            .ToList();
-                                                    if (lcm?.Any() ?? false)
-                                                    {
-                                                        foreach (var cm in lcm)
-                                                        {
-                                                            ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                                            {
-                                                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
-                                                                idFamiliare = cm.idConiuge,
-                                                                idPassaporti = pm.idPassaporto,
-                                                                Nominativo = cm.nominativo,
-                                                                CodiceFiscale = cm.codiceFiscale,
-                                                                dataInizio = cm.dataInizio,
-                                                                dataFine = cm.dataFine,
-                                                                parentela = EnumParentela.Coniuge,
-                                                                idAltriDati =
-                                                                    dtadf.GetAlttriDatiFamiliariConiuge(cm.idConiuge)
-                                                                        .idAltriDatiFam,
-                                                                Documenti =
-                                                                    dtdoc.GetDocumentiByIdTable(cm.idConiuge,
-                                                                        EnumTipoDoc.Documento_Identita,
-                                                                        EnumParentela.Coniuge),
-                                                                escludiPassaporto = cm.escludiPassaporto
-                                                            };
+                                                    #region Coniuge
 
-                                                            lefm.Add(efm);
+                                                    using (dtConiuge dtc = new dtConiuge())
+                                                    {
+                                                        var lcm =
+                                                            dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari).Where(a => a.idTipologiaConiuge == EnumTipologiaConiuge.Residente)
+                                                                .ToList();
+                                                        if (lcm?.Any() ?? false)
+                                                        {
+                                                            foreach (var cm in lcm)
+                                                            {
+                                                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                                                {
+                                                                    idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
+                                                                    idFamiliare = cm.idConiuge,
+                                                                    idPassaporti = pm.idPassaporto,
+                                                                    Nominativo = cm.nominativo,
+                                                                    CodiceFiscale = cm.codiceFiscale,
+                                                                    dataInizio = cm.dataInizio,
+                                                                    dataFine = cm.dataFine,
+                                                                    parentela = EnumParentela.Coniuge,
+                                                                    idAltriDati =
+                                                                        dtadf.GetAlttriDatiFamiliariConiuge(cm.idConiuge)
+                                                                            .idAltriDatiFam,
+                                                                    Documenti =
+                                                                        dtdoc.GetDocumentiByIdTable(cm.idConiuge,
+                                                                            EnumTipoDoc.Documento_Identita,
+                                                                            EnumParentela.Coniuge),
+                                                                    escludiPassaporto = cm.escludiPassaporto
+                                                                };
+
+                                                                lefm.Add(efm);
+                                                            }
                                                         }
                                                     }
-                                                }
 
-                                                #endregion
+                                                    #endregion
 
-                                                #region Figli
+                                                    #region Figli
 
-                                                using (dtFigli dtf = new dtFigli())
-                                                {
-                                                    var lfm =
-                                                        dtf.GetListaFigli(mf.idMaggiorazioniFamiliari)
-                                                            .Where(
-                                                                a =>
-                                                                    new[]
-                                                                    {
+                                                    using (dtFigli dtf = new dtFigli())
+                                                    {
+                                                        var lfm =
+                                                            dtf.GetListaFigli(mf.idMaggiorazioniFamiliari)
+                                                                .Where(
+                                                                    a =>
+                                                                        new[]
+                                                                        {
                                                                         EnumTipologiaFiglio.Residente,
                                                                         EnumTipologiaFiglio.StudenteResidente,
-                                                                    }.Contains
-                                                                        (a.idTipologiaFiglio))
-                                                            .ToList();
-                                                    if (lfm?.Any() ?? false)
-                                                    {
-                                                        foreach (var fm in lfm)
+                                                                        }.Contains
+                                                                            (a.idTipologiaFiglio))
+                                                                .ToList();
+                                                        if (lfm?.Any() ?? false)
                                                         {
-                                                            ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                                            foreach (var fm in lfm)
                                                             {
-                                                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
-                                                                idFamiliare = fm.idFigli,
-                                                                idPassaporti = pm.idPassaporto,
-                                                                Nominativo = fm.nominativo,
-                                                                CodiceFiscale = fm.codiceFiscale,
-                                                                dataInizio = fm.dataInizio,
-                                                                dataFine = fm.dataFine,
-                                                                parentela = EnumParentela.Figlio,
-                                                                idAltriDati =
-                                                                    dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli)
-                                                                        .idAltriDatiFam,
-                                                                Documenti =
-                                                                    dtdoc.GetDocumentiByIdTable(fm.idFigli,
-                                                                        EnumTipoDoc.Documento_Identita,
-                                                                        EnumParentela.Figlio),
-                                                                escludiPassaporto = fm.escludiPassaporto
-                                                            };
+                                                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                                                {
+                                                                    idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
+                                                                    idFamiliare = fm.idFigli,
+                                                                    idPassaporti = pm.idPassaporto,
+                                                                    Nominativo = fm.nominativo,
+                                                                    CodiceFiscale = fm.codiceFiscale,
+                                                                    dataInizio = fm.dataInizio,
+                                                                    dataFine = fm.dataFine,
+                                                                    parentela = EnumParentela.Figlio,
+                                                                    idAltriDati =
+                                                                        dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli)
+                                                                            .idAltriDatiFam,
+                                                                    Documenti =
+                                                                        dtdoc.GetDocumentiByIdTable(fm.idFigli,
+                                                                            EnumTipoDoc.Documento_Identita,
+                                                                            EnumParentela.Figlio),
+                                                                    escludiPassaporto = fm.escludiPassaporto
+                                                                };
 
-                                                            lefm.Add(efm);
+                                                                lefm.Add(efm);
+                                                            }
                                                         }
                                                     }
-                                                }
 
-                                                #endregion
+                                                    #endregion
+                                                }
                                             }
                                         }
-                                    }
 
-                                    #endregion
+                                        #endregion
+                                    }
                                 }
+
+
                             }
                         }
                     }

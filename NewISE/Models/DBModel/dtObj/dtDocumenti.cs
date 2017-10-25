@@ -517,7 +517,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.IDTRASFERIMENTO, dm.idDocumenti);
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
                 }
             }
             else
@@ -532,7 +532,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.IDTRASFERIMENTO, dm.idDocumenti);
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
                 }
             }
 

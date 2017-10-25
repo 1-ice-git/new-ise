@@ -188,15 +188,9 @@ namespace NewISE.Controllers
 
             using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
             {
-                var lmfm = dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(idTrasferimento);
-                if (lmfm?.Any() ?? false)
-                {
-                    mfm = lmfm.OrderBy(a => a.idMaggiorazioniFamiliari).First();
-                }
-
+                mfm = dtmf.GetMaggiorazioniFamiliariByID(idTrasferimento);
             }
 
-            ViewBag.idTrasferimento = idTrasferimento;
             ViewData.Add("callConiuge", callConiuge);
             return PartialView(mfm);
         }

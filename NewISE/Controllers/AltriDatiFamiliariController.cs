@@ -141,6 +141,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
@@ -179,7 +180,12 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
+            }
+
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
 
 
             using (dtFigli dtf = new dtFigli())
@@ -209,6 +215,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
@@ -247,7 +254,12 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
+            }
+
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
 
 
             using (dtFigli dtf = new dtFigli())
@@ -395,6 +407,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
@@ -441,8 +454,12 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
+            }
 
-            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
 
             using (dtConiuge dtc = new dtConiuge())
             {
@@ -464,6 +481,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamModel adf = new AltriDatiFamModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
@@ -511,7 +529,12 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idTrasferimento", mcm.idTrasferimento);
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
+            }
+
+            ViewData.Add("idTrasferimento", tm.idTrasferimento);
 
             using (dtConiuge dtc = new dtConiuge())
             {

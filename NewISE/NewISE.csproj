@@ -1043,6 +1043,7 @@
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
+    <Content Include="Immagini\Loading\source.gif" />
     <Content Include="Immagini\Logo ISE.png" />
     <Content Include="Immagini\Logo rit.jpg" />
     <Content Include="Immagini\LogOut.png" />
@@ -1930,6 +1931,9 @@
     <Compile Include="EF\ANTICIPI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ATTIVAZIONIMAGFAM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ATTIVITACRUD.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2149,6 +2153,8 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />

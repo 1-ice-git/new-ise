@@ -476,56 +476,66 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idMaggiorazioniFamiliari = 0)
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
             bool solaLettura = false;
             decimal idTrasferimento = 0;
+            decimal idMaggiorazioniFamiliari = 0;
+
 
             try
             {
-                using (dtTrasferimento dttr = new dtTrasferimento())
-                {
-                    if (idMaggiorazioniFamiliari > 0)
-                    {
-                        var trm = dttr.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari);
-                        idTrasferimento = trm.idTrasferimento;
-                    }
-
-                }
-
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetDocumentiByIdTable(id, tipoDoc, parentela).OrderByDescending(a => a.dataInserimento).ToList();
+                    ldm =
+                        dtd.GetDocumentiByIdTable(id, tipoDoc, parentela)
+                            .OrderByDescending(a => a.dataInserimento)
+                            .ToList();
                 }
-
 
                 switch (chiamante)
                 {
                     case EnumChiamante.Maggiorazioni_Familiari:
+
+
+
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
                                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                 {
                                     var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(id);
-                                    idTrasferimento = mfm.idTrasferimento;
+                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+                                    }
+
                                 }
                                 break;
                             case EnumParentela.Figlio:
                                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                 {
                                     var mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(id);
-                                    idTrasferimento = mfm.idTrasferimento;
+                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+                                    }
                                 }
                                 break;
                             case EnumParentela.Richiedente:
                                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                 {
                                     var mfm = dtmf.GetMaggiorazioniFamiliariByID(id);
-                                    idTrasferimento = mfm.idTrasferimento;
+                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+                                    }
                                 }
                                 break;
                             default:

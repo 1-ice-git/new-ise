@@ -18,7 +18,7 @@ namespace NewISE.Models.Tools
         private decimal indennitaBaseNoRiduzione { get; set; }
         private CoefficientiSedeModel coefficenteSede { get; set; }
         private PercentualeDisagioModel percentualeDisagio { get; set; }
-        private List<MaggiorazioniFamiliariModel> ListamaggiorazioniFamiliari { get; set; }
+        private MaggiorazioniFamiliariModel maggiorazioniFamiliari { get; set; }
         private ConiugeModel coniuge { get; set; }
         private PercentualeMagConiugeModel percentualeMaggiorazioneConiuge { get; set; }
         private PensioneConiugeModel pensioneConiuge { get; set; }
@@ -214,94 +214,85 @@ namespace NewISE.Models.Tools
 
                             using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                             {
-                                ListamaggiorazioniFamiliari =
-                                    dtmf.GetListaMaggiorazioniFamiliariByIDTrasf(trasferimento.idTrasferimento, db)
-                                        .ToList();
+                                maggiorazioniFamiliari = dtmf.GetMaggiorazioniFamiliariByID(trasferimento.idTrasferimento, db);
 
-                                if (ListamaggiorazioniFamiliari?.Any() ?? false)
+                                if (maggiorazioniFamiliari != null && maggiorazioniFamiliari.idMaggiorazioniFamiliari > 0)
                                 {
-                                    foreach (var maggiorazioniFamiliari in ListamaggiorazioniFamiliari)
+
+                                    using (dtConiuge dtc = new dtConiuge())
                                     {
-
-                                        if (maggiorazioniFamiliari.attivazioneMaggiorazioni)
+                                        coniuge =
+                                            dtc.GetConiugeByIdMagFamAttivo(
+                                                maggiorazioniFamiliari.idMaggiorazioniFamiliari,
+                                                dtDatiParametri, db);
+                                        if (coniuge.HasValue())
                                         {
-                                            using (dtConiuge dtc = new dtConiuge())
+                                            using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                                             {
-                                                coniuge =
-                                                    dtc.GetConiugeByIdMagFam(
-                                                        maggiorazioniFamiliari.idMaggiorazioniFamiliari,
+                                                percentualeMaggiorazioneConiuge =
+                                                    dtpc.GetPercentualeMaggiorazioneConiuge(
+                                                        coniuge.idTipologiaConiuge,
                                                         dtDatiParametri, db);
-                                                if (coniuge.HasValue())
-                                                {
-                                                    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                                                    {
-                                                        percentualeMaggiorazioneConiuge =
-                                                            dtpc.GetPercentualeMaggiorazioneConiuge(
-                                                                coniuge.idTipologiaConiuge,
-                                                                dtDatiParametri, db);
-                                                    }
-
-                                                    using (dtPensione dtp = new dtPensione())
-                                                    {
-                                                        pensioneConiuge = dtp.GetPensioniByIdConiuge(coniuge.idConiuge,
-                                                            dtDatiParametri, db);
-                                                    }
-                                                    if (percentualeMaggiorazioneConiuge != null &&
-                                                        percentualeMaggiorazioneConiuge.percentualeConiuge > 0)
-                                                    {
-                                                        maggiorazioneConiuge += (indennitaServizio *
-                                                                                percentualeMaggiorazioneConiuge
-                                                                                    .percentualeConiuge / 100);
-                                                    }
-                                                    else
-                                                    {
-                                                        throw new Exception(
-                                                            "La percentuale maggiorazione coniuge non è presente.");
-                                                    }
-                                                }
                                             }
 
-
-                                            using (dtFigli dtf = new dtFigli())
+                                            using (dtPensione dtp = new dtPensione())
                                             {
-                                                figli =
-                                                    dtf.GetFigliByIdMagFam(maggiorazioniFamiliari.idMaggiorazioniFamiliari,
-                                                        dtDatiParametri, db).ToList();
-                                                if (figli?.Any() ?? false)
-                                                {
-                                                    using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
-                                                    {
-                                                        using (
-                                                            dtIndennitaPrimoSegretario dtps =
-                                                                new dtIndennitaPrimoSegretario())
-                                                        {
-                                                            foreach (var f in figli)
-                                                            {
-                                                                PercentualeMagFigliModel pmfm =
-                                                                    dtpf.GetPercentualeMaggiorazioneFigli(f.idFigli,
-                                                                        dtDatiParametri,
-                                                                        db);
-                                                                IndennitaPrimoSegretModel ipsm =
-                                                                    dtps.GetIndennitaPrimoSegretario(f.idFigli,
-                                                                        dtDatiParametri,
-                                                                        db);
+                                                pensioneConiuge = dtp.GetPensioniByIdConiuge(coniuge.idConiuge,
+                                                    dtDatiParametri, db);
+                                            }
+                                            if (percentualeMaggiorazioneConiuge != null &&
+                                                percentualeMaggiorazioneConiuge.percentualeConiuge > 0)
+                                            {
+                                                maggiorazioneConiuge += (indennitaServizio *
+                                                                        percentualeMaggiorazioneConiuge
+                                                                            .percentualeConiuge / 100);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception(
+                                                    "La percentuale maggiorazione coniuge non è presente.");
+                                            }
+                                        }
+                                    }
 
-                                                                if (pmfm.percentualeFigli > 0)
-                                                                {
-                                                                    maggiorazioneFigli += ipsm.indennita *
-                                                                                          pmfm.percentualeFigli /
-                                                                                          100;
-                                                                }
-                                                            }
+
+                                    using (dtFigli dtf = new dtFigli())
+                                    {
+                                        figli =
+                                            dtf.GetFigliByIdMagFamAttivi(maggiorazioniFamiliari.idMaggiorazioniFamiliari,
+                                                dtDatiParametri, db).ToList();
+                                        if (figli?.Any() ?? false)
+                                        {
+                                            using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                                            {
+                                                using (
+                                                    dtIndennitaPrimoSegretario dtps =
+                                                        new dtIndennitaPrimoSegretario())
+                                                {
+                                                    foreach (var f in figli)
+                                                    {
+                                                        PercentualeMagFigliModel pmfm =
+                                                            dtpf.GetPercentualeMaggiorazioneFigli(f.idFigli,
+                                                                dtDatiParametri,
+                                                                db);
+                                                        IndennitaPrimoSegretModel ipsm =
+                                                            dtps.GetIndennitaPrimoSegretario(f.idFigli,
+                                                                dtDatiParametri,
+                                                                db);
+
+                                                        if (pmfm.percentualeFigli > 0)
+                                                        {
+                                                            maggiorazioneFigli += ipsm.indennita *
+                                                                                  pmfm.percentualeFigli /
+                                                                                  100;
                                                         }
                                                     }
                                                 }
                                             }
-
-
                                         }
-
                                     }
+
+
                                     maggiorazioneFamiliari = maggiorazioneConiuge + maggiorazioneFigli;
                                 }
 
