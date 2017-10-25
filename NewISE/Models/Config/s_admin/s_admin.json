@@ -20,6 +20,20 @@
       "nome": "Francesco",
       "cognome": "Salierno",
       "email": "francesco.salierno@ritspa.it"
+    },
+    {
+      "username": "andrea",
+      "password": "ise",
+      "nome": "Andrea",
+      "cognome": "-",
+      "email": "andrea.gull@email.it"
+    },
+    {
+      "username": "rick",
+      "password": "ise",
+      "nome": "jean",
+      "cognome": "ravelomanantsoa",
+      "email": "jean.ravelomanantsoa@valueson.it"
     }
   ]
 
