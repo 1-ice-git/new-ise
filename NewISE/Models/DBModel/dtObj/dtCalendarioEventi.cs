@@ -25,7 +25,6 @@ namespace NewISE.Models.DBModel.dtObj
                 ca.DATACOMPLETATO = cem.DataCompletato;
                 ca.DATAINIZIOEVENTO = cem.DataInizioEvento;
                 ca.DATASCADENZA = cem.DataScadenza;
-                // ca.IDCALENDARIOEVENTI = cem.idCalendarioEventi;
                 ca.IDFUNZIONIEVENTI = (decimal)cem.idFunzioneEventi;
                 ca.IDTRASFERIMENTO = cem.idTrasferimento;
                 db.CALENDARIOEVENTI.Add(ca);
@@ -41,6 +40,28 @@ namespace NewISE.Models.DBModel.dtObj
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  dell'evento relativo al calendario eventi.",
                         "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
                 }
+            }
+        }
+        public void ModificaInCompletatoCalendarioEvento(ref CalendarioEventiModel ca)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                decimal idCalev = ca.idCalendarioEventi;
+                var result = db.CALENDARIOEVENTI.SingleOrDefault(c => c.IDCALENDARIOEVENTI == idCalev);
+                if (result != null)
+                {
+                    result.COMPLETATO = true;
+                    int i = db.SaveChanges();
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
+                          "CALENDARIOEVENTI", db, ca.idTrasferimento, ca.idCalendarioEventi);
+                    }
+                }               
             }
         }
     }
