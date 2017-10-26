@@ -1906,8 +1906,10 @@
     </Compile>
     <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
+    <Compile Include="Controllers\CalendariEventiController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
+    <Compile Include="Controllers\FunzioniEventiController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
@@ -2153,8 +2155,10 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtCalendarioEventi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
@@ -2261,6 +2265,7 @@
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
+    <Compile Include="Models\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
     <Compile Include="Models\ModelRest\CDCModelRest.cs" />
@@ -2346,6 +2351,8 @@
     <Content Include="Views\TitoliViaggio\UploadTitoliViaggio.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
+    <Content Include="Views\FunzioniEventi\FunzioneEvento.cshtml" />
+    <Content Include="Views\Home\FunzioneEvento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
