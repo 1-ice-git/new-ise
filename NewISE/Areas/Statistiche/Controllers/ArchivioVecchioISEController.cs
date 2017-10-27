@@ -1895,31 +1895,62 @@ namespace NewISE.Areas.Statistiche.Controllers
         // Report Operazioni Effettuate - Canone Anticipato
         public ActionResult RptOpCanoneAnticipato(string V_DATA = "", string V_DATA1 = "")
         {
+            DataSet2 ds2 = new DataSet2();
+            try
+            {
 
-            String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME AS NOMINATIVO, ";
-            Sql += "CAN_MATRICOLA AS MATRICOLA, ";
-            Sql += "SED_DESCRIZIONE AS SEDE, ";
-            Sql += "VAL_DESCRIZIONE AS VALUTA, ";
-            Sql += "CAN_DT_DECORRENZA AS DATA_DECORRENZA, ";
-            Sql += "CAN_DT_LETTERA AS DATA_LETTERA, ";
-            Sql += "CAN_DT_OPERAZIONE AS DATA_OPERAZIONE, ";
-            Sql += "CAN_CANONE_ANNUO_VALUTA, ";
-            Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
-            Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
-            Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
-            Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI) AS QUOTA_MENS, ";
-            Sql += "CAN_PROG_TRASFERIMENTO, ";
-            Sql += "CAN_PROG_CAN_ABITAZIONE ";
-            Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
-            Sql += "Where CAN_COD_SEDE = SED_COD_SEDE ";
-            Sql += "And CAN_VALUTA_CANONE = VAL_COD_VALUTA ";
-            Sql += "And CAN_MATRICOLA = AND_MATRICOLA ";
-            Sql += "And(CAN_DT_OPERAZIONE >= To_Date ('" + V_DATA + "','DD-MM-YYYY') ";
-            Sql += "And CAN_DT_OPERAZIONE <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
-            Sql += "Order By NOMINATIVO, ";
-            Sql += "CAN_PROG_TRASFERIMENTO, ";
-            Sql += "CAN_DT_DECORRENZA, ";
-            Sql += "CAN_PROG_CAN_ABITAZIONE ";
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
+
+
+                var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
+
+                OracleConnection conx = new OracleConnection(connectionString);
+                #region MyRegion
+
+                String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME AS NOMINATIVO, ";
+                Sql += "CAN_MATRICOLA AS MATRICOLA, ";
+                Sql += "SED_DESCRIZIONE AS SEDE, ";
+                Sql += "VAL_DESCRIZIONE AS VALUTA, ";
+                Sql += "CAN_DT_DECORRENZA AS DATA_DECORRENZA, ";
+                Sql += "CAN_DT_LETTERA AS DATA_LETTERA, ";
+                Sql += "CAN_DT_OPERAZIONE AS DATA_OPERAZIONE, ";
+                Sql += "CAN_CANONE_ANNUO_VALUTA, ";
+                Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
+                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
+                Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
+                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI) AS QUOTA_MENS, ";
+                Sql += "CAN_PROG_TRASFERIMENTO, ";
+                Sql += "CAN_PROG_CAN_ABITAZIONE ";
+                Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
+                Sql += "Where CAN_COD_SEDE = SED_COD_SEDE ";
+                Sql += "And CAN_VALUTA_CANONE = VAL_COD_VALUTA ";
+                Sql += "And CAN_MATRICOLA = AND_MATRICOLA ";
+                Sql += "And(CAN_DT_OPERAZIONE >= To_Date ('" + V_DATA + "','DD-MM-YYYY') ";
+                Sql += "And CAN_DT_OPERAZIONE <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
+                Sql += "Order By NOMINATIVO, ";
+                Sql += "CAN_PROG_TRASFERIMENTO, ";
+                Sql += "CAN_DT_DECORRENZA, ";
+                Sql += "CAN_PROG_CAN_ABITAZIONE ";
+                #endregion
+
+                OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
+
+                adp.Fill(ds2, ds2.V_OP_EFFETTUATE_CANONE_ANTI.TableName);
+
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report25.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet2", ds2.Tables[0]));
+
+                ViewBag.ReportViewer = reportViewer;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
             return View();
         }
@@ -1983,7 +2014,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Operazioni Effettuate - Maggiorazione Abitazione
-        public ActionResult OpMaggiorazioneAbitazione(string VDATA = "", string VDATA1 = "")
+        public ActionResult OpMaggiorazioneAbitazione(string V_DATA = "", string V_DATA1 = "")
         {
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
@@ -2012,8 +2043,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND MAB.MAB_FLAG_ANNULLATO = 0 ";
                 Sql += "AND RMAB.MAB_RAT_FLAG_ANNULLATO = 0 ";
                 Sql += "AND MAB.MAB_CESSAZIONE = 0 ";
-                Sql += "AND(RMAB.MAB_RAT_DATARATA >= To_Date ('" + VDATA + "','DD-MM-YYYY') ";
-                Sql += "AND RMAB.MAB_RAT_DATARATA <= To_Date ('" + VDATA1 + "','DD-MM-YYYY')) ";
+                Sql += "AND(RMAB.MAB_RAT_DATARATA >= To_Date ('" + V_DATA + "','DD-MM-YYYY') ";
+                Sql += "AND RMAB.MAB_RAT_DATARATA <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
                 Sql += "ORDER BY NOMINATIVO, MAB.IES_PROG_TRASFERIMENTO, MAB.MAB_DT_DATADECORRENZA ";
 
 
@@ -2045,6 +2076,67 @@ namespace NewISE.Areas.Statistiche.Controllers
         // Report Operazioni Effettuate - Maggiorazione Abitazione
         public ActionResult RptOpMaggiorazioneAbitazione(string V_DATA = "", string V_DATA1 = "")
         {
+            DataSet3 ds3 = new DataSet3();
+            try
+            {
+
+                ReportViewer reportViewer = new ReportViewer();
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                reportViewer.SizeToReportContent = true;
+                reportViewer.Width = Unit.Percentage(100);
+                reportViewer.Height = Unit.Percentage(100);
+
+
+                var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
+
+                OracleConnection conx = new OracleConnection(connectionString);
+                #region MyRegion
+
+                String Sql = "SELECT DISTINCT MAB.IES_MATRICOLA MATRICOLA, ";
+                Sql += "A.AND_COGNOME || ' ' || A.AND_NOME NOMINATIVO, ";
+                Sql += "S.SED_COD_SEDE CodSede, ";
+                Sql += "S.SED_DESCRIZIONE SEDE, ";
+                Sql += "(MAB.VAL_ID_VALUTACANONE + MAB.VAL_ID_VALUTAUFFICIALE) VALUTA, ";
+                Sql += "MAB.MAB_DT_DATADECORRENZA DATADECORRENZA, ";
+                Sql += "MAB.MAB_DT_LETTERA DATALETTERA, ";
+                Sql += "MAB.MAB_DT_OPERAZIONE DATAOPERAZIONE, ";
+                Sql += "MAB.MAB_CANONELOCAZIONE CANONE, ";
+                Sql += "RMAB.MAB_RAT_MAGINVIATA RATAINVIATA, ";
+                Sql += "P.MAB_PAR_PERCENTUALE PERCENTUALE, ";
+                Sql += "MAB.IES_PROG_TRASFERIMENTO ";
+                Sql += "FROM MAG_ABITAZIONE MAB, ";
+                Sql += "RATEIZZAZIONECONTMAB RMAB, ";
+                Sql += "ANADIPE A, ";
+                Sql += "SEDIESTERE S, ";
+                Sql += "PARAMETRIMAB P ";
+                Sql += "WHERE 1 = 1 ";
+                Sql += "AND RMAB.MAB_ID = MAB.MAB_ID ";
+                Sql += "AND A.AND_MATRICOLA = MAB.IES_MATRICOLA ";
+                Sql += "AND MAB.IES_COD_SEDE = S.SED_COD_SEDE ";
+                Sql += "AND P.MAB_PAR_ID = MAB.MAB_PAR_ID ";
+                Sql += "AND MAB.MAB_FLAG_ANNULLATO = 0 ";
+                Sql += "AND RMAB.MAB_RAT_FLAG_ANNULLATO = 0 ";
+                Sql += "AND MAB.MAB_CESSAZIONE = 0 ";
+                Sql += "AND(RMAB.MAB_RAT_DATARATA >= To_Date ('" + V_DATA + "','DD-MM-YYYY') ";
+                Sql += "AND RMAB.MAB_RAT_DATARATA <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
+                Sql += "ORDER BY NOMINATIVO, MAB.IES_PROG_TRASFERIMENTO, MAB.MAB_DT_DATADECORRENZA ";
+                #endregion
+
+                OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
+
+                adp.Fill(ds3, ds3.V_OP_EFFETTUATE_MAGG_ABITAZ.TableName);
+
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report26.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet3", ds3.Tables[0]));
+
+                ViewBag.ReportViewer = reportViewer;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             return View();
         }
 
