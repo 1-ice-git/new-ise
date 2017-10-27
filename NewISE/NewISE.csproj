@@ -1585,6 +1585,28 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet15.xss">
       <DependentUpon>DataSet15.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet2.xsc">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet2.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet2.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet2.xss">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet3.xsc">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet3.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet3.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet3.xss">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet6.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1667,6 +1689,8 @@
     <Content Include="FormulariMaster\FormularioMF\formulario 5.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 6.pdf" />
     <Content Include="FormulariMaster\FormularioMF\formulario 7.pdf" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpCanoneAnticipato.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpMaggiorazioneAbitazione.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1882,6 +1906,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet15.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet3.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet6.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2396,6 +2430,16 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report15.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report16.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report17.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report20.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report21.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report22.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report23.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report24.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report25.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report26.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report18.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report2.rdlc" />
