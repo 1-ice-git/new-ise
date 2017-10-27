@@ -3,6 +3,7 @@ using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 
@@ -20,6 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 CALENDARIOEVENTI ca = new CALENDARIOEVENTI();
+
                 ca.ANNULLATO = cem.Annullato;
                 ca.COMPLETATO = cem.Completato;
                 ca.DATACOMPLETATO = cem.DataCompletato;
@@ -35,7 +37,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    cem.idCalendarioEventi = ca.IDCALENDARIOEVENTI; 
+                    cem.idCalendarioEventi = ca.IDCALENDARIOEVENTI;
 
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  dell'evento relativo al calendario eventi.",
                         "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
@@ -61,7 +63,7 @@ namespace NewISE.Models.DBModel.dtObj
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
                           "CALENDARIOEVENTI", db, ca.idTrasferimento, ca.idCalendarioEventi);
                     }
-                }               
+                }
             }
         }
     }
