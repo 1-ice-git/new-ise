@@ -759,6 +759,8 @@
           <Property Name="IDRINUNCIAMAGFAM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" />
           <Property Name="RINUNCIAMAGGIORAZIONI" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIO" Type="date" />
+          <Property Name="DATAFINE" Type="date" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -3710,7 +3712,6 @@
           <EntitySet Name="REGOLECALCOLO" EntityType="DBISEPRO.REGOLECALCOLO" />
           <EntitySet Name="RICHIAMO" EntityType="DBISEPRO.RICHIAMO" />
           <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
-          <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <EntitySet Name="RUOLOACCESSO" EntityType="DBISEPRO.RUOLOACCESSO" />
           <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
           <EntitySet Name="RUOLOUFFICIO" EntityType="DBISEPRO.RUOLOUFFICIO" />
@@ -3859,10 +3860,6 @@
           <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="DBISEPRO.R_UFFICI_MAGANNUALI">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
-          </AssociationSet>
-          <AssociationSet Name="R_MF_RMF" Association="DBISEPRO.R_MF_RMF">
-            <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
-            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
           <AssociationSet Name="R_T_MF" Association="DBISEPRO.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -4170,6 +4167,11 @@
           <AssociationSet Name="PMF_F" Association="DBISEPRO.PMF_F">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
+          </AssociationSet>
+          <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" />
+          <AssociationSet Name="R_MF_RMF" Association="DBISEPRO.R_MF_RMF">
+            <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
+            <End Role="RINUNCIAMAGGIORAZIONIFAMILIARI" EntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -4554,12 +4556,12 @@
             <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
           </Key>
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_MF_RMF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.MGAFAM_DOC" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="ATTIVAZIONIMAGFAM" Relationship="DBISEPRO.R_MF_AMF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="ATTIVAZIONIMAGFAM" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_MF_C" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_MF_F" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="FIGLI" />
+          <NavigationProperty Name="RINUNCIAMAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_MF_RMF" FromRole="MAGGIORAZIONIFAMILIARI" ToRole="RINUNCIAMAGGIORAZIONIFAMILIARI" />
         </EntityType>
         <EntityType Name="NORMACALCOLO">
           <Key>
@@ -4743,17 +4745,6 @@
           <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.R_RIDUZIONI_INDBASE" FromRole="RIDUZIONI" ToRole="INDENNITABASE" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.R_R_IS" FromRole="RIDUZIONI" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.R_REGOLECALCOLO_RIDUZIONI" FromRole="RIDUZIONI" ToRole="REGOLECALCOLO" />
-        </EntityType>
-        <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
-          <Key>
-            <PropertyRef Name="IDRINUNCIAMAGFAM" />
-          </Key>
-          <Property Name="IDRINUNCIAMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="RINUNCIAMAGGIORAZIONI" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_MF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="MAGGIORAZIONIFAMILIARI" />
         </EntityType>
         <EntityType Name="RUOLOACCESSO">
           <Key>
@@ -5524,20 +5515,6 @@
             </Principal>
             <Dependent Role="MAGGIORAZIONIANNUALI">
               <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MF_RMF">
-          <End Type="DBISEPRO.MAGGIORAZIONIFAMILIARI" Role="MAGGIORAZIONIFAMILIARI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Role="RINUNCIAMAGGIORAZIONIFAMILIARI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONIFAMILIARI">
-              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
-            </Principal>
-            <Dependent Role="RINUNCIAMAGGIORAZIONIFAMILIARI">
-              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6359,6 +6336,33 @@
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
+        <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
+          <Key>
+            <PropertyRef Name="IDRINUNCIAMAGFAM" />
+          </Key>
+          <Property Name="IDRINUNCIAMAGFAM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="RINUNCIAMAGGIORAZIONI" Type="Boolean" Nullable="false" />
+          <Property Name="DATAINIZIO" Type="DateTime" />
+          <Property Name="DATAFINE" Type="DateTime" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_MF_RMF" FromRole="RINUNCIAMAGGIORAZIONIFAMILIARI" ToRole="MAGGIORAZIONIFAMILIARI" />
+        </EntityType>
+        <Association Name="R_MF_RMF">
+          <End Type="DBISEPRO.MAGGIORAZIONIFAMILIARI" Role="MAGGIORAZIONIFAMILIARI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Role="RINUNCIAMAGGIORAZIONIFAMILIARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONIFAMILIARI">
+              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
+            </Principal>
+            <Dependent Role="RINUNCIAMAGGIORAZIONIFAMILIARI">
+              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6862,17 +6866,6 @@
                 <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
                 <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
                 <ScalarProperty Name="IDRIDUZIONI" ColumnName="IDRIDUZIONI" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
-            <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI">
-              <MappingFragment StoreEntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
-                <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
-                <ScalarProperty Name="IDRINUNCIAMAGFAM" ColumnName="IDRINUNCIAMAGFAM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7490,6 +7483,19 @@
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
+            <EntityTypeMapping TypeName="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI">
+              <MappingFragment StoreEntitySet="RINUNCIAMAGGIORAZIONIFAMILIARI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINE" ColumnName="DATAFINE" />
+                <ScalarProperty Name="DATAINIZIO" ColumnName="DATAINIZIO" />
+                <ScalarProperty Name="RINUNCIAMAGGIORAZIONI" ColumnName="RINUNCIAMAGGIORAZIONI" />
+                <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
+                <ScalarProperty Name="IDRINUNCIAMAGFAM" ColumnName="IDRINUNCIAMAGFAM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
