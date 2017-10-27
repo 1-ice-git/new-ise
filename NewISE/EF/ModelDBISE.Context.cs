@@ -65,7 +65,6 @@ namespace NewISE.EF
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
-        public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
@@ -98,5 +97,6 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
+        public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
     }
 }

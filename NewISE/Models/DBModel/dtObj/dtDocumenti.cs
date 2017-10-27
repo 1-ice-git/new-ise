@@ -50,12 +50,7 @@ namespace NewISE.Models.DBModel.dtObj
                         .OrderByDescending(a => a.IDDOCUMENTO);
                 if (ld?.Any() ?? false)
                 {
-                    foreach (var d in ld)
-                    {
-                        var dm = this.GetDocumento(d.IDDOCUMENTO, db);
-
-                        ldm.Add(dm);
-                    }
+                    ldm.AddRange(ld.Select(d => this.GetDocumento(d.IDDOCUMENTO, db)));
                 }
 
             }
@@ -503,37 +498,22 @@ namespace NewISE.Models.DBModel.dtObj
             dm.file.InputStream.CopyTo(ms);
 
             var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-            var ld = mf.DOCUMENTI;
 
-            if (ld?.Any() ?? false)
+            d.NOMEDOCUMENTO = dm.nomeDocumento;
+            d.ESTENSIONE = dm.estensione;
+            d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
+            d.DATAINSERIMENTO = dm.dataInserimento;
+            d.FILEDOCUMENTO = ms.ToArray();
+            mf.DOCUMENTI.Add(d);
+
+            if (db.SaveChanges() > 0)
             {
-                d = ld.First();
-                d.NOMEDOCUMENTO = dm.nomeDocumento;
-                d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
-                d.DATAINSERIMENTO = dm.dataInserimento;
-                d.FILEDOCUMENTO = ms.ToArray();
-
-                if (db.SaveChanges() > 0)
-                {
-                    dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
-                }
+                dm.idDocumenti = d.IDDOCUMENTO;
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
             }
             else
             {
-                d.NOMEDOCUMENTO = dm.nomeDocumento;
-                d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
-                d.DATAINSERIMENTO = dm.dataInserimento;
-                d.FILEDOCUMENTO = ms.ToArray();
-                ld.Add(d);
-
-                if (db.SaveChanges() > 0)
-                {
-                    dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
-                }
+                throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
             }
 
         }

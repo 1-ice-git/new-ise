@@ -17,6 +17,8 @@ namespace NewISE.EF
         public decimal IDRINUNCIAMAGFAM { get; set; }
         public Nullable<decimal> IDMAGGIORAZIONIFAMILIARI { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
+        public Nullable<System.DateTime> DATAINIZIO { get; set; }
+        public Nullable<System.DateTime> DATAFINE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     

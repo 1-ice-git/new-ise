@@ -25,12 +25,21 @@ namespace NewISE.Controllers
 
         public ActionResult ElencoFormulariInseriti(decimal idMaggiorazioniFamiliari)
         {
+
+            ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
+
+            return PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult TabFormulariInseriti(decimal idMaggiorazioniFamiliari)
+        {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             try
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
                 }
             }
             catch (Exception ex)
@@ -192,6 +201,7 @@ namespace NewISE.Controllers
             }
 
             ViewData.Add("callConiuge", callConiuge);
+
             return PartialView(mfm);
         }
 

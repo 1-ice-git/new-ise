@@ -475,7 +475,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                var lamf = mf.ATTIVAZIONIMAGFAM;
+                var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
 
                 if (lamf?.Any() ?? false)
                 {
@@ -501,7 +501,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.CONIUGE != null)
                         {
-                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            //var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            var lc = mf.CONIUGE.Where(a => a.ATTIVAZIONIMAGFAM?.Any(b => b.ANNULLATO == false) ?? false && a.ANNULLATO == false);
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
@@ -544,7 +545,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.FIGLI != null)
                         {
-                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            //var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            var lf =
+                                mf.FIGLI.Where(
+                                    a =>
+                                        a.ATTIVAZIONIMAGFAM?.Any(b => b.ANNULLATO == false) ??
+                                        false && a.ANNULLATO == false);
 
                             if (lf?.Any() ?? false)
                             {

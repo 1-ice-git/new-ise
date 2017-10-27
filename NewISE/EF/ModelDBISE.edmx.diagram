@@ -45,7 +45,6 @@
         <EntityTypeShape EntityType="DBISEPRO.REGOLECALCOLO" Width="1.5" PointX="20.25" PointY="76.625" />
         <EntityTypeShape EntityType="DBISEPRO.RICHIAMO" Width="1.5" PointX="27" PointY="62.75" />
         <EntityTypeShape EntityType="DBISEPRO.RIDUZIONI" Width="1.5" PointX="22.5" PointY="76.625" />
-        <EntityTypeShape EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Width="1.5" PointX="10.5" PointY="53.75" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLOACCESSO" Width="1.5" PointX="0.75" PointY="42.75" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLODIPENDENTE" Width="1.5" PointX="16.5" PointY="52.5" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLOUFFICIO" Width="1.5" PointX="14.25" PointY="43" />
@@ -105,7 +104,6 @@
         <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_T_MB" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" />
-        <AssociationConnector Association="DBISEPRO.R_MF_RMF" />
         <AssociationConnector Association="DBISEPRO.R_T_MF" />
         <AssociationConnector Association="DBISEPRO.R_NC_RC" />
         <AssociationConnector Association="DBISEPRO.R_T_P" />
@@ -185,6 +183,8 @@
         <AssociationConnector Association="DBISEPRO.F_IPS" />
         <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.PMF_F" />
+        <EntityTypeShape EntityType="DBISEPRO.RINUNCIAMAGGIORAZIONIFAMILIARI" Width="1.5" PointX="10.5" PointY="54.25" />
+        <AssociationConnector Association="DBISEPRO.R_MF_RMF" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
