@@ -17,64 +17,53 @@
         <xs:element name="V_ISE_STP_CONS_SPESE_DIVERSE" msprop:Generator_TableClassName="V_ISE_STP_CONS_SPESE_DIVERSEDataTable" msprop:Generator_TableVarName="tableV_ISE_STP_CONS_SPESE_DIVERSE" msprop:Generator_TablePropName="V_ISE_STP_CONS_SPESE_DIVERSE" msprop:Generator_RowDeletingName="V_ISE_STP_CONS_SPESE_DIVERSERowDeleting" msprop:Generator_RowChangingName="V_ISE_STP_CONS_SPESE_DIVERSERowChanging" msprop:Generator_RowEvHandlerName="V_ISE_STP_CONS_SPESE_DIVERSERowChangeEventHandler" msprop:Generator_RowDeletedName="V_ISE_STP_CONS_SPESE_DIVERSERowDeleted" msprop:Generator_UserTableName="V_ISE_STP_CONS_SPESE_DIVERSE" msprop:Generator_RowChangedName="V_ISE_STP_CONS_SPESE_DIVERSERowChanged" msprop:Generator_RowEvArgName="V_ISE_STP_CONS_SPESE_DIVERSERowChangeEvent" msprop:Generator_RowClassName="V_ISE_STP_CONS_SPESE_DIVERSERow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="TIPO" msprop:Generator_ColumnVarNameInTable="columnTIPO" msprop:Generator_ColumnPropNameInRow="TIPO" msprop:Generator_ColumnPropNameInTable="TIPOColumn" msprop:Generator_UserColumnName="TIPO" minOccurs="0">
+              <xs:element name="IES_MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnIES_MATRICOLA" msprop:Generator_ColumnPropNameInRow="IES_MATRICOLA" msprop:Generator_ColumnPropNameInTable="IES_MATRICOLAColumn" msprop:Generator_UserColumnName="IES_MATRICOLA" type="xs:short" />
+              <xs:element name="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="IES_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="IES_PROG_TRASFERIMENTO" type="xs:short" />
+              <xs:element name="IES_COD_TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_COD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="IES_COD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="IES_COD_TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="IES_COD_TIPO_MOVIMENTO" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="22" />
+                    <xs:maxLength value="1" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:long" minOccurs="0" />
+              <xs:element name="IES_ANTICIPO" msprop:Generator_ColumnVarNameInTable="columnIES_ANTICIPO" msprop:Generator_ColumnPropNameInRow="IES_ANTICIPO" msprop:Generator_ColumnPropNameInTable="IES_ANTICIPOColumn" msprop:Generator_UserColumnName="IES_ANTICIPO" type="xs:double" minOccurs="0" />
+              <xs:element name="IES_COD_QUALIFICA" msprop:Generator_ColumnVarNameInTable="columnIES_COD_QUALIFICA" msprop:Generator_ColumnPropNameInRow="IES_COD_QUALIFICA" msprop:Generator_ColumnPropNameInTable="IES_COD_QUALIFICAColumn" msprop:Generator_UserColumnName="IES_COD_QUALIFICA" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="6" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CODSEDE" msprop:Generator_ColumnVarNameInTable="columnCODSEDE" msprop:Generator_ColumnPropNameInRow="CODSEDE" msprop:Generator_ColumnPropNameInTable="CODSEDEColumn" msprop:Generator_UserColumnName="CODSEDE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="4" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SED_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnSED_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="SED_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="SED_DESCRIZIONEColumn" msprop:Generator_UserColumnName="SED_DESCRIZIONE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="35" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VAL_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnVAL_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="VAL_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="VAL_DESCRIZIONEColumn" msprop:Generator_UserColumnName="VAL_DESCRIZIONE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="IES_DT_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_DT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="IES_DT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="IES_DT_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="IES_DT_TRASFERIMENTO" type="xs:dateTime" />
+              <xs:element name="SISRIE" msprop:Generator_ColumnVarNameInTable="columnSISRIE" msprop:Generator_ColumnPropNameInRow="SISRIE" msprop:Generator_ColumnPropNameInTable="SISRIEColumn" msprop:Generator_UserColumnName="SISRIE" type="xs:decimal" minOccurs="0" />
               <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
+                    <xs:maxLength value="101" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="CODLIVELLO" msprop:Generator_ColumnVarNameInTable="columnCODLIVELLO" msprop:Generator_ColumnPropNameInRow="CODLIVELLO" msprop:Generator_ColumnPropNameInTable="CODLIVELLOColumn" msprop:Generator_UserColumnName="CODLIVELLO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="CODSEDE" msprop:Generator_ColumnVarNameInTable="columnCODSEDE" msprop:Generator_ColumnPropNameInRow="CODSEDE" msprop:Generator_ColumnPropNameInTable="CODSEDEColumn" msprop:Generator_UserColumnName="CODSEDE" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="DT_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnDT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="DT_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="DT_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="DT_TRASFERIMENTO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SPESA" msprop:Generator_ColumnVarNameInTable="columnSPESA" msprop:Generator_ColumnPropNameInRow="SPESA" msprop:Generator_ColumnPropNameInTable="SPESAColumn" msprop:Generator_UserColumnName="SPESA" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="100" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="IMPORTOSPESA" msprop:Generator_ColumnVarNameInTable="columnIMPORTOSPESA" msprop:Generator_ColumnPropNameInRow="IMPORTOSPESA" msprop:Generator_ColumnPropNameInTable="IMPORTOSPESAColumn" msprop:Generator_UserColumnName="IMPORTOSPESA" type="xs:double" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

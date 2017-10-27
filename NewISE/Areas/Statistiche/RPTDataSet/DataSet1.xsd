@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="V_OP_EFFETTUATE_USO_ABITAZ" msprop:Generator_TableClassName="V_OP_EFFETTUATE_USO_ABITAZDataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_USO_ABITAZ" msprop:Generator_TablePropName="V_OP_EFFETTUATE_USO_ABITAZ" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_USO_ABITAZRowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_USO_ABITAZRowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_USO_ABITAZRowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_USO_ABITAZRowDeleted" msprop:Generator_UserTableName="V_OP_EFFETTUATE_USO_ABITAZ" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_USO_ABITAZRowChanged" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_USO_ABITAZRowChangeEvent" msprop:Generator_RowClassName="V_OP_EFFETTUATE_USO_ABITAZRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="101" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="35" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATA_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATA_DECORRENZA" msprop:Generator_ColumnPropNameInRow="DATA_DECORRENZA" msprop:Generator_ColumnPropNameInTable="DATA_DECORRENZAColumn" msprop:Generator_UserColumnName="DATA_DECORRENZA" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CANONE_VALUTA" msprop:Generator_ColumnVarNameInTable="columnCANONE_VALUTA" msprop:Generator_ColumnPropNameInRow="CANONE_VALUTA" msprop:Generator_ColumnPropNameInTable="CANONE_VALUTAColumn" msprop:Generator_UserColumnName="CANONE_VALUTA" type="xs:double" minOccurs="0" />
+              <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="IMPONIBILE_PREVIDENZIALE" msprop:Generator_ColumnVarNameInTable="columnIMPONIBILE_PREVIDENZIALE" msprop:Generator_ColumnPropNameInRow="IMPONIBILE_PREVIDENZIALE" msprop:Generator_ColumnPropNameInTable="IMPONIBILE_PREVIDENZIALEColumn" msprop:Generator_UserColumnName="IMPONIBILE_PREVIDENZIALE" type="xs:double" minOccurs="0" />
+              <xs:element name="USO_PROG_USO_ABITAZIONE" msprop:Generator_ColumnVarNameInTable="columnUSO_PROG_USO_ABITAZIONE" msprop:Generator_ColumnPropNameInRow="USO_PROG_USO_ABITAZIONE" msprop:Generator_ColumnPropNameInTable="USO_PROG_USO_ABITAZIONEColumn" msprop:Generator_UserColumnName="USO_PROG_USO_ABITAZIONE" type="xs:short" />
+              <xs:element name="USO_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnUSO_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="USO_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="USO_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="USO_PROG_TRASFERIMENTO" type="xs:short" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

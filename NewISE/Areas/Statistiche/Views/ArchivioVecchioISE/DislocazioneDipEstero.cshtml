@@ -19,21 +19,23 @@
         </div>
         
         <div class="select2-container select2-container--classic">
-            @Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })
+            @Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
         </div>
 
     </div>
     <br />
-    <div class="form-group">
-        <div class="col-md-3">
-            <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
-        </div>
-    </div>
-
-    <hr />
+    
 </div>
-
-
+<div class="form-group">
+    <div class="col-md-3">
+        <a href="#" onclick="Dislocazione()">Visualizza la Stampa dei Dipendenti all' Estero per Livello </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
+    </div>
+    
+</div>
+<br /><br />
 
 <table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
     <thead>
@@ -159,13 +161,14 @@
    
         function invia() {
             //debugger
-            //rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
-            //var descr_ufficio = $("#codicesede").select2('val');
-            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?codicesede=" + codicesede;
 
-            window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+            var descr_ufficio = $("#codicesede").select2('val');
+            var data = $("#datepicker").datepicker().val()
 
-            
+            // Con parametri
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?codicesede=" + codicesede + "&V_DATA=" + data + ""
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?V_DATA=" + data + ""
         };
     
     // Calendario con possibilità di cambiare mese e anno
@@ -179,7 +182,7 @@
             });  
         });
 
-        function PrelevaGigius(codicesede, txtMyField) {
+        function Dislocazione(codicesede) {
             //debugger;
             
             rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
