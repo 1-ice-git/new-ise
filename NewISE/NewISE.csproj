@@ -1905,8 +1905,10 @@
     </Compile>
     <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
+    <Compile Include="Controllers\CalendariEventiController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
+    <Compile Include="Controllers\FunzioniEventiController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
