@@ -11,6 +11,7 @@
 
         <div class="col-md-2">
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            
         </div>
 
         <div class="col-md-2">
@@ -27,7 +28,7 @@
             @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
         </div>*@
         <div class="select2-container select2-container--classic">
-            @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaQualifica(this.value);" })
+            @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
             
         </div>
 
@@ -51,14 +52,13 @@
 
      <div class="form-group">
          <div class="col-md-3">
-             <a href="#" target="_blank" onclick="PrelevaReportQualifica()">Stampa Presenze dei Livelli in Servizio al'Estero </a>
-             
-
+             <a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>
          </div>
-     </div>
-
-    <hr />
-</div>
+         <div class="col-md-3">
+             <a href="#" onclick="PresenzeLivelli()">Visualizza  Presenze dei Livelli all'Estero </a>
+         </div>
+         
+    </div>
 
     <table id="tbDipEsteroLivello" class="display" cellspacing="0">
         <thead>
@@ -167,12 +167,12 @@
 
         function invia() {
             //debugger
-            //var matricola = parseInt($("#MATRICOLA").select2('val'));
-            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
-            var codicequalifica = parseInt($("#COD_QUALIFICA").select2('val'));
-            var data = $("#datepicker").val();
+            
+            var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
 
-            window.location.href = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli?codicequalifica=" + codicequalifica + "&VDATA=" + data;
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli?codicequalifica=" + codicequalifica + "&V_DATA=" + data + "&V_DATA1=" + data1 + ""
         };
 
         //$(document).ready(function () {
@@ -207,7 +207,7 @@
             });
         });
 
-        function PrelevaQualifica(codicequalifica) {
+        function PresenzeLivelli(codicequalifica) {
             //debugger;
 
             rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
@@ -274,9 +274,9 @@
             //debugger;
 
             rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
-
+            
             var codicequalifica = $("#COD_QUALIFICA").select2('val');
-            var data = $("#datepicker").val();
+            var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").val();
 
             var chk = true;
@@ -314,8 +314,9 @@
                     //debugger;
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
                     //$("#divPViewParametri").empty();
+                    window.open('_blank');
                     $("#divPViewParametri").html(result);
-
+                    
                     //RicercaDocumenti();
 
                 },

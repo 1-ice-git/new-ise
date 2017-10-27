@@ -1531,6 +1531,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet10.xsc">
       <DependentUpon>DataSet10.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet10.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1654,6 +1665,8 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\SpeseDiverse3.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\StoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\Statistiche\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpContributoAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpUsoAbitazione.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1844,6 +1857,11 @@
     <Compile Include="Areas\Statistiche\Models\Stp_Spese_ di_avvicendamento.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Spese_diverse.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Storia_Dipendente.cs" />
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet10.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2356,6 +2374,14 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report15.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report16.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report17.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report20.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report21.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report22.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report23.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report24.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report18.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report2.rdlc" />
@@ -2364,9 +2390,8 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report5.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report6.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

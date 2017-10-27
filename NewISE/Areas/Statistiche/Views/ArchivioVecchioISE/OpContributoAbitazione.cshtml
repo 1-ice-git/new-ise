@@ -6,26 +6,28 @@
         <hr />
 
         <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
 
         <div class="col-md-2">
-            @Html.Editor("Al", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
+
 
     </div>
     <br />
-    <div class="form-group">
-        <div class="col-md-3">
-            <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Contributo Abitazione </a>
-        </div>
-    </div>
 
-    <hr />
 </div>
-<br>
+
+<div class="form-group">
+    <div class="col-md-3">
+        <a href="#" onclick="OpContributoAbitazione()">Visualizza il Riepilogo delle Operazioni effettuate - Contributo Abitazione </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Contributo Abitazione </a>
+    </div>
+</div>
+<br /><br />
 <table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
     <thead>
         <tr>
@@ -138,13 +140,13 @@
             }
         });
 
+       
         function invia() {
             //debugger
-            //var matricola = parseInt($("#MATRICOLA").select2('val'));
-            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+            var DATA = $("#datepicker").datepicker().val()
+            var DATA1 = $("#datepicker1").datepicker().val()
 
-            //var matricola = parseInt($("#MATRICOLA").select2('val'));
-            window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente";
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptOpContributoAbitazione?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
         };
 
         /* Custom filtering function which will search data in column four between two values */
@@ -172,6 +174,97 @@
                 table.draw();
             });
         });
+
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '2001:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker1").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '1920:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
+        function OpContributoAbitazione() {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/OpContributoAbitazione";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+            var chk = true;
+
+            //$("#codicedipendente").val = idMatricola;
+
+            //if (isNaN(codicequalifica)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            //if (isNaN(null)) {
+            //    alert("null is not a number");
+            //} else {
+            //    alert("i think null is a number");
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
 
 </script>
 

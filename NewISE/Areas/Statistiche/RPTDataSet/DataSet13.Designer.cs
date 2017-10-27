@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet13 : global::System.Data.DataSet {
         
-        private V_ISE_STP_LIVELLI_ESTERIDataTable tableV_ISE_STP_LIVELLI_ESTERI;
+        private V_PRESENZE_LIVELLIDataTable tableV_PRESENZE_LIVELLI;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["V_ISE_STP_LIVELLI_ESTERI"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_LIVELLI_ESTERIDataTable(ds.Tables["V_ISE_STP_LIVELLI_ESTERI"]));
+                if ((ds.Tables["V_PRESENZE_LIVELLI"] != null)) {
+                    base.Tables.Add(new V_PRESENZE_LIVELLIDataTable(ds.Tables["V_PRESENZE_LIVELLI"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public V_ISE_STP_LIVELLI_ESTERIDataTable V_ISE_STP_LIVELLI_ESTERI {
+        public V_PRESENZE_LIVELLIDataTable V_PRESENZE_LIVELLI {
             get {
-                return this.tableV_ISE_STP_LIVELLI_ESTERI;
+                return this.tableV_PRESENZE_LIVELLI;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["V_ISE_STP_LIVELLI_ESTERI"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_LIVELLI_ESTERIDataTable(ds.Tables["V_ISE_STP_LIVELLI_ESTERI"]));
+                if ((ds.Tables["V_PRESENZE_LIVELLI"] != null)) {
+                    base.Tables.Add(new V_PRESENZE_LIVELLIDataTable(ds.Tables["V_PRESENZE_LIVELLI"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableV_ISE_STP_LIVELLI_ESTERI = ((V_ISE_STP_LIVELLI_ESTERIDataTable)(base.Tables["V_ISE_STP_LIVELLI_ESTERI"]));
+            this.tableV_PRESENZE_LIVELLI = ((V_PRESENZE_LIVELLIDataTable)(base.Tables["V_PRESENZE_LIVELLI"]));
             if ((initTable == true)) {
-                if ((this.tableV_ISE_STP_LIVELLI_ESTERI != null)) {
-                    this.tableV_ISE_STP_LIVELLI_ESTERI.InitVars();
+                if ((this.tableV_PRESENZE_LIVELLI != null)) {
+                    this.tableV_PRESENZE_LIVELLI.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet13.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableV_ISE_STP_LIVELLI_ESTERI = new V_ISE_STP_LIVELLI_ESTERIDataTable();
-            base.Tables.Add(this.tableV_ISE_STP_LIVELLI_ESTERI);
+            this.tableV_PRESENZE_LIVELLI = new V_PRESENZE_LIVELLIDataTable();
+            base.Tables.Add(this.tableV_PRESENZE_LIVELLI);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeV_ISE_STP_LIVELLI_ESTERI() {
+        private bool ShouldSerializeV_PRESENZE_LIVELLI() {
             return false;
         }
         
@@ -270,35 +270,39 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void V_ISE_STP_LIVELLI_ESTERIRowChangeEventHandler(object sender, V_ISE_STP_LIVELLI_ESTERIRowChangeEvent e);
+        public delegate void V_PRESENZE_LIVELLIRowChangeEventHandler(object sender, V_PRESENZE_LIVELLIRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class V_ISE_STP_LIVELLI_ESTERIDataTable : global::System.Data.TypedTableBase<V_ISE_STP_LIVELLI_ESTERIRow> {
+        public partial class V_PRESENZE_LIVELLIDataTable : global::System.Data.TypedTableBase<V_PRESENZE_LIVELLIRow> {
             
-            private global::System.Data.DataColumn columnCODQUALIFICA;
+            private global::System.Data.DataColumn columnIES_COD_QUALIFICA;
             
-            private global::System.Data.DataColumn columnQUALIFICA;
+            private global::System.Data.DataColumn columnIBS_DESCRIZIONE;
+            
+            private global::System.Data.DataColumn columnIES_MATRICOLA;
+            
+            private global::System.Data.DataColumn columnIES_DT_DECORRENZA;
             
             private global::System.Data.DataColumn columnNOMINATIVO;
             
-            private global::System.Data.DataColumn columnMATRICOLA;
+            private global::System.Data.DataColumn columnSED_DESCRIZIONE;
             
-            private global::System.Data.DataColumn columnSEDE;
+            private global::System.Data.DataColumn columnIES_DT_TRASFERIMENTO;
             
-            private global::System.Data.DataColumn columnDT_TRASFERIMENTO;
+            private global::System.Data.DataColumn columnTRA_DT_FIN_TRASFERIMENTO;
             
-            private global::System.Data.DataColumn columnDT_RIENTRO;
+            private global::System.Data.DataColumn columnIES_PROG_TRASFERIMENTO;
             
-            private global::System.Data.DataColumn columnDT_DECORRENZA;
+            private global::System.Data.DataColumn columnIES_PROG_MOVIMENTO;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIDataTable() {
-                this.TableName = "V_ISE_STP_LIVELLI_ESTERI";
+            public V_PRESENZE_LIVELLIDataTable() {
+                this.TableName = "V_PRESENZE_LIVELLI";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -306,7 +310,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_LIVELLI_ESTERIDataTable(global::System.Data.DataTable table) {
+            internal V_PRESENZE_LIVELLIDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -323,24 +327,40 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected V_ISE_STP_LIVELLI_ESTERIDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected V_PRESENZE_LIVELLIDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CODQUALIFICAColumn {
+            public global::System.Data.DataColumn IES_COD_QUALIFICAColumn {
                 get {
-                    return this.columnCODQUALIFICA;
+                    return this.columnIES_COD_QUALIFICA;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn QUALIFICAColumn {
+            public global::System.Data.DataColumn IBS_DESCRIZIONEColumn {
                 get {
-                    return this.columnQUALIFICA;
+                    return this.columnIBS_DESCRIZIONE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IES_MATRICOLAColumn {
+                get {
+                    return this.columnIES_MATRICOLA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IES_DT_DECORRENZAColumn {
+                get {
+                    return this.columnIES_DT_DECORRENZA;
                 }
             }
             
@@ -354,41 +374,41 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MATRICOLAColumn {
+            public global::System.Data.DataColumn SED_DESCRIZIONEColumn {
                 get {
-                    return this.columnMATRICOLA;
+                    return this.columnSED_DESCRIZIONE;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn SEDEColumn {
+            public global::System.Data.DataColumn IES_DT_TRASFERIMENTOColumn {
                 get {
-                    return this.columnSEDE;
+                    return this.columnIES_DT_TRASFERIMENTO;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DT_TRASFERIMENTOColumn {
+            public global::System.Data.DataColumn TRA_DT_FIN_TRASFERIMENTOColumn {
                 get {
-                    return this.columnDT_TRASFERIMENTO;
+                    return this.columnTRA_DT_FIN_TRASFERIMENTO;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DT_RIENTROColumn {
+            public global::System.Data.DataColumn IES_PROG_TRASFERIMENTOColumn {
                 get {
-                    return this.columnDT_RIENTRO;
+                    return this.columnIES_PROG_TRASFERIMENTO;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn DT_DECORRENZAColumn {
+            public global::System.Data.DataColumn IES_PROG_MOVIMENTOColumn {
                 get {
-                    return this.columnDT_DECORRENZA;
+                    return this.columnIES_PROG_MOVIMENTO;
                 }
             }
             
@@ -403,52 +423,54 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIRow this[int index] {
+            public V_PRESENZE_LIVELLIRow this[int index] {
                 get {
-                    return ((V_ISE_STP_LIVELLI_ESTERIRow)(this.Rows[index]));
+                    return ((V_PRESENZE_LIVELLIRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_LIVELLI_ESTERIRowChangeEventHandler V_ISE_STP_LIVELLI_ESTERIRowChanging;
+            public event V_PRESENZE_LIVELLIRowChangeEventHandler V_PRESENZE_LIVELLIRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_LIVELLI_ESTERIRowChangeEventHandler V_ISE_STP_LIVELLI_ESTERIRowChanged;
+            public event V_PRESENZE_LIVELLIRowChangeEventHandler V_PRESENZE_LIVELLIRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_LIVELLI_ESTERIRowChangeEventHandler V_ISE_STP_LIVELLI_ESTERIRowDeleting;
+            public event V_PRESENZE_LIVELLIRowChangeEventHandler V_PRESENZE_LIVELLIRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_LIVELLI_ESTERIRowChangeEventHandler V_ISE_STP_LIVELLI_ESTERIRowDeleted;
+            public event V_PRESENZE_LIVELLIRowChangeEventHandler V_PRESENZE_LIVELLIRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddV_ISE_STP_LIVELLI_ESTERIRow(V_ISE_STP_LIVELLI_ESTERIRow row) {
+            public void AddV_PRESENZE_LIVELLIRow(V_PRESENZE_LIVELLIRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIRow AddV_ISE_STP_LIVELLI_ESTERIRow(string CODQUALIFICA, string QUALIFICA, string NOMINATIVO, long MATRICOLA, string SEDE, string DT_TRASFERIMENTO, string DT_RIENTRO, System.DateTime DT_DECORRENZA) {
-                V_ISE_STP_LIVELLI_ESTERIRow rowV_ISE_STP_LIVELLI_ESTERIRow = ((V_ISE_STP_LIVELLI_ESTERIRow)(this.NewRow()));
+            public V_PRESENZE_LIVELLIRow AddV_PRESENZE_LIVELLIRow(string IES_COD_QUALIFICA, string IBS_DESCRIZIONE, short IES_MATRICOLA, System.DateTime IES_DT_DECORRENZA, string NOMINATIVO, string SED_DESCRIZIONE, System.DateTime IES_DT_TRASFERIMENTO, System.DateTime TRA_DT_FIN_TRASFERIMENTO, short IES_PROG_TRASFERIMENTO, short IES_PROG_MOVIMENTO) {
+                V_PRESENZE_LIVELLIRow rowV_PRESENZE_LIVELLIRow = ((V_PRESENZE_LIVELLIRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        CODQUALIFICA,
-                        QUALIFICA,
+                        IES_COD_QUALIFICA,
+                        IBS_DESCRIZIONE,
+                        IES_MATRICOLA,
+                        IES_DT_DECORRENZA,
                         NOMINATIVO,
-                        MATRICOLA,
-                        SEDE,
-                        DT_TRASFERIMENTO,
-                        DT_RIENTRO,
-                        DT_DECORRENZA};
-                rowV_ISE_STP_LIVELLI_ESTERIRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowV_ISE_STP_LIVELLI_ESTERIRow);
-                return rowV_ISE_STP_LIVELLI_ESTERIRow;
+                        SED_DESCRIZIONE,
+                        IES_DT_TRASFERIMENTO,
+                        TRA_DT_FIN_TRASFERIMENTO,
+                        IES_PROG_TRASFERIMENTO,
+                        IES_PROG_MOVIMENTO};
+                rowV_PRESENZE_LIVELLIRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowV_PRESENZE_LIVELLIRow);
+                return rowV_PRESENZE_LIVELLIRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                V_ISE_STP_LIVELLI_ESTERIDataTable cln = ((V_ISE_STP_LIVELLI_ESTERIDataTable)(base.Clone()));
+                V_PRESENZE_LIVELLIDataTable cln = ((V_PRESENZE_LIVELLIDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -456,73 +478,84 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new V_ISE_STP_LIVELLI_ESTERIDataTable();
+                return new V_PRESENZE_LIVELLIDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnCODQUALIFICA = base.Columns["CODQUALIFICA"];
-                this.columnQUALIFICA = base.Columns["QUALIFICA"];
+                this.columnIES_COD_QUALIFICA = base.Columns["IES_COD_QUALIFICA"];
+                this.columnIBS_DESCRIZIONE = base.Columns["IBS_DESCRIZIONE"];
+                this.columnIES_MATRICOLA = base.Columns["IES_MATRICOLA"];
+                this.columnIES_DT_DECORRENZA = base.Columns["IES_DT_DECORRENZA"];
                 this.columnNOMINATIVO = base.Columns["NOMINATIVO"];
-                this.columnMATRICOLA = base.Columns["MATRICOLA"];
-                this.columnSEDE = base.Columns["SEDE"];
-                this.columnDT_TRASFERIMENTO = base.Columns["DT_TRASFERIMENTO"];
-                this.columnDT_RIENTRO = base.Columns["DT_RIENTRO"];
-                this.columnDT_DECORRENZA = base.Columns["DT_DECORRENZA"];
+                this.columnSED_DESCRIZIONE = base.Columns["SED_DESCRIZIONE"];
+                this.columnIES_DT_TRASFERIMENTO = base.Columns["IES_DT_TRASFERIMENTO"];
+                this.columnTRA_DT_FIN_TRASFERIMENTO = base.Columns["TRA_DT_FIN_TRASFERIMENTO"];
+                this.columnIES_PROG_TRASFERIMENTO = base.Columns["IES_PROG_TRASFERIMENTO"];
+                this.columnIES_PROG_MOVIMENTO = base.Columns["IES_PROG_MOVIMENTO"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnCODQUALIFICA = new global::System.Data.DataColumn("CODQUALIFICA", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCODQUALIFICA);
-                this.columnQUALIFICA = new global::System.Data.DataColumn("QUALIFICA", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnQUALIFICA);
+                this.columnIES_COD_QUALIFICA = new global::System.Data.DataColumn("IES_COD_QUALIFICA", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_COD_QUALIFICA);
+                this.columnIBS_DESCRIZIONE = new global::System.Data.DataColumn("IBS_DESCRIZIONE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIBS_DESCRIZIONE);
+                this.columnIES_MATRICOLA = new global::System.Data.DataColumn("IES_MATRICOLA", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_MATRICOLA);
+                this.columnIES_DT_DECORRENZA = new global::System.Data.DataColumn("IES_DT_DECORRENZA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_DT_DECORRENZA);
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(long), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMATRICOLA);
-                this.columnSEDE = new global::System.Data.DataColumn("SEDE", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnSEDE);
-                this.columnDT_TRASFERIMENTO = new global::System.Data.DataColumn("DT_TRASFERIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDT_TRASFERIMENTO);
-                this.columnDT_RIENTRO = new global::System.Data.DataColumn("DT_RIENTRO", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDT_RIENTRO);
-                this.columnDT_DECORRENZA = new global::System.Data.DataColumn("DT_DECORRENZA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDT_DECORRENZA);
-                this.columnCODQUALIFICA.MaxLength = 100;
-                this.columnQUALIFICA.MaxLength = 100;
-                this.columnNOMINATIVO.MaxLength = 100;
-                this.columnSEDE.MaxLength = 100;
-                this.columnDT_TRASFERIMENTO.MaxLength = 100;
-                this.columnDT_RIENTRO.MaxLength = 100;
+                this.columnSED_DESCRIZIONE = new global::System.Data.DataColumn("SED_DESCRIZIONE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSED_DESCRIZIONE);
+                this.columnIES_DT_TRASFERIMENTO = new global::System.Data.DataColumn("IES_DT_TRASFERIMENTO", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_DT_TRASFERIMENTO);
+                this.columnTRA_DT_FIN_TRASFERIMENTO = new global::System.Data.DataColumn("TRA_DT_FIN_TRASFERIMENTO", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTRA_DT_FIN_TRASFERIMENTO);
+                this.columnIES_PROG_TRASFERIMENTO = new global::System.Data.DataColumn("IES_PROG_TRASFERIMENTO", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_PROG_TRASFERIMENTO);
+                this.columnIES_PROG_MOVIMENTO = new global::System.Data.DataColumn("IES_PROG_MOVIMENTO", typeof(short), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIES_PROG_MOVIMENTO);
+                this.columnIES_COD_QUALIFICA.MaxLength = 6;
+                this.columnIBS_DESCRIZIONE.AllowDBNull = false;
+                this.columnIBS_DESCRIZIONE.MaxLength = 30;
+                this.columnIES_MATRICOLA.AllowDBNull = false;
+                this.columnIES_DT_DECORRENZA.AllowDBNull = false;
+                this.columnNOMINATIVO.MaxLength = 101;
+                this.columnSED_DESCRIZIONE.AllowDBNull = false;
+                this.columnSED_DESCRIZIONE.MaxLength = 35;
+                this.columnIES_DT_TRASFERIMENTO.AllowDBNull = false;
+                this.columnIES_PROG_TRASFERIMENTO.AllowDBNull = false;
+                this.columnIES_PROG_MOVIMENTO.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIRow NewV_ISE_STP_LIVELLI_ESTERIRow() {
-                return ((V_ISE_STP_LIVELLI_ESTERIRow)(this.NewRow()));
+            public V_PRESENZE_LIVELLIRow NewV_PRESENZE_LIVELLIRow() {
+                return ((V_PRESENZE_LIVELLIRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new V_ISE_STP_LIVELLI_ESTERIRow(builder);
+                return new V_PRESENZE_LIVELLIRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(V_ISE_STP_LIVELLI_ESTERIRow);
+                return typeof(V_PRESENZE_LIVELLIRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.V_ISE_STP_LIVELLI_ESTERIRowChanged != null)) {
-                    this.V_ISE_STP_LIVELLI_ESTERIRowChanged(this, new V_ISE_STP_LIVELLI_ESTERIRowChangeEvent(((V_ISE_STP_LIVELLI_ESTERIRow)(e.Row)), e.Action));
+                if ((this.V_PRESENZE_LIVELLIRowChanged != null)) {
+                    this.V_PRESENZE_LIVELLIRowChanged(this, new V_PRESENZE_LIVELLIRowChangeEvent(((V_PRESENZE_LIVELLIRow)(e.Row)), e.Action));
                 }
             }
             
@@ -530,8 +563,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.V_ISE_STP_LIVELLI_ESTERIRowChanging != null)) {
-                    this.V_ISE_STP_LIVELLI_ESTERIRowChanging(this, new V_ISE_STP_LIVELLI_ESTERIRowChangeEvent(((V_ISE_STP_LIVELLI_ESTERIRow)(e.Row)), e.Action));
+                if ((this.V_PRESENZE_LIVELLIRowChanging != null)) {
+                    this.V_PRESENZE_LIVELLIRowChanging(this, new V_PRESENZE_LIVELLIRowChangeEvent(((V_PRESENZE_LIVELLIRow)(e.Row)), e.Action));
                 }
             }
             
@@ -539,8 +572,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.V_ISE_STP_LIVELLI_ESTERIRowDeleted != null)) {
-                    this.V_ISE_STP_LIVELLI_ESTERIRowDeleted(this, new V_ISE_STP_LIVELLI_ESTERIRowChangeEvent(((V_ISE_STP_LIVELLI_ESTERIRow)(e.Row)), e.Action));
+                if ((this.V_PRESENZE_LIVELLIRowDeleted != null)) {
+                    this.V_PRESENZE_LIVELLIRowDeleted(this, new V_PRESENZE_LIVELLIRowChangeEvent(((V_PRESENZE_LIVELLIRow)(e.Row)), e.Action));
                 }
             }
             
@@ -548,14 +581,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.V_ISE_STP_LIVELLI_ESTERIRowDeleting != null)) {
-                    this.V_ISE_STP_LIVELLI_ESTERIRowDeleting(this, new V_ISE_STP_LIVELLI_ESTERIRowChangeEvent(((V_ISE_STP_LIVELLI_ESTERIRow)(e.Row)), e.Action));
+                if ((this.V_PRESENZE_LIVELLIRowDeleting != null)) {
+                    this.V_PRESENZE_LIVELLIRowDeleting(this, new V_PRESENZE_LIVELLIRowChangeEvent(((V_PRESENZE_LIVELLIRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveV_ISE_STP_LIVELLI_ESTERIRow(V_ISE_STP_LIVELLI_ESTERIRow row) {
+            public void RemoveV_PRESENZE_LIVELLIRow(V_PRESENZE_LIVELLIRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -582,7 +615,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "V_ISE_STP_LIVELLI_ESTERIDataTable";
+                attribute2.FixedValue = "V_PRESENZE_LIVELLIDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -626,48 +659,64 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class V_ISE_STP_LIVELLI_ESTERIRow : global::System.Data.DataRow {
+        public partial class V_PRESENZE_LIVELLIRow : global::System.Data.DataRow {
             
-            private V_ISE_STP_LIVELLI_ESTERIDataTable tableV_ISE_STP_LIVELLI_ESTERI;
+            private V_PRESENZE_LIVELLIDataTable tableV_PRESENZE_LIVELLI;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_LIVELLI_ESTERIRow(global::System.Data.DataRowBuilder rb) : 
+            internal V_PRESENZE_LIVELLIRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableV_ISE_STP_LIVELLI_ESTERI = ((V_ISE_STP_LIVELLI_ESTERIDataTable)(this.Table));
+                this.tableV_PRESENZE_LIVELLI = ((V_PRESENZE_LIVELLIDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CODQUALIFICA {
+            public string IES_COD_QUALIFICA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.CODQUALIFICAColumn]));
+                        return ((string)(this[this.tableV_PRESENZE_LIVELLI.IES_COD_QUALIFICAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CODQUALIFICA\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è" +
-                                " DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IES_COD_QUALIFICA\' nella tabella \'V_PRESENZE_LIVELLI\' è " +
+                                "DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.CODQUALIFICAColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.IES_COD_QUALIFICAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string QUALIFICA {
+            public string IBS_DESCRIZIONE {
                 get {
-                    try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.QUALIFICAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è DB" +
-                                "Null.", e);
-                    }
+                    return ((string)(this[this.tableV_PRESENZE_LIVELLI.IBS_DESCRIZIONEColumn]));
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.QUALIFICAColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.IBS_DESCRIZIONEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public short IES_MATRICOLA {
+                get {
+                    return ((short)(this[this.tableV_PRESENZE_LIVELLI.IES_MATRICOLAColumn]));
+                }
+                set {
+                    this[this.tableV_PRESENZE_LIVELLI.IES_MATRICOLAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime IES_DT_DECORRENZA {
+                get {
+                    return ((global::System.DateTime)(this[this.tableV_PRESENZE_LIVELLI.IES_DT_DECORRENZAColumn]));
+                }
+                set {
+                    this[this.tableV_PRESENZE_LIVELLI.IES_DT_DECORRENZAColumn] = value;
                 }
             }
             
@@ -676,197 +725,113 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableV_PRESENZE_LIVELLI.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è D" +
-                                "BNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.NOMINATIVOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long MATRICOLA {
-                get {
-                    try {
-                        return ((long)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.MATRICOLAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è DB" +
-                                "Null.", e);
-                    }
-                }
-                set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.MATRICOLAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string SEDE {
-                get {
-                    try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.SEDEColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è DBNull." +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_PRESENZE_LIVELLI\' è DBNull." +
                                 "", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.SEDEColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.NOMINATIVOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string DT_TRASFERIMENTO {
+            public string SED_DESCRIZIONE {
+                get {
+                    return ((string)(this[this.tableV_PRESENZE_LIVELLI.SED_DESCRIZIONEColumn]));
+                }
+                set {
+                    this[this.tableV_PRESENZE_LIVELLI.SED_DESCRIZIONEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime IES_DT_TRASFERIMENTO {
+                get {
+                    return ((global::System.DateTime)(this[this.tableV_PRESENZE_LIVELLI.IES_DT_TRASFERIMENTOColumn]));
+                }
+                set {
+                    this[this.tableV_PRESENZE_LIVELLI.IES_DT_TRASFERIMENTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime TRA_DT_FIN_TRASFERIMENTO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_TRASFERIMENTOColumn]));
+                        return ((global::System.DateTime)(this[this.tableV_PRESENZE_LIVELLI.TRA_DT_FIN_TRASFERIMENTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DT_TRASFERIMENTO\' nella tabella \'V_ISE_STP_LIVELLI_ESTER" +
-                                "I\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TRA_DT_FIN_TRASFERIMENTO\' nella tabella \'V_PRESENZE_LIVE" +
+                                "LLI\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_TRASFERIMENTOColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.TRA_DT_FIN_TRASFERIMENTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string DT_RIENTRO {
+            public short IES_PROG_TRASFERIMENTO {
                 get {
-                    try {
-                        return ((string)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_RIENTROColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DT_RIENTRO\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' è D" +
-                                "BNull.", e);
-                    }
+                    return ((short)(this[this.tableV_PRESENZE_LIVELLI.IES_PROG_TRASFERIMENTOColumn]));
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_RIENTROColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.IES_PROG_TRASFERIMENTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DT_DECORRENZA {
+            public short IES_PROG_MOVIMENTO {
                 get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_DECORRENZAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DT_DECORRENZA\' nella tabella \'V_ISE_STP_LIVELLI_ESTERI\' " +
-                                "è DBNull.", e);
-                    }
+                    return ((short)(this[this.tableV_PRESENZE_LIVELLI.IES_PROG_MOVIMENTOColumn]));
                 }
                 set {
-                    this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_DECORRENZAColumn] = value;
+                    this[this.tableV_PRESENZE_LIVELLI.IES_PROG_MOVIMENTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCODQUALIFICANull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.CODQUALIFICAColumn);
+            public bool IsIES_COD_QUALIFICANull() {
+                return this.IsNull(this.tableV_PRESENZE_LIVELLI.IES_COD_QUALIFICAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCODQUALIFICANull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.CODQUALIFICAColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsQUALIFICANull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.QUALIFICAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetQUALIFICANull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.QUALIFICAColumn] = global::System.Convert.DBNull;
+            public void SetIES_COD_QUALIFICANull() {
+                this[this.tableV_PRESENZE_LIVELLI.IES_COD_QUALIFICAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.NOMINATIVOColumn);
+                return this.IsNull(this.tableV_PRESENZE_LIVELLI.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableV_PRESENZE_LIVELLI.NOMINATIVOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsMATRICOLANull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.MATRICOLAColumn);
+            public bool IsTRA_DT_FIN_TRASFERIMENTONull() {
+                return this.IsNull(this.tableV_PRESENZE_LIVELLI.TRA_DT_FIN_TRASFERIMENTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetMATRICOLANull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.MATRICOLAColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsSEDENull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.SEDEColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetSEDENull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.SEDEColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsDT_TRASFERIMENTONull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.DT_TRASFERIMENTOColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetDT_TRASFERIMENTONull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_TRASFERIMENTOColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsDT_RIENTRONull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.DT_RIENTROColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetDT_RIENTRONull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_RIENTROColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsDT_DECORRENZANull() {
-                return this.IsNull(this.tableV_ISE_STP_LIVELLI_ESTERI.DT_DECORRENZAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetDT_DECORRENZANull() {
-                this[this.tableV_ISE_STP_LIVELLI_ESTERI.DT_DECORRENZAColumn] = global::System.Convert.DBNull;
+            public void SetTRA_DT_FIN_TRASFERIMENTONull() {
+                this[this.tableV_PRESENZE_LIVELLI.TRA_DT_FIN_TRASFERIMENTOColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -874,22 +839,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class V_ISE_STP_LIVELLI_ESTERIRowChangeEvent : global::System.EventArgs {
+        public class V_PRESENZE_LIVELLIRowChangeEvent : global::System.EventArgs {
             
-            private V_ISE_STP_LIVELLI_ESTERIRow eventRow;
+            private V_PRESENZE_LIVELLIRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIRowChangeEvent(V_ISE_STP_LIVELLI_ESTERIRow row, global::System.Data.DataRowAction action) {
+            public V_PRESENZE_LIVELLIRowChangeEvent(V_PRESENZE_LIVELLIRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_LIVELLI_ESTERIRow Row {
+            public V_PRESENZE_LIVELLIRow Row {
                 get {
                     return this.eventRow;
                 }

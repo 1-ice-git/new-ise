@@ -19,5 +19,9 @@ namespace NewISE.Areas.Statistiche.Models
         public string progr_trasferimento { get; set; }
         public string progr_movimento { get; set; }
 
+        [DataType(DataType.Date)]
+        [Display(Name = "Date")]
+        public DateTime Date { get; set; }
+
     }
 }
