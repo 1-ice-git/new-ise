@@ -1,4 +1,22 @@
 ﻿@using ReportViewerForMvc;
 @using Microsoft.Reporting.WebForms;
 
-@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>Presenze dei Livelli in servizio all'Estero</title>
+</head>
+<body>
+    @{
+        ViewBag.Title = "Presenze dei Livelli in servizio all'Estero";
+    }
+
+
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+
+
+</body>
+</html>
