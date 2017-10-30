@@ -2157,7 +2157,6 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
