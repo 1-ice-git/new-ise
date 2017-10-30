@@ -42,6 +42,7 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
+        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
         public virtual MAGGIORAZIONEFAMILIARI MAGGIORAZIONEFAMILIARI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
@@ -51,6 +52,5 @@ namespace NewISE.EF
         public virtual ICollection<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
     }
 }

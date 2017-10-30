@@ -53,6 +53,8 @@ body {
 .container {
     max-width: none !important;
     width: 1200px;
+    /*max-height: 700px;*/
+    min-height: 700px;
 }
 
 footer {

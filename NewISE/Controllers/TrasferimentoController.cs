@@ -563,11 +563,10 @@ namespace NewISE.Controllers
                                         PrimaSistemazioneModel psm = new PrimaSistemazioneModel()
                                         {
                                             idPrimaSistemazione = trm.idTrasferimento,
-                                            dataOperazione = DateTime.Now,
-                                            ricalcolata = false
+                                            dataOperazione = DateTime.Now
                                         };
 
-                                        dtps.SetPrimaSistemazione(psm, db);
+                                        dtps.InserisciPrimaSistemazione(psm, db);
 
                                     }
 

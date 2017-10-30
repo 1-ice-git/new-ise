@@ -29,10 +29,10 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
+        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
     }
 }

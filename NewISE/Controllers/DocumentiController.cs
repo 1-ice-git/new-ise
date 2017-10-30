@@ -400,7 +400,7 @@ namespace NewISE.Controllers
                                                 bool notificaRichiesta = tvm.notificaRichiesta;
                                                 bool praticaConclusa = tvm.praticaConclusa;
 
-                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                if (notificaRichiesta == true && praticaConclusa == true)
                                                 {
                                                     solaLettura = true;
                                                 }
@@ -418,7 +418,7 @@ namespace NewISE.Controllers
                                                 bool notificaRichiesta = tvm.notificaRichiesta;
                                                 bool praticaConclusa = tvm.praticaConclusa;
 
-                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                if (notificaRichiesta == true && praticaConclusa == true)
                                                 {
                                                     solaLettura = true;
                                                 }
@@ -436,7 +436,7 @@ namespace NewISE.Controllers
                                                 bool notificaRichiesta = tvm.notificaRichiesta;
                                                 bool praticaConclusa = tvm.praticaConclusa;
 
-                                                if (notificaRichiesta == true || praticaConclusa == true)
+                                                if (notificaRichiesta == true && praticaConclusa == true)
                                                 {
                                                     solaLettura = true;
                                                 }

@@ -55,6 +55,7 @@ namespace NewISE.Models.dtObj
 
                     ac.idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
                     ac.idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE;
+                    ac.idDipendente = ua.IDDIPENDENTE;
                     ac.matricola = ua.UTENTE;
                     ac.ruoloAccesso = new RuoloAccesoModel()
                     {

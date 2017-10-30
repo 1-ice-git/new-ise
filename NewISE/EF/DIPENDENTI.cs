@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DIPENDENTI()
         {
+            this.UTENTIAUTORIZZATI = new HashSet<UTENTIAUTORIZZATI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
@@ -38,6 +39,8 @@ namespace NewISE.EF
         public System.DateTime DATAINIZIORICALCOLI { get; set; }
     
         public virtual CDCGEPE CDCGEPE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
