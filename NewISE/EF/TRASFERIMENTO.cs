@@ -20,7 +20,6 @@ namespace NewISE.EF
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
-            this.PASSAPORTI = new HashSet<PASSAPORTI>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.TEORICI = new HashSet<TEORICI>();
             this.TITOLIVIAGGIO = new HashSet<TITOLIVIAGGIO>();
@@ -51,8 +50,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PASSAPORTI> PASSAPORTI { get; set; }
+        public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

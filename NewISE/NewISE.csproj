@@ -1935,6 +1935,9 @@
     <Compile Include="EF\ATTIVAZIONIMAGFAM.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ATTIVAZIONIPASSAPORTI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ATTIVITACRUD.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

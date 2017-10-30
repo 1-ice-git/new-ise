@@ -12,22 +12,29 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class RICHIAMO
+    public partial class ATTIVAZIONIPASSAPORTI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RICHIAMO()
+        public ATTIVAZIONIPASSAPORTI()
         {
-            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
-            this.COEFFICIENTEINDRICHIAMO = new HashSet<COEFFICIENTEINDRICHIAMO>();
+            this.CONIUGE = new HashSet<CONIUGE>();
+            this.FIGLI = new HashSet<FIGLI>();
         }
     
-        public decimal IDTRASFRICHIAMO { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDATTIVAZIONIPASSAPORTI { get; set; }
+        public decimal IDPASSAPORTI { get; set; }
+        public bool NOTIFICARICHIESTA { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
+        public bool PRATICACONCLUSA { get; set; }
+        public Nullable<System.DateTime> DATAPRATICACONCLUSA { get; set; }
+        public bool ESCLUDIPASSAPORTO { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
     }
 }

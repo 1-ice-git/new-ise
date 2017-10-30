@@ -30,19 +30,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                var p =
-                    t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
-                        .OrderByDescending(a => a.IDPASSAPORTI).First();
+                var p = t.PASSAPORTI;
 
                 pm = new PassaportoModel()
                 {
                     idPassaporto = p.IDPASSAPORTI,
-                    idTrasferimento = p.IDTRASFERIMENTO,
-                    notificaRichiesta = p.NOTIFICARICHIESTA,
-                    dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                    praticaConclusa = p.PRATICACONCLUSA,
-                    dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                    escludiPassaporto = p.ESCLUDIPASSAPORTO
                 };
 
             }
@@ -63,11 +55,6 @@ namespace NewISE.Models.DBModel.dtObj
                     pm = new PassaportoModel()
                     {
                         idPassaporto = p.IDPASSAPORTI,
-                        notificaRichiesta = p.NOTIFICARICHIESTA,
-                        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                        praticaConclusa = p.PRATICACONCLUSA,
-                        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                        escludiPassaporto = p.ESCLUDIPASSAPORTO
                     };
                 }
 
@@ -89,11 +76,6 @@ namespace NewISE.Models.DBModel.dtObj
                     pm = new PassaportoModel()
                     {
                         idPassaporto = p.IDPASSAPORTI,
-                        notificaRichiesta = p.NOTIFICARICHIESTA,
-                        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                        praticaConclusa = p.PRATICACONCLUSA,
-                        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                        escludiPassaporto = p.ESCLUDIPASSAPORTO
                     };
                 }
 
@@ -332,13 +314,23 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var lp = t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
+                    var p = t.PASSAPORTI;
+                    ///.Where(a => a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
 
-                    var p = lp.First();
-                    if (p != null && p.IDPASSAPORTI > 0)
+                    var lap =
+                        p.ATTIVAZIONIPASSAPORTI.Where(
+                            a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == false)
+                            .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+
+
+
+
+                    if (lap?.Any() ?? false)
                     {
-                        p.PRATICACONCLUSA = true;
-                        p.DATAPRATICACONCLUSA = DateTime.Now;
+                        var ap = lap.First();
+
+                        ap.PRATICACONCLUSA = true;
+                        ap.DATAPRATICACONCLUSA = DateTime.Now;
 
                         int i = db.SaveChanges();
 
@@ -350,8 +342,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             this.InvioEmailPraticaPassaportoConclusa(p.IDPASSAPORTI, db);
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                                "Chiusura della richiesta del passaporto/visto.", "PASSAPORTI", db,
-                                idTrasferimento, p.IDPASSAPORTI);
+                                "Chiusura della richiesta del passaporto/visto.", "ATTIVAZIONIPASSAPORTI", db,
+                                idTrasferimento, ap.IDATTIVAZIONIPASSAPORTI);
 
                         }
                     }
@@ -375,15 +367,20 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var lp =
-                        t.PASSAPORTI.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
-                            .OrderBy(a => a.IDPASSAPORTI);
+                    var p = t.PASSAPORTI;
+                    ///.Where(a => a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false).OrderBy(a => a.IDPASSAPORTI);
+                    var lap =
+                        p.ATTIVAZIONIPASSAPORTI.Where(
+                            a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
+                            .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
-                    var p = lp.First();
-                    if (p != null && p.IDPASSAPORTI > 0)
+
+                    if (lap?.Any() ?? false)
                     {
-                        p.NOTIFICARICHIESTA = true;
-                        p.DATANOTIFICARICHIESTA = DateTime.Now;
+                        var ap = lap.First();
+
+                        ap.NOTIFICARICHIESTA = true;
+                        ap.DATANOTIFICARICHIESTA = DateTime.Now;
 
                         int i = db.SaveChanges();
 
@@ -394,8 +391,8 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-                                "Notifica della richiesta del passaporto/visto.", "PASSAPORTI", db,
-                                idTrasferimento, p.IDPASSAPORTI);
+                                "Notifica della richiesta del passaporto/visto.", "ATTIVAZIONIPASSAPORTI", db,
+                                idTrasferimento, ap.IDATTIVAZIONIPASSAPORTI);
 
                             this.InvioEmailPratichePassaportoRichiesta(p.IDPASSAPORTI, db);
 
@@ -485,7 +482,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (p != null && p.IDPASSAPORTI > 0)
                 {
-                    if (p.ESCLUDIPASSAPORTO == false)
+                    var ap = p.ATTIVAZIONIPASSAPORTI.OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI).First();
+
+
+
+                    if (ap.ESCLUDIPASSAPORTO == false)
                     {
                         var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                         if (ldRichiedente?.Any() ?? false)
@@ -585,8 +586,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             esistonoRichiesteAttive = EsistonoRichiesteAttive,
                             esistonoRichiesteSalvate = EsistonoRichiesteSalvate,
-                            notificaRichiesta = p.NOTIFICARICHIESTA,
-                            praticaConclusa = p.PRATICACONCLUSA
+                            notificaRichiesta = ap.NOTIFICARICHIESTA,
+                            praticaConclusa = ap.PRATICACONCLUSA
 
                         };
                     }
@@ -599,192 +600,193 @@ namespace NewISE.Models.DBModel.dtObj
 
             return gppm;
         }
-        public GestPulsantiAttConclModel GestionePulsantiPassaportoByIdTrasf(decimal idTrasferimento)
-        {
-            GestPulsantiAttConclModel gppm = new GestPulsantiAttConclModel();
-            bool esistonoRichiesteRichiedente = false;///Vero se ancora non si è inserito il documento
-            bool esistonoRichiesteRichiedenteSalvate = false;///Vero se non escluso, ovvero, se è stato inserito il documento
-            bool esistonoRichiesteConiuge = false;///Vero se ancora non è stato inserito il documento per il coniuge.
-            bool esistonoRichiesteConiugeSalvate = false;///Vero se il coniuge non è stato escluso ed è stato inserito il documento.
-            bool esistonoRichiesteFigli = false;///Vero se ancora per i figli non sono stati inseriti i documenti.
-            bool esistonoRichiesteFigliSalvate = false;///Vero se i/o i/il figlio/i non sono stati esclusi
-            bool EsistonoRichiesteAttive = false;
-            bool EsistonoRichiesteSalvate = false;
+        ////////public GestPulsantiAttConclModel GestionePulsantiPassaportoByIdTrasf(decimal idTrasferimento)
+        ////////{
+        ////////    GestPulsantiAttConclModel gppm = new GestPulsantiAttConclModel();
+        ////////    bool esistonoRichiesteRichiedente = false;///Vero se ancora non si è inserito il documento
+        ////////    bool esistonoRichiesteRichiedenteSalvate = false;///Vero se non escluso, ovvero, se è stato inserito il documento
+        ////////    bool esistonoRichiesteConiuge = false;///Vero se ancora non è stato inserito il documento per il coniuge.
+        ////////    bool esistonoRichiesteConiugeSalvate = false;///Vero se il coniuge non è stato escluso ed è stato inserito il documento.
+        ////////    bool esistonoRichiesteFigli = false;///Vero se ancora per i figli non sono stati inseriti i documenti.
+        ////////    bool esistonoRichiesteFigliSalvate = false;///Vero se i/o i/il figlio/i non sono stati esclusi
+        ////////    bool EsistonoRichiesteAttive = false;
+        ////////    bool EsistonoRichiesteSalvate = false;
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+        ////////    using (ModelDBISE db = new ModelDBISE())
+        ////////    {
+        ////////        var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+        ////////        var p = t.PASSAPORTI;
 
-                if (p != null && p.IDPASSAPORTI > 0)
-                {
-                    if (p.ESCLUDIPASSAPORTO == false)
-                    {
-                        var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
-                        if (ldRichiedente?.Any() ?? false)
-                        {
-                            esistonoRichiesteRichiedente = false;
-                            esistonoRichiesteRichiedenteSalvate = true;
-                        }
-                        else
-                        {
-                            esistonoRichiesteRichiedente = true;
-                            esistonoRichiesteRichiedenteSalvate = false;
-                        }
-                    }
-                    else
-                    {
-                        esistonoRichiesteRichiedente = false;
-                        esistonoRichiesteRichiedenteSalvate = false;
-                    }
+        ////////        if (p != null && p.IDPASSAPORTI > 0)
+        ////////        {
 
-                    var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
-                    if (lc?.Any() ?? false)
-                    {
-                        foreach (var c in lc)
-                        {
-                            var ldConiuge =
-                                c.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
-                            if (ldConiuge?.Any() ?? false)
-                            {
-                                if (esistonoRichiesteConiuge == false)
-                                    esistonoRichiesteConiuge = false;
+        ////////            if (p.ESCLUDIPASSAPORTO == false)
+        ////////            {
+        ////////                var ldRichiedente = p.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+        ////////                if (ldRichiedente?.Any() ?? false)
+        ////////                {
+        ////////                    esistonoRichiesteRichiedente = false;
+        ////////                    esistonoRichiesteRichiedenteSalvate = true;
+        ////////                }
+        ////////                else
+        ////////                {
+        ////////                    esistonoRichiesteRichiedente = true;
+        ////////                    esistonoRichiesteRichiedenteSalvate = false;
+        ////////                }
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                esistonoRichiesteRichiedente = false;
+        ////////                esistonoRichiesteRichiedenteSalvate = false;
+        ////////            }
 
-                                esistonoRichiesteConiugeSalvate = true;
-                            }
-                            else
-                            {
-                                esistonoRichiesteConiuge = true;
+        ////////            var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+        ////////            if (lc?.Any() ?? false)
+        ////////            {
+        ////////                foreach (var c in lc)
+        ////////                {
+        ////////                    var ldConiuge =
+        ////////                        c.DOCUMENTI.Where(
+        ////////                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
+        ////////                    if (ldConiuge?.Any() ?? false)
+        ////////                    {
+        ////////                        if (esistonoRichiesteConiuge == false)
+        ////////                            esistonoRichiesteConiuge = false;
 
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ///Questo caso si verifica se il coniuge non è presente, non a carico o se escluso dalla richiesta di passaporto.
-                        esistonoRichiesteConiuge = false;
-                        esistonoRichiesteConiugeSalvate = false;
-                    }
+        ////////                        esistonoRichiesteConiugeSalvate = true;
+        ////////                    }
+        ////////                    else
+        ////////                    {
+        ////////                        esistonoRichiesteConiuge = true;
 
-                    var lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
-                    if (lf?.Any() ?? false)
-                    {
-                        foreach (var f in lf)
-                        {
-                            var ldFiglio =
-                                f.DOCUMENTI.Where(
-                                    a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
-                            if (ldFiglio?.Any() ?? false)
-                            {
-                                if (esistonoRichiesteFigli == false)
-                                    esistonoRichiesteFigli = false;
+        ////////                    }
+        ////////                }
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                ///Questo caso si verifica se il coniuge non è presente, non a carico o se escluso dalla richiesta di passaporto.
+        ////////                esistonoRichiesteConiuge = false;
+        ////////                esistonoRichiesteConiugeSalvate = false;
+        ////////            }
 
-                                esistonoRichiesteFigliSalvate = true;
-                            }
-                            else
-                            {
-                                esistonoRichiesteFigli = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        esistonoRichiesteFigli = false;
-                        esistonoRichiesteFigliSalvate = false;
-                    }
+        ////////            var lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+        ////////            if (lf?.Any() ?? false)
+        ////////            {
+        ////////                foreach (var f in lf)
+        ////////                {
+        ////////                    var ldFiglio =
+        ////////                        f.DOCUMENTI.Where(
+        ////////                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita).ToList();
+        ////////                    if (ldFiglio?.Any() ?? false)
+        ////////                    {
+        ////////                        if (esistonoRichiesteFigli == false)
+        ////////                            esistonoRichiesteFigli = false;
 
-                    if (esistonoRichiesteRichiedente || esistonoRichiesteConiuge || esistonoRichiesteFigli)
-                    {
-                        EsistonoRichiesteAttive = true;
-                    }
-                    else
-                    {
-                        EsistonoRichiesteAttive = false;
-                    }
+        ////////                        esistonoRichiesteFigliSalvate = true;
+        ////////                    }
+        ////////                    else
+        ////////                    {
+        ////////                        esistonoRichiesteFigli = true;
+        ////////                    }
+        ////////                }
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                esistonoRichiesteFigli = false;
+        ////////                esistonoRichiesteFigliSalvate = false;
+        ////////            }
 
-                    if (esistonoRichiesteRichiedenteSalvate || esistonoRichiesteConiugeSalvate || esistonoRichiesteFigliSalvate)
-                    {
-                        EsistonoRichiesteSalvate = true;
-                    }
-                    else
-                    {
-                        EsistonoRichiesteSalvate = false;
-                    }
+        ////////            if (esistonoRichiesteRichiedente || esistonoRichiesteConiuge || esistonoRichiesteFigli)
+        ////////            {
+        ////////                EsistonoRichiesteAttive = true;
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                EsistonoRichiesteAttive = false;
+        ////////            }
 
-                    if (p != null && p.IDPASSAPORTI > 0)
-                    {
-                        gppm = new GestPulsantiAttConclModel()
-                        {
-                            esistonoRichiesteAttive = EsistonoRichiesteAttive,
-                            esistonoRichiesteSalvate = EsistonoRichiesteSalvate,
-                            notificaRichiesta = p.NOTIFICARICHIESTA,
-                            praticaConclusa = p.PRATICACONCLUSA
+        ////////            if (esistonoRichiesteRichiedenteSalvate || esistonoRichiesteConiugeSalvate || esistonoRichiesteFigliSalvate)
+        ////////            {
+        ////////                EsistonoRichiesteSalvate = true;
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                EsistonoRichiesteSalvate = false;
+        ////////            }
 
-                        };
-                    }
+        ////////            if (p != null && p.IDPASSAPORTI > 0)
+        ////////            {
+        ////////                gppm = new GestPulsantiAttConclModel()
+        ////////                {
+        ////////                    esistonoRichiesteAttive = EsistonoRichiesteAttive,
+        ////////                    esistonoRichiesteSalvate = EsistonoRichiesteSalvate,
+        ////////                    notificaRichiesta = p.NOTIFICARICHIESTA,
+        ////////                    praticaConclusa = p.PRATICACONCLUSA
 
-                }
+        ////////                };
+        ////////            }
 
-
-
-            }
-
-            return gppm;
-        }
+        ////////        }
 
 
 
-        public void SetEscludiPassaportoRichiedente(decimal idPassaporto, ref bool chk)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
+        ////////    }
 
-                var p = db.PASSAPORTI.Find(idPassaporto);
-                var t = p.TRASFERIMENTO;
+        ////////    return gppm;
+        ////////}
 
-                if (p != null && p.IDPASSAPORTI > 0)
-                {
-                    p.ESCLUDIPASSAPORTO = p.ESCLUDIPASSAPORTO == false ? true : false;
 
-                    int i = db.SaveChanges();
 
-                    if (i <= 0)
-                    {
-                        throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto.");
-                    }
-                    else
-                    {
-                        chk = p.ESCLUDIPASSAPORTO;
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Esclusione dalla richiesta di passaporto/visto.", "Passaporti", db, t.IDTRASFERIMENTO, p.IDPASSAPORTI);
-                    }
-                }
-            }
-        }
+        ////////public void SetEscludiPassaportoRichiedente(decimal idPassaporto, ref bool chk)
+        ////////{
+        ////////    using (ModelDBISE db = new ModelDBISE())
+        ////////    {
 
-        public void PreSetPassaporto(decimal idTrasferimento, ModelDBISE db)
-        {
-            PASSAPORTI p = new PASSAPORTI()
-            {
-                IDTRASFERIMENTO = idTrasferimento,
-                NOTIFICARICHIESTA = false,
-                PRATICACONCLUSA = false,
-                ESCLUDIPASSAPORTO = false
-            };
+        ////////        var p = db.PASSAPORTI.Find(idPassaporto);
+        ////////        var t = p.TRASFERIMENTO;
 
-            db.PASSAPORTI.Add(p);
-            int i = db.SaveChanges();
+        ////////        if (p != null && p.IDPASSAPORTI > 0)
+        ////////        {
+        ////////            p.ESCLUDIPASSAPORTO = p.ESCLUDIPASSAPORTO == false ? true : false;
 
-            if (i <= 0)
-            {
-                throw new Exception("Errore nella fase d'inserimento dei dati per la gestione del passaporto.");
-            }
-            else
-            {
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento dei dati di gestione del passaporto.", "PASSAPORTI", db, idTrasferimento, p.IDPASSAPORTI);
-            }
-        }
+        ////////            int i = db.SaveChanges();
+
+        ////////            if (i <= 0)
+        ////////            {
+        ////////                throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto.");
+        ////////            }
+        ////////            else
+        ////////            {
+        ////////                chk = p.ESCLUDIPASSAPORTO;
+        ////////                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Esclusione dalla richiesta di passaporto/visto.", "Passaporti", db, t.IDTRASFERIMENTO, p.IDPASSAPORTI);
+        ////////            }
+        ////////        }
+        ////////    }
+        ////////}
+
+        //////public void PreSetPassaporto(decimal idTrasferimento, ModelDBISE db)
+        //////{
+        //////    PASSAPORTI p = new PASSAPORTI()
+        //////    {
+        //////        IDTRASFERIMENTO = idTrasferimento,
+        //////        NOTIFICARICHIESTA = false,
+        //////        PRATICACONCLUSA = false,
+        //////        ESCLUDIPASSAPORTO = false
+        //////    };
+
+        //////    db.PASSAPORTI.Add(p);
+        //////    int i = db.SaveChanges();
+
+        //////    if (i <= 0)
+        //////    {
+        //////        throw new Exception("Errore nella fase d'inserimento dei dati per la gestione del passaporto.");
+        //////    }
+        //////    else
+        //////    {
+        //////        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento dei dati di gestione del passaporto.", "PASSAPORTI", db, idTrasferimento, p.IDPASSAPORTI);
+        //////    }
+        //////}
 
         public void PreSetPassaporto(decimal idTrasferimento)
         {
@@ -792,9 +794,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 PASSAPORTI p = new PASSAPORTI()
                 {
-                    IDTRASFERIMENTO = idTrasferimento,
-                    NOTIFICARICHIESTA = false,
-                    PRATICACONCLUSA = false
+                    IDPASSAPORTI = idTrasferimento,
                 };
 
                 db.PASSAPORTI.Add(p);
@@ -812,129 +812,130 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public PassaportoModel GetPassaportoRichiedente(decimal idTrasferimento)
-        {
-            PassaportoModel pm = new PassaportoModel();
+        //public PassaportoModel GetPassaportoRichiedente(decimal idTrasferimento)
+        //{
+        //    PassaportoModel pm = new PassaportoModel();
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var t = db.TRASFERIMENTO.Find(idTrasferimento);
+        //        var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
 
-                pm = new PassaportoModel()
-                {
-                    idPassaporto = p.IDPASSAPORTI,
-                    notificaRichiesta = p.NOTIFICARICHIESTA,
-                    dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                    praticaConclusa = p.PRATICACONCLUSA,
-                    dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                    escludiPassaporto = p.ESCLUDIPASSAPORTO,
+        //        pm = new PassaportoModel()
+        //        {
+        //            idPassaporto = p.IDPASSAPORTI,
+        //            notificaRichiesta = p.NOTIFICARICHIESTA,
+        //            dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+        //            praticaConclusa = p.PRATICACONCLUSA,
+        //            dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+        //            escludiPassaporto = p.ESCLUDIPASSAPORTO,
 
-                };
-            }
+        //        };
+        //    }
 
-            return pm;
+        //    return pm;
 
-        }
-        public PassaportoModel GetPassaportoRichiedente(decimal idTrasferimento, ModelDBISE db)
-        {
-            PassaportoModel pm = new PassaportoModel();
+        //}
 
-            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+        //public PassaportoModel GetPassaportoRichiedente(decimal idTrasferimento, ModelDBISE db)
+        //{
+        //    PassaportoModel pm = new PassaportoModel();
 
-            pm = new PassaportoModel()
-            {
-                idPassaporto = p.IDPASSAPORTI,
-                notificaRichiesta = p.NOTIFICARICHIESTA,
-                dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                praticaConclusa = p.PRATICACONCLUSA,
-                dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                escludiPassaporto = p.ESCLUDIPASSAPORTO,
+        //    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+        //    var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
 
-            };
+        //    pm = new PassaportoModel()
+        //    {
+        //        idPassaporto = p.IDPASSAPORTI,
+        //        notificaRichiesta = p.NOTIFICARICHIESTA,
+        //        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+        //        praticaConclusa = p.PRATICACONCLUSA,
+        //        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+        //        escludiPassaporto = p.ESCLUDIPASSAPORTO,
 
-            return pm;
+        //    };
 
-        }
+        //    return pm;
 
-
-        public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
-        {
-            PassaportoModel pm = new PassaportoModel();
-
-
-            var p = db.PASSAPORTI.Find(idPassaporto);
-
-            pm = new PassaportoModel()
-            {
-                idPassaporto = p.IDPASSAPORTI,
-                notificaRichiesta = p.NOTIFICARICHIESTA,
-                dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                praticaConclusa = p.PRATICACONCLUSA,
-                dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                escludiPassaporto = p.ESCLUDIPASSAPORTO,
-                //trasferimento = new TrasferimentoModel()
-                //{
-                //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
-                //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
-                //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
-                //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
-                //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
-                //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
-                //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
-                //    coan = p.TRASFERIMENTO.COAN,
-                //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
-                //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
-                //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
-                //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
-                //}
-            };
-
-
-            return pm;
-        }
+        //}
 
 
 
-        public PassaportoModel GetPassaportoByID(decimal idPassaporto)
-        {
-            PassaportoModel pm = new PassaportoModel();
+        //public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
+        //{
+        //    PassaportoModel pm = new PassaportoModel();
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var p = db.PASSAPORTI.Find(idPassaporto);
 
-                pm = new PassaportoModel()
-                {
-                    idPassaporto = p.IDPASSAPORTI,
-                    notificaRichiesta = p.NOTIFICARICHIESTA,
-                    dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-                    praticaConclusa = p.PRATICACONCLUSA,
-                    dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-                    escludiPassaporto = p.ESCLUDIPASSAPORTO,
-                    //trasferimento = new TrasferimentoModel()
-                    //{
-                    //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
-                    //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                    //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
-                    //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
-                    //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
-                    //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
-                    //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
-                    //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
-                    //    coan = p.TRASFERIMENTO.COAN,
-                    //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
-                    //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
-                    //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
-                    //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
-                    //}
-                };
-            }
+        //    var p = db.PASSAPORTI.Find(idPassaporto);
 
-            return pm;
-        }
+        //    pm = new PassaportoModel()
+        //    {
+        //        idPassaporto = p.IDPASSAPORTI,
+        //        notificaRichiesta = p.NOTIFICARICHIESTA,
+        //        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+        //        praticaConclusa = p.PRATICACONCLUSA,
+        //        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+        //        escludiPassaporto = p.ESCLUDIPASSAPORTO,
+        //        //trasferimento = new TrasferimentoModel()
+        //        //{
+        //        //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+        //        //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+        //        //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+        //        //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+        //        //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+        //        //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+        //        //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+        //        //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+        //        //    coan = p.TRASFERIMENTO.COAN,
+        //        //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+        //        //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+        //        //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+        //        //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+        //        //}
+        //    };
+
+
+        //    return pm;
+        //}
+
+
+        //public PassaportoModel GetPassaportoByID(decimal idPassaporto)
+        //{
+        //    PassaportoModel pm = new PassaportoModel();
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var p = db.PASSAPORTI.Find(idPassaporto);
+
+        //        pm = new PassaportoModel()
+        //        {
+        //            idPassaporto = p.IDPASSAPORTI,
+        //            notificaRichiesta = p.NOTIFICARICHIESTA,
+        //            dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
+        //            praticaConclusa = p.PRATICACONCLUSA,
+        //            dataPraticaConclusa = p.DATAPRATICACONCLUSA,
+        //            escludiPassaporto = p.ESCLUDIPASSAPORTO,
+        //            //trasferimento = new TrasferimentoModel()
+        //            //{
+        //            //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+        //            //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+        //            //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+        //            //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+        //            //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+        //            //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+        //            //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+        //            //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+        //            //    coan = p.TRASFERIMENTO.COAN,
+        //            //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+        //            //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+        //            //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+        //            //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+        //            //}
+        //        };
+        //    }
+
+        //    return pm;
+        //}
 
 
         //public PassaportoModel GetPassaportoByIDTrasf(decimal idTrasferimento)
@@ -983,295 +984,295 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="idFamiliare">Per il coniuge è l'idConiuge, per il figlio è l'idFiglio, per il richiedente è l'id trasferimento o passaporto per via del riferimento uno ad uno.</param>
         /// <param name="parentela"></param>
         /// <returns></returns>
-        public ElencoFamiliariModel GetDatiForColElencoDoc(decimal idFamiliare, EnumParentela parentela)
-        {
-            ElencoFamiliariModel efm = new ElencoFamiliariModel();
-            TrasferimentoModel trm;
-            MaggiorazioniFamiliariModel mfm;
-            PassaportoModel pm = new PassaportoModel();
+        //public ElencoFamiliariModel GetDatiForColElencoDoc(decimal idFamiliare, EnumParentela parentela)
+        //{
+        //    ElencoFamiliariModel efm = new ElencoFamiliariModel();
+        //    TrasferimentoModel trm;
+        //    MaggiorazioniFamiliariModel mfm;
+        //    PassaportoModel pm = new PassaportoModel();
 
-            using (dtTrasferimento dttr = new dtTrasferimento())
-            {
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                {
-                    using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                    {
-                        using (dtDocumenti dtdoc = new dtDocumenti())
-                        {
-                            switch (parentela)
-                            {
-                                case EnumParentela.Coniuge:
-                                    using (dtConiuge dtc = new dtConiuge())
-                                    {
-                                        var cm = dtc.GetConiugebyID(idFamiliare);
-                                        if (cm != null && cm.HasValue())
-                                        {
-                                            mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(cm.idConiuge);
-                                            trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
-                                            pm = dtpp.GetPassaportoByID(cm.idPassaporti);
-                                            efm = new ElencoFamiliariModel()
-                                            {
-                                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
-                                                idFamiliare = cm.idConiuge,
-                                                idPassaporti = pm.idPassaporto,
-                                                Nominativo = cm.nominativo,
-                                                CodiceFiscale = cm.codiceFiscale,
-                                                dataInizio = cm.dataInizio,
-                                                dataFine = cm.dataFine,
-                                                parentela = EnumParentela.Coniuge,
-                                                idAltriDati = 0,
-                                                Documenti = dtdoc.GetDocumentiByIdTable(cm.idConiuge,
-                                                            EnumTipoDoc.Documento_Identita,
-                                                            EnumParentela.Coniuge),
-                                                escludiPassaporto = cm.escludiPassaporto
-                                            };
+        //    using (dtTrasferimento dttr = new dtTrasferimento())
+        //    {
+        //        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //        {
+        //            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+        //            {
+        //                using (dtDocumenti dtdoc = new dtDocumenti())
+        //                {
+        //                    switch (parentela)
+        //                    {
+        //                        case EnumParentela.Coniuge:
+        //                            using (dtConiuge dtc = new dtConiuge())
+        //                            {
+        //                                var cm = dtc.GetConiugebyID(idFamiliare);
+        //                                if (cm != null && cm.HasValue())
+        //                                {
+        //                                    mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(cm.idConiuge);
+        //                                    trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
+        //                                    pm = dtpp.GetPassaportoByID(cm.idPassaporti);
+        //                                    efm = new ElencoFamiliariModel()
+        //                                    {
+        //                                        idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
+        //                                        idFamiliare = cm.idConiuge,
+        //                                        idPassaporti = pm.idPassaporto,
+        //                                        Nominativo = cm.nominativo,
+        //                                        CodiceFiscale = cm.codiceFiscale,
+        //                                        dataInizio = cm.dataInizio,
+        //                                        dataFine = cm.dataFine,
+        //                                        parentela = EnumParentela.Coniuge,
+        //                                        idAltriDati = 0,
+        //                                        Documenti = dtdoc.GetDocumentiByIdTable(cm.idConiuge,
+        //                                                    EnumTipoDoc.Documento_Identita,
+        //                                                    EnumParentela.Coniuge),
+        //                                        escludiPassaporto = cm.escludiPassaporto
+        //                                    };
 
-                                        }
-
-
-
-                                    }
-                                    break;
-                                case EnumParentela.Figlio:
-                                    using (dtFigli dtf = new dtFigli())
-                                    {
-                                        var fm = dtf.GetFigliobyID(idFamiliare);
-                                        if (fm != null && fm.HasValue())
-                                        {
-                                            mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(fm.idFigli);
-                                            trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
-                                            pm = dtpp.GetPassaportoByID(fm.idPassaporti);
-
-                                            efm = new ElencoFamiliariModel()
-                                            {
-                                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
-                                                idFamiliare = fm.idFigli,
-                                                idPassaporti = pm.idPassaporto,
-                                                Nominativo = fm.nominativo,
-                                                CodiceFiscale = fm.codiceFiscale,
-                                                dataInizio = fm.dataInizio,
-                                                dataFine = fm.dataFine,
-                                                parentela = EnumParentela.Figlio,
-                                                idAltriDati = 0,
-                                                Documenti = dtdoc.GetDocumentiByIdTable(fm.idFigli,
-                                                                    EnumTipoDoc.Documento_Identita,
-                                                                    EnumParentela.Figlio),
-                                                escludiPassaporto = fm.escludiPassaporto
-                                            };
-                                        }
-                                    }
-                                    break;
-                                case EnumParentela.Richiedente:
-                                    using (dtDipendenti dtd = new dtDipendenti())
-                                    {
-                                        trm = dttr.GetTrasferimentoByIdPassaporto(idFamiliare);
-                                        mfm = dtmf.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
-
-                                        var dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
-                                        pm = dtpp.GetPassaportoByID(idFamiliare);
-                                        efm = new ElencoFamiliariModel()
-                                        {
-                                            idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
-                                            idFamiliare = idFamiliare,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere molti trasferimenti.
-                                            idPassaporti = pm.idPassaporto,
-                                            Nominativo = dm.Nominativo,
-                                            CodiceFiscale = string.Empty,
-                                            dataInizio = trm.dataPartenza,
-                                            dataFine = trm.dataRientro,
-                                            parentela = EnumParentela.Richiedente,
-                                            idAltriDati = 0,
-                                            Documenti = dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
-                                                                    EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
-                                                                    .ToList(),
-                                            escludiPassaporto = pm.escludiPassaporto
-                                        };
-                                    }
-
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException("parentela");
-                            }
-                        }
-                    }
-
-
-                }
-
-            }
+        //                                }
 
 
 
+        //                            }
+        //                            break;
+        //                        case EnumParentela.Figlio:
+        //                            using (dtFigli dtf = new dtFigli())
+        //                            {
+        //                                var fm = dtf.GetFigliobyID(idFamiliare);
+        //                                if (fm != null && fm.HasValue())
+        //                                {
+        //                                    mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(fm.idFigli);
+        //                                    trm = dttr.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
+        //                                    pm = dtpp.GetPassaportoByID(fm.idPassaporti);
 
-            return efm;
-        }
+        //                                    efm = new ElencoFamiliariModel()
+        //                                    {
+        //                                        idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
+        //                                        idFamiliare = fm.idFigli,
+        //                                        idPassaporti = pm.idPassaporto,
+        //                                        Nominativo = fm.nominativo,
+        //                                        CodiceFiscale = fm.codiceFiscale,
+        //                                        dataInizio = fm.dataInizio,
+        //                                        dataFine = fm.dataFine,
+        //                                        parentela = EnumParentela.Figlio,
+        //                                        idAltriDati = 0,
+        //                                        Documenti = dtdoc.GetDocumentiByIdTable(fm.idFigli,
+        //                                                            EnumTipoDoc.Documento_Identita,
+        //                                                            EnumParentela.Figlio),
+        //                                        escludiPassaporto = fm.escludiPassaporto
+        //                                    };
+        //                                }
+        //                            }
+        //                            break;
+        //                        case EnumParentela.Richiedente:
+        //                            using (dtDipendenti dtd = new dtDipendenti())
+        //                            {
+        //                                trm = dttr.GetTrasferimentoByIdPassaporto(idFamiliare);
+        //                                mfm = dtmf.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
 
+        //                                var dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
+        //                                pm = dtpp.GetPassaportoByID(idFamiliare);
+        //                                efm = new ElencoFamiliariModel()
+        //                                {
+        //                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
+        //                                    idFamiliare = idFamiliare,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere molti trasferimenti.
+        //                                    idPassaporti = pm.idPassaporto,
+        //                                    Nominativo = dm.Nominativo,
+        //                                    CodiceFiscale = string.Empty,
+        //                                    dataInizio = trm.dataPartenza,
+        //                                    dataFine = trm.dataRientro,
+        //                                    parentela = EnumParentela.Richiedente,
+        //                                    idAltriDati = 0,
+        //                                    Documenti = dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
+        //                                                            EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
+        //                                                            .ToList(),
+        //                                    escludiPassaporto = pm.escludiPassaporto
+        //                                };
+        //                            }
 
-        public IList<ElencoFamiliariModel> GetDipendentiRichiestaPassaporto(decimal idTrasferimento)
-        {
-            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
-
-            TrasferimentoModel trm = new TrasferimentoModel();
-            DipendentiModel dm = new DipendentiModel();
-            MaggiorazioniFamiliariModel mf = new MaggiorazioniFamiliariModel();
-            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
-            PassaportoModel pm = new PassaportoModel();
-
-            using (dtDipendenti dtd = new dtDipendenti())
-            {
-                using (dtTrasferimento dttr = new dtTrasferimento())
-                {
-                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                    {
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            using (dtDocumenti dtdoc = new dtDocumenti())
-                            {
-                                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                                {
-                                    trm = dttr.GetTrasferimentoById(idTrasferimento);
-
-                                    if (trm != null && trm.HasValue())
-                                    {
-                                        dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
-                                        mf = dtmf.GetMaggiorazioniFamiliariByID(idTrasferimento);
-
-                                        pm = dtpp.GetPassaportoRichiedente(trm.idTrasferimento);
-                                        amfm = dtamf.GetUltimaAttivazioneMagFam(mf.idMaggiorazioniFamiliari);
-
-                                        #region Passaporto richiedente
-
-                                        if (dm != null && dm.HasValue())
-                                        {
-                                            ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                            {
-                                                idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
-                                                idFamiliare = pm.idPassaporto,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
-                                                idPassaporti = pm.idPassaporto,
-                                                Nominativo = dm.Nominativo,
-                                                CodiceFiscale = string.Empty,
-                                                dataInizio = trm.dataPartenza,
-                                                dataFine = trm.dataRientro,
-                                                parentela = EnumParentela.Richiedente,
-                                                idAltriDati = 0,
-                                                Documenti =
-                                                    dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
-                                                        EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
-                                                        .ToList(),
-                                                escludiPassaporto = pm.escludiPassaporto
-                                            };
-
-                                            lefm.Add(efm);
-                                        }
-
-                                        #endregion
-
-                                        #region Passaporto familiari
-
-                                        if (mf != null && mf.HasValue())
-                                        {
-                                            if (amfm.attivazioneMagFam == true)
-                                            {
-                                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                                                {
-                                                    #region Coniuge
-
-                                                    using (dtConiuge dtc = new dtConiuge())
-                                                    {
-                                                        var lcm =
-                                                            dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari).Where(a => a.idTipologiaConiuge == EnumTipologiaConiuge.Residente)
-                                                                .ToList();
-                                                        if (lcm?.Any() ?? false)
-                                                        {
-                                                            foreach (var cm in lcm)
-                                                            {
-                                                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                                                {
-                                                                    idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
-                                                                    idFamiliare = cm.idConiuge,
-                                                                    idPassaporti = pm.idPassaporto,
-                                                                    Nominativo = cm.nominativo,
-                                                                    CodiceFiscale = cm.codiceFiscale,
-                                                                    dataInizio = cm.dataInizio,
-                                                                    dataFine = cm.dataFine,
-                                                                    parentela = EnumParentela.Coniuge,
-                                                                    idAltriDati =
-                                                                        dtadf.GetAlttriDatiFamiliariConiuge(cm.idConiuge)
-                                                                            .idAltriDatiFam,
-                                                                    Documenti =
-                                                                        dtdoc.GetDocumentiByIdTable(cm.idConiuge,
-                                                                            EnumTipoDoc.Documento_Identita,
-                                                                            EnumParentela.Coniuge),
-                                                                    escludiPassaporto = cm.escludiPassaporto
-                                                                };
-
-                                                                lefm.Add(efm);
-                                                            }
-                                                        }
-                                                    }
-
-                                                    #endregion
-
-                                                    #region Figli
-
-                                                    using (dtFigli dtf = new dtFigli())
-                                                    {
-                                                        var lfm =
-                                                            dtf.GetListaFigli(mf.idMaggiorazioniFamiliari)
-                                                                .Where(
-                                                                    a =>
-                                                                        new[]
-                                                                        {
-                                                                        EnumTipologiaFiglio.Residente,
-                                                                        EnumTipologiaFiglio.StudenteResidente,
-                                                                        }.Contains
-                                                                            (a.idTipologiaFiglio))
-                                                                .ToList();
-                                                        if (lfm?.Any() ?? false)
-                                                        {
-                                                            foreach (var fm in lfm)
-                                                            {
-                                                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                                                {
-                                                                    idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
-                                                                    idFamiliare = fm.idFigli,
-                                                                    idPassaporti = pm.idPassaporto,
-                                                                    Nominativo = fm.nominativo,
-                                                                    CodiceFiscale = fm.codiceFiscale,
-                                                                    dataInizio = fm.dataInizio,
-                                                                    dataFine = fm.dataFine,
-                                                                    parentela = EnumParentela.Figlio,
-                                                                    idAltriDati =
-                                                                        dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli)
-                                                                            .idAltriDatiFam,
-                                                                    Documenti =
-                                                                        dtdoc.GetDocumentiByIdTable(fm.idFigli,
-                                                                            EnumTipoDoc.Documento_Identita,
-                                                                            EnumParentela.Figlio),
-                                                                    escludiPassaporto = fm.escludiPassaporto
-                                                                };
-
-                                                                lefm.Add(efm);
-                                                            }
-                                                        }
-                                                    }
-
-                                                    #endregion
-                                                }
-                                            }
-                                        }
-
-                                        #endregion
-                                    }
-                                }
+        //                            break;
+        //                        default:
+        //                            throw new ArgumentOutOfRangeException("parentela");
+        //                    }
+        //                }
+        //            }
 
 
-                            }
-                        }
-                    }
-                }
-            }
+        //        }
 
-            return lefm;
-        }
+        //    }
+
+
+
+
+        //    return efm;
+        //}
+
+
+        //public IList<ElencoFamiliariModel> GetDipendentiRichiestaPassaporto(decimal idTrasferimento)
+        //{
+        //    List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
+
+        //    TrasferimentoModel trm = new TrasferimentoModel();
+        //    DipendentiModel dm = new DipendentiModel();
+        //    MaggiorazioniFamiliariModel mf = new MaggiorazioniFamiliariModel();
+        //    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+        //    PassaportoModel pm = new PassaportoModel();
+
+        //    using (dtDipendenti dtd = new dtDipendenti())
+        //    {
+        //        using (dtTrasferimento dttr = new dtTrasferimento())
+        //        {
+        //            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //            {
+        //                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+        //                {
+        //                    using (dtDocumenti dtdoc = new dtDocumenti())
+        //                    {
+        //                        using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+        //                        {
+        //                            trm = dttr.GetTrasferimentoById(idTrasferimento);
+
+        //                            if (trm != null && trm.HasValue())
+        //                            {
+        //                                dm = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento);
+        //                                mf = dtmf.GetMaggiorazioniFamiliariByID(idTrasferimento);
+
+        //                                pm = dtpp.GetPassaportoRichiedente(trm.idTrasferimento);
+        //                                amfm = dtamf.GetUltimaAttivazioneMagFam(mf.idMaggiorazioniFamiliari);
+
+        //                                #region Passaporto richiedente
+
+        //                                if (dm != null && dm.HasValue())
+        //                                {
+        //                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
+        //                                    {
+        //                                        idMaggiorazioniFamiliari = mf.idMaggiorazioniFamiliari,
+        //                                        idFamiliare = pm.idPassaporto,///In questo caso portiamo l'id del trasferimento interessato perché inserire l'id del dipendente potrebbe portare errori per via che un dipendente può avere n trasferimenti.
+        //                                        idPassaporti = pm.idPassaporto,
+        //                                        Nominativo = dm.Nominativo,
+        //                                        CodiceFiscale = string.Empty,
+        //                                        dataInizio = trm.dataPartenza,
+        //                                        dataFine = trm.dataRientro,
+        //                                        parentela = EnumParentela.Richiedente,
+        //                                        idAltriDati = 0,
+        //                                        Documenti =
+        //                                            dtdoc.GetDocumentiByIdTable(pm.idPassaporto,
+        //                                                EnumTipoDoc.Documento_Identita, EnumParentela.Richiedente)
+        //                                                .ToList(),
+        //                                        escludiPassaporto = pm.escludiPassaporto
+        //                                    };
+
+        //                                    lefm.Add(efm);
+        //                                }
+
+        //                                #endregion
+
+        //                                #region Passaporto familiari
+
+        //                                if (mf != null && mf.HasValue())
+        //                                {
+        //                                    if (amfm.attivazioneMagFam == true)
+        //                                    {
+        //                                        using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+        //                                        {
+        //                                            #region Coniuge
+
+        //                                            using (dtConiuge dtc = new dtConiuge())
+        //                                            {
+        //                                                var lcm =
+        //                                                    dtc.GetListaConiugeByIdMagFam(mf.idMaggiorazioniFamiliari).Where(a => a.idTipologiaConiuge == EnumTipologiaConiuge.Residente)
+        //                                                        .ToList();
+        //                                                if (lcm?.Any() ?? false)
+        //                                                {
+        //                                                    foreach (var cm in lcm)
+        //                                                    {
+        //                                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+        //                                                        {
+        //                                                            idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
+        //                                                            idFamiliare = cm.idConiuge,
+        //                                                            idPassaporti = pm.idPassaporto,
+        //                                                            Nominativo = cm.nominativo,
+        //                                                            CodiceFiscale = cm.codiceFiscale,
+        //                                                            dataInizio = cm.dataInizio,
+        //                                                            dataFine = cm.dataFine,
+        //                                                            parentela = EnumParentela.Coniuge,
+        //                                                            idAltriDati =
+        //                                                                dtadf.GetAlttriDatiFamiliariConiuge(cm.idConiuge)
+        //                                                                    .idAltriDatiFam,
+        //                                                            Documenti =
+        //                                                                dtdoc.GetDocumentiByIdTable(cm.idConiuge,
+        //                                                                    EnumTipoDoc.Documento_Identita,
+        //                                                                    EnumParentela.Coniuge),
+        //                                                            escludiPassaporto = cm.escludiPassaporto
+        //                                                        };
+
+        //                                                        lefm.Add(efm);
+        //                                                    }
+        //                                                }
+        //                                            }
+
+        //                                            #endregion
+
+        //                                            #region Figli
+
+        //                                            using (dtFigli dtf = new dtFigli())
+        //                                            {
+        //                                                var lfm =
+        //                                                    dtf.GetListaFigli(mf.idMaggiorazioniFamiliari)
+        //                                                        .Where(
+        //                                                            a =>
+        //                                                                new[]
+        //                                                                {
+        //                                                                EnumTipologiaFiglio.Residente,
+        //                                                                EnumTipologiaFiglio.StudenteResidente,
+        //                                                                }.Contains
+        //                                                                    (a.idTipologiaFiglio))
+        //                                                        .ToList();
+        //                                                if (lfm?.Any() ?? false)
+        //                                                {
+        //                                                    foreach (var fm in lfm)
+        //                                                    {
+        //                                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+        //                                                        {
+        //                                                            idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
+        //                                                            idFamiliare = fm.idFigli,
+        //                                                            idPassaporti = pm.idPassaporto,
+        //                                                            Nominativo = fm.nominativo,
+        //                                                            CodiceFiscale = fm.codiceFiscale,
+        //                                                            dataInizio = fm.dataInizio,
+        //                                                            dataFine = fm.dataFine,
+        //                                                            parentela = EnumParentela.Figlio,
+        //                                                            idAltriDati =
+        //                                                                dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli)
+        //                                                                    .idAltriDatiFam,
+        //                                                            Documenti =
+        //                                                                dtdoc.GetDocumentiByIdTable(fm.idFigli,
+        //                                                                    EnumTipoDoc.Documento_Identita,
+        //                                                                    EnumParentela.Figlio),
+        //                                                            escludiPassaporto = fm.escludiPassaporto
+        //                                                        };
+
+        //                                                        lefm.Add(efm);
+        //                                                    }
+        //                                                }
+        //                                            }
+
+        //                                            #endregion
+        //                                        }
+        //                                    }
+        //                                }
+
+        //                                #endregion
+        //                            }
+        //                        }
+
+
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return lefm;
+        //}
     }
 }
