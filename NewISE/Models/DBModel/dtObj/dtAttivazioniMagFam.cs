@@ -158,5 +158,17 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public AttivazioniMagFamModel GetAttivazioneMagFamDaLavorare(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            return null;
+        }
+
+
+
+        public void AssociaConiuge(decimal idAttivazioneFamiliare, decimal idConiuge)
+        {
+
+        }
+
     }
 }
