@@ -498,239 +498,239 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
-        {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
-            ConiugeModel cm = new ConiugeModel();
-            bool solaLettura = false;
-            decimal idTrasferimento = 0;
-            decimal idMaggiorazioniFamiliari = 0;
+        //public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
+        //{
+        //    List<DocumentiModel> ldm = new List<DocumentiModel>();
+        //    ConiugeModel cm = new ConiugeModel();
+        //    bool solaLettura = false;
+        //    decimal idTrasferimento = 0;
+        //    decimal idMaggiorazioniFamiliari = 0;
 
 
-            try
-            {
+        //    try
+        //    {
 
-                using (dtDocumenti dtd = new dtDocumenti())
-                {
-                    ldm =
-                        dtd.GetDocumentiByIdTable(id, tipoDoc, parentela)
-                            .OrderByDescending(a => a.dataInserimento)
-                            .ToList();
-                }
+        //        using (dtDocumenti dtd = new dtDocumenti())
+        //        {
+        //            ldm =
+        //                dtd.GetDocumentiByIdTable(id, tipoDoc, parentela)
+        //                    .OrderByDescending(a => a.dataInserimento)
+        //                    .ToList();
+        //        }
 
-                switch (chiamante)
-                {
-                    case EnumChiamante.Maggiorazioni_Familiari:
-
-
-
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                                {
-                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(id);
-                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
-                                    {
-                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
-                                    }
-
-                                }
-                                break;
-                            case EnumParentela.Figlio:
-                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                                {
-                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(id);
-                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
-                                    {
-                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
-                                    }
-                                }
-                                break;
-                            case EnumParentela.Richiedente:
-                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                                {
-                                    var mfm = dtmf.GetMaggiorazioniFamiliariByID(id);
-                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
-                                    using (dtTrasferimento dtt = new dtTrasferimento())
-                                    {
-                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
-                                    }
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-
-
-                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                        {
-                            bool rinunciaMagFam = false;
-                            bool richiestaAttivazione = false;
-                            bool attivazione = false;
-                            bool datiConiuge = false;
-                            bool datiParzialiConiuge = false;
-                            bool datiFigli = false;
-                            bool datiParzialiFigli = false;
-                            bool siDocConiuge = false;
-                            bool siDocFigli = false;
-                            bool docFormulario = false;
-
-
-                            if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
-                            {
-                                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
-
-                                if (richiestaAttivazione == true)
-                                {
-                                    solaLettura = true;
-                                }
-                                else
-                                {
-                                    solaLettura = false;
-                                }
-                            }
-                            else
-                            {
-                                solaLettura = false;
-                            }
-
-                        }
-                        break;
-                    case EnumChiamante.Titoli_Viaggio:
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            TitoloViaggioModel tvm;
-
-                            switch (parentela)
-                            {
-                                case EnumParentela.Coniuge:
-                                    tvm = dttv.GetTitoloViaggioByIdConiuge(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
-
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
-
-                                    }
-                                    break;
-                                case EnumParentela.Figlio:
-                                    tvm = dttv.GetTitoloViaggioByIdFiglio(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
-
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
-
-                                    }
-                                    break;
-                                case EnumParentela.Richiedente:
-                                    tvm = dttv.GetTitoloViaggioByID(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
-
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
-
-                                    }
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException("parentela");
-                            }
-                        }
-                        break;
-                    case EnumChiamante.Trasporto_Effetti:
-                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-                        {
-                            var tem = dtte.GetTrasportoEffettiByID(id);
-                            idTrasferimento = tem.idTrasferimento;
-                        }
-                        break;
-                    case EnumChiamante.Trasferimento:
-                        idTrasferimento = id;
-                        break;
-                    case EnumChiamante.Passaporti:
-
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdConiuge(id);
-                                    idTrasferimento = ppm.idTrasferimento;
-                                }
-                                break;
-                            case EnumParentela.Figlio:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdFiglio(id);
-                                    idTrasferimento = ppm.idTrasferimento;
-                                }
-                                break;
-                            case EnumParentela.Richiedente:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByID(id);
-                                    idTrasferimento = ppm.idTrasferimento;
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("chiamante");
-                }
+        //        switch (chiamante)
+        //        {
+        //            case EnumChiamante.Maggiorazioni_Familiari:
 
 
 
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-            ViewData.Add("id", id);
-            ViewData.Add("chiamante", chiamante);
-            ViewData.Add("tipoDoc", tipoDoc);
-            ViewData.Add("parentela", parentela);
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-            ViewData.Add("solaLettura", solaLettura);
-            ViewData.Add("idTrasferimento", idTrasferimento);
+        //                switch (parentela)
+        //                {
+        //                    case EnumParentela.Coniuge:
+        //                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //                        {
+        //                            var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(id);
+        //                            idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+        //                            using (dtTrasferimento dtt = new dtTrasferimento())
+        //                            {
+        //                                idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+        //                            }
 
-            return PartialView(ldm);
-        }
+        //                        }
+        //                        break;
+        //                    case EnumParentela.Figlio:
+        //                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //                        {
+        //                            var mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(id);
+        //                            idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+        //                            using (dtTrasferimento dtt = new dtTrasferimento())
+        //                            {
+        //                                idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+        //                            }
+        //                        }
+        //                        break;
+        //                    case EnumParentela.Richiedente:
+        //                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //                        {
+        //                            var mfm = dtmf.GetMaggiorazioniFamiliariByID(id);
+        //                            idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+        //                            using (dtTrasferimento dtt = new dtTrasferimento())
+        //                            {
+        //                                idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+        //                            }
+        //                        }
+        //                        break;
+        //                    default:
+        //                        throw new ArgumentOutOfRangeException("parentela");
+        //                }
+
+
+        //                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+        //                {
+        //                    bool rinunciaMagFam = false;
+        //                    bool richiestaAttivazione = false;
+        //                    bool attivazione = false;
+        //                    bool datiConiuge = false;
+        //                    bool datiParzialiConiuge = false;
+        //                    bool datiFigli = false;
+        //                    bool datiParzialiFigli = false;
+        //                    bool siDocConiuge = false;
+        //                    bool siDocFigli = false;
+        //                    bool docFormulario = false;
+
+
+        //                    if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
+        //                    {
+        //                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+        //                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+        //                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+
+        //                        if (richiestaAttivazione == true)
+        //                        {
+        //                            solaLettura = true;
+        //                        }
+        //                        else
+        //                        {
+        //                            solaLettura = false;
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        solaLettura = false;
+        //                    }
+
+        //                }
+        //                break;
+        //            case EnumChiamante.Titoli_Viaggio:
+        //                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+        //                {
+        //                    TitoloViaggioModel tvm;
+
+        //                    switch (parentela)
+        //                    {
+        //                        case EnumParentela.Coniuge:
+        //                            tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+        //                            idTrasferimento = tvm.idTrasferimento;
+        //                            if (tvm != null && tvm.HasValue())
+        //                            {
+        //                                bool notificaRichiesta = tvm.notificaRichiesta;
+        //                                bool praticaConclusa = tvm.praticaConclusa;
+
+        //                                if (notificaRichiesta == true && praticaConclusa == true)
+        //                                {
+        //                                    solaLettura = true;
+        //                                }
+        //                                else
+        //                                {
+        //                                    solaLettura = false;
+        //                                }
+
+        //                            }
+        //                            break;
+        //                        case EnumParentela.Figlio:
+        //                            tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+        //                            idTrasferimento = tvm.idTrasferimento;
+        //                            if (tvm != null && tvm.HasValue())
+        //                            {
+        //                                bool notificaRichiesta = tvm.notificaRichiesta;
+        //                                bool praticaConclusa = tvm.praticaConclusa;
+
+        //                                if (notificaRichiesta == true && praticaConclusa == true)
+        //                                {
+        //                                    solaLettura = true;
+        //                                }
+        //                                else
+        //                                {
+        //                                    solaLettura = false;
+        //                                }
+
+        //                            }
+        //                            break;
+        //                        case EnumParentela.Richiedente:
+        //                            tvm = dttv.GetTitoloViaggioByID(id);
+        //                            idTrasferimento = tvm.idTrasferimento;
+        //                            if (tvm != null && tvm.HasValue())
+        //                            {
+        //                                bool notificaRichiesta = tvm.notificaRichiesta;
+        //                                bool praticaConclusa = tvm.praticaConclusa;
+
+        //                                if (notificaRichiesta == true && praticaConclusa == true)
+        //                                {
+        //                                    solaLettura = true;
+        //                                }
+        //                                else
+        //                                {
+        //                                    solaLettura = false;
+        //                                }
+
+        //                            }
+        //                            break;
+        //                        default:
+        //                            throw new ArgumentOutOfRangeException("parentela");
+        //                    }
+        //                }
+        //                break;
+        //            case EnumChiamante.Trasporto_Effetti:
+        //                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+        //                {
+        //                    var tem = dtte.GetTrasportoEffettiByID(id);
+        //                    idTrasferimento = tem.idTrasferimento;
+        //                }
+        //                break;
+        //            case EnumChiamante.Trasferimento:
+        //                idTrasferimento = id;
+        //                break;
+        //            case EnumChiamante.Passaporti:
+
+        //                switch (parentela)
+        //                {
+        //                    case EnumParentela.Coniuge:
+        //                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+        //                        {
+        //                            var ppm = dtpp.GetPassaportoByIdConiuge(id);
+        //                            idTrasferimento = ppm.idTrasferimento;
+        //                        }
+        //                        break;
+        //                    case EnumParentela.Figlio:
+        //                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+        //                        {
+        //                            var ppm = dtpp.GetPassaportoByIdFiglio(id);
+        //                            idTrasferimento = ppm.idTrasferimento;
+        //                        }
+        //                        break;
+        //                    case EnumParentela.Richiedente:
+        //                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+        //                        {
+        //                            var ppm = dtpp.GetPassaportoByID(id);
+        //                            idTrasferimento = ppm.idTrasferimento;
+        //                        }
+        //                        break;
+        //                    default:
+        //                        throw new ArgumentOutOfRangeException("parentela");
+        //                }
+
+        //                break;
+        //            default:
+        //                throw new ArgumentOutOfRangeException("chiamante");
+        //        }
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
+        //    ViewData.Add("id", id);
+        //    ViewData.Add("chiamante", chiamante);
+        //    ViewData.Add("tipoDoc", tipoDoc);
+        //    ViewData.Add("parentela", parentela);
+        //    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+        //    ViewData.Add("solaLettura", solaLettura);
+        //    ViewData.Add("idTrasferimento", idTrasferimento);
+
+        //    return PartialView(ldm);
+        //}
 
         [HttpPost]
         public JsonResult NumeroDocumentiSalvati(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela)

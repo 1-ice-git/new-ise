@@ -2158,9 +2158,11 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CalendarioEventiModel.cs" />
+    <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAttivazioniPassaporti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCalendarioEventi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />

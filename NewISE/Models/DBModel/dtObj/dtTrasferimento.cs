@@ -194,11 +194,25 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region Pratiche passaporto
-                var p = t.PASSAPORTI.OrderBy(a => a.IDPASSAPORTI).First();
+
+                var p = t.PASSAPORTI;
                 if (p != null && p.IDPASSAPORTI > 0)
                 {
-                    richiestaPP = p.NOTIFICARICHIESTA;
-                    conclusePP = p.PRATICACONCLUSA;
+                    var lap = p.ATTIVAZIONIPASSAPORTI.OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+
+                    if (lap?.Any() ?? false)
+                    {
+                        var ap = lap.First();
+
+                        richiestaPP = ap.NOTIFICARICHIESTA;
+                        conclusePP = ap.PRATICACONCLUSA;
+                    }
+                    else
+                    {
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIPASSAPORTI non trovato.");
+                    }
+
+
                 }
                 #endregion
 

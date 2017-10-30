@@ -30,7 +30,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    lefm = dtpp.GetDipendentiRichiestaPassaporto(idTrasferimento).ToList();
+                    //lefm = dtpp.GetDipendentiRichiestaPassaporto(idTrasferimento).ToList();
                 }
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace NewISE.Controllers
 
             using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
             {
-                efm = dtpp.GetDatiForColElencoDoc(idFamiliare, parentela);
+                //efm = dtpp.GetDatiForColElencoDoc(idFamiliare, parentela);
             }
 
             return PartialView(efm);
@@ -78,7 +78,7 @@ namespace NewISE.Controllers
                     case EnumParentela.Richiedente:
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
-                            dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
+                            //dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
                         }
                         break;
                     default:
@@ -109,7 +109,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiPassaportoByIdTrasf(idTrasferimento);
+                    //gppm = dtpp.GestionePulsantiPassaportoByIdTrasf(idTrasferimento);
                 }
             }
             catch (Exception ex)
@@ -173,7 +173,7 @@ namespace NewISE.Controllers
                         pm = dtpp.GetPassaportoByIdFiglio(idFamiliare);
                         break;
                     case EnumParentela.Richiedente:
-                        pm = dtpp.GetPassaportoByID(idFamiliare);
+                        //pm = dtpp.GetPassaportoByID(idFamiliare);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("parentela");
@@ -181,10 +181,10 @@ namespace NewISE.Controllers
 
                 if (pm != null && pm.idPassaporto > 0)
                 {
-                    if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
-                    {
-                        dchk = true;
-                    }
+                    //if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
+                    //{
+                    //    dchk = true;
+                    //}
                 }
 
                 gcep = new GestioneChkEscludiPassaportoModel()
@@ -212,7 +212,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    dtpp.SetNotificaRichiesta(idTrasferimento);
+                    //dtpp.SetNotificaRichiesta(idTrasferimento);
                     msg = "Notifica effettuata con successo";
                 }
             }
@@ -233,7 +233,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    dtpp.SetConcludiPassaporto(idTrasferimento);
+                    //dtpp.SetConcludiPassaporto(idTrasferimento);
                     msg = "Pratica conclusa con successo";
                 }
             }
