@@ -1,7 +1,7 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoElementiHome>
 @{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    //decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 @{
@@ -11,59 +11,37 @@
 <link href="~/Content/css/cssHome.css" rel="stylesheet" />
 
 
-<div class="row">
+@*<div class="row">
     <div class="col-xs-12">
         <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <div>Non ci sono messaggi.</div>
         </div>
     </div>
-</div>
-
-<table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nominativo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataInizio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataScadenza)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeFunzione)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Completato)
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-            {
+</div>*@
+<div>
+    <table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nominativo)
+                <th>
+                    @Html.DisplayNameFor(model => model.Nominativo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataInizio)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataScadenza)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeFunzione)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Completato)
+                </th>
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataInizio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataScadenza)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeFunzione)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Completato)
-                </td>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+    </table>
+</div>
 
 <script type="text/javascript">
     $('#tbDislocazioneDipEstero').DataTable({
@@ -71,7 +49,7 @@
             "scrollY": 220,
             "scrollX": true,
             "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sEmptyTable": "<b>Nessun dato presente nel calendario eventi</b>",
                 "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
                 "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
                 "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",

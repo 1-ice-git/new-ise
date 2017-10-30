@@ -44,11 +44,12 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
-        public void ModificaInCompletatoCalendarioEvento(ref CalendarioEventiModel ca)
+        public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento,ref FunzioniEventi fzev)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                decimal idCalev = ca.idCalendarioEventi;
+                CALENDARIOEVENTI ca = db.CALENDARIOEVENTI.Find(idTrasferimento);
+                decimal idCalev = ca.IDCALENDARIOEVENTI;
                 var result = db.CALENDARIOEVENTI.SingleOrDefault(c => c.IDCALENDARIOEVENTI == idCalev);
                 if (result != null)
                 {
@@ -61,7 +62,7 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-                          "CALENDARIOEVENTI", db, ca.idTrasferimento, ca.idCalendarioEventi);
+                          "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
                     }
                 }
             }
