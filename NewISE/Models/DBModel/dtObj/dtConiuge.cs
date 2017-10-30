@@ -487,6 +487,19 @@ namespace NewISE.Models.DBModel.dtObj
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
                     idTrasferimento, c.IDCONIUGE);
+
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                {
+                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                    //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+
+
+                }
+
+
+
+
             }
         }
 
