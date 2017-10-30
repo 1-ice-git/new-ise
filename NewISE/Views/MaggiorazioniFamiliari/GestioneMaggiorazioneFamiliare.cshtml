@@ -1,0 +1,16 @@
+﻿<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+<link href="~/Content/css/GestioneTrasferimento.css" rel="stylesheet" />
+
+@{
+    string matricola = Convert.ToString(ViewBag.Matricola);
+}
+
+@*@Html.Hidden("hMatricola", matricola)*@
+
+<div class="row">
+    <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px; ">
+        <div id="divGestioneMaggiorazioneFamiliare">
+            @Html.Action("AttivitaMaggiorazioneFamiliare", new { matricola = matricola })
+        </div>
+    </div>
+</div>

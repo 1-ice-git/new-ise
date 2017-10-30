@@ -1,0 +1,538 @@
+﻿@model NewISE.Models.DBModel.MaggiorazioniFamiliariModel
+
+@{
+
+    bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
+
+    decimal idMafFam = Model.idMaggiorazioniFamiliari;
+}
+
+
+<div class="row">
+    <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
+        <div class="nav nav-justified nav-tabs">
+            <ul class="nav nav-tabs tabs-destro" id="tabsMaggiorazioniFamiliari">
+                <li id="mnConiuge">
+                    <a data-toggle="tab" href="#tabConiuge" id="lkConiuge" onclick=" ElencoConiuge(); ">Coniuge</a>
+                </li>
+                <li id="mnFigli">
+                    <a data-toggle="tab" href="#tabFigli" id="lkFigli" onclick=" ElencoFigli(); ">Figli</a>
+                </li>
+                <li id="mnFormulari">
+                    <a data-toggle="tab" href="#tabFormulari" id="lkFormulari" onclick=" ElencoFormulariInseriti(); ">Formulari</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="tabContenuti">
+            <div class="active tab-pane" id="tabConiuge"></div>
+            <div class="tab-pane" id="tabFigli"></div>
+            <div class="tab-pane" id="tabFormulari"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @*<div class="col-xs-3" style="margin-top: 10px; margin-bottom: 10px;">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormulario();">
+                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                Download formulario
+            </button>
+
+        </div>*@
+    @*<div class="col-xs-4" style="margin-top: 5px; margin-bottom: 5px;">
+            <div id="divDocumentoFormulario">
+                @Html.Action("FormularioMF", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMafFam })
+            </div>
+        </div>*@
+
+    <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
+        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModelNotificaRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Notifica richiesta
+        </button>
+
+        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModelAttivaRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Attiva maggiorazioni
+        </button>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="ModalNotificaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiesta">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotifica" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaNotificaRichiesta(); ">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiesta">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazione" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivazioneRichiesta();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade" id="ModalDownloadFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Formulari Maggiorazioni Familiari</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <div id="divFormularioMF">
+                        @Html.Action("ElencoDocumentiFormulario", "MaggiorazioniFamiliari")
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<script type="text/javascript">
+    $('#tabsMaggiorazioniFamiliari').tab();
+
+    @if (callConiuge)
+    {
+        @:ElencoConiuge();
+                                                                                                    }
+    else
+    {
+        @:ElencoFigli();
+                                                                                                    }
+
+
+    //function DownloadFormulario() {
+    //    $('#ModalDownloadFormulario').modal().show();
+
+    //}
+
+
+    @*function FormularioMF() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/FormularioMF";
+        var idMaggiorazioniFamiliari = parseInt('@idMafFam');
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divDocumentoFormulario").empty();
+                $("#divDocumentoFormulario").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }*@
+
+    function ElencoFormulariInseriti() {
+        var rotta = "/MaggiorazioniFamiliari/ElencoFormulariInseriti";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabFormulari").empty();
+                $("#tabFormulari").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
+    //PulsantiNotificaAttivaMagFam();
+
+    function ElencoConiuge() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/ElencoConiuge";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function ElencoFigli() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/ElencoFigli";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabFigli").empty();
+                $("#tabFigli").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+
+
+    function ModelAttivaRichiesta() {
+        //debugger;
+        $('#ModalAttivaRichiesta').modal().show();
+    }
+
+    function ConfermaAttivazioneRichiesta() {
+        var rotta = "/MaggiorazioniFamiliari/AttivaRichiesta";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err == "") {
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+                //InfoTrasferimento($("#hMatricola").val());
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function ModelNotificaRichiesta() {
+        //debugger;
+        $('#ModalNotificaRichiesta').modal().show();
+    }
+
+
+
+    function ConfermaNotificaRichiesta() {
+        var rotta = "/MaggiorazioniFamiliari/NotificaRichiesta";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err == "") {
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function PulsantiNotificaAttivaMagFam() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/PulsantiNotificaAttivaMagFam";
+        var idMafFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMafFam },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err == "") {
+                    var admin = result.admin;
+                    var rinuncia = result.rinuncia;
+                    var richiesta = result.richiesta;
+                    var attivazione = result.attivazione;
+                    var datiConiuge = result.datiConiuge;
+                    var datiParzialiConiuge = result.datiParzialiConiuge;
+                    var datiFigli = result.datiFigli;
+                    var datiParzialiFigli = result.datiParzialiFigli;
+                    var siDocConiuge = result.siDocConiuge;
+                    var siDocFigli = result.siDocFigli;
+                    var docFormulario = result.docFormulario;
+
+                    $("#btAttivaMagFam").attr("disabled", "disabled");
+                    $("#btAttivaMagFam").addClass("disabled");
+
+
+                    ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
+                    if (rinuncia == true && richiesta == true) {
+                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                        $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                        //$("#chkMagFamiliariR").attr('checked', true);
+
+                        if (attivazione == true) {
+                            $("#btAttivaMagFam").attr("disabled", "disabled");
+                            $("#btAttivaMagFam").addClass("disabled");
+
+                            //$("#chkMagFamiliariSR").attr('checked', true);
+
+                        } else {
+                            if (admin == true) {
+                                $("#btAttivaMagFam").removeAttr("disabled");
+                                $("#btAttivaMagFam").removeClass("disabled");
+                            } else {
+                                $("#btAttivaMagFam").attr("disabled", "disabled");
+                                $("#btAttivaMagFam").addClass("disabled");
+                            }
+
+                            //$("#chkMagFamiliariSR").attr('checked', false);
+                        }
+                    } else {
+                        if (richiesta == true) {
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                            //$("#chkMagFamiliariR").attr('checked', true);
+
+                            if (attivazione == true) {
+                                $("#btAttivaMagFam").attr("disabled", "disabled");
+                                $("#btAttivaMagFam").addClass("disabled");
+
+                                $("#chkMagFamiliariSR").attr('checked', true);
+
+                            } else {
+                                if (admin == true) {
+                                    $("#btAttivaMagFam").removeAttr("disabled");
+                                    $("#btAttivaMagFam").removeClass("disabled");
+                                } else {
+                                    $("#btAttivaMagFam").attr("disabled", "disabled");
+                                    $("#btAttivaMagFam").addClass("disabled");
+                                }
+                                //$("#chkMagFamiliariSR").attr('checked', false);
+                            }
+                        } else {
+                            if ((datiConiuge == true || datiFigli == true)) {
+                                if (datiParzialiConiuge == true || datiParzialiFigli == true) {
+                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                                    $("#btAttivaMagFam").attr("disabled", "disabled");
+                                    $("#btAttivaMagFam").addClass("disabled");
+                                } else {
+                                    if (((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) && docFormulario == false) {
+                                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                        $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                                        $("#btAttivaMagFam").attr("disabled", "disabled");
+                                        $("#btAttivaMagFam").addClass("disabled");
+                                    } else {
+                                        if ((datiConiuge == true || datiFigli == true) && docFormulario == false) {
+                                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                                            $("#btAttivaMagFam").attr("disabled", "disabled");
+                                            $("#btAttivaMagFam").addClass("disabled");
+                                        } else {
+                                            $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                                            $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                                        }
+
+                                        //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
+                                        //$("#btAttivaMagFam").removeClass("disabled");
+                                    }
+                                }
+
+                            } else {
+                                if (docFormulario == false) {
+                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+
+
+                                } else {
+                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
+                                }
+
+                            }
+
+                            //$("#chkMagFamiliariR").attr('checked', false);
+                        }
+                    }
+
+                    GestioneAttivitaTrasferimento();
+
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+
+
+    }
+
+</script>
