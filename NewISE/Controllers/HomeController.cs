@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Models.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,7 +13,9 @@ namespace NewISE.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            List<ElencoElementiHome> leeh = new List<ElencoElementiHome>();
+
+            return View(leeh);
         }
         
         public ActionResult MsgUtente(int idUtente)

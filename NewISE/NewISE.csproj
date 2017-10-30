@@ -1536,6 +1536,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet10.xsc">
       <DependentUpon>DataSet10.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet10.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1702,6 +1713,8 @@
     <Content Include="FormulariMaster\FormularioMF\formulario 7.pdf" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpCanoneAnticipato.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpContributoAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpUsoAbitazione.cshtml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1913,6 +1926,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet13.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet14.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet15.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2046,9 +2064,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\LIVELLIDIPENDENTI.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\LIVELLIVISIBILITAEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\LOGATTIVITA.cs">
@@ -2456,7 +2471,6 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report24.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report25.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report26.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report18.rdlc" />
@@ -2467,7 +2481,6 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report5.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report6.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
   </ItemGroup>
