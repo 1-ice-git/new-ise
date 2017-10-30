@@ -959,8 +959,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 if (codicesede == string.Empty)
                 {
-                    //lr.First().Selected = true;
-                    lr.First().Value = "";
+                    lr.First().Selected = true;
+                    //lr.First().Value = "";
                     codicesede = lr.First().Value;
                 }
                 else
@@ -1078,12 +1078,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 cn.Open();
                 cmd1.ExecuteNonQuery();
-
-                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA,        CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='@V_UTENTE' Order By SEDE, NOMINATIVO";
-
-                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='"+ V_UTENTE + "' Order By SEDE, NOMINATIVO";
-
-                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE UTENTE ='" + V_UTENTE + "' Order By SEDE, NOMINATIVO";
+                
+                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE SEDE ='" + V_UFFICIO + "' Order By SEDE, NOMINATIVO";
 
                 using (OracleCommand cmd = new OracleCommand())
                 {
