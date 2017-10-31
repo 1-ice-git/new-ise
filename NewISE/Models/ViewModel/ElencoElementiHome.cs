@@ -25,7 +25,7 @@ namespace NewISE.Models.ViewModel
         public string NomeFunzione { get; set; }
 
         [Display(Name = "Completato")]
-        public string Completato { get; set; }
+        public bool Completato { get; set; }
 
     }
 }

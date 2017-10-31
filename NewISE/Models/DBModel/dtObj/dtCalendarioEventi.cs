@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.ViewModel;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -44,16 +45,16 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
-        public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento,ref FunzioniEventi fzev)
+        public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento,FunzioniEventi fe)
         {
+            int funzEv = (int)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-                CALENDARIOEVENTI ca = db.CALENDARIOEVENTI.Find(idTrasferimento);
-                decimal idCalev = ca.IDCALENDARIOEVENTI;
-                var result = db.CALENDARIOEVENTI.SingleOrDefault(c => c.IDCALENDARIOEVENTI == idCalev);
-                if (result != null)
+                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO== idTrasferimento && c.IDFUNZIONIEVENTI==funzEv);
+                foreach (var x in result)
                 {
-                    result.COMPLETATO = true;
+                    x.COMPLETATO = true;
+                    x.DATACOMPLETATO = DateTime.Now;
                     int i = db.SaveChanges();
                     if (i <= 0)
                     {
@@ -62,10 +63,11 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-                          "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
+                          "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
                     }
                 }
             }
         }
+        
     }
 }

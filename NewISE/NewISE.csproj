@@ -2358,6 +2358,7 @@
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
     <Content Include="Views\Home\FunzioneEvento.cshtml" />
+    <Content Include="Views\Home\GetListaHome.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
