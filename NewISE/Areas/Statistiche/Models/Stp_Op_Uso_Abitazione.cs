@@ -8,8 +8,8 @@ namespace NewISE.Areas.Statistiche.Models
     public class Stp_Op_Uso_Abitazione
     {
 
-        public string matricola { get; set; }
         public string nominativo { get; set; }
+        public string matricola { get; set; }
         public string sede { get; set; }
         public string valuta { get; set; }
         public string canone_in_valuta { get; set; }
