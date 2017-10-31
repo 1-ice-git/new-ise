@@ -492,8 +492,9 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
-                    //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(cm.idMaggiorazioniFamiliari, db);
 
+                    dtamf.AssociaConiuge(amfm.idAttivazioneMagFam, c.IDCONIUGE, db);
 
                 }
 

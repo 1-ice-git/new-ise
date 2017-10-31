@@ -681,7 +681,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void DeleteDocumento(decimal idDocumento)
+        public void DeleteDocumento(decimal idDocumento, EnumChiamante chiamante)
         {
             TRASFERIMENTO t = new TRASFERIMENTO();
 
@@ -710,9 +710,6 @@ namespace NewISE.Models.DBModel.dtObj
                             break;
                         case EnumTipoDoc.Attestazione_Trasloco:
                             break;
-                        case EnumTipoDoc.Documento_Identita:
-                            t = d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI).First().TRASFERIMENTO;
-                            break;
                         case EnumTipoDoc.Lettera_Trasferimento:
                             t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
                             break;
@@ -721,6 +718,43 @@ namespace NewISE.Models.DBModel.dtObj
                                 d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
                                     .First()
                                     .TRASFERIMENTO;
+                            break;
+                        case EnumTipoDoc.Documento_Identita:
+
+                            switch (chiamante)
+                            {
+                                case EnumChiamante.Maggiorazioni_Familiari:
+                                    var lc = d.CONIUGE;
+                                    if (lc?.Any() ?? false)
+                                    {
+                                        t = lc.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                                    }
+                                    else
+                                    {
+                                        var lf = d.FIGLI;
+                                        if (lf?.Any() ?? false)
+                                        {
+                                            t = lf.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                                        }
+                                    }
+                                    break;
+                                case EnumChiamante.Titoli_Viaggio:
+                                    break;
+                                case EnumChiamante.Trasporto_Effetti:
+                                    break;
+                                case EnumChiamante.Trasferimento:
+                                    break;
+                                case EnumChiamante.Passaporti:
+                                    t =
+                                        d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI)
+                                            .First()
+                                            .TRASFERIMENTO;
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("chiamante");
+                            }
+
+
                             break;
                         default:
                             t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
@@ -739,10 +773,105 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Inserimento di una nuovo documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
                         }
                     }
                 }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+        public void DeleteDocumento(decimal idDocumento, EnumChiamante chiamante, ModelDBISE db)
+        {
+            TRASFERIMENTO t = new TRASFERIMENTO();
+
+            try
+            {
+
+                var d = db.DOCUMENTI.Find(idDocumento);
+
+                switch ((EnumTipoDoc)d.IDTIPODOCUMENTO)
+                {
+                    case EnumTipoDoc.Carta_Imbarco:
+                    case EnumTipoDoc.Titolo_Viaggio:
+                    case EnumTipoDoc.Formulario_Titoli_Viaggio:
+                        t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
+                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
+                    case EnumTipoDoc.Attestazione_Spese_Abitazione:
+                    case EnumTipoDoc.Clausole_Contratto_Alloggio:
+                    case EnumTipoDoc.Copia_Contratto_Locazione:
+                        t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
+                        t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Attestazione_Trasloco:
+                        break;
+                    case EnumTipoDoc.Lettera_Trasferimento:
+                        t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
+                        break;
+                    case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
+                        t =
+                            d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
+                                .First()
+                                .TRASFERIMENTO;
+                        break;
+                    case EnumTipoDoc.Documento_Identita:
+
+                        switch (chiamante)
+                        {
+                            case EnumChiamante.Maggiorazioni_Familiari:
+                                var lc = d.CONIUGE;
+                                if (lc?.Any() ?? false)
+                                {
+                                    t = lc.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                                }
+                                else
+                                {
+                                    var lf = d.FIGLI;
+                                    if (lf?.Any() ?? false)
+                                    {
+                                        t = lf.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("chiamante");
+                        }
+
+
+                        break;
+                    default:
+                        t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
+                        break;
+
+                }
+
+
+                if (d != null && d.IDDOCUMENTO > 0)
+                {
+                    db.DOCUMENTI.Remove(d);
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
+                    }
+                }
+
             }
             catch (Exception ex)
             {

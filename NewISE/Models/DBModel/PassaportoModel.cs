@@ -12,7 +12,7 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idPassaporto { get; set; }
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
-        public decimal idTrasferimento { get; set; }
+
 
 
         public TrasferimentoModel trasferimento { get; set; }

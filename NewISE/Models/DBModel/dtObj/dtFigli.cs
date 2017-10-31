@@ -275,21 +275,22 @@ namespace NewISE.Models.DBModel.dtObj
                 decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del Figlio", "FIGLI", db,
                     idTrasferimento, f.IDFIGLI);
+
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                {
+                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(fm.idMaggiorazioniFamiliari, db);
+
+                    dtamf.AssociaFiglio(amfm.idAttivazioneMagFam, f.IDFIGLI, db);
+
+                }
+
             }
             else
             {
                 throw new Exception(string.Format("Il figlio {0} non è stato inserito.", fm.nominativo));
             }
-
-
-
-            //decimal idTrasferimento = db.MAGGIORAZIONEFAMILIARI.Find(c.idMaggiorazioniFamiliari).IDTRASFERIMENTO;
-            //cm.idConiuge = c.IDCONIUGE;
-
-            //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
-            //    idTrasferimento, c.IDCONIUGE);
-
-
 
         }
 
