@@ -1,7 +1,7 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoElementiHome>
 @{
-    //decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 @{
@@ -9,7 +9,6 @@
 }
 
 <link href="~/Content/css/cssHome.css" rel="stylesheet" />
-
 
 @*<div class="row">
     <div class="col-xs-12">
@@ -40,6 +39,42 @@
 
             </tr>
         </thead>
+        <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizio)</span>
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.dataInizio)
+                    </td>
+                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.dataScadenza)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+
     </table>
 </div>
 
