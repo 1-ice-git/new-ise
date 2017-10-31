@@ -46,12 +46,12 @@
         </div>*@
 
     <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
-        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModelNotificaRichiesta();">
+        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
         </button>
 
-        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModelAttivaRichiesta();">
+        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModalAttivaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Attiva maggiorazioni
         </button>
@@ -130,11 +130,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                    }
+                                                                                                                                                                            }
     else
     {
         @:ElencoFigli();
-                                                                                                    }
+                                                                                                                                                                            }
 
 
     //function DownloadFormulario() {
@@ -294,7 +294,7 @@
 
 
 
-    function ModelAttivaRichiesta() {
+    function ModalAttivaRichiesta() {
         //debugger;
         $('#ModalAttivaRichiesta').modal().show();
     }
@@ -336,7 +336,7 @@
 
     }
 
-    function ModelNotificaRichiesta() {
+    function ModalNotificaRichiesta() {
         //debugger;
         $('#ModalNotificaRichiesta').modal().show();
     }
@@ -363,6 +363,10 @@
 
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFormulariInseriti();
+                    ElencoConiuge();
+                    ElencoFigli();
+
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -440,6 +444,7 @@
 
                             //$("#chkMagFamiliariSR").attr('checked', false);
                         }
+
                     } else {
                         if (richiesta == true) {
                             $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");

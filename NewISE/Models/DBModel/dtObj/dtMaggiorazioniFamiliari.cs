@@ -393,10 +393,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                             .First();
 
-
                                     rmf.RINUNCIAMAGGIORAZIONI = true;
-
-                                    //mf.RICHIESTAATTIVAZIONE = true;
+                                    amf.RICHIESTAATTIVAZIONE = true;
 
                                     i = db.SaveChanges();
                                     if (i <= 0)
@@ -480,7 +478,7 @@ namespace NewISE.Models.DBModel.dtObj
                 if (lamf?.Any() ?? false)
                 {
                     var amf = lamf.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
-                    if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
+                    if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                     {
 
                         var rmf =
@@ -501,8 +499,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.CONIUGE != null)
                         {
-                            //var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
-                            var lc = mf.CONIUGE.Where(a => a.ATTIVAZIONIMAGFAM?.Any(b => b.ANNULLATO == false) ?? false && a.ANNULLATO == false);
+                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
@@ -545,12 +542,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.FIGLI != null)
                         {
-                            //var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
-                            var lf =
-                                mf.FIGLI.Where(
-                                    a =>
-                                        a.ATTIVAZIONIMAGFAM?.Any(b => b.ANNULLATO == false) ??
-                                        false && a.ANNULLATO == false);
+                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
 
                             if (lf?.Any() ?? false)
                             {
@@ -704,7 +696,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void InserisciFiglio(FigliModel fm)
+        public void InserisciFiglioMagFam(FigliModel fm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -712,6 +704,28 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
+
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoByIDMagFam(fm.idMaggiorazioniFamiliari);
+
+                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                        {
+                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            fm.idPassaporti = p.idPassaporto;
+                        }
+
+                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                        {
+                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            fm.idTitoloViaggio = tvm.idTitoloViaggio;
+                        }
+
+                    }
+
+
+
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;

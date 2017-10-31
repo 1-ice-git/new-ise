@@ -18,6 +18,55 @@ namespace NewISE.Controllers
     public class MaggiorazioniFamiliariController : Controller
     {
 
+        [NonAction]
+        private bool SolaLettura(decimal idMaggiorazioniFamiliari)
+        {
+
+            bool solaLettura = false;
+
+            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+            {
+                bool rinunciaMagFam = false;
+                bool richiestaAttivazione = false;
+                bool attivazione = false;
+                bool datiConiuge = false;
+                bool datiParzialiConiuge = false;
+                bool datiFigli = false;
+                bool datiParzialiFigli = false;
+                bool siDocConiuge = false;
+                bool siDocFigli = false;
+                bool docFormulario = false;
+
+
+                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+
+                if (richiestaAttivazione == true || attivazione == true)
+                {
+
+                    solaLettura = true;
+                }
+                else
+                {
+                    if (rinunciaMagFam)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                }
+
+
+            }
+
+            return solaLettura;
+        }
+
+
         public ActionResult ElencoDocumentiFormulario()
         {
             return PartialView();
@@ -25,7 +74,11 @@ namespace NewISE.Controllers
 
         public ActionResult ElencoFormulariInseriti(decimal idMaggiorazioniFamiliari)
         {
+            bool solaLettura = false;
 
+            solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+
+            ViewData.Add("solaLettura", solaLettura);
             ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
 
             return PartialView();
@@ -37,6 +90,11 @@ namespace NewISE.Controllers
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             try
             {
+
+                bool solaLettura = false;
+                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                ViewData.Add("solaLettura", solaLettura);
+
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
                     ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
@@ -247,36 +305,9 @@ namespace NewISE.Controllers
 
                     //ViewData.Add("callConiuge", false);
 
-                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                    {
-                        bool rinunciaMagFam = false;
-                        bool richiestaAttivazione = false;
-                        bool attivazione = false;
-                        bool datiConiuge = false;
-                        bool datiParzialiConiuge = false;
-                        bool datiFigli = false;
-                        bool datiParzialiFigli = false;
-                        bool siDocConiuge = false;
-                        bool siDocFigli = false;
-                        bool docFormulario = false;
-
-                        bool solaLettura = false;
-
-                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                            out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
-
-                        if (richiestaAttivazione == true || attivazione == true)
-                        {
-                            solaLettura = true;
-                        }
-                        else
-                        {
-                            solaLettura = false;
-                        }
-
-                        ViewData.Add("solaLettura", solaLettura);
-                    }
+                    bool solaLettura = false;
+                    solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                    ViewData.Add("solaLettura", solaLettura);
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
@@ -340,36 +371,9 @@ namespace NewISE.Controllers
 
                 }
 
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
-                {
-                    bool rinunciaMagFam = false;
-                    bool richiestaAttivazione = false;
-                    bool attivazione = false;
-                    bool datiConiuge = false;
-                    bool datiParzialiConiuge = false;
-                    bool datiFigli = false;
-                    bool datiParzialiFigli = false;
-                    bool siDocConiuge = false;
-                    bool siDocFigli = false;
-                    bool docFormulario = false;
-
-                    bool solaLettura = false;
-
-                    dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
-
-                    if (richiestaAttivazione == true || attivazione == true)
-                    {
-                        solaLettura = true;
-                    }
-                    else
-                    {
-                        solaLettura = false;
-                    }
-
-                    ViewData.Add("solaLettura", solaLettura);
-                }
+                bool solaLettura = false;
+                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                ViewData.Add("solaLettura", solaLettura);
 
 
                 ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
@@ -485,7 +489,7 @@ namespace NewISE.Controllers
                     {
                         using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                         {
-                            dtmf.InserisciFiglio(fm);
+                            dtmf.InserisciFiglioMagFam(fm);
                         }
                     }
                     catch (Exception ex)
