@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="DataSet12" targetNamespace="http://tempuri.org/DataSet12.xsd" xmlns:mstns="http://tempuri.org/DataSet12.xsd" xmlns="http://tempuri.org/DataSet12.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="DataSet18" targetNamespace="http://tempuri.org/DataSet18.xsd" xmlns:mstns="http://tempuri.org/DataSet18.xsd" xmlns="http://tempuri.org/DataSet18.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
@@ -7,12 +7,12 @@
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
         </Connections>
         <Tables>
-          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="V_ISE_STP_CONS_SPESE_AVVICETableAdapter" GeneratorDataComponentClassName="V_ISE_STP_CONS_SPESE_AVVICETableAdapter" Name="V_ISE_STP_CONS_SPESE_AVVICE" UserDataComponentName="V_ISE_STP_CONS_SPESE_AVVICETableAdapter">
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="V_ISE_STP_SPESE_DIVERSETableAdapter" GeneratorDataComponentClassName="V_ISE_STP_SPESE_DIVERSETableAdapter" Name="V_ISE_STP_SPESE_DIVERSE" UserDataComponentName="V_ISE_STP_SPESE_DIVERSETableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_ISE_STP_CONS_SPESE_AVVICE" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_ISE_STP_SPESE_DIVERSE" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT MATRICOLA, NOMINATIVO, LIVELLO, CODICE_SEDE, DESCRIZIONE_SEDE, "DATA", SPESA, INDENITA_IN_VALUTA FROM ISESTOR.V_ISE_STP_CONS_SPESE_AVVICE</CommandText>
+                    <CommandText>SELECT MATRICOLA, NOMINATIVO, LIVELLO, CODICE_SEDE, DESCRIZIONE_SEDE, "DATA", VOCE_DI_SPESA, IMPORTO_VALUTA FROM ISESTOR.V_ISE_STP_SPESE_DIVERSE</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -25,8 +25,8 @@
               <Mapping SourceColumn="CODICE_SEDE" DataSetColumn="CODICE_SEDE" />
               <Mapping SourceColumn="DESCRIZIONE_SEDE" DataSetColumn="DESCRIZIONE_SEDE" />
               <Mapping SourceColumn="DATA" DataSetColumn="DATA" />
-              <Mapping SourceColumn="SPESA" DataSetColumn="SPESA" />
-              <Mapping SourceColumn="INDENITA_IN_VALUTA" DataSetColumn="INDENITA_IN_VALUTA" />
+              <Mapping SourceColumn="VOCE_DI_SPESA" DataSetColumn="VOCE_DI_SPESA" />
+              <Mapping SourceColumn="IMPORTO_VALUTA" DataSetColumn="IMPORTO_VALUTA" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -35,10 +35,10 @@
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="DataSet12" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet12" msprop:Generator_UserDSName="DataSet12">
+  <xs:element name="DataSet18" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet18" msprop:Generator_UserDSName="DataSet18">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="V_ISE_STP_CONS_SPESE_AVVICE" msprop:Generator_TableClassName="V_ISE_STP_CONS_SPESE_AVVICEDataTable" msprop:Generator_TableVarName="tableV_ISE_STP_CONS_SPESE_AVVICE" msprop:Generator_TablePropName="V_ISE_STP_CONS_SPESE_AVVICE" msprop:Generator_RowDeletingName="V_ISE_STP_CONS_SPESE_AVVICERowDeleting" msprop:Generator_RowChangingName="V_ISE_STP_CONS_SPESE_AVVICERowChanging" msprop:Generator_RowEvHandlerName="V_ISE_STP_CONS_SPESE_AVVICERowChangeEventHandler" msprop:Generator_RowDeletedName="V_ISE_STP_CONS_SPESE_AVVICERowDeleted" msprop:Generator_UserTableName="V_ISE_STP_CONS_SPESE_AVVICE" msprop:Generator_RowChangedName="V_ISE_STP_CONS_SPESE_AVVICERowChanged" msprop:Generator_RowEvArgName="V_ISE_STP_CONS_SPESE_AVVICERowChangeEvent" msprop:Generator_RowClassName="V_ISE_STP_CONS_SPESE_AVVICERow">
+        <xs:element name="V_ISE_STP_SPESE_DIVERSE" msprop:Generator_TableClassName="V_ISE_STP_SPESE_DIVERSEDataTable" msprop:Generator_TableVarName="tableV_ISE_STP_SPESE_DIVERSE" msprop:Generator_TablePropName="V_ISE_STP_SPESE_DIVERSE" msprop:Generator_RowDeletingName="V_ISE_STP_SPESE_DIVERSERowDeleting" msprop:Generator_RowChangingName="V_ISE_STP_SPESE_DIVERSERowChanging" msprop:Generator_RowEvHandlerName="V_ISE_STP_SPESE_DIVERSERowChangeEventHandler" msprop:Generator_RowDeletedName="V_ISE_STP_SPESE_DIVERSERowDeleted" msprop:Generator_UserTableName="V_ISE_STP_SPESE_DIVERSE" msprop:Generator_RowChangedName="V_ISE_STP_SPESE_DIVERSERowChanged" msprop:Generator_RowEvArgName="V_ISE_STP_SPESE_DIVERSERowChangeEvent" msprop:Generator_RowClassName="V_ISE_STP_SPESE_DIVERSERow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
@@ -71,14 +71,14 @@
                 </xs:simpleType>
               </xs:element>
               <xs:element name="DATA" msprop:Generator_ColumnVarNameInTable="columnDATA" msprop:Generator_ColumnPropNameInRow="DATA" msprop:Generator_ColumnPropNameInTable="DATAColumn" msprop:Generator_UserColumnName="DATA" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="SPESA" msprop:Generator_ColumnVarNameInTable="columnSPESA" msprop:Generator_ColumnPropNameInRow="SPESA" msprop:Generator_ColumnPropNameInTable="SPESAColumn" msprop:Generator_UserColumnName="SPESA">
+              <xs:element name="VOCE_DI_SPESA" msprop:Generator_ColumnVarNameInTable="columnVOCE_DI_SPESA" msprop:Generator_ColumnPropNameInRow="VOCE_DI_SPESA" msprop:Generator_ColumnPropNameInTable="VOCE_DI_SPESAColumn" msprop:Generator_UserColumnName="VOCE_DI_SPESA">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="35" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="INDENITA_IN_VALUTA" msprop:Generator_ColumnVarNameInTable="columnINDENITA_IN_VALUTA" msprop:Generator_ColumnPropNameInRow="INDENITA_IN_VALUTA" msprop:Generator_ColumnPropNameInTable="INDENITA_IN_VALUTAColumn" msprop:Generator_UserColumnName="INDENITA_IN_VALUTA" type="xs:double" />
+              <xs:element name="IMPORTO_VALUTA" msprop:Generator_ColumnVarNameInTable="columnIMPORTO_VALUTA" msprop:Generator_ColumnPropNameInRow="IMPORTO_VALUTA" msprop:Generator_ColumnPropNameInTable="IMPORTO_VALUTAColumn" msprop:Generator_UserColumnName="IMPORTO_VALUTA" type="xs:double" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

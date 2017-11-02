@@ -1632,6 +1632,28 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet16.xss">
       <DependentUpon>DataSet16.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet17.xsc">
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet17.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet17.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet17.xss">
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet18.xsc">
+      <DependentUpon>DataSet18.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet18.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet18.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet18.xss">
+      <DependentUpon>DataSet18.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet2.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1762,6 +1784,7 @@
     <Content Include="DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpSpeseDiverse.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -2005,6 +2028,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet16.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet17.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet18.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet18.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet2.cs">
       <DependentUpon>DataSet2.xsd</DependentUpon>
@@ -2558,6 +2591,9 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report28.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report29.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report30.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report31.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report32.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report33.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />

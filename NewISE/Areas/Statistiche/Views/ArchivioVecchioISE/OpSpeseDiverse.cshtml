@@ -33,31 +33,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.matricola)
+                @Html.DisplayNameFor(model => model.NOMINATIVO)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.nominativo)
+                @Html.DisplayNameFor(model => model.MATRICOLA)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.sede)
+                @Html.DisplayNameFor(model => model.DESCRIZIONE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valuta)
+                @Html.DisplayNameFor(model => model.TSP_DESCRIZIONE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.tipo_spesa)
+                @Html.DisplayNameFor(model => model.SPD_DT_DECORRENZA)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.data_decorrenza)
+                @Html.DisplayNameFor(model => model.SPD_DT_OPERAZIONE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.data_operazione)
+                @Html.DisplayNameFor(model => model.SPD_IMPORTO_LIRE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.importo_spesa)
+                @Html.DisplayNameFor(model => model.SPD_TIPO_MOVIMENTO)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.partenza_rientro)
+                @Html.DisplayNameFor(model => model.SPD_PROG_SPESA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_PROG_TRASFERIMENTO)
             </th>
         </tr>
     </thead>
@@ -66,31 +69,34 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.matricola)
+                    @Html.DisplayFor(modelItem => item.NOMINATIVO)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.nominativo)
+                    @Html.DisplayFor(modelItem => item.MATRICOLA)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.sede)
+                    @Html.DisplayFor(modelItem => item.DESCRIZIONE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.valuta)
+                    @Html.DisplayFor(modelItem => item.TSP_DESCRIZIONE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.tipo_spesa)
+                    @Html.DisplayFor(modelItem => item.SPD_DT_DECORRENZA)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.data_decorrenza)
+                    @Html.DisplayFor(modelItem => item.SPD_DT_OPERAZIONE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.data_operazione)
+                    @Html.DisplayFor(modelItem => item.SPD_IMPORTO_LIRE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.importo_spesa)
+                    @Html.DisplayFor(modelItem => item.SPD_TIPO_MOVIMENTO)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.partenza_rientro)
+                    @Html.DisplayFor(modelItem => item.SPD_PROG_SPESA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_PROG_TRASFERIMENTO)
                 </td>
             </tr>
         }

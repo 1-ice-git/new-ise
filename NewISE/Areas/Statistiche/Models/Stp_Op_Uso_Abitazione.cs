@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,10 @@ namespace NewISE.Areas.Statistiche.Models
         public string data_decorrenza { get; set; }
         public string data_lettera { get; set; }
         public string data_operazione { get; set; }
-                
+
+        //[DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        //public Nullable<System.DateTime> data_operazione { get; set; }
+
     }
 }
