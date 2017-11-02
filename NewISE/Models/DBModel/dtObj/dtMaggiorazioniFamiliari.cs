@@ -871,6 +871,8 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+
+
         //public MaggiorazioniFamiliariModel GetMaggiorazioneFamiliare(decimal idTrasferimento, DateTime dt)
         //{
         //    MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();

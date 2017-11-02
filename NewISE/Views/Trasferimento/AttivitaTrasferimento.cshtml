@@ -216,15 +216,19 @@
                         if (attivazioneMF == true) {
                             $("#chkMagFamiliariSR").each(function () { this.checked = true; });
                             EnableDisableLinkPassaporto(true);
+                            EnableDisableMaggiorazioneFamiliare(true);
                         } else {
                             $("#chkMagFamiliariSR").each(function () { this.checked = false; });
                             EnableDisableLinkPassaporto(false);
+                            EnableDisableMaggiorazioneFamiliare(false);
                         }
                     } else {
                         $("#chkMagFamiliariR").each(function () { this.checked = false; });
                         $("#chkMagFamiliariSR").each(function () { this.checked = false; });
 
                         EnableDisableLinkPassaporto(false);
+                        EnableDisableMaggiorazioneFamiliare(false);
+
                     }
 
                     if (richiestaPP == true) {
@@ -285,6 +289,19 @@
             //disableLink
             $("#linkPratichePassaporto").attr("disabled", "disabled");
             $("#linkPratichePassaporto").addClass("disableLink");
+        }
+    }
+
+    function EnableDisableMaggiorazioneFamiliare(abilitato) {
+            if (abilitato == true) {
+            $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
+            $("#mnMaggiorazioneFamiliare").removeClass("disabled");
+            $('#lkMaggiorazioneFamiliare').attr('onClick', 'MaggiorazioneFamiliare();');
+        }
+        else {
+            $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
+            $("#mnMaggiorazioneFamiliare").addClass("disabled");
+            $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
     }
 

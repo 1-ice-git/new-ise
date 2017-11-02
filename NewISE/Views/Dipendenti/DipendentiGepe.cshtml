@@ -85,16 +85,16 @@
             $("#lkGestioneTrasferimento").removeAttr("onClick");
         }
 
-        if (MenuMaggiorazioneFamiliare(matricola) == 1) {
-            $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
-            $("#mnMaggiorazioneFamiliare").removeClass("disabled");
-            $('#lkMaggiorazioneFamiliare').attr('onClick', 'AttivitaMaggiorazioneFamiliare();');
-        }
-        else {
-            $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
-            $("#mnMaggiorazioneFamiliare").addClass("disabled");
-            $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
-        }
+        //if (MenuMaggiorazioneFamiliare(matricola) == 1) {
+        //    $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
+        //    $("#mnMaggiorazioneFamiliare").removeClass("disabled");
+        //    $('#lkMaggiorazioneFamiliare').attr('onClick', 'MaggiorazioneFamiliare();');
+        //}
+        //else {
+        //    $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
+        //    $("#mnMaggiorazioneFamiliare").addClass("disabled");
+        //    $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
+        //}
 
 
     }
@@ -237,6 +237,7 @@
                     if (result.err == "" || result.err == undefined) {
                         if (result.idmaggiorazione != 0) {
                             valoreRitorno = 1;
+                            GestioneAttivitaTrasferimento();
                         }
                         else {
                             valoreRitorno = 0;
@@ -261,6 +262,10 @@
 
         return valoreRitorno;
     }
+
+
+
+
 
 
     function FiltraDipendente() {
@@ -329,6 +334,7 @@
                 success: function (result) {
                     //debugger;
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    var idTrasferimento = result.idTrasferimento;
                     $("#ContenitoreDatiTrasf").empty();
                     $("#ContenitoreDatiTrasf").html(result);
 

@@ -454,54 +454,60 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void SetConiuge(ref ConiugeModel cm, ModelDBISE db)
         {
-            CONIUGE c = new CONIUGE()
+            try
             {
-                IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
-                IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
-                IDPASSAPORTI = cm.idPassaporti,
-                IDTITOLOVIAGGIO = cm.idTitoloViaggio,
-                NOME = cm.nome.ToUpper(),
-                COGNOME = cm.cognome.ToUpper(),
-                CODICEFISCALE = cm.codiceFiscale.ToUpper(),
-                DATAINIZIOVALIDITA = cm.dataInizio.Value,
-                DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
-                DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                ANNULLATO = cm.annullato,
-                ESCLUDIPASSAPORTO = cm.escludiPassaporto,
-                DATANOTIFICAPP = cm.dataNotificaPP,
-                ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
-                DATANOTIFICATV = cm.dataNotificaTV
-
-            };
-
-            db.CONIUGE.Add(c);
-
-            if (db.SaveChanges() <= 0)
-            {
-                throw new Exception("Non è stato possibile inserire il coniuge.");
-            }
-            else
-            {
-                decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
-                cm.idConiuge = c.IDCONIUGE;
-
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
-                    idTrasferimento, c.IDCONIUGE);
-
-                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                CONIUGE c = new CONIUGE()
                 {
-                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+                    IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
+                    IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
+                    IDPASSAPORTI = cm.idPassaporti,
+                    IDTITOLOVIAGGIO = cm.idTitoloViaggio,
+                    NOME = cm.nome.ToUpper(),
+                    COGNOME = cm.cognome.ToUpper(),
+                    CODICEFISCALE = cm.codiceFiscale.ToUpper(),
+                    DATAINIZIOVALIDITA = cm.dataInizio.Value,
+                    DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
+                    DATAAGGIORNAMENTO = cm.dataAggiornamento,
+                    ANNULLATO = cm.annullato,
+                    ESCLUDIPASSAPORTO = cm.escludiPassaporto,
+                    DATANOTIFICAPP = cm.dataNotificaPP,
+                    ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
+                    DATANOTIFICATV = cm.dataNotificaTV
+                };
 
-                    //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+                db.CONIUGE.Add(c);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception("Non è stato possibile inserire il coniuge.");
+                }
+                else
+                {
+                    decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                    cm.idConiuge = c.IDCONIUGE;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
+                        idTrasferimento, c.IDCONIUGE);
+
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    {
+                        AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                        //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
 
 
+                    }
                 }
 
+            }
 
-
-
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
             }
         }
+
 
         public void EditConiuge(ConiugeModel cm, ModelDBISE db)
         {
@@ -546,8 +552,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 escludiPassaporto = cm.escludiPassaporto,
                                 dataNotificaPP = cm.dataNotificaPP,
                                 escludiTitoloViaggio = cm.escludiTitoloViaggio,
-                                dataNotificaTV = cm.dataNotificaTV
-                            };
+                                dataNotificaTV = cm.dataNotificaTV,
+                                dataAggiornamento = DateTime.Now
+                        };
 
                             this.SetConiuge(ref newc, db);
 

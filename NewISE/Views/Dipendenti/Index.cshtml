@@ -147,6 +147,84 @@
         });
     }
 
+    //new
+    function MaggiorazioneFamiliare() {
+        var matricola = $("#hMatricola").val();
+        rotta = "/MaggiorazioniFamiliari/AttivitaMaggiorazioneFamiliare";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabMaggiorazioneFamiliare").empty();
+                $("#tabMaggiorazioneFamiliare").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnMaggiorazioneFamiliare");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function AttivitaTrasferimento() {
+        var matricola = $("#hMatricola").val();
+        rotta = "/Trasferimento/AttivitaTrasferimento";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#tabMaggiorazioneFamiliare").empty();
+                //$("#tabMaggiorazioneFamiliare").html(result);
+
+                //RicercaDocumenti();
+                result.id
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnGestioneTrasferimento");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
+    //
+
+
     function MenuDaVisualizzare() {
         //debugger;
         var mnuV = $("#hMenuInLavorazione").val();
