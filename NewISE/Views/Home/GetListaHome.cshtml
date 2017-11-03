@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Lista Calendario Evento";
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    var errori = ViewData.ModelState;
 }
 <input type="hidden" id="hAmministratore" value="@admin.ToString()" />
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
@@ -18,8 +19,8 @@
                 <th>
                     @Html.DisplayNameFor(model => model.dataScadenza)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NomeFunzione)
+                <th>                    
+                    @Html.DisplayNameFor(model => model.NomeFunzione)                             
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Completato)
@@ -55,7 +56,9 @@
                         <td style="text-align: center;"></td>
                     }
                     <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span>
+                        <a href="javascript:void(0);" 
+                           class="anchorDetail"
+                           data-id="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                     </td>
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
@@ -65,6 +68,20 @@
         </tbody>
     </table>
 </div>
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+
+</div> 
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/MyValidateDate.js"></script>
+
 <script type="text/javascript">
 
     $("#tbelencocal").DataTable({
@@ -93,4 +110,53 @@
         }           
     });
 
+    function DialogModalView(err) {
+        if (err == 'True') {
+            $('#myModalNomeFunzione').modal('toggle');
+        }
+    }
+
 </script>
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+
+        var TeamDetailPostBackURL = 'Home/DetailsFunzioneEvento';
+    $(function () {
+        $(".anchorDetail").click(function () {
+            debugger;
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    debugger;
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        });
+        //$("#closebtn").on('click',function(){
+        //    $('#myModal').modal('hide');
+
+        $("#closbtn").click(function () {
+            $('#myModal').modal('hide');
+        });
+    });
+
+    </script>
+
+}  

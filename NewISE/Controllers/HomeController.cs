@@ -1,5 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models;
+using NewISE.Models.DBModel;
+using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using System;
@@ -38,23 +40,26 @@ namespace NewISE.Controllers
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             try
             {
-                using (var dbContext = new ModelDBISE())
+                using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = (from d in dbContext.DIPENDENTI
-                           join t in dbContext.TRASFERIMENTO on d.IDDIPENDENTE equals t.IDDIPENDENTE
-                           join c in dbContext.CALENDARIOEVENTI on t.IDTRASFERIMENTO equals c.IDTRASFERIMENTO
-                           join f in dbContext.FUNZIONIEVENTI on c.IDFUNZIONIEVENTI equals f.IDFUNZIONIEVENTI
-                           where c.ANNULLATO == false && c.COMPLETATO == false && c.DATAINIZIOEVENTO.Month == DateTime.Now.Month
-                           && c.DATAINIZIOEVENTO.Year == DateTime.Now.Year && c.COMPLETATO == false
-                           select new ElencoElementiHome
-                           {
-                               Nominativo = d.COGNOME + " " + d.NOME,
-                               dataInizio = c.DATAINIZIOEVENTO,
-                               dataScadenza = c.DATASCADENZA,
-                               NomeFunzione = f.NOMEFUNZIONE,
-                               Completato = c.COMPLETATO,
-                           }).ToList();
+                    tmp = dtcal.GetListaElementiHome().ToList();                   
                 }               
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(tmp);
+        }
+        public ActionResult DetailsFunzioneEvento(int Id)
+        {
+            FunzioneEventoModel tmp = new FunzioneEventoModel();
+            try
+            {
+                using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
+                {
+                    tmp = dtcal.OgggettoFunzioneEvento(Id);
+                }
             }
             catch (Exception ex)
             {
@@ -64,3 +69,4 @@ namespace NewISE.Controllers
         }
     }
 }
+

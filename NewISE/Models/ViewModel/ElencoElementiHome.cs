@@ -26,6 +26,6 @@ namespace NewISE.Models.ViewModel
 
         [Display(Name = "Completato")]
         public bool Completato { get; set; }
-
+        public decimal IdFunzioneEvento { get; set; }
     }
 }

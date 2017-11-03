@@ -38,8 +38,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    cem.idCalendarioEventi = ca.IDCALENDARIOEVENTI;
-
+                    cem.idCalendarioEventi = ca.IDCALENDARIOEVENTI;//per il ref parametro
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  dell'evento relativo al calendario eventi.",
                         "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
                 }
@@ -50,11 +49,12 @@ namespace NewISE.Models.DBModel.dtObj
             int funzEv = (int)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO== idTrasferimento && c.IDFUNZIONIEVENTI==funzEv);
+                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO== idTrasferimento && c.IDFUNZIONIEVENTI==funzEv).ToList();
                 foreach (var x in result)
                 {
-                    x.COMPLETATO = true;
-                    x.DATACOMPLETATO = DateTime.Now;
+                    CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
+                    y.COMPLETATO = true;
+                    y.DATACOMPLETATO = DateTime.Now;
                     int i = db.SaveChanges();
                     if (i <= 0)
                     {
@@ -67,7 +67,56 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
             }
+        }        
+        public List<ElencoElementiHome> GetListaElementiHome()
+        {
+            List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
+            try
+            {
+                using (var dbContext = new ModelDBISE())
+                {
+                    tmp = (from d in dbContext.DIPENDENTI
+                           join t in dbContext.TRASFERIMENTO on d.IDDIPENDENTE equals t.IDDIPENDENTE
+                           join c in dbContext.CALENDARIOEVENTI on t.IDTRASFERIMENTO equals c.IDTRASFERIMENTO
+                           join f in dbContext.FUNZIONIEVENTI on c.IDFUNZIONIEVENTI equals f.IDFUNZIONIEVENTI
+                           where c.ANNULLATO == false && c.COMPLETATO == false && c.DATAINIZIOEVENTO.Month == DateTime.Now.Month
+                           && c.DATAINIZIOEVENTO.Year == DateTime.Now.Year && c.COMPLETATO == false
+                           select new ElencoElementiHome
+                           {
+                               Nominativo = d.COGNOME + " " + d.NOME+" ("+d.MATRICOLA+")",
+                               dataInizio = c.DATAINIZIOEVENTO,
+                               dataScadenza = c.DATASCADENZA,
+                               NomeFunzione = f.NOMEFUNZIONE,
+                               Completato = c.COMPLETATO,
+                               IdFunzioneEvento=f.IDFUNZIONIEVENTI
+                           }).ToList();
+
+                }
+                return (tmp);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        
+        public FunzioneEventoModel OgggettoFunzioneEvento(int Id)
+        {
+            FunzioneEventoModel tmp = new FunzioneEventoModel();           
+            try
+            {
+                using (var db = new ModelDBISE())
+                {
+                    var result = db.FUNZIONIEVENTI.Find(Id);
+                    tmp.idFunzioniEventi = result.IDFUNZIONIEVENTI;
+                    tmp.NomeFunzione = result.NOMEFUNZIONE;
+                    tmp.NomeFunzione = result.MESSAGGIOEVENTO;
+                }
+                return tmp;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

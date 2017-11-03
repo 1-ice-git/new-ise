@@ -31,25 +31,7 @@ namespace NewISE.Controllers
 
             return View();
         }
-        public ActionResult FunzioneEvento(string nomefunzione="")
-        {
-            var objList = new List<SelectListItem>();
-            bool admin = false;
-            List<FunzioneEventoModel> lfe = new List<FunzioneEventoModel>();
-            FunzioneEventoModel obj = new FunzioneEventoModel();
-            AccountModel ac = new AccountModel();
-            try
-            {
-
-            }        
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-
-            return PartialView(obj);
-
-}
+        
 
 
      /*  public ActionResult DipendentiGepe(string matricola = "")
