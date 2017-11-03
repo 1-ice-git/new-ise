@@ -582,10 +582,10 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 ViewBag.ReportViewer = reportViewer;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
 
             return View();
@@ -907,8 +907,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.MATRICOLA = rdr["MATRICOLA"].ToString();
                                 details.LIVELLO = rdr["LIVELLO"].ToString();
                                 details.TIPO_MOVIMENTO = rdr["TIPO_MOVIMENTO"].ToString();
-                                details.DATA_DECORRENZA = rdr["DATA_DECORRENZA"].ToString();
-                                details.DATA_LETTERA = rdr["DATA_LETTERA"].ToString();
+                                details.DATA_DECORRENZA = rdr["DATA_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
+                                //details.DATA_DECORRENZA = Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
+                                //details.DATA_DECORRENZA = rdr["DATA_DECORRENZA"].ToString();
+                                //details.DATA_LETTERA = rdr["DATA_LETTERA"].ToString();
+                                details.DATA_LETTERA = rdr["DATA_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
+                                //details.DATA_LETTERA = Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
+
                                 details.COEF_SEDE = rdr["COEF_SEDE"].ToString();
                                 details.PERC_DISAGIO = rdr["PERC_DISAGIO"].ToString();
                                 details.PERC_SPETTANTE = rdr["PERC_SPETTANTE"].ToString();
@@ -1644,9 +1649,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.nominativo = rdr["NOMINATIVO"].ToString();
                     details.sede = rdr["SED_DESCRIZIONE"].ToString();
                     details.valuta = rdr["VAL_DESCRIZIONE"].ToString();
-                    details.data_decorrenza = rdr["CON_DT_DECORRENZA"].ToString();
-                    details.data_lettera = rdr["CON_DT_LETTERA"].ToString();
-                    details.data_operazione = rdr["CON_DT_OPERAZIONE"].ToString();
+                    //if (rdr["CON_DT_DECORRENZA"] != DBNull.Value)
+                    details.data_decorrenza = rdr["CON_DT_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["CON_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
+                    //details.data_decorrenza = rdr["CON_DT_DECORRENZA"].ToString();
+                    //if (rdr["CON_DT_LETTERA"] != DBNull.Value)
+                    //details.data_lettera = Convert.ToDateTime("" + rdr["CON_DT_LETTERA"]).ToString("dd/MM/yyyy");
+                    details.data_operazione = rdr["CON_DT_OPERAZIONE"] == DBNull.Value ? null : Convert.ToDateTime(rdr["CON_DT_OPERAZIONE"]).ToString("dd/MM/yyyy");
+                    //details.data_operazione = rdr["CON_DT_OPERAZIONE"].ToString();
                     details.contributo_valuta = rdr["CON_CONTRIBUTO_VALUTA"].ToString();
                     details.contributo_L_E = rdr["CON_CONTRIBUTO_LIRE"].ToString();
                     details.canone = rdr["CON_CANONE"].ToString();
@@ -1765,9 +1774,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                     //details.data_decorrenza = Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
                     //details.data_lettera = Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
                     //details.data_operazione = Convert.ToDateTime(rdr["DATA_OPERAZIONE"]).ToString("dd/MM/yyyy");
-                    details.data_decorrenza = rdr["DATA_DECORRENZA"].ToString();
-                    details.data_lettera = rdr["DATA_LETTERA"].ToString();
-                    details.data_operazione = rdr["DATA_OPERAZIONE"].ToString();
+                    details.data_decorrenza = rdr["DATA_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
+                    //details.data_decorrenza = rdr["DATA_DECORRENZA"].ToString();
+                    //details.data_lettera = rdr["DATA_LETTERA"].ToString();
+                    details.data_lettera = rdr["DATA_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
+                    //details.data_operazione = rdr["DATA_OPERAZIONE"].ToString();
+                    details.data_operazione = rdr["DATA_OPERAZIONE"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_OPERAZIONE"]).ToString("dd/MM/yyyy");
                     details.canone_in_valuta = rdr["CANONE_VALUTA"].ToString();
                     //details.canone_in_euro = rdr["CANONE"].ToString();
                     details.imponibile_previdenziale = rdr["IMPONIBILE_PREVIDENZIALE"].ToString();
@@ -1882,8 +1894,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.nominativo = rdr["NOMINATIVO"].ToString();
                     details.sede = rdr["SEDE"].ToString();
                     details.valuta = rdr["VALUTA"].ToString();
-                    details.data_decorrenza = rdr["DATA_DECORRENZA"].ToString();
-                    details.data_lettera = rdr["DATA_LETTERA"].ToString();
+                    details.data_decorrenza = rdr["DATA_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
+                    //details.data_decorrenza = rdr["DATA_DECORRENZA"].ToString();
+                    //details.data_lettera = rdr["DATA_LETTERA"].ToString();
+                    details.data_lettera = rdr["DATA_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
                     details.data_operazione = rdr["DATA_OPERAZIONE"].ToString();
                     details.anticipo_valuta = rdr["CANONE"].ToString();
                     details.anticipo_euro = rdr["CANONE"].ToString();
@@ -1924,8 +1938,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "CAN_CANONE_ANNUO_VALUTA, ";
                 Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
                 Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
-                //Sql += "- ROUND((DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
-                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI),6) AS QUOTA_MENS, ";
+                Sql += "- ROUND((DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
+                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI),6) AS QUOTA_MENS, ";
                 Sql += "CAN_PROG_TRASFERIMENTO, ";
                 Sql += "CAN_PROG_CAN_ABITAZIONE ";
                 Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
@@ -2119,6 +2133,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.codice_sede = rdr["CodSede"].ToString();
                     details.sede = rdr["SEDE"].ToString();
                     details.valuta = rdr["VALUTA"].ToString();
+                    //if (rdr["DATADECORRENZA"] != DBNull.Value)
                     details.data_decorrenza = Convert.ToDateTime(rdr["DATADECORRENZA"]).ToString("dd/MM/yyyy");
                     details.data_lettera = Convert.ToDateTime(rdr["DATALETTERA"]).ToString("dd/MM/yyyy");
                     details.data_operazione = Convert.ToDateTime(rdr["DATAOPERAZIONE"]).ToString("dd/MM/yyyy");

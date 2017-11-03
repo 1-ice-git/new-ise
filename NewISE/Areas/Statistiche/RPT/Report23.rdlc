@@ -529,7 +529,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CON_DT_DECORRENZA.Value</Value>
+                              <Value>=FormatDateTime(Fields!CON_DT_DECORRENZA.Value, DateFormat.ShortDate)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -559,7 +559,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CON_DT_LETTERA.Value</Value>
+                              <Value>=FormatDateTime(Fields!CON_DT_LETTERA.Value, DateFormat.ShortDate)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -589,7 +589,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CON_DT_OPERAZIONE.Value</Value>
+                              <Value>=FormatDateTime(Fields!CON_DT_OPERAZIONE.Value, DateFormat.ShortDate)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -763,7 +763,7 @@
         <Top>5.15619cm</Top>
         <Left>0.57891cm</Left>
         <Height>1.2cm</Height>
-        <Width>27.80396cm</Width>
+        <Width>27.80397cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -806,10 +806,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox25</rd:DefaultName>
-        <Top>0.44084cm</Top>
+        <Top>0.17639cm</Top>
         <Left>0.57891cm</Left>
-        <Height>1.49958cm</Height>
-        <Width>27.80396cm</Width>
+        <Height>1.76403cm</Height>
+        <Width>27.40708cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -839,7 +839,7 @@
         <Top>3.11313cm</Top>
         <Left>24.93501cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.44786cm</Width>
+        <Width>3.05098cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
@@ -871,7 +871,7 @@
           <Top>0.3055cm</Top>
           <Left>0.57891cm</Left>
           <Height>2.05811cm</Height>
-          <Width>27.80396cm</Width>
+          <Width>27.40708cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
