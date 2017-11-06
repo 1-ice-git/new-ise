@@ -441,6 +441,87 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
+        public void EditFiglio(FigliModel fm, ModelDBISE db)
+        {
+            try
+            {
+                var f = db.FIGLI.Find(fm.idFigli);
+
+                DateTime dtIni = fm.dataInizio.Value;
+                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    if (f.DATAINIZIOVALIDITA != fm.dataInizio.Value || f.DATAFINEVALIDITA != dtFin ||
+                        f.IDTIPOLOGIAFIGLIO != (decimal)fm.idTipologiaFiglio || f.NOME != fm.nome || f.COGNOME != fm.cognome ||
+                        f.CODICEFISCALE != fm.codiceFiscale || f.IDPASSAPORTI != fm.idPassaporti || f.IDTITOLOVIAGGIO != fm.idTitoloViaggio)
+                    {
+                        f.DATAAGGIORNAMENTO = DateTime.Now;
+                        f.ANNULLATO = true;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile modificare il figlio.");
+                        }
+                        else
+                        {
+                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "FIGLIO", db, idTrasferimento, f.IDFIGLI);
+
+                            FigliModel newf = new FigliModel()
+                            {
+                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
+                                idTipologiaFiglio = fm.idTipologiaFiglio,
+                                idPassaporti = fm.idPassaporti,
+                                idTitoloViaggio = fm.idTitoloViaggio,
+                                nome = fm.nome,
+                                cognome = fm.cognome,
+                                codiceFiscale = fm.codiceFiscale,
+                                dataInizio = fm.dataInizio.Value,
+                                dataFine = dtFin,
+                                escludiPassaporto = fm.escludiPassaporto,
+                                dataNotificaPP = fm.dataNotificaPP,
+                                escludiTitoloViaggio = fm.escludiTitoloViaggio,
+                                dataNotificaTV = fm.dataNotificaTV,
+                                dataAggiornamento = DateTime.Now
+                            };
+
+                            this.SetFiglio(ref newf, db);
+
+                            //if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin)
+                            //{
+                            using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                            {
+                                PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(fm.idFigli, DateTime.Now);
+
+                                if (pf != null && pf.HasValue()) 
+                                {
+                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(fm.idFigli, pf.idPercMagFigli, db);
+                                    //dtpmf.AggiornaPMF_F(fm.idFigli, db);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non è presente nessuna percentuale del figlio.");
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+                //db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
+
 
     }
 }

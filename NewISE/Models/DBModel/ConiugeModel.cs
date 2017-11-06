@@ -22,7 +22,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Maggiorazione familiari")]
         [Display(Name = "Maggiorazione familiari")]
         public decimal idMaggiorazioniFamiliari { get; set; }
-        [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
+        [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "Il passaporto è richiesto.")]

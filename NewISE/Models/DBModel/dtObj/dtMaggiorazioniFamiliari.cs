@@ -871,6 +871,29 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void ModificaFiglio(FigliModel fm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    using (dtFigli dtf = new dtFigli())
+                    {
+                        dtf.EditFiglio(fm, db);
+                    }
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
 
 
         //public MaggiorazioniFamiliariModel GetMaggiorazioneFamiliare(decimal idTrasferimento, DateTime dt)

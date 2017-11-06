@@ -141,6 +141,36 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        //public void AggiornaPMF_F(decimal idFiglio, ModelDBISE db)
+        //{
+        //    try
+        //    {
+        //        using (dtp dtFigli dtf = new dtFigli())
+        //        {
+        //            FIGLI f = new FIGLI()
+        //    {
+
+
+        //            var fm = db.FIGLI.Find(idFiglio);
+        //        var item = db.Entry<FIGLI>(fm);
+        //        item.State = System.Data.Entity.EntityState.Modified;
+        //        item.Collection(a => a.PERCENTUALEMAGFIGLI).Load();
+        //        var pmf = db.PERCENTUALEMAGFIGLI.Find(idFiglioi);
+        //        fm.PERCENTUALEMAGFIGLI.Add(pmf);
+        //        int i = db.SaveChanges();
+
+        //        if (i <= 0)
+        //        {
+        //            throw new Exception("Impossibile associare la percentuale maggiorazione per il figlio.");
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
 
 

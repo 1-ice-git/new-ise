@@ -507,6 +507,59 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+        public void SetFiglio(ref FigliModel fm, ModelDBISE db)
+        {
+            try
+            {
+                FIGLI f = new FIGLI()
+                {
+                    IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
+                    IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
+                    IDPASSAPORTI = fm.idPassaporti,
+                    IDTITOLOVIAGGIO = fm.idTitoloViaggio,
+                    NOME = fm.nome.ToUpper(),
+                    COGNOME = fm.cognome.ToUpper(),
+                    CODICEFISCALE = fm.codiceFiscale.ToUpper(),
+                    DATAINIZIOVALIDITA = fm.dataInizio.Value,
+                    DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
+                    DATAAGGIORNAMENTO = fm.dataAggiornamento,
+                    ANNULLATO = fm.Annullato,
+                    ESCLUDIPASSAPORTO = fm.escludiPassaporto,
+                    DATANOTIFICAPP = fm.dataNotificaPP,
+                    ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
+                    DATANOTIFICATV = fm.dataNotificaTV
+                };
+
+                db.FIGLI.Add(f);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception("Non è stato possibile inserire il figlio.");
+                }
+                else
+                {
+                    decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                    fm.idFigli = f.IDFIGLI;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del figlio", "FIGLIO", db,
+                        idTrasferimento, f.IDFIGLI);
+
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    {
+                        AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                        //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+                    }
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
 
 
         public void EditConiuge(ConiugeModel cm, ModelDBISE db)
@@ -609,21 +662,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             dtp.SetNuovoImportoPensione(pcm, newc.idConiuge, db);
                                         }
-
-
                                     }
-
-
-
                                 }
-
-
-
                             }
-                            //}
-
-
-
                         }
                     }
                 }
@@ -636,5 +677,7 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+
     }
 }
