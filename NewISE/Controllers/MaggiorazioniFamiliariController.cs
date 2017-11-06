@@ -328,7 +328,6 @@ namespace NewISE.Controllers
 
             try
             {
-
                 using (dtConiuge dtc = new dtConiuge())
                 {
                     List<ConiugeModel> lcm = dtc.GetListaConiugeByIdMagFam(idMaggiorazioniFamiliari).ToList();
@@ -365,10 +364,6 @@ namespace NewISE.Controllers
                             }
                         }
                     }
-
-
-
-
                 }
 
                 bool solaLettura = false;

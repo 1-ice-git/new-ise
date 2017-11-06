@@ -21,6 +21,33 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public IList<ElencoFamiliariModel> GetFamiliariRichiestaPassaporto(decimal idTrasferimento)
+        {
+            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    var p = t.PASSAPORTI;
+                    if (p != null && p.IDPASSAPORTI > 0)
+                    {
+                        var lap =
+                            p.ATTIVAZIONIPASSAPORTI.Where(
+                                a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false);
+                        if (lap?.Any() ?? false)
+                        {
+
+                        }
+                    }
+                }
+
+
+            }
+        }
+
 
         public PassaportoModel GetPassaportoInLavorazioneByIdTrasf(decimal idTrasferimento)
         {

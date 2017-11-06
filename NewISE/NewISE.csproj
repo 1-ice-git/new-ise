@@ -2108,6 +2108,9 @@
     <Compile Include="EF\PASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\PASSAPORTORICHIEDENTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2228,6 +2231,7 @@
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAttivazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniPassaporti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCalendarioEventi.cs" />

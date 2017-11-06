@@ -30,7 +30,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    //lefm = dtpp.GetDipendentiRichiestaPassaporto(idTrasferimento).ToList();
+                    lefm = dtpp.GetFamiliariRichiestaPassaporto(idTrasferimento).ToList();
                 }
             }
             catch (Exception ex)

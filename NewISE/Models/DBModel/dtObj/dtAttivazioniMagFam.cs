@@ -174,7 +174,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
             {
                 var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(a => a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
+                    mf.ATTIVAZIONIMAGFAM.Where(a => a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false)
                         .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
                 if (lamf?.Any() ?? false)
                 {
