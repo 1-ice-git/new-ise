@@ -85,16 +85,16 @@
             $("#lkGestioneTrasferimento").removeAttr("onClick");
         }
 
-        //if (MenuMaggiorazioneFamiliare(matricola) == 1) {
-        //    $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
-        //    $("#mnMaggiorazioneFamiliare").removeClass("disabled");
-        //    $('#lkMaggiorazioneFamiliare').attr('onClick', 'MaggiorazioneFamiliare();');
-        //}
-        //else {
-        //    $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
-        //    $("#mnMaggiorazioneFamiliare").addClass("disabled");
-        //    $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
-        //}
+        if (MenuMaggiorazioneFamiliare(matricola) == 1) {
+            $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
+            $("#mnMaggiorazioneFamiliare").removeClass("disabled");
+            $('#lkMaggiorazioneFamiliare').attr('onClick', 'MaggiorazioneFamiliare();');
+        }
+        else {
+            $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
+            $("#mnMaggiorazioneFamiliare").addClass("disabled");
+            $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
+        }
 
 
     }
@@ -216,7 +216,7 @@
 
     function MenuMaggiorazioneFamiliare(matricola) {
         //debugger;
-        var rotta = "/Trasferimento/VerificaMaggiorazioneFamiliare";
+        var rotta = "/MaggiorazioniFamiliari/VerificaMaggiorazioneFamiliare";
         var valoreRitorno = 0;
 
         if (matricola != "" && matricola != undefined) {
@@ -235,9 +235,9 @@
                     //debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.idmaggiorazione != 0) {
+                        if (result.VerificaMaggiorazione != 0) {
                             valoreRitorno = 1;
-                            GestioneAttivitaTrasferimento();
+                            //GestioneAttivitaTrasferimento();
                         }
                         else {
                             valoreRitorno = 0;

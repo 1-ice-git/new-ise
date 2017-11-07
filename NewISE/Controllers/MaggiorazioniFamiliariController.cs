@@ -1089,7 +1089,8 @@ namespace NewISE.Controllers
                 {
                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                     {
-                        dtmf.ModificaConiuge(cm);
+                        dtmf.MagFam_ModificaConiuge(cm);
+                        
                     }
                 }
                 else
@@ -1187,11 +1188,9 @@ namespace NewISE.Controllers
                 {
                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                     {
-                        dtmf.ModificaFiglio(fm);
+                        dtmf.MagFam_ModificaFiglio(fm);
+
                     }
-                }
-                else
-                {
                     using (dtTipologiaFiglio dttf = new dtTipologiaFiglio())
                     {
                         List<SelectListItem> lTipologiaFiglio = new List<SelectListItem>();
@@ -1249,5 +1248,59 @@ namespace NewISE.Controllers
 
             return PartialView("AttivitaMaggiorazioneFamiliare");
         }
+
+        public JsonResult VerificaMaggiorazioneFamiliare(string matricola = "")
+        {
+            try
+            {
+                if (matricola == string.Empty)
+                {
+                    throw new Exception("La matricola non risulta valorizzata.");
+                }
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
+                    if (trm != null && trm.HasValue())
+                    {
+                        using (dtMaggiorazioniFamiliari dtd = new dtMaggiorazioniFamiliari())
+                        {
+                            MaggiorazioniFamiliariModel dm = dtd.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
+
+                            if (dm.idMaggiorazioniFamiliari.ToString() != null)
+                            {
+                                if (dm.idMaggiorazioniFamiliari>0)
+                                {
+                                    return Json(new { VerificaMaggiorazione = 1 });
+                                }
+                                else
+                                {
+                                    return Json(new { VerificaMaggiorazione = 0 });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { VerificaMaggiorazione = 0 });
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        return Json(new { VerificaMaggiorazione = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+
+
+        }
+
+
+
+
     }
 }

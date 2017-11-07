@@ -142,7 +142,7 @@
         <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="21.75" PointY="53.875" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="24.25" PointY="45.75" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="24" PointY="51.875" />
-        <EntityTypeShape EntityType="DBISEPRO.TRASFERIMENTO" Width="2.125" PointX="5.875" PointY="44.25" />
+        <EntityTypeShape EntityType="DBISEPRO.TRASFERIMENTO" Width="2.125" PointX="5.25" PointY="44.375" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
         <AssociationConnector Association="DBISEPRO.R_F_ADF" />
         <AssociationConnector Association="DBISEPRO.R_P_AP" />

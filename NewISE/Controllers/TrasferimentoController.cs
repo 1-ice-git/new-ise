@@ -955,54 +955,6 @@ namespace NewISE.Controllers
         }
 
 
-        public JsonResult VerificaMaggiorazioneFamiliare(string matricola = "")
-        {
-            try
-            {
-                if (matricola == string.Empty)
-                {
-                    throw new Exception("La matricola non risulta valorizzata.");
-                }
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
-                    if (trm != null && trm.HasValue())
-                    {
-                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                        {
-                            trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
-                            trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
-                            //trm.idTrasferimento
-                        }
-                        using (dtMaggiorazioniFamiliari dtd = new dtMaggiorazioniFamiliari())
-                        {
-                            MaggiorazioniFamiliariModel dm = dtd.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
-                            
-                            if (dm.idMaggiorazioniFamiliari.ToString() != null)
-                            {
-                                return Json(new { idmaggiorazione=dm.idMaggiorazioniFamiliari.ToString() });
-                            }
-                            else
-                            {
-                                return Json(new { idmaggiorazione=0 });
-                            }
-
-                        }
-
-                    }
-                    else
-                    {
-                        return Json(new { idmaggiorazione = 0 });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { err = ex.Message });
-            }
-
-
-        }
 
 
 

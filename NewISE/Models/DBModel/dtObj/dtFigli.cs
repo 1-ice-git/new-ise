@@ -293,6 +293,63 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void MagFam_SetFiglio(ref FigliModel fm, ModelDBISE db)
+        {
+            try
+            {
+                FIGLI f = new FIGLI()
+                {
+                    IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
+                    IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
+                    IDPASSAPORTI = fm.idPassaporti,
+                    IDTITOLOVIAGGIO = fm.idTitoloViaggio,
+                    NOME = fm.nome.ToUpper(),
+                    COGNOME = fm.cognome.ToUpper(),
+                    CODICEFISCALE = fm.codiceFiscale.ToUpper(),
+                    DATAINIZIOVALIDITA = fm.dataInizio.Value,
+                    DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
+                    DATAAGGIORNAMENTO = fm.dataAggiornamento,
+                    ANNULLATO = fm.Annullato,
+                    ESCLUDIPASSAPORTO = fm.escludiPassaporto,
+                    DATANOTIFICAPP = fm.dataNotificaPP,
+                    ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
+                    DATANOTIFICATV = fm.dataNotificaTV
+                };
+
+                db.FIGLI.Add(f);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception("Non è stato possibile inserire il figlio.");
+                }
+                else
+                {
+                    decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                    fm.idFigli = f.IDFIGLI;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del figlio", "FIGLIO", db,
+                        idTrasferimento, f.IDFIGLI);
+
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    {
+                        AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                        //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+
+
+                    }
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
+
         public FigliModel GetFigliobyID(decimal idFiglio)
         {
             FigliModel fm = new FigliModel();
@@ -513,6 +570,118 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 //db.Database.CurrentTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
+
+        public void MagFam_EditFiglio(FigliModel fm, ModelDBISE db)
+        {
+            try
+            {
+                var f = db.FIGLI.Find(fm.idFigli);
+
+                DateTime dtIni = fm.dataInizio.Value;
+                DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
+
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    if (f.DATAINIZIOVALIDITA != fm.dataInizio.Value || f.DATAFINEVALIDITA != dtFin)
+                    //c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
+                    //c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
+                    {
+                        f.DATAAGGIORNAMENTO = DateTime.Now;
+                        f.ANNULLATO = true;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile modificare il figlio.");
+                        }
+                        else
+                        {
+                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(f.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "FIGLI", db, idTrasferimento, f.IDFIGLI);
+
+                            FigliModel newf = new FigliModel()
+                            {
+                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
+                                idTipologiaFiglio = fm.idTipologiaFiglio,
+                                idPassaporti = fm.idPassaporti,
+                                idTitoloViaggio = fm.idTitoloViaggio,
+                                nome = fm.nome,
+                                cognome = fm.cognome,
+                                codiceFiscale = fm.codiceFiscale,
+                                dataInizio = fm.dataInizio.Value,
+                                dataFine = dtFin,
+                                escludiPassaporto = fm.escludiPassaporto,
+                                dataNotificaPP = fm.dataNotificaPP,
+                                escludiTitoloViaggio = fm.escludiTitoloViaggio,
+                                dataNotificaTV = fm.dataNotificaTV,
+                                dataAggiornamento = DateTime.Now
+                            };
+
+                            this.MagFam_SetFiglio(ref newf, db);
+
+                            //if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin)
+                            //{
+                            using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                            {
+                                PercentualeMagFigliModel lpmfm = dtpf.GetPercentualeMaggiorazioneFigli(newf.idFigli, DateTime.Now);
+
+                                if (lpmfm != null && lpmfm.idPercMagFigli > 0)
+                                {
+                                    dtpf.AssociaPercentualeMaggiorazioneFigli(newf.idFigli, lpmfm.idPercMagFigli, db);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                                }
+                            }
+
+                            //altri dati
+                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                            {
+                                AltriDatiFamModel adfm = dtadf.GetAlttriDatiFamiliariFiglio(fm.idFigli);
+
+                                if (adfm != null && adfm.idFigli > 0)
+                                {
+                                    dtadf.AssociaAltriDatiFamiliariFiglio(newf.idFigli, adfm.idAltriDatiFam, db);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non sono presenti altri dati familiari del figlio.");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (f.DATAINIZIOVALIDITA == fm.dataInizio.Value && f.DATAFINEVALIDITA == dtFin &&
+                           (f.IDTIPOLOGIAFIGLIO != (decimal)fm.idTipologiaFiglio || f.NOME != fm.nome || f.COGNOME != fm.cognome ||
+                            f.CODICEFISCALE != fm.codiceFiscale || f.IDPASSAPORTI != fm.idPassaporti || f.IDTITOLOVIAGGIO != fm.idTitoloViaggio))
+                        {
+                            f.NOME = fm.nome.ToUpper();
+                            f.COGNOME = fm.cognome.ToUpper();
+                            f.CODICEFISCALE = fm.codiceFiscale.ToUpper();
+                            f.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Impossibile modificare il figlio.");
+                            }
+                        }
+                    }
+
+                    //db.Database.CurrentTransaction.Commit();
+                }
             }
             catch (Exception ex)
             {

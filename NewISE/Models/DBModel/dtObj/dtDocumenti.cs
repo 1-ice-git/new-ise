@@ -327,6 +327,36 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+        public DocumentiModel GetDatiDocumentoByIdConiuge(decimal idConiuge)
+        {
+            DocumentiModel dm = new DocumentiModel();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ld = db.CONIUGE.Find(idConiuge).DOCUMENTI;
+
+                if (ld != null && ld.Count > 0)
+                {
+                    var d = ld.First();
+                    //HttpPostedFileBase f;
+
+                    //f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO, d.NOMEDOCUMENTO + d.ESTENSIONE, "application/pdf");
+
+                    dm = new DocumentiModel()
+                    {
+                        idDocumenti = d.IDDOCUMENTO,
+                        nomeDocumento = d.NOMEDOCUMENTO,
+                        estensione = d.ESTENSIONE,
+                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                        dataInserimento = d.DATAINSERIMENTO,
+                        //file = f
+                    };
+                }
+            }
+
+            return dm;
+        }
+
+
         public DocumentiModel GetDatiDocumentoById(decimal idDocumento)
         {
             DocumentiModel dm = new DocumentiModel();
@@ -752,6 +782,34 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
+        public void AssociaDocumentiConiuge(decimal idConiuge, decimal idDocumenti, ModelDBISE db)
+        {
+
+            try
+            {
+                var mc = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(mc);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.DOCUMENTI).Load();
+                var dc = db.DOCUMENTI.Find(idDocumenti);
+                mc.DOCUMENTI.Add(dc);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare documenti per il coniuge.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
 
 
     }

@@ -372,6 +372,61 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AssociaAltriDatiFamiliariConiuge(decimal idConiuge, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+
+            try
+            {
+                var mc = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(mc);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adfc = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                mc.ALTRIDATIFAM.Add(adfc);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare altri dati familiari per il coniuge.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+
+
+        public void AssociaAltriDatiFamiliariFiglio(decimal idFiglio, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+
+            try
+            {
+                var mf = db.FIGLI.Find( idFiglio);
+                var item = db.Entry<FIGLI>(mf);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adff = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                mf.ALTRIDATIFAM.Add(adff);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare altri dati familiari per il figlio.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+
 
 
     }

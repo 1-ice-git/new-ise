@@ -507,6 +507,63 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        public void MagFam_SetConiuge(ref ConiugeModel cm, ModelDBISE db)
+        {
+            try
+            {
+                CONIUGE c = new CONIUGE()
+                {
+                    IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
+                    IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
+                    IDPASSAPORTI = cm.idPassaporti,
+                    IDTITOLOVIAGGIO = cm.idTitoloViaggio,
+                    NOME = cm.nome.ToUpper(),
+                    COGNOME = cm.cognome.ToUpper(),
+                    CODICEFISCALE = cm.codiceFiscale.ToUpper(),
+                    DATAINIZIOVALIDITA = cm.dataInizio.Value,
+                    DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
+                    DATAAGGIORNAMENTO = cm.dataAggiornamento,
+                    ANNULLATO = cm.annullato,
+                    ESCLUDIPASSAPORTO = cm.escludiPassaporto,
+                    DATANOTIFICAPP = cm.dataNotificaPP,
+                    ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
+                    DATANOTIFICATV = cm.dataNotificaTV
+                };
+
+                db.CONIUGE.Add(c);
+
+                if (db.SaveChanges() <= 0)
+                {
+                    throw new Exception("Non è stato possibile inserire il coniuge.");
+                }
+                else
+                {
+                    decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                    cm.idConiuge = c.IDCONIUGE;
+
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
+                        idTrasferimento, c.IDCONIUGE);
+
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    {
+                        AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                        //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+
+
+                    }
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
         public void SetFiglio(ref FigliModel fm, ModelDBISE db)
         {
             try
@@ -677,6 +734,174 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+        public void MagFam_EditConiuge(ConiugeModel cm, ModelDBISE db)
+        {
+            try
+            {
+                var c = db.CONIUGE.Find(cm.idConiuge);
+
+                DateTime dtIni = cm.dataInizio.Value;
+                DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
+
+                if (c != null && c.IDCONIUGE > 0)
+                {
+                    if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin )
+                        //c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
+                        //c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
+                    {
+                        c.DATAAGGIORNAMENTO = DateTime.Now;
+                        c.ANNULLATO = true;
+
+                        int i = db.SaveChanges();
+
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile modificare il coniuge.");
+                        }
+                        else
+                        {
+                            decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
+                            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
+
+                            ConiugeModel newc = new ConiugeModel()
+                            {
+                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
+                                idTipologiaConiuge = cm.idTipologiaConiuge,
+                                idPassaporti = cm.idPassaporti,
+                                idTitoloViaggio = cm.idTitoloViaggio,
+                                nome = cm.nome,
+                                cognome = cm.cognome,
+                                codiceFiscale = cm.codiceFiscale,
+                                dataInizio = cm.dataInizio.Value,
+                                dataFine = dtFin,
+                                escludiPassaporto = cm.escludiPassaporto,
+                                dataNotificaPP = cm.dataNotificaPP,
+                                escludiTitoloViaggio = cm.escludiTitoloViaggio,
+                                dataNotificaTV = cm.dataNotificaTV,
+                                dataAggiornamento = DateTime.Now
+                            };
+
+                            this.MagFam_SetConiuge(ref newc, db);
+
+                            //if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin)
+                            //{
+                            using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                            {
+                                List<PercentualeMagConiugeModel> lpmcm =
+                                    dtpc.GetListaPercentualiMagConiugeByRangeDate(newc.idTipologiaConiuge, dtIni, dtFin, db)
+                                        .ToList();
+
+                                if (lpmcm?.Any() ?? false)
+                                {
+                                    foreach (var pmcm in lpmcm)
+                                    {
+                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(newc.idConiuge, pmcm.idPercentualeConiuge, db);
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Non è presente nessuna percentuale del coniuge.");
+                                }
+                            }
+
+                            using (dtPensione dtp = new dtPensione())
+                            {
+                                List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
+
+                                lpcm = dtp.GetPensioniByIdConiuge(cm.idConiuge, db).OrderBy(a => a.dataInizioValidita).ToList();
+
+                                if (lpcm?.Any() ?? false)
+                                {
+                                    var pcmFirst = lpcm.First();
+                                    var pcmLast = lpcm.Last();
+
+                                    if (pcmFirst.dataInizioValidita < newc.dataInizio.Value)
+                                    {
+                                        pcmFirst.dataInizioValidita = newc.dataInizio.Value;
+                                        dtp.SetNuovoImportoPensione(pcmFirst, newc.idConiuge, db);
+                                    }
+
+                                    if (pcmLast.dataFineValidita > newc.dataFine)
+                                    {
+                                        pcmLast.dataFineValidita = newc.dataFine;
+                                        dtp.SetNuovoImportoPensione(pcmLast, newc.idConiuge, db);
+                                    }
+
+                                    foreach (var pcm in lpcm)
+                                    {
+
+                                        if (pcm.idPensioneConiuge != pcmFirst.idPensioneConiuge && pcm.idPensioneConiuge != pcmLast.idPensioneConiuge)
+                                        {
+                                            dtp.SetNuovoImportoPensione(pcm, newc.idConiuge, db);
+                                        }
+                                    }
+                                }
+                            }
+
+                            //associa altri dati coniuge duplicando il record sulla tabella AltriDatiConiuge
+                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                            {
+                                AltriDatiFamModel adfm = dtadf.GetAlttriDatiFamiliariConiuge(cm.idConiuge);
+
+                                if (adfm != null && adfm.idConiuge > 0)
+                                {
+                                    dtadf.AssociaAltriDatiFamiliariConiuge(newc.idConiuge, adfm.idAltriDatiFam, db);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non sono presenti altri dati familiari del coniuge.");
+                                }
+                            }
+
+                            //associa documenti coniuge duplicando il record sulla tabella Documenti creando l'associazione su Coniuge_Doc
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = dtd.GetDatiDocumentoByIdConiuge(cm.idConiuge);
+
+                                if (dm != null && dm.idDocumenti > 0)
+                                {
+                                    dtd.AssociaDocumentiConiuge(newc.idConiuge, dm.idDocumenti, db);
+                                }
+                                else
+                                {
+                                    throw new Exception("Non sono presenti documenti del coniuge.");
+                                }
+                            }
+
+
+                        }
+                    }
+                    else
+                    {
+                        if (c.DATAINIZIOVALIDITA == cm.dataInizio.Value && c.DATAFINEVALIDITA == dtFin && 
+                           (c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
+                            c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio))
+                        {
+                            c.NOME = cm.nome.ToUpper();
+                            c.COGNOME = cm.cognome.ToUpper();
+                            c.CODICEFISCALE = cm.codiceFiscale.ToUpper();
+                            c.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Impossibile modificare il coniuge.");
+                            }
+                        }
+                    }
+
+                    //db.Database.CurrentTransaction.Commit();
+                }
+            }
+            catch (Exception ex)
+            {
+                //db.Database.CurrentTransaction.Rollback();
+                throw ex;
+            }
+        }
+
 
 
     }

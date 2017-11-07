@@ -871,6 +871,52 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void MagFam_ModificaConiuge(ConiugeModel cm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    using (dtConiuge dtc = new dtConiuge())
+                    {
+                        dtc.MagFam_EditConiuge(cm, db);
+                    }
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+        public void MagFam_ModificaFiglio(FigliModel fm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+                try
+                {
+                    using (dtFigli dtf = new dtFigli())
+                    {
+                        dtf.MagFam_EditFiglio(fm, db);
+                    }
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+
         public void ModificaFiglio(FigliModel fm)
         {
             using (ModelDBISE db = new ModelDBISE())
