@@ -492,8 +492,18 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
-                    //var lamfm = dtamf.GetUltimaAttivazioneMagFam()
+                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(cm.idMaggiorazioniFamiliari, db);
 
+                    dtamf.AssociaConiuge(amfm.idAttivazioneMagFam, c.IDCONIUGE, db);
+
+                }
+
+                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                {
+                    AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+
+                    apm = dtap.GetAttivazionePassaportiDaLavorare(cm.idMaggiorazioniFamiliari, db);
+                    dtap.AssociaConiuge(apm.idAttivazioniPassaporti, cm.idConiuge, db);
 
                 }
 
@@ -529,8 +539,13 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
+
+
                             decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
+
+
+
 
                             ConiugeModel newc = new ConiugeModel()
                             {
@@ -551,8 +566,40 @@ namespace NewISE.Models.DBModel.dtObj
 
                             this.SetConiuge(ref newc, db);
 
-                            //if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin)
-                            //{
+                            #region AltriDatiFamiliari
+
+                            var ladf =
+                                c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+                            if (ladf?.Any() ?? false)
+                            {
+                                var adf = ladf.First();
+                                adf.DATAAGGIORNAMENTO = DateTime.Now;
+                                adf.ANNULLATO = true;
+
+                                int j = db.SaveChanges();
+                                if (j > 0)
+                                {
+                                    AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel()
+                                    {
+                                        idConiuge = newc.idConiuge,
+                                        nazionalita = adf.NAZIONALITA,
+                                        indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                                        capResidenza = adf.CAPRESIDENZA,
+                                        comuneResidenza = adf.COMUNERESIDENZA,
+                                        provinciaResidenza = adf.PROVINCIARESIDENZA,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false
+                                    };
+                                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                    {
+                                        dtadf.SetAltriDatiFamiliariConiuge(adfm, db);
+                                    }
+                                }
+
+                            }
+                            #endregion
+
+                            #region Associa Percentuali maggiorazioni coniuge
                             using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                             {
                                 List<PercentualeMagConiugeModel> lpmcm =
@@ -563,7 +610,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var pmcm in lpmcm)
                                     {
-                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(cm.idConiuge, pmcm.idPercentualeConiuge, db);
+                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(newc.idConiuge, pmcm.idPercentualeConiuge, db);
                                     }
                                 }
                                 else
@@ -571,7 +618,28 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception("Non è presente nessuna percentuale del coniuge.");
                                 }
                             }
+                            #endregion
 
+                            #region Associa documenti
+
+                            var ld = c.DOCUMENTI;
+
+                            if (ld?.Any() ?? false)
+                            {
+                                using (dtDocumenti dtd = new dtDocumenti())
+                                {
+                                    foreach (var d in ld)
+                                    {
+                                        dtd.AssociaDocumentoConiuge(newc.idConiuge, d.IDDOCUMENTO, db);
+                                    }
+                                }
+
+                            }
+
+                            #endregion
+
+
+                            #region Associa Pensioni
                             using (dtPensione dtp = new dtPensione())
                             {
                                 List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
@@ -607,13 +675,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
 
 
-
                                 }
 
-
-
                             }
-                            //}
+                            #endregion
+
+
+
 
 
 

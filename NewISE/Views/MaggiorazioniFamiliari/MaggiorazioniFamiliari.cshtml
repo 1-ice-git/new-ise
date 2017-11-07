@@ -45,15 +45,20 @@
             </div>
         </div>*@
 
-    <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
-        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModelNotificaRichiesta();">
+    <div class="col-xs-8" style="margin-top: 10px; margin-bottom: 10px;">
+        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
         </button>
 
-        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModelAttivaRichiesta();">
+        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam" onclick="ModalAttivaRichiesta(); ">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Attiva maggiorazioni
+        </button>
+
+        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam" onclick="ModalAnnullaRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Annulla richiesta
         </button>
     </div>
 </div>
@@ -67,7 +72,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Info!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewNotificaRichiesta">
@@ -89,7 +94,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Info!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAttivaRichiesta">
@@ -97,7 +102,29 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAttivazione" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivazioneRichiesta();">Procedi</button>
+                <button id="btConfermaAttivazione" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAttivazioneRichiesta(); ">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiesta">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnulla" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -130,11 +157,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                                                    }
+                                                                                                                                                                                                                                    }
     else
     {
         @:ElencoFigli();
-                                                                                                    }
+                                                                                                                                                                                                                                    }
 
 
     //function DownloadFormulario() {
@@ -294,19 +321,20 @@
 
 
 
-    function ModelAttivaRichiesta() {
+    function ModalAttivaRichiesta() {
         //debugger;
         $('#ModalAttivaRichiesta').modal().show();
     }
 
-    function ConfermaAttivazioneRichiesta() {
-        var rotta = "/MaggiorazioniFamiliari/AttivaRichiesta";
-        var idMafFam = parseInt('@idMafFam');
+
+    function ConfermaAnnullaRichiesta() {
+        var rotta = "/MaggiorazioniFamiliari/AnnullaRichiesta";
+        var idMagFam = parseInt('@idMafFam');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idMaggiorazioniFamiliari: idMafFam },
+            data: { idMaggiorazioniFamiliari: idMagFam },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -336,11 +364,54 @@
 
     }
 
-    function ModelNotificaRichiesta() {
+
+    function ConfermaAttivazioneRichiesta() {
+        var rotta = "/MaggiorazioniFamiliari/AttivaRichiesta";
+        var idMagFam = parseInt('@idMafFam');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMaggiorazioniFamiliari: idMagFam },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err == "") {
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+                //InfoTrasferimento($("#hMatricola").val());
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function ModalNotificaRichiesta() {
         //debugger;
         $('#ModalNotificaRichiesta').modal().show();
     }
 
+
+    function ModalAnnullaRichiesta() {
+        //debugger;
+        $('#ModalAnnullaRichiesta').modal().show();
+    }
 
 
     function ConfermaNotificaRichiesta() {
@@ -363,6 +434,10 @@
 
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFormulariInseriti();
+                    ElencoConiuge();
+                    ElencoFigli();
+
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -415,6 +490,8 @@
                     $("#btAttivaMagFam").attr("disabled", "disabled");
                     $("#btAttivaMagFam").addClass("disabled");
 
+                    $("#btAnnullaMagFam").attr("disabled", "disabled");
+                    $("#btAnnullaMagFam").addClass("disabled");
 
                     ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
                     if (rinuncia == true && richiesta == true) {
@@ -433,6 +510,9 @@
                             if (admin == true) {
                                 $("#btAttivaMagFam").removeAttr("disabled");
                                 $("#btAttivaMagFam").removeClass("disabled");
+
+                                $("#btAnnullaMagFam").removeAttr("disabled");
+                                $("#btAnnullaMagFam").removeClass("disabled");
                             } else {
                                 $("#btAttivaMagFam").attr("disabled", "disabled");
                                 $("#btAttivaMagFam").addClass("disabled");
@@ -440,6 +520,7 @@
 
                             //$("#chkMagFamiliariSR").attr('checked', false);
                         }
+
                     } else {
                         if (richiesta == true) {
                             $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
@@ -457,6 +538,9 @@
                                 if (admin == true) {
                                     $("#btAttivaMagFam").removeAttr("disabled");
                                     $("#btAttivaMagFam").removeClass("disabled");
+
+                                    $("#btAnnullaMagFam").removeAttr("disabled");
+                                    $("#btAnnullaMagFam").removeClass("disabled");
                                 } else {
                                     $("#btAttivaMagFam").attr("disabled", "disabled");
                                     $("#btAttivaMagFam").addClass("disabled");
@@ -499,11 +583,12 @@
                                 if (docFormulario == false) {
                                     $("#btNotificaRichiestaMagFam").removeAttr("disabled");
                                     $("#btNotificaRichiestaMagFam").removeClass("disabled");
-
-
                                 } else {
                                     $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                                     $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                                    $("#btAnnullaMagFam").removeAttr("disabled");
+                                    $("#btAnnullaMagFam").removeClass("disabled");
                                 }
 
                             }

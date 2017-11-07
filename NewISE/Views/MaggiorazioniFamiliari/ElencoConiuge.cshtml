@@ -123,7 +123,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -131,7 +131,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari)) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari)) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -332,7 +332,7 @@
 
     }
 
-    function ElencoDocumentiConiuge(id, tipoDoc, idParentela, chiamante) {
+    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 

@@ -2108,6 +2108,9 @@
     <Compile Include="EF\PASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\PASSAPORTORICHIEDENTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2225,22 +2228,25 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAttivazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniPassaporti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCalendarioEventi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPrimaSistemazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRinunciaMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasportoModel.cs" />
     <Compile Include="Models\DBModel\TitoloViaggioModel.cs" />
     <Compile Include="Models\DBModel\AliquoteContributiveModel.cs" />
-    <Compile Include="Models\DBModel\AltriDatiFamModel.cs" />
+    <Compile Include="Models\DBModel\AltriDatiFamConiugeModel.cs" />
     <Compile Include="Models\DBModel\CDCDipendentiModel.cs" />
     <Compile Include="Models\DBModel\CDCGepeModel.cs" />
     <Compile Include="Models\DBModel\CDCModel.cs" />

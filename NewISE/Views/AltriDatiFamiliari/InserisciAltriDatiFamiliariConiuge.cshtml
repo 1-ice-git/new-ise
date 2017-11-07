@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.AltriDatiFamModel
+﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
 @using NewISE.DBComuniItalia
 @using System.Linq;
 @using System.Collections;
@@ -31,38 +31,38 @@
             @Html.HiddenFor(model => model.residente)
             @Html.HiddenFor(model => model.ulterioreMagConiuge)
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.dataNascita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.dataNascita, new { @class = "form-control", @style = "max-width:100px;", @placeholder = "gg/mm/aaaa" })
-                    @Html.ValidationMessageFor(model => model.dataNascita, "", new { @class = "text-danger" })
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.dataNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.dataNascita, new { @class = "form-control", @style = "max-width:100px;", @placeholder = "gg/mm/aaaa" })
+                        @Html.ValidationMessageFor(model => model.dataNascita, "", new { @class = "text-danger" })
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
-                    @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
+                        @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" })
-                    @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" })
+                        @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.provinciaNascita, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" })
-                    @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.provinciaNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" })
+                        @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.nazionalita, htmlAttributes: new { @class = "control-label col-md-2" })

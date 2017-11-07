@@ -21,6 +21,35 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public IList<ElencoFamiliariModel> GetFamiliariRichiestaPassaporto(decimal idTrasferimento)
+        {
+            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t != null && t.IDTRASFERIMENTO > 0)
+                {
+                    var p = t.PASSAPORTI;
+                    if (p != null && p.IDPASSAPORTI > 0)
+                    {
+                        var lap =
+                            p.ATTIVAZIONIPASSAPORTI.Where(
+                                a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false);
+                        if (lap?.Any() ?? false)
+                        {
+
+                        }
+                    }
+                }
+
+
+            }
+
+            return null;
+        }
+
 
         public PassaportoModel GetPassaportoInLavorazioneByIdTrasf(decimal idTrasferimento)
         {
@@ -796,7 +825,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idPassaporti = p.IDPASSAPORTI,
                         notificaRichiesta = false,
                         praticaConclusa = false,
-                        escludiPassaporto = false,
+                        //escludiPassaporto = false,
                     };
 
                     dtap.SetAttivazioniPassaporti(apm, db);
@@ -857,81 +886,56 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        //public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
-        //{
-        //    PassaportoModel pm = new PassaportoModel();
+        public PassaportoModel GetPassaportoByID(decimal idPassaporto, ModelDBISE db)
+        {
+            PassaportoModel pm = new PassaportoModel();
 
 
-        //    var p = db.PASSAPORTI.Find(idPassaporto);
+            var p = db.PASSAPORTI.Find(idPassaporto);
 
-        //    pm = new PassaportoModel()
-        //    {
-        //        idPassaporto = p.IDPASSAPORTI,
-        //        notificaRichiesta = p.NOTIFICARICHIESTA,
-        //        dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-        //        praticaConclusa = p.PRATICACONCLUSA,
-        //        dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-        //        escludiPassaporto = p.ESCLUDIPASSAPORTO,
-        //        //trasferimento = new TrasferimentoModel()
-        //        //{
-        //        //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
-        //        //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
-        //        //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
-        //        //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
-        //        //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
-        //        //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
-        //        //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
-        //        //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
-        //        //    coan = p.TRASFERIMENTO.COAN,
-        //        //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
-        //        //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
-        //        //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
-        //        //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
-        //        //}
-        //    };
+            pm = new PassaportoModel()
+            {
+                idPassaporto = p.IDPASSAPORTI,
+            };
 
 
-        //    return pm;
-        //}
+            return pm;
+        }
 
 
-        //public PassaportoModel GetPassaportoByID(decimal idPassaporto)
-        //{
-        //    PassaportoModel pm = new PassaportoModel();
+        public PassaportoModel GetPassaportoByID(decimal idPassaporto)
+        {
+            PassaportoModel pm = new PassaportoModel();
 
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        var p = db.PASSAPORTI.Find(idPassaporto);
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var p = db.PASSAPORTI.Find(idPassaporto);
 
-        //        pm = new PassaportoModel()
-        //        {
-        //            idPassaporto = p.IDPASSAPORTI,
-        //            notificaRichiesta = p.NOTIFICARICHIESTA,
-        //            dataNotificaRichiesta = p.DATANOTIFICARICHIESTA,
-        //            praticaConclusa = p.PRATICACONCLUSA,
-        //            dataPraticaConclusa = p.DATAPRATICACONCLUSA,
-        //            escludiPassaporto = p.ESCLUDIPASSAPORTO,
-        //            //trasferimento = new TrasferimentoModel()
-        //            //{
-        //            //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
-        //            //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
-        //            //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
-        //            //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
-        //            //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
-        //            //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
-        //            //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
-        //            //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
-        //            //    coan = p.TRASFERIMENTO.COAN,
-        //            //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
-        //            //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
-        //            //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
-        //            //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
-        //            //}
-        //        };
-        //    }
+                pm = new PassaportoModel()
+                {
+                    idPassaporto = p.IDPASSAPORTI,
 
-        //    return pm;
-        //}
+                    //trasferimento = new TrasferimentoModel()
+                    //{
+                    //    idTrasferimento = p.TRASFERIMENTO.IDTRASFERIMENTO,
+                    //    idTipoTrasferimento = p.TRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                    //    idUfficio = p.TRASFERIMENTO.IDUFFICIO,
+                    //    idStatoTrasferimento = p.TRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                    //    idDipendente = p.TRASFERIMENTO.IDDIPENDENTE,
+                    //    idTipoCoan = p.TRASFERIMENTO.IDTIPOCOAN,
+                    //    dataPartenza = p.TRASFERIMENTO.DATAPARTENZA,
+                    //    dataRientro = p.TRASFERIMENTO.DATARIENTRO,
+                    //    coan = p.TRASFERIMENTO.COAN,
+                    //    protocolloLettera = p.TRASFERIMENTO.PROTOCOLLOLETTERA,
+                    //    dataLettera = p.TRASFERIMENTO.DATALETTERA,
+                    //    notificaTrasferimento = p.TRASFERIMENTO.NOTIFICATRASFERIMENTO,
+                    //    dataAggiornamento = p.TRASFERIMENTO.DATAAGGIORNAMENTO
+                    //}
+                };
+            }
+
+            return pm;
+        }
 
 
         //public PassaportoModel GetPassaportoByIDTrasf(decimal idTrasferimento)

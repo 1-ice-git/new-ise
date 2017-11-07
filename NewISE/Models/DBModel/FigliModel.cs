@@ -79,7 +79,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
-        public IList<AltriDatiFamModel> lAtriDatiFamiliari { get; set; }
+        public IList<AltriDatiFamConiugeModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
 
         public PassaportoModel passaporto { get; set; }
