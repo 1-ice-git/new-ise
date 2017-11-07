@@ -2433,6 +2433,12 @@
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MagFam_ModificaConiuge.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MagFam_ModificaFiglio.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoConiuge.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoFamiliare.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
