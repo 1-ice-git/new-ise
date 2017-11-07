@@ -157,6 +157,43 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        private void Email(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI();
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
+                {
+                    TRASFERIMENTO tr = mf.TRASFERIMENTO;
+
+
+
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
+
+
+
+        }
+
         private void InvioEmailMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
         {
             MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
@@ -348,6 +385,104 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void AnnullaRichiesta(decimal idMaggiorazioniFamiliari)
+        {
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+
+                    try
+                    {
+
+                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                        var lamf =
+                                mf.ATTIVAZIONIMAGFAM.Where(
+                                    a => a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false)
+                                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+
+                        if (lamf?.Any() ?? true)
+                        {
+                            var amf = lamf.First();
+
+                            amf.DATAAGGIORNAMENTO = DateTime.Now;
+                            amf.ANNULLATO = true;
+
+                            int i = db.SaveChanges();
+
+                            if (i > 0)
+                            {
+
+                                ATTIVAZIONIMAGFAM amfNew = new ATTIVAZIONIMAGFAM()
+                                {
+                                    IDMAGGIORAZIONIFAMILIARI = amf.IDMAGGIORAZIONIFAMILIARI,
+                                    RICHIESTAATTIVAZIONE = false,
+                                    ATTIVAZIONEMAGFAM = false,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO = false,
+                                };
+
+                                db.ATTIVAZIONIMAGFAM.Add(amfNew);
+
+                                int j = db.SaveChanges();
+
+                                if (j > 0)
+                                {
+                                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                    {
+                                        foreach (var c in amf.CONIUGE)
+                                        {
+                                            dtamf.AssociaConiuge(amfNew.IDATTIVAZIONEMAGFAM, c.IDCONIUGE, db);
+                                        }
+
+                                        foreach (var f in amf.FIGLI)
+                                        {
+                                            dtamf.AssociaFiglio(amfNew.IDATTIVAZIONEMAGFAM, f.IDFIGLI, db);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Errore nella fase d'inserimento della riga di attivazione maggiorazione familiare per l'id maggiorazione familiare: " + mf.IDMAGGIORAZIONIFAMILIARI);
+                                }
+
+                                if (amf.CONIUGE.Count <= 0 || amf.FIGLI.Count <= 0)
+                                {
+                                    using (dtRinunciaMagFam dtrmf = new dtRinunciaMagFam())
+                                    {
+                                        dtrmf.AnnullaRinuncia(mf.IDMAGGIORAZIONIFAMILIARI, db);
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                throw new Exception("Errore nella fase di annullamento della riga di attivazione maggiorazione familiare per l'id: " + amf.IDATTIVAZIONEMAGFAM);
+                            }
+
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public void NotificaRichiesta(decimal idMaggiorazioniFamiliari)
         {
             bool rinunciaMagFam = false;
@@ -470,6 +605,7 @@ namespace NewISE.Models.DBModel.dtObj
             siDocFigli = false;
             docFormulario = false;
 
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
@@ -489,6 +625,8 @@ namespace NewISE.Models.DBModel.dtObj
                         rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                         Attivazione = amf.ATTIVAZIONEMAGFAM;
+
+
 
                         var ld = mf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
                         if (ld?.Any() ?? false)
@@ -816,8 +954,6 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
                     }
-
-
 
 
                     using (dtConiuge dtc = new dtConiuge())

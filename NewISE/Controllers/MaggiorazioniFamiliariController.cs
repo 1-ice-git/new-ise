@@ -170,6 +170,31 @@ namespace NewISE.Controllers
                     });
 
         }
+        [HttpPost]
+        public JsonResult AnnullaRichiesta(decimal idMaggiorazioniFamiliari)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    dtmf.AnnullaRichiesta(idMaggiorazioniFamiliari);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
 
         [HttpPost]
         public JsonResult NotificaRichiesta(decimal idMaggiorazioniFamiliari)

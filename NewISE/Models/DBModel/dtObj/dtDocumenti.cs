@@ -17,6 +17,30 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public void AssociaDocumentoConiuge(decimal idConiuge, decimal idDocumento, ModelDBISE db)
+        {
+            try
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(c);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.DOCUMENTI).Load();
+                var d = db.DOCUMENTI.Find(idDocumento);
+                c.DOCUMENTI.Add(d);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il documento per il coniuge. {0}", c.COGNOME + " " + c.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public DocumentiModel GetFormularioTitoliViaggio(decimal idTitoloViaggio)
         {
             DocumentiModel dm = new DocumentiModel();

@@ -46,6 +46,8 @@ namespace NewISE.Models.DBModel.dtObj
 
 
             }
+
+            return null;
         }
 
 
@@ -823,7 +825,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idPassaporti = p.IDPASSAPORTI,
                         notificaRichiesta = false,
                         praticaConclusa = false,
-                        escludiPassaporto = false,
+                        //escludiPassaporto = false,
                     };
 
                     dtap.SetAttivazioniPassaporti(apm, db);

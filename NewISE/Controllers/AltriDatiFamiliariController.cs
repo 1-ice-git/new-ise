@@ -16,7 +16,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
             try
@@ -98,14 +98,14 @@ namespace NewISE.Controllers
                     }
                 }
 
-                using (dtConiuge dtc = new dtConiuge())
-                {
-                    if (adf.idConiuge.HasValue)
-                    {
-                        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                        adf.Coniuge = cm;
-                    }
-                }
+                //using (dtConiuge dtc = new dtConiuge())
+                //{
+                //    if (adf.idConiuge.HasValue)
+                //    {
+                //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                //        adf.Coniuge = cm;
+                //    }
+                //}
 
 
                 return PartialView(adf);
@@ -139,7 +139,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult AltriDatiFamiliariFiglioPassaporto(decimal idFiglio)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
             TrasferimentoModel tm = new TrasferimentoModel();
 
@@ -197,14 +197,14 @@ namespace NewISE.Controllers
                 }
             }
 
-            using (dtConiuge dtc = new dtConiuge())
-            {
-                if (adf.idConiuge.HasValue)
-                {
-                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                    adf.Coniuge = cm;
-                }
-            }
+            //using (dtConiuge dtc = new dtConiuge())
+            //{
+            //    if (adf.idConiuge.HasValue)
+            //    {
+            //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+            //        adf.Coniuge = cm;
+            //    }
+            //}
 
             return PartialView(adf);
         }
@@ -213,7 +213,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult AltriDatiFamiliariFiglioTitoliViaggio(decimal idFiglio)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
             TrasferimentoModel tm = new TrasferimentoModel();
 
@@ -271,14 +271,14 @@ namespace NewISE.Controllers
                 }
             }
 
-            using (dtConiuge dtc = new dtConiuge())
-            {
-                if (adf.idConiuge.HasValue)
-                {
-                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                    adf.Coniuge = cm;
-                }
-            }
+            //using (dtConiuge dtc = new dtConiuge())
+            //{
+            //    if (adf.idConiuge.HasValue)
+            //    {
+            //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+            //        adf.Coniuge = cm;
+            //    }
+            //}
 
             return PartialView(adf);
         }
@@ -287,7 +287,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
             try
@@ -405,7 +405,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult AltriDatiFamiliariConiugePassaporti(decimal idConiuge)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
             TrasferimentoModel tm = new TrasferimentoModel();
 
@@ -479,7 +479,7 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult AltriDatiFamiliariConiugeTitoliViaggio(decimal idConiuge)
         {
-            AltriDatiFamModel adf = new AltriDatiFamModel();
+            AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
             TrasferimentoModel tm = new TrasferimentoModel();
 
@@ -552,7 +552,7 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciAltriDatiFamiliariFiglio(AltriDatiFamModel adf, decimal idMaggiorazioniFamiliari)
+        public ActionResult InserisciAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adf, decimal idMaggiorazioniFamiliari)
         {
             try
             {
@@ -600,7 +600,7 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamModel adf, decimal idMaggiorazioniFamiliari)
+        public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adf, decimal idMaggiorazioniFamiliari)
         {
             try
             {
@@ -642,13 +642,13 @@ namespace NewISE.Controllers
 
         public ActionResult ModificaAltriDatiFamiliariFiglio(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
         {
-            AltriDatiFamModel adfm = new AltriDatiFamModel();
+            AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adfm = dtadf.GetAltriDatiFamiliari(idAltriDatiFam);
+                    adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
                     if (adfm != null && adfm.HasValue())
                     {
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -706,13 +706,13 @@ namespace NewISE.Controllers
 
         public ActionResult ModificaAltriDatiFamiliariConiuge(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
         {
-            AltriDatiFamModel adfm = new AltriDatiFamModel();
+            AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adfm = dtadf.GetAltriDatiFamiliari(idAltriDatiFam);
+                    adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
                     if (adfm != null && adfm.HasValue())
                     {
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
@@ -778,7 +778,7 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfermaModificaAdf(AltriDatiFamModel adfm)
+        public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm)
         {
             try
             {
@@ -789,38 +789,60 @@ namespace NewISE.Controllers
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        dtadf.EditAltriDatiFamiliari(adfm);
+                        dtadf.EditAltriDatiFamiliariConiuge(adfm);
                     }
                 }
                 else
                 {
-                    if (adfm.idConiuge.HasValue)
-                    {
-                        return PartialView("ModificaAltriDatiFamiliariConiuge", adfm);
-                    }
-                    else
-                    {
-                        return PartialView("ModificaAltriDatiFamiliariFiglio", adfm);
-                    }
+
+                    return PartialView("ModificaAltriDatiFamiliariConiuge", adfm);
+
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            if (adfm.idConiuge.HasValue)
-            {
-                return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
-            }
-            else if (adfm.idFigli.HasValue)
-            {
-                return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adfm.idFigli });
-            }
-            else
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = "Errore nella modifica altri dati familiari" });
-            }
+
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
+
+
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfermaModificaAdfFiglio(AltriDatiFamFiglioModel adfm)
+        {
+            try
+            {
+                adfm.dataAggiornamento = DateTime.Now;
+                adfm.annullato = false;
+
+                if (ModelState.IsValid)
+                {
+                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                    {
+                        dtadf.EditAltriDatiFamiliariFiglio(adfm);
+                    }
+                }
+                else
+                {
+
+                    return PartialView("ModificaAltriDatiFamiliariFiglio", adfm);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adfm.idFigli });
+
+        }
+
+
 
         //public JsonResult DatiComuneNascita(string pComune = "", string pProvincia = "", string pCap = "")
         //{

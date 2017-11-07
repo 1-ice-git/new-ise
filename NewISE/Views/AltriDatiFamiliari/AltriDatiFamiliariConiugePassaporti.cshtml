@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.AltriDatiFamModel
+﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["IdTrasferimento"]);
@@ -20,43 +20,43 @@
             <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.dataNascita)
-        </dt>
-        @if (Model.dataNascita.HasValue)
-        {
+        @*<dt>
+                @Html.DisplayNameFor(model => model.dataNascita)
+            </dt>
+            @if (Model.dataNascita.HasValue)
+            {
+                <dd>
+                    <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+                </dd>
+            }
+            else
+            {
+                <dd></dd>
+            }*@
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.capNascita)
+            </dt>
+
             <dd>
-                <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+                @Html.DisplayFor(model => model.capNascita)
             </dd>
-        }
-        else
-        {
-            <dd></dd>
-        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.capNascita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.comuneNascita)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.capNascita)
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.comuneNascita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.provinciaNascita)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.provinciaNascita)
-        </dt>
-
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.nazionalita)

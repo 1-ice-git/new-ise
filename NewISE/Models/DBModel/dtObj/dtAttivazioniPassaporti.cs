@@ -23,7 +23,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATANOTIFICARICHIESTA = apm.dataNotificaRichiesta,
                 PRATICACONCLUSA = apm.praticaConclusa,
                 DATAPRATICACONCLUSA = apm.dataPraticaConclusa,
-                ESCLUDIPASSAPORTO = apm.escludiPassaporto,
+                //ESCLUDIPASSAPORTO = apm.escludiPassaporto,
                 DATAAGGIORNAMENTO = apm.dataAggiornamento,
                 ANNULLATO = apm.annullato
             };

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
@@ -45,5 +46,35 @@ namespace NewISE.Models.DBModel.dtObj
             return apm;
 
         }
+
+        public void AssociaConiuge(decimal idAttivazionePassaporto, decimal idConiuge, ModelDBISE db)
+        {
+            try
+            {
+
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+                var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.CONIUGE).Load();
+                var c = db.CONIUGE.Find(idConiuge);
+                ap.CONIUGE.Add(c);
+
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il coniuge per l'attivazione del passaporto per {0}.", c.COGNOME + " " + c.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
+
     }
 }

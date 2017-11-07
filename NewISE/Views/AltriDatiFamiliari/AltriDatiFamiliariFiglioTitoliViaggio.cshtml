@@ -1,124 +1,124 @@
-﻿@model NewISE.Models.DBModel.AltriDatiFamModel
+﻿@model NewISE.Models.DBModel.AltriDatiFamFiglioModel
 
-@{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    @{
+        decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 
 
-}
+    }
 
-<div style="padding-left: 15px;">
-    <h4>Altri Dati Familiari</h4>
-    <hr />
-    <dl class="dl-horizontal">
+    <div style="padding-left: 15px;">
+        <h4>Altri Dati Familiari</h4>
+        <hr />
+        <dl class="dl-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Figli.nominativo)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Figli.nominativo)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.Figli.nominativo)</span>
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.dataNascita)
-        </dt>
-
-        @if (Model.dataNascita.HasValue)
-        {
             <dd>
-                <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.Figli.nominativo)</span>
             </dd>
-        }
-        else
-        {
-            <dd></dd>
-        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.capNascita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.dataNascita)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.capNascita)
-        </dd>
+            @if (Model.dataNascita.HasValue)
+            {
+                <dd>
+                    <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
+                </dd>
+            }
+            else
+            {
+                <dd></dd>
+            }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.comuneNascita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.capNascita)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.capNascita)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.provinciaNascita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.comuneNascita)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.nazionalita)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.provinciaNascita)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.indirizzoResidenza)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.nazionalita)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.capResidenza)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.indirizzoResidenza)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.capResidenza)
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.comuneResidenza)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.capResidenza)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.capResidenza)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.provinciaResidenza)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.comuneResidenza)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.residente)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.provinciaResidenza)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.studente)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.residente)
+            </dt>
 
-        <dd>
-            <span class="text-uppercase">@Html.DisplayFor(model => model.studente)</span>
-        </dd>
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
+            </dd>
 
-    </dl>
-</div>
-<p style="padding-left: 15px;">
+            <dt>
+                @Html.DisplayNameFor(model => model.studente)
+            </dt>
 
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+            <dd>
+                <span class="text-uppercase">@Html.DisplayFor(model => model.studente)</span>
+            </dd>
 
-</p>
+        </dl>
+    </div>
+    <p style="padding-left: 15px;">
+
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariTitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+
+    </p>
 
