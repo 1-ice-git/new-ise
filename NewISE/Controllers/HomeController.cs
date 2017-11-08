@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NewISE.Models.ViewModel;
 
 namespace NewISE.Controllers
 {
@@ -22,7 +21,7 @@ namespace NewISE.Controllers
         {
             
             try
-{
+            {
                 admin = Utility.Amministratore();
                 ViewBag.Amministratore = admin;
             }
@@ -31,12 +30,9 @@ namespace NewISE.Controllers
                 return View("Error");
             }
             return View();
-                    }
-
-        public ActionResult MsgUtente(int idUtente)
-        {
-            return null;
         }
+
+        
         public ActionResult GetListaHome()
         {            
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
@@ -44,16 +40,7 @@ namespace NewISE.Controllers
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.GetListaElementiHome().ToList();
-                    //CalendarioEventiModel xx = new CalendarioEventiModel();
-                    //xx.Completato = true;
-                    //xx.DataCompletato = new DateTime(2019, 1, 1);
-                    //xx.DataInizioEvento = DateTime.Now;
-                    //xx.DataScadenza = new DateTime(2018, 1, 1);
-                    //EnumFunzioniEventi aa = EnumFunzioniEventi.Funzione1;
-                    //xx.idFunzioneEventi = aa;
-                    //xx.idTrasferimento = 197;
-                    //dtcal.InsertCalendarioEvento(ref xx);
+                    tmp = dtcal.GetListaElementiHome().ToList();                    
                 }               
             }
             catch (Exception ex)
@@ -62,6 +49,8 @@ namespace NewISE.Controllers
             }
             return PartialView(tmp);
         }
+
+        [HttpGet]
         public ActionResult DetailsFunzioneEvento(EnumFunzioniEventi idf,int idd)
         {
             DettagliMessaggio tmp = new DettagliMessaggio();

@@ -34,7 +34,7 @@
                         {
                             if (item.Completato == true)
                             {
-                                <tr style="background-color:yellowgreen;color:yellow">
+                                <tr style="background-color:yellowgreen;color:darkblue">
                                     <td>
                                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                                     </td>
@@ -59,7 +59,7 @@
                                         <td style="text-align: center;"></td>
                                     }
                                     <td>
-                                        <a href="javascript:void(0);" style="color:yellow"
+                                        <a href="javascript:void(0);" style="color:darkblue"
                                            class="anchorDetail" id_dip="@item.IdDipendente"
                                            id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                                     </td>
@@ -155,10 +155,6 @@
     </div>
 </div> 
 
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/MyValidateDate.js"></script>
-
 <script type="text/javascript">
 
     $("#tbelencocal").DataTable({
@@ -188,45 +184,38 @@
         }           
     });
 
-    
-</script>
-
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-
-    <script>
-        var TeamDetailPostBackURL = '/Home/DetailsFunzioneEvento';
     $(function () {
         $(".anchorDetail").click(function () {
-            debugger;
+            //debugger;
+            var TeamDetailPostBackURL = '/Home/DetailsFunzioneEvento';
             var $buttonClicked = $(this);
             var idf = $buttonClicked.attr('id_fe');
             var idd = $buttonClicked.attr('id_dip');
             var options = { "backdrop": "static", keyboard: true };
+
             $.ajax({
                 type: "GET",
                 url: TeamDetailPostBackURL,
                 contentType: "application/json; charset=utf-8",
-                data: { "idf": idf,"idd":idd },
+                data: { "idf": idf, "idd": idd },
                 datatype: "json",
                 success: function (data) {
-                    debugger;
+                    //debugger;
                     $('#myModalContent').html(data);
                     $('#myModal').modal(options);
                     $('#myModal').modal('show');
-
                 },
                 error: function () {
                     alert("Dynamic content load failed.");
                 }
             });
-        });        
+        });
 
         $("#closbtn").click(function () {
             $('#myModal').modal('hide');
         });
     });
+    
+</script>
 
-    </script>
 
