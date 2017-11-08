@@ -289,7 +289,7 @@
 
     function AltriDatiFamiliari(idConiuge) {
         //debugger;
-        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiuge";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
@@ -308,12 +308,12 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;
@@ -347,8 +347,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {
@@ -385,8 +385,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {

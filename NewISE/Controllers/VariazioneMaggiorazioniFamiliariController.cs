@@ -1,4 +1,5 @@
-﻿using NewISE.Models.DBModel;
+﻿using NewISE.DBComuniItalia;
+using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
 using System;
@@ -11,8 +12,9 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.Tools;
 using MaggiorazioniFamiliariModel = NewISE.Models.DBModel.MaggiorazioniFamiliariModel;
-
-
+using Newtonsoft.Json;
+using System.IO;
+using System.Net.Configuration;
 
 namespace NewISE.Controllers
 {
@@ -578,6 +580,195 @@ namespace NewISE.Controllers
             ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
 
             return PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
+        {
+            AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
+            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                }
+                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                {
+                    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                }
+
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    bool rinunciaMagFam = false;
+                    bool richiestaAttivazione = false;
+                    bool attivazione = false;
+                    bool datiConiuge = false;
+                    bool datiParzialiConiuge = false;
+                    bool datiFigli = false;
+                    bool datiParzialiFigli = false;
+                    bool siDocConiuge = false;
+                    bool siDocFigli = false;
+                    bool docFormulario = false;
+
+                    bool solaLettura = false;
+
+                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+
+                    if (richiestaAttivazione == true)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                    ViewData.Add("solaLettura", solaLettura);
+                }
+
+                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                {
+                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
+
+                    if (pc != null && pc.HasValue())
+                    {
+                        switch (pc.idTipologiaConiuge)
+                        {
+                            case TipologiaConiuge.Residente:
+                                adf.residente = true;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
+                            case TipologiaConiuge.NonResidenteCarico:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = true;
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioniFamiliari);
+
+            if (adf != null && adf.HasValue())
+            {
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    if (adf.idConiuge.HasValue)
+                    {
+                        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
+                        adf.Coniuge = cm;
+                    }
+                }
+
+
+                return PartialView(adf);
+            }
+            else
+            {
+                List<Comuni> comuni = new List<Comuni>();
+
+                using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
+                {
+                    comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+                }
+
+                adf.idConiuge = idConiuge;
+
+                ViewData.Add("Comuni", comuni);
+
+                return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
+            }
+        }
+        public ActionResult ModificaAltriDatiFamiliariConiuge(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
+        {
+            AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
+
+            try
+            {
+                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                {
+                    adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
+                    if (adfm != null && adfm.HasValue())
+                    {
+                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                        {
+                            PercentualeMagConiugeModel pc = new PercentualeMagConiugeModel();
+
+                            pc = dtpc.GetPercMagConiugeNow(adfm.idConiuge.Value, DateTime.Now.Date);
+
+                            if (pc != null && pc.HasValue())
+                            {
+                                switch (pc.idTipologiaConiuge)
+                                {
+                                    case TipologiaConiuge.Residente:
+                                        adfm.residente = true;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
+
+                                    case TipologiaConiuge.NonResidente:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
+
+                                    case TipologiaConiuge.NonResidenteCarico:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = true;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            List<Comuni> comuni = new List<Comuni>();
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
+                {
+                    comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            ViewData.Add("Comuni", comuni);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
+            return PartialView(adfm);
         }
 
 

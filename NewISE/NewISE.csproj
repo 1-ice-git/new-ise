@@ -2452,6 +2452,9 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFamiliare.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\AltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
