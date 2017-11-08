@@ -5,12 +5,13 @@
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     var errori = ViewData.ModelState;
 }
-<input type="hidden" id="hAmministratore" value="@admin.ToString()" />
+<input type="hidden" id="Amministratore" value="@admin.ToString()" />
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+    <h3 style="text-align:center; color:red">EVENTI IN CORSO</h3>
     <table id="tbelencocal" class="table">
         <thead>
             <tr>
-                <th>
+               <th>
                     @Html.DisplayNameFor(model => model.Nominativo)
                 </th>
                 <th>
@@ -29,43 +30,120 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
-                    </td>                   
-                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
-                    {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.dataInizio)
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;"></td>
-                    }
-                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
-                    {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.dataScadenza)
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;"></td>
-                    }
-                    <td>
-                        <a href="javascript:void(0);" 
-                           class="anchorDetail"
-                           data-id="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
-                    </td>
-                    <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
-                    </td>
-                </tr>
-            }
-        </tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.Completato == true)
+                            {
+                                <tr style="background-color:yellowgreen;color:yellow">
+                                    <td>
+                                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                                    </td>
+                                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
+                                    {
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.dataInizio)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align: center;"></td>
+                                    }
+                                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                                    {
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.dataScadenza)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align: center;"></td>
+                                    }
+                                    <td>
+                                        <a href="javascript:void(0);" style="color:yellow"
+                                           class="anchorDetail" id_dip="@item.IdDipendente"
+                                           id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
+                                    </td>
+                                    <td>
+                                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            if (item.dataScadenza < DateTime.Now)
+                            {
+                                <tr style="background-color: #CC3333; color:white">
+                                    <td>
+                                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                                    </td>
+                                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
+                                    {
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.dataInizio)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align: center;"></td>
+                                    }
+                                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                                    {
+                                        <td style="text-align: center;">
+                                            @Html.DisplayFor(modelItem => item.dataScadenza)
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align: center;"></td>
+                                    }
+                                    <td >
+                                        <a href="javascript:void(0);" style="color:white"
+                                           class="anchorDetail" id_dip="@item.IdDipendente"
+                                           id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
+                                    </td>
+                                    <td>
+                                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                             <tr>
+                             <td>
+                                <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                            </td>
+                                @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
+                                {
+                                    <td style="text-align: center;">
+                                        @Html.DisplayFor(modelItem => item.dataInizio)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="text-align: center;"></td>
+                                }
+                                @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                                {
+                                    <td style="text-align: center;">
+                                        @Html.DisplayFor(modelItem => item.dataScadenza)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="text-align: center;"></td>
+                                }
+                                <td>
+                                    <a href="javascript:void(0);"
+                                       class="anchorDetail" id_dip="@item.IdDipendente"
+                                       id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
+                                </td>
+                                <td>
+                                    <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
+                                </td>
+                            </tr>
+                            }
+
+                        }
+</tbody>
     </table>
 </div>
 
@@ -75,7 +153,6 @@
             <div id='myModalContent'></div>
         </div>
     </div>
-
 </div> 
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -85,6 +162,7 @@
 <script type="text/javascript">
 
     $("#tbelencocal").DataTable({
+        "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -110,32 +188,27 @@
         }           
     });
 
-    function DialogModalView(err) {
-        if (err == 'True') {
-            $('#myModalNomeFunzione').modal('toggle');
-        }
-    }
-
+    
 </script>
-@section scripts
-{
+
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <script>
 
-        var TeamDetailPostBackURL = 'Home/DetailsFunzioneEvento';
+    <script>
+        var TeamDetailPostBackURL = '/Home/DetailsFunzioneEvento';
     $(function () {
         $(".anchorDetail").click(function () {
             debugger;
             var $buttonClicked = $(this);
-            var id = $buttonClicked.attr('data-id');
+            var idf = $buttonClicked.attr('id_fe');
+            var idd = $buttonClicked.attr('id_dip');
             var options = { "backdrop": "static", keyboard: true };
             $.ajax({
                 type: "GET",
                 url: TeamDetailPostBackURL,
                 contentType: "application/json; charset=utf-8",
-                data: { "Id": id },
+                data: { "idf": idf,"idd":idd },
                 datatype: "json",
                 success: function (data) {
                     debugger;
@@ -148,9 +221,7 @@
                     alert("Dynamic content load failed.");
                 }
             });
-        });
-        //$("#closebtn").on('click',function(){
-        //    $('#myModal').modal('hide');
+        });        
 
         $("#closbtn").click(function () {
             $('#myModal').modal('hide');
@@ -159,4 +230,3 @@
 
     </script>
 
-}  

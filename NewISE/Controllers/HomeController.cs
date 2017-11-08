@@ -42,7 +42,16 @@ namespace NewISE.Controllers
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.GetListaElementiHome().ToList();                   
+                    tmp = dtcal.GetListaElementiHome().ToList();
+                    //CalendarioEventiModel xx = new CalendarioEventiModel();
+                    //xx.Completato = true;
+                    //xx.DataCompletato = new DateTime(2019, 1, 1);
+                    //xx.DataInizioEvento = DateTime.Now;
+                    //xx.DataScadenza = new DateTime(2018, 1, 1);
+                    //EnumFunzioniEventi aa = EnumFunzioniEventi.Funzione1;
+                    //xx.idFunzioneEventi = aa;
+                    //xx.idTrasferimento = 197;
+                    //dtcal.InsertCalendarioEvento(ref xx);
                 }               
             }
             catch (Exception ex)
@@ -51,14 +60,14 @@ namespace NewISE.Controllers
             }
             return PartialView(tmp);
         }
-        public ActionResult DetailsFunzioneEvento(int Id)
+        public ActionResult DetailsFunzioneEvento(EnumFunzioniEventi idf,int idd)
         {
-            FunzioneEventoModel tmp = new FunzioneEventoModel();
+            DettagliMessaggio tmp = new DettagliMessaggio();
             try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.OgggettoFunzioneEvento(Id);
+                   tmp = dtcal.OgggettoFunzioneEvento(idf,idd);
                 }
             }
             catch (Exception ex)

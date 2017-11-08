@@ -2269,6 +2269,7 @@
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
+    <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />

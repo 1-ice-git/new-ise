@@ -6,17 +6,26 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum FunzioniEventi
+    
+    public enum EnumFunzioniEventi
     {
-        RichiestaMaggiorazioniFamiliari = 1,
-
+        Funzione1=1,
+        Funzione2 = 2,
+        Funzione3 = 3,
+        Funzione4 = 21,
+        Funzione5 = 22,
+        Funzione6 = 23,
+        Funzione7 = 24,
+        Funzione8 = 25,
+        Funzione9 = 26,
+        Funzione10 = 27
     }
     public class CalendarioEventiModel
     {
         [Key]
         public decimal idCalendarioEventi { get; set; }
         [Required]
-        public FunzioniEventi idFunzioneEventi { get; set; }
+        public EnumFunzioniEventi idFunzioneEventi { get; set; }
         public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "La data inizio evento è richiesta.")]
         [DataType(DataType.DateTime)]
