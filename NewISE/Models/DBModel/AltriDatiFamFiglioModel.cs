@@ -8,14 +8,13 @@ using NewISE.Models.DBModel.dtObj;
 
 namespace NewISE.Models.DBModel
 {
-    public class AltriDatiFamModel
+    public class AltriDatiFamFiglioModel
     {
         [Key]
         public decimal idAltriDatiFam { get; set; }
         [Display(Name = "Figli")]
         public decimal? idFigli { get; set; }
-        [Display(Name = "Coniuge")]
-        public decimal? idConiuge { get; set; }
+
         [Required(ErrorMessage = "La data di nascita è richiesta.")]
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -88,8 +87,5 @@ namespace NewISE.Models.DBModel
         {
             return idAltriDatiFam > 0 ? true : false;
         }
-
-
-
     }
 }

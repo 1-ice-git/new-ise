@@ -1,5 +1,5 @@
 ﻿@using NewISE.DBComuniItalia
-@model NewISE.Models.DBModel.AltriDatiFamModel
+@model NewISE.Models.DBModel.AltriDatiFamFiglioModel
 
 @{
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
@@ -11,7 +11,7 @@
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
-@using (@Ajax.BeginForm("ConfermaModificaAdf", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formEditADF" }))
+@using (@Ajax.BeginForm("ConfermaModificaAdfFiglio", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formEditADF" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left: 15px;">
@@ -167,21 +167,21 @@
         }
     </datalist>
 
-    <datalist id="ListaProvincie">
-        @foreach (var d in comuni.GroupBy(a => a.provincia.nome).Select(a => a.First()).OrderBy(a => a.provincia.nome))
-        {
-            <option value="@d.provincia.nome" />
-        }
-    </datalist>
-    <datalist id="ListaCap">
-        @foreach (var d in comuni)
-        {
-            foreach (var item in d.cap.Distinct().OrderBy(a => a.ToString()))
+        <datalist id="ListaProvincie">
+            @foreach (var d in comuni.GroupBy(a => a.provincia.nome).Select(a => a.First()).OrderBy(a => a.provincia.nome))
             {
-                <option value="@item.ToString()" />
+                <option value="@d.provincia.nome" />
             }
-        }
-    </datalist>
+        </datalist>
+        <datalist id="ListaCap">
+            @foreach (var d in comuni)
+            {
+                foreach (var item in d.cap.Distinct().OrderBy(a => a.ToString()))
+                {
+                    <option value="@item.ToString()" />
+                }
+            }
+        </datalist>
 }
 
 <script src="~/Scripts/jquery.validate.min.js"></script>

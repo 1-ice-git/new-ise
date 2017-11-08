@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
@@ -158,16 +159,103 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        /// <summary>
+        /// Preleva il record di attivazione familiare non ancora lavorato.
+        /// </summary>
+        /// <param name="idMaggiorazioniFamiliari"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public AttivazioniMagFamModel GetAttivazioneMagFamDaLavorare(decimal idMaggiorazioniFamiliari, ModelDBISE db)
         {
-            return null;
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+            if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
+            {
+                var lamf =
+                    mf.ATTIVAZIONIMAGFAM.Where(a => a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                if (lamf?.Any() ?? false)
+                {
+                    var amf = lamf.First();
+                    amfm = new AttivazioniMagFamModel()
+                    {
+                        idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                        idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                        richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                        dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                        attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                        dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                        dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                        annullato = amf.ANNULLATO,
+                    };
+                }
+                else
+                {
+                    throw new Exception("Errore, Attivazione Maggiorazioni familiari relative alle maggiorazioni familiari con id: " + idMaggiorazioniFamiliari + " non trovate.");
+                }
+            }
+            else
+            {
+                throw new Exception("Errore, Maggiorazione familiare con id: " + idMaggiorazioniFamiliari + " non trovata.");
+            }
+
+            return amfm;
         }
 
 
 
-        public void AssociaConiuge(decimal idAttivazioneFamiliare, decimal idConiuge)
+        public void AssociaConiuge(decimal idAttivazioneFamiliare, decimal idConiuge, ModelDBISE db)
         {
+            try
+            {
 
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.CONIUGE).Load();
+                var c = db.CONIUGE.Find(idConiuge);
+                amf.CONIUGE.Add(c);
+
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il coniuge per l'attivazione familiare {0}.", c.COGNOME + " " + c.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaFiglio(decimal idAttivazioneFamiliare, decimal idFiglio, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.FIGLI).Load();
+                var f = db.FIGLI.Find(idFiglio);
+                amf.FIGLI.Add(f);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il figlio per l'attivazione familiare {0}.", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
     }

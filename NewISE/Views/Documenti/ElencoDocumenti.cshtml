@@ -389,12 +389,14 @@
         //debugger;
         var rotta = "/Documenti/EliminaDocumento";
         var idDoc = parseInt($("#hiEliminaDoc").val());
+        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                idDocumento: idDoc
+                idDocumento: idDoc,
+                chiamante: chiamante
             },
             dataType: 'json',
             async: false,
@@ -408,6 +410,7 @@
                 //debugger;
                 if (result.errore === "") {
                     $('#'+ nuovoIdModalDelete).modal('hide');
+                    PulsantiNotificaAttivaMagFam();
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }
@@ -447,7 +450,7 @@
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
 
         if (newDoc != nDocOld) {
-            ElencoDocumenti(@id, @tipoDoc, @parentela, @chiamante, @idMaggiorazioniFamiliari);
+            ElencoDocumenti(@id, @tipoDoc, @parentela, @chiamante);
         }
     }
 

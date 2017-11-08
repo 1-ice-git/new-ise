@@ -173,7 +173,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var mf = t.MAGGIORAZIONIFAMILIARI;
                 if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
-                    var lamf = mf.ATTIVAZIONIMAGFAM.OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                    var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAGFAM);
 
                     if (lamf?.Any() ?? false)
                     {
@@ -198,7 +198,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var p = t.PASSAPORTI;
                 if (p != null && p.IDPASSAPORTI > 0)
                 {
-                    var lap = p.ATTIVAZIONIPASSAPORTI.OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+                    var lap = p.ATTIVAZIONIPASSAPORTI.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                     if (lap?.Any() ?? false)
                     {
