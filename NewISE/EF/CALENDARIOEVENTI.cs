@@ -25,5 +25,10 @@ namespace NewISE.EF
     
         public virtual FUNZIONIEVENTI FUNZIONIEVENTI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+
+        public static implicit operator CALENDARIOEVENTI(List<CALENDARIOEVENTI> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

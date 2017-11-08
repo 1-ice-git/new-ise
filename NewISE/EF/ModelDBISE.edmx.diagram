@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="DBISEPRO.CONTABILITA" Width="1.5" PointX="16.5" PointY="47.875" />
         <EntityTypeShape EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" Width="1.5" PointX="1.5" PointY="61.125" />
         <EntityTypeShape EntityType="DBISEPRO.DIPENDENTI" Width="1.5" PointX="0.75" PointY="45.375" />
-        <EntityTypeShape EntityType="DBISEPRO.FUNZIONIEVENTI" Width="1.5" PointX="9" PointY="35.625" />
+        <EntityTypeShape EntityType="DBISEPRO.FUNZIONIEVENTI" Width="2.875" PointX="9" PointY="35.625" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITA" Width="1.5" PointX="11.25" PointY="50.25" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="16.5" PointY="56" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="26.5" PointY="59.25" />

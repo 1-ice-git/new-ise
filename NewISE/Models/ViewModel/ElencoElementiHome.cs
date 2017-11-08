@@ -13,19 +13,20 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Cognome Nome")]
         public string Nominativo { get; set; }
        
-        [Display(Name = "Data Ini.")]
+        [Display(Name = "Data Inizio")]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
         public DateTime? dataInizio { get; set; }
 
-        [Display(Name = "Data Scad.")]
+        [Display(Name = "Data Scadenza")]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
         public DateTime? dataScadenza { get; set; }
 
-        [Display(Name = "Nome Funz.")]
+        [Display(Name = "Nome Funzione")]
         public string NomeFunzione { get; set; }
 
         [Display(Name = "Completato")]
-        public string Completato { get; set; }
-
+        public bool Completato { get; set; }
+        public decimal IdFunzioneEvento { get; set; }
+        public decimal IdDipendente { get; set; }
     }
 }

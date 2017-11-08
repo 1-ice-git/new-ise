@@ -2343,7 +2343,8 @@
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
-    <Compile Include="Models\FunzioneEventoModel.cs" />
+    <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
+    <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
     <Compile Include="Models\ModelRest\CDCModelRest.cs" />
@@ -2431,6 +2432,8 @@
     <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
+    <Content Include="Views\Home\GetListaHome.cshtml" />
+    <Content Include="Views\Home\DetailsFunzioneEvento.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />

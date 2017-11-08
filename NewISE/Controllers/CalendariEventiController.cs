@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.Models.ViewModel;
+using NewISE.EF;
 
 namespace NewISE.Models
 {
@@ -26,7 +28,8 @@ namespace NewISE.Models
             else myDate = null;
             CalendarioEventiModel obj = new CalendarioEventiModel();
             obj.DataInizioEvento = (DateTime)myDate;
-            return View(obj);
+            return PartialView(obj);
         }
+        
     }
 }

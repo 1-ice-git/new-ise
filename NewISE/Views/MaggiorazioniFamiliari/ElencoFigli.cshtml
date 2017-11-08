@@ -1,14 +1,10 @@
 ﻿@using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
-
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-
-
 }
-
 
 <p style="padding-left: 15px; margin-top: 10px;">
     @if (solaLettura)
