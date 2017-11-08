@@ -638,7 +638,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                             #endregion
 
-
                             #region Associa Pensioni
                             using (dtPensione dtp = new dtPensione())
                             {
@@ -679,11 +678,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             }
                             #endregion
-
-
-
-
-
+                            
 
                         }
                     }

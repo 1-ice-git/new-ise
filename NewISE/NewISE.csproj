@@ -1982,6 +1982,7 @@
     <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
+    <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
     <Compile Include="DBComuniItalia\Cm.cs" />
     <Compile Include="DBComuniItalia\Comuni.cs" />
     <Compile Include="DBComuniItalia\Provincia.cs" />
@@ -2241,6 +2242,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRegoleCalcolo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRinunciaMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasportoEffetti.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneFamiliare.cs" />
     <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasportoModel.cs" />
@@ -2442,6 +2444,14 @@
     <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoConiuge.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ConfermaNuovoConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFamiliare.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
