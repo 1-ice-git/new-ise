@@ -16,6 +16,7 @@ namespace NewISE.Models.DBModel
         Trasporto_Effetti = 3,
         Trasferimento = 4,
         Passaporti = 5,
+        VariazioneMaggiorazioniFamiliari = 6
 
     }
 

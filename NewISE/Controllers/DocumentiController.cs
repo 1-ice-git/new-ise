@@ -521,8 +521,7 @@ namespace NewISE.Controllers
                 switch (chiamante)
                 {
                     case EnumChiamante.Maggiorazioni_Familiari:
-
-
+                    case EnumChiamante.VariazioneMaggiorazioniFamiliari:
 
                         switch (parentela)
                         {
