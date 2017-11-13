@@ -29,7 +29,7 @@ namespace NewISE.Models.Tools
             ac = Utility.UtenteAutorizzato();
             if (ac != null)
             {
-                if (ac.idRuoloUtente == 1 || ac.idRuoloUtente == 2)
+                if (ac.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore || ac.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                 {
                     admin = true;
                 }
@@ -50,7 +50,7 @@ namespace NewISE.Models.Tools
             ac = Utility.UtenteAutorizzato();
             if (ac != null)
             {
-                if (ac.idRuoloUtente == 1 || ac.idRuoloUtente == 2)
+                if (ac.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore || ac.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                 {
                     admin = true;
                 }
@@ -107,12 +107,43 @@ namespace NewISE.Models.Tools
                         RUOLOACCESSO ruolo = db.RUOLOACCESSO.Find(ac.idRuoloUtente);
                         if (ruolo != null)
                         {
-                            ac.ruoloAccesso = new RuoloAccesoModel()
+                            ac.RuoloAccesso = new RuoloAccesoModel()
                             {
                                 idRuoloAccesso = ruolo.IDRUOLOACCESSO,
                                 descRuoloAccesso = ruolo.DESCRUOLO
                             };
                         }
+
+                        UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idUtenteAutorizzato);
+                        DIPENDENTI d = ua.DIPENDENTI;
+
+                        if (d?.IDDIPENDENTE > 0)
+                        {
+                            ac.idDipendente = d.IDDIPENDENTE;
+
+                            DipendentiModel dm = new DipendentiModel()
+                            {
+                                idDipendente = d.IDDIPENDENTE,
+                                matricola = d.MATRICOLA,
+                                nome = d.NOME,
+                                cognome = d.COGNOME,
+                                dataAssunzione = d.DATAASSUNZIONE,
+                                dataCessazione = d.DATACESSAZIONE,
+                                indirizzo = d.INDIRIZZO,
+                                cap = d.CAP,
+                                citta = d.CITTA,
+                                provincia = d.PROVINCIA,
+                                email = d.EMAIL,
+                                telefono = d.TELEFONO,
+                                fax = d.FAX,
+                                abilitato = d.ABILITATO,
+                                dataInizioRicalcoli = d.DATAINIZIORICALCOLI
+                            };
+
+                            ac.Dipendenti = dm;
+                        }
+
+
                     }
                 }
             }

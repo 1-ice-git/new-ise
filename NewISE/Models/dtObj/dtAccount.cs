@@ -28,10 +28,52 @@ namespace NewISE.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    if (db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).Count() > 0)
+                    var lua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola);
+
+                    if (lua?.Any() ?? false)
                     {
                         ret = true;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ret;
+        }
+
+        public bool VerificaAccesso(string matricola, out UtenteAutorizzatoModel uam)
+        {
+            bool ret = false;
+            uam = new UtenteAutorizzatoModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+
+                    var lua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola);
+
+                    if (lua?.Any() ?? false)
+                    {
+                        var ua = lua.First();
+                        ret = true;
+                        uam = new UtenteAutorizzatoModel()
+                        {
+                            idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO,
+                            idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE,
+                            idDipendente = ua.IDDIPENDENTE,
+                            matricola = ua.UTENTE
+                        };
+                    }
+                    else
+                    {
+                        ret = false;
+                    }
+
                 }
             }
             catch (Exception ex)

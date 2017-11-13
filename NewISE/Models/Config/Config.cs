@@ -69,5 +69,30 @@ namespace NewISE.Models.Config
             return sa;
 
         }
+
+        public sUtenteNormale UtentiNormali()
+        {
+            sUtenteNormale sa = new sUtenteNormale();
+
+            try
+            {
+                //C:\Users\yoravas\documents\visual studio 2015\Projects\NewISE\NewISE\Models\Config\s_admin\s_admin.json
+                using (StreamReader sr = new StreamReader(VirtualPathProvider.OpenFile("/Models/Config/s_admin/s_utente.json")))
+                {
+                    string content = sr.ReadToEnd();
+                    sa = JsonConvert.DeserializeObject<sUtenteNormale>(content);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return sa;
+
+        }
     }
 }
