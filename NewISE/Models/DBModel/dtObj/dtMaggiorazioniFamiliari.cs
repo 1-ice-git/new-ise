@@ -226,67 +226,58 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.mittente = mittente;
                                 msgMail.cc.Add(cc);
 
-                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
-                                {
-                                    to = new Destinatario()
-                                    {
-                                        Nominativo = am.nominativo,
-                                        EmailDestinatario = am.eMail
-                                    };
+                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
-                                    msgMail.destinatario.Add(to);
-                                }
-                                else
+                                if (luam?.Any() ?? false)
                                 {
-                                    luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-                                    if (luam?.Any() ?? false)
+                                    foreach (var uam in luam)
                                     {
-                                        foreach (var uam in luam)
+                                        var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                        if (amministratore != null && amministratore.IDDIPENDENTE > 0)
                                         {
-                                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                            to = new Destinatario()
                                             {
-                                                to = new Destinatario()
-                                                {
-                                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                                    EmailDestinatario = amministratore.EMAIL
-                                                };
+                                                Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                                EmailDestinatario = amministratore.EMAIL
+                                            };
 
-                                                msgMail.destinatario.Add(to);
-                                            }
-
-
+                                            msgMail.destinatario.Add(to);
                                         }
 
+
                                     }
-                                }
 
-                                if (msgMail.destinatario?.Any() ?? false)
-                                {
+                                    if (msgMail.destinatario?.Any() ?? false)
+                                    {
 
-                                    msgMail.oggetto = Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
-                                    msgMail.corpoMsg =
-                                        string.Format(
-                                            Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari,
-                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                            tr.DATAPARTENZA.ToLongDateString(),
-                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-                                    gmail.sendMail(msgMail);
+                                        msgMail.oggetto =
+                                            Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
+                                        msgMail.corpoMsg =
+                                            string.Format(
+                                                Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari,
+                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+                                                tr.DATAPARTENZA.ToLongDateString(),
+                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+                                        gmail.sendMail(msgMail);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Non è stato possibile inviare l'email. Nessun destinatario inserito.");
+                                    }
+
                                 }
                                 else
                                 {
-                                    throw new Exception("Non è stato possibile inviare l'email.");
+                                    throw new Exception(
+                                        "Non è stato possibile inviare l'email. Non risulta inserito nessun amministratore.");
                                 }
-
-
-
                             }
                         }
+
+
+
                     }
-
-
-
                 }
 
             }
@@ -335,17 +326,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.mittente = mittente;
                                 msgMail.cc.Add(cc);
 
-                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
-                                {
-                                    to = new Destinatario()
-                                    {
-                                        Nominativo = am.nominativo,
-                                        EmailDestinatario = am.eMail
-                                    };
 
-                                    msgMail.destinatario.Add(to);
-                                }
-                                else if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
+                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                                 {
                                     to = new Destinatario()
                                     {
@@ -434,47 +416,36 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                                 {
 
-                                    if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
-                                    {
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = am.nominativo,
-                                            EmailDestinatario = am.eMail
-                                        };
-                                    }
-                                    else
-                                    {
-                                        luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+                                    luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
 
-                                        if (luam?.Any() ?? false)
+                                    if (luam?.Any() ?? false)
+                                    {
+                                        foreach (var uam in luam)
                                         {
-                                            foreach (var uam in luam)
+                                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
                                             {
-                                                var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                                if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                                cc = new Destinatario()
                                                 {
-                                                    cc = new Destinatario()
-                                                    {
-                                                        Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                                        EmailDestinatario = amministratore.EMAIL
-                                                    };
+                                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                                    EmailDestinatario = amministratore.EMAIL
+                                                };
 
-                                                    msgMail.cc.Add(cc);
-                                                }
-
-
+                                                msgMail.cc.Add(cc);
                                             }
 
 
                                         }
 
-                                        to = new Destinatario()
-                                        {
-                                            Nominativo = d.COGNOME + " " + d.NOME,
-                                            EmailDestinatario = d.EMAIL
 
-                                        };
                                     }
+
+                                    to = new Destinatario()
+                                    {
+                                        Nominativo = d.COGNOME + " " + d.NOME,
+                                        EmailDestinatario = d.EMAIL
+
+                                    };
 
                                     msgMail.destinatario.Add(to);
 
