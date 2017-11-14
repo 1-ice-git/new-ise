@@ -9,7 +9,8 @@ namespace NewISE.Models
     {
         Inserimento = 1,
         Eliminazione = 2,
-        Modifica = 3
+        Modifica = 3,
+        Annullato = 4
 
     }
     public class AttivitaCRUDModel

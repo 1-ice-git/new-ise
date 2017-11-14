@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel;
 
 namespace NewISE.Models
 {
@@ -11,29 +12,31 @@ namespace NewISE.Models
     {
         [Key]
         public decimal idUtenteAutorizzato { get; set; }
-        [StringLength(50, ErrorMessage ="Il campo utente accetta un massimo di 50 caratteri.")]
+        [StringLength(50, ErrorMessage = "Il campo utente accetta un massimo di 50 caratteri.")]
         [DataType(DataType.Text)]
-        [Display(AutoGenerateField =false, AutoGenerateFilter =false, Description ="Username dell'utente.",Name ="Username")]
+        [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Username dell'utente.", Name = "Username")]
         public string utente { get; set; }
-        [Required(ErrorMessage ="La password è richiesta.")]
+        [Required(ErrorMessage = "La password è richiesta.")]
         [DataType(DataType.Password)]
-        [Display(AutoGenerateField =false,AutoGenerateFilter =false, Description ="Password dell'utente", Name ="Password")]
+        [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Password dell'utente", Name = "Password")]
         public string password { get; set; }
-        [Required(ErrorMessage ="Il nome è richiesto.")]
+        [Required(ErrorMessage = "Il nome è richiesto.")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Nome dell'utente")]
         public string nome { get; set; }
-        [Required(ErrorMessage ="Il cognome è richiesto")]
+        [Required(ErrorMessage = "Il cognome è richiesto")]
         [DataType(DataType.Text)]
         [Display(AutoGenerateField = false, AutoGenerateFilter = false, Description = "Cognome dell'utente")]
         public string cognome { get; set; }
 
-        [Required(ErrorMessage ="L'e-mail è richiesta")]
+        [Required(ErrorMessage = "L'e-mail è richiesta")]
         [DataType(DataType.EmailAddress)]
-        [Display(AutoGenerateField =true, AutoGenerateFilter =false, Description ="E-mail dell'utente.",Name ="E-mail")]
+        [Display(AutoGenerateField = true, AutoGenerateFilter = false, Description = "E-mail dell'utente.", Name = "E-mail")]
         public string eMail { get; set; }
-        [Required(ErrorMessage ="Il ruolo è richiesto.")]
+        [Required(ErrorMessage = "Il ruolo è richiesto.")]
         public decimal idRuoloUtente { get; set; }
+        [Required(ErrorMessage = "Il dipendente è richiesto.")]
+        public decimal idDipendente { get; set; }
 
 
         [DataType(DataType.Text)]
@@ -47,9 +50,8 @@ namespace NewISE.Models
         }
 
 
-
-        public RuoloAccesoModel ruoloAccesso { get; set; }
-        
+        public RuoloAccesoModel RuoloAccesso { get; set; }
+        public DipendentiModel Dipendenti { get; set; }
 
 
     }

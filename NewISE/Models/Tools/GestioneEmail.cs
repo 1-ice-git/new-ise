@@ -26,9 +26,23 @@ namespace NewISE.Models.Tools
 
             try
             {
+                bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+
                 AccountModel am = new AccountModel();
                 am = Utility.UtenteAutorizzato();
-                if (am.idRuoloUtente == 1)
+
+                if (test)
+                {
+                    msgMail.destinatario.Clear();
+                    msgMail.destinatario.Add(new Destinatario()
+                    {
+                        Nominativo = am.nominativo,
+                        EmailDestinatario = am.eMail
+                    });
+
+                    msgMail.cc.Clear();
+                }
+                else if (am.idRuoloUtente == 1)
                 {
                     msgMail.destinatario.Clear();
                     msgMail.destinatario.Add(new Destinatario()

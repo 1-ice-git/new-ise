@@ -1,0 +1,33 @@
+﻿{
+  "s_utente": [
+    {
+      "username": "2909",
+      "password": "ise",
+      "nome": "Claudia",
+      "cognome": "Finocchi",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "3310",
+      "password": "ise",
+      "nome": "Giorgio",
+      "cognome": "Adornato",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "3042",
+      "password": "ise",
+      "nome": "Giancarlo",
+      "cognome": "Albano",
+      "email": "jean.ravelomanantsoa@valueson.it"
+    }
+
+
+  ]
+
+
+
+
+
+
+}

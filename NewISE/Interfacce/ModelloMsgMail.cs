@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
+using System.Web.Configuration;
 
 namespace NewISE.Interfacce
 {
@@ -23,6 +24,7 @@ namespace NewISE.Interfacce
             destinatario = new List<Destinatario>();
             allegato = new List<ModelloAllegatoMail>();
             cc = new List<Destinatario>();
+
         }
 
         public void Dispose()

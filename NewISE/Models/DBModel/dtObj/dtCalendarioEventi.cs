@@ -44,15 +44,71 @@ namespace NewISE.Models.DBModel.dtObj
                 }
             }
         }
+
+
+        public void InsertCalendarioEvento(ref CalendarioEventiModel cem, ModelDBISE db)
+        {
+
+            CALENDARIOEVENTI ca = new CALENDARIOEVENTI();
+
+            ca.ANNULLATO = cem.Annullato;
+            ca.COMPLETATO = cem.Completato;
+            ca.DATACOMPLETATO = cem.DataCompletato;
+            ca.DATAINIZIOEVENTO = cem.DataInizioEvento;
+            ca.DATASCADENZA = cem.DataScadenza;
+            ca.IDFUNZIONIEVENTI = (decimal)cem.idFunzioneEventi;
+            ca.IDTRASFERIMENTO = cem.idTrasferimento;
+            db.CALENDARIOEVENTI.Add(ca);
+            int i = db.SaveChanges();
+            if (i <= 0)
+            {
+                throw new Exception("Errore nella fase d'inserimento dell'evento per il calendario eventi.");
+            }
+            else
+            {
+                cem.idCalendarioEventi = ca.IDCALENDARIOEVENTI;//per il ref parametro
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento  dell'evento relativo al calendario eventi.",
+                    "CALENDARIOEVENTI", db, ca.IDTRASFERIMENTO, ca.IDCALENDARIOEVENTI);
+            }
+
+        }
+
+
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
         {
-            int funzEv = (int)fe;
+            //int funzEv = (int)fe;
+            //using (ModelDBISE db = new ModelDBISE())
+            //{
+            //    var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
+            //    foreach (var x in result)
+            //    {
+            //        CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
+            //        y.COMPLETATO = true;
+            //        y.DATACOMPLETATO = DateTime.Now;
+            //        int i = db.SaveChanges();
+            //        if (i <= 0)
+            //        {
+            //            throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
+            //        }
+            //        else
+            //        {
+            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
+            //              "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
+            //        }
+            //    }
+            //}
             using (ModelDBISE db = new ModelDBISE())
             {
-                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO== idTrasferimento && c.IDFUNZIONIEVENTI==funzEv).ToList();
-                foreach (var x in result)
+                decimal funzEv = (decimal)fe;
+                var lce =
+                    db.CALENDARIOEVENTI.Where(
+                        c =>
+                            c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv && c.COMPLETATO == false &&
+                            c.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI);
+
+                if (lce?.Any() ?? false)
                 {
-                    CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
+                    CALENDARIOEVENTI y = lce.First();
                     y.COMPLETATO = true;
                     y.DATACOMPLETATO = DateTime.Now;
                     int i = db.SaveChanges();
@@ -63,124 +119,155 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-                          "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
+                          "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
                     }
                 }
             }
+
         }
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
-                int funzEv = (int)fe;            
-                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
-                foreach (var x in result)
+            decimal funzEv = (decimal)fe;
+            var lce =
+                db.CALENDARIOEVENTI.Where(
+                    c =>
+                        c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv && c.COMPLETATO == false &&
+                        c.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI);
+
+            if (lce?.Any() ?? false)
+            {
+                CALENDARIOEVENTI y = lce.First();
+                y.COMPLETATO = true;
+                y.DATACOMPLETATO = DateTime.Now;
+                int i = db.SaveChanges();
+                if (i <= 0)
                 {
-                    CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
-                    y.COMPLETATO = true;
-                    y.DATACOMPLETATO = DateTime.Now;
-                    int i = db.SaveChanges();
-                    if (i <= 0)
-                    {
-                        throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
-                    }
-                    else
-                    {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-                          "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
-                    }
+                    throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
                 }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
+                      "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
+                }
+            }
+
         }
 
-        //public List<ElencoElementiHome> GetListaElementiHome()
-        //{
-        //    List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
-        //    try
-        //    {
-        //        using (var dbContext = new ModelDBISE())
-        //        {
-        //            tmp = (from d in dbContext.DIPENDENTI
-        //                   join t in dbContext.TRASFERIMENTO on d.IDDIPENDENTE equals t.IDDIPENDENTE
-        //                   join c in dbContext.CALENDARIOEVENTI on t.IDTRASFERIMENTO equals c.IDTRASFERIMENTO
-        //                   join f in dbContext.FUNZIONIEVENTI on c.IDFUNZIONIEVENTI equals f.IDFUNZIONIEVENTI
-        //                   where c.ANNULLATO == false && c.COMPLETATO == false && c.DATAINIZIOEVENTO.Month == DateTime.Now.Month
-        //                   && c.DATAINIZIOEVENTO.Year == DateTime.Now.Year && c.COMPLETATO == false
-        //                   select new ElencoElementiHome
-        //                   {
-        //                       Nominativo = d.COGNOME + " " + d.NOME+" ("+d.MATRICOLA+")",
-        //                       dataInizio = c.DATAINIZIOEVENTO,
-        //                       dataScadenza = c.DATASCADENZA,
-        //                       NomeFunzione = f.NOMEFUNZIONE,
-        //                       Completato = c.COMPLETATO,
-        //                       IdFunzioneEvento=f.IDFUNZIONIEVENTI
-        //                   }).ToList();
+        public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
+        {
+            decimal funzEv = (decimal)fe;
+            var lce =
+                db.CALENDARIOEVENTI.Where(
+                    a =>
+                        a.IDTRASFERIMENTO == idTrasferimento && a.IDFUNZIONIEVENTI == funzEv && a.COMPLETATO == false &&
+                        a.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI);
 
-        //        }
-        //        return (tmp);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+            if (lce?.Any() ?? false)
+            {
+                CALENDARIOEVENTI y = lce.First();
+                y.ANNULLATO = true;
+                int i = db.SaveChanges();
+                if (i <= 0)
+                {
+                    throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
+                }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Annullato, "Annullamento del evento.",
+                      "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
+                }
+            }
+
+        }
 
         public List<ElencoElementiHome> GetListaElementiHome()
         {
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp1 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmpAll = new List<ElencoElementiHome>();
+            AccountModel am = new AccountModel();
+
             try
             {
+
+                bool admin = Utility.Amministratore(out am);
+
+
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    tmp = (from e in db.CALENDARIOEVENTI
-                           where e.COMPLETATO == true && 
-                                 e.DATACOMPLETATO.Month == DateTime.Now.Month && 
-                                 e.DATACOMPLETATO.Year == DateTime.Now.Year
-                                 orderby e.DATACOMPLETATO descending
-                           select new ElencoElementiHome()
-                           {
-                               IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                               dataInizio = e.DATAINIZIOEVENTO,
-                               dataScadenza = e.DATASCADENZA,
-                               NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                               Completato = e.COMPLETATO,
-                               Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                               IdDipendente=e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                           }).ToList();
+                    if (admin)
+                    {
+                        tmp = (from e in db.CALENDARIOEVENTI
+                               where e.COMPLETATO == true &&
+                                     e.DATACOMPLETATO.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                     e.ANNULLATO == false
+                               orderby e.DATACOMPLETATO descending
+                               select new ElencoElementiHome()
+                               {
+                                   IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                   dataInizio = e.DATAINIZIOEVENTO,
+                                   dataScadenza = e.DATASCADENZA,
+                                   NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                   Completato = e.COMPLETATO,
+                                   Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                   IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                               }).ToList();
 
-                    tmp1 = (from e in db.CALENDARIOEVENTI
-                            where e.COMPLETATO == false
-                            orderby e.DATASCADENZA descending
-                            orderby e.DATAINIZIOEVENTO descending
-                            select new ElencoElementiHome()
-                            {
-                                IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                dataInizio = e.DATAINIZIOEVENTO,
-                                dataScadenza = e.DATASCADENZA,
-                                NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                Completato = e.COMPLETATO,
-                                Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                            }).ToList();
+                        tmp1 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false && e.ANNULLATO == false
+                                orderby e.DATASCADENZA descending
+                                orderby e.DATAINIZIOEVENTO descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                }).ToList();
+                    }
+                    else
+                    {
+                        tmp = (from e in db.CALENDARIOEVENTI
+                               where e.COMPLETATO == true &&
+                                     e.DATACOMPLETATO.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                     e.ANNULLATO == false &&
+                                     e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                               orderby e.DATACOMPLETATO descending
+                               select new ElencoElementiHome()
+                               {
+                                   IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                   dataInizio = e.DATAINIZIOEVENTO,
+                                   dataScadenza = e.DATASCADENZA,
+                                   NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                   Completato = e.COMPLETATO,
+                                   Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                   IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                               }).ToList();
+
+                        tmp1 = (from e in db.CALENDARIOEVENTI
+                                where e.COMPLETATO == false && e.ANNULLATO == false && e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                                orderby e.DATASCADENZA descending
+                                orderby e.DATAINIZIOEVENTO descending
+                                select new ElencoElementiHome()
+                                {
+                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                    dataInizio = e.DATAINIZIOEVENTO,
+                                    dataScadenza = e.DATASCADENZA,
+                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                    Completato = e.COMPLETATO,
+                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                }).ToList();
+                    }
 
                     tmpAll.AddRange(tmp);
                     tmpAll.AddRange(tmp1);
                 }
-                    
-                //tmp = (from d in dbContext.DIPENDENTI
-                //       join t in dbContext.TRASFERIMENTO on d.IDDIPENDENTE equals t.IDDIPENDENTE
-                //       join c in dbContext.CALENDARIOEVENTI on t.IDTRASFERIMENTO equals c.IDTRASFERIMENTO
-                //       join f in dbContext.FUNZIONIEVENTI on c.IDFUNZIONIEVENTI equals f.IDFUNZIONIEVENTI
-                //       where c.ANNULLATO == false && c.COMPLETATO == false && c.DATAINIZIOEVENTO.Month == DateTime.Now.Month
-                //       && c.DATAINIZIOEVENTO.Year == DateTime.Now.Year && c.COMPLETATO == false
-                //       select new ElencoElementiHome
-                //       {
-                //           Nominativo = d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                //           dataInizio = c.DATAINIZIOEVENTO,
-                //           dataScadenza = c.DATASCADENZA,
-                //           NomeFunzione = f.NOMEFUNZIONE,
-                //           Completato = c.COMPLETATO,
-                //           IdFunzioneEvento = f.IDFUNZIONIEVENTI
-                //       }).ToList();
 
 
                 return (tmpAll);
@@ -191,16 +278,16 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public DettagliMessaggio OgggettoFunzioneEvento(EnumFunzioniEventi idf,int idd)
+        public DettagliMessaggio OgggettoFunzioneEvento(EnumFunzioniEventi idf, int idd)
         {
-            List <DettagliMessaggio> tmp = new List<DettagliMessaggio>();           
+            List<DettagliMessaggio> tmp = new List<DettagliMessaggio>();
             try
             {
                 using (var db = new ModelDBISE())
                 {
-                    int x = (int)idf;
+                    decimal x = (decimal)idf;
                     tmp = (from e in db.CALENDARIOEVENTI
-                           where e.IDFUNZIONIEVENTI == x && e.TRASFERIMENTO.IDDIPENDENTE==idd
+                           where e.IDFUNZIONIEVENTI == x && e.TRASFERIMENTO.IDDIPENDENTE == idd && e.ANNULLATO == false
                            select new DettagliMessaggio()
                            {
                                NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
@@ -216,5 +303,5 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
-    } 
+    }
 }

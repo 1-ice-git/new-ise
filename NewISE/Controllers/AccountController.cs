@@ -17,6 +17,7 @@ using System.Web.Mvc;
 using System.Collections;
 using System.Collections.Generic;
 using NewISE.Models.dtObj.objB;
+using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 
 namespace NewISE.Controllers
@@ -49,6 +50,8 @@ namespace NewISE.Controllers
             return View(account);
         }
 
+
+
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,6 +60,7 @@ namespace NewISE.Controllers
             RetDipendenteJson rj = new RetDipendenteJson();
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
             sAdmin sad = new sAdmin();
+            sUtenteNormale utentiNormali = new sUtenteNormale();
 
             try
             {
@@ -176,36 +180,141 @@ namespace NewISE.Controllers
                             }
                         }
                     }
+
                 }
 
-                var client = new RestSharp.RestClient("http://128.1.50.97:82");
-                var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
-                req.RequestFormat = RestSharp.DataFormat.Json;
-                req.AddParameter("username", account.username);
-                req.AddParameter("password", account.password);
+                bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
 
-                RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
-
-                RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
-
-                RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
-
-                if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                if (test)
                 {
-                    if (retDip.success == true)
+                    using (dtDipendenti dtdip = new dtDipendenti())
                     {
-                        if (retDip.items != null)
+                        using (dtAccount dta = new dtAccount())
                         {
-                            using (dtAccount dta = new dtAccount())
+                            UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                            if (dta.VerificaAccesso(account.username, out uam))
                             {
-                                if (dta.VerificaAccesso(account.username))
+                                DipendentiModel dipm = new DipendentiModel();
+
+                                dipm = dtdip.GetDipendenteByID(uam.idDipendente.Value);
+
+                                using (Config cfg = new Config())
                                 {
-                                    UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+                                    utentiNormali = cfg.UtentiNormali();
 
-                                    uam = dta.PrelevaUtenteLoggato(account.username);
+                                    var lutsa = utentiNormali.s_utente.Where(a => a.username == account.username);
 
-                                    Claim[] identityClaims = new Claim[]
+                                    if (lutsa.Count() > 0)
                                     {
+                                        var utsa = lutsa.First();
+
+                                        if (utsa.username == account.username)
+                                        {
+                                            if (utsa.password == account.password)
+                                            {
+                                                Claim[] identityClaims;
+                                                identityClaims = new Claim[]
+                                                {
+                                                    new Claim(ClaimTypes.NameIdentifier,
+                                                        uam.idUtenteAutorizzato.ToString()),
+                                                    new Claim(ClaimTypes.Role,
+                                                        Convert.ToString((decimal) uam.idRuoloUtente)),
+                                                    new Claim(ClaimTypes.GivenName, utsa.username),
+                                                    new Claim(ClaimTypes.Name, utsa.nome),
+                                                    new Claim(ClaimTypes.Surname, utsa.cognome),
+                                                    new Claim(ClaimTypes.PostalCode, dipm.cap),
+                                                    new Claim(ClaimTypes.Country, dipm.citta),
+                                                    new Claim(ClaimTypes.StateOrProvince, dipm.provincia),
+                                                    new Claim(ClaimTypes.StreetAddress, dipm.indirizzo),
+                                                    new Claim(ClaimTypes.Email, utsa.email),
+                                                };
+
+                                                ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                                    DefaultAuthenticationTypes.ApplicationCookie,
+                                                    ClaimTypes.NameIdentifier, ClaimTypes.Role);
+
+                                                Authentication.SignIn(new AuthenticationProperties
+                                                {
+                                                    IsPersistent = account.ricordati
+                                                }, identity);
+
+                                                using (objAccesso accesso = new objAccesso())
+                                                {
+                                                    accesso.Accesso(uam.idUtenteAutorizzato);
+                                                }
+
+                                                //"/Home/Home"
+                                                return Redirect(GetRedirectUrl(returnUrl));
+                                            }
+                                            else
+                                            {
+                                                ViewBag.ModelStateCount = 1;
+                                                ModelState.AddModelError("", "Le credenziali sono errate.");
+                                                return View(account);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ViewBag.ModelStateCount = 1;
+                                            ModelState.AddModelError("", "Le credenziali sono errate.");
+                                            return View(account);
+                                        }
+
+
+                                    }
+                                    else
+                                    {
+                                        ViewBag.ModelStateCount = 1;
+                                        ModelState.AddModelError("", "Le credenziali sono errate.");
+                                        return View(account);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ViewBag.ModelStateCount = 1;
+                                ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
+                                return View(account);
+                            }
+
+                        }
+
+
+
+
+                    }
+                }
+                else
+                {
+                    var client = new RestSharp.RestClient("http://128.1.50.97:82");
+                    var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
+                    req.RequestFormat = RestSharp.DataFormat.Json;
+                    req.AddParameter("username", account.username);
+                    req.AddParameter("password", account.password);
+
+                    RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
+
+                    RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
+
+                    RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
+
+                    if (resp.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        if (retDip.success == true)
+                        {
+                            if (retDip.items != null)
+                            {
+                                using (dtAccount dta = new dtAccount())
+                                {
+                                    if (dta.VerificaAccesso(account.username))
+                                    {
+                                        UtenteAutorizzatoModel uam = new UtenteAutorizzatoModel();
+
+                                        uam = dta.PrelevaUtenteLoggato(account.username);
+
+                                        Claim[] identityClaims = new Claim[]
+                                        {
                                         new Claim(ClaimTypes.NameIdentifier, uam.idUtenteAutorizzato.ToString()),
                                         new Claim(ClaimTypes.Role, Convert.ToString((decimal) uam.idRuoloUtente)),
                                         new Claim(ClaimTypes.GivenName, retDip.items.matricola),
@@ -216,31 +325,38 @@ namespace NewISE.Controllers
                                         new Claim(ClaimTypes.StateOrProvince, retDip.items.provincia),
                                         new Claim(ClaimTypes.StreetAddress, retDip.items.indirizzo),
                                         new Claim(ClaimTypes.Email, retDip.items.email),
-                                    };
+                                        };
 
-                                    ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
-                                        DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
-                                        ClaimTypes.Role);
+                                        ClaimsIdentity identity = new ClaimsIdentity(identityClaims,
+                                            DefaultAuthenticationTypes.ApplicationCookie, ClaimTypes.NameIdentifier,
+                                            ClaimTypes.Role);
 
-                                    Authentication.SignIn(new AuthenticationProperties
-                                    {
-                                        IsPersistent = account.ricordati
-                                    }, identity);
+                                        Authentication.SignIn(new AuthenticationProperties
+                                        {
+                                            IsPersistent = account.ricordati
+                                        }, identity);
 
-                                    using (objAccesso accesso = new objAccesso())
-                                    {
-                                        accesso.Accesso(uam.idUtenteAutorizzato);
+                                        using (objAccesso accesso = new objAccesso())
+                                        {
+                                            accesso.Accesso(uam.idUtenteAutorizzato);
+                                        }
+
+                                        //"/Home/Home"
+                                        return Redirect(GetRedirectUrl(returnUrl));
                                     }
-
-                                    //"/Home/Home"
-                                    return Redirect(GetRedirectUrl(returnUrl));
+                                    else
+                                    {
+                                        ViewBag.ModelStateCount = 1;
+                                        ModelState.AddModelError("", "Le credenziali sono errate.");
+                                        return View(account);
+                                    }
                                 }
-                                else
-                                {
-                                    ViewBag.ModelStateCount = 1;
-                                    ModelState.AddModelError("", "Le credenziali sono errate.");
-                                    return View(account);
-                                }
+                            }
+                            else
+                            {
+                                ViewBag.ModelStateCount = 1;
+                                ModelState.AddModelError("", retDip.message);
+                                return View(account);
                             }
                         }
                         else
@@ -252,15 +368,10 @@ namespace NewISE.Controllers
                     }
                     else
                     {
-                        ViewBag.ModelStateCount = 1;
-                        ModelState.AddModelError("", retDip.message);
-                        return View(account);
+                        throw new Exception(resp.StatusDescription);
                     }
                 }
-                else
-                {
-                    throw new Exception(resp.StatusDescription);
-                }
+
             }
             catch (Exception ex)
             {

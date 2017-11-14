@@ -6,10 +6,10 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    
+
     public enum EnumFunzioniEventi
     {
-        Funzione1=1,
+        RichiestaMaggiorazioniFamiliari = 1,
         Funzione2 = 2,
         Funzione3 = 3,
         Funzione4 = 21,

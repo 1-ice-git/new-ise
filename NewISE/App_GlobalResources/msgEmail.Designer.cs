@@ -61,7 +61,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica delle Maggiorazioni familiari per il dipendente {0}..
+        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate..
+        /// </summary>
+        internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica delle Maggiorazioni Familiari per il dipendente {0}, trasferito il {1} nella sede di {2}..
         /// </summary>
         internal static string MessaggioNotificaRichiestaMaggiorazioniFamiliari {
             get {
@@ -124,7 +142,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per le maggiorazioni familiari.
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta per le Maggiorazioni Familiari.
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaMaggiorazioniFamiliari {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione delle maggiorazioni familiari.
+        /// </summary>
+        internal static string OggettoAttivazioneMaggiorazioniFamiliari {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per le Maggiorazioni Familiari.
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
             get {

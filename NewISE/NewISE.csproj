@@ -1715,6 +1715,7 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpContributoAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpUsoAbitazione.cshtml" />
+    <Content Include="Models\Config\s_admin\s_utente.json" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.2.4.intellisense.js" />
@@ -1840,6 +1841,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>msgEmail.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ScadenzaFunzioniEventi.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
@@ -2229,6 +2235,7 @@
     <Compile Include="EF\VOCI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Config\s_admin\sUtenteNormale.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
@@ -2439,10 +2446,6 @@
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\MagFam_ModificaConiuge.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\MagFam_ModificaFiglio.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoConiuge.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\MagFam_NuovoFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ConfermaNuovoConiuge.cshtml" />
@@ -2481,6 +2484,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\ScadenzaFunzioniEventi.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>ScadenzaFunzioniEventi.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report1.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report10.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report11.rdlc" />
