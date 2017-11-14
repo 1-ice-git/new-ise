@@ -15,7 +15,7 @@
         @Html.Label("lblIndPrimoSegr0", "Seleziona Indennità Primo Segretario", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idIndPrimoSegr", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndPrimoSegr();", @onClick = "PrelevaPVIndPrimoSegr();" })
+                @Html.DropDownList("idIndPrimoSegr", ViewBag.PrimoSegretarioList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndPrimoSegr();", @onClick = "PrelevaPVIndPrimoSegr();" })
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td style="text-align:center;">
+                @*<td style="text-align:center;">
                     @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
@@ -74,7 +74,7 @@
                     }
 
 
-                </td>
+                </td>*@
             </tr>
         }
     </tbody>
@@ -233,9 +233,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

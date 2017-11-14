@@ -8,11 +8,10 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-
     TipoAliquoteContributiveModel lm = (TipoAliquoteContributiveModel)ViewBag.descrizione;
     string descrizione = lm.descrizione;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipoAliqContr = lm.idTipoAliqContr;
+    decimal idTipoContributo = lm.idTipoAliqContr;
 
 }
 
@@ -28,12 +27,13 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idAliqContr)
+
+        @Html.HiddenFor(model => model.idTipoContributo)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
-                <label>Livello </label>
+                <label>Aliquota Contributiva </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
@@ -128,10 +128,10 @@
     function TornaElencoIb() {
         rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
 
-        var idTipoAliqContr = parseFloat('@idTipoAliqContr');
+        var idTipoContributo = parseFloat('@idTipoContributo');
         var chk = true;
 
-        if (isNaN(idTipoAliqContr)) {
+        if (isNaN(idTipoContributo)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -143,7 +143,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
+            data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

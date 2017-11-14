@@ -47,7 +47,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.PrimoSegretarioList = r;
                 }
 
                 using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())
@@ -99,7 +99,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         r.Where(a => a.Value == idIndPrimoSegr.ToString()).First().Selected = true;
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.PrimoSegretarioList = r;
                 }
 
                 using (dtParIndPrimoSegr dtib = new dtParIndPrimoSegr())

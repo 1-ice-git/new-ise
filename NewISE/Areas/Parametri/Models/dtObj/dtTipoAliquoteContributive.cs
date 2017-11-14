@@ -1,6 +1,5 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,9 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtParTipoAliquoteContributive : IDisposable
+    public class dtTipoAliquoteContributive : IDisposable
     {
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

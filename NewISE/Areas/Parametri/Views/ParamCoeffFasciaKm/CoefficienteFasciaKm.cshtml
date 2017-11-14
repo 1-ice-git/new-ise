@@ -1,8 +1,23 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.CoeffFasciaKmModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
+@{
+    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+
+}
+
+
 <p>
-    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuoveAliquoteContributive();">Inserisci Coefficiente Fascia Km </a>
+    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci Coefficiente Fascia Km </a>
+</p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblFasciaKm", "Seleziona km della fascia Km ", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic"> </div>
+        </div>
+    </div>
 </p>
 
 <table id="tbCoeffFasciaKm" class="display" cellspacing="0">
@@ -82,8 +97,8 @@
             }
         }
     });
-    $("#idLivello").select2({
-        placeholder: "Seleziona il .....",
+    $("#idDefKm").select2({
+        placeholder: "Seleziona la fascia Km",
         allowClear: true,
         language: "it",
         width: '150'
@@ -91,5 +106,56 @@
     });
 
     $("#btnInsNuovoCoeffFasciaKm").button();
+
+
+    function PrelevaPVIndBase() {
+        //debugger;
+        rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
+
+        var idLivello = parseInt($("#idLivello").select2('val'));
+        var chk = true;
+
+        if (isNaN(idLivello)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        @*if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }*@
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idLivello: idLivello, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
 
 </script>

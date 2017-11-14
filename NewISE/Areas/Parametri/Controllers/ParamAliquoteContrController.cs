@@ -49,7 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.Aliquote = r;
                 }
 
                 using (dtParAliquoteContr dtib = new dtParAliquoteContr())
@@ -77,7 +77,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult AliquoteContributiveLivello(decimal idTipoAliqContr, bool escludiAnnullati)
+        public ActionResult AliquoteContributiveLivello(decimal idTipoContributo, bool escludiAnnullati)
         {
             List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
             var r = new List<SelectListItem>();
@@ -85,7 +85,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
+                using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
                 {
                     llm = dtl.GetTipoAliquote().OrderBy(a => a.descrizione).ToList();
 
@@ -97,28 +97,28 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Text = t.descrizione,
                                  Value = t.idTipoAliqContr.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idTipoAliqContr.ToString()).First().Selected = true;
+                        r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.Aliquote = r;
                 }
 
-                using (dtParAliquoteContr dtib = new dtParAliquoteContr())
+                using (dtAliquoteContr dtib = new dtAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListAliquoteContributive(llm.Where(a => a.idTipoAliqContr == idTipoAliqContr).First().idTipoAliqContr, escludiAnnullati).OrderBy(a => a.idTipoContributo).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListAliquoteContributive(llm.Where(a => a.idTipoAliqContr == idTipoContributo).First().idTipoAliqContr, escludiAnnullati).OrderBy(a => a.idTipoContributo).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListAliquoteContributive(llm.Where(a => a.idTipoAliqContr == idTipoAliqContr).First().idTipoAliqContr).OrderBy(a => a.idTipoContributo).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListAliquoteContributive(llm.Where(a => a.idTipoAliqContr == idTipoContributo).First().idTipoAliqContr).OrderBy(a => a.idTipoContributo).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -127,15 +127,15 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaAliquotaContributiva(decimal idTipoAliqContr, bool escludiAnnullati)
+        public ActionResult NuovaAliquotaContributiva(decimal idTipoContributo, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
 
             try
             {
-                using (dtParTipoAliquoteContributive dtl = new dtParTipoAliquoteContributive())
+                using (dtTipoAliquoteContributive dtl = new dtTipoAliquoteContributive())
                 {
-                    var lm = dtl.GetTipoAliquote(idTipoAliqContr);
+                    var lm = dtl.GetTipoAliquote(idTipoContributo);
                     ViewBag.descrizione = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
@@ -143,7 +143,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 

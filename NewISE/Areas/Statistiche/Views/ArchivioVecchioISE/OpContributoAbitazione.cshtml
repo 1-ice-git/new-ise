@@ -1,23 +1,26 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Contributo_Abitazione>
 <br />
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <hr />
+@using (Ajax.BeginForm("Index", "ArchivioVecchioISE", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnComplete="pippo()" }))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <hr />
 
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            <div class="col-md-2">
+                @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            </div>
+
+            <div class="col-md-2">
+                @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            </div>
+
+
         </div>
-
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
-
+        <br />
 
     </div>
-    <br />
-
-</div>
+}
 
 <div class="form-group">
     <div class="col-md-3">
@@ -26,7 +29,11 @@
     <div class="col-md-3">
         <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Contributo Abitazione </a>
     </div>
+    <div class="col-md-3">
+        <a href="#" onclick="TornaElenco();">Torna all'elenco delle Tabelle </a>
+    </div>
 </div>
+
 <br /><br />
 <table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
     <thead>
@@ -37,7 +44,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.nominativo)
             </th>
-                     <th>
+            <th>
                 @Html.DisplayNameFor(model => model.sede)
             </th>
             <th>
@@ -108,6 +115,9 @@
         }
     </tbody>
 </table>
+<div style="clear: both"></div>
+
+
 
 <script type="text/javascript">
     $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
@@ -140,7 +150,7 @@
             }
         });
 
-       
+
         function invia() {
             //debugger
             var DATA = $("#datepicker").datepicker().val()
@@ -204,6 +214,10 @@
             });
         });
 
+        function pippo() {
+            alert("fiundi");
+        }
+
         function OpContributoAbitazione() {
             //debugger;
 
@@ -265,7 +279,50 @@
 
         }
 
+        function TornaElenco() {
+            //debugger;
+            rotta = "/Statistiche/ArchivioVecchioISE/Index";
 
+            //if (isNaN()) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                //data: {
+                //},
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    //$("#divPViewParametri").html(result);
+
+                    window.location.href = rotta;
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
 </script>
 
 

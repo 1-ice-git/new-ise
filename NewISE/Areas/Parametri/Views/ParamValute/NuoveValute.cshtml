@@ -8,14 +8,9 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-
-    //LivelloModel lm = (LivelloModel)ViewBag.Livello;
-    //string descrizioneLivello = lm.DescLivello;
     ValuteModel lm = (ValuteModel)ViewBag.descrizionevaluta;
     string descrizionevaluta = lm.descrizioneValuta;
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idValuta = lm.idValuta;
-
 }
 
 @using (Ajax.BeginForm("InserisciValuta", "ParamValute", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
@@ -31,18 +26,7 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idValuta)
-        @*<input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />*@
 
-        <div class="form-group">
-            <div class="col-xs-2 text-right">
-                <label>Livello </label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizionevaluta</label>
-                </div>
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.descrizioneValuta, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -71,19 +55,19 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle indennità di base.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle valute.</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#valutaufficiale").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: ''
-	});
+    //$("#valutaufficiale").autoNumeric('init',
+	//{
+	//    aSep: '.',
+	//    aDec: ',',
+	//    aSign: ''
+	//});
 
 
     $('form').submit(function () {
@@ -122,7 +106,7 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamValute/ValuteLivello";
+        rotta = "/Parametri/ParamValute/ValutaLivello";
 
         var idValuta = parseFloat('@idValuta');
         var chk = true;
@@ -132,9 +116,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $.ajax({
             type: "POST",

@@ -1550,6 +1550,7 @@
     <Content Include="AAAA.xss">
       <DependentUpon>AAAA.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -1924,10 +1925,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>msgEmail.resx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Controllers\CoefficientiSedeController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamAliquoteContrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffFasciaKmController.cs" />
@@ -1944,6 +1941,12 @@
     <Compile Include="Areas\Parametri\Controllers\ParamPrimoIndSegrController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamRiduzioniController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamValuteController.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtAliquoteContr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtCoefficientiSede.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParAliquoteContr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficientiSede.cs" />
@@ -1962,6 +1965,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipologiaConiuge.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoTrasferimento.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParValute.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtTipoAliquoteContributive.cs" />
     <Compile Include="Areas\Parametri\ParametriAreaRegistration.cs" />
     <Compile Include="Areas\Statistiche\Connessione.cs" />
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />

@@ -51,7 +51,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.VALUTE.Where(a => a.IDVALUTA == idValute).ToList();
+                    var lib = db.VALUTE.ToList();
 
                     libm = (from e in lib
                             select new ValuteModel()
@@ -460,11 +460,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     llm = (from e in ll
                            select new ValuteModel()
                            {
-
                                idValuta = e.IDVALUTA,
-                               descrizioneValuta = e.DESCRIZIONEVALUTA
-
-
+                               descrizioneValuta = e.DESCRIZIONEVALUTA,
+                               valutaUfficiale = e.VALUTAUFFICIALE
                            }).ToList();
                 }
 
@@ -489,7 +487,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new ValuteModel()
                     {
                         idValuta = liv.IDVALUTA,
-                        descrizioneValuta = liv.DESCRIZIONEVALUTA
+                        descrizioneValuta = liv.DESCRIZIONEVALUTA,
+                        valutaUfficiale = liv.VALUTAUFFICIALE
                     };
                 }
 
