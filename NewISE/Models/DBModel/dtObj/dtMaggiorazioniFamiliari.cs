@@ -227,6 +227,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.cc.Add(cc);
 
                                 luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
 
                                 if (luam?.Any() ?? false)
                                 {
@@ -327,7 +328,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.cc.Add(cc);
 
 
-                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
+                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore || am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
                                 {
                                     to = new Destinatario()
                                     {
@@ -413,10 +414,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.mittente = mittente;
                                 msgMail.cc.Add(cc);
 
-                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
+                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore || am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
                                 {
 
                                     luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+                                    luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
 
                                     if (luam?.Any() ?? false)
                                     {

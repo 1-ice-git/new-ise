@@ -68,10 +68,10 @@
                         }
                     </td>
                     @if (item.idAltriDati > 0)
-                {
-                    switch (item.parentela)
                     {
-                        case EnumParentela.Coniuge:
+                        switch (item.parentela)
+                        {
+                            case EnumParentela.Coniuge:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idFamiliare); ">
                                         <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />

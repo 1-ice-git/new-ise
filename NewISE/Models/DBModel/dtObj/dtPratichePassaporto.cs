@@ -29,17 +29,148 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
+
                 if (t != null && t.IDTRASFERIMENTO > 0)
                 {
+                    var d = t.DIPENDENTI;
+
+                    var mf = t.MAGGIORAZIONIFAMILIARI;
+
                     var p = t.PASSAPORTI;
                     if (p != null && p.IDPASSAPORTI > 0)
                     {
                         var lap =
                             p.ATTIVAZIONIPASSAPORTI.Where(
-                                a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false);
+                                a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
+                                .OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+
                         if (lap?.Any() ?? false)
                         {
 
+                            var ap = lap.First();
+
+                            #region Richiedente
+
+                            var lpr =
+                                p.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false)
+                                    .OrderByDescending(a => a.IDPASSAPORTORICHIEDENTE);
+
+                            if (lpr?.Any() ?? false)
+                            {
+                                var pr = lpr.First();
+
+                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                {
+                                    idPassaporti = p.IDPASSAPORTI,
+                                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
+                                    idFamiliare = t.IDTRASFERIMENTO,
+                                    Nominativo = d.COGNOME + " " + d.NOME,
+                                    dataInizio = t.DATAPARTENZA,
+                                    dataFine = t.DATARIENTRO,
+                                    parentela = EnumParentela.Richiedente,
+                                    escludiPassaporto = pr.ESCLUDIPASSAPORTO,
+
+                                };
+
+                                lefm.Add(efm);
+                            }
+
+                            #endregion
+
+                            #region Coniuge
+
+                            var lc =
+                                ap.CONIUGE.Where(
+                                    a =>
+                                        a.ANNULLATO &&
+                                        a.TIPOLOGIACONIUGE.IDTIPOLOGIACONIUGE ==
+                                        (decimal)EnumTipologiaConiuge.Residente)
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+                            foreach (var c in lc)
+                            {
+                                bool hasPensione = c.PENSIONE.Where(a => a.ANNULLATO == false).Count() > 0
+                                    ? true
+                                    : false;
+
+                                decimal idAltriDati = 0;
+
+                                var ladf =
+                                    c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                        .OrderByDescending(a => a.IDALTRIDATIFAM);
+                                if (ladf?.Any() ?? false)
+                                {
+                                    var adf = ladf.First();
+
+                                    idAltriDati = adf.IDALTRIDATIFAM;
+                                }
+
+                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                {
+                                    idPassaporti = p.IDPASSAPORTI,
+                                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
+                                    idFamiliare = c.IDCONIUGE,
+                                    Nominativo = c.COGNOME + " " + c.NOME,
+                                    CodiceFiscale = c.CODICEFISCALE,
+                                    dataInizio = c.DATAFINEVALIDITA,
+                                    dataFine = c.DATAFINEVALIDITA,
+                                    parentela = EnumParentela.Coniuge,
+                                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
+                                    HasPensione = hasPensione,
+                                    idAltriDati = idAltriDati,
+
+                                };
+
+                                lefm.Add(efm);
+                            }
+
+                            #endregion
+
+                            #region fIGLI
+
+                            var lf =
+                                ap.FIGLI.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        (a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
+                                         a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO ==
+                                         (decimal)EnumTipologiaFiglio.StudenteResidente))
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+                            foreach (var f in lf)
+                            {
+                                decimal idAltriDati = 0;
+
+                                var ladf =
+                                    f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                        .OrderByDescending(a => a.IDALTRIDATIFAM);
+                                if (ladf?.Any() ?? false)
+                                {
+                                    var adf = ladf.First();
+
+                                    idAltriDati = adf.IDALTRIDATIFAM;
+                                }
+
+                                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                {
+                                    idPassaporti = p.IDPASSAPORTI,
+                                    idMaggiorazioniFamiliari = mf.IDMAGGIORAZIONIFAMILIARI,
+                                    idFamiliare = f.IDFIGLI,
+                                    Nominativo = f.COGNOME + " " + f.NOME,
+                                    CodiceFiscale = f.CODICEFISCALE,
+                                    dataInizio = f.DATAFINEVALIDITA,
+                                    dataFine = f.DATAFINEVALIDITA,
+                                    parentela = EnumParentela.Figlio,
+                                    escludiPassaporto = f.ESCLUDIPASSAPORTO,
+                                    idAltriDati = idAltriDati,
+
+                                };
+
+                                lefm.Add(efm);
+
+                            }
+
+                            #endregion
                         }
                     }
                 }
@@ -47,7 +178,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             }
 
-            return null;
+            return lefm;
         }
 
 
@@ -92,6 +223,25 @@ namespace NewISE.Models.DBModel.dtObj
             return pm;
         }
 
+
+        public PassaportoModel GetPassaportoByIdFiglio(decimal idFiglio, ModelDBISE db)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            var p = db.FIGLI.Find(idFiglio).PASSAPORTI;
+
+            if (p != null && p.IDPASSAPORTI > 0)
+            {
+                pm = new PassaportoModel()
+                {
+                    idPassaporto = p.IDPASSAPORTI,
+                };
+            }
+
+            return pm;
+        }
+
+
         public PassaportoModel GetPassaportoByIdConiuge(decimal idConiuge)
         {
             PassaportoModel pm = new PassaportoModel();
@@ -112,6 +262,25 @@ namespace NewISE.Models.DBModel.dtObj
 
             return pm;
         }
+
+
+        public PassaportoModel GetPassaportoByIdConiuge(decimal idConiuge, ModelDBISE db)
+        {
+            PassaportoModel pm = new PassaportoModel();
+
+            var p = db.CONIUGE.Find(idConiuge).PASSAPORTI;
+
+            if (p != null && p.IDPASSAPORTI > 0)
+            {
+                pm = new PassaportoModel()
+                {
+                    idPassaporto = p.IDPASSAPORTI,
+                };
+            }
+
+            return pm;
+        }
+
 
         //private void InvioEmailPraticaPassaportoConclusa(decimal idPassaporto, ModelDBISE db)
         //{
@@ -818,7 +987,7 @@ namespace NewISE.Models.DBModel.dtObj
                     "Inserimento dei dati di gestione del passaporto.", "PASSAPORTI", db, idTrasferimento,
                     p.IDPASSAPORTI);
 
-                using (dtAttivazioniPassaporti dtap = new dtAttivazioniPassaporti())
+                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
                 {
                     AttivazionePassaportiModel apm = new AttivazionePassaportiModel()
                     {
@@ -828,7 +997,17 @@ namespace NewISE.Models.DBModel.dtObj
                         //escludiPassaporto = false,
                     };
 
-                    dtap.SetAttivazioniPassaporti(apm, db);
+                    dtap.SetAttivazioniPassaporti(ref apm, db);
+
+                    PassaportoRichiedenteModel prm = new PassaportoRichiedenteModel()
+                    {
+                        idPassaporti = p.IDPASSAPORTI,
+                        EscludiPassaporto = false,
+                        DataAggiornamento = DateTime.Now,
+                        annullato = false
+                    };
+
+                    dtap.SetPassaportoRichiedente(ref prm, db);
                 }
 
 
@@ -936,6 +1115,10 @@ namespace NewISE.Models.DBModel.dtObj
 
             return pm;
         }
+
+
+
+
 
 
         //public PassaportoModel GetPassaportoByIDTrasf(decimal idTrasferimento)

@@ -14,7 +14,41 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void SetAttivazioniPassaporti(AttivazionePassaportiModel apm, ModelDBISE db)
+
+        public void SetPassaportoRichiedente(ref PassaportoRichiedenteModel prm, ModelDBISE db)
+        {
+            PASSAPORTORICHIEDENTE pr = new PASSAPORTORICHIEDENTE()
+            {
+                IDPASSAPORTI = prm.idPassaporti,
+                ESCLUDIPASSAPORTO = prm.EscludiPassaporto,
+                DATAESCLUDIPASSAPORTO = prm.DataEscludiPassaporto,
+                DATAAGGIORNAMENTO = prm.DataAggiornamento,
+                ANNULLATO = prm.annullato
+            };
+
+            var p = db.PASSAPORTI.Find(prm.idPassaporti);
+
+            p.PASSAPORTORICHIEDENTE.Add(pr);
+
+            int i = db.SaveChanges();
+
+            if (i > 0)
+            {
+                prm.idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                    "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
+                    pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
+
+
+            }
+
+
+
+
+        }
+
+        public void SetAttivazioniPassaporti(ref AttivazionePassaportiModel apm, ModelDBISE db)
         {
             ATTIVAZIONIPASSAPORTI ap = new ATTIVAZIONIPASSAPORTI()
             {
@@ -39,6 +73,8 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
+                apm.idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI;
+
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                     "Inserimento dei dati per le attivazioni del passaporto", "ATTIVAZIONIPASSAPORTI", db,
                     p.TRASFERIMENTO.IDTRASFERIMENTO, ap.IDATTIVAZIONIPASSAPORTI);
