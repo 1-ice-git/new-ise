@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
@@ -161,41 +162,76 @@ namespace NewISE.Controllers
             GestioneChkEscludiPassaportoModel gcep;
             PassaportoModel pm = new PassaportoModel();
             bool dchk = false;
-            using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+
+            using (ModelDBISE db = new ModelDBISE())
             {
+                db.Database.BeginTransaction();
 
-                switch (parentela)
+                try
                 {
-                    case EnumParentela.Coniuge:
-                        pm = dtpp.GetPassaportoByIdConiuge(idFamiliare);
-                        break;
-                    case EnumParentela.Figlio:
-                        pm = dtpp.GetPassaportoByIdFiglio(idFamiliare);
-                        break;
-                    case EnumParentela.Richiedente:
-                        //pm = dtpp.GetPassaportoByID(idFamiliare);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
+                    using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                    {
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                pm = dtpp.GetPassaportoByIdConiuge(idFamiliare, db);
+                                break;
+                            case EnumParentela.Figlio:
+                                pm = dtpp.GetPassaportoByIdFiglio(idFamiliare, db);
+                                break;
+                            case EnumParentela.Richiedente:
+                                pm = dtpp.GetPassaportoByID(idFamiliare, db);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
+
+
+                        if (pm != null && pm.idPassaporto > 0)
+                        {
+
+                            using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                            {
+                                var ap = dtap.GetLastAttivazionePassaporti(pm.idPassaporto, db);
+
+                                if (ap.HasValue())
+                                {
+
+                                }
+
+                            }
+
+
+
+
+                            //if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
+                            //{
+                            //    dchk = true;
+                            //}
+                        }
+
+                        gcep = new GestioneChkEscludiPassaportoModel()
+                        {
+                            idFamiliare = idFamiliare,
+                            parentela = parentela,
+                            esisteDoc = esisteDoc,
+                            escludiPassaporto = escludiPassaporto,
+                            disabilitaChk = dchk,
+                        };
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
                 }
 
-                if (pm != null && pm.idPassaporto > 0)
-                {
-                    //if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
-                    //{
-                    //    dchk = true;
-                    //}
-                }
 
-                gcep = new GestioneChkEscludiPassaportoModel()
-                {
-                    idFamiliare = idFamiliare,
-                    parentela = parentela,
-                    esisteDoc = esisteDoc,
-                    escludiPassaporto = escludiPassaporto,
-                    disabilitaChk = dchk,
-                };
             }
+
+
 
 
             return PartialView(gcep);
