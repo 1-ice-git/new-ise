@@ -227,10 +227,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.cc.Add(cc);
 
                                 luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
+                                //luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
 
-                                if (luam?.Any() ?? false)
-                                {
+                                //if (luam?.Any() ?? false)
+                                //{
                                     foreach (var uam in luam)
                                     {
                                         var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
@@ -248,8 +248,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     }
 
-                                    if (msgMail.destinatario?.Any() ?? false)
-                                    {
+                                    //if (msgMail.destinatario?.Any() ?? false)
+                                    //{
 
                                         msgMail.oggetto =
                                             Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
@@ -260,19 +260,19 @@ namespace NewISE.Models.DBModel.dtObj
                                                 tr.DATAPARTENZA.ToLongDateString(),
                                                 u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
                                         gmail.sendMail(msgMail);
-                                    }
-                                    else
-                                    {
-                                        throw new Exception(
-                                            "Non è stato possibile inviare l'email. Nessun destinatario inserito.");
-                                    }
+                                    //}
+                                    //else
+                                    //{
+                                        //throw new Exception(
+                                            //"Non è stato possibile inviare l'email. Nessun destinatario inserito.");
+                                    //}
 
-                                }
-                                else
-                                {
-                                    throw new Exception(
-                                        "Non è stato possibile inviare l'email. Non risulta inserito nessun amministratore.");
-                                }
+                                //}
+                                //else
+                                //{
+                                //    throw new Exception(
+                                //        "Non è stato possibile inviare l'email. Non risulta inserito nessun amministratore.");
+                                //}
                             }
                         }
 
@@ -418,10 +418,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
 
                                     luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-                                    luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
+                                    //luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
 
-                                    if (luam?.Any() ?? false)
-                                    {
+                                    //if (luam?.Any() ?? false)
+                                    //{
                                         foreach (var uam in luam)
                                         {
                                             var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
@@ -440,7 +440,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
 
 
-                                    }
+                                    //}
 
                                     to = new Destinatario()
                                     {
@@ -452,8 +452,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     msgMail.destinatario.Add(to);
 
 
-                                    if (msgMail.destinatario?.Any() ?? false)
-                                    {
+                                    //if (msgMail.destinatario?.Any() ?? false)
+                                    //{
 
                                         msgMail.oggetto =
                                             Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari;
@@ -463,11 +463,11 @@ namespace NewISE.Models.DBModel.dtObj
                                                 u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")",
                                                 tr.DATAPARTENZA.ToLongDateString());
                                         gmail.sendMail(msgMail);
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Non è stato possibile inviare l'email.");
-                                    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    throw new Exception("Non è stato possibile inviare l'email.");
+                                    //}
                                 }
                                 else
                                 {
