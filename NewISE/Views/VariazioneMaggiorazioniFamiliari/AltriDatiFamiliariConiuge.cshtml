@@ -1,0 +1,114 @@
+﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
+
+@{
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    //decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
+
+    //decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+
+}
+
+
+<div style="padding-left: 15px;">
+    <h4>Altri Dati Familiari</h4>
+    <hr />
+    <table style="width:100%">
+        <tr>
+            <td>
+                <table >
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.Coniuge.nominativo)
+                        </td>
+
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.nazionalita)
+                        </td>
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.residente)
+                        </td>
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.ulterioreMagConiuge)
+                        </td>
+
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.ulterioreMagConiuge)</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table >
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.indirizzoResidenza)
+                        </td>
+
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.capResidenza)
+                        </td>
+                        <td style="padding-left:10px">
+                            @Html.DisplayFor(model => model.capResidenza)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.comuneResidenza)
+                        </td>
+
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.provinciaResidenza)
+                        </td>
+
+                        <td style="padding-left:10px">
+                            <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+</div>
+<p style="padding-left: 15px;">
+
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled">Modifica</button>
+    }
+    else
+    {
+        @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+    }
+    | @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+
+</p>
+

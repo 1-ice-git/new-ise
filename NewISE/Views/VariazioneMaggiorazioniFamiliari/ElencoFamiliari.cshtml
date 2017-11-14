@@ -4,12 +4,10 @@
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    // per test
-    solaLettura = false;
 }
 
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-    @if (solaLettura)
+    @if (!solaLettura)  // test !
     {
         <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Familiare</button>
     }
@@ -113,48 +111,21 @@
                         <td style="text-align: center;"></td>
                     }
                     <td style="text-align: center;">
-                        @if (Model?.Any() ?? false)
+                    @if (item.parentela == EnumParentela.Coniuge)
+                    {
+                        if (item.HasPensione)
                         {
-                            if (!solaLettura)
-                            {
-                                if (item.parentela == EnumParentela.Coniuge)
-                                {
-                                    if (item.HasPensione)
-                                    {
-                                        <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
-                                            <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
-                                            <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
-                                        </a>
-                                    }
-                                }
-                            }
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                                <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
+                            </a>
                         }
                         else
                         {
-                            if (!solaLettura)
-                            {
-                                if (item.parentela == EnumParentela.Coniuge)
-                                {
-                                    if (item.HasPensione)
-                                    {
-                                        <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
-                                            <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
-                                            <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
-                                        </a>
-                                    }
-                                }
-                            }
+                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                                <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
+                            </a>
                         }
+                    }
                     </td>
                     @if (item.idAltriDati > 0)
                     {
@@ -176,7 +147,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ) ">
+                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari) ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -184,7 +155,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari)) ">
+                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari)) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -249,12 +220,12 @@
         //]
     });
 
-    //PulsantiNotificaAttivaMagFam();
+    PulsantiNotificaAttivaMagFam();
 
 
     function Pensione(idConiuge) {
         //debugger;
-        var rotta = "/PensioneConiuge/ElencoPensioniConiuge";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoPensioniConiuge";
 
         $.ajax({
             url: rotta,
@@ -273,8 +244,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             error: function (error) {
@@ -289,7 +260,7 @@
 
     function AltriDatiFamiliari(idConiuge) {
         //debugger;
-        var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiuge";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
@@ -308,12 +279,12 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;
@@ -347,8 +318,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {
@@ -385,12 +356,12 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;

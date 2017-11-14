@@ -35,7 +35,7 @@
 <p style="padding-left: 15px;">
     @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
 
-    @if (solaLettura)
+    @if (solaLettura)  
     {
         <button class="btn btn-default disabled" disabled="disabled">Nuovo documento</button>
     }
@@ -84,7 +84,7 @@
                         </a>
                     </td>
                     <td class="text-center" style="width: 10%;">
-                        @if (solaLettura)
+                        @if (solaLettura) 
                         {
                             <a href="#" class="disabled">Elimina</a>
                         }
@@ -129,11 +129,13 @@
         case EnumChiamante.Passaporti:
             @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
+        case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+            @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+            break;
         default:
             throw new ArgumentOutOfRangeException();
-    }
-
-
+        }
+  
 </p>
 
 
@@ -418,6 +420,7 @@
             complete: function () {
 
                 Sblocca();
+     
             },
             error: function (error) {
                 //debugger;

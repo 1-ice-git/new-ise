@@ -23,7 +23,7 @@
     }
     else
     {
-        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
     }
 
 </p>
@@ -85,7 +85,7 @@
 </div>
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">
@@ -158,7 +158,7 @@
         //debugger;
         var idPensioneConiuge = $('#hdIdImportoPensione').val();
         var idConiuge = parseInt('@idConiuge');
-        var rotta = "/PensioneConiuge/EliminaPensione";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/EliminaPensione";
 
 
         $.ajax({
@@ -179,8 +179,8 @@
                 //debugger;
                 //$("#viewPensione").empty();
                 //$("#viewPensione").html(result);
-                $("#tabConiuge").empty();
-                $("#tabConiuge").html(result);
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
 
             },
             complete: function () {

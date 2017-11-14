@@ -2445,6 +2445,7 @@
     <Content Include="Views\Home\DetailsFunzioneEvento.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
+    
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
@@ -2455,6 +2456,11 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFamiliare.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\AltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniConiuge.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoImportoPensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
