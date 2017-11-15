@@ -1,0 +1,146 @@
+﻿@model NewISE.Models.DBModel.DocumentiModel
+
+@{
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+}
+
+<div class="form-horizontal">
+    <div class="form-group ">
+        <div class="col-xs-9">
+            <input id="file" name="file" multiple type="file" class="file file-loading hidden" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
+            <div id="divFile" style="display:inline-block;">
+                <button class="btn btn-default  " id="btUploadFMF">
+                    <i class="fa fa-2x fa-upload" aria-hidden="true"></i>
+                    Seleziona il formulario
+                </button>
+                <span id="spanNomeFile">Seleziona il formulario</span>
+            </div>
+            <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+            @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/ValidationWithBoot.js"></script>
+
+<script type="text/javascript">
+    $("#btUploadFMF").click(function () {
+        //debugger;
+        $("#file").empty();
+        $("#file").click();
+    });
+
+    $("#file").change(function () {
+        //debugger;
+        var file = $("#file").val();
+        if (file != null && file != undefined) {
+            var splitFile = file.split("\\");
+            var nomeFile = splitFile[splitFile.length - 1];
+
+            var estensioniValide = new Array(".pdf");
+            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+            if (estensioniValide.contiene(estensione)) {
+
+                //$("#NomeFile").val(nomeFile);
+                //$("#EstensioneFile").val(estensione);
+
+                $("#spanNomeFile").html(nomeFile);
+                return true;
+            } else {
+
+                MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il .pdf");
+
+                return false;
+            }
+        }
+
+    });
+
+    function Validazione() {
+        //debugger;
+        var ret = false;
+
+        var file = $("#file").val();
+
+        if (file != null && file != undefined && file != "") {
+            $("#divFile").removeClass('BordoRosso');
+            ret = true;
+        }
+        else {
+            $("#divFile").addClass('BordoRosso');
+            ret = false;
+        }
+
+        return ret;
+    }
+
+
+    function SalvaDocumento() {
+
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/Documenti/InserisciFormularioMF";
+
+
+        var file = $("#file")[0].files[0];
+
+        if (Validazione()) {
+
+            datiForm.append("idMaggiorazioniFamiliari", @idMaggiorazioniFamiliari);
+            datiForm.append("file", file);
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+                dataType: 'json',
+                cache: false,
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                    $("#btUploadFMF").attr("disabled", "disabled");
+                    $("#btUploadFMF").addClass("disabled");
+                },
+                processData: false, //Serve per NON far convertire l’oggetto
+                //FormData in una stringa, preservando il file
+                contentType: false, //Serve per NON far inserire automaticamente
+                //un content type errato
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err != "" && result.err != undefined) {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+                    else {
+                        InfoElaborazioneAjax(result.msg);
+                        PulsantiNotificaAttivaMagFam();
+                        //CloseTimeModalFormulario();
+                    }
+
+                },
+                complete: function () {
+                    //$("#btUpload").removeAttr("disabled");
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    $("#btUploadFMF").removeAttr("disabled");
+                    $("#btUploadFMF").removeClass("disabled");
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+        //else {
+        //    DialogInfo("Prima di inviare la lettera di trasferimento è necessario compilare i campi con asterisco.");
+        //}
+
+    }
+
+
+
+</script>

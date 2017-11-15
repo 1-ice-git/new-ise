@@ -26,14 +26,14 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="divTabElencoFormulari">
-            @Html.Action("TabFormulariInseriti", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+        <div id="divTabElencoFormulari_var">
+            @Html.Action("TabFormulariInseriti", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
         </div>
     </div>
 </div>
 
 
-<div class="modal fade" id="ModalDownloadFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
+<div class="modal fade" id="ModalDownloadFormulario_var" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -44,7 +44,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <div id="divFormularioMF">
-                    @Html.Action("ElencoDocumentiFormulario", "MaggiorazioniFamiliari")
+                    @Html.Action("ElencoDocumentiFormulario", "VariazioneMaggiorazioniFamiliari")
                 </div>
             </div>
             <div class="modal-footer">
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="ModalNuovoFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
+<div class="modal fade" id="ModalNuovoFormulario_var" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,7 +64,7 @@
                 <h3 class="modal-title alert alert-info text-info" id="NuovoFormularioLabel">Nuovo Formulario Maggiorazioni Familiari</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <div id="divViewNuovoFormulario">
+                <div id="divViewNuovoFormulario_var">
                     @*@Html.Action("ElencoFormulariInseriti", "MaggiorazioniFamiliari", new {idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari})*@
                 </div>
             </div>
@@ -81,12 +81,12 @@
 <script type="text/javascript">
 
     function DownloadFormulario() {
-        $('#ModalDownloadFormulario').modal().show();
+        $('#ModalDownloadFormulario_var').modal().show();
     }
 
     function NuovoFormulario() {
         //debugger;
-        var rotta = "/MaggiorazioniFamiliari/NuovoFormularioMF";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoFormularioMF";
         var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
 
         $.ajax({
@@ -100,12 +100,12 @@
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
-                $('#ModalNuovoFormulario').modal('show');
+                $('#ModalNuovoFormulario_var').modal('show');
             },
             success: function (result) {
                 //debugger;
-                $("#divViewNuovoFormulario").empty();
-                $("#divViewNuovoFormulario").html(result);
+                $("#divViewNuovoFormulario_var").empty();
+                $("#divViewNuovoFormulario_var").html(result);
 
             },
             error: function (error) {
@@ -120,7 +120,7 @@
 
     function TabElencoFormulari() {
         //debugger;
-        var rotta = "/MaggiorazioniFamiliari/TabFormulariInseriti";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/TabFormulariInseriti";
         var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
 
         $.ajax({
@@ -138,8 +138,8 @@
             },
             success: function (result) {
                 //debugger;
-                $("#divTabElencoFormulari").empty();
-                $("#divTabElencoFormulari").html(result);
+                $("#divTabElencoFormulari_var").empty();
+                $("#divTabElencoFormulari_var").html(result);
 
             },
             error: function (error) {
@@ -156,7 +156,7 @@
 
 
 
-    $("#ModalNuovoFormulario").on("hidden.bs.modal", function() {
+    $("#ModalNuovoFormulario_var").on("hidden.bs.modal", function() {
         //debugger;
         TabElencoFormulari();
     });

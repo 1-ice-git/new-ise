@@ -14,18 +14,18 @@
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
         <div class="nav nav-justified nav-tabs">
-            <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaMaggiorazioniFamiliari">
+            <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaMaggiorazioniFamiliari_var">
                 <li id="mnFamiliari">
-                    <a data-toggle="tab" href="#tabFamiliari" id="lkFamiliari" onclick=" ElencoFamiliari(); ">Familiari</a>
+                    <a data-toggle="tab" href="#tabFamiliari" id="lkFamiliari" onclick="ElencoFamiliari();">Familiari</a>
                 </li>
                 <li id="mnFormulariVar">
-                    <a data-toggle="tab" href="#tabFormulariVar" id="lkFormulariVar" onclick=" ElencoFormulariInseriti(); ">Formulari</a>
+                    <a data-toggle="tab" href="#tabFormulari_Var" id="lkFormulariVar" onclick="ElencoFormulariInseriti();">Formulari</a>
                 </li>
             </ul>
         </div>
         <div class="tab-content" id="tabContenutiVar" style="border:1px;border-color:red">
             <div class="tab-content" id="tabFamiliari"></div>
-            <div class="tab-pane" id="tabFormulariVar"></div>
+            <div class="tab-pane" id="tabFormulari_Var"></div>
         </div>
     </div>
 </div>
@@ -65,7 +65,7 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaNotifica_var" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaNotificaRichiesta(); ">Procedi</button>
+                <button id="btConfermaNotifica_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiesta();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -118,7 +118,7 @@
 
 
 <script type="text/javascript">
-    $('#tabsAttivitaMaggiorazioniFamiliari').tab();
+    $('#tabsAttivitaMaggiorazioniFamiliari_var').tab();
 
     ElencoFamiliari();
 
@@ -140,8 +140,8 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#tabFormulariVar").empty();
-                $("#tabFormulariVar").html(result);
+                $("#tabFormulari_Var").empty();
+                $("#tabFormulari_Var").html(result);
 
                 //RicercaDocumenti();
 
@@ -187,7 +187,8 @@
 
             },
             complete: function () {
-                 PulsantiNotificaAttivaMagFam();
+                /// TEST
+                /// PulsantiNotificaAttivaMagFam();
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;

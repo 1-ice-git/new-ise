@@ -26,6 +26,56 @@ namespace NewISE.Controllers
             return View();
         }
 
+        [NonAction]
+        private bool SolaLettura(decimal idMaggiorazioniFamiliari)
+        {
+
+            bool solaLettura = false;
+
+            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+            {
+                bool rinunciaMagFam = false;
+                bool richiestaAttivazione = false;
+                bool attivazione = false;
+                bool datiConiuge = false;
+                bool datiParzialiConiuge = false;
+                bool datiFigli = false;
+                bool datiParzialiFigli = false;
+                bool siDocConiuge = false;
+                bool siDocFigli = false;
+                bool docFormulario = false;
+
+
+                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+
+                if (richiestaAttivazione == true || attivazione == true)
+                {
+
+                    solaLettura = true;
+                }
+                else
+                {
+                    if (rinunciaMagFam)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                }
+
+
+            }
+
+            return solaLettura;
+        }
+
+
+
         public JsonResult VerificaMaggiorazioneFamiliare(string matricola = "")
         {
             try
@@ -592,6 +642,23 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult NuovoFormularioMF(decimal idMaggiorazioniFamiliari)
+        {
+
+            ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
+
+            return PartialView();
+        }
+
+
+
+        public ActionResult ElencoDocumentiFormulario()
+        {
+            return PartialView();
+        }
+
+
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
@@ -1085,6 +1152,30 @@ namespace NewISE.Controllers
                     {
                         err = errore
                     });
+        }
+
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult TabFormulariInseriti(decimal idMaggiorazioniFamiliari)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            try
+            {
+
+                bool solaLettura = false;
+                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                ViewData.Add("solaLettura", solaLettura);
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(ldm);
         }
 
 
