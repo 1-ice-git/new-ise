@@ -9,7 +9,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 {
     public class dtTipoAliquoteContributive : IDisposable
     {
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -55,7 +54,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new TipoAliquoteContributiveModel()
                     {
                         idTipoAliqContr = liv.IDTIPOALIQCONTR,
-                        codice = liv.CODICE,
+                        codice =liv.CODICE,
                         descrizione = liv.DESCRIZIONE
                     };
                 }

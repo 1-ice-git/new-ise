@@ -8,39 +8,33 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtAliquoteContr : IDisposable
+    public class dtIndPrimoSegr : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive()
+        public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario()
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.ToList();
+                    var lib = db.INDENNITAPRIMOSEGRETARIO.ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new IndennitaPrimoSegretModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -51,34 +45,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo)
+        public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(decimal idIndPrimoSegr)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                    var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == idIndPrimoSegr).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new IndennitaPrimoSegretModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -89,34 +75,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(bool escludiAnnullati = false)
+        public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new IndennitaPrimoSegretModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -127,36 +105,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo, bool escludiAnnullati = false)
+        public IList<IndennitaPrimoSegretModel> getListIndennitaPrimoSegretario(decimal idIndPrimoSegr, bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
+                    //var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == idIndPrimoSegr && a.ANNULLATO == escludiAnnullati).ToList();
+
+                    var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     
-
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new IndennitaPrimoSegretModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaPrimoSegretModel().dataFineValidita,
+                                indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -172,15 +143,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetAliquoteContributive(AliquoteContributiveModel ibm)
+        public void SetIndennitaPrimoSegretario(IndennitaPrimoSegretModel ibm)
         {
-            List<ALIQUOTECONTRIBUTIVE> libNew = new List<ALIQUOTECONTRIBUTIVE>();
+            List<INDENNITAPRIMOSEGRETARIO> libNew = new List<INDENNITAPRIMOSEGRETARIO>();
 
-            ALIQUOTECONTRIBUTIVE ibNew = new ALIQUOTECONTRIBUTIVE();
+            INDENNITAPRIMOSEGRETARIO ibNew = new INDENNITAPRIMOSEGRETARIO();
 
-            ALIQUOTECONTRIBUTIVE ibPrecedente = new ALIQUOTECONTRIBUTIVE();
+            INDENNITAPRIMOSEGRETARIO ibPrecedente = new INDENNITAPRIMOSEGRETARIO();
 
-            List<ALIQUOTECONTRIBUTIVE> lArchivioIB = new List<ALIQUOTECONTRIBUTIVE>();
+            List<INDENNITAPRIMOSEGRETARIO> lArchivioIB = new List<INDENNITAPRIMOSEGRETARIO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -190,28 +161,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new INDENNITAPRIMOSEGRETARIO()
                             {
                                 
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                INDENNITA = ibm.indennita,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new INDENNITAPRIMOSEGRETARIO()
                             {
                                 
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ALIQUOTA = ibm.aliquota,
+                                INDENNITA = ibm.indennita,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
@@ -219,14 +188,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     }
                     else
                     {
-                        ibNew = new ALIQUOTECONTRIBUTIVE()
+                        ibNew = new INDENNITAPRIMOSEGRETARIO()
                         {
                             
-                            IDALIQCONTR = ibm.idAliqContr,
-                            IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                            IDINDPRIMOSEGR = ibm.idIndPrimoSegr,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ALIQUOTA = ibm.aliquota,
+                            INDENNITA = ibm.indennita,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
@@ -234,7 +202,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDALIQCONTR == ibNew.IDALIQCONTR)
+                    var recordInteressati = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false && a.IDINDPRIMOSEGR == ibNew.IDINDPRIMOSEGR)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -251,14 +219,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
                                         
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        INDENNITA = item.INDENNITA,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -268,26 +235,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
                                         
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        INDENNITA = item.INDENNITA,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld2 = new INDENNITAPRIMOSEGRETARIO()
                                     {
                                         
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        INDENNITA = item.INDENNITA,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -306,14 +271,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
                                         
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        INDENNITA = item.INDENNITA,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -329,14 +293,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                                     {
                                         
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDINDPRIMOSEGR = item.IDINDPRIMOSEGR,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA =item.ALIQUOTA,
+                                        INDENNITA = item.INDENNITA,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -349,18 +312,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.ALIQUOTECONTRIBUTIVE.AddRange(libNew);
+                        db.INDENNITAPRIMOSEGRETARIO.AddRange(libNew);
                     }
                     else
                     {
-                        db.ALIQUOTECONTRIBUTIVE.Add(ibNew);
+                        db.INDENNITAPRIMOSEGRETARIO.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro aliquote contributive.", "ALIQUOTECONTRIBUTIVE", ibNew.IDALIQCONTR);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di primo segretario.", "INDENNITAPRIMOSEGRETARIO", ibNew.IDINDPRIMOSEGR);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -372,22 +335,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        public bool EsistonoMovimentiPrima(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrima(IndennitaPrimoSegretModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
             }
         }
-
-        public bool EsistonoMovimentiSuccessivi(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessivi(IndennitaPrimoSegretModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -395,14 +356,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        public bool EsistonoMovimentiSuccessiviUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(IndennitaPrimoSegretModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -410,19 +370,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(IndennitaPrimoSegretModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
+                return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).Count() > 0 ? true : false;
             }
         }
-
-        public void DelAliquoteContributive(decimal idAliqContr)
+        public void DelIndennitaPrimoSegretario(decimal idIndPrimoSegr)
         {
-            ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
-            ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
+            INDENNITAPRIMOSEGRETARIO precedenteIB = new INDENNITAPRIMOSEGRETARIO();
+            INDENNITAPRIMOSEGRETARIO delIB = new INDENNITAPRIMOSEGRETARIO();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -431,40 +389,38 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr);
+                    var lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == idIndPrimoSegr);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                            var ibOld1 = new INDENNITAPRIMOSEGRETARIO()
                             {
                                 
-                                IDALIQCONTR = precedenteIB.IDALIQCONTR,
-                                IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                IDINDPRIMOSEGR = precedenteIB.IDINDPRIMOSEGR,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ALIQUOTA = precedenteIB.ALIQUOTA,
-                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
+                                INDENNITA = precedenteIB.INDENNITA,
                                 ANNULLATO = false
                             };
 
-                            db.ALIQUOTECONTRIBUTIVE.Add(ibOld1);
+                            db.INDENNITAPRIMOSEGRETARIO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità primo segretario.", "INDENNITAPRIMOSEGRETARIO", idIndPrimoSegr);
                         }
 
 
@@ -479,6 +435,56 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             }
 
+        }
+        public IList<IndennitaPrimoSegretModel> getIndennitaPrimoSegretario()
+        {
+            List<IndennitaPrimoSegretModel> llm = new List<IndennitaPrimoSegretModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ll = db.INDENNITAPRIMOSEGRETARIO.ToList();
+
+                    llm = (from e in ll
+                           select new IndennitaPrimoSegretModel()
+                           {
+                               idIndPrimoSegr = e.IDINDPRIMOSEGR,
+                               indennita = e.INDENNITA
+                           }).ToList();
+                }
+
+                return llm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public IndennitaPrimoSegretModel getIndennitaPrimoSegretario(decimal idIndPrimoSegr)
+        {
+            IndennitaPrimoSegretModel lm = new IndennitaPrimoSegretModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var liv = db.INDENNITAPRIMOSEGRETARIO.Find(idIndPrimoSegr);
+
+                    lm = new IndennitaPrimoSegretModel()
+                    {
+                        idIndPrimoSegr = liv.IDINDPRIMOSEGR,
+                        indennita = liv.INDENNITA
+                        
+                    };
+                }
+
+                return lm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

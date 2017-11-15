@@ -1,6 +1,5 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
-using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParValute dtl = new dtParValute())
+                using (dtValute dtl = new dtValute())
                 {
                     llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
 
@@ -50,22 +49,16 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                //using (dtValute dtib = new dtValute())
-                //{
-                //    if (escludiAnnullati)
-                //    {
-                //        escludiAnnullati = false;
-                //        libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
-                //    }
-                //    else
-                //    {
-                //        libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
-                //    }
-                //}
+                using (dtValute dtib = new dtValute())
+                {
+
+                    libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
+
+                }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
 
@@ -83,7 +76,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParValute dtl = new dtParValute())
+                using (dtValute dtl = new dtValute())
                 {
                     llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
 
@@ -101,26 +94,20 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                //using (dtIndennitaBase dtib = new dtIndennitaBase())
-                //{
-                //    if (escludiAnnullati)
-                //    {
-                //        escludiAnnullati = false;
-                //        libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                //    }
-                //    else
-                //    {
-                //        libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                //    }
-                //}
+                using (dtValute dtib = new dtValute())
+                {
+
+                    libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
+
+                }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
             //ViewBag.escludiAnnullati = escludiAnnullati;
 
-            return PartialView("IndennitaBase", libm);
+            return PartialView("Valute", libm);
         }
 
         [HttpPost]
@@ -132,7 +119,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParValute dtl = new dtParValute())
+                using (dtValute dtl = new dtValute())
                 {
                     var lm = dtl.GetValute(idValuta);
                     ViewBag.descrizionevaluta = lm;
@@ -143,7 +130,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
@@ -157,7 +144,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParValute dtib = new dtParValute())
+                    using (dtValute dtib = new dtValute())
                     {
 
                         dtib.SetValute(ibm);
@@ -167,10 +154,10 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtParValute dtl = new dtParValute())
+                    using (dtValute dtl = new dtValute())
                     {
                         var lm = dtl.GetValute(ibm.idValuta);
-                        ViewBag.Livello = lm;
+                        ViewBag.descrizionevaluta = lm;
                     }
 
                     return PartialView("NuoveValute", ibm);
@@ -178,7 +165,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
@@ -189,7 +176,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParValute dtib = new dtParValute())
+                using (dtValute dtib = new dtValute())
                 {
                     dtib.DelValute(idValuta);
                 }
@@ -199,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
 

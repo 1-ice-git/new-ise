@@ -8,38 +8,40 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtAliquoteContr : IDisposable
+    public class dtPercentualeDisagio : IDisposable
     {
+        
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive()
+
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio()
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.ToList();
+                    var lib = db.PERCENTUALEDISAGIO.ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeDisagioModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
                             }).ToList();
                 }
@@ -52,33 +54,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeDisagioModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
-
                             }).ToList();
                 }
 
@@ -90,33 +90,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(bool escludiAnnullati = false)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeDisagioModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
-
                             }).ToList();
                 }
 
@@ -128,35 +126,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo, bool escludiAnnullati = false)
+        public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio, bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeDisagioModel> libm = new List<PercentualeDisagioModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
-
-                    
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeDisagioModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercentualeDisagio = e.IDPERCENTUALEDISAGIO,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeDisagioModel().dataFineValidita,
+                                percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
+                                Ufficio = new UfficiModel()
                                 {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
                                 }
-
                             }).ToList();
                 }
 
@@ -172,15 +166,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetAliquoteContributive(AliquoteContributiveModel ibm)
+        public void SetPercentualeDisagio(PercentualeDisagioModel ibm)
         {
-            List<ALIQUOTECONTRIBUTIVE> libNew = new List<ALIQUOTECONTRIBUTIVE>();
+            List<PERCENTUALEDISAGIO> libNew = new List<PERCENTUALEDISAGIO>();
 
-            ALIQUOTECONTRIBUTIVE ibNew = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEDISAGIO ibNew = new PERCENTUALEDISAGIO();
 
-            ALIQUOTECONTRIBUTIVE ibPrecedente = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEDISAGIO ibPrecedente = new PERCENTUALEDISAGIO();
 
-            List<ALIQUOTECONTRIBUTIVE> lArchivioIB = new List<ALIQUOTECONTRIBUTIVE>();
+            List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -190,51 +184,46 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new PERCENTUALEDISAGIO()
                             {
                                 
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                PERCENTUALE = ibm.percentuale,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new PERCENTUALEDISAGIO()
                             {
-                                
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ALIQUOTA = ibm.aliquota,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                PERCENTUALE = ibm.percentuale,
+                                DATAAGGIORNAMENTO = System.DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new ALIQUOTECONTRIBUTIVE()
+                        ibNew = new PERCENTUALEDISAGIO()
                         {
-                            
-                            IDALIQCONTR = ibm.idAliqContr,
-                            IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                            IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ALIQUOTA = ibm.aliquota,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            PERCENTUALE = ibm.percentuale,
+                            DATAAGGIORNAMENTO = System.DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDALIQCONTR == ibNew.IDALIQCONTR)
+                    var recordInteressati = db.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -251,15 +240,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -268,27 +255,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDUFFICIO = item.IDUFFICIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld2 = new PERCENTUALEDISAGIO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -306,15 +289,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -329,15 +310,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEDISAGIO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDUFFICIO = item.IDUFFICIO,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA =item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        PERCENTUALE = item.PERCENTUALE,
+                                        DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -349,18 +328,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.ALIQUOTECONTRIBUTIVE.AddRange(libNew);
+                        db.PERCENTUALEDISAGIO.AddRange(libNew);
                     }
                     else
                     {
-                        db.ALIQUOTECONTRIBUTIVE.Add(ibNew);
+                        db.PERCENTUALEDISAGIO.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro aliquote contributive.", "ALIQUOTECONTRIBUTIVE", ibNew.IDALIQCONTR);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", ibNew.IDPERCENTUALEDISAGIO);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -373,21 +352,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrima(PercentualeDisagioModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercentualeDisagioModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -396,13 +375,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercentualeDisagioModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -411,18 +390,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(PercentualeDisagioModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
+                return db.PERCENTUALEDISAGIO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
             }
         }
 
-        public void DelAliquoteContributive(decimal idAliqContr)
+        public void DelPercentualeDisagio(decimal idPercDisagio)
         {
-            ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
-            ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEDISAGIO precedenteIB = new PERCENTUALEDISAGIO();
+            PERCENTUALEDISAGIO delIB = new PERCENTUALEDISAGIO();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -431,40 +410,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr);
+                    var lib = db.PERCENTUALEDISAGIO.Where(a => a.IDPERCENTUALEDISAGIO == idPercDisagio);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEDISAGIO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                            var ibOld1 = new PERCENTUALEDISAGIO()
                             {
-                                
-                                IDALIQCONTR = precedenteIB.IDALIQCONTR,
-                                IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                IDPERCENTUALEDISAGIO = precedenteIB.IDPERCENTUALEDISAGIO,
+                                IDUFFICIO = precedenteIB.IDUFFICIO,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ALIQUOTA = precedenteIB.ALIQUOTA,
-                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
+                                PERCENTUALE = precedenteIB.PERCENTUALE,
+                                DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,                                
                                 ANNULLATO = false
                             };
 
-                            db.ALIQUOTECONTRIBUTIVE.Add(ibOld1);
+                            db.PERCENTUALEDISAGIO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEDISAGIO", idPercDisagio);
                         }
 
 
@@ -480,6 +458,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+
 
     }
 }

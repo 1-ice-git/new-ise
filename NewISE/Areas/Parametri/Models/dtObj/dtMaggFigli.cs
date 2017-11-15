@@ -8,39 +8,38 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtAliquoteContr : IDisposable
+    public class dtMaggFigli : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive()
+        public IList<PercentualeMagFigliModel> getListMaggiorazioneFiglio()
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeMagFigliModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                //idTipologiaFiglio =e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
+                                //Figlio = new TipologiaFiglioModel()
+                                //{
+                                //    idTipologiaFiglio = e.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO,
+                                //    tipologiaFiglio = e.TIPOLOGIAFIGLIO.TIPOLOGIAFIGLIO1
+                                //}
                             }).ToList();
                 }
 
@@ -52,33 +51,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo)
+        public IList<PercentualeMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeMagFigliModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                //idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                //Figlio = new TipologiaFiglioModel()
+                                //{
+                                //    idTipologiaFiglio = e.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO,
+                                //    tipologiaFiglio = e.TIPOLOGIAFIGLIO.TIPOLOGIAFIGLIO1
+                                //}
                             }).ToList();
                 }
 
@@ -90,33 +87,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(bool escludiAnnullati = false)
+        public IList<PercentualeMagFigliModel> getListMaggiorazioneFiglio(bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeMagFigliModel()
                             {
                                 
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idPercMagFigli =e.IDPERCMAGFIGLI,
+                                //idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
                                 annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                //Figlio = new TipologiaFiglioModel()
+                                //{
+                                //    idTipologiaFiglio = e.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO,
+                                //    tipologiaFiglio = e.TIPOLOGIAFIGLIO.TIPOLOGIAFIGLIO1
+                                //}
                             }).ToList();
                 }
 
@@ -128,35 +123,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo, bool escludiAnnullati = false)
+        public IList<PercentualeMagFigliModel> getListMaggiorazioneFiglio(decimal idTipologiaFiglio, bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
-
-                    
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == idTipologiaFiglio && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new PercentualeMagFigliModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
 
+                                idPercMagFigli = e.IDPERCMAGFIGLI,
+                                //idTipologiaFiglio = e.IDTIPOLOGIAFIGLIO,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
+                                percentualeFigli = e.PERCENTUALEFIGLI,
+                                annullato = e.ANNULLATO,
+                                //Figlio = new TipologiaFiglioModel()
+                                //{
+                                //    idTipologiaFiglio = e.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO,
+                                //    tipologiaFiglio = e.TIPOLOGIAFIGLIO.TIPOLOGIAFIGLIO1
+                                //}
                             }).ToList();
                 }
 
@@ -172,15 +163,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetAliquoteContributive(AliquoteContributiveModel ibm)
+        public void SetMaggiorazioneFiglio(PercentualeMagFigliModel ibm)
         {
-            List<ALIQUOTECONTRIBUTIVE> libNew = new List<ALIQUOTECONTRIBUTIVE>();
+            List<PERCENTUALEMAGFIGLI> libNew = new List<PERCENTUALEMAGFIGLI>();
 
-            ALIQUOTECONTRIBUTIVE ibNew = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEMAGFIGLI ibNew = new PERCENTUALEMAGFIGLI();
 
-            ALIQUOTECONTRIBUTIVE ibPrecedente = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEMAGFIGLI ibPrecedente = new PERCENTUALEMAGFIGLI();
 
-            List<ALIQUOTECONTRIBUTIVE> lArchivioIB = new List<ALIQUOTECONTRIBUTIVE>();
+            List<PERCENTUALEMAGFIGLI> lArchivioIB = new List<PERCENTUALEMAGFIGLI>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -190,28 +181,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                                //IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                PERCENTUALEFIGLI = ibm.percentualeFigli,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new PERCENTUALEMAGFIGLI()
                             {
-                                
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                                //IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ALIQUOTA = ibm.aliquota,
+                                PERCENTUALEFIGLI = ibm.percentualeFigli,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
@@ -219,14 +208,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     }
                     else
                     {
-                        ibNew = new ALIQUOTECONTRIBUTIVE()
+                        ibNew = new PERCENTUALEMAGFIGLI()
                         {
-                            
-                            IDALIQCONTR = ibm.idAliqContr,
-                            IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                            IDPERCMAGFIGLI = ibm.idPercMagFigli,
+                            //IDTIPOLOGIAFIGLIO = ibm.idTipologiaFiglio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ALIQUOTA = ibm.aliquota,
+                            PERCENTUALEFIGLI = ibm.percentualeFigli,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
@@ -234,7 +222,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDALIQCONTR == ibNew.IDALIQCONTR)
+                    var recordInteressati = db.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIAFIGLIO == ibNew.IDTIPOLOGIAFIGLIO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -251,14 +239,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -268,26 +255,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld2 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -306,14 +291,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -329,14 +313,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new PERCENTUALEMAGFIGLI()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDPERCMAGFIGLI = item.IDPERCMAGFIGLI,
+                                        IDTIPOLOGIAFIGLIO = item.IDTIPOLOGIAFIGLIO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA =item.ALIQUOTA,
+                                        PERCENTUALEFIGLI = item.PERCENTUALEFIGLI,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -349,18 +332,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.ALIQUOTECONTRIBUTIVE.AddRange(libNew);
+                        db.PERCENTUALEMAGFIGLI.AddRange(libNew);
                     }
                     else
                     {
-                        db.ALIQUOTECONTRIBUTIVE.Add(ibNew);
+                        db.PERCENTUALEMAGFIGLI.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro aliquote contributive.", "ALIQUOTECONTRIBUTIVE", ibNew.IDALIQCONTR);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro per la percentuale di maggiorazione figli.", "PERCENTUALEMAGFIGLI", ibNew.IDPERCMAGFIGLI);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -373,21 +356,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrima(PercentualeMagFigliModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita ).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessivi(PercentualeMagFigliModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -396,13 +379,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(PercentualeMagFigliModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value ).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -410,19 +393,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
+        
+        public bool EsistonoMovimentiPrimaUguale(PercentualeMagFigliModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
+                return db.PERCENTUALEMAGFIGLI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
 
-        public void DelAliquoteContributive(decimal idAliqContr)
+        public void DelMaggiorazioneFiglio(decimal idPercMagFigli)
         {
-            ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
-            ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
+            PERCENTUALEMAGFIGLI precedenteIB = new PERCENTUALEMAGFIGLI();
+            PERCENTUALEMAGFIGLI delIB = new PERCENTUALEMAGFIGLI();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -431,40 +414,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr);
+                    var lib = db.PERCENTUALEMAGFIGLI.Where(a => a.IDPERCMAGFIGLI == idPercMagFigli);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.PERCENTUALEMAGFIGLI.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                            var ibOld1 = new PERCENTUALEMAGFIGLI()
                             {
-                                
-                                IDALIQCONTR = precedenteIB.IDALIQCONTR,
-                                IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                IDPERCMAGFIGLI = precedenteIB.IDPERCMAGFIGLI,
+                                IDTIPOLOGIAFIGLIO = precedenteIB.IDTIPOLOGIAFIGLIO,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ALIQUOTA = precedenteIB.ALIQUOTA,
+                                PERCENTUALEFIGLI = precedenteIB.PERCENTUALEFIGLI,
                                 DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
 
-                            db.ALIQUOTECONTRIBUTIVE.Add(ibOld1);
+                            db.PERCENTUALEMAGFIGLI.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro per la percentuale di maggiorazione figlio.", "PERCENTUALEMAGFIGLI", idPercMagFigli);
                         }
 
 

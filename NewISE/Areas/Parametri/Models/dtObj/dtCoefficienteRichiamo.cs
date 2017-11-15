@@ -8,39 +8,35 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtAliquoteContr : IDisposable
+    public class dtCoefficienteRichiamo : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive()
+        
+
+        public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo()
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -52,33 +48,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo)
+        public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo(decimal idCoefIndRichiamo)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                    //var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoefIndRichiamo).ToList();
+
+                    var lib = db.COEFFICIENTEINDRICHIAMO.ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -90,33 +81,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo(bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -128,35 +112,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo, bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo(decimal idCoefIndRichiamo, bool escludiAnnullati = false)
         {
-            List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
+                    //var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoefIndRichiamo && a.ANNULLATO == escludiAnnullati).ToList();
 
-                    
+                    //var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoefIndRichiamo).ToList();
+
+                    //var lib = db.COEFFICIENTEINDRICHIAMO.ToList();
+
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new AliquoteContributiveModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                
-                                idAliqContr = e.IDALIQCONTR,
-                                idTipoContributo = e.IDTIPOCONTRIBUTO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.ALIQUOTA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                descrizione = new TipoAliquoteContributiveModel()
-                                {
-                                    idTipoAliqContr = e.TIPOALIQUOTECONTRIBUTIVE.IDTIPOALIQCONTR,
-                                    descrizione = e.TIPOALIQUOTECONTRIBUTIVE.DESCRIZIONE
-                                }
-
+                                annullato = e.ANNULLATO
                             }).ToList();
                 }
 
@@ -172,15 +153,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetAliquoteContributive(AliquoteContributiveModel ibm)
+        public void SetCoefficienteRichiamo(CoefficienteRichiamoModel ibm)
         {
-            List<ALIQUOTECONTRIBUTIVE> libNew = new List<ALIQUOTECONTRIBUTIVE>();
+            List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
 
-            ALIQUOTECONTRIBUTIVE ibNew = new ALIQUOTECONTRIBUTIVE();
+            COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
 
-            ALIQUOTECONTRIBUTIVE ibPrecedente = new ALIQUOTECONTRIBUTIVE();
+            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
 
-            List<ALIQUOTECONTRIBUTIVE> lArchivioIB = new List<ALIQUOTECONTRIBUTIVE>();
+            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -190,51 +171,48 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ALIQUOTA = ibm.aliquota,
+                                COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new ALIQUOTECONTRIBUTIVE()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                
-                                IDALIQCONTR = ibm.idAliqContr,
-                                IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ALIQUOTA = ibm.aliquota,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new ALIQUOTECONTRIBUTIVE()
+                        ibNew = new COEFFICIENTEINDRICHIAMO()
                         {
-                            
-                            IDALIQCONTR = ibm.idAliqContr,
-                            IDTIPOCONTRIBUTO = ibm.idTipoContributo,
+                            IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ALIQUOTA = ibm.aliquota,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                            COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
+                            DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDALIQCONTR == ibNew.IDALIQCONTR)
+                    var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == ibNew.IDCOEFINDRICHIAMO)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -251,15 +229,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -268,27 +245,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
+                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld2 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
+                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -306,15 +281,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA = item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
+                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -329,15 +303,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new ALIQUOTECONTRIBUTIVE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        
-                                        IDALIQCONTR = item.IDALIQCONTR,
-                                        IDTIPOCONTRIBUTO = item.IDTIPOCONTRIBUTO,
+                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        ALIQUOTA =item.ALIQUOTA,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
+                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -349,18 +322,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.ALIQUOTECONTRIBUTIVE.AddRange(libNew);
+                        db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
                     }
                     else
                     {
-                        db.ALIQUOTECONTRIBUTIVE.Add(ibNew);
+                        db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro aliquote contributive.", "ALIQUOTECONTRIBUTIVE", ibNew.IDALIQCONTR);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di indennita di richiamo.", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -373,21 +346,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrima(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessivi(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -396,13 +369,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -411,18 +384,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDALIQCONTR == ibm.idAliqContr).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).Count() > 0 ? true : false;
             }
         }
 
-        public void DelAliquoteContributive(decimal idAliqContr)
+        public void DelCoefficienteRichiamo(decimal idCoefIndRichiamo)
         {
-            ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
-            ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
+            COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
+            COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -431,40 +404,38 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr);
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoefIndRichiamo);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.ALIQUOTECONTRIBUTIVE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new ALIQUOTECONTRIBUTIVE()
-                            {
-                                
-                                IDALIQCONTR = precedenteIB.IDALIQCONTR,
-                                IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
+                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+                            {   
+                                IDCOEFINDRICHIAMO = precedenteIB.IDCOEFINDRICHIAMO,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                ALIQUOTA = precedenteIB.ALIQUOTA,
+                                COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
+                                COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
                                 DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
-
-                            db.ALIQUOTECONTRIBUTIVE.Add(ibOld1);
+                            //COEFFICIENTEINDRICHIAMO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro del coefficiente di indennità di richiamo.", "COEFFICIENTEINDRICHIAMO", idCoefIndRichiamo);
                         }
 
 
@@ -480,6 +451,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+
+
 
     }
 }

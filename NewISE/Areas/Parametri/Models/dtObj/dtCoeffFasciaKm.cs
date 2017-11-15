@@ -8,39 +8,38 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtCoefficientiSede : IDisposable
+    public class dtCoeffFasciaKm : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<CoefficientiSedeModel> getListCoefficientiSede()
+        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm()
         {
-            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTESEDE.ToList();
+                    var lib = db.COEFFICIENTEFKM.ToList();
 
                     libm = (from e in lib
-                            select new CoefficientiSedeModel()
-                            {
-                                
-                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
-                                idUfficio = e.IDUFFICIO,
+                            select new CoeffFasciaKmModel()
+                            {   
+                                idCfKm = e.IDCFKM,
+                                //idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICIENTE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //coefficienteKm = e.COEFFICIENTEKM,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //km = new DefFasciaKmModel()
+                                //{
+                                //    idDefKm = e.IDDEFKM,
+                                //    km = e.COEFFICIENTEKM
+                                //}
                             }).ToList();
                 }
 
@@ -52,32 +51,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoefficientiSedeModel> getListCoefficientiSede(decimal idUfficio)
+        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal idDefKm)
         {
-            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDDEFKM == idDefKm).ToList();
 
                     libm = (from e in lib
-                            select new CoefficientiSedeModel()
+                            select new CoeffFasciaKmModel()
                             {
-
-                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
-                                idUfficio = e.IDUFFICIO,
+                                idCfKm = e.IDCFKM,
+                                //idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICIENTE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //coefficienteKm = e.COEFFICIENTEKM,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //km = new DefFasciaKmModel()
+                                //{
+                                //    idDefKm = e.IDDEFKM,
+                                //    km = e.COEFFICIENTEKM
+                                //}
                             }).ToList();
                 }
 
@@ -89,31 +87,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoefficientiSedeModel> getListCoefficientiSede(bool escludiAnnullati = false)
+        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(bool escludiAnnullati = false)
         {
-            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new CoefficientiSedeModel()
+                            select new CoeffFasciaKmModel()
                             {
-                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
-                                idUfficio = e.IDUFFICIO,
+                                idCfKm = e.IDCFKM,
+                                //idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICIENTE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //coefficienteKm = e.COEFFICIENTEKM,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //km = new DefFasciaKmModel()
+                                //{
+                                //    idDefKm = e.IDDEFKM,
+                                //    km = e.COEFFICIENTEKM
+                                //}
                             }).ToList();
                 }
 
@@ -125,31 +123,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoefficientiSedeModel> getListCoefficientiSede(decimal idUfficio, bool escludiAnnullati = false)
+        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal idDefKm, bool escludiAnnullati = false)
         {
-            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDDEFKM == idDefKm && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new CoefficientiSedeModel()
+                            select new CoeffFasciaKmModel()
                             {
-                                idCoefficientiSede = e.IDCOEFFICIENTESEDE,
-                                idUfficio = e.IDUFFICIO,
+                                idCfKm = e.IDCFKM,
+                                //idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
-                                valore = e.VALORECOEFFICIENTE,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //coefficienteKm = e.COEFFICIENTEKM,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Ufficio = new UfficiModel()
-                                {
-                                    idUfficio = e.UFFICI.IDUFFICIO,
-                                    //DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                }
+                                //km = new DefFasciaKmModel()
+                                //{
+                                //    idDefKm = e.IDDEFKM,
+                                //    km = e.COEFFICIENTEKM
+                                //}
                             }).ToList();
                 }
 
@@ -165,15 +163,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetCoefficientiSede(CoefficientiSedeModel ibm)
+        public void SetCoeffFasciaKm(CoeffFasciaKmModel ibm)
         {
-            List<COEFFICIENTESEDE> libNew = new List<COEFFICIENTESEDE>();
+            List<COEFFICIENTEFKM> libNew = new List<COEFFICIENTEFKM>();
 
-            COEFFICIENTESEDE ibNew = new COEFFICIENTESEDE();
+            COEFFICIENTEFKM ibNew = new COEFFICIENTEFKM();
 
-            COEFFICIENTESEDE ibPrecedente = new COEFFICIENTESEDE();
+            COEFFICIENTEFKM ibPrecedente = new COEFFICIENTEFKM();
 
-            List<COEFFICIENTESEDE> lArchivioIB = new List<COEFFICIENTESEDE>();
+            List<COEFFICIENTEFKM> lArchivioIB = new List<COEFFICIENTEFKM>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -183,25 +181,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new COEFFICIENTESEDE()
+                            ibNew = new COEFFICIENTEFKM()
                             {
-
-                                IDUFFICIO = ibm.idUfficio,
+                                IDCFKM = ibm.idCfKm,
+                                //IDDEFKM = ibm.idDefKm,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                VALORECOEFFICIENTE = ibm.valore,
+                                //COEFFICIENTEKM = ibm.coefficienteKm,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new COEFFICIENTESEDE()
+                            ibNew = new COEFFICIENTEFKM()
                             {
-                                IDUFFICIO = ibm.idUfficio,
+                                IDCFKM = ibm.idCfKm,
+                                //IDDEFKM = ibm.idDefKm,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                VALORECOEFFICIENTE = ibm.valore,
+                                //COEFFICIENTEKM = ibm.coefficienteKm,
                                 DATAAGGIORNAMENTO = System.DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
@@ -209,12 +208,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     }
                     else
                     {
-                        ibNew = new COEFFICIENTESEDE()
+                        ibNew = new COEFFICIENTEFKM()
                         {
-                            IDUFFICIO = ibm.idUfficio,
+
+                            IDCFKM = ibm.idCfKm,
+                            //IDDEFKM = ibm.idDefKm,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            VALORECOEFFICIENTE = ibm.valore,
+                            //COEFFICIENTEKM = ibm.coefficienteKm,
                             DATAAGGIORNAMENTO = System.DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
@@ -222,10 +223,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.COEFFICIENTESEDE.Where(a => a.ANNULLATO == false && a.IDUFFICIO == ibNew.IDUFFICIO)
+                    var recordInteressati = db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.IDDEFKM == ibNew.IDDEFKM)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
+
+
 
                     recordInteressati.ForEach(a => a.ANNULLATO = true);
                     //db.SaveChanges();
@@ -239,12 +242,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTESEDE()
+                                    var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDCFKM = item.IDCFKM,
+                                        IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
                                         DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
@@ -254,22 +258,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTESEDE()
+                                    var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
+                                        IDCFKM = item.IDCFKM,
+                                        IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
                                         DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new COEFFICIENTESEDE()
+                                    var ibOld2 = new COEFFICIENTEFKM()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
+                                        IDCFKM = item.IDCFKM,
+                                        IDDEFKM = item.IDDEFKM,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
                                         DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
@@ -288,12 +294,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTESEDE()
+                                    var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDCFKM = item.IDCFKM,
+                                        IDDEFKM = item.IDDEFKM,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
                                         DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
@@ -309,12 +316,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTESEDE()
+                                    var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDUFFICIO = item.IDUFFICIO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
+                                        IDCFKM = item.IDCFKM,
+                                        IDDEFKM = item.IDDEFKM,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORECOEFFICIENTE = item.VALORECOEFFICIENTE,
+                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
                                         DATAAGGIORNAMENTO = System.DateTime.Now,
                                         ANNULLATO = false
                                     };
@@ -327,18 +335,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.COEFFICIENTESEDE.AddRange(libNew);
+                        db.COEFFICIENTEFKM.AddRange(libNew);
                     }
                     else
                     {
-                        db.COEFFICIENTESEDE.Add(ibNew);
+                        db.COEFFICIENTEFKM.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di sede.", "COEFFICENTISEDE", ibNew.IDCOEFFICIENTESEDE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di coefficiente di fascia kilometerica.", "COEFFICIENTEFKM", ibNew.IDCFKM);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -351,21 +359,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(CoefficientiSedeModel ibm)
+        public bool EsistonoMovimentiPrima(CoeffFasciaKmModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.COEFFICIENTEFKM.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(CoefficientiSedeModel ibm)
+        public bool EsistonoMovimentiSuccessivi(CoeffFasciaKmModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEFKM.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -374,13 +382,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(CoefficientiSedeModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(CoeffFasciaKmModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEFKM.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -388,19 +396,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        public bool EsistonoMovimentiPrimaUguale(CoefficientiSedeModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(CoeffFasciaKmModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.COEFFICIENTEFKM.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
 
-        public void DelCoefficientiSede(decimal idCoefficienteSede)
+        public void DelCoeffFasciaKm(decimal idCfKm)
         {
-            COEFFICIENTESEDE precedenteIB = new COEFFICIENTESEDE();
-            COEFFICIENTESEDE delIB = new COEFFICIENTESEDE();
+            COEFFICIENTEFKM precedenteIB = new COEFFICIENTEFKM();
+            COEFFICIENTEFKM delIB = new COEFFICIENTEFKM();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -409,39 +416,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.COEFFICIENTESEDE.Where(a => a.IDCOEFFICIENTESEDE == idCoefficienteSede);
+                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDCFKM == idCfKm);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.COEFFICIENTESEDE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.COEFFICIENTEFKM.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new COEFFICIENTESEDE()
+                            var ibOld1 = new COEFFICIENTEFKM()
                             {
-                                IDCOEFFICIENTESEDE = precedenteIB.IDCOEFFICIENTESEDE,
-                                IDUFFICIO = precedenteIB.IDUFFICIO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                IDCFKM = precedenteIB.IDCFKM,
+                                IDDEFKM = precedenteIB.IDDEFKM,
+                                DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                VALORECOEFFICIENTE = precedenteIB.VALORECOEFFICIENTE,
+                                COEFFICIENTEKM = precedenteIB.COEFFICIENTEKM,
                                 DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
-                            
-                            db.COEFFICIENTESEDE.Add(ibOld1);
+
+                            db.COEFFICIENTEFKM.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro del coefficiente di sede.", "COEFFICENTISEDE", idCoefficienteSede);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coefficiente fascia km.", "COEFFICIENTEFKM", idCfKm);
                         }
 
 
