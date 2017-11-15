@@ -62,11 +62,11 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtMaggConiuge dtib = new dtMaggConiuge())
+                    @using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idMaggiorazioneConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaIndbase(@item.idPercentualeConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -123,7 +123,7 @@
 
     function PrelevaPVMaggConiuge() {
         //debugger;
-        rotta = "/Parametri/ParamMaggConiuge/MaggiorazioneConiugeLivello";
+        rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
 
         var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
         var chk = true;

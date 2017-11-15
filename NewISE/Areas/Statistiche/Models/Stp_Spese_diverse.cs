@@ -7,13 +7,13 @@ namespace NewISE.Areas.Statistiche.Models
 {
     public class Stp_Spese_diverse
     {
-        public string matricola { get; set; }
-        public string nominativo { get; set; }
-        public string codlivello { get; set; }
-        public string codsede { get; set; }
-        public string sede { get; set; }
-        public string data { get; set; }
-        public string vocedispesa { get; set; }
-        public string valuta { get; set; }
+        public string MATRICOLA { get; set; }
+        public string NOMINATIVO { get; set; }
+        public string LIVELLO { get; set; }
+        public string CODICE_SEDE { get; set; }
+        public string DESCRIZIONE_SEDE { get; set; }
+        public string DATA { get; set; }
+        public string VOCE_DI_SPESA { get; set; }
+        public string IMPORTO_VALUTA { get; set; }
     }
 }

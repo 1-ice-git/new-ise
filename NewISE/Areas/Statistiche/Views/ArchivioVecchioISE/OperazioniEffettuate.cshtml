@@ -7,41 +7,14 @@
 
 <div style="margin: 15px"></div>
 <div class="form-horizontal" id="divRiga1">
-
-     <div class="form-group">
-         <hr />
-
-         <div class="col-md-2">
-             @*@Html.TextBox("Data dal", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })*@
-             @*@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })*@
-         </div>
-         <div class="col-md-2">
-             @*@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })*@
-             @*@Html.TextBox("Data al", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @onchange = "PrelevaGigius(this.value);" })*@
-         </div>
-
-        @*@Html.Label("lblOperazione", "Selezionare su quale tabella effettuare la Ricerca ", new { @class = "control-label col-xs-2" })*@
+    <hr />
+    <div class="form-group">
+        @Html.Label("lblStampa", "Seleziona la Stampa per effettuare la Ricerca", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic" id="test">
                 @Html.DropDownList("idOperazione", ViewBag.OperazioniEffettuate as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();", @onclick = "prelevaPartiaViewStatistiche();" })
-                
             </div>
-           
         </div>
-    </div>
-
-</div>
-
-<div id="divContentpartial" class="row">
-    <div id="divPViewParametri" class="col-xs-12">
-
-    </div>
-</div>
-
-<div id="dialog-message" title="Attenzione!!!" style="display:none;">
-    <div>
-        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
-        <strong><span id="msgDialog"></span></strong>
     </div>
 </div>
 

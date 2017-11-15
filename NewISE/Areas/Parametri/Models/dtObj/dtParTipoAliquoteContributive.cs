@@ -28,8 +28,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     llm = (from e in ll
                            select new TipoAliquoteContributiveModel()
                            {
-                               codice = e.CODICE,
                                idTipoAliqContr = e.IDTIPOALIQCONTR,
+                               codice = e.CODICE,
+                               descrizione = e.DESCRIZIONE
                            }).ToList();
                 }
 
@@ -41,7 +42,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public TipoAliquoteContributiveModel GetTipoAliquote(decimal idAliqContr)
+        public TipoAliquoteContributiveModel GetTipoAliquote(decimal idTipoContributo)
         {
             TipoAliquoteContributiveModel lm = new TipoAliquoteContributiveModel();
 
@@ -49,14 +50,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idAliqContr);
+                    var liv = db.TIPOALIQUOTECONTRIBUTIVE.Find(idTipoContributo);
 
                     lm = new TipoAliquoteContributiveModel()
                     {
-                        
-                        codice =liv.CODICE,
-                        idTipoAliqContr = liv.IDTIPOALIQCONTR
-                        
+                        idTipoAliqContr = liv.IDTIPOALIQCONTR,
+                        codice = liv.CODICE,
+                        descrizione = liv.DESCRIZIONE
                     };
                 }
 

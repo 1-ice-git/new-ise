@@ -7,16 +7,17 @@ namespace NewISE.Areas.Statistiche.Models
 {
     public class Stp_Op_Spese_Diverse
     {
-
-        public string matricola { get; set; }
-        public string nominativo { get; set; }
-        public string sede { get; set; }
-        public string valuta { get; set; }
-        public string tipo_spesa { get; set; }
-        public string data_decorrenza { get; set; }
-        public string data_operazione { get; set; }
-        public string importo_spesa { get; set; }
-        public string partenza_rientro { get; set; }
-
+        public string MATRICOLA { get; set; }
+        public string NOMINATIVO { get; set; }
+        public string SEDE { get; set; }
+        public string DESCRIZIONE { get; set; }
+        public string TSP_DESCRIZIONE { get; set; }
+        public string SPD_DT_DECORRENZA { get; set; }
+        public string SPD_DT_OPERAZIONE { get; set; }
+        public string SPD_IMPORTO_LIRE { get; set; }
+        public string SPD_TIPO_MOVIMENTO { get; set; }
+        public string SPD_PROG_SPESA { get; set; }
+        public string SPD_PROG_TRASFERIMENTO { get; set; }
+        
     }
 }

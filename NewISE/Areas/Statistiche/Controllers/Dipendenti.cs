@@ -95,6 +95,14 @@ namespace NewISE.Areas.Statistiche.Controllers
                         {
                             cmd1.Connection.Open();
 
+                            // Ampoooo vuoto
+                            DipEsteroModel cm2 = new DipEsteroModel()
+                            {
+                                codicesede = "",
+                                descrizione = ""
+                            };
+                            lcm.Add(cm2);
+
                             using (OracleDataReader dr = cmd1.ExecuteReader(CommandBehavior.CloseConnection))
                             {
                                 if (dr.HasRows)

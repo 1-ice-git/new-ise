@@ -23,82 +23,65 @@
 
 <div class="form-group">
     <div class="col-md-3">
-        <a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza le Spese Diverse </a>
+        <a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>
     </div>
     <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>
+        <a href="#" target="_blank" onclick="invia()">Stampa il Consuntivo Spese di Avvicendamento </a>
     </div>
 </div>
 <br /><br />
 
 <table id="tb_Spese_Avvicendamento" class="display" cellspacing="0">
     <thead>
-        <tr>
-            @*<th>
-                @Html.DisplayNameFor(model => model.TIPO)
-            </th>*@
+        <tr>  
             <th>
                 @Html.DisplayNameFor(model => model.MATRICOLA)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NOMINATIVO)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.CODLIVELLO)
-            </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.CODSEDE)
+                @Html.DisplayNameFor(model => model.CODICE_SEDE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SEDE)
+                @Html.DisplayNameFor(model => model.DESCRIZIONE_SEDE)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VALUTA)
+                @Html.DisplayNameFor(model => model.DATA)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DT_TRASFERIMENTO)
-            </th>
-            @*<th>
                 @Html.DisplayNameFor(model => model.SPESA)
-            </th>*@
+            </th>
+            
             <th>
-                @Html.DisplayNameFor(model => model.IMPORTOSPESA)
+                @Html.DisplayNameFor(model => model.INDENITA_IN_VALUTA)
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
             {
-            <tr>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.TIPO)
-                </td>*@
+            <tr>          
                 <td>
                     @Html.DisplayFor(modelItem => item.MATRICOLA)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NOMINATIVO)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.CODLIVELLO)
-                </td>*@
                 <td>
-                    @Html.DisplayFor(modelItem => item.CODSEDE)
+                    @Html.DisplayFor(modelItem => item.CODICE_SEDE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SEDE)
+                    @Html.DisplayFor(modelItem => item.DESCRIZIONE_SEDE)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.VALUTA)
+                    @Html.DisplayFor(modelItem => item.DATA)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DT_TRASFERIMENTO)
-                </td>
-                @*<td>
                     @Html.DisplayFor(modelItem => item.SPESA)
-                </td>*@
+                </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IMPORTOSPESA)
+                    @Html.DisplayFor(modelItem => item.INDENITA_IN_VALUTA)
                 </td>
             </tr>
         }

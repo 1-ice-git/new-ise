@@ -2,12 +2,40 @@
 <xs:schema id="DataSet2" targetNamespace="http://tempuri.org/DataSet2.xsd" xmlns:mstns="http://tempuri.org/DataSet2.xsd" xmlns="http://tempuri.org/DataSet2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.ConnectionString.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
         </Connections>
-        <Tables />
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter" GeneratorDataComponentClassName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter" Name="V_OP_EFFETTUATE_CANONE_ANTI" UserDataComponentName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT NOMINATIVO, MATRICOLA, SEDE, VALUTA, DATA_DECORRENZA, DATA_LETTERA, DATA_OPERAZIONE, CAN_CANONE_ANNUO_VALUTA, CANONE, QUOTA_MENS, CAN_PROG_TRASFERIMENTO, CAN_PROG_CAN_ABITAZIONE FROM ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NOMINATIVO" DataSetColumn="NOMINATIVO" />
+              <Mapping SourceColumn="MATRICOLA" DataSetColumn="MATRICOLA" />
+              <Mapping SourceColumn="SEDE" DataSetColumn="SEDE" />
+              <Mapping SourceColumn="VALUTA" DataSetColumn="VALUTA" />
+              <Mapping SourceColumn="DATA_DECORRENZA" DataSetColumn="DATA_DECORRENZA" />
+              <Mapping SourceColumn="DATA_LETTERA" DataSetColumn="DATA_LETTERA" />
+              <Mapping SourceColumn="DATA_OPERAZIONE" DataSetColumn="DATA_OPERAZIONE" />
+              <Mapping SourceColumn="CAN_CANONE_ANNUO_VALUTA" DataSetColumn="CAN_CANONE_ANNUO_VALUTA" />
+              <Mapping SourceColumn="CANONE" DataSetColumn="CANONE" />
+              <Mapping SourceColumn="QUOTA_MENS" DataSetColumn="QUOTA_MENS" />
+              <Mapping SourceColumn="CAN_PROG_TRASFERIMENTO" DataSetColumn="CAN_PROG_TRASFERIMENTO" />
+              <Mapping SourceColumn="CAN_PROG_CAN_ABITAZIONE" DataSetColumn="CAN_PROG_CAN_ABITAZIONE" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
         <Sources />
       </DataSource>
     </xs:appinfo>

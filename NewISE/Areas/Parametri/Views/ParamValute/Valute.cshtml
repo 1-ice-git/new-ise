@@ -2,11 +2,11 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 <p>
-    <a id="btnInsNuovaValuta" href="#" onclick="NuovaValuta();">Inserisci Valuta</a>
+    <a id="btnInsNuovaValuta" href="#" onclick="NuoveValute();">Inserisci Valuta</a>
 </p>
 
 <p>
-    <div class="form-group">
+    <div class="form-group" style="visibility: hidden">
         @Html.Label("lblValuta0", "Seleziona Valuta", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
@@ -15,36 +15,40 @@
         </div>
     </div>
 </p>
+
+
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
+
             <th>
                 @Html.DisplayNameFor(model => model.descrizioneValuta)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.valutaUfficiale)
             </th>
-            
-            <th></th>
+
+            @*<th></th>*@
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.descrizioneValuta)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.valutaUfficiale)
                 </td>
-                <td style="text-align:center;">
-                    @using (dtValute dtib = new dtValute())
-                    {
-                        <a href="#" onclick="EliminaValuta(@item.idValuta );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                    }
+                @*<td style="text-align:center;display:none">
+                        @using (dtValute dtib = new dtValute())
+                        {
+                            <a href="#" onclick="EliminaValuta(@item.idValuta );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
 
-                </td>
+                    </td>*@
             </tr>
         }
     </tbody>
@@ -140,22 +144,13 @@
 
     }
 
-    function NuovaValuta() {
-        debugger;
+    function NuoveValute() {
+        //debugger;
 
         var rotta = "/Parametri/ParamValute/NuoveValute";
         var idValuta = parseInt($("#idValuta").select2('val'));
         var chk = false;
 
-        if (isNaN(idValuta)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare una valuta per procedere.");
-            return false;
-        }
-
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
 
         $.ajax({
             type: "POST",
@@ -163,23 +158,15 @@
             data: { idValuta: idValuta, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
+               //debugger;
+
             },
             success: function (result) {
                 //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#divPViewParametri").empty();
                 $("#divPViewParametri").html(result);
-
-                //RicercaDocumenti();
-
             },
             complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;

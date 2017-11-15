@@ -12,17 +12,20 @@
 
 <p>
     <div class="form-group">
-        @Html.Label("lblAliquota0", "Seleziona Aliquota ", new { @class = "control-label" })
+        @Html.Label("lblAliquota", "Seleziona Aliquota ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipoAliqContr", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
+                @Html.DropDownList("idTipoContributo", ViewBag.Aliquote as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
             </div>
         </div>
     </div>
 </p>
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbAliquota" class="display" cellspacing="0">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.descrizione.descrizione)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -45,7 +48,9 @@
         @foreach (var item in Model)
         {
             <tr>
-
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.descrizione.descrizione)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -62,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtParAliquoteContr dtib = new dtParAliquoteContr())
+                    @using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -111,8 +116,8 @@
         }
     });
 
-    $("#idTipoAliqContr").select2({
-        placeholder: "Seleziona l' Aliquota ",
+    $("#idTipoContributo").select2({
+        placeholder: "Seleziona Aliquota ",
         allowClear: true,
         language: "it",
         width: '150'
@@ -122,13 +127,13 @@
     $("#btnInsNuovaAliquota").button();
 
     function PrelevaPVAliquota() {
-        debugger;
+        //debugger;
         rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
 
-        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
+        var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
         var chk = true;
 
-        if (isNaN(idTipoAliqContr)) {
+        if (isNaN(idTipoContributo)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -140,7 +145,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
+            data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -175,12 +180,12 @@
         //debugger;
 
         var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
-        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
+        var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
         var chk = false;
 
-        if (isNaN(idTipoAliqContr)) {
+        if (isNaN(idTipoContributo)) {
             //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un livello per procedere.");
+            AlertDialog("Selezionare una aliquota per procedere.");
             return false;
         }
 
@@ -191,7 +196,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipoAliqContr: idTipoAliqContr, escludiAnnullati: chk },
+            data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -224,12 +229,12 @@
 
     function EliminaAliquota(id) {
         //debugger;
-        var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquota";
+        var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
 
-        var idTipoAliqContr = parseInt($("#idTipoAliqContr").select2('val'));
+        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
         var chk = true;
 
-        if (isNaN(idTipoAliqContr)) {
+        if (isNaN(idAliqContr)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -249,7 +254,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idTipoAliqContr: idTipoAliqContr, idAliqContr: id },
+                            data: { escludiAnnullati: chk, idTipoContributo: idTipoContributo, idAliqContr: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

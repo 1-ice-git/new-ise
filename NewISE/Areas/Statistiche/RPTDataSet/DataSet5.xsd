@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet5" targetNamespace="http://tempuri.org/DataSet5.xsd" xmlns:mstns="http://tempuri.org/DataSet5.xsd" xmlns="http://tempuri.org/DataSet5.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter" GeneratorDataComponentClassName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter" Name="V_OP_EFFETTUATE_CANONE_ANTI" UserDataComponentName="V_OP_EFFETTUATE_CANONE_ANTITableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT NOMINATIVO, MATRICOLA, SEDE, VALUTA, DATA_DECORRENZA, DATA_LETTERA, DATA_OPERAZIONE, CAN_CANONE_ANNUO_VALUTA, CANONE, QUOTA_MENS, CAN_PROG_TRASFERIMENTO, CAN_PROG_CAN_ABITAZIONE FROM ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NOMINATIVO" DataSetColumn="NOMINATIVO" />
+              <Mapping SourceColumn="MATRICOLA" DataSetColumn="MATRICOLA" />
+              <Mapping SourceColumn="SEDE" DataSetColumn="SEDE" />
+              <Mapping SourceColumn="VALUTA" DataSetColumn="VALUTA" />
+              <Mapping SourceColumn="DATA_DECORRENZA" DataSetColumn="DATA_DECORRENZA" />
+              <Mapping SourceColumn="DATA_LETTERA" DataSetColumn="DATA_LETTERA" />
+              <Mapping SourceColumn="DATA_OPERAZIONE" DataSetColumn="DATA_OPERAZIONE" />
+              <Mapping SourceColumn="CAN_CANONE_ANNUO_VALUTA" DataSetColumn="CAN_CANONE_ANNUO_VALUTA" />
+              <Mapping SourceColumn="CANONE" DataSetColumn="CANONE" />
+              <Mapping SourceColumn="QUOTA_MENS" DataSetColumn="QUOTA_MENS" />
+              <Mapping SourceColumn="CAN_PROG_TRASFERIMENTO" DataSetColumn="CAN_PROG_TRASFERIMENTO" />
+              <Mapping SourceColumn="CAN_PROG_CAN_ABITAZIONE" DataSetColumn="CAN_PROG_CAN_ABITAZIONE" />
+            </Mappings>
+            <Sources>
+              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI" DbObjectType="View" FillMethodModifier="Public" FillMethodName="FillBy" GenerateMethods="Both" GenerateShortCommands="true" GeneratorGetMethodName="GetDataBy" GeneratorSourceName="FillBy" GetMethodModifier="Public" GetMethodName="GetDataBy" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy" UserSourceName="FillBy">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        NOMINATIVO, MATRICOLA, SEDE, VALUTA, DATA_DECORRENZA, DATA_LETTERA, DATA_OPERAZIONE, CAN_CANONE_ANNUO_VALUTA, CANONE, QUOTA_MENS, CAN_PROG_TRASFERIMENTO, 
+                         CAN_PROG_CAN_ABITAZIONE
+FROM            ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </Sources>
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet5" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet5" msprop:Generator_UserDSName="DataSet5">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="V_OP_EFFETTUATE_CANONE_ANTI" msprop:Generator_TableClassName="V_OP_EFFETTUATE_CANONE_ANTIDataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_CANONE_ANTI" msprop:Generator_TablePropName="V_OP_EFFETTUATE_CANONE_ANTI" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_CANONE_ANTIRowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_CANONE_ANTIRowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_CANONE_ANTIRowDeleted" msprop:Generator_UserTableName="V_OP_EFFETTUATE_CANONE_ANTI" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_CANONE_ANTIRowChanged" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent" msprop:Generator_RowClassName="V_OP_EFFETTUATE_CANONE_ANTIRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="101" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="35" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATA_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATA_DECORRENZA" msprop:Generator_ColumnPropNameInRow="DATA_DECORRENZA" msprop:Generator_ColumnPropNameInTable="DATA_DECORRENZAColumn" msprop:Generator_UserColumnName="DATA_DECORRENZA" type="xs:dateTime" />
+              <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:dateTime" />
+              <xs:element name="CAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnVarNameInTable="columnCAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnPropNameInRow="CAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnPropNameInTable="CAN_CANONE_ANNUO_VALUTAColumn" msprop:Generator_UserColumnName="CAN_CANONE_ANNUO_VALUTA" type="xs:double" />
+              <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="QUOTA_MENS" msprop:Generator_ColumnVarNameInTable="columnQUOTA_MENS" msprop:Generator_ColumnPropNameInRow="QUOTA_MENS" msprop:Generator_ColumnPropNameInTable="QUOTA_MENSColumn" msprop:Generator_UserColumnName="QUOTA_MENS" type="xs:decimal" minOccurs="0" />
+              <xs:element name="CAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnCAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="CAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="CAN_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="CAN_PROG_TRASFERIMENTO" type="xs:short" />
+              <xs:element name="CAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnVarNameInTable="columnCAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnPropNameInRow="CAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnPropNameInTable="CAN_PROG_CAN_ABITAZIONEColumn" msprop:Generator_UserColumnName="CAN_PROG_CAN_ABITAZIONE" type="xs:short" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
