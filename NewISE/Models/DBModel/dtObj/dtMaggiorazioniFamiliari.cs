@@ -231,41 +231,41 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 //if (luam?.Any() ?? false)
                                 //{
-                                    foreach (var uam in luam)
+                                foreach (var uam in luam)
+                                {
+                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
                                     {
-                                        var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                        if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                        to = new Destinatario()
                                         {
-                                            to = new Destinatario()
-                                            {
-                                                Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                                EmailDestinatario = amministratore.EMAIL
-                                            };
+                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                            EmailDestinatario = amministratore.EMAIL
+                                        };
 
-                                            msgMail.destinatario.Add(to);
-                                        }
-
-
+                                        msgMail.destinatario.Add(to);
                                     }
 
-                                    //if (msgMail.destinatario?.Any() ?? false)
-                                    //{
 
-                                        msgMail.oggetto =
-                                            Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
-                                        msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari,
-                                                d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                                                tr.DATAPARTENZA.ToLongDateString(),
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
-                                        gmail.sendMail(msgMail);
-                                    //}
-                                    //else
-                                    //{
-                                        //throw new Exception(
-                                            //"Non è stato possibile inviare l'email. Nessun destinatario inserito.");
-                                    //}
+                                }
+
+                                //if (msgMail.destinatario?.Any() ?? false)
+                                //{
+
+                                msgMail.oggetto =
+                                    Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
+                                msgMail.corpoMsg =
+                                    string.Format(
+                                        Resources.msgEmail.MessaggioNotificaRichiestaMaggiorazioniFamiliari,
+                                        d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+                                        tr.DATAPARTENZA.ToLongDateString(),
+                                        u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+                                gmail.sendMail(msgMail);
+                                //}
+                                //else
+                                //{
+                                //throw new Exception(
+                                //"Non è stato possibile inviare l'email. Nessun destinatario inserito.");
+                                //}
 
                                 //}
                                 //else
@@ -422,22 +422,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     //if (luam?.Any() ?? false)
                                     //{
-                                        foreach (var uam in luam)
+                                    foreach (var uam in luam)
+                                    {
+                                        var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                        if (amministratore != null && amministratore.IDDIPENDENTE > 0)
                                         {
-                                            var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
-                                            if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                            cc = new Destinatario()
                                             {
-                                                cc = new Destinatario()
-                                                {
-                                                    Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
-                                                    EmailDestinatario = amministratore.EMAIL
-                                                };
+                                                Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                                EmailDestinatario = amministratore.EMAIL
+                                            };
 
-                                                msgMail.cc.Add(cc);
-                                            }
-
-
+                                            msgMail.cc.Add(cc);
                                         }
+
+
+                                    }
 
 
                                     //}
@@ -455,14 +455,14 @@ namespace NewISE.Models.DBModel.dtObj
                                     //if (msgMail.destinatario?.Any() ?? false)
                                     //{
 
-                                        msgMail.oggetto =
-                                            Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari;
-                                        msgMail.corpoMsg =
-                                            string.Format(
-                                                Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari,
-                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")",
-                                                tr.DATAPARTENZA.ToLongDateString());
-                                        gmail.sendMail(msgMail);
+                                    msgMail.oggetto =
+                                        Resources.msgEmail.OggettoAttivazioneMaggiorazioniFamiliari;
+                                    msgMail.corpoMsg =
+                                        string.Format(
+                                            Resources.msgEmail.MessaggioAttivazioneMaggiorazioniFamiliari,
+                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")",
+                                            tr.DATAPARTENZA.ToLongDateString());
+                                    gmail.sendMail(msgMail);
                                     //}
                                     //else
                                     //{
@@ -948,11 +948,19 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
+
+                var lamf =
+                    mf.ATTIVAZIONIMAGFAM.Where(
+                        e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
+                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+
+                //var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
 
                 if (lamf?.Any() ?? false)
                 {
-                    var amf = lamf.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
+                    var amf = lamf.First();
+
+
                     if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                     {
 

@@ -18,7 +18,7 @@ namespace NewISE.Controllers
     public class MaggiorazioniFamiliariController : Controller
     {
 
-        [NonAction]        
+        [NonAction]
         private bool SolaLettura(decimal idMaggiorazioniFamiliari)
         {
 
@@ -44,7 +44,6 @@ namespace NewISE.Controllers
 
                 if (richiestaAttivazione == true || attivazione == true)
                 {
-
                     solaLettura = true;
                 }
                 else
