@@ -49,7 +49,6 @@ namespace NewISE.EF
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual RICHIAMO RICHIAMO { get; set; }
@@ -67,5 +66,6 @@ namespace NewISE.EF
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
     }
 }
