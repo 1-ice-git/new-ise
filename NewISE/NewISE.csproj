@@ -1966,10 +1966,6 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtMaggAnnuali.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtMaggConiuge.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtMaggFigli.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
-    <Compile Include="Areas\Parametri\Models\dtObj\dtParTipologiaFiglio.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParAliquoteContr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffFasciaKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficientiSede.cs" />
