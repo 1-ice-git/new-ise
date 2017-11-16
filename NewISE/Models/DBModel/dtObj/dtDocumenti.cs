@@ -61,21 +61,33 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public IList<DocumentiModel> GetFormulariMaggiorazioniFamiliari(decimal idMaggiorazioniFamiliari)
+        public IList<DocumentiModel> GetFormulariMaggiorazioniFamiliariPartenza(decimal idMaggiorazioniFamiliari)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                var ld =
-                    mf.DOCUMENTI.Where(
-                        a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
-                        .OrderByDescending(a => a.IDDOCUMENTO);
-                if (ld?.Any() ?? false)
+
+                var lamf =
+                    mf.ATTIVAZIONIMAGFAM.Where(
+                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
+                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                if (lamf?.Any() ?? false)
                 {
-                    ldm.AddRange(ld.Select(d => this.GetDocumento(d.IDDOCUMENTO, db)));
+                    var amf = lamf.First();
+                    var ld =
+                        amf.DOCUMENTI.Where(
+                            a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                            .OrderByDescending(a => a.DATAINSERIMENTO);
+                    if (ld?.Any() ?? false)
+                    {
+                        ldm.AddRange(ld.Select(d => this.GetDocumento(d.IDDOCUMENTO, db)));
+                    }
+
+
                 }
+
 
             }
 
@@ -173,7 +185,23 @@ namespace NewISE.Models.DBModel.dtObj
                                 ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 break;
                             case EnumParentela.Richiedente:
-                                ld = db.MAGGIORAZIONIFAMILIARI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                //ld = db.MAGGIORAZIONIFAMILIARI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                var mf = db.MAGGIORAZIONIFAMILIARI.Find(id);
+                                var lamf =
+                                    mf.ATTIVAZIONIMAGFAM.Where(
+                                        a =>
+                                            (a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false &&
+                                             a.ATTIVAZIONEMAGFAM == false) ||
+                                            a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true)
+                                        .OrderByDescending(a => a.DATAAGGIORNAMENTO);
+                                foreach (var amf in lamf)
+                                {
+                                    var nld =
+                                        amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                                            .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                                    ld.AddRange(nld);
+                                }
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException("parentela");
@@ -452,10 +480,7 @@ namespace NewISE.Models.DBModel.dtObj
                         t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
                         break;
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-                        t =
-                            d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
-                                .First()
-                                .TRASFERIMENTO;
+                        t = d.ATTIVAZIONIMAGFAM.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                         break;
                     default:
                         t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
@@ -523,22 +548,36 @@ namespace NewISE.Models.DBModel.dtObj
 
             var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-            d.NOMEDOCUMENTO = dm.nomeDocumento;
-            d.ESTENSIONE = dm.estensione;
-            d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
-            d.DATAINSERIMENTO = dm.dataInserimento;
-            d.FILEDOCUMENTO = ms.ToArray();
-            mf.DOCUMENTI.Add(d);
-
-            if (db.SaveChanges() > 0)
+            var lamf =
+                mf.ATTIVAZIONIMAGFAM.Where(
+                    a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
+                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+            if (lamf?.Any() ?? false)
             {
-                dm.idDocumenti = d.IDDOCUMENTO;
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
+                var amf = lamf.First();
+
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+                amf.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
+                }
+                else
+                {
+                    throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
+                }
             }
             else
             {
                 throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
             }
+
 
         }
 
@@ -738,10 +777,7 @@ namespace NewISE.Models.DBModel.dtObj
                             t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
                             break;
                         case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-                            t =
-                                d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
-                                    .First()
-                                    .TRASFERIMENTO;
+                            t = d.ATTIVAZIONIMAGFAM.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Documento_Identita:
 
@@ -846,10 +882,7 @@ namespace NewISE.Models.DBModel.dtObj
                         t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
                         break;
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-                        t =
-                            d.MAGGIORAZIONIFAMILIARI.OrderByDescending(a => a.IDMAGGIORAZIONIFAMILIARI)
-                                .First()
-                                .TRASFERIMENTO;
+                        t = d.ATTIVAZIONIMAGFAM.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Documento_Identita:
 

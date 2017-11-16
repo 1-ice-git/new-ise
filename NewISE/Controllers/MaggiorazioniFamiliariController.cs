@@ -19,9 +19,8 @@ namespace NewISE.Controllers
     {
 
         [NonAction]
-        private bool SolaLettura(decimal idMaggiorazioniFamiliari)
+        private bool SolaLetturaPartenza(decimal idMaggiorazioniFamiliari)
         {
-
             bool solaLettura = false;
 
             using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
@@ -38,7 +37,7 @@ namespace NewISE.Controllers
                 bool docFormulario = false;
 
 
-                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                dtmf.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -59,7 +58,6 @@ namespace NewISE.Controllers
 
                 }
 
-
             }
 
             return solaLettura;
@@ -75,7 +73,7 @@ namespace NewISE.Controllers
         {
             bool solaLettura = false;
 
-            solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+            solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
 
             ViewData.Add("solaLettura", solaLettura);
             ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
@@ -91,12 +89,12 @@ namespace NewISE.Controllers
             {
 
                 bool solaLettura = false;
-                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
                 ViewData.Add("solaLettura", solaLettura);
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliariPartenza(idMaggiorazioniFamiliari).ToList();
                 }
             }
             catch (Exception ex)
@@ -127,7 +125,7 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliariPartenza(idMaggiorazioniFamiliari).ToList();
                 }
             }
             catch (Exception ex)
@@ -241,7 +239,7 @@ namespace NewISE.Controllers
                 amministratore = Utility.Amministratore();
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
-                    dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
                 }
@@ -330,7 +328,7 @@ namespace NewISE.Controllers
                     //ViewData.Add("callConiuge", false);
 
                     bool solaLettura = false;
-                    solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                    solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
                     ViewData.Add("solaLettura", solaLettura);
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
@@ -391,7 +389,7 @@ namespace NewISE.Controllers
                 }
 
                 bool solaLettura = false;
-                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
                 ViewData.Add("solaLettura", solaLettura);
 
 

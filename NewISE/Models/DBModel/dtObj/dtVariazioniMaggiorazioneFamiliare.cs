@@ -21,6 +21,157 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+
+        public void SituazioneMagFamVariazione(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
+                                       out bool richiestaAttivazione, out bool Attivazione,
+                                       out bool datiConiuge, out bool datiParzialiConiuge,
+                                       out bool datiFigli, out bool datiParzialiFigli,
+                                       out bool siDocConiuge, out bool siDocFigli,
+                                       out bool docFormulario)
+        {
+            rinunciaMagFam = false;
+            richiestaAttivazione = false;
+            Attivazione = false;
+            datiConiuge = false;
+            datiParzialiConiuge = false;
+            datiFigli = false;
+            datiParzialiFigli = false;
+            siDocConiuge = false;
+            siDocFigli = false;
+            docFormulario = false;
+
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+
+                if (lamf?.Any() ?? false)
+                {
+                    var amf = lamf.First();
+
+
+                    if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
+                    {
+
+                        var rmf =
+                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                .First();
+
+                        rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
+                        richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
+                        Attivazione = amf.ATTIVAZIONEMAGFAM;
+
+
+
+                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                        if (ld?.Any() ?? false)
+                        {
+                            docFormulario = true;
+                        }
+
+
+                        if (mf.CONIUGE != null)
+                        {
+                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            if (lc?.Any() ?? false)
+                            {
+                                datiConiuge = true;
+                                foreach (var c in lc)
+                                {
+                                    var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+
+                                    if (nadc > 0)
+                                    {
+                                        datiParzialiConiuge = false;
+                                    }
+                                    else
+                                    {
+                                        datiParzialiConiuge = true;
+                                        break;
+                                    }
+                                }
+
+                                foreach (var c in lc)
+                                {
+                                    var ndocc = c.DOCUMENTI.Count;
+
+                                    if (ndocc > 0)
+                                    {
+                                        siDocConiuge = true;
+                                    }
+                                    else
+                                    {
+                                        siDocConiuge = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                datiConiuge = false;
+                            }
+
+                        }
+
+                        if (mf.FIGLI != null)
+                        {
+                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+
+                            if (lf?.Any() ?? false)
+                            {
+                                datiFigli = true;
+                                foreach (var f in lf)
+                                {
+                                    var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+
+                                    if (nadf > 0)
+                                    {
+                                        datiParzialiFigli = false;
+                                    }
+                                    else
+                                    {
+                                        datiParzialiFigli = true;
+                                        break;
+                                    }
+                                }
+
+                                foreach (var f in lf)
+                                {
+                                    var ndocf = f.DOCUMENTI.Count;
+                                    if (ndocf > 0)
+                                    {
+                                        siDocFigli = true;
+                                    }
+                                    else
+                                    {
+                                        siDocFigli = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                datiFigli = false;
+                            }
+                        }
+                    }
+                }
+
+
+
+            }
+
+        }
+
+
+
+
+
+
+
         public void ModificaConiuge(ConiugeModel cm)
         {
             using (ModelDBISE db = new ModelDBISE())

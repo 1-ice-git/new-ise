@@ -204,7 +204,31 @@ namespace NewISE.Models.DBModel.dtObj
             return amfm;
         }
 
+        public void AssociaFormulario(decimal idAttivazioneFamiliare, decimal idDocumento, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.DOCUMENTI).Load();
+                var d = db.DOCUMENTI.Find(idDocumento);
+                amf.DOCUMENTI.Add(d);
 
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare il formulario per l'attivazione familiare.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         public void AssociaConiuge(decimal idAttivazioneFamiliare, decimal idConiuge, ModelDBISE db)
         {

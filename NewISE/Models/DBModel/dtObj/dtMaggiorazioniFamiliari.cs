@@ -104,7 +104,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             int i = 0;
 
-            this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+            this.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -746,6 +746,11 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             dtamf.AssociaFiglio(amfNew.IDATTIVAZIONEMAGFAM, f.IDFIGLI, db);
                                         }
+
+                                        foreach (var d in amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari))
+                                        {
+                                            dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
+                                        }
                                     }
                                 }
                                 else
@@ -808,7 +813,7 @@ namespace NewISE.Models.DBModel.dtObj
             bool docFormulario = false;
             int i = 0;
 
-            this.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+            this.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -926,7 +931,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void SituazioneMagFam(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
+        public void SituazioneMagFamPartenza(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
                                        out bool richiestaAttivazione, out bool Attivazione,
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
@@ -975,7 +980,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-                        var ld = mf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
                         if (ld?.Any() ?? false)
                         {
                             docFormulario = true;
