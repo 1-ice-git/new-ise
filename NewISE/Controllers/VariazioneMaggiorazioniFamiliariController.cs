@@ -32,7 +32,7 @@ namespace NewISE.Controllers
 
             bool solaLettura = false;
 
-            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+            using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
             {
                 bool rinunciaMagFam = false;
                 bool richiestaAttivazione = false;
@@ -46,7 +46,7 @@ namespace NewISE.Controllers
                 bool docFormulario = false;
 
 
-                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -1167,7 +1167,7 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
+                    //ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
                 }
             }
             catch (Exception ex)
