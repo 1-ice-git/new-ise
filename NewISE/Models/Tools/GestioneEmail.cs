@@ -56,7 +56,7 @@ namespace NewISE.Models.Tools
 
 
                 MailMessage messaggio = new MailMessage();
-                string NomeMittente = string.Empty;
+                //string NomeMittente = string.Empty;
 
                 if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
                 {

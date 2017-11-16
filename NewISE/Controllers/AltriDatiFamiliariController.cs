@@ -44,7 +44,7 @@ namespace NewISE.Controllers
 
                     bool solaLettura = false;
 
-                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamPartenza(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -316,7 +316,7 @@ namespace NewISE.Controllers
 
                     bool solaLettura = false;
 
-                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamPartenza(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 

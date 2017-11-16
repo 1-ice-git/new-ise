@@ -17,17 +17,14 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONIFAMILIARI()
         {
-            this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.FIGLI = new HashSet<FIGLI>();
             this.RINUNCIAMAGGIORAZIONIFAMILIARI = new HashSet<RINUNCIAMAGGIORAZIONIFAMILIARI>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
         }
     
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -36,6 +33,6 @@ namespace NewISE.EF
         public virtual ICollection<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
     }
 }
