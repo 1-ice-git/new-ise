@@ -12,10 +12,11 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idValuta { get; set; }
+
         [Required(ErrorMessage = "Il campo descrizione è richiesto.")]
         [Display(Name = "Descrizione")]
-        
         public string descrizioneValuta { get; set; }
+
         [Required(ErrorMessage = "Il campo valuta è richiesto.")]
         [Display(Name = "Valuta")]
         public bool valutaUfficiale { get; set; } 

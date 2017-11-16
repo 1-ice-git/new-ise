@@ -25,13 +25,14 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
+
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name = "Valore")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Valore resp.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F8")]
+        [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

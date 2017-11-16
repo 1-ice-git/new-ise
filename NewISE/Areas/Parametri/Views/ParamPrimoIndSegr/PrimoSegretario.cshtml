@@ -60,7 +60,7 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                @*<td style="text-align:center;">
+                <td style="text-align:center;">
                     @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
@@ -74,7 +74,7 @@
                     }
 
 
-                </td>*@
+                </td>
             </tr>
         }
     </tbody>
@@ -124,7 +124,7 @@
         //debugger;
         rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
 
-        var idIndPrimoSegr = parseInt($("#idIndPrimoSegr").select2('val'));
+        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
         var chk = true;
 
         if (isNaN(idIndPrimoSegr)) {
@@ -174,7 +174,7 @@
         //debugger;
 
         var rotta = "/Parametri/ParamPrimoIndSegr/NuovaIndennitaPrimoSegretario";
-        var idIndPrimoSegr = parseInt($("#idIndPrimoSegr").select2('val'));
+        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
         var chk = false;
 
         if (isNaN(idIndPrimoSegr)) {
@@ -225,7 +225,7 @@
         //debugger;
         var rotta = "/Parametri/ParamPrimoIndSegr/EliminaIndennitaPrimoSegretario";
 
-        var idIndPrimoSegr = parseInt($("#idIndPrimoSegr").select2('val'));
+        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
         var chk = true;
 
         if (isNaN(idIndPrimoSegr)) {

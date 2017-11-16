@@ -330,7 +330,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
                 catch (Exception ex)
                 {
-                    db.Database.CurrentTransaction.Rollback();
+                    db.Database.CurrentTransaction.Rollback(); 
                     throw ex;
                 }
             }
