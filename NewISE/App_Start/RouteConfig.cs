@@ -36,6 +36,10 @@ namespace NewISE
                 name: "LeggiDocumento",
                 url: "Documenti/LeggiDocumento/{id}"
             );
+            routes.MapRoute(
+                name: "CalendariEventi",
+                url: "CalendariEventi/index"
+            );
         }
     }
 }

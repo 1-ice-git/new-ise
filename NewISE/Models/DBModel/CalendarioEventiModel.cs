@@ -39,4 +39,5 @@ namespace NewISE.Models.DBModel
         public DateTime DataCompletato { get; set; }
         public bool Annullato { get; set; }
     }
+
 }

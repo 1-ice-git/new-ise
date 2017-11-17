@@ -12,9 +12,12 @@ namespace NewISE.App_Start
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.unobtrusive-*"));
+                        "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/bootstrap.js",
+                        "~/Scripts/bootstrap-modal.js*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery.unobtruisive*",
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(

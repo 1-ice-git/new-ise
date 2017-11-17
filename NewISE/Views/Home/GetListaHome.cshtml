@@ -68,8 +68,7 @@
                                     </td>
                                 </tr>
                             }
-                            else
-                            if (item.dataScadenza < DateTime.Now)
+                            else if (item.dataScadenza < DateTime.Now)
                             {
                                 <tr style="background-color: #CC3333; color:white">
                                     <td>
@@ -206,7 +205,7 @@
                     $('#myModal').modal('show');
                 },
                 error: function () {
-                    alert("Dynamic content load failed.");
+                    alert("Carico contenuti dinamici fallito.");
                 }
             });
         });

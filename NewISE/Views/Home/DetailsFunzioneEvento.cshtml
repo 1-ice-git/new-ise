@@ -7,20 +7,20 @@
     var errori = ViewData.ModelState;
 }
 
-<div>
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
 
     <div class="modal-header" align="center">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><b>x</b></button>
         <p><h1 id="myModalLabel" style="color:darkblue">@Html.DisplayFor(modelItem => modelItem.NomeFunzione)</h1></p>
     </div>
-        
-    <table id="tbelencocal" class="table"  style="font-size:18px">
+
+    <table id="tbelencocal" class="table" style="font-size:18px">
         <tr class="dl-horizontal">
             <td>
-                @Html.DisplayNameFor(model => model.Nominativo)                
+                @Html.DisplayNameFor(model => model.Nominativo)
             </td>
             <td>
-                 @Html.DisplayFor(modelItem => modelItem.Nominativo)
+                @Html.DisplayFor(modelItem => modelItem.Nominativo)
             </td>
         </tr>
         <tr class="dl-horizontal">
@@ -28,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.Trasferimento)
             </td>
             <td>
-                 @Html.DisplayFor(modelItem => modelItem.Trasferimento)
+                @Html.DisplayFor(modelItem => modelItem.Trasferimento)
             </td>
         </tr>
         <tr class="dl-horizontal">
