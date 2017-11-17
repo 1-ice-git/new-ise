@@ -8,6 +8,9 @@ using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
 using NewISE.Models.ModelRest;
 using NewISE.Models.Tools;
+using System.Diagnostics;
+using System.IO;
+
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
 
@@ -791,6 +794,122 @@ namespace NewISE.Models.DBModel.dtObj
                 //db.Database.CurrentTransaction.Rollback();
                 throw ex;
             }
+        }
+
+        public void PreSetAttivazioneVariazioneMaggiorazioniFamiliari(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+            {
+
+                RinunciaMaggiorazioniFamiliariModel rmfm = new RinunciaMaggiorazioniFamiliariModel()
+                {
+                    idMaggiorazioniFamiliari = idMaggiorazioniFamiliari,
+                    rinunciaMaggiorazioni = false,
+                    dataAggiornamento = DateTime.Now,
+                    annullato = false
+                };
+
+                dtmf.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
+            }
+
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel()
+            {
+                idMaggiorazioniFamiliari = idMaggiorazioniFamiliari,
+                richiestaAttivazione = false,
+                attivazioneMagFam = false,
+                dataAggiornamento = DateTime.Now,
+                annullato = false
+            };
+
+            using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+            {
+                dtamf.SetAttivaziomeMagFam(ref amfm, db);
+            }
+
+        }
+
+
+        public void SetFormularioVariazioneMaggiorazioniFamiliari(ref DocumentiModel dm, decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        {
+            MemoryStream ms = new MemoryStream();
+            DOCUMENTI d = new DOCUMENTI();
+
+            dm.file.InputStream.CopyTo(ms);
+
+            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+            var lamf =
+                mf.ATTIVAZIONIMAGFAM.Where(
+                    a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
+                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+            if (lamf?.Any() ?? false)
+            {
+                var amf = lamf.First();
+
+                d.NOMEDOCUMENTO = dm.nomeDocumento;
+                d.ESTENSIONE = dm.estensione;
+                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
+                d.DATAINSERIMENTO = dm.dataInserimento;
+                d.FILEDOCUMENTO = ms.ToArray();
+                amf.DOCUMENTI.Add(d);
+
+                if (db.SaveChanges() > 0)
+                {
+                    dm.idDocumenti = d.IDDOCUMENTO;
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
+                }
+            }
+            else
+            {
+                // se non trova attivazioni in corso ne crea una nuova
+                this.PreSetAttivazioneVariazioneMaggiorazioniFamiliari(idMaggiorazioniFamiliari, db);
+
+                // aggiunge il formulario
+                mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                lamf = mf.ATTIVAZIONIMAGFAM.Where(
+                        a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                if (lamf?.Any() ?? false)
+                {
+                    var amf = lamf.First();
+
+                    d.NOMEDOCUMENTO = dm.nomeDocumento;
+                    d.ESTENSIONE = dm.estensione;
+                    d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
+                    d.DATAINSERIMENTO = dm.dataInserimento;
+                    d.FILEDOCUMENTO = ms.ToArray();
+                    amf.DOCUMENTI.Add(d);
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        dm.idDocumenti = d.IDDOCUMENTO;
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
+                    }
+                }
+
+
+
+                // associa il formulario all'attivazioneMagFam
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                {
+                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(idMaggiorazioniFamiliari, db);
+
+                    dtamf.AssociaFormulario(amfm.idAttivazioneMagFam, dm.idDocumenti, db);
+
+                }
+
+                //throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
+            }
+
+            //else
+            //{
+            //    throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
+            //}
+
+
         }
 
 

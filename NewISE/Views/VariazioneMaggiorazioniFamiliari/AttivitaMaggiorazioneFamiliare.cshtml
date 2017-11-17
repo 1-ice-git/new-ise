@@ -23,8 +23,8 @@
                 </li>
             </ul>
         </div>
-        <div class="tab-content" id="tabContenutiVar" style="border:1px;border-color:red">
-            <div class="tab-content" id="tabFamiliari"></div>
+        <div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">
+            <div class="active tab-pane" id="tabFamiliari"></div>
             <div class="tab-pane" id="tabFormulari_Var"></div>
         </div>
     </div>
@@ -50,7 +50,7 @@
 
 
 
-<div class="modal fade" id="ModalNotificaRichiesta_var" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalNotificaRichiesta_Var" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -65,14 +65,14 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaNotifica_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiesta();">Procedi</button>
+                <button id="btConfermaNotifica_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiesta();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="ModalAttivaRichiesta_var" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAttivaRichiesta_Var" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -87,14 +87,14 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAttivazione_var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivazioneRichiesta();">Procedi</button>
+                <button id="btConfermaAttivazione_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivazioneRichiesta();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="ModalAnnullaRichiesta_var" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAnnullaRichiesta_Var" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -109,7 +109,7 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAnnulla_var" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
+                <button id="btConfermaAnnulla_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -118,7 +118,7 @@
 
 
 <script type="text/javascript">
-    $('#tabsAttivitaMaggiorazioniFamiliari_var').tab();
+    $('#tabsAttivitaMaggiorazioniFamiliari_Var').tab();
 
     ElencoFamiliari();
 
@@ -203,7 +203,7 @@
 
     function ModelAttivaRichiesta() {
         //debugger;
-        $('#ModalAttivaRichiesta_var').modal().show();
+        $('#ModalAttivaRichiesta_Var').modal().show();
     }
 
     function ConfermaAttivazioneRichiesta() {
@@ -245,12 +245,12 @@
 
     function ModelNotificaRichiesta() {
         //debugger;
-        $('#ModalNotificaRichiesta_var').modal().show();
+        $('#ModalNotificaRichiesta_Var').modal().show();
     }
 
     function ModalAnnullaRichiesta() {
         //debugger;
-        $('#ModalAnnullaRichiesta_var').modal().show();
+        $('#ModalAnnullaRichiesta_Var').modal().show();
     }
 
 
@@ -322,35 +322,35 @@
                     var siDocFigli = result.siDocFigli;
                     var docFormulario = result.docFormulario;
 
-                    $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                    $("#btAttivaMagFam_var").addClass("disabled");
+                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                    $("#btAttivaMagFam_Var").addClass("disabled");
 
-                    $("#btAnnullaMagFam_var").attr("disabled", "disabled");
-                    $("#btAnnullaMagFam_var").addClass("disabled");
+                    $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                    $("#btAnnullaMagFam_Var").addClass("disabled");
 
                     ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
                     if (rinuncia == true && richiesta == true) {
-                        $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                        $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
                         //$("#chkMagFamiliariR").attr('checked', true);
 
                         if (attivazione == true) {
-                            $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                            $("#btAttivaMagFam_var").addClass("disabled");
+                            $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                            $("#btAttivaMagFam_Var").addClass("disabled");
 
                             //$("#chkMagFamiliariSR").attr('checked', true);
 
                         } else {
                             if (admin == true) {
-                                $("#btAttivaMagFam_var").removeAttr("disabled");
-                                $("#btAttivaMagFam_var").removeClass("disabled");
+                                $("#btAttivaMagFam_Var").removeAttr("disabled");
+                                $("#btAttivaMagFam_Var").removeClass("disabled");
 
-                                $("#btAnnullaMagFam_var").removeAttr("disabled");
-                                $("#btAnnullaMagFam_var").removeClass("disabled");
+                                $("#btAnnullaMagFam_Var").removeAttr("disabled");
+                                $("#btAnnullaMagFam_Var").removeClass("disabled");
                             } else {
-                                $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                $("#btAttivaMagFam_var").addClass("disabled");
+                                $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                $("#btAttivaMagFam_Var").addClass("disabled");
                             }
 
                             //$("#chkMagFamiliariSR").attr('checked', false);
@@ -358,55 +358,55 @@
 
                     } else {
                         if (richiesta == true) {
-                            $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                            $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
                             //$("#chkMagFamiliariR").attr('checked', true);
 
                             if (attivazione == true) {
-                                $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                $("#btAttivaMagFam_var").addClass("disabled");
+                                $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                $("#btAttivaMagFam_Var").addClass("disabled");
 
                                 //$("#chkMagFamiliariSR").attr('checked', true);
 
                             } else {
                                 if (admin == true) {
-                                    $("#btAttivaMagFam_var").removeAttr("disabled");
-                                    $("#btAttivaMagFam_var").removeClass("disabled");
+                                    $("#btAttivaMagFam_Var").removeAttr("disabled");
+                                    $("#btAttivaMagFam_Var").removeClass("disabled");
 
-                                    $("#btAnnullaMagFam_var").removeAttr("disabled");
-                                    $("#btAnnullaMagFam_var").removeClass("disabled");
+                                    $("#btAnnullaMagFam_Var").removeAttr("disabled");
+                                    $("#btAnnullaMagFam_Var").removeClass("disabled");
                                 } else {
-                                    $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                    $("#btAttivaMagFam_var").addClass("disabled");
+                                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btAttivaMagFam_Var").addClass("disabled");
                                 }
                                 //$("#chkMagFamiliariSR").attr('checked', false);
                             }
                         } else {
                             if ((datiConiuge == true || datiFigli == true)) {
                                 if (datiParzialiConiuge == true || datiParzialiFigli == true) {
-                                    $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                    $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                    $("#btAttivaMagFam_var").addClass("disabled");
+                                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btAttivaMagFam_Var").addClass("disabled");
                                 } else {
                                     if (((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) && docFormulario == false) {
-                                        $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                                        $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                        $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                        $("#btAttivaMagFam_var").addClass("disabled");
+                                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                        $("#btAttivaMagFam_Var").addClass("disabled");
                                     } else {
                                         if ((datiConiuge == true || datiFigli == true) && docFormulario == false) {
-                                            $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                                            $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                            $("#btAttivaMagFam_var").attr("disabled", "disabled");
-                                            $("#btAttivaMagFam_var").addClass("disabled");
+                                            $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                            $("#btAttivaMagFam_Var").addClass("disabled");
                                         } else {
-                                            $("#btNotificaRichiestaMagFam_var").removeAttr("disabled");
-                                            $("#btNotificaRichiestaMagFam_var").removeClass("disabled");
+                                            $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
+                                            $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                                         }
 
                                         //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
@@ -416,14 +416,14 @@
 
                             } else {
                                 if (docFormulario == false) {
-                                    $("#btNotificaRichiestaMagFam_var").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam_var").removeClass("disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                                 } else {
-                                    $("#btNotificaRichiestaMagFam_var").attr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam_var").addClass("disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                    $("#btAnnullaMagFam_var").removeAttr("disabled");
-                                    $("#btAnnullaMagFam_var").removeClass("disabled");
+                                    $("#btAnnullaMagFam_Var").removeAttr("disabled");
+                                    $("#btAnnullaMagFam_Var").removeClass("disabled");
                                 }
 
                             }

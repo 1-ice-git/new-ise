@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-xs-3">
         <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
-            <button class="btn btn-default btn-sm" onclick=" DownloadFormulario(); ">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormulario();">
                 <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                 Download formulario
             </button>
@@ -16,7 +16,7 @@
     </div>
     <div class="col-xs-2">
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <button class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
+            <button class="btn btn-default btn-sm" onclick="NuovoFormulario();">
                 <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                 Inserisci formulario
             </button>
@@ -26,14 +26,14 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="divTabElencoFormulari_var">
+        <div id="divTabElencoFormulari_Var">
             @Html.Action("TabFormulariInseriti", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
         </div>
     </div>
 </div>
 
 
-<div class="modal fade" id="ModalDownloadFormulario_var" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
+<div class="modal fade" id="ModalDownloadFormulario_Var" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="ModalNuovoFormulario_var" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
+<div class="modal fade" id="ModalNuovoFormulario_Var" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,12 +64,12 @@
                 <h3 class="modal-title alert alert-info text-info" id="NuovoFormularioLabel">Nuovo Formulario Maggiorazioni Familiari</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <div id="divViewNuovoFormulario_var">
+                <div id="divViewNuovoFormulario_Var">
                     @*@Html.Action("ElencoFormulariInseriti", "MaggiorazioniFamiliari", new {idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari})*@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" SalvaDocumento(); ">Invia</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="SalvaDocumento();">Invia</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -81,7 +81,7 @@
 <script type="text/javascript">
 
     function DownloadFormulario() {
-        $('#ModalDownloadFormulario_var').modal().show();
+        $('#ModalDownloadFormulario_Var').modal().show();
     }
 
     function NuovoFormulario() {
@@ -100,12 +100,12 @@
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
-                $('#ModalNuovoFormulario_var').modal('show');
+                $('#ModalNuovoFormulario_Var').modal('show');
             },
             success: function (result) {
                 //debugger;
-                $("#divViewNuovoFormulario_var").empty();
-                $("#divViewNuovoFormulario_var").html(result);
+                $("#divViewNuovoFormulario_Var").empty();
+                $("#divViewNuovoFormulario_Var").html(result);
 
             },
             error: function (error) {
@@ -138,8 +138,8 @@
             },
             success: function (result) {
                 //debugger;
-                $("#divTabElencoFormulari_var").empty();
-                $("#divTabElencoFormulari_var").html(result);
+                $("#divTabElencoFormulari_Var").empty();
+                $("#divTabElencoFormulari_Var").html(result);
 
             },
             error: function (error) {
@@ -156,7 +156,7 @@
 
 
 
-    $("#ModalNuovoFormulario_var").on("hidden.bs.modal", function() {
+    $("#ModalNuovoFormulario_Var").on("hidden.bs.modal", function() {
         //debugger;
         TabElencoFormulari();
     });

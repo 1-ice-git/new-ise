@@ -2495,6 +2495,7 @@
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
+    <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
@@ -2601,6 +2602,9 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoImportoPensione.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
