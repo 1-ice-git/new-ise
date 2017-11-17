@@ -84,7 +84,7 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle percentuali maggiorazioni abitazioni.</a>
+        <a href="#" onclick="TornaElencoPercMaggAbitaz();">Torna all'elenco delle percentuali maggiorazioni abitazioni.</a>
     </div>
 </div>
 
@@ -140,7 +140,8 @@
         inline: true,
     });
 
-    function TornaElencoIb() {
+    function TornaElencoPercMaggAbitaz() {
+        debugger;
         rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";
 
         var idLivello = parseFloat('@idLivello');

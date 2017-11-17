@@ -36,11 +36,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Ufficio = new UfficiModel()
-                                //{
-                                //    idUfficio = e.UFFICI.IDUFFICIO,
-                                //    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                //}
+                                DescrizioneUfficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
                             }).ToList();
                 }
 
@@ -72,11 +72,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Ufficio = new UfficiModel()
-                                //{
-                                //    idUfficio = e.UFFICI.IDUFFICIO,
-                                //    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                //}
+                                DescrizioneUfficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
                             }).ToList();
                 }
 
@@ -108,11 +108,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Ufficio = new UfficiModel()
-                                //{
-                                //    idUfficio = e.UFFICI.IDUFFICIO,
-                                //    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                //}
+                                DescrizioneUfficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
                             }).ToList();
                 }
 
@@ -144,11 +144,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //Ufficio = new UfficiModel()
-                                //{
-                                //    idUfficio = e.UFFICI.IDUFFICIO,
-                                //    DescUfficio = e.UFFICI.DESCRIZIONEUFFICIO
-                                //}
+                                DescrizioneUfficio = new UfficiModel()
+                                {
+                                    idUfficio = e.UFFICI.IDUFFICIO,
+                                    descUfficio = e.UFFICI.DESCRIZIONEUFFICIO
+                                }
                             }).ToList();
                 }
 

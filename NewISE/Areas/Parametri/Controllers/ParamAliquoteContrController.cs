@@ -52,7 +52,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.Aliquote = r;
                 }
 
-                using (dtParAliquoteContr dtib = new dtParAliquoteContr())
+                using (dtAliquoteContr dtib = new dtAliquoteContr())
                 {
                     if (escludiAnnullati)
                     {
@@ -157,7 +157,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParAliquoteContr dtib = new dtParAliquoteContr())
+                    using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
 
                         dtib.SetAliquoteContributive(ibm);

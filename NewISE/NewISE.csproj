@@ -1493,7 +1493,6 @@
     <Content Include="Areas\Parametri\Views\ParamRiduzioni\NuoveRiduzioni.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamFasciaKm\NuovaFasciaKm.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamPrimoIndSegr\NuovaIndennitaPrimoSegretario.cshtml" />
-    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamValute\NuoveValute.cshtml" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\bower.json" />
     <Content Include="Componenti\bootstrap-checkbox-1.4.0\composer.json" />
@@ -1551,6 +1550,9 @@
       <DependentUpon>AAAA.xsd</DependentUpon>
     </Content>
     <Content Include="Areas\Parametri\Views\CoefficientiSede\NuovoCoefficienteSede.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggiorazioneAbitazione.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamTFR\NuovoTFR.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamTFR\TFR.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -1931,6 +1933,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />

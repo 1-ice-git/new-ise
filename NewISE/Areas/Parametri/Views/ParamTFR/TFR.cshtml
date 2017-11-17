@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.PercentualeMagConiugeModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.TFRModel>
+
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -7,22 +8,25 @@
 }
 
 <p>
-    <a id="btnInsNuovaMaggConiuge" href="#" onclick="NuovaMaggiorazioneConiuge();">Inserisci Percentuale Maggiorazione Coniuge</a>
+    <a id="btnInsNuovoTfr" href="#" onclick="NuovoTFR();">Inserisci Nuovo TFR </a>
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblTipologiaConiuge0", "Seleziona Tipologia Coniuge", new { @class = "control-label" })
+        @Html.Label("lblidValuta", "Seleziona Valuta", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipologiaConiuge", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVMaggConiuge();", @onClick = "PrelevaPVMaggConiuge();" })
+                @Html.DropDownList("idValuta", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVTfr();", @onClick = "PrelevaPVTfr();" })
             </div>
         </div>
     </div>
 </p>
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbValuta" class="display" cellspacing="0">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DescrizioneValuta.descrizioneValuta)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -30,13 +34,13 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.percentualeConiuge)
+                @Html.DisplayNameFor(model => model.tassoCambio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.annullato)
+                @Html.DisplayNameFor(model => model.Annullato)
             </th>
             <th></th>
         </tr>
@@ -45,28 +49,30 @@
         @foreach (var item in Model)
         {
             <tr>
-               
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescrizioneValuta.descrizioneValuta)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentualeConiuge)
+                <td>
+                    @Html.DisplayFor(modelItem => item.tassoCambio)
                 </td>
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.annullato)
+                    @Html.DisplayFor(modelItem => item.Annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtParMaggConiuge dtib = new dtParMaggConiuge())
+                    @using (dtTfr dtib = new dtTfr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idPercentualeConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaTFR(@item.idTFR );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -80,8 +86,8 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina maggiorazione coniuge?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della maggiorazione coniuge?</p>
+<div id="dialog-confirm" title="Elimina Tfr?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del Tfr?</p>
 </div>
 
 <script type="text/javascript">
@@ -111,24 +117,24 @@
         }
     });
 
-    $("#idTipologiaConiuge").select2({
-        placeholder: "Seleziona la Tipologia Coniuge ",
+    $("#idValuta").select2({
+        placeholder: "Seleziona valuta",
         allowClear: true,
         language: "it",
         width: '150'
 
     });
 
-    $("#btnInsNuovaMaggConiuge").button();
+    $("#btnInsNuovoTfr").button();
 
-    function PrelevaPVMaggConiuge() {
+    function PrelevaPVTfr() {
         //debugger;
-        rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
+        rotta = "/Parametri/ParamTFR/TfrLivello";
 
-        var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
+        var idValuta = parseInt($("#idValuta").select2('val'));
         var chk = true;
 
-        if (isNaN(idTipologiaConiuge)) {
+        if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -140,7 +146,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipologiaConiuge: idTipologiaConiuge, escludiAnnullati: chk },
+            data: { idValuta: idValuta, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -171,16 +177,16 @@
 
     }
 
-    function NuovaMaggiorazioneConiuge() {
+    function NuovoTFR() {
         //debugger;
 
-        var rotta = "/Parametri/ParamMaggConiuge/NuovaPercMaggiorazioneConiuge";
-        var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
+        var rotta = "/Parametri/ParamTFR/NuovoTFR";
+        var idValuta = parseInt($("#idValuta").select2('val'));
         var chk = false;
 
-        if (isNaN(idTipologiaConiuge)) {
+        if (isNaN(idValuta)) {
             //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare la tipologia coniuge per procedere.");
+            AlertDialog("Selezionare una valuta per procedere.");
             return false;
         }
 
@@ -191,7 +197,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipologiaConiuge: idTipologiaConiuge, escludiAnnullati: chk },
+            data: { idValuta: idValuta, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -222,14 +228,14 @@
 
     }
 
-    function EliminaMaggiorazioneConiuge(id) {
+    function EliminaTFR(id) {
         //debugger;
-        var rotta = "/Parametri/ParamMaggConiuge/EliminaMaggiorazioneConiuge";
+        var rotta = "/Parametri/ParamTFR/EliminaTFR";
 
-        var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
+        var idValuta = parseInt($("#idValuta").select2('val'));
         var chk = true;
 
-        if (isNaN(idTipologiaConiuge)) {
+        if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -249,7 +255,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idTipologiaConiuge: idTipologiaConiuge, idMaggConiuge: id },
+                            data: { escludiAnnullati: chk, idValuta: idValuta, idTFR: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

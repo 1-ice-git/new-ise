@@ -178,7 +178,8 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.Descrizione = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    return PartialView("NuovaPercentualeDisagio", ibm);
+                    return PartialView("NuovaMaggiorazioneAnnuale", ibm);
+                
                 }
             }
             catch (Exception ex)

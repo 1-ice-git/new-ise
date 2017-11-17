@@ -50,7 +50,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParMaggConiuge dtib = new dtParMaggConiuge())
+                using (dtMaggConiuge dtib = new dtMaggConiuge())
                 {
                     if (escludiAnnullati)
                     {
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParMaggConiuge dtib = new dtParMaggConiuge())
+                using (dtMaggConiuge dtib = new dtMaggConiuge())
                 {
                     if (escludiAnnullati)
                     {
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParMaggConiuge dtib = new dtParMaggConiuge())
+                    using (dtMaggConiuge dtib = new dtMaggConiuge())
                     {
                         dtib.SetPercMagConiuge(ibm);
                     }

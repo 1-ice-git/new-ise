@@ -25,12 +25,12 @@
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
+                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "", @onClick = "" })
             </div>
         </div>
     </div>
 </p>
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbPercMaggAbitaz" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -103,34 +103,42 @@
 </div>
 
 <script type="text/javascript">
-    //$('.display').DataTable({
-    //    "language": {
-    //        "sEmptyTable": "Nessun dato presente nella tabella",
-    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-    //        "sInfoPostFix": "",
-    //        "sInfoThousands": ".",
-    //        "sLengthMenu": "Visualizza _MENU_ elementi",
-    //        "sLoadingRecords": "Caricamento...",
-    //        "sProcessing": "Elaborazione...",
-    //        "sSearch": "Cerca:",
-    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-    //        "oPaginate": {
-    //            "sFirst": "Inizio",
-    //            "sPrevious": "Precedente",
-    //            "sNext": "Successivo",
-    //            "sLast": "Fine"
-    //        },
-    //        "oAria": {
-    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-    //        }
-    //    }
-    //});
+    $('.display').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
 
     $("#idLivello").select2({
         placeholder: "Seleziona il livello",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona l' Ufficio",
         allowClear: true,
         language: "it",
         width: '150'
@@ -144,9 +152,15 @@
         rotta = "/Parametri/ParamPercMaggAbitaz/MaggiorazioneAbitazioneLivello";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = true;
 
         if (isNaN(idLivello)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -158,7 +172,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
+            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

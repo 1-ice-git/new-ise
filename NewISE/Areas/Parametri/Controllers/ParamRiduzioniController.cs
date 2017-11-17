@@ -15,58 +15,57 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult Riduzioni(bool escludiAnnullati, decimal idRiduzioni = 0)
+        public ActionResult Riduzioni(bool escludiAnnullati, decimal idRegola = 0)
         {
             List<RiduzioniModel> libm = new List<RiduzioniModel>();
             var r = new List<SelectListItem>();
-            List<RiduzioniModel> llm1 = new List<RiduzioniModel>();
+            List<RegoleCalcoloModel> llm = new List<RegoleCalcoloModel>();
 
             try
             {
-                using (dtParRiduzioni dtl = new dtParRiduzioni())
+                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
                 {
-                    llm1 = dtl.GetRiduzioni().OrderBy(a => a.percentuale).ToList();
+                    llm = dtl.GetRegoleCalcolo().OrderBy(a => a.formulaRegolaCalcolo).ToList();
 
-                    if (llm1 != null && llm1.Count > 0)
+                    if (llm != null && llm.Count > 0)
                     {
-                        r = (from t in llm1
+                        r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.percentuale.ToString(),
-                                 Value = t.idRiduzioni.ToString()
-
+                                 Text = t.formulaRegolaCalcolo,
+                                 Value = t.idRegola.ToString()
                              }).ToList();
 
-                        if (idRiduzioni == 0)
+                        if (idRegola == 0)
                         {
                             r.First().Selected = true;
-                            idRiduzioni = Convert.ToDecimal(r.First().Value);
+                            idRegola = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
+                            r.Where(a => a.Value == idRegola.ToString()).First().Selected = true;
                         }
                     }
 
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParRiduzioni dtib = new dtParRiduzioni())
+                using (dtRiduzioni dtib = new dtRiduzioni())
                 {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListRiduzioni(idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListRiduzioni(idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListRiduzioni(idRiduzioni).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListRiduzioni(idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -76,49 +75,48 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult RiduzioniLivello(decimal idRiduzioni, bool escludiAnnullati)
+        public ActionResult RiduzioniLivello(decimal idRegola, bool escludiAnnullati)
         {
             List<RiduzioniModel> libm = new List<RiduzioniModel>();
             var r = new List<SelectListItem>();
-            List<RiduzioniModel> llm1 = new List<RiduzioniModel>();
+            List<RegoleCalcoloModel> llm = new List<RegoleCalcoloModel>();
 
             try
             {
-                using (dtParRiduzioni dtl = new dtParRiduzioni())
+                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
                 {
-                    llm1 = dtl.GetRiduzioni().OrderBy(a => a.percentuale).ToList();
+                    llm = dtl.GetRegoleCalcolo().OrderBy(a => a.formulaRegolaCalcolo).ToList();
 
-                    if (llm1 != null && llm1.Count > 0)
+                    if (llm != null && llm.Count > 0)
                     {
-                        r = (from t in llm1
+                        r = (from t in llm
                              select new SelectListItem()
                              {
-
-                                 Text = t.percentuale.ToString(),
-                                 Value = t.idRiduzioni.ToString()
+                                 Text = t.formulaRegolaCalcolo,
+                                 Value = t.idRegola.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
+                        r.Where(a => a.Value == idRegola.ToString()).First().Selected = true;
                     }
 
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParRiduzioni dtib = new dtParRiduzioni())
+                using (dtRiduzioni dtib = new dtRiduzioni())
                 {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListRiduzioni(llm1.Where(a => a.idRiduzioni == idRiduzioni).First().idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListRiduzioni(llm1.Where(a => a.idRiduzioni == idRiduzioni).First().idRiduzioni).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -127,30 +125,29 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuoveRiduzioni(decimal idRiduzioni, bool escludiAnnullati)
+        public ActionResult NuoveRiduzioni(decimal idRegola, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
 
-
             try
             {
-                using (dtParRiduzioni dtl = new dtParRiduzioni())
+                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
                 {
-                    var lm = dtl.GetRiduzioni(idRiduzioni);
-                    ViewBag.percentuale = lm;
+                    var lm = dtl.GetRegoleCalcolo(idRegola);
+                    ViewBag.FormulaRegolaCalcolo = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciRiduzioni(RiduzioniModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciRiduzione(RiduzioniModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -158,21 +155,20 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParRiduzioni dtib = new dtParRiduzioni())
+                    using (dtRiduzioni dtib = new dtRiduzioni())
                     {
-
 
                         dtib.SetRiduzioni(ibm);
                     }
 
-                    return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRiduzioni = ibm.idRiduzioni });
+                    return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRegola = ibm.idRegola });
                 }
                 else
                 {
-                    using (dtParRiduzioni dtl = new dtParRiduzioni())
+                    using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
                     {
-                        var lm = dtl.GetRiduzioni(ibm.idRiduzioni);
-                        ViewBag.percentuale = lm;
+                        var lm = dtl.GetRegoleCalcolo(ibm.idRegola);
+                        ViewBag.FormulaRegolaCalcolo = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuoveRiduzioni", ibm);
@@ -180,31 +176,33 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaRiduzioni(bool escludiAnnullati, decimal idRiduzioni)
+        public ActionResult EliminaRiduzione(bool escludiAnnullati, decimal idRegola, decimal idRiduzioni)
         {
 
             try
             {
-                using (dtParRiduzioni dtib = new dtParRiduzioni())
+                using (dtRiduzioni dtib = new dtRiduzioni())
                 {
                     dtib.DelRiduzioni(idRiduzioni);
                 }
 
-                return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRiduzioni = idRiduzioni });
+                return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRegola = idRegola });
             }
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
 
         }
+
+
     }
 }

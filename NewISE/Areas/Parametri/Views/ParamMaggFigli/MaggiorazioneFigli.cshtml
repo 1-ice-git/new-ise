@@ -1,4 +1,6 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.MaggiorazioneFigliModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.MaggiorazioniFigliModel>
+
+
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -66,7 +68,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idMaggiorazioneFigli );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idMaggiorazioneFigli);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {

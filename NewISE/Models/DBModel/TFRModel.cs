@@ -44,9 +44,8 @@ namespace NewISE.Models.DBModel
             return idTFR > 0 ? true : false;
         }
 
+        //public ValuteModel Valute { get; set; }
 
-        public ValuteModel Valute { get; set; }
-
-
+        public ValuteModel DescrizioneValuta { get; set; }
     }
 }

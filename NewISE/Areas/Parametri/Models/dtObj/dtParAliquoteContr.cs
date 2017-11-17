@@ -200,7 +200,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 IDALIQCONTR = ibm.idAliqContr,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Utility.DataFineStop(),
+                                //DATAFINEVALIDITA = Utility.DataFineStop(),
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 ALIQUOTA = ibm.aliquota,
                                 ANNULLATO = ibm.annullato
                             };
@@ -213,7 +214,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             IDALIQCONTR = ibm.idAliqContr,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Utility.DataFineStop(),
+                            //DATAFINEVALIDITA = Utility.DataFineStop(),
+                            DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                             ALIQUOTA = ibm.aliquota,
                             ANNULLATO = ibm.annullato
                         };

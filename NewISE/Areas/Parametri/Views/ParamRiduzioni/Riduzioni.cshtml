@@ -12,19 +12,19 @@
 
 <p>
     <div class="form-group">
-        @Html.Label("lblRiduzioni0", "Seleziona Riduzione", new { @class = "control-label" })
+        @Html.Label("lblRiduzioni", "Seleziona Riduzione", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idRiduzioni", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVRiduzioni();", @onClick = "PrelevaPVRiduzioni();" })
+                @Html.DropDownList("idRegola", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVRiduzioni();", @onClick = "PrelevaPVRiduzioni();" })
             </div>
         </div>
     </div>
 </p>
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbRiduzioni" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.idRiduzioni)
+                @Html.DisplayNameFor(model => model.RegolaCalcolo.formulaRegolaCalcolo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -48,8 +48,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idRiduzioni)
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.RegolaCalcolo.formulaRegolaCalcolo)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -71,7 +71,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaIndbase(@item.idRiduzioni );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaRiduzione(@item.idRiduzioni );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -112,15 +112,15 @@
             "oAria": {
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
+            },
         }
     });
 
-    $("#idRiduzioni").select2({
+    $("#idRegola").select2({
         placeholder: "Seleziona Riduzioni",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '1000'
 
     });
 
@@ -130,10 +130,10 @@
         //debugger;
         rotta = "/Parametri/ParamRiduzioni/RiduzioniLivello";
 
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
+        var idRegola = parseInt($("#idRegola").select2('val'));
         var chk = true;
 
-        if (isNaN(idRiduzioni)) {
+        if (isNaN(idRegola)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -145,7 +145,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
+            data: { idRegola: idRegola, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -180,12 +180,12 @@
         debugger;
 
         var rotta = "/Parametri/ParamRiduzioni/NuoveRiduzioni";
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
+        var idRegola = parseInt($("#idRegola").select2('val'));
         var chk = false;
 
-        if (isNaN(idRiduzioni)) {
+        if (isNaN(idRegola)) {
             //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare una riduzioni per procedere.");
+            AlertDialog("Selezionare una riduzione per procedere.");
             return false;
         }
 
@@ -196,7 +196,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
+            data: { idRegola: idRegola, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -227,14 +227,14 @@
 
     }
 
-    function EliminaRiduzioni(id) {
+    function EliminaRiduzione(id) {
         //debugger;
-        var rotta = "/Parametri/ParamRiduzioni/EliminaRiduzioni";
+        var rotta = "/Parametri/ParamRiduzioni/EliminaRiduzione";
 
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
+        var idRegola = parseInt($("#idRegola").select2('val'));
         var chk = true;
 
-        if (isNaN(idRiduzioni)) {
+        if (isNaN(idRegola)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -254,7 +254,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idRiduzioni: idRiduzioni, idRiduzioni: id },
+                            data: { escludiAnnullati: chk, idRegola: idRegola, idRiduzioni: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

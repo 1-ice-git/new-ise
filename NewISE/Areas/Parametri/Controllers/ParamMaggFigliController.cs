@@ -51,7 +51,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParMaggFigli dtib = new dtParMaggFigli())
+                using (dtMaggFigli dtib = new dtMaggFigli())
                 {
                     if (escludiAnnullati)
                     {
@@ -102,7 +102,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
-                using (dtParMaggFigli dtib = new dtParMaggFigli())
+                using (dtMaggFigli dtib = new dtMaggFigli())
                 {
                     if (escludiAnnullati)
                     {
@@ -187,7 +187,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParMaggFigli dtib = new dtParMaggFigli())
+                using (dtMaggFigli dtib = new dtMaggFigli())
                 {
                     dtib.DelMaggiorazioneFiglio(idMaggFiglio);
                 }

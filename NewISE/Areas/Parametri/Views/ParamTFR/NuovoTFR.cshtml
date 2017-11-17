@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.PercentualeMagConiugeModel
+﻿@model NewISE.Models.DBModel.TFRModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -8,15 +8,13 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-
-    TipologiaConiugeModel lm = (TipologiaConiugeModel)ViewBag.Coniuge;
-    string tipologiaConiuge = lm.tipologiaConiuge;
+    ValuteModel lm = (ValuteModel)ViewBag.DescrizioneValuta;
+    string DescrizioneValuta = lm.descrizioneValuta;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipologiaConiuge = lm.idTipologiaConiuge;
-
+    decimal idValuta = lm.idValuta;
 }
 
-@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciTFR", "ParamTFR", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,17 +26,25 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idTipologiaConiuge)
+        @Html.HiddenFor(model => model.idValuta)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
-                <label>Livello </label>
+                <label>Valuta </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaConiuge</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@DescrizioneValuta</label>
                 </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.tassoCambio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.tassoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.tassoCambio, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -57,15 +63,6 @@
                 @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group ">
-            @Html.LabelFor(model => model.percentualeConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.percentualeConiuge, new { htmlAttributes = new { @class = "form-control number" } })
-                @Html.ValidationMessageFor(model => model.percentualeConiuge, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
         
 
         <div class="form-group">
@@ -78,26 +75,19 @@
 
 <div class="row">
     <div class="col-xs-offset-2 col-xs-10">
-        <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle maggiorazioni coniuge.</a>
+        <a href="#" onclick="TornaElencoIb();">Torna all'elenco del TFR.</a>
     </div>
 </div>
 
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    //$("#percentualeConiuge").autoNumeric('init',
-	//{
-	//    aSep: '.',
-	//    aDec: ',',
-	//    aSign: ''
-	//});
-
-    //$("#valoreResponsabile").autoNumeric('init',
-	//{
-	//    aSep: '.',
-	//    aDec: ',',
-	//    aSign: ''
-	//});
+    $("#tassocambio").autoNumeric('init',
+	{
+	    aSep: '.',
+	    aDec: ',',
+	    aSign: ''
+	});
 
     $('form').submit(function () {
         //debugger;
@@ -135,12 +125,12 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
+        rotta = "/Parametri/ParamTFR/TfrLivello";
 
-        var idTipologiaConiuge = parseFloat('@idTipologiaConiuge');
+        var idValuta = parseFloat('@idValuta');
         var chk = true;
 
-        if (isNaN(idTipologiaConiuge)) {
+        if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
@@ -152,7 +142,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTipologiaConiuge: idTipologiaConiuge, escludiAnnullati: chk },
+            data: { idValuta: idValuta, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

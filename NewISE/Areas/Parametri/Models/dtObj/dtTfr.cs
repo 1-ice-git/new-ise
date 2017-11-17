@@ -35,12 +35,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new TFRModel().dataFineValidita,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Annullato = e.ANNULLATO,
-                                //DescrizioneValuta = new ValuteModel()
-                                //{
-                                //    idValuta = e.VALUTE.IDVALUTA,
-                                //    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
-                                //    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
-                                //}
+                                DescrizioneValuta = new ValuteModel()
+                                {
+                                    idValuta = e.VALUTE.IDVALUTA,
+                                    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
+                                    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
+                                }
                             }).ToList();
                 }
 
@@ -71,12 +71,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new TFRModel().dataFineValidita,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Annullato = e.ANNULLATO,
-                                //DescrizioneValuta = new ValuteModel()
-                                //{
-                                //    idValuta = e.VALUTE.IDVALUTA,
-                                //    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
-                                //    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
-                                //}
+                                DescrizioneValuta = new ValuteModel()
+                                {
+                                    idValuta = e.VALUTE.IDVALUTA,
+                                    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
+                                    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
+                                }
                             }).ToList();
                 }
 
@@ -107,12 +107,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new TFRModel().dataFineValidita,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Annullato = e.ANNULLATO,
-                                //DescrizioneValuta = new ValuteModel()
-                                //{
-                                //    idValuta = e.VALUTE.IDVALUTA,
-                                //    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
-                                //    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
-                                //}
+                                DescrizioneValuta = new ValuteModel()
+                                {
+                                    idValuta = e.VALUTE.IDVALUTA,
+                                    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
+                                    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
+                                }
                             }).ToList();
                 }
 
@@ -143,12 +143,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new TFRModel().dataFineValidita,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 Annullato = e.ANNULLATO,
-                                //DescrizioneValuta = new ValuteModel()
-                                //{
-                                //    idValuta = e.VALUTE.IDVALUTA,
-                                //    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
-                                //    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
-                                //}
+                                DescrizioneValuta = new ValuteModel()
+                                {
+                                    idValuta = e.VALUTE.IDVALUTA,
+                                    descrizioneValuta = e.VALUTE.DESCRIZIONEVALUTA,
+                                    valutaUfficiale = e.VALUTE.VALUTAUFFICIALE
+                                }
                             }).ToList();
                 }
 

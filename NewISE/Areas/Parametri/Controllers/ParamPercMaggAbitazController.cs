@@ -23,7 +23,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParLivelli dtl = new dtParLivelli())
+                using (dtLivelli dtl = new dtLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -83,7 +83,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParLivelli dtl = new dtParLivelli())
+                using (dtLivelli dtl = new dtLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
 
@@ -120,7 +120,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
-            return PartialView("IndennitaBase", libm);
+            return PartialView("PercentualeMaggAbitazione", libm);
         }
 
         [HttpPost]
@@ -132,7 +132,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParLivelli dtl = new dtParLivelli())
+                using (dtLivelli dtl = new dtLivelli())
                 {
                     var lm = dtl.GetLivelli(idLivello);
                     ViewBag.Livello = lm;
@@ -168,7 +168,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 else
                 {
-                    using (dtParLivelli dtl = new dtParLivelli())
+                    using (dtLivelli dtl = new dtLivelli())
                     {
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
