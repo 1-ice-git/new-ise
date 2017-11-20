@@ -359,10 +359,24 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<ConiugeModel> GetListaConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
             List<ConiugeModel> lcm = new List<ConiugeModel>();
+            List<CONIUGE> lc = new List<CONIUGE>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAINIZIOVALIDITA);
+
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                var lamf =
+                    mf.ATTIVAZIONIMAGFAM.Where(
+                        e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
+                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+
+                var amf = lamf.First();
+
+                lc = amf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+
+
+                //var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAINIZIOVALIDITA);
 
                 if (lc?.Any() ?? false)
                 {
@@ -678,7 +692,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             }
                             #endregion
-                            
+
 
                         }
                     }

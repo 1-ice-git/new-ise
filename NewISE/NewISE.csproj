@@ -2128,6 +2128,7 @@
     <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
+    <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
     <Compile Include="DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

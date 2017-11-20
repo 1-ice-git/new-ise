@@ -21,7 +21,40 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public IList<ElencoFamiliariModel> GetFamiliariRichiestaPassaporto(decimal idTrasferimento)
+        public GestioneChkEscludiPassaportoModel ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        {
+            GestioneChkEscludiPassaportoModel gep = new GestioneChkEscludiPassaportoModel();
+            PASSAPORTI p = new PASSAPORTI();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
+                        break;
+                    case EnumParentela.Figlio:
+                        p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
+                        break;
+                    case EnumParentela.Richiedente:
+                        p = db.PASSAPORTI.Find(idFamiliare);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("parentela");
+                }
+            }
+
+
+
+            return gep;
+        }
+
+
+
+
+        public IList<ElencoFamiliariModel> GetFamiliariRichiestaPassaportoPartenza(decimal idTrasferimento)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
 
@@ -37,12 +70,13 @@ namespace NewISE.Models.DBModel.dtObj
                     var mf = t.MAGGIORAZIONIFAMILIARI;
 
                     var p = t.PASSAPORTI;
+
                     if (p != null && p.IDPASSAPORTI > 0)
                     {
                         var lap =
                             p.ATTIVAZIONIPASSAPORTI.Where(
-                                a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false)
-                                .OrderByDescending(a => a.IDATTIVAZIONIPASSAPORTI);
+                                a => (a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == true) || a.ANNULLATO == false)
+                                .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
 
                         if (lap?.Any() ?? false)
                         {
@@ -82,10 +116,9 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                                 ap.CONIUGE.Where(
                                     a =>
-                                        a.ANNULLATO &&
+                                        a.ANNULLATO == false &&
                                         a.TIPOLOGIACONIUGE.IDTIPOLOGIACONIUGE ==
-                                        (decimal)EnumTipologiaConiuge.Residente)
-                                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+                                        (decimal)EnumTipologiaConiuge.Residente).OrderBy(a => a.DATAINIZIOVALIDITA);
 
                             foreach (var c in lc)
                             {

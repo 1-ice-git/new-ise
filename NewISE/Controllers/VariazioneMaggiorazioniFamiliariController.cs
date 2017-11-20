@@ -26,6 +26,56 @@ namespace NewISE.Controllers
             return View();
         }
 
+        [NonAction]
+        private bool SolaLettura(decimal idMaggiorazioniFamiliari)
+        {
+
+            bool solaLettura = false;
+
+            using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+                bool rinunciaMagFam = false;
+                bool richiestaAttivazione = false;
+                bool attivazione = false;
+                bool datiConiuge = false;
+                bool datiParzialiConiuge = false;
+                bool datiFigli = false;
+                bool datiParzialiFigli = false;
+                bool siDocConiuge = false;
+                bool siDocFigli = false;
+                bool docFormulario = false;
+
+
+                dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+
+                if (richiestaAttivazione == true || attivazione == true)
+                {
+
+                    solaLettura = true;
+                }
+                else
+                {
+                    if (rinunciaMagFam)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                }
+
+
+            }
+
+            return solaLettura;
+        }
+
+
+
         public JsonResult VerificaMaggiorazioneFamiliare(string matricola = "")
         {
             try
@@ -183,7 +233,7 @@ namespace NewISE.Controllers
 
                     //ViewData.Add("callConiuge", false);
 
-                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                    using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
                         bool rinunciaMagFam = false;
                         bool richiestaAttivazione = false;
@@ -198,7 +248,7 @@ namespace NewISE.Controllers
 
                         bool solaLettura = false;
 
-                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                             out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -276,12 +326,12 @@ namespace NewISE.Controllers
                             if (ltcm != null && ltcm.Count > 0)
                             {
                                 rc = (from t in ltcm
-                                    select new SelectListItem()
-                                    {
-                                        Text = t.tipologiaConiuge,
-                                        Value = t.idTipologiaConiuge.ToString()
-                                    }).ToList();
-                            rc.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                                      select new SelectListItem()
+                                      {
+                                          Text = t.tipologiaConiuge,
+                                          Value = t.idTipologiaConiuge.ToString()
+                                      }).ToList();
+                                rc.Insert(0, new SelectListItem() { Text = "", Value = "" });
                             }
 
                             lTipologiaConiuge = rc;
@@ -323,11 +373,11 @@ namespace NewISE.Controllers
                     if (ltcm != null && ltcm.Count > 0)
                     {
                         r = (from t in ltcm
-                                select new SelectListItem()
-                                {
-                                    Text = t.tipologiaConiuge,
-                                    Value = t.idTipologiaConiuge.ToString()
-                                }).ToList();
+                             select new SelectListItem()
+                             {
+                                 Text = t.tipologiaConiuge,
+                                 Value = t.idTipologiaConiuge.ToString()
+                             }).ToList();
                         r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                     }
 
@@ -592,6 +642,23 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult NuovoFormularioMF(decimal idMaggiorazioniFamiliari)
+        {
+
+            ViewData["idMaggiorazioniFamiliari"] = idMaggiorazioniFamiliari;
+
+            return PartialView();
+        }
+
+
+
+        public ActionResult ElencoDocumentiFormulario()
+        {
+            return PartialView();
+        }
+
+
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
@@ -609,7 +676,7 @@ namespace NewISE.Controllers
                     mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
                 }
 
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
                     bool rinunciaMagFam = false;
                     bool richiestaAttivazione = false;
@@ -624,7 +691,7 @@ namespace NewISE.Controllers
 
                     bool solaLettura = false;
 
-                    dtmf.SituazioneMagFam(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamVariazione(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -829,7 +896,7 @@ namespace NewISE.Controllers
                     decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioniFamiliari;
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
-                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                    using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
                         bool rinunciaMagFam = false;
                         bool richiestaAttivazione = false;
@@ -844,7 +911,7 @@ namespace NewISE.Controllers
 
                         bool solaLettura = false;
 
-                        dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                             out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -974,9 +1041,9 @@ namespace NewISE.Controllers
             try
             {
                 amministratore = Utility.Amministratore();
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
-                    dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
                 }
@@ -1085,6 +1152,30 @@ namespace NewISE.Controllers
                     {
                         err = errore
                     });
+        }
+
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult TabFormulariInseriti(decimal idMaggiorazioniFamiliari)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            try
+            {
+
+                bool solaLettura = false;
+                solaLettura = this.SolaLettura(idMaggiorazioniFamiliari);
+                ViewData.Add("solaLettura", solaLettura);
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    //ldm = dtd.GetFormulariMaggiorazioniFamiliari(idMaggiorazioniFamiliari).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(ldm);
         }
 
 

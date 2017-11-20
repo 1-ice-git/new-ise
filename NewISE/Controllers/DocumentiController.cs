@@ -580,9 +580,10 @@ namespace NewISE.Controllers
 
                             if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
                             {
-                                dtmf.SituazioneMagFam(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                                dtmf.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                                    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
+                                    out docFormulario);
 
                                 if (richiestaAttivazione == true)
                                 {
