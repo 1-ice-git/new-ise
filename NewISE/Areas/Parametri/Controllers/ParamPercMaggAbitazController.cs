@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.Models.DBModel.dtObj;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using System;
@@ -15,11 +16,12 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeMaggAbitazione(bool escludiAnnullati, decimal idLivello = 0)
+        public ActionResult PercentualeMaggAbitazione(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
+            List<UfficiModel> llm1 = new List<UfficiModel>();
 
             try
             {
@@ -50,6 +52,33 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.LivelliList = r;
                 }
 
+                using (dtUffici dtl1 = new dtUffici())
+                {
+                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
+
+                    if (llm1 != null && llm1.Count > 0)
+                    {
+                        r = (from t in llm1
+                             select new SelectListItem()
+                             {
+                                 Text = t.descUfficio,
+                                 Value = t.idUfficio.ToString()
+                             }).ToList();
+
+                        if (idUfficio == 0)
+                        {
+                            r.First().Selected = true;
+                            idUfficio = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                        }
+                    }
+
+                    ViewBag.UfficiList = r;
+                }
+
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
                     if (escludiAnnullati)
@@ -75,11 +104,12 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercentualeMaggiorazioneAbitazioneLivello(decimal idLivello, bool escludiAnnullati)
+        public ActionResult PercentualeMaggiorazioneAbitazioneLivello(decimal idLivello, decimal idUfficio, bool escludiAnnullati)
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
+            List<UfficiModel> llm1 = new List<UfficiModel>();
 
             try
             {
@@ -99,6 +129,24 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
 
                     ViewBag.LivelliList = r;
+                }
+
+                using (dtUffici dtl1 = new dtUffici())
+                {
+                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
+
+                    if (llm1 != null && llm1.Count > 0)
+                    {
+                        r = (from t in llm1
+                             select new SelectListItem()
+                             {
+                                 Text = t.descUfficio,
+                                 Value = t.idUfficio.ToString()
+                             }).ToList();
+                        r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                    }
+
+                    ViewBag.UfficiList = r;
                 }
 
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
@@ -125,7 +173,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaPercentualeMaggiorazioneAbitazione(decimal idLivello, bool escludiAnnullati)
+        public ActionResult NuovaPercentualeMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
 
@@ -137,6 +185,14 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetLivelli(idLivello);
                     ViewBag.Livello = lm;
                 }
+
+                using (dtUffici dtl1 = new dtUffici())
+                {
+                    var lm1 = dtl1.GetUffici(idUfficio);
+                    ViewBag.Ufficio = lm1;
+                }
+
+
                 ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView();
             }

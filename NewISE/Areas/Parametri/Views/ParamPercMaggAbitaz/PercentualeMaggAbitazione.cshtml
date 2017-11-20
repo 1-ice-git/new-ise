@@ -25,7 +25,7 @@
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUfficio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "", @onClick = "" })
+                @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVPercMaggAbitaz();", @onClick = "PrelevaPVPercMaggAbitaz();" })
             </div>
         </div>
     </div>
@@ -204,15 +204,22 @@
     }
 
     function NuovaPercentualeMaggAbitaz() {
-        debugger;
+        //debugger;
 
         var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercentualeMaggiorazioneAbitazione";
         var idLivello = parseInt($("#idLivello").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = false;
 
         if (isNaN(idLivello)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un livello per procedere.");
+            return false;
+        }
+
+        if (isNaN(idUfficio)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un ufficio per procedere.");
             return false;
         }
 
@@ -223,7 +230,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
+            data: { idLivello: idLivello, idUfficio: idUfficio, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
