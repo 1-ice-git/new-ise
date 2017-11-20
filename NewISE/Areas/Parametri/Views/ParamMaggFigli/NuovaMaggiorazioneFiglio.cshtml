@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.DBModel.MaggiorazioneFigliModel
+﻿@model NewISE.Models.DBModel.PercMagFigliModel
 @using NewISE.Models.DBModel;
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
@@ -16,7 +16,7 @@
 
 }
 
-@using (Ajax.BeginForm("InserisciMaggiorazioneFiglio", "ParamMaggFigli", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciPercMaggiorazioneFiglio", "ParamMaggFigli", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -135,7 +135,7 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamMaggFigli/MaggiorazioneFiglioLivello";
+        rotta = "/Parametri/ParamMaggFigli/PercMaggiorazioneFiglioLivello";
 
         var idTipologiaFiglio = parseFloat('@idTipologiaFiglio');
         var chk = true;

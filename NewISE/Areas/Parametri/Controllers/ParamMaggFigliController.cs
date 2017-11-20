@@ -18,13 +18,13 @@ namespace NewISE.Areas.Parametri.Controllers
 
         public ActionResult MaggiorazioneFigli(bool escludiAnnullati, decimal idTipologiaFiglio = 0)
         {
-            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
             try
             {
-                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
+                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                 {
                     llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
 
@@ -66,7 +66,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -76,15 +76,15 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult MaggiorazioneFiglioLivello(decimal idTipologiaFiglio, bool escludiAnnullati)
+        public ActionResult PercMaggiorazioneFiglioLivello(decimal idTipologiaFiglio, bool escludiAnnullati)
         {
-            List<PercentualeMagFigliModel> libm = new List<PercentualeMagFigliModel>();
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
 
             try
             {
-                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
+                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                 {
                     llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
 
@@ -117,7 +117,7 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -132,7 +132,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
+                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                 {
                     var lm = dtl.GetTipologiaFiglio(idTipologiaFiglio);
                     ViewBag.Figlio = lm;
@@ -142,13 +142,13 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneFiglio(PercentualeMagFigliModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciPercMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -156,18 +156,18 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParMaggFigli dtib = new dtParMaggFigli())
+                    using (dtMaggFigli dtib = new dtMaggFigli())
                     {
                         dtib.SetMaggiorazioneFiglio(ibm);
                     }
 
-                    return RedirectToAction("MaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = ibm.idTipologiaFiglio });
+                    return RedirectToAction("PercMaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = ibm.idTipologiaFiglio });
                 }
                 else
                 {
-                    using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
+                    using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
                     {
-                        var lm = dtl.GetTipologiaFiglio((decimal)ibm.idTipologiaFiglio);
+                        var lm = dtl.GetTipologiaFiglio(ibm.idTipologiaFiglio);
                         ViewBag.Figlio = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
@@ -176,20 +176,20 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaMaggiorazioneFiglio(bool escludiAnnullati, decimal idTipologiaFiglio, decimal idMaggFiglio)
+        public ActionResult EliminaPercMaggiorazioneFiglio(bool escludiAnnullati, decimal idTipologiaFiglio, decimal idPercMagFigli)
         {
 
             try
             {
                 using (dtMaggFigli dtib = new dtMaggFigli())
                 {
-                    dtib.DelMaggiorazioneFiglio(idMaggFiglio);
+                    dtib.DelMaggiorazioneFiglio(idPercMagFigli);
                 }
 
                 return RedirectToAction("MaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = idTipologiaFiglio });
@@ -197,7 +197,7 @@ namespace NewISE.Areas.Parametri.Controllers
             catch (Exception ex)
             {
 
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                return PartialView("ErrorPartial");
             }
 
 

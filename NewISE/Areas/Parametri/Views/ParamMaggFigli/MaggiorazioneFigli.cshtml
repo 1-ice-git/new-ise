@@ -1,6 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.MaggiorazioniFigliModel>
-
-
+﻿@model IEnumerable<NewISE.Models.DBModel.PercMagFigliModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -9,12 +7,12 @@
 }
 
 <p>
-    <a id="btnInsNuovaMaggFigli" href="#" onclick="NuovaMaggiorazioneFiglio();">Inserisci Maggiorazione Figli</a>
+    <a id="btnInsNuovaMaggFigli" href="#" onclick="NuovaPercMaggiorazioneFiglio();">Inserisci Maggiorazione Figli</a>
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblTipologiaFiglio0", "Seleziona Tipologia Figlio", new { @class = "control-label" })
+        @Html.Label("lblTipologiaFiglio", "Seleziona Tipologia Figlio", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("idTipologiaFiglio", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVMaggFiglio();", @onClick = "PrelevaPVMaggFiglio();" })
@@ -22,9 +20,12 @@
         </div>
     </div>
 </p>
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbMaggFigli" class="display" cellspacing="0">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Figlio.tipologiaFiglio)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -47,7 +48,9 @@
         @foreach (var item in Model)
         {
             <tr>
-
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Figlio.tipologiaFiglio)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -68,7 +71,7 @@
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
-                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idMaggiorazioneFigli);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idPercMagFigli );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
@@ -82,8 +85,8 @@
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina maggiorazione figlio?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della maggiorazione figlio?</p>
+<div id="dialog-confirm" title="Elimina percentuale di maggiorazione figli?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della percentuale maggiorazione figli?</p>
 </div>
 
 <script type="text/javascript">
@@ -114,7 +117,7 @@
     });
 
     $("#idTipologiaFiglio").select2({
-        placeholder: "Seleziona la Tipologia Figlio ",
+        placeholder: "Seleziona la Tipologia di Figlio ",
         allowClear: true,
         language: "it",
         width: '150'
@@ -125,7 +128,7 @@
 
     function PrelevaPVMaggFiglio() {
         //debugger;
-        rotta = "/Parametri/ParamMaggFigli/MaggiorazioneFiglioLivello";
+        rotta = "/Parametri/ParamMaggFigli/PercMaggiorazioneFiglioLivello";
 
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
         var chk = true;
@@ -173,7 +176,7 @@
 
     }
 
-    function NuovaMaggiorazioneFiglio() {
+    function NuovaPercMaggiorazioneFiglio() {
         //debugger;
 
         var rotta = "/Parametri/ParamMaggFigli/NuovaMaggiorazioneFiglio";
@@ -224,9 +227,9 @@
 
     }
 
-    function EliminaMaggiorazioneFiglio(id) {
+    function EliminaPercMaggiorazioneFiglio(id) {
         //debugger;
-        var rotta = "/Parametri/ParamMaggFigli/EliminaMaggiorazioneFiglio";
+        var rotta = "/Parametri/ParamMaggFigli/EliminaPercMaggiorazioneFiglio";
 
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
         var chk = true;
@@ -251,7 +254,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idTipologiaFiglio: idTipologiaFiglio, idMaggFiglio: id },
+                            data: { escludiAnnullati: chk, idTipologiaFiglio: idTipologiaFiglio, idPercMaggFigli: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

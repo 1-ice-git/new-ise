@@ -2393,6 +2393,7 @@
     <Compile Include="Models\DBModel\dtObj\dtRinunciaMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtTrasportoEffetti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtVariazioniMaggiorazioneFamiliare.cs" />
+    <Compile Include="Models\DBModel\PercMagFigliModel.cs" />
     <Compile Include="Models\DBModel\PrimaSistemazioneModel.cs" />
     <Compile Include="Models\DBModel\RinunciaMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasportoModel.cs" />
