@@ -46,16 +46,20 @@ namespace NewISE.Models
         //    bool rslt = Utils.InitialiseDiary();
         //    return rslt.ToString();
         //}
-        
-        public JsonResult GetDiaryEvents(DateTime start)
+        //[HttpPost]
+        public JsonResult GetDiaryEvents(DateTime start, DateTime end)
         {
             List<CalendarViewModel> tmp = new List<CalendarViewModel>();
-                       try
+            try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
-                    tmp = dtcal.GetConteggioStatiAttivita(start);
+                    for (DateTime i = start; i < end; i = i.AddDays(1))
+                    {                    
+                        tmp.AddRange(dtcal.GetConteggioStatiAttivita(i));
+                    }
                 }
+                
             }
             catch 
             {
@@ -74,20 +78,29 @@ namespace NewISE.Models
             //    start = Convert.ToDateTime("12/11/2017"),            
             //};
             //lcvm.Add(cvm);
-            //lcvm.Add(cvm2);          
+            //lcvm.Add(cvm2);    
+            
+
+
+
             var eventList = from e in tmp
-                            select new CalendarViewModel
+                            select new
                             {
                                 id = e.id,
                                 title = e.title,
-                               // Attivi = e.Attivi == null ? "" : e.Attivi,
-                               // Completati = e.Completati==null?"": e.Completati,
                                 start = e.start,
-                                //end=e.end,
-                               // Scaduti = e.Scaduti == null ? "" : e.Scaduti,
+                                end = e.end,
+                                color = e.color,
+                                someKey = 1,
+                               // allDay = false
                             };                            
             var rows = eventList.ToArray();
-            return Json(rows, JsonRequestBehavior.AllowGet);            
+
+           
+
+            return Json(rows, JsonRequestBehavior.AllowGet);
+            // var j = Json(rows, JsonRequestBehavior.AllowGet);
+           // return j;         
         }
     }
 }
