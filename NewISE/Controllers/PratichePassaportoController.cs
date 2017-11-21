@@ -79,7 +79,7 @@ namespace NewISE.Controllers
                     case EnumParentela.Richiedente:
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
-                            //dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
+                            dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
                         }
                         break;
                     default:
@@ -159,79 +159,21 @@ namespace NewISE.Controllers
 
         public ActionResult ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
         {
-            GestioneChkEscludiPassaportoModel gcep;
-            PassaportoModel pm = new PassaportoModel();
-            bool dchk = false;
+            GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
 
-            using (ModelDBISE db = new ModelDBISE())
+
+            try
             {
-                db.Database.BeginTransaction();
-
-                try
+                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
                 {
-                    using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                    {
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                pm = dtpp.GetPassaportoByIdConiuge(idFamiliare, db);
-                                break;
-                            case EnumParentela.Figlio:
-                                pm = dtpp.GetPassaportoByIdFiglio(idFamiliare, db);
-                                break;
-                            case EnumParentela.Richiedente:
-                                pm = dtpp.GetPassaportoByID(idFamiliare, db);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-
-
-                        if (pm != null && pm.idPassaporto > 0)
-                        {
-
-                            using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
-                            {
-                                var ap = dtap.GetLastAttivazionePassaporti(pm.idPassaporto, db);
-
-                                if (ap.HasValue())
-                                {
-
-                                }
-
-                            }
-
-
-
-
-                            //if (pm.notificaRichiesta == true || pm.praticaConclusa == true)
-                            //{
-                            //    dchk = true;
-                            //}
-                        }
-
-                        gcep = new GestioneChkEscludiPassaportoModel()
-                        {
-                            idFamiliare = idFamiliare,
-                            parentela = parentela,
-                            esisteDoc = esisteDoc,
-                            escludiPassaporto = escludiPassaporto,
-                            disabilitaChk = dchk,
-                        };
-                    }
-
-                    db.Database.CurrentTransaction.Commit();
+                    gcep = dtap.GetGestioneEcludiPassaporto(idFamiliare, parentela, esisteDoc, escludiPassaporto);
                 }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
-
-
             }
+            catch (Exception ex)
+            {
 
-
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
 
 
             return PartialView(gcep);

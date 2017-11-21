@@ -191,7 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var f = db.FIGLI.Find(idFiglio);
                 if (f != null && f.IDFIGLI > 0)
                 {
-                    f.ESCLUDIPASSAPORTO = f.ESCLUDIPASSAPORTO == false ? true : false;
+                    f.ESCLUDIPASSAPORTO = true;
                     int i = db.SaveChanges();
 
                     if (i <= 0)
