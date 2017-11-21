@@ -16,10 +16,76 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public GestioneChkEscludiPassaportoModel GetGestioneEcludiPassaporto(decimal idPassaporto)
+        public GestioneChkEscludiPassaportoModel GetGestioneEcludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
         {
-            return null;
+            GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
+            bool dchk = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+
+                PASSAPORTI p = new PASSAPORTI();
+
+                try
+                {
+                    switch (parentela)
+                    {
+                        case EnumParentela.Coniuge:
+                            p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
+                            break;
+                        case EnumParentela.Figlio:
+                            p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
+                            break;
+                        case EnumParentela.Richiedente:
+                            p = db.PASSAPORTI.Find(idFamiliare);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("parentela");
+                    }
+
+                    if (p != null && p.IDPASSAPORTI > 0)
+                    {
+                        var lap =
+                            p.ATTIVAZIONIPASSAPORTI.Where(
+                                a => (a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == true) || a.ANNULLATO == false)
+                                .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+
+                        if (lap?.Any() ?? false)
+                        {
+                            var ap = lap.First();
+
+                            if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true)
+                            {
+                                dchk = true;
+                            }
+
+                            gcep = new GestioneChkEscludiPassaportoModel()
+                            {
+                                idFamiliare = idFamiliare,
+                                parentela = parentela,
+                                esisteDoc = esisteDoc,
+                                escludiPassaporto = escludiPassaporto,
+                                disabilitaChk = dchk,
+                            };
+
+                        }
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+            return gcep;
+
+
         }
+
+
 
         public AttivazionePassaportiModel GetLastAttivazionePassaporti(decimal idPassaporto, ModelDBISE db)
         {
@@ -86,6 +152,32 @@ namespace NewISE.Models.DBModel.dtObj
 
             return apm;
 
+        }
+
+        public void AssociaRichiedente(decimal idAttivazionePassaporto, decimal idPassaportoRichiedente, ModelDBISE db)
+        {
+            try
+            {
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+                var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.PASSAPORTORICHIEDENTE).Load();
+                var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
+                ap.PASSAPORTORICHIEDENTE.Add(pr);
+
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare il richiedente per l'attivazione del passaporto.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaConiuge(decimal idAttivazionePassaporto, decimal idConiuge, ModelDBISE db)
