@@ -1,14 +1,19 @@
-﻿@using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+﻿@using NewISE.Models.ViewModel
+@using NewISE.Models.DBModel
+@*model IEnumerable<NewISE.Models.DBModel.DocumentiModel>*@
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     EnumChiamante enChiamante = EnumChiamante.VariazioneMaggiorazioniFamiliari;
 }
 
-<table class="table" id="tabElencoFormulariInseriti_var">
+<table class="table"  id="tabElencoFormulariInseriti_Var">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.progressivo )
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
@@ -26,29 +31,83 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nomeDocumento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.estensione)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataInserimento)
-                </td>
-                <td>
-                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
-                </td>
-                <td>
-                    @if (solaLettura)
-                    {
-                        <button class="btn btn-link disabled" disabled="disabled">Elimina</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-link" onclick=" EliminaFormulario(@item.idDocumenti); ">Elimina</button>
-                    }
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        @Html.DisplayFor(modelItem => item.progressivo )
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        @Html.DisplayFor(modelItem => item.progressivo )
+                    </td>
+                }
 
-                </td>
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+
+
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                    </td>
+                }
+
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        <button class="btn btn-link" onclick="EliminaFormulario(@item.idDocumenti);">Elimina </button>
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        <button class="btn btn-link disabled" disabled>Elimina</button>
+                    </td>
+                }
             </tr>
         }
     </tbody>
@@ -78,7 +137,7 @@
 
 
 <script type="text/javascript">
-    $("#tabElencoFormulariInseriti_var").DataTable({
+    $("#tabElencoFormulariInseriti_Var").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -101,6 +160,7 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
+        
         },
         "info": false,
         "lengthChange": false,
@@ -109,6 +169,8 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "order": [[3, "desc"]]
+       
         //dom: 'Bfrtip',
         //buttons: [
         //    {
@@ -182,7 +244,8 @@
 
     $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
         //debugger;
-        TabElencoFormulari();
+        //TabElencoFormulari();
+        ElencoFormulariInseriti();
     });
 </script>
 

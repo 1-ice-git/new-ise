@@ -939,6 +939,182 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniFamiliariVariazione(decimal idMaggiorazioniFamiliari)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                var lamf = 
+                    mf.ATTIVAZIONIMAGFAM.Where(
+                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+
+               
+                var i = 1;
+                var coloresfondo = "";
+                var coloretesto = "";
+
+                if (lamf?.Any() ?? false)
+                {
+                    foreach (var e in lamf)
+                    {
+                        var ld =
+                            e.DOCUMENTI.Where(
+                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                                .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                        bool modificabile = false;
+                        if (e.RICHIESTAATTIVAZIONE==false && e.ATTIVAZIONEMAGFAM==false)
+                        {
+                            modificabile = true;
+                            coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                            coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                        }
+                        else
+                        {
+                            if (i % 2 == 0)
+                            {
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoDispari;
+                            }
+                            else
+                            {
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                            }
+                            coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                        }
+                        foreach (var doc in ld)
+                        {
+                            var amf = new VariazioneDocumentiModel()
+                            {
+                                dataInserimento = doc.DATAINSERIMENTO,
+                                estensione = doc.ESTENSIONE,
+                                idDocumenti = doc.IDDOCUMENTO,
+                                nomeDocumento = doc.NOMEDOCUMENTO,
+                                Modificabile = modificabile,
+                                IdAttivazione = e.IDATTIVAZIONEMAGFAM,
+                                DataAggiornamento = e.DATAAGGIORNAMENTO,
+                                ColoreSfondo = coloresfondo,
+                                ColoreTesto=coloretesto,
+                                progressivo=i
+                            };
+
+                            ldm.Add(amf);
+                        }
+
+                        i++;                    
+
+                    }
+
+                }
+            }
+
+            return ldm;
+
+        }
+
+
+        public VariazioneDocumentiModel GetVariazioneDocumento(decimal idDocumento, ModelDBISE db)
+        {
+            VariazioneDocumentiModel dm = new VariazioneDocumentiModel();
+
+            var d = db.DOCUMENTI.Find(idDocumento);
+
+            if (d != null && d.IDDOCUMENTO > 0)
+            {
+                var f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO);
+
+                dm = new VariazioneDocumentiModel()
+                {
+                    idDocumenti = d.IDDOCUMENTO,
+                    nomeDocumento = d.NOMEDOCUMENTO,
+                    estensione = d.ESTENSIONE,
+                    tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                    dataInserimento = d.DATAINSERIMENTO,
+                    file = f
+                };
+            }
+
+            return dm;
+        }
+
+        public IList<VariazioneDocumentiModel> GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(decimal idMaggiorazioniFamiliari, decimal idAttivazione)
+        {
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                //var lamf =
+                //    mf.ATTIVAZIONIMAGFAM.Where(
+                //        a => ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false) && a.IDATTIVAZIONEMAGFAM == idAttivazione)
+                //        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                var lamf =
+                    mf.ATTIVAZIONIMAGFAM.Where(
+                        a => ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false))
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                var i = 1;
+                var coloretesto = "";
+                var coloresfondo = "";
+
+                if (lamf?.Any() ?? false)
+                {
+
+                    foreach (var e in lamf)
+                    {
+                        if (e.IDATTIVAZIONEMAGFAM == idAttivazione)
+                        {
+                            var ld =
+                            e.DOCUMENTI.Where(
+                                a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
+                                .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                            bool modificabile = false;
+                            if (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false)
+                            {
+                                modificabile = true;
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Testo;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
+                            }
+                            else
+                            {
+                                coloretesto = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_Testo;
+                                coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamDisabilitate_SfondoPari;
+                            }
+
+                            foreach (var doc in ld)
+                            {
+                                var amf = new VariazioneDocumentiModel()
+                                {
+                                    dataInserimento = doc.DATAINSERIMENTO,
+                                    estensione = doc.ESTENSIONE,
+                                    idDocumenti = doc.IDDOCUMENTO,
+                                    nomeDocumento = doc.NOMEDOCUMENTO,
+                                    Modificabile = modificabile,
+                                    IdAttivazione = e.IDATTIVAZIONEMAGFAM,
+                                    DataAggiornamento = e.DATAAGGIORNAMENTO,
+                                    ColoreTesto=coloretesto,
+                                    ColoreSfondo=coloresfondo,
+                                    progressivo=i
+                                };
+
+                                ldm.Add(amf);
+                            }
+                        }
+
+                        i++;
+                    }
+
+                }
+            }
+
+            return ldm;
+
+        }
+
 
 
     }
