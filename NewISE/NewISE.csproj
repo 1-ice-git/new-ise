@@ -1931,6 +1931,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\VariazioneMagFamColori.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VariazioneMagFamColori.resx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
@@ -2637,6 +2642,10 @@
     <Content Include="App_GlobalResources\ScadenzaFunzioniEventi.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ScadenzaFunzioniEventi.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\VariazioneMagFamColori.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>VariazioneMagFamColori.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report1.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report10.rdlc" />

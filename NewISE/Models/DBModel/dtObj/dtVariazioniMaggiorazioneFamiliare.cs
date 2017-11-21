@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel.dtObj
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
                                        out bool siDocConiuge, out bool siDocFigli,
-                                       out bool docFormulario)
+                                       out bool docFormulario, out bool inLavorazione)
         {
             rinunciaMagFam = false;
             richiestaAttivazione = false;
@@ -42,129 +42,138 @@ namespace NewISE.Models.DBModel.dtObj
             siDocConiuge = false;
             siDocFigli = false;
             docFormulario = false;
+            inLavorazione = false;
 
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                var conta_attivazioni = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE==true && a.ATTIVAZIONEMAGFAM == true))).Count();
 
-                if (lamf?.Any() ?? false)
+                if (conta_attivazioni>1)
                 {
-                    var amf = lamf.First();
+                    var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
-
-                    if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
+                    if (lamf?.Any() ?? false)
                     {
+                        //inLavorazione = true;
 
-                        var rmf =
-                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
-                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-                                .First();
-
-                        rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
-                        richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
-                        Attivazione = amf.ATTIVAZIONEMAGFAM;
-
-
-
-                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
-                        if (ld?.Any() ?? false)
+                        foreach(var amf in lamf)
                         {
-                            docFormulario = true;
+                         //   var amf = lamf.First();
+
+                            if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
+                            {
+                                var rmf =
+                                    mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                        .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
+                                        .First();
+
+                                rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
+                                richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
+                                Attivazione = amf.ATTIVAZIONEMAGFAM;
+    
+                                var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                                if (ld?.Any() ?? false)
+                                {
+                                    docFormulario = true;
+                                    inLavorazione = true;
+
+                                }
+
+
+                                if (mf.CONIUGE != null)
+                                {
+                                    var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                                    if (lc?.Any() ?? false)
+                                    {
+                                        datiConiuge = true;
+                                        inLavorazione = true;
+
+                                        foreach (var c in lc)
+                                        {
+                                            var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+    
+                                            if (nadc > 0)
+                                            {
+                                                datiParzialiConiuge = false;
+                                            }
+                                            else
+                                            {
+                                                datiParzialiConiuge = true;
+                                                break;
+                                            }
+                                        }
+                                        foreach (var c in lc)
+                                        {
+                                            var ndocc = c.DOCUMENTI.Count;
+    
+                                            if (ndocc > 0)
+                                            {
+                                                siDocConiuge = true;
+                                            }
+                                            else
+                                            {
+                                                siDocConiuge = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        datiConiuge = false;
+                                    }
+    
+                                }
+    
+                                if (mf.FIGLI != null)
+                                {
+                                    var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+    
+                                    if (lf?.Any() ?? false)
+                                    {
+                                        datiFigli = true;
+                                        inLavorazione = true;
+
+                                        foreach (var f in lf)
+                                        {
+                                            var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
+    
+                                            if (nadf > 0)
+                                            {
+                                                datiParzialiFigli = false;
+                                            }
+                                            else
+                                            {
+                                                datiParzialiFigli = true;
+                                                break;
+                                            }
+                                        }
+    
+                                        foreach (var f in lf)
+                                        {
+                                            var ndocf = f.DOCUMENTI.Count;
+                                            if (ndocf > 0)
+                                            {
+                                                siDocFigli = true;
+                                            }
+                                            else
+                                            {
+                                                siDocFigli = false;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        datiFigli = false;
+                                    }
+                                }
+                            }
                         }
-
-
-                        if (mf.CONIUGE != null)
-                        {
-                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
-                            if (lc?.Any() ?? false)
-                            {
-                                datiConiuge = true;
-                                foreach (var c in lc)
-                                {
-                                    var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-
-                                    if (nadc > 0)
-                                    {
-                                        datiParzialiConiuge = false;
-                                    }
-                                    else
-                                    {
-                                        datiParzialiConiuge = true;
-                                        break;
-                                    }
-                                }
-
-                                foreach (var c in lc)
-                                {
-                                    var ndocc = c.DOCUMENTI.Count;
-
-                                    if (ndocc > 0)
-                                    {
-                                        siDocConiuge = true;
-                                    }
-                                    else
-                                    {
-                                        siDocConiuge = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                datiConiuge = false;
-                            }
-
-                        }
-
-                        if (mf.FIGLI != null)
-                        {
-                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
-
-                            if (lf?.Any() ?? false)
-                            {
-                                datiFigli = true;
-                                foreach (var f in lf)
-                                {
-                                    var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-
-                                    if (nadf > 0)
-                                    {
-                                        datiParzialiFigli = false;
-                                    }
-                                    else
-                                    {
-                                        datiParzialiFigli = true;
-                                        break;
-                                    }
-                                }
-
-                                foreach (var f in lf)
-                                {
-                                    var ndocf = f.DOCUMENTI.Count;
-                                    if (ndocf > 0)
-                                    {
-                                        siDocFigli = true;
-                                    }
-                                    else
-                                    {
-                                        siDocFigli = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                datiFigli = false;
-                            }
-                        }
-                    }
+                    }   
                 }
-
-
-
             }
 
         }
