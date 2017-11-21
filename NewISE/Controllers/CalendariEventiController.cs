@@ -102,5 +102,22 @@ namespace NewISE.Models
             // var j = Json(rows, JsonRequestBehavior.AllowGet);
            // return j;         
         }
+        
+        public ActionResult GetDetailsCalendarEvents(DateTime DataInizio,string stato)
+        {
+            List<CalendarioEventiModel> tmp = new List<CalendarioEventiModel>();
+            try
+            {
+                using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
+                {
+                    tmp.AddRange(dtcal.GetDetailsCalendarEvents(DataInizio, stato));
+                }
+            }
+            catch
+            {
+                return null;
+            }
+            return PartialView(tmp);
+        }
     }
 }

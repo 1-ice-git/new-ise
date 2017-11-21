@@ -16,7 +16,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
         public void InsertCalendarioEvento(ref CalendarioEventiModel cem)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -94,16 +93,21 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp1 = new List<ElencoElementiHome>();
+            List<ElencoElementiHome> tmp2 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmpAll = new List<ElencoElementiHome>();
+            
+
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+                    ///Completati
                     tmp = (from e in db.CALENDARIOEVENTI
                            where e.COMPLETATO == true && 
                                  e.DATACOMPLETATO.Month == DateTime.Now.Month && 
-                                 e.DATACOMPLETATO.Year == DateTime.Now.Year
-                                 orderby e.DATACOMPLETATO descending
+                                 e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                 e.ANNULLATO == false
+                           orderby e.DATACOMPLETATO descending
                            select new ElencoElementiHome()
                            {
                                IdFunzioneEvento = e.IDFUNZIONIEVENTI,
@@ -115,8 +119,30 @@ namespace NewISE.Models.DBModel.dtObj
                                IdDipendente=e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                            }).ToList();
 
+                    ///Attivi
                     tmp1 = (from e in db.CALENDARIOEVENTI
-                            where e.COMPLETATO == false
+                            where e.COMPLETATO == false &&
+                                  DateTime.Now >= e.DATAINIZIOEVENTO &&
+                                  DateTime.Now <= e.DATASCADENZA.Value &&
+                                  e.ANNULLATO == false
+                            orderby e.DATASCADENZA descending
+                            orderby e.DATAINIZIOEVENTO descending
+                            select new ElencoElementiHome()
+                            {
+                                IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                dataInizio = e.DATAINIZIOEVENTO,
+                                dataScadenza = e.DATASCADENZA,
+                                NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                Completato = e.COMPLETATO,
+                                Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                            }).ToList();
+
+                    ///Scaduti
+                    tmp2 = (from e in db.CALENDARIOEVENTI
+                            where e.COMPLETATO == false &&
+                                  DateTime.Now > e.DATASCADENZA.Value &&
+                                  e.ANNULLATO == false
                             orderby e.DATASCADENZA descending
                             orderby e.DATAINIZIOEVENTO descending
                             select new ElencoElementiHome()
@@ -132,6 +158,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     tmpAll.AddRange(tmp);
                     tmpAll.AddRange(tmp1);
+                    tmpAll.AddRange(tmp2);
                 }                  
                 return (tmpAll);
             }
@@ -210,44 +237,51 @@ namespace NewISE.Models.DBModel.dtObj
                     string StringDate = string.Format("{0:yyyy-MM-dd}", inizio.Date);
                     //string StartDateString = StringDate + "T00:00:00"; //ISO 8601 format
                     // string EndDateString = StringDate + "T23:59:59";
-
-                    attivi = new CalendarViewModel()
+                    if (numeroAttivi != 0)
                     {
-                        title = "Attivi: " + numeroAttivi.ToString(),// + "\nCompletati:" + numeroCompletati.ToString() + "\nScaduti: " + numeroScaduti.ToString(),
-                       // Completati = "Completati: " + numeroCompletati.ToString(),
-                        start = StringDate,
-                        end = StringDate,
-                        color="blue"
-                    };
-
-                    ElencoAttivita.Add(attivi);
+                        attivi = new CalendarViewModel()
+                        {
+                            title = "Attivi: " + numeroAttivi.ToString(),// + "\nCompletati:" + numeroCompletati.ToString() + "\nScaduti: " + numeroScaduti.ToString(),
+                                                                         // Completati = "Completati: " + numeroCompletati.ToString(),
+                            start = StringDate,
+                            end = StringDate,
+                            // color="blue"
+                        };
+                        ElencoAttivita.Add(attivi);
+                    }
 
                     CalendarViewModel completati = new CalendarViewModel();
                     var lc = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == true &&
                     a.DATAINIZIOEVENTO.Month == meseCorrente &&
                     a.DATAINIZIOEVENTO.Year == annoCorrente).ToList();
                     var numeroCompletati = lc.Count;
-                    completati = new CalendarViewModel()
+                    if (numeroCompletati != 0)
                     {
-                        title = "Completati: " + numeroCompletati.ToString(),
-                        start = StringDate,
-                        end = StringDate,
-                        color="green"
-                    };
-                    ElencoAttivita.Add(completati);
+                        completati = new CalendarViewModel()
+                        {
+                            title = "Completati: " + numeroCompletati.ToString(),
+                            start = StringDate,
+                            end = StringDate,
+                            color = "green"
+                        };
+                        ElencoAttivita.Add(completati);
+                    }
 
                     CalendarViewModel scaduti = new CalendarViewModel();
                     var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                    a.DATASCADENZA.Value < inizio).ToList();
+                    a.DATASCADENZA.Value <inizio.Date).ToList();
                     var numeroScaduti = ls.Count;
-                    scaduti = new CalendarViewModel()
+                    if (numeroScaduti != 0)
                     {
-                        title = "Scaduti: " + numeroScaduti.ToString(),
-                        start = StringDate,
-                        end = StringDate,
-                        color="red"
-                    };
-                    ElencoAttivita.Add(scaduti);
+                        scaduti = new CalendarViewModel()
+                        {
+                            title = "Scaduti: " + numeroScaduti.ToString(),
+                            start = StringDate,
+                            end = StringDate,
+                            color = "red"
+                        };
+                        ElencoAttivita.Add(scaduti);
+                    }
                 }
 
                 return ElencoAttivita;
@@ -269,47 +303,8 @@ namespace NewISE.Models.DBModel.dtObj
                 //                  start = (DateTime)e.DATAINIZIOEVENTO,
                 //                  //   end=(DateTime)e.DATASCADENZA,                                  
                 //              }).Distinct().ToList();
-                //    x.AddRange(attivi);
-
-                //    int contaComp = db.CALENDARIOEVENTI
-                //       .Where(p => p.COMPLETATO == true && p.DATAINIZIOEVENTO.Month == inizio.Month && p.DATAINIZIOEVENTO.Year == inizio.Year)
-                //       .GroupBy(f => f.COMPLETATO)
-                //       .Select(g => new { }).Count();
-                //    int c = contaComp;
-                //    titolo = "Completi " + c.ToString();
-                //    //tmp = new CalendarViewModel();
-                //    //tmp.title = titolo; tmp.id = DateTime.Now.Ticks;
-                //    //x.Add(tmp);
-                //    completati = (from e in db.CALENDARIOEVENTI
-                //                  where e.COMPLETATO == true
-                //                  select new CalendarViewModel()
-                //                  {
-                //                      id = e.IDCALENDARIOEVENTI,
-                //                      title = titolo,
-                //                      start = (DateTime)e.DATAINIZIOEVENTO,
-                //                      //   end = (DateTime)e.DATASCADENZA,
-                //                  }).Distinct().ToList();
-                //    x.AddRange(completati);
-
-                //    //int contaScad = db.CALENDARIOEVENTI
-                //    //  .Where(p => p.COMPLETATO == false && p.DATAINIZIOEVENTO< inizio)
-                //    //  .GroupBy(f => f.IDCALENDARIOEVENTI)
-                //    //  .Select(g => new { u = g.Count(), }).Count();
-                //    //int s = contaScad;
-                //    //titolo = "Scaduti " + s.ToString();
-                //    //tmp = new CalendarViewModel();
-                //    //tmp.title = titolo; tmp.id = DateTime.Now.Ticks;
-                //    //x.Add(tmp);
-                //    ////scaduti = (from e in db.CALENDARIOEVENTI
-                //    ////              where e.COMPLETATO == false &&  e.DATASCADENZA< inizio
-                //    ////              select new CalendarViewModel()
-                //    ////              {
-                //    ////                  id = e.IDCALENDARIOEVENTI,
-                //    ////                //  title =  titolo,
-                //    ////                  start = (DateTime)e.DATAINIZIOEVENTO,
-                //    ////                 // end = (DateTime)e.DATASCADENZA,
-                //    ////              }).ToList();
-                //    ////x.AddRange(scaduti);
+                //    x.AddRange(attivi);           
+                                
 
                 //    return x;
                 //}
@@ -318,6 +313,69 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw ex;
             }
+        }
+
+        public List<CalendarioEventiModel> GetDetailsCalendarEvents(DateTime inizio,string stato)
+        {
+            List<CalendarioEventiModel> tmp = new List<CalendarioEventiModel>();
+            List<CalendarioEventiModel> tmp2 = new List<CalendarioEventiModel>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                switch (stato.ToUpper())
+                {
+                    case "ATTIVI":
+                       var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                     //   la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date).ToList();
+                        tmp2 = (from a in la
+                               where inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date
+                                select new CalendarioEventiModel()
+                               {
+                                   DataInizioEvento = a.DATAINIZIOEVENTO,
+                                   DataScadenza = a.DATASCADENZA.Value,
+                                   Completato = a.COMPLETATO,
+                                   DataCompletato = a.DATACOMPLETATO,
+                                   Annullato=a.ANNULLATO
+                               }).ToList();
+                        tmp.AddRange(tmp2);
+                        break;
+                    case "COMPLETATI":
+                        int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
+                        DateTime attuale;
+                        if (inizio.Day != 1)
+                        {
+                            attuale = inizio.AddMonths(1);
+                            meseCorrente = attuale.Month;
+                            annoCorrente = attuale.Year;
+                        }
+                        tmp2 =(from b in db.CALENDARIOEVENTI where b.ANNULLATO == false && b.COMPLETATO == true &&
+                            b.DATAINIZIOEVENTO.Month == meseCorrente &&
+                            b.DATAINIZIOEVENTO.Year == annoCorrente
+                            select new CalendarioEventiModel()
+                            {
+                                DataInizioEvento = b.DATAINIZIOEVENTO,
+                                DataScadenza = b.DATASCADENZA.Value,
+                                Completato = b.COMPLETATO,
+                                DataCompletato = b.DATACOMPLETATO,
+                                Annullato = b.ANNULLATO
+                            }).ToList();
+                        tmp.AddRange(tmp2);
+                        break;
+                    case "SCADUTI":
+                        tmp2 = (from a in db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                                a.DATASCADENZA.Value < inizio).ToList()
+                                select new CalendarioEventiModel()
+                                {
+                                    DataInizioEvento = a.DATAINIZIOEVENTO,
+                                    DataScadenza = a.DATASCADENZA.Value,
+                                    Completato = a.COMPLETATO,
+                                    DataCompletato = a.DATACOMPLETATO,
+                                    Annullato = a.ANNULLATO
+                                }).ToList();
+                        tmp.AddRange(tmp2);
+                        break;
+                }
+            }
+            return tmp;
         }
     } 
 }

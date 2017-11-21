@@ -1,0 +1,171 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.DBModel.CalendarioEventiModel
+
+<meta name="viewport" content="width=device-width" />
+<title>Calendario Evento</title>
+
+
+<div align="center"><h1 id="logo">Calendario Attività</h1></div>
+
+<meta charset='utf-8' />
+<link href="~/Lib/fullcalendar.min.css" rel='stylesheet' />
+<link href='~/Lib/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<script src='~/Lib/moment.min.js'></script>
+<script src='~/Lib/fullcalendar.min.js'></script>
+<script src='~/Lib/locale/it.js'></script>
+
+<div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Dettagli Calendario Eventi</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoDettagli">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px; overflow-y:auto; height:600px; font-size:medium">
+    <div id='calendar'></div>
+</div>
+
+<script type="text/javascript">
+    var datainizio;
+    var stato;
+    CalendarEvents();
+
+
+    function CalendarEvents() {
+       // debugger;
+        //var jar;
+        var sourceFullView = { url: '/CalendariEventi/GetDiaryEvents/' };
+        //var sourceSummaryView = { url: '/CalendariEventi/GetDiarySummary/' };
+        var CalLoading = true;
+
+        $('#calendar').fullCalendar({
+            timeFormat: '',
+            //header: {
+            //	left: 'prev,next today',
+            //	center: 'title',
+            //	right: 'month,agendaWeek,agendaDay,listWeek'
+            //},
+            lang: 'It',
+            defaultDate: new Date(),//'2017-10-12',            
+            editable: true,
+           // navLinks: true,
+            selectable: true,
+            eventLimit: true, // allow "more" link when too many events
+                      //events: jar,
+            events: '/CalendariEventi/GetDiaryEvents',
+           // timeFormat: 'H(:mm)', // uppercase H for 24-hour clock
+            //events: [
+            //    {
+            //        title  : 'event1',
+            //        start  : '2017-11-01'
+            //    },
+            //    {
+            //        title  : 'event2',
+            //        start  : '2017-11-05',
+            //        end    : '2017-11-05'
+            //    },
+            //    {
+            //        title  : 'event3',
+            //        start  : '2017-11-09T12:30:00',
+            //        allDay : false // will make the time show
+            //    }
+            //],
+            eventClick: function (calEvent, jsEvent, view) {
+                //alert('You clicked on event id: ' + calEvent.id
+                //    + "\nSpecial ID: " + calEvent.someKey
+                //    + "\nAnd the title is: " + calEvent.title);
+               // alert(calEvent.start.format());
+                // DocumentoModal(calEvent.start.format());
+                datainizio = calEvent.start.format();
+                var arr = calEvent.title.split(':');
+                stato = arr[0];
+               // debugger;
+                DocumentoModal();
+            },
+            
+            loading: function (bool) {
+                $('#loading').toggle(bool);
+            },
+            eventRender: function (event, el) {
+                // render the timezone offset below the event title
+                //if (event.start.hasZone()) {
+                //    el.find('.fc-title').after(
+				//		$('<div class="tzo"/>').text(event.start.format('Z'))
+				//	);
+                //}
+            },
+            dayClick: function (date) {
+                console.log('dayClick', date.format());
+               // alert('Clicked on: ' + date.format());
+            },
+            select: function (startDate, endDate) {
+                console.log('select', startDate.format(), endDate.format());
+            },       
+        });
+    }
+
+    
+    function CloseTimeModal() {
+        setTimeout(CloseModalFile, 2000);
+        //CloseModalFile();
+    }
+
+    function CloseModalFile() {
+        $('#inviaDocModal').modal('hide');
+        //RicaricaModificaTrasferimento();
+        setTimeout(RicaricaModificaTrasferimento, 1000);
+    }
+
+    function DocumentoModal() {
+        var rotta = "/CalendariEventi/GetDetailsCalendarEvents";
+        var DataInizio = datainizio;// parseInt($("#idTrasferimento").val());
+        var Stato = stato;
+        //  alert(xyz);
+        //debugger;
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { DataInizio: DataInizio,Stato: Stato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+               // debugger;               
+                $('#inviaDocModal').modal('show');
+                //Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewDocumentoDettagli").empty();
+                $("#viewDocumentoDettagli").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+     
+    function DialogInfo(response) {
+        $("#msgModalInfo").text(response);
+        $('#myModalInfo').modal('toggle');
+    }
+     
+</script>
