@@ -2,20 +2,21 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 
 }
 
-
 <p>
-    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci Coefficiente Fascia Km </a>
+    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci nuovo Coefficiente Fascia Km</a>
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblFasciaKm", "Seleziona km della fascia Km ", new { @class = "control-label" })
+        @Html.Label("lblCoeffFasciaKm", "Seleziona Il nuovo Coeff. Fascia Km ", new { @class = "control-label" })
         <div id="divCombo">
-            <div class="select2-container select2-container--classic"> </div>
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("IDDefKm", ViewBag.CoeffFasciaKm as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffFasciaKm();", @onClick = "PrelevaPVCoeffFasciaKm();" })
+            </div>
         </div>
     </div>
 </p>
@@ -27,13 +28,19 @@
                 @Html.DisplayNameFor(model => model.idCfKm)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.IDDefKm)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.coefficiente)
+                @Html.DisplayNameFor(model => model.coefficienteKm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
@@ -49,21 +56,22 @@
                     @Html.DisplayFor(modelItem => item.idCfKm)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.IDDefKm)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.coefficiente)
+                    @Html.DisplayFor(modelItem => item.coefficienteKm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.idCfKm }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.idCfKm }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.idCfKm })
                 </td>
             </tr>
         }
@@ -98,7 +106,7 @@
         }
     });
     $("#idDefKm").select2({
-        placeholder: "Seleziona la fascia Km",
+        placeholder: "Seleziona nuovo Coefficiente di Fascia Km",
         allowClear: true,
         language: "it",
         width: '150'
@@ -108,26 +116,26 @@
     $("#btnInsNuovoCoeffFasciaKm").button();
 
 
-    function PrelevaPVIndBase() {
-        //debugger;
-        rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
+    function PrelevaPVCoeffFasciaKm() {
+        debugger;
+        rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKm";
 
-        var idLivello = parseInt($("#idLivello").select2('val'));
+        var idDefKm = parseInt($("#idDefKm").select2('val'));
         var chk = true;
 
-        if (isNaN(idLivello)) {
+        if (isNaN(idDefKm)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
+        if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }*@
+        }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idLivello: idLivello, escludiAnnullati: chk },
+            data: { idDefKm: idDefKm, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -154,6 +162,127 @@
                 AlertDialog(msg);
             }
 
+        });
+
+    }
+
+    function NuovoCoeffFasciaKm() {
+        //debugger;
+
+        var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
+        var idDefKm = parseInt($("#idDefKm").select2('val'));
+        var chk = false;
+
+        if (isNaN(idDefKm)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un coeff. per procedere.");
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idDefKm: idDefKm, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaCoeffFasciaKm(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
+
+        var idDefKm = parseInt($("#idDefKm").select2('val'));
+        var chk = true;
+
+        if (isNaN(idDefKm)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if ('@escludiAnnullati' == 'true') {
+            chk = false;
+        }
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idDefKm: idDefKm },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
         });
 
     }

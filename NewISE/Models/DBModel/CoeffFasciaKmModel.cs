@@ -13,6 +13,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idCfKm { get; set; }
 
+        [Display(Name = "IDDefKm")]
+        public decimal IDDefKm { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -23,18 +26,22 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
-        public decimal coefficiente { get; set; }
+
+        public decimal coefficienteKm { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Lettera")]
         public DateTime dataAggiornamento { get; set; }
-
-
+        
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
+        public DefFasciaKmModel km { get; set; }
+
+        public TipoAliquoteContributiveModel descrizione { get; set; }
+
     }
 }
