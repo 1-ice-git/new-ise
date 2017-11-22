@@ -133,6 +133,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATARICHIESTAATTIVAZIONE = amfm.dataRichiestaAttivazione,
                 ATTIVAZIONEMAGFAM = amfm.attivazioneMagFam,
                 DATAATTIVAZIONEMAGFAM = amfm.dataAttivazioneMagFam,
+                DATAVARIAZIONE = amfm.dataVariazione,
                 DATAAGGIORNAMENTO = amfm.dataAggiornamento,
                 ANNULLATO = amfm.annullato
             };

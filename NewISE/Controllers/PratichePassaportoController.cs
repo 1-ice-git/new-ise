@@ -49,7 +49,7 @@ namespace NewISE.Controllers
 
             using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
             {
-                //efm = dtpp.GetDatiForColElencoDoc(idFamiliare, parentela);
+                efm = dtpp.GetDatiForColElencoDoc(idFamiliare, parentela);
             }
 
             return PartialView(efm);

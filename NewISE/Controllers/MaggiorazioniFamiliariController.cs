@@ -362,25 +362,22 @@ namespace NewISE.Controllers
                             {
                                 using (dtPensione dtp = new dtPensione())
                                 {
-                                    foreach (var e in lcm)
+                                    lefm.AddRange(lcm.Select(e => new ElencoFamiliariModel()
                                     {
-                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                        {
-                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                            idFamiliare = e.idConiuge,
-                                            idPassaporti = e.idPassaporti,
-                                            Nominativo = e.cognome + " " + e.nome,
-                                            CodiceFiscale = e.codiceFiscale,
-                                            dataInizio = e.dataInizio,
-                                            dataFine = e.dataFine,
-                                            parentela = EnumParentela.Coniuge,
-                                            idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge),
-                                            HasPensione = dtp.HasPensione(e.idConiuge)
-                                        };
-
-                                        lefm.Add(efm);
-                                    }
+                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                        idFamiliare = e.idConiuge,
+                                        idPassaporti = e.idPassaporti,
+                                        Nominativo = e.cognome + " " + e.nome,
+                                        CodiceFiscale = e.codiceFiscale,
+                                        dataInizio = e.dataInizio,
+                                        dataFine = e.dataFine,
+                                        parentela = EnumParentela.Coniuge,
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                        Documenti =
+                                            dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita,
+                                                EnumParentela.Coniuge),
+                                        HasPensione = dtp.HasPensione(e.idConiuge)
+                                    }));
                                 }
 
                             }

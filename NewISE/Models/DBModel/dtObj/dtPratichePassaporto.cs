@@ -21,6 +21,28 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public PassaportoRichiedenteModel GetPassaportoRichiedenteByID(decimal id)
+        {
+            PassaportoRichiedenteModel prm = new PassaportoRichiedenteModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var pr = db.PASSAPORTORICHIEDENTE.Find(id);
+
+                prm = new PassaportoRichiedenteModel()
+                {
+                    idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE,
+                    idPassaporti = pr.IDPASSAPORTI,
+                    EscludiPassaporto = pr.ESCLUDIPASSAPORTO,
+                    DataEscludiPassaporto = pr.DATAESCLUDIPASSAPORTO,
+                    DataAggiornamento = pr.DATAAGGIORNAMENTO,
+                    annullato = pr.ANNULLATO
+                };
+            }
+
+            return prm;
+        }
+
 
         public void SetEscludiPassaportoRichiedente(decimal idPassaportoRichiedente, ref bool chk)
         {
@@ -175,7 +197,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idFamiliare = c.IDCONIUGE,
                                     Nominativo = c.COGNOME + " " + c.NOME,
                                     CodiceFiscale = c.CODICEFISCALE,
-                                    dataInizio = c.DATAFINEVALIDITA,
+                                    dataInizio = c.DATAINIZIOVALIDITA,
                                     dataFine = c.DATAFINEVALIDITA,
                                     parentela = EnumParentela.Coniuge,
                                     escludiPassaporto = c.ESCLUDIPASSAPORTO,
@@ -221,7 +243,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idFamiliare = f.IDFIGLI,
                                     Nominativo = f.COGNOME + " " + f.NOME,
                                     CodiceFiscale = f.CODICEFISCALE,
-                                    dataInizio = f.DATAFINEVALIDITA,
+                                    dataInizio = f.DATAINIZIOVALIDITA,
                                     dataFine = f.DATAFINEVALIDITA,
                                     parentela = EnumParentela.Figlio,
                                     escludiPassaporto = f.ESCLUDIPASSAPORTO,

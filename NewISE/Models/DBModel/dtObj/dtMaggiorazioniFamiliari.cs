@@ -45,6 +45,7 @@ namespace NewISE.Models.DBModel.dtObj
                 idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
                 richiestaAttivazione = false,
                 attivazioneMagFam = false,
+                dataVariazione = DateTime.Now,
                 dataAggiornamento = DateTime.Now,
                 annullato = false
             };
