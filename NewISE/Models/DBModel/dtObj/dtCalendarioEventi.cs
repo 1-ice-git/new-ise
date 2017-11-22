@@ -48,7 +48,7 @@ namespace NewISE.Models.DBModel.dtObj
             int funzEv = (int)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO== idTrasferimento && c.IDFUNZIONIEVENTI==funzEv).ToList();
+                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
                 foreach (var x in result)
                 {
                     CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
@@ -69,33 +69,33 @@ namespace NewISE.Models.DBModel.dtObj
         }
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
-                int funzEv = (int)fe;            
-                var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
-                foreach (var x in result)
+            int funzEv = (int)fe;
+            var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
+            foreach (var x in result)
+            {
+                CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
+                y.COMPLETATO = true;
+                y.DATACOMPLETATO = DateTime.Now;
+                int i = db.SaveChanges();
+                if (i <= 0)
                 {
-                    CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
-                    y.COMPLETATO = true;
-                    y.DATACOMPLETATO = DateTime.Now;
-                    int i = db.SaveChanges();
-                    if (i <= 0)
-                    {
-                        throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
-                    }
-                    else
-                    {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-                          "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
-                    }
+                    throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
                 }
+                else
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
+                      "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
+                }
+            }
         }
-        
+
         public List<ElencoElementiHome> GetListaElementiHome()
         {
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp1 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp2 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmpAll = new List<ElencoElementiHome>();
-            
+
 
             try
             {
@@ -103,8 +103,8 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     ///Completati
                     tmp = (from e in db.CALENDARIOEVENTI
-                           where e.COMPLETATO == true && 
-                                 e.DATACOMPLETATO.Month == DateTime.Now.Month && 
+                           where e.COMPLETATO == true &&
+                                 e.DATACOMPLETATO.Month == DateTime.Now.Month &&
                                  e.DATACOMPLETATO.Year == DateTime.Now.Year &&
                                  e.ANNULLATO == false
                            orderby e.DATACOMPLETATO descending
@@ -116,7 +116,7 @@ namespace NewISE.Models.DBModel.dtObj
                                NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
                                Completato = e.COMPLETATO,
                                Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                               IdDipendente=e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                               IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                            }).ToList();
 
                     ///Attivi
@@ -159,7 +159,7 @@ namespace NewISE.Models.DBModel.dtObj
                     tmpAll.AddRange(tmp);
                     tmpAll.AddRange(tmp1);
                     tmpAll.AddRange(tmp2);
-                }                  
+                }
                 return (tmpAll);
             }
             catch (Exception ex)
@@ -168,16 +168,16 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public DettagliMessaggio OgggettoFunzioneEvento(EnumFunzioniEventi idf,int idd)
+        public DettagliMessaggio OgggettoFunzioneEvento(EnumFunzioniEventi idf, int idd)
         {
-            List <DettagliMessaggio> tmp = new List<DettagliMessaggio>();           
+            List<DettagliMessaggio> tmp = new List<DettagliMessaggio>();
             try
             {
                 using (var db = new ModelDBISE())
                 {
                     int x = (int)idf;
                     tmp = (from e in db.CALENDARIOEVENTI
-                           where e.IDFUNZIONIEVENTI == x && e.TRASFERIMENTO.IDDIPENDENTE==idd
+                           where e.IDFUNZIONIEVENTI == x && e.TRASFERIMENTO.IDDIPENDENTE == idd
                            select new DettagliMessaggio()
                            {
                                NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
@@ -195,7 +195,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
         public List<CalendarViewModel> GetConteggioStatiAttivita(DateTime inizio)
         {
-            List<CalendarViewModel> x = new List<CalendarViewModel>();            
+            List<CalendarViewModel> x = new List<CalendarViewModel>();
 
             //DateTime corrente;
 
@@ -210,7 +210,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     //var la = db.CALENDARIOEVENTI.Where(a=>a.ANNULLATO == false && inizio >= a.DATAINIZIOEVENTO && inizio <= a.DATASCADENZA && a.COMPLETATO == false).ToList();
 
-                    var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false  && a.COMPLETATO == false).ToList();
+                    var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
                     la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date).ToList();
                     //if (la?.Any() ?? false)
                     //{
@@ -223,16 +223,16 @@ namespace NewISE.Models.DBModel.dtObj
 
                     //}
                     var numeroAttivi = la.Count;
-                    int meseCorrente=inizio.Month,annoCorrente=inizio.Year;
+                    int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
                     DateTime attuale;
                     if (inizio.Day != 1)
                     {
-                        attuale= inizio.AddMonths(1);
+                        attuale = inizio.AddMonths(1);
                         meseCorrente = attuale.Month;
                         annoCorrente = attuale.Year;
                     }
-                    
-                   
+
+
 
                     string StringDate = string.Format("{0:yyyy-MM-dd}", inizio.Date);
                     //string StartDateString = StringDate + "T00:00:00"; //ISO 8601 format
@@ -268,8 +268,10 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     CalendarViewModel scaduti = new CalendarViewModel();
+                    //var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                    //a.DATASCADENZA.Value < DateTime.Now).ToList();
                     var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                    a.DATASCADENZA.Value <inizio.Date).ToList();
+                     inizio.Date > a.DATASCADENZA.Value && inizio <= DateTime.Now).ToList();
                     var numeroScaduti = ls.Count;
                     if (numeroScaduti != 0)
                     {
@@ -304,7 +306,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //                  //   end=(DateTime)e.DATASCADENZA,                                  
                 //              }).Distinct().ToList();
                 //    x.AddRange(attivi);           
-                                
+
 
                 //    return x;
                 //}
@@ -315,67 +317,84 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<CalendarioEventiModel> GetDetailsCalendarEvents(DateTime inizio,string stato)
+        public List<ElencoElementiHome> GetDetailsCalendarEvents(DateTime inizio, string stato)
         {
-            List<CalendarioEventiModel> tmp = new List<CalendarioEventiModel>();
-            List<CalendarioEventiModel> tmp2 = new List<CalendarioEventiModel>();
-            using (ModelDBISE db = new ModelDBISE())
+            List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
+            List<ElencoElementiHome> tmp2 = new List<ElencoElementiHome>();
+            try
             {
-                switch (stato.ToUpper())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    case "ATTIVI":
-                       var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
-                     //   la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date).ToList();
-                        tmp2 = (from a in la
-                               where inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date
-                                select new CalendarioEventiModel()
-                               {
-                                   DataInizioEvento = a.DATAINIZIOEVENTO,
-                                   DataScadenza = a.DATASCADENZA.Value,
-                                   Completato = a.COMPLETATO,
-                                   DataCompletato = a.DATACOMPLETATO,
-                                   Annullato=a.ANNULLATO
-                               }).ToList();
-                        tmp.AddRange(tmp2);
-                        break;
-                    case "COMPLETATI":
-                        int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
-                        DateTime attuale;
-                        if (inizio.Day != 1)
-                        {
-                            attuale = inizio.AddMonths(1);
-                            meseCorrente = attuale.Month;
-                            annoCorrente = attuale.Year;
-                        }
-                        tmp2 =(from b in db.CALENDARIOEVENTI where b.ANNULLATO == false && b.COMPLETATO == true &&
-                            b.DATAINIZIOEVENTO.Month == meseCorrente &&
-                            b.DATAINIZIOEVENTO.Year == annoCorrente
-                            select new CalendarioEventiModel()
+                    switch (stato.ToUpper())
+                    {
+                        case "ATTIVI":
+                            var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                            //   la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date).ToList();
+                            tmp2 = (from e in la
+                                    where inizio.Date >= e.DATAINIZIOEVENTO.Date && inizio <= e.DATASCADENZA.Value.Date
+                                    select new ElencoElementiHome()
+                                    {
+                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                        dataInizio = e.DATAINIZIOEVENTO,
+                                        dataScadenza = e.DATASCADENZA.Value,
+                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                        Completato = e.COMPLETATO,
+                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                        Stato=stato
+                                    }).ToList();
+                            tmp.AddRange(tmp2);
+                            break;
+                        case "COMPLETATI":
+                            int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
+                            DateTime attuale;
+                            if (inizio.Day != 1)
                             {
-                                DataInizioEvento = b.DATAINIZIOEVENTO,
-                                DataScadenza = b.DATASCADENZA.Value,
-                                Completato = b.COMPLETATO,
-                                DataCompletato = b.DATACOMPLETATO,
-                                Annullato = b.ANNULLATO
-                            }).ToList();
-                        tmp.AddRange(tmp2);
-                        break;
-                    case "SCADUTI":
-                        tmp2 = (from a in db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                                a.DATASCADENZA.Value < inizio).ToList()
-                                select new CalendarioEventiModel()
-                                {
-                                    DataInizioEvento = a.DATAINIZIOEVENTO,
-                                    DataScadenza = a.DATASCADENZA.Value,
-                                    Completato = a.COMPLETATO,
-                                    DataCompletato = a.DATACOMPLETATO,
-                                    Annullato = a.ANNULLATO
-                                }).ToList();
-                        tmp.AddRange(tmp2);
-                        break;
+                                attuale = inizio.AddMonths(1);
+                                meseCorrente = attuale.Month;
+                                annoCorrente = attuale.Year;
+                            }
+                            tmp2 = (from e in db.CALENDARIOEVENTI
+                                    where e.ANNULLATO == false && e.COMPLETATO == true &&
+                                    e.DATAINIZIOEVENTO.Month == meseCorrente &&
+                                    e.DATAINIZIOEVENTO.Year == annoCorrente
+                                    select new ElencoElementiHome()
+                                    {
+                                         IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                         Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                         dataInizio = e.DATAINIZIOEVENTO,
+                                         dataScadenza = e.DATASCADENZA.Value,
+                                         NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                         Completato = e.COMPLETATO,
+                                         IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                        Stato = stato
+                                    }).ToList();
+                            tmp.AddRange(tmp2);
+                            break;
+                        case "SCADUTI":
+                            tmp2 = (from e in db.CALENDARIOEVENTI.Where(e => e.ANNULLATO == false && e.COMPLETATO == false &&
+                                    inizio.Date > e.DATASCADENZA.Value).ToList()
+                                    select new ElencoElementiHome()
+                                    {
+                                        IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                        Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                        dataInizio = e.DATAINIZIOEVENTO,
+                                        dataScadenza = e.DATASCADENZA.Value,
+                                        NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                        Completato = e.COMPLETATO,
+                                        IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                        Stato = stato
+                                    }).ToList();
+                            tmp.AddRange(tmp2);
+                            break;
+                    }
                 }
+                return tmp;
             }
-            return tmp;
+            catch (Exception eex)
+            {
+                return null;
+            }
         }
-    } 
+    }
 }

@@ -59,7 +59,8 @@
                                         <td style="text-align: center;"></td>
                                     }
                                     <td>
-                                        <a href="javascript:void(0);" style="color:darkblue"
+                                        <a href="javascript:void(0);"
+                                            style="color:darkblue"
                                            class="anchorDetail" id_dip="@item.IdDipendente"
                                            id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                                     </td>
@@ -95,7 +96,8 @@
                                         <td style="text-align: center;"></td>
                                     }
                                     <td >
-                                        <a href="javascript:void(0);" style="color:white"
+                                        <a href="javascript:void(0);" 
+                                           style="color:white"
                                            class="anchorDetail" id_dip="@item.IdDipendente"
                                            id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                                     </td>
@@ -146,75 +148,115 @@
     </table>
 </div>
 
-<div id='myModal' class='modal'>
-    <div class="modal-dialog">
+<div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div id='myModalContent'></div>
+            @*<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Dettagli Funzione Eventi</h3>
+            </div>*@
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoDettagli">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+               </div>
+            </div>
+                <div class="modal-footer" style="background-color:white;text-align:center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+           </div>
         </div>
     </div>
-</div> 
 
-<script type="text/javascript">
+    <script type="text/javascript">
+        DocumentoModal();
 
-    $("#tbelencocal").DataTable({
-        "ordering": false,
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        }           
-    });
-
-    $(function () {
-        $(".anchorDetail").click(function () {
-            //debugger;
-            var TeamDetailPostBackURL = '/Home/DetailsFunzioneEvento';
-            var $buttonClicked = $(this);
-            var idf = $buttonClicked.attr('id_fe');
-            var idd = $buttonClicked.attr('id_dip');
-            var options = { "backdrop": "static", keyboard: true };
-
-            $.ajax({
-                type: "GET",
-                url: TeamDetailPostBackURL,
-                contentType: "application/json; charset=utf-8",
-                data: { "idf": idf, "idd": idd },
-                datatype: "json",
-                success: function (data) {
-                    //debugger;
-                    $('#myModalContent').html(data);
-                    $('#myModal').modal(options);
-                    $('#myModal').modal('show');
+        $("#tbelencocal").DataTable({
+            "ordering": false,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
                 },
-                error: function () {
-                    alert("Carico contenuti dinamici fallito.");
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
                 }
-            });
+            }
         });
 
-        $("#closbtn").click(function () {
-            $('#myModal').modal('hide');
+
+
+        $("#btModifica").click(function () {
+            //debugger;
+            $("#formEditTrasf").submit();
         });
-    });
-    
-</script>
+
+        function CloseTimeModal() {
+            setTimeout(CloseModalFile, 2000);
+            //CloseModalFile();
+        }
+
+        function CloseModalFile() {
+            $('#inviaDocModal').modal('hide');
+            //RicaricaModificaTrasferimento();
+            setTimeout(RicaricaModificaTrasferimento, 1000);
+        }
+
+        function DocumentoModal() {
+            $(".anchorDetail").click(function () {
+               // debugger;
+                var rotta = "/Home/DetailsFunzioneEvento";
+                var $buttonClicked = $(this);
+                var idf = $buttonClicked.attr('id_fe');
+                var idd = $buttonClicked.attr('id_dip');
+                $.ajax({
+                    url: rotta,
+                    type: "GET", //Le info testuali saranno passate in POST
+                    data: { "idf": idf, "idd": idd },
+                    dataType: 'html',
+                    async: false,
+                    beforeSend: function () {
+                        // debugger;
+                        $('#inviaDocModal').modal('show');
+                        //Blocca();
+                    },
+                    success: function (result) {
+                       // debugger;
+                        $("#viewDocumentoDettagli").empty();
+                        $("#viewDocumentoDettagli").html(result);
+                    },
+                    error: function (error) {
+                        //debugger;
+                        //Sblocca();
+                        var msg = error.responseText;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
+            });
+        }
+
+
+        function DialogInfo(response) {
+            $("#msgModalInfo").text(response);
+            $('#myModalInfo').modal('toggle');
+        }
+
+
+    </script>
 
 

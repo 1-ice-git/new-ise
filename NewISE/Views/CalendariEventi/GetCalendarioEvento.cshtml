@@ -15,21 +15,24 @@
 <script src='~/Lib/locale/it.js'></script>
 
 <div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            @*<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Dettagli Calendario Eventi</h3>
-            </div>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel" style="text-align:center">Dettagli Calendario Eventi</h3>
+            </div>*@
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div id="viewDocumentoDettagli">
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            <div class="modal-footer" style="text-align:center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Chiudi</button>
             </div>
         </div>
     </div>
@@ -120,7 +123,7 @@
 
     
     function CloseTimeModal() {
-        setTimeout(CloseModalFile, 2000);
+        setTimeout(CloseModalFile, 2000);        
         //CloseModalFile();
     }
 
@@ -128,14 +131,14 @@
         $('#inviaDocModal').modal('hide');
         //RicaricaModificaTrasferimento();
         setTimeout(RicaricaModificaTrasferimento, 1000);
+        //location.reload();
     }
 
     function DocumentoModal() {
         var rotta = "/CalendariEventi/GetDetailsCalendarEvents";
         var DataInizio = datainizio;// parseInt($("#idTrasferimento").val());
         var Stato = stato;
-        //  alert(xyz);
-        //debugger;
+        
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST

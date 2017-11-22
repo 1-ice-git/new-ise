@@ -105,7 +105,8 @@ namespace NewISE.Models
         
         public ActionResult GetDetailsCalendarEvents(DateTime DataInizio,string stato)
         {
-            List<CalendarioEventiModel> tmp = new List<CalendarioEventiModel>();
+            
+            List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             try
             {
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
