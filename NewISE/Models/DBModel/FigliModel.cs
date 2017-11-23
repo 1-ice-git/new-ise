@@ -77,6 +77,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
+        [DefaultValue(false)]
+        public bool Modificato { get; set; }
+
         public IList<AltriDatiFamConiugeModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
 

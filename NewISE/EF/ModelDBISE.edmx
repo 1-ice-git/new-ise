@@ -265,6 +265,7 @@
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDCONIUGE" Type="number" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CONIUGE_DOC">
           <Key>
@@ -381,6 +382,7 @@
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="FK_IDFIGLI" Type="number" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI_DOC">
           <Key>
@@ -6690,6 +6692,7 @@
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDCONIUGE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_C_ADF" FromRole="CONIUGE" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_B_C" FromRole="CONIUGE" ToRole="TITOLIVIAGGIO" />
           <NavigationProperty Name="CONIUGE1" Relationship="DBISEPRO.R_C_C" FromRole="CONIUGE" ToRole="CONIUGE1" />
@@ -6723,6 +6726,7 @@
           <Property Name="IDMAGGIORAZIONIFAMILIARI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="IDPASSAPORTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="FK_IDFIGLI" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ALTRIDATIFAM" Relationship="DBISEPRO.R_F_ADF" FromRole="FIGLI" ToRole="ALTRIDATIFAM" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_B_F" FromRole="FIGLI" ToRole="TITOLIVIAGGIO" />
           <NavigationProperty Name="FIGLI1" Relationship="DBISEPRO.R_F_F" FromRole="FIGLI" ToRole="FIGLI1" />
@@ -8034,6 +8038,7 @@
           <EntitySetMapping Name="CONIUGE">
             <EntityTypeMapping TypeName="DBISEPRO.CONIUGE">
               <MappingFragment StoreEntitySet="CONIUGE">
+                <ScalarProperty Name="MODIFICATO" ColumnName="MODIFICATO" />
                 <ScalarProperty Name="FK_IDCONIUGE" ColumnName="FK_IDCONIUGE" />
                 <ScalarProperty Name="IDPASSAPORTI" ColumnName="IDPASSAPORTI" />
                 <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />
@@ -8056,6 +8061,7 @@
           <EntitySetMapping Name="FIGLI">
             <EntityTypeMapping TypeName="DBISEPRO.FIGLI">
               <MappingFragment StoreEntitySet="FIGLI">
+                <ScalarProperty Name="MODIFICATO" ColumnName="MODIFICATO" />
                 <ScalarProperty Name="FK_IDFIGLI" ColumnName="FK_IDFIGLI" />
                 <ScalarProperty Name="IDPASSAPORTI" ColumnName="IDPASSAPORTI" />
                 <ScalarProperty Name="IDMAGGIORAZIONIFAMILIARI" ColumnName="IDMAGGIORAZIONIFAMILIARI" />

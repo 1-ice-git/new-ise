@@ -42,6 +42,7 @@ namespace NewISE.EF
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public decimal IDPASSAPORTI { get; set; }
         public Nullable<decimal> FK_IDFIGLI { get; set; }
+        public bool MODIFICATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }

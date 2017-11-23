@@ -174,8 +174,8 @@
         <AssociationConnector Association="DBISEPRO.ATT_PENSIONE" />
         <AssociationConnector Association="DBISEPRO.ATT_RMF" />
         <AssociationConnector Association="DBISEPRO.ATTMAGFAM_DOC" />
-        <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="38.25" PointY="56.375" />
-        <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="41.25" PointY="54.375" />
+        <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="38.25" PointY="56.25" />
+        <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="41.25" PointY="54.25" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
         <AssociationConnector Association="DBISEPRO.R_F_ADF" />
         <AssociationConnector Association="DBISEPRO.R_B_C" />
