@@ -250,7 +250,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
 
-                            c.ANNULLATO = true;
+                            
 
                             int i = db.SaveChanges();
     
@@ -316,7 +316,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var f in lf)
                                         {
                                             figli = f;
-                                            f.ANNULLATO = true;
 
                                             db.FIGLI.Add(figli);
                                             i = db.SaveChanges();
