@@ -1553,6 +1553,10 @@
     <Content Include="Areas\Parametri\Views\ParamPercMaggAbitaz\NuovaPercentualeMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamTFR\NuovoTFR.cshtml" />
     <Content Include="Areas\Parametri\Views\ParamTFR\TFR.cshtml" />
+    <Content Include="Areas\Parametri\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamCoeffIndRichiamo\CoeffIndRichiamo.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamCoeffIndRichiamo\NuovoCoeffIndRichiamo.cshtml" />
+    <Content Include="Areas\Parametri\Views\ParamCoeffFasciaKm\NuovoCoeffFasciakm.cshtml" />
     <None Include="Areas\Statistiche\RPTDataSet\DataSet1.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet14.Designer.cs</LastGenOutput>
@@ -1933,7 +1937,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />

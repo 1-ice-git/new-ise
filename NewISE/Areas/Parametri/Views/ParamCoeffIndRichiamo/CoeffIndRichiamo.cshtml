@@ -1,21 +1,21 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.CoeffFasciaKmModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.CoefficienteRichiamoModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 
 }
 
 <p>
-    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci nuovo Coefficiente Fascia Km</a>
+    <a id="btnInsNuovoCoeffIndRichiamo" href="#" onclick="NuovoCoeffIndRichiamo();">Inserisci nuovo Coeff. Ind. Richiamo</a>
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblCoeffFasciaKm", "Seleziona nuovo Coeff. Fascia Km ", new { @class = "control-label" })
+        @Html.Label("lblCoeffFasciaKm", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idDefKm", ViewBag.CoeffFasciaKm as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffFasciaKm();", @onClick = "PrelevaPVCoeffFasciaKm();" })
+                @Html.DropDownList("idCoefIndRichiamo", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffCoeffIndRichiamo();" })
             </div>
         </div>
     </div>
@@ -25,10 +25,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.idCfKm)
+                @Html.DisplayNameFor(model => model.idCoefIndRichiamo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.idDefKm)
+                @Html.DisplayNameFor(model => model.idRiduzioni)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -37,7 +37,10 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.coefficienteKm)
+                @Html.DisplayNameFor(model => model.coefficienteRichiamo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.coefficienteIndBase)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
@@ -53,10 +56,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.idCfKm)
+                    @Html.DisplayFor(modelItem => item.idCoefIndRichiamo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.idDefKm)
+                    @Html.DisplayFor(modelItem => item.idRiduzioni)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
@@ -65,7 +68,10 @@
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.coefficienteKm)
+                    @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.coefficienteIndBase)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
@@ -105,37 +111,37 @@
             }
         }
     });
-    $("#idDefKm").select2({
-        placeholder: "Seleziona nuovo Coefficiente di Fascia Km",
+    $("#idCoefIndRichiamo").select2({
+        placeholder: "Seleziona nuovo Coefficiente Indennità di Richiamo",
         allowClear: true,
         language: "it",
         width: '150'
 
     });
 
-    $("#btnInsNuovoCoeffFasciaKm").button();
+    $("#btnInsNuovoCoeffIndRichiamo").button();
 
 
-    function PrelevaPVCoeffFasciaKm() {
+    function PrelevaPVCoeffCoeffIndRichiamo() {
         //debugger;
-        rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
+        //rotta = "/Parametri/ParamCoeffIndRichiamo/CoefficienteFasciaKmLivello";
 
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
+        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
         var chk = true;
 
-        if (isNaN(idDefKm)) {
+        if (isNaN(idCoefIndRichiamo)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idDefKm: idDefKm, escludiAnnullati: chk },
+            data: { idCoefIndRichiamo: idCoefIndRichiamo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -166,27 +172,27 @@
 
     }
 
-    function NuovoCoeffFasciaKm() {
+    function NuovoCoeffIndRichiamo() {
         //debugger;
 
-        //var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
+        //var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndennitaRichiamo";
+        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
         var chk = false;
 
-        if (isNaN(idDefKm)) {
+        if (isNaN(idCoefIndRichiamo)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un coeff. per procedere.");
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idDefKm: idDefKm, escludiAnnullati: chk },
+            data: { idCoefIndRichiamo: idCoefIndRichiamo, escludiAnnullati: escludiAnnullati },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -217,21 +223,21 @@
 
     }
 
-    function EliminaCoeffFasciaKm(id) {
+    function EliminaCoefIndRichiamo(id) {
         //debugger;
-        //var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
+        //var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaAliquoteContributive";
 
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
+        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
         var chk = true;
 
-        if (isNaN(idDefKm)) {
+        if (isNaN(idCoefIndRichiamo)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -244,7 +250,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idDefKm: idDefKm },
+                            data: { escludiAnnullati: chk, idCoefIndRichiamo: idCoefIndRichiamo },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

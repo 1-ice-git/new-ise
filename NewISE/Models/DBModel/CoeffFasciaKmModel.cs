@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal idCfKm { get; set; }
 
         [Display(Name = "IDDefKm")]
-        public decimal IDDefKm { get; set; }
+        public decimal idDefKm { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
@@ -40,8 +40,6 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
         public DefFasciaKmModel km { get; set; }
-
-        public TipoAliquoteContributiveModel descrizione { get; set; }
-
+        
     }
 }
