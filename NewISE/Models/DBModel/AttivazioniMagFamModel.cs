@@ -37,8 +37,10 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         [Display(Name = "Annullato")]
         public bool annullato { get; set; }
-
-
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Data agg.")]
+        public DateTime dataVariazione { get; set; }
+        
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliaria { get; set; }
     }
 }

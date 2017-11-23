@@ -369,7 +369,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var lamf =
                     mf.ATTIVAZIONIMAGFAM.Where(
                         e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
-                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
                 var amf = lamf.First();
 
