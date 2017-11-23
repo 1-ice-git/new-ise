@@ -75,7 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.CONIUGE != null)
                         {
-                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            var lc = mf.CONIUGE.ToList();
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
@@ -118,7 +118,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.FIGLI != null)
                         {
-                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            var lf = mf.FIGLI.ToList();
 
                             if (lf?.Any() ?? false)
                             {
@@ -379,7 +379,6 @@ namespace NewISE.Models.DBModel.dtObj
                         c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;
-                        c.ANNULLATO = true;
 
                         int i = db.SaveChanges();
 
@@ -561,7 +560,6 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOVALIDITA = cm.dataInizio.Value,
                     DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                    ANNULLATO = cm.annullato,
                     ESCLUDIPASSAPORTO = cm.escludiPassaporto,
                     DATANOTIFICAPP = cm.dataNotificaPP,
                     ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
@@ -753,7 +751,6 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOVALIDITA = fm.dataInizio.Value,
                     DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                    ANNULLATO = fm.Annullato,
                     ESCLUDIPASSAPORTO = fm.escludiPassaporto,
                     DATANOTIFICAPP = fm.dataNotificaPP,
                     ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,

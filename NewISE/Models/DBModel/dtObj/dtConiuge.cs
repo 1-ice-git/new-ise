@@ -100,11 +100,11 @@ namespace NewISE.Models.DBModel.dtObj
                 var p = db.PASSAPORTI.Find(idPassaporto);
                 if (AllOnlyNotify)
                 {
-                    lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                    lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 }
                 else
                 {
-                    lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                    lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 }
 
 
@@ -124,7 +124,6 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizio = e.DATAINIZIOVALIDITA,
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO,
                                escludiPassaporto = e.ESCLUDIPASSAPORTO,
                                dataNotificaPP = e.DATANOTIFICAPP,
                                escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -151,11 +150,11 @@ namespace NewISE.Models.DBModel.dtObj
             var p = db.PASSAPORTI.Find(idPassaporto);
             if (AllOnlyNotify)
             {
-                lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lc?.Any() ?? false)
@@ -174,7 +173,6 @@ namespace NewISE.Models.DBModel.dtObj
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           annullato = e.ANNULLATO,
                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
                            dataNotificaPP = e.DATANOTIFICAPP,
                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -201,11 +199,11 @@ namespace NewISE.Models.DBModel.dtObj
             var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
             if (AllOnlyNotify)
             {
-                lc = tv.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lc = tv.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lc?.Any() ?? false)
@@ -224,7 +222,6 @@ namespace NewISE.Models.DBModel.dtObj
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           annullato = e.ANNULLATO,
                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
                            dataNotificaPP = e.DATANOTIFICAPP,
                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -243,7 +240,7 @@ namespace NewISE.Models.DBModel.dtObj
             var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
             var lc =
-                mf.CONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                mf.CONIUGE.Where(a => dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
                     .ToList();
 
             if (lc?.Any() ?? false)
@@ -271,7 +268,6 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = c.DATAINIZIOVALIDITA,
                             dataFine = c.DATAFINEVALIDITA,
                             dataAggiornamento = c.DATAAGGIORNAMENTO,
-                            annullato = c.ANNULLATO,
                             escludiPassaporto = c.ESCLUDIPASSAPORTO,
                             dataNotificaPP = c.DATANOTIFICAPP,
                             escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
@@ -310,7 +306,6 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    annullato = c.ANNULLATO,
                     escludiPassaporto = c.ESCLUDIPASSAPORTO,
                     dataNotificaPP = c.DATANOTIFICAPP,
                     escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
@@ -344,7 +339,6 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                        annullato = c.ANNULLATO,
                         escludiPassaporto = c.ESCLUDIPASSAPORTO,
                         dataNotificaPP = c.DATANOTIFICAPP,
                         escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
@@ -373,8 +367,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var amf = lamf.First();
 
-                lc = amf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
-
+                lc = amf.CONIUGE.ToList();
 
                 //var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAINIZIOVALIDITA);
 
@@ -394,7 +387,6 @@ namespace NewISE.Models.DBModel.dtObj
                                dataInizio = e.DATAINIZIOVALIDITA,
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               annullato = e.ANNULLATO,
                                escludiPassaporto = e.ESCLUDIPASSAPORTO,
                                dataNotificaPP = e.DATANOTIFICAPP,
                                escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -480,7 +472,6 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                ANNULLATO = cm.annullato,
                 ESCLUDIPASSAPORTO = cm.escludiPassaporto,
                 DATANOTIFICAPP = cm.dataNotificaPP,
                 ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
@@ -543,7 +534,6 @@ namespace NewISE.Models.DBModel.dtObj
                         c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;
-                        c.ANNULLATO = true;
 
                         int i = db.SaveChanges();
 

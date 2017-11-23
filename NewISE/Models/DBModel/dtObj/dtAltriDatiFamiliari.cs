@@ -449,7 +449,7 @@ namespace NewISE.Models.DBModel.dtObj
         //<exception cref = "DbUpdateException" > Si è verificato un errore durante l'invio degli aggiornamenti al database.</exception>
         //<exception cref = "DbUpdateConcurrencyException" > Un comando di database non ha influito sul numero previsto di righe.Questo indica in genere una violazione della concorrenza ottimistica, ovvero che una riga è cambiata nel database rispetto a quando è stata eseguita la query.</exception>
         //<exception cref = "DbEntityValidationException" > Il salvataggio è stato annullato perché la convalida dei valori di proprietà delle entità non è riuscita.</exception>
-        public void SetAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adfm)
+        public void SetAltriDatiFamiliariConiuge(ref AltriDatiFamConiugeModel adfm, decimal idAttivitaMagFam)
         {
             using (var db = new ModelDBISE())
             {
@@ -477,6 +477,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (db.SaveChanges() > 0)
                     {
+                        adfm.idAltriDatiFam = adf.IDALTRIDATIFAM;
+
                         decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);

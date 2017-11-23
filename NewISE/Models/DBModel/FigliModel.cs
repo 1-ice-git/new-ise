@@ -58,9 +58,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Agg.")]
         [DataType(DataType.DateTime)]
         public DateTime dataAggiornamento { get; set; }
-        [Required(ErrorMessage = "Il campo annullatto è obbligatorio.")]
-        [DefaultValue(false)]
-        public bool Annullato { get; set; }
+
 
         [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
         [Display(Name = "Escludi P.")]

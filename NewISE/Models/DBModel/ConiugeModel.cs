@@ -57,8 +57,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data agg.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dataAggiornamento { get; set; }
-        [Display(Name = "Annullato")]
-        public bool annullato { get; set; }
+
 
         [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
         [Display(Name = "Escludi P.")]

@@ -14,6 +14,12 @@ namespace NewISE.EF
     
     public partial class ALTRIDATIFAM
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ALTRIDATIFAM()
+        {
+            this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
+        }
+    
         public decimal IDALTRIDATIFAM { get; set; }
         public Nullable<decimal> IDCONIUGE { get; set; }
         public Nullable<decimal> IDFIGLI { get; set; }
@@ -29,6 +35,8 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
         public virtual FIGLI FIGLI { get; set; }
     }

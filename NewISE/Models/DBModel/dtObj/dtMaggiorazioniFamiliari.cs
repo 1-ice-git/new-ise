@@ -30,16 +30,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             this.SetMaggiorazioneFamiliari(ref mfm, db);
 
-            RinunciaMaggiorazioniFamiliariModel rmfm = new RinunciaMaggiorazioniFamiliariModel()
-            {
-                idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
-                rinunciaMaggiorazioni = false,
-                dataAggiornamento = DateTime.Now,
-                annullato = false
-            };
-
-            this.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
-
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel()
             {
                 idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
@@ -53,7 +43,24 @@ namespace NewISE.Models.DBModel.dtObj
             using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
             {
                 dtamf.SetAttivaziomeMagFam(ref amfm, db);
+
+                RinunciaMaggiorazioniFamiliariModel rmfm = new RinunciaMaggiorazioniFamiliariModel()
+                {
+                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari,
+                    rinunciaMaggiorazioni = false,
+                    dataAggiornamento = DateTime.Now,
+                    annullato = false
+                };
+
+                this.SetRinunciaMaggiorazioniFamiliari(ref rmfm, db);
+
+                dtamf.AssociaRinunciaMagFam(amfm.idAttivazioneMagFam, rmfm.idRinunciaMagFam, db);
             }
+
+
+
+
+
 
         }
 
@@ -990,7 +997,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.CONIUGE != null)
                         {
-                            var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                            var lc = mf.CONIUGE.ToList();
                             if (lc?.Any() ?? false)
                             {
                                 datiConiuge = true;
@@ -1033,7 +1040,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (mf.FIGLI != null)
                         {
-                            var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
+                            var lf = mf.FIGLI.ToList();
 
                             if (lf?.Any() ?? false)
                             {
@@ -1182,7 +1189,12 @@ namespace NewISE.Models.DBModel.dtObj
 
             db.MAGGIORAZIONIFAMILIARI.Add(mf);
 
-            db.SaveChanges();
+            int i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Maggiorazioni familiari non inserite.");
+            }
 
         }
 
@@ -1220,8 +1232,6 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;
-                        fm.Annullato = false;
-
 
 
 
@@ -1290,6 +1300,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
+
+                    //var mf = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari);
+
+
+
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
                         var tm = dtt.GetTrasferimentoByIDMagFam(cm.idMaggiorazioniFamiliari);
@@ -1312,15 +1327,13 @@ namespace NewISE.Models.DBModel.dtObj
                     using (dtConiuge dtc = new dtConiuge())
                     {
                         cm.dataAggiornamento = DateTime.Now;
-                        cm.annullato = false;
-
 
                         dtc.SetConiuge(ref cm, db);
+
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                         {
                             DateTime dtIni = cm.dataInizio.Value;
                             DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
-
 
                             List<PercentualeMagConiugeModel> lpmcm =
                                 dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)

@@ -168,7 +168,6 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                                 ap.CONIUGE.Where(
                                     a =>
-                                        a.ANNULLATO == false &&
                                         a.TIPOLOGIACONIUGE.IDTIPOLOGIACONIUGE ==
                                         (decimal)EnumTipologiaConiuge.Residente).OrderBy(a => a.DATAINIZIOVALIDITA);
 
@@ -216,7 +215,6 @@ namespace NewISE.Models.DBModel.dtObj
                             var lf =
                                 ap.FIGLI.Where(
                                     a =>
-                                        a.ANNULLATO == false &&
                                         (a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                          a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO ==
                                          (decimal)EnumTipologiaFiglio.StudenteResidente))
@@ -793,7 +791,7 @@ namespace NewISE.Models.DBModel.dtObj
                         esistonoRichiesteRichiedenteSalvate = false;
                     }
 
-                    var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+                    var lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false);
                     if (lc?.Any() ?? false)
                     {
                         foreach (var c in lc)
@@ -822,7 +820,7 @@ namespace NewISE.Models.DBModel.dtObj
                         esistonoRichiesteConiugeSalvate = false;
                     }
 
-                    var lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+                    var lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false);
                     if (lf?.Any() ?? false)
                     {
                         foreach (var f in lf)
@@ -1602,7 +1600,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lc =
                                     p.CONIUGE.Where(
                                         a =>
-                                            a.ANNULLATO == false &&
                                             a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                         .ThenBy(a => a.DATAFINEVALIDITA);
@@ -1641,7 +1638,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lf =
                                     p.FIGLI.Where(
                                         a =>
-                                            a.ANNULLATO == false &&
                                             (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                              a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente))
                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
