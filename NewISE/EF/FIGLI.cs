@@ -18,11 +18,12 @@ namespace NewISE.EF
         public FIGLI()
         {
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
-            this.INDENNITAPRIMOSEGRETARIO = new HashSet<INDENNITAPRIMOSEGRETARIO>();
-            this.PERCENTUALEMAGFIGLI = new HashSet<PERCENTUALEMAGFIGLI>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.FIGLI1 = new HashSet<FIGLI>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.ATTIVAZIONIPASSAPORTI = new HashSet<ATTIVAZIONIPASSAPORTI>();
+            this.INDENNITAPRIMOSEGRETARIO = new HashSet<INDENNITAPRIMOSEGRETARIO>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.PERCENTUALEMAGFIGLI = new HashSet<PERCENTUALEMAGFIGLI>();
         }
     
         public decimal IDFIGLI { get; set; }
@@ -33,7 +34,6 @@ namespace NewISE.EF
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
         public bool ESCLUDIPASSAPORTO { get; set; }
         public Nullable<System.DateTime> DATANOTIFICAPP { get; set; }
         public decimal IDTITOLOVIAGGIO { get; set; }
@@ -41,22 +41,27 @@ namespace NewISE.EF
         public bool ESCLUDITITOLOVIAGGIO { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public decimal IDPASSAPORTI { get; set; }
+        public Nullable<decimal> FK_IDFIGLI { get; set; }
+        public bool MODIFICATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
-        public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
+        public virtual ICollection<FIGLI> FIGLI1 { get; set; }
+        public virtual FIGLI FIGLI2 { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
+        public virtual TIPOLOGIAFIGLIO TIPOLOGIAFIGLIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
     }
 }

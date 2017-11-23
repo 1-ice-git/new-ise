@@ -146,17 +146,35 @@ namespace NewISE.Models.DBModel.dtObj
                         idLivello = ib.LIVELLI.IDLIVELLO,
                         DescLivello = ib.LIVELLI.LIVELLO
                     },
-                    Riduzioni = new RiduzioniModel()
+                    //Riduzioni = new RiduzioniModel()
+                    //{
+                    //    idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
+                    //    idRegola = ib.RIDUZIONI.IDREGOLA,
+                    //    dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
+                    //    dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                    //    percentuale = ib.RIDUZIONI.PERCENTUALE,
+                    //    dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
+                    //    annullato = ib.ANNULLATO
+                    //}
+                };
+
+                var r = ib.RIDUZIONI;
+                if (r?.IDRIDUZIONI > 0)
+                {
+                    ibm.Riduzioni = new RiduzioniModel()
                     {
                         idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
                         idRegola = ib.RIDUZIONI.IDREGOLA,
                         dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : ib.RIDUZIONI.DATAFINEVALIDITA,
+                        dataFineValidita =
+                            ib.RIDUZIONI.DATAFINEVALIDITA == Utility.DataFineStop()
+                                ? new DateTime?()
+                                : ib.RIDUZIONI.DATAFINEVALIDITA,
                         percentuale = ib.RIDUZIONI.PERCENTUALE,
                         dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
                         annullato = ib.ANNULLATO
-                    }
-                };
+                    };
+                }
             }
 
             return ibm;
@@ -274,18 +292,24 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idLivello = ib.LIVELLI.IDLIVELLO,
                         DescLivello = ib.LIVELLI.LIVELLO
-                    },
-                    Riduzioni = new RiduzioniModel()
-                    {
-                        idRiduzioni = ib.RIDUZIONI.IDRIDUZIONI,
-                        idRegola = ib.RIDUZIONI.IDREGOLA,
-                        dataInizioValidita = ib.RIDUZIONI.DATAINIZIOVALIDITA,
-                        dataFineValidita = ib.RIDUZIONI.DATAFINEVALIDITA != Utility.DataFineStop() ? ib.RIDUZIONI.DATAFINEVALIDITA : new DateTime?(),
-                        percentuale = ib.RIDUZIONI.PERCENTUALE,
-                        dataAggiornamento = ib.RIDUZIONI.DATAAGGIORNAMENTO,
-                        annullato = ib.RIDUZIONI.ANNULLATO
                     }
                 };
+
+                var r = ib.RIDUZIONI;
+                if (r?.IDRIDUZIONI > 0)
+                {
+                    ibm.Riduzioni = new RiduzioniModel()
+                    {
+                        idRiduzioni = r.IDRIDUZIONI,
+                        idRegola = r.IDREGOLA,
+                        dataInizioValidita = r.DATAINIZIOVALIDITA,
+                        dataFineValidita = r.DATAFINEVALIDITA != Utility.DataFineStop() ? ib.RIDUZIONI.DATAFINEVALIDITA : new DateTime?(),
+                        percentuale = r.PERCENTUALE,
+                        dataAggiornamento = r.DATAAGGIORNAMENTO,
+                        annullato = r.ANNULLATO
+                    };
+                }
+
             }
 
             return ibm;

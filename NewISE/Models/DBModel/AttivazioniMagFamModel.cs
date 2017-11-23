@@ -31,6 +31,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Att.")]
         public DateTime? dataAttivazioneMagFam { get; set; }
         [DataType(DataType.DateTime)]
+        [Display(Name = "Data var.")]
+        public DateTime dataVariazione { get; set; }
+        [DataType(DataType.DateTime)]
         [Display(Name = "Data agg.")]
         public DateTime dataAggiornamento { get; set; } = DateTime.Now;
         [Required]

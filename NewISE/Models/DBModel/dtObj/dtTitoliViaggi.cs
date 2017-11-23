@@ -487,7 +487,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                             tv.CONIUGE.Where(
                                 a =>
-                                    a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false &&
+                                    a.ESCLUDITITOLOVIAGGIO == false &&
                                     a.DATANOTIFICATV.HasValue == false).ToList();
                             if (lc?.Any() ?? false)
                             {
@@ -506,7 +506,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lf =
                                 tv.FIGLI.Where(
                                     a =>
-                                        a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false &&
+                                        a.ESCLUDITITOLOVIAGGIO == false &&
                                         a.DATANOTIFICATV.HasValue == false).ToList();
                             if (lf?.Any() ?? false)
                             {

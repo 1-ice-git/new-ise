@@ -701,8 +701,8 @@ namespace NewISE.Controllers
                             case EnumParentela.Richiedente:
                                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                                 {
-                                    var ppm = dtpp.GetPassaportoByID(id);
-                                    idTrasferimento = ppm.idPassaporto;
+                                    var ppm = dtpp.GetPassaportoRichiedenteByID(id);
+                                    idTrasferimento = ppm.idPassaporti;
                                 }
                                 break;
                             default:

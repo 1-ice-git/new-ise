@@ -68,7 +68,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                
+
                 var lamf =
                     mf.ATTIVAZIONIMAGFAM.Where(
                         a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
@@ -94,6 +94,10 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
+
+
+
+
 
 
         /// <summary>
@@ -167,7 +171,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 break;
                             case EnumParentela.Richiedente:
-                                ld = db.PASSAPORTI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException("parentela");
@@ -176,36 +180,11 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Lettera_Trasferimento:
                         break;
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Richiedente:
-                                //ld = db.MAGGIORAZIONIFAMILIARI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                var mf = db.MAGGIORAZIONIFAMILIARI.Find(id);
-                                var lamf =
-                                    mf.ATTIVAZIONIMAGFAM.Where(
-                                        a =>
-                                            (a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false &&
-                                             a.ATTIVAZIONEMAGFAM == false) ||
-                                            a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true)
-                                        .OrderByDescending(a => a.DATAAGGIORNAMENTO);
-                                foreach (var amf in lamf)
-                                {
-                                    var nld =
-                                        amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
-                                            .OrderByDescending(a => a.DATAINSERIMENTO);
 
-                                    ld.AddRange(nld);
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
+                        ld = db.ATTIVAZIONIMAGFAM.Find(id)
+                            .DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
+                            .OrderByDescending(a => a.DATAINSERIMENTO).ToList();
+
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("tipodoc");

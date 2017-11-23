@@ -57,8 +57,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data agg.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dataAggiornamento { get; set; }
-        [Display(Name = "Annullato")]
-        public bool annullato { get; set; }
+
 
         [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
         [Display(Name = "Escludi P.")]
@@ -74,6 +73,12 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataNotificaTV { get; set; }
 
+        [DefaultValue(false)]
+        public bool Modificato { get; set; }
+
+        public decimal FK_idConiuge { get; set; }
+
+        public ConiugeModel ConiugeModificato { get; set; }
 
         public IList<AltriDatiFamConiugeModel> lAltriDatiFamiliari { get; set; }
 

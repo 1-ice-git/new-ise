@@ -11,6 +11,7 @@ namespace NewISE.Models.ViewModel
     public class ElencoFamiliariModel
     {
         public decimal idMaggiorazioniFamiliari { get; set; }
+        public decimal idAttivazioneMagFam { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
         public decimal? idPassaporti { get; set; }
         public decimal? idTitoloViaggio { get; set; }

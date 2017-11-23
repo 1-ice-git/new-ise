@@ -611,7 +611,7 @@ namespace NewISE.Controllers
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        dtadf.SetAltriDatiFamiliariConiuge(adf);
+                        //dtadf.SetAltriDatiFamiliariConiuge(adf);
                     }
                 }
                 else

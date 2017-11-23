@@ -150,10 +150,10 @@ namespace NewISE.Models.Tools
                                     {
                                         indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
                                             dtDatiParametri, db);
-                                        if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
+                                        if (indennitaBase?.idIndennitaBase > 0)
                                         {
                                             indennitaBaseNoRiduzione = indennitaBase.valoreResponsabile;
-                                            if (indennitaBase.Riduzioni.percentuale > 0)
+                                            if (indennitaBase?.Riduzioni?.percentuale > 0)
                                             {
                                                 indennitaBaseRiduzione = indennitaBaseNoRiduzione *
                                                                          indennitaBase.Riduzioni.percentuale / 100;
@@ -170,10 +170,10 @@ namespace NewISE.Models.Tools
                                     {
                                         indennitaBase = dtib.GetIndennitaBaseByIdTrasf(indennita.idTrasfIndennita,
                                             dtDatiParametri, db);
-                                        if (indennitaBase != null && indennitaBase.idIndennitaBase > 0)
+                                        if (indennitaBase?.idIndennitaBase > 0)
                                         {
                                             indennitaBaseNoRiduzione = indennitaBase.valore;
-                                            if (indennitaBase.Riduzioni.percentuale > 0)
+                                            if (indennitaBase?.Riduzioni?.percentuale > 0)
                                             {
                                                 indennitaBaseRiduzione = indennitaBaseNoRiduzione *
                                                                          indennitaBase.Riduzioni.percentuale / 100;

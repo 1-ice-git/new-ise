@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
+using Newtonsoft.Json.Schema;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -14,6 +15,47 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
+
+
+        public AttivazioniMagFamModel GetAttivazioneIniziale(decimal idMaggiorazioneFamiliare)
+        {
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioneFamiliare);
+
+                if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
+                {
+                    var lamf =
+                        mf.ATTIVAZIONIMAGFAM.Where(
+                            a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
+                            .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                    if (lamf?.Any() ?? false)
+                    {
+                        var amf = lamf.First();
+
+                        amfm = new AttivazioniMagFamModel()
+                        {
+                            idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                            idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                            richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                            dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                            attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                            dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                            dataVariazione = amf.DATAVARIAZIONE,
+                            dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                            annullato = amf.ANNULLATO
+                        };
+
+                    }
+                }
+
+            }
+
+            return amfm;
+        }
+
 
         public IList<AttivazioniMagFamModel> GetListAttivazioniMagFamByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
@@ -133,6 +175,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATARICHIESTAATTIVAZIONE = amfm.dataRichiestaAttivazione,
                 ATTIVAZIONEMAGFAM = amfm.attivazioneMagFam,
                 DATAATTIVAZIONEMAGFAM = amfm.dataAttivazioneMagFam,
+                DATAVARIAZIONE = amfm.dataVariazione,
                 DATAAGGIORNAMENTO = amfm.dataAggiornamento,
                 ANNULLATO = amfm.annullato
             };
@@ -202,6 +245,32 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
             return amfm;
+        }
+
+        public void AssociaRinunciaMagFam(decimal idAttivazioneFamiliare, decimal idRinunciaMagFam, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.RINUNCIAMAGGIORAZIONIFAMILIARI).Load();
+                var r = db.RINUNCIAMAGGIORAZIONIFAMILIARI.Find(idRinunciaMagFam);
+                amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(r);
+
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare l'informazione di rinuncia delle maggiorazioni all'attivazione familiare.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public void AssociaFormulario(decimal idAttivazioneFamiliare, decimal idDocumento, ModelDBISE db)

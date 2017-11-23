@@ -33,11 +33,11 @@ namespace NewISE.Models.DBModel.dtObj
             var p = db.PASSAPORTI.Find(idPassaporto);
             if (AllOnlyNotify)
             {
-                lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lf?.Any() ?? false)
@@ -55,7 +55,6 @@ namespace NewISE.Models.DBModel.dtObj
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           Annullato = e.ANNULLATO,
                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
                            dataNotificaPP = e.DATANOTIFICAPP,
                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -84,11 +83,11 @@ namespace NewISE.Models.DBModel.dtObj
             var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
             if (AllOnlyNotify)
             {
-                lf = tv.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lf = tv.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lf?.Any() ?? false)
@@ -106,7 +105,6 @@ namespace NewISE.Models.DBModel.dtObj
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           Annullato = e.ANNULLATO,
                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
                            dataNotificaPP = e.DATANOTIFICAPP,
                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
@@ -256,7 +254,6 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                ANNULLATO = fm.Annullato,
                 ESCLUDIPASSAPORTO = fm.escludiPassaporto,
                 DATANOTIFICAPP = fm.dataNotificaPP,
                 ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
@@ -326,7 +323,6 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = f.DATAINIZIOVALIDITA,
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                        Annullato = f.ANNULLATO,
                         escludiPassaporto = f.ESCLUDIPASSAPORTO,
                         dataNotificaPP = f.DATANOTIFICAPP,
                         escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO,
@@ -353,7 +349,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (mf != null && mf.IDMAGGIORAZIONIFAMILIARI > 0)
             {
                 var lf =
-                    mf.FIGLI.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    mf.FIGLI.Where(a => dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
                         .ToList();
 
                 if (lf?.Any() ?? false)
@@ -376,7 +372,6 @@ namespace NewISE.Models.DBModel.dtObj
                                      dataInizio = f.DATAINIZIOVALIDITA,
                                      dataFine = f.DATAFINEVALIDITA,
                                      dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                     Annullato = f.ANNULLATO,
                                      escludiPassaporto = f.ESCLUDIPASSAPORTO,
                                      dataNotificaPP = f.DATANOTIFICAPP,
                                      escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO
@@ -403,7 +398,7 @@ namespace NewISE.Models.DBModel.dtObj
                         .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
 
                 var amf = lamf.First();
-                var lf = amf.FIGLI.Where(a => a.ANNULLATO == false);
+                var lf = amf.FIGLI;
 
                 //var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
 
@@ -425,7 +420,6 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = item.DATAINIZIOVALIDITA,
                             dataFine = item.DATAFINEVALIDITA,
                             dataAggiornamento = item.DATAAGGIORNAMENTO,
-                            Annullato = item.ANNULLATO,
                             escludiPassaporto = item.ESCLUDIPASSAPORTO,
                             dataNotificaPP = item.DATANOTIFICAPP,
                             escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO,
@@ -449,7 +443,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lf =
                 db.FIGLI.Where(
                     a =>
-                        a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari && a.ANNULLATO == false &&
+                        a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari &&
                         a.DATAFINEVALIDITA == Utility.DataFineStop())
                     .OrderByDescending(a => a.DATAFINEVALIDITA)
                     .ToList();

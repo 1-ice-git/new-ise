@@ -21,6 +21,28 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public PassaportoRichiedenteModel GetPassaportoRichiedenteByID(decimal id)
+        {
+            PassaportoRichiedenteModel prm = new PassaportoRichiedenteModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var pr = db.PASSAPORTORICHIEDENTE.Find(id);
+
+                prm = new PassaportoRichiedenteModel()
+                {
+                    idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE,
+                    idPassaporti = pr.IDPASSAPORTI,
+                    EscludiPassaporto = pr.ESCLUDIPASSAPORTO,
+                    DataEscludiPassaporto = pr.DATAESCLUDIPASSAPORTO,
+                    DataAggiornamento = pr.DATAAGGIORNAMENTO,
+                    annullato = pr.ANNULLATO
+                };
+            }
+
+            return prm;
+        }
+
 
         public void SetEscludiPassaportoRichiedente(decimal idPassaportoRichiedente, ref bool chk)
         {
@@ -146,7 +168,6 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                                 ap.CONIUGE.Where(
                                     a =>
-                                        a.ANNULLATO == false &&
                                         a.TIPOLOGIACONIUGE.IDTIPOLOGIACONIUGE ==
                                         (decimal)EnumTipologiaConiuge.Residente).OrderBy(a => a.DATAINIZIOVALIDITA);
 
@@ -175,7 +196,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idFamiliare = c.IDCONIUGE,
                                     Nominativo = c.COGNOME + " " + c.NOME,
                                     CodiceFiscale = c.CODICEFISCALE,
-                                    dataInizio = c.DATAFINEVALIDITA,
+                                    dataInizio = c.DATAINIZIOVALIDITA,
                                     dataFine = c.DATAFINEVALIDITA,
                                     parentela = EnumParentela.Coniuge,
                                     escludiPassaporto = c.ESCLUDIPASSAPORTO,
@@ -194,7 +215,6 @@ namespace NewISE.Models.DBModel.dtObj
                             var lf =
                                 ap.FIGLI.Where(
                                     a =>
-                                        a.ANNULLATO == false &&
                                         (a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                          a.TIPOLOGIAFIGLIO.IDTIPOLOGIAFIGLIO ==
                                          (decimal)EnumTipologiaFiglio.StudenteResidente))
@@ -221,7 +241,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idFamiliare = f.IDFIGLI,
                                     Nominativo = f.COGNOME + " " + f.NOME,
                                     CodiceFiscale = f.CODICEFISCALE,
-                                    dataInizio = f.DATAFINEVALIDITA,
+                                    dataInizio = f.DATAINIZIOVALIDITA,
                                     dataFine = f.DATAFINEVALIDITA,
                                     parentela = EnumParentela.Figlio,
                                     escludiPassaporto = f.ESCLUDIPASSAPORTO,
@@ -771,7 +791,7 @@ namespace NewISE.Models.DBModel.dtObj
                         esistonoRichiesteRichiedenteSalvate = false;
                     }
 
-                    var lc = p.CONIUGE.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+                    var lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false);
                     if (lc?.Any() ?? false)
                     {
                         foreach (var c in lc)
@@ -800,7 +820,7 @@ namespace NewISE.Models.DBModel.dtObj
                         esistonoRichiesteConiugeSalvate = false;
                     }
 
-                    var lf = p.FIGLI.Where(a => a.ANNULLATO == false && a.ESCLUDIPASSAPORTO == false);
+                    var lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false);
                     if (lf?.Any() ?? false)
                     {
                         foreach (var f in lf)
@@ -1580,7 +1600,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lc =
                                     p.CONIUGE.Where(
                                         a =>
-                                            a.ANNULLATO == false &&
                                             a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                         .ThenBy(a => a.DATAFINEVALIDITA);
@@ -1619,7 +1638,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 var lf =
                                     p.FIGLI.Where(
                                         a =>
-                                            a.ANNULLATO == false &&
                                             (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                              a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente))
                                         .OrderByDescending(a => a.DATAINIZIOVALIDITA)

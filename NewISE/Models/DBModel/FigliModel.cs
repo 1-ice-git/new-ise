@@ -58,9 +58,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Agg.")]
         [DataType(DataType.DateTime)]
         public DateTime dataAggiornamento { get; set; }
-        [Required(ErrorMessage = "Il campo annullatto è obbligatorio.")]
-        [DefaultValue(false)]
-        public bool Annullato { get; set; }
+
 
         [Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
         [Display(Name = "Escludi P.")]
@@ -78,6 +76,9 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
+
+        [DefaultValue(false)]
+        public bool Modificato { get; set; }
 
         public IList<AltriDatiFamConiugeModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }

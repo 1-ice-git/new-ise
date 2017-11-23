@@ -21,7 +21,7 @@ namespace NewISE.Models
         public bool EscludiPassaporto { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data escl. pass.")]
-        public DateTime DataEscludiPassaporto { get; set; }
+        public DateTime? DataEscludiPassaporto { get; set; }
         [Display(Name = "Data agg.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DataAggiornamento { get; set; }

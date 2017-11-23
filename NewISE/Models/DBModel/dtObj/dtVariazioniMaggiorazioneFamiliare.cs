@@ -49,9 +49,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var conta_attivazioni = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE==true && a.ATTIVAZIONEMAGFAM == true))).Count();
+                var conta_attivazioni = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).Count();
 
-                if (conta_attivazioni>1)
+                if (conta_attivazioni > 1)
                 {
                     var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
@@ -59,9 +59,9 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         //inLavorazione = true;
 
-                        foreach(var amf in lamf)
+                        foreach (var amf in lamf)
                         {
-                         //   var amf = lamf.First();
+                            //   var amf = lamf.First();
 
                             if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                             {
@@ -73,7 +73,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
                                 richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                                 Attivazione = amf.ATTIVAZIONEMAGFAM;
-    
+
                                 var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
                                 if (ld?.Any() ?? false)
                                 {
@@ -85,7 +85,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (mf.CONIUGE != null)
                                 {
-                                    var lc = mf.CONIUGE.Where(a => a.ANNULLATO == false).ToList();
+                                    var lc = mf.CONIUGE.ToList();
                                     if (lc?.Any() ?? false)
                                     {
                                         datiConiuge = true;
@@ -94,7 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var c in lc)
                                         {
                                             var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-    
+
                                             if (nadc > 0)
                                             {
                                                 datiParzialiConiuge = false;
@@ -108,7 +108,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var c in lc)
                                         {
                                             var ndocc = c.DOCUMENTI.Count;
-    
+
                                             if (ndocc > 0)
                                             {
                                                 siDocConiuge = true;
@@ -124,13 +124,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         datiConiuge = false;
                                     }
-    
+
                                 }
-    
+
                                 if (mf.FIGLI != null)
                                 {
-                                    var lf = mf.FIGLI.Where(a => a.ANNULLATO == false).ToList();
-    
+                                    var lf = mf.FIGLI.ToList();
+
                                     if (lf?.Any() ?? false)
                                     {
                                         datiFigli = true;
@@ -139,7 +139,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var f in lf)
                                         {
                                             var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-    
+
                                             if (nadf > 0)
                                             {
                                                 datiParzialiFigli = false;
@@ -150,7 +150,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 break;
                                             }
                                         }
-    
+
                                         foreach (var f in lf)
                                         {
                                             var ndocf = f.DOCUMENTI.Count;
@@ -172,7 +172,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             }
                         }
-                    }   
+                    }
                 }
             }
 
@@ -391,7 +391,6 @@ namespace NewISE.Models.DBModel.dtObj
                         c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
                     {
                         c.DATAAGGIORNAMENTO = DateTime.Now;
-                        c.ANNULLATO = true;
 
                         int i = db.SaveChanges();
 
@@ -573,7 +572,6 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOVALIDITA = cm.dataInizio.Value,
                     DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                    ANNULLATO = cm.annullato,
                     ESCLUDIPASSAPORTO = cm.escludiPassaporto,
                     DATANOTIFICAPP = cm.dataNotificaPP,
                     ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
@@ -765,7 +763,6 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOVALIDITA = fm.dataInizio.Value,
                     DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                     DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                    ANNULLATO = fm.Annullato,
                     ESCLUDIPASSAPORTO = fm.escludiPassaporto,
                     DATANOTIFICAPP = fm.dataNotificaPP,
                     ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,

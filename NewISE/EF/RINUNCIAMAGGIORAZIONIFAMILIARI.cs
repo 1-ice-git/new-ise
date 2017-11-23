@@ -14,6 +14,12 @@ namespace NewISE.EF
     
     public partial class RINUNCIAMAGGIORAZIONIFAMILIARI
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RINUNCIAMAGGIORAZIONIFAMILIARI()
+        {
+            this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
+        }
+    
         public decimal IDRINUNCIAMAGFAM { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
         public bool RINUNCIAMAGGIORAZIONI { get; set; }
@@ -23,5 +29,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
     }
 }
