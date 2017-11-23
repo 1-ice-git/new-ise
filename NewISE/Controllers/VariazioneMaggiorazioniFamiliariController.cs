@@ -234,37 +234,38 @@ namespace NewISE.Controllers
 
                     //ViewData.Add("callConiuge", false);
 
-                    using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
-                    {
-                        bool rinunciaMagFam = false;
-                        bool richiestaAttivazione = false;
-                        bool attivazione = false;
-                        bool datiConiuge = false;
-                        bool datiParzialiConiuge = false;
-                        bool datiFigli = false;
-                        bool datiParzialiFigli = false;
-                        bool siDocConiuge = false;
-                        bool siDocFigli = false;
-                        bool docFormulario = false;
-                        bool inLavorazione = false;
+                    //using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
+                    //{
+                    //    bool rinunciaMagFam = false;
+                    //    bool richiestaAttivazione = false;
+                    //    bool attivazione = false;
+                    //    bool datiConiuge = false;
+                    //    bool datiParzialiConiuge = false;
+                    //    bool datiFigli = false;
+                    //    bool datiParzialiFigli = false;
+                    //    bool siDocConiuge = false;
+                    //    bool siDocFigli = false;
+                    //    bool docFormulario = false;
+                    //    bool inLavorazione = false;
 
-                        bool solaLettura = false;
+                    //    bool solaLettura = false;
 
-                        dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                            out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
+                    //    dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    //        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                    //        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
 
-                        if (richiestaAttivazione == true || attivazione == true)
-                        {
-                            solaLettura = true;
-                        }
-                        else
-                        {
-                            solaLettura = false;
-                        }
+                    //    if (!richiestaAttivazione && !attivazione == false && inLavorazione) 
+                    //    {
+                    //        solaLettura = false;
+                    //    }
+                    //    else
+                    //    {
+                    //        solaLettura = true;
+                    //    }
 
-                        ViewData.Add("solaLettura", solaLettura);
-                    }
+                    //    ViewData.Add("solaLettura", solaLettura);
+                        ViewData.Add("solaLettura", false);
+                    //}
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
@@ -667,6 +668,7 @@ namespace NewISE.Controllers
                 {
                     lamf = dtamf.GetListAttivazioniMagFamByIdMagFam(idMaggiorazioniFamiliari).ToList();
                 }
+                var i = 1;
 
                 foreach (var e in lamf)
                 {
@@ -676,13 +678,14 @@ namespace NewISE.Controllers
                         {
                             if(docFormulario)
                             {
-                                lDataAttivazione.Insert(0, new SelectListItem() { Text = e.dataAggiornamento.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
+                                lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
                             }
                         }
                         else
                         {
-                            lDataAttivazione.Insert(0, new SelectListItem() { Text = e.dataAggiornamento.ToString(), Value = e.idAttivazioneMagFam.ToString() });
+                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
                         }
+                        i++;
                     }
                 }
                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "", Value = "" });

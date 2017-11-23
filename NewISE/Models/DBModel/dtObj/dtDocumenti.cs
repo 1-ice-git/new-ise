@@ -926,12 +926,10 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var lamf = 
+                var lamf =
                     mf.ATTIVAZIONIMAGFAM.Where(
-                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAGFAM);
 
-               
                 var i = 1;
                 var coloresfondo = "";
                 var coloretesto = "";
@@ -1034,7 +1032,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var lamf =
                     mf.ATTIVAZIONIMAGFAM.Where(
                         a => ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false))
-                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
                 var i = 1;
                 var coloretesto = "";
                 var coloresfondo = "";

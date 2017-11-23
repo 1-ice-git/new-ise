@@ -76,7 +76,8 @@ namespace NewISE.Models.DBModel.dtObj
                                  attivazioneMagFam = e.ATTIVAZIONEMAGFAM,
                                  dataAttivazioneMagFam = e.DATAATTIVAZIONEMAGFAM,
                                  dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                 annullato = e.ANNULLATO
+                                 annullato = e.ANNULLATO,
+                                 dataVariazione=e.DATAVARIAZIONE
                              }).ToList();
                 }
             }

@@ -34,13 +34,13 @@
                 @if (item.Modificabile)
                 {
                     <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
-                        @Html.DisplayFor(modelItem => item.progressivo )
+                        (@Html.DisplayFor(modelItem => item.progressivo ))
                     </td>
                 }
                 else
                 {
                     <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
-                        @Html.DisplayFor(modelItem => item.progressivo )
+                        (@Html.DisplayFor(modelItem => item.progressivo ))
                     </td>
                 }
 
