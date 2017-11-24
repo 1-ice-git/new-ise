@@ -142,7 +142,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.CoeffFasciaKm = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                return PartialView();
+                return PartialView("NuovoCoeffFasciakm");
             }
             catch (Exception ex)
             {
@@ -186,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaIndennitaBase(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
+        public ActionResult EliminaCoeffFasciaKm(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
         {
 
             try
