@@ -123,10 +123,10 @@
         var idDefKm = parseInt($("#idDefKm").select2('val'));
         var chk = true;
 
-        if (isNaN(idDefKm)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
+        //if (isNaN(idDefKm)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         if ('@escludiAnnullati' == 'true') {
             chk = false;
@@ -167,17 +167,17 @@
     }
 
     function NuovoCoeffFasciakm() {
-        debugger;
+        //debugger;
 
         var rotta = "/Parametri/ParamCoeffFasciaKm/NuovoCoefficienteFasciaKm";
         var idDefKm = parseInt($("#idDefKm").select2('val'));
         var chk = false;
 
-        if (isNaN(idDefKm)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un coeff. per procedere.");
-            return false;
-        }
+        //if (isNaN(idDefKm)) {
+        //    //$("#divPViewParametri").empty();
+        //    AlertDialog("Selezionare un coeff. per procedere.");
+        //    return false;
+        //}
 
         if ('@escludiAnnullati' == 'true') {
             chk = false;
@@ -224,10 +224,10 @@
         var idDefKm = parseInt($("#idDefKm").select2('val'));
         var chk = true;
 
-        if (isNaN(idDefKm)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
+        //if (isNaN(idDefKm)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         if ('@escludiAnnullati' == 'true') {
             chk = false;

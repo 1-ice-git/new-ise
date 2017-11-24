@@ -12,11 +12,9 @@
 
     RiduzioniModel lm = (RiduzioniModel)ViewBag.CoeffIndRichiamo;
     string CoeffIndRichiamo = lm.idRiduzioni.ToString();
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idRiduzioni = lm.idRiduzioni;
-
-
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idRiduzioni = lm.idRiduzioni;
+    
 }
 
 @using (Ajax.BeginForm("InserisciCoeffIndRichiamo", "ParamCoeffIndRichiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
