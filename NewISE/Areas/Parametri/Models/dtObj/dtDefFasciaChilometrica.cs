@@ -29,8 +29,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                            select new DefFasciaKmModel()
                            {
                                idDefKm = e.IDDEFKM,
-                               //km = e.KM
-
+                               km = e.KM
                            }).ToList();
                 }
 
@@ -55,7 +54,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new DefFasciaKmModel()
                     {
                         idDefKm = liv.IDDEFKM,
-                        //km = liv.KM
+                        km = liv.KM
 
                     };
                 }

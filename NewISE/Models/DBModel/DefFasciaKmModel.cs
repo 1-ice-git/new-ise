@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idDefKm { get; set; }
         [Required(ErrorMessage = "Il campo km è richiesto.")]
-        public decimal km { get; set; }
+        public string km { get; set; }
 
     }
 }

@@ -9,18 +9,18 @@ using System.Web.Mvc;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
-    public class ParamCoeffFasciaKmController : Controller
+    public class ParamCoeffIndRichiamoController : Controller
     {
-        // GET: Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKm
+        // GET: Parametri/ParamCoeffIndRichiamo
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoefficienteFasciaKm(bool escludiAnnullati, decimal idDefKm = 0)
+        public ActionResult CoeffIndRichiamo(bool escludiAnnullati, decimal idDefKm = 0)
         {
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             var r = new List<SelectListItem>();
             List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
-            
+
             try
             {
                 using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
@@ -47,10 +47,10 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                     }
 
-                    ViewBag.CoeffFasciaKm = r;
+                    ViewBag.CoeffIndRichiamo = r;
                 }
 
-                
+
 
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
@@ -77,7 +77,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoefficienteFasciaKmLivello(decimal idDefKm, bool escludiAnnullati)
+        public ActionResult CoeffIndRichiamoLivello(decimal idDefKm, bool escludiAnnullati)
         {
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             var r = new List<SelectListItem>();
@@ -87,7 +87,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
                 {
-                    
+
                     llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
 
                     if (llm != null && llm.Count > 0)
@@ -101,7 +101,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
                     }
 
-                    ViewBag.CoeffFasciaKm = r;
+                    ViewBag.CoeffIndRichiamo = r;
                 }
 
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
@@ -123,15 +123,15 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
 
-            return PartialView("CoefficienteFasciaKm", libm);
+            return PartialView("CoeffIndRichiamo", libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovoCoefficienteFasciaKm(decimal idDefKm, bool escludiAnnullati)
+        public ActionResult NuovoCoeffIndRichiamo(decimal idDefKm, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-            
+
             CoeffFasciaKmModel ibm = new CoeffFasciaKmModel();
 
             try
@@ -139,10 +139,10 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
                 {
                     var lm = dtl.GetFasciaKm(idDefKm);
-                    ViewBag.CoeffFasciaKm = lm;
+                    ViewBag.CoeffIndRichiamo = lm;
                 }
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                return PartialView("NuovoCoeffFasciakm");
+                return PartialView("NuovoCoeffIndRichiamo");
             }
             catch (Exception ex)
             {
@@ -152,7 +152,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCoeffFasciaKm(CoeffFasciaKmModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciCoeffIndRichiamo(CoeffFasciaKmModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -165,14 +165,14 @@ namespace NewISE.Areas.Parametri.Controllers
                         dtib.SetCoeffFasciaKm(ibm);
                     }
 
-                    return RedirectToAction("CoefficienteFasciaKm", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
+                    return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
                 }
                 else
                 {
                     using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
                     {
                         var lm = dtl.GetFasciaKm(ibm.idDefKm);
-                        ViewBag.CoeffFasciaKm = lm;
+                        ViewBag.CoeffIndRichiamo = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovoCoeffFasciakm", ibm);
@@ -186,7 +186,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoeffFasciaKm(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
+        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
         {
 
             try
@@ -206,5 +206,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
 
         }
+
+
     }
 }
