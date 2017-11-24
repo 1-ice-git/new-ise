@@ -2,7 +2,7 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 
 }
 
@@ -15,7 +15,7 @@
         @Html.Label("lblCoeffFasciaKm", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idCoefIndRichiamo", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffCoeffIndRichiamo();" })
+                @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffCoeffIndRichiamo();" })
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
             }
         }
     });
-    $("#idCoefIndRichiamo").select2({
+    $("#idRiduzioni").select2({
         placeholder: "Seleziona nuovo Coefficiente Indennità di Richiamo",
         allowClear: true,
         language: "it",
@@ -124,24 +124,24 @@
 
     function PrelevaPVCoeffCoeffIndRichiamo() {
         //debugger;
-        //rotta = "/Parametri/ParamCoeffIndRichiamo/CoefficienteFasciaKmLivello";
+        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
 
-        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
+        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
         var chk = true;
 
-        if (isNaN(idCoefIndRichiamo)) {
+        if (isNaN(idRiduzioni)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
+        if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }*@
+        }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idCoefIndRichiamo: idCoefIndRichiamo, escludiAnnullati: chk },
+            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -175,24 +175,24 @@
     function NuovoCoeffIndRichiamo() {
         //debugger;
 
-        //var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndennitaRichiamo";
-        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
+        var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndRichiamo";
+        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
         var chk = false;
 
-        if (isNaN(idCoefIndRichiamo)) {
+        if (isNaN(idRiduzioni)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un coeff. per procedere.");
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
+        if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }*@
+        }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idCoefIndRichiamo: idCoefIndRichiamo, escludiAnnullati: escludiAnnullati },
+            data: { idRiduzioni: idRiduzioni, escludiAnnullati: escludiAnnullati },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -225,19 +225,19 @@
 
     function EliminaCoefIndRichiamo(id) {
         //debugger;
-        //var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaAliquoteContributive";
+        var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaAliquoteContributive";
 
-        var idCoefIndRichiamo = parseInt($("#idCoefIndRichiamo").select2('val'));
+        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
         var chk = true;
 
-        if (isNaN(idCoefIndRichiamo)) {
+        if (isNaN(idRiduzioni)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
+        if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }*@
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -250,7 +250,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idCoefIndRichiamo: idCoefIndRichiamo },
+                            data: { escludiAnnullati: chk, idRiduzioni: idRiduzioni },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

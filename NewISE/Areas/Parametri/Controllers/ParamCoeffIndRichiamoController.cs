@@ -12,28 +12,201 @@ namespace NewISE.Areas.Parametri.Controllers
     public class ParamCoeffIndRichiamoController : Controller
     {
         // GET: Parametri/ParamCoeffIndRichiamo
-        
+
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoeffIndennitaRichiamo()
+        public ActionResult CoeffIndRichiamo(bool escludiAnnullati, decimal idDefKm = 0)
         {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
             var r = new List<SelectListItem>();
+            List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
+
             try
             {
-                ViewBag.CoeffIndRichiamo = r;
-            }
+                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                {
+                    llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
 
-            
-            catch (Exception)
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.km,
+                                 Value = t.idDefKm.ToString()
+                             }).ToList();
+
+                        if (idDefKm == 0)
+                        {
+                            r.First().Selected = true;
+                            idDefKm = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
+                        }
+                    }
+
+                    ViewBag.CoeffIndRichiamo = r;
+                }
+
+
+
+                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                {
+                    if (escludiAnnullati)
+                    {
+                        escludiAnnullati = false;
+                        libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    else
+                    {
+                        libm = dtib.getListCoeffFasciaKm(idDefKm).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-
-                throw;
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return View("CoeffIndRichiamo");
+            ViewBag.escludiAnnullati = escludiAnnullati;
+
+            return PartialView(libm);
         }
 
-        
+        [HttpPost]
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult CoeffIndRichiamoLivello(decimal idDefKm, bool escludiAnnullati)
+        {
+            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            var r = new List<SelectListItem>();
+            List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
+
+            try
+            {
+                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                {
+
+                    llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
+
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.km,
+                                 Value = t.idDefKm.ToString()
+                             }).ToList();
+                        r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
+                    }
+
+                    ViewBag.CoeffIndRichiamo = r;
+                }
+
+                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                {
+                    if (escludiAnnullati)
+                    {
+                        escludiAnnullati = false;
+                        libm = dtib.getListCoeffFasciaKm(llm.Where(a => a.idDefKm == idDefKm).First().idDefKm, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    else
+                    {
+                        libm = dtib.getListCoeffFasciaKm(llm.Where(a => a.idDefKm == idDefKm).First().idDefKm).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            ViewBag.escludiAnnullati = escludiAnnullati;
+
+            return PartialView("CoeffIndRichiamo", libm);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult NuovoCoeffIndRichiamo(decimal idDefKm, bool escludiAnnullati)
+        {
+            var r = new List<SelectListItem>();
+
+            CoeffFasciaKmModel ibm = new CoeffFasciaKmModel();
+
+            try
+            {
+                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                {
+                    var lm = dtl.GetFasciaKm(idDefKm);
+                    ViewBag.CoeffIndRichiamo = lm;
+                }
+                ViewBag.escludiAnnullati = escludiAnnullati;
+                return PartialView("NuovoCoeffIndRichiamo");
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult InserisciCoeffIndRichiamo(CoeffFasciaKmModel ibm, bool escludiAnnullati = true)
+        {
+            var r = new List<SelectListItem>();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                    {
+                        dtib.SetCoeffFasciaKm(ibm);
+                    }
+
+                    return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
+                }
+                else
+                {
+                    using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                    {
+                        var lm = dtl.GetFasciaKm(ibm.idDefKm);
+                        ViewBag.CoeffIndRichiamo = lm;
+                    }
+                    ViewBag.escludiAnnullati = escludiAnnullati;
+                    return PartialView("NuovoCoeffFasciakm", ibm);
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "1, 2")]
+        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
+        {
+
+            try
+            {
+                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                {
+                    dtib.DelCoeffFasciaKm(idDefKm);
+                }
+
+                return RedirectToAction("CoefficienteFasciaKm", new { escludiAnnullati = escludiAnnullati, idDefKm = idDefKm });
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+        }
+
+
     }
 }
