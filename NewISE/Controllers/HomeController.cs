@@ -50,7 +50,7 @@ namespace NewISE.Controllers
             return PartialView(tmp);
         }
 
-        [HttpGet]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult DetailsFunzioneEvento(EnumFunzioniEventi idf,int idd)
         {
             DettagliMessaggio tmp = new DettagliMessaggio();
