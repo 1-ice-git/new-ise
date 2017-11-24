@@ -160,7 +160,7 @@ namespace NewISE.Controllers
                 //
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    List<ConiugeModel> lcm = dtc.GetListaConiugeByIdMagFam(idMaggiorazioniFamiliari).ToList();
+                    List<VariazioneConiugeModel> lcm = dtc.GetListaAttivazioniConiugeByIdMagFam(idMaggiorazioniFamiliari).ToList();
 
                     if (lcm?.Any() ?? false)
                     {
@@ -504,7 +504,6 @@ namespace NewISE.Controllers
                     using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
                         dtvmf.ModificaConiuge(cm);
-
                     }
                 }
                 else

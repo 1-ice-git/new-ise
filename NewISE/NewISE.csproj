@@ -2503,6 +2503,7 @@
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
