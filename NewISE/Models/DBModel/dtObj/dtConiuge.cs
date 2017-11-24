@@ -692,5 +692,59 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+
+
+        public IList<VariazioneConiugeModel> GetListaAttivazioniConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
+        {
+            List<VariazioneConiugeModel> lcm = new List<VariazioneConiugeModel>();
+            List<CONIUGE> lc = new List<CONIUGE>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+
+                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                var lamf = mf.ATTIVAZIONIMAGFAM
+                            .Where(e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
+                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+
+                foreach (var att in lamf)
+                {
+                    bool modificabile = false;
+
+                    lc = att.CONIUGE.ToList();
+
+                    if (lc?.Any() ?? false)
+                    {
+                        if (att.ANNULLATO==false && att.ATTIVAZIONEMAGFAM==false & att.RICHIESTAATTIVAZIONE==false)
+                        {
+                            modificabile = true;
+                        }
+
+                        lcm = (from e in lc select new VariazioneConiugeModel()
+                        {
+                            modificabile=modificabile,
+                            idConiuge = e.IDCONIUGE,
+                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                            idPassaporti = e.IDPASSAPORTI,
+                            idTitoloViaggio = e.IDTITOLOVIAGGIO,
+                            nome = e.NOME,
+                            cognome = e.COGNOME,
+                            codiceFiscale = e.CODICEFISCALE,
+                            dataInizio = e.DATAINIZIOVALIDITA,
+                            dataFine = e.DATAFINEVALIDITA,
+                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                            dataNotificaPP = e.DATANOTIFICAPP,
+                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
+                            dataNotificaTV = e.DATANOTIFICATV
+                        }).ToList();
+                    }
+                }
+            }
+            return lcm;
+        }
+
     }
 }
