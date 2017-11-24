@@ -350,7 +350,7 @@ namespace NewISE.Models.DBModel.dtObj
             return cm;
         }
 
-        public IList<ConiugeModel> GetListaConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)
+        public IList<ConiugeModel> GetListaConiugeByIdAttivazione(decimal idAttivazioneMagFam)
         {
             List<ConiugeModel> lcm = new List<ConiugeModel>();
             List<CONIUGE> lc = new List<CONIUGE>();
@@ -358,18 +358,10 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
 
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(
-                        e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                lc = amf.CONIUGE.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
-                var amf = lamf.First();
-
-                lc = amf.CONIUGE.ToList();
-
-                //var lc = db.CONIUGE.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.DATAINIZIOVALIDITA);
 
                 if (lc?.Any() ?? false)
                 {
@@ -390,7 +382,11 @@ namespace NewISE.Models.DBModel.dtObj
                                escludiPassaporto = e.ESCLUDIPASSAPORTO,
                                dataNotificaPP = e.DATANOTIFICAPP,
                                escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                               dataNotificaTV = e.DATANOTIFICATV
+                               dataNotificaTV = e.DATANOTIFICATV,
+                               FK_idConiuge = e.FK_IDCONIUGE,
+                               idAttivazione = idAttivazioneMagFam,
+                               Modificato = e.MODIFICATO
+
                            }).ToList();
                 }
             }

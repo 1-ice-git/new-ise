@@ -384,51 +384,56 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public IList<FigliModel> GetListaFigli(decimal idMaggiorazioniFamiliari)
+        public IList<FigliModel> GetListaFigliByIdAttivazione(decimal idAttivazioneMagFam)
         {
             List<FigliModel> lfm = new List<FigliModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
 
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(
-                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                var amf = lamf.First();
-                var lf = amf.FIGLI;
-
-                //var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
-
-                if (lf?.Any() ?? false)
+                if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
+                    var lf = amf.FIGLI.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA);
 
-                    foreach (var item in lf)
+                    //var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
+
+                    if (lf?.Any() ?? false)
                     {
-                        var fm = new FigliModel()
-                        {
-                            idFigli = item.IDFIGLI,
-                            idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
-                            idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
-                            idPassaporti = item.IDPASSAPORTI,
-                            idTitoloViaggio = item.IDTITOLOVIAGGIO,
-                            nome = item.NOME,
-                            cognome = item.COGNOME,
-                            codiceFiscale = item.CODICEFISCALE,
-                            dataInizio = item.DATAINIZIOVALIDITA,
-                            dataFine = item.DATAFINEVALIDITA,
-                            dataAggiornamento = item.DATAAGGIORNAMENTO,
-                            escludiPassaporto = item.ESCLUDIPASSAPORTO,
-                            dataNotificaPP = item.DATANOTIFICAPP,
-                            escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO,
-                            dataNotificaTV = item.DATANOTIFICATV
-                        };
 
-                        lfm.Add(fm);
+                        foreach (var item in lf)
+                        {
+                            var fm = new FigliModel()
+                            {
+                                idFigli = item.IDFIGLI,
+                                idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
+                                idPassaporti = item.IDPASSAPORTI,
+                                idTitoloViaggio = item.IDTITOLOVIAGGIO,
+                                nome = item.NOME,
+                                cognome = item.COGNOME,
+                                codiceFiscale = item.CODICEFISCALE,
+                                dataInizio = item.DATAINIZIOVALIDITA,
+                                dataFine = item.DATAFINEVALIDITA,
+                                dataAggiornamento = item.DATAAGGIORNAMENTO,
+                                escludiPassaporto = item.ESCLUDIPASSAPORTO,
+                                dataNotificaPP = item.DATANOTIFICAPP,
+                                escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO,
+                                dataNotificaTV = item.DATANOTIFICATV,
+                                Modificato = item.MODIFICATO,
+                                FK_IdFigli = item.FK_IDFIGLI,
+                                idAttivazione = idAttivazioneMagFam
+
+                            };
+
+                            lfm.Add(fm);
+                        }
                     }
                 }
+
+
+
             }
 
             return lfm;

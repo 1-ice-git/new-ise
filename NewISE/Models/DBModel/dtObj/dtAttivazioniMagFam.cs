@@ -17,7 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public AttivazioniMagFamModel GetAttivazioneIniziale(decimal idMaggiorazioneFamiliare)
+        public AttivazioniMagFamModel GetAttivazioneMagFamIniziale(decimal idMaggiorazioneFamiliare)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
@@ -77,7 +77,7 @@ namespace NewISE.Models.DBModel.dtObj
                                  dataAttivazioneMagFam = e.DATAATTIVAZIONEMAGFAM,
                                  dataAggiornamento = e.DATAAGGIORNAMENTO,
                                  annullato = e.ANNULLATO,
-                                 dataVariazione=e.DATAVARIAZIONE
+                                 dataVariazione = e.DATAVARIAZIONE
                              }).ToList();
                 }
             }

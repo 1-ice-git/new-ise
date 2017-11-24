@@ -293,48 +293,56 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtFigli dtf = new dtFigli())
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                 {
-                    List<FigliModel> lfm = dtf.GetListaFigli(idMaggiorazioniFamiliari).ToList();
 
-                    if (lfm?.Any() ?? false)
+                    var amf = dtamf.GetAttivazioneMagFamIniziale(idMaggiorazioniFamiliari);
+
+                    using (dtFigli dtf = new dtFigli())
                     {
-                        using (dtDocumenti dtd = new dtDocumenti())
-                        {
-                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                            {
-                                foreach (var e in lfm)
-                                {
-                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                    {
-                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                        idFamiliare = e.idFigli,
-                                        idPassaporti = e.idPassaporti,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Figlio,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
-                                        Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio)
-                                    };
+                        List<FigliModel> lfm = dtf.GetListaFigliByIdAttivazione(amf.idAttivazioneMagFam).ToList();
 
-                                    lefm.Add(efm);
+                        if (lfm?.Any() ?? false)
+                        {
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                {
+                                    foreach (var e in lfm)
+                                    {
+                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                        {
+                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                            idFamiliare = e.idFigli,
+                                            idAttivazioneMagFam = e.idAttivazione,
+                                            idPassaporti = e.idPassaporti,
+                                            Nominativo = e.cognome + " " + e.nome,
+                                            CodiceFiscale = e.codiceFiscale,
+                                            dataInizio = e.dataInizio,
+                                            dataFine = e.dataFine,
+                                            parentela = EnumParentela.Figlio,
+                                            idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
+                                            Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio)
+                                        };
+
+                                        lefm.Add(efm);
+                                    }
                                 }
                             }
                         }
+
+                        //ViewData.Add("callConiuge", false);
+
+                        bool solaLettura = false;
+                        solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
+                        ViewData.Add("solaLettura", solaLettura);
+
+                        ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
+                        return PartialView(lefm);
                     }
-
-                    //ViewData.Add("callConiuge", false);
-
-                    bool solaLettura = false;
-                    solaLettura = this.SolaLetturaPartenza(idMaggiorazioniFamiliari);
-                    ViewData.Add("solaLettura", solaLettura);
-
-                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
-
-                    return PartialView(lefm);
                 }
+
             }
             catch (Exception ex)
             {
@@ -347,42 +355,56 @@ namespace NewISE.Controllers
         public ActionResult ElencoConiuge(decimal idMaggiorazioniFamiliari)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
+            AttivazioniMagFamModel amf = new AttivazioniMagFamModel();
 
             try
             {
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    List<ConiugeModel> lcm = dtc.GetListaConiugeByIdMagFam(idMaggiorazioniFamiliari).ToList();
 
-                    if (lcm?.Any() ?? false)
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                     {
-                        using (dtDocumenti dtd = new dtDocumenti())
-                        {
-                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                            {
-                                using (dtPensione dtp = new dtPensione())
-                                {
-                                    lefm.AddRange(lcm.Select(e => new ElencoFamiliariModel()
-                                    {
-                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                        idFamiliare = e.idConiuge,
-                                        idPassaporti = e.idPassaporti,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                        Documenti =
-                                            dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita,
-                                                EnumParentela.Coniuge),
-                                        HasPensione = dtp.HasPensione(e.idConiuge)
-                                    }));
-                                }
+                        amf = dtamf.GetAttivazioneMagFamIniziale(idMaggiorazioniFamiliari);
 
+                        if (amf?.idAttivazioneMagFam > 0)
+                        {
+                            List<ConiugeModel> lcm = dtc.GetListaConiugeByIdAttivazione(amf.idAttivazioneMagFam).ToList();
+
+                            if (lcm?.Any() ?? false)
+                            {
+                                using (dtDocumenti dtd = new dtDocumenti())
+                                {
+                                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                    {
+                                        using (dtPensione dtp = new dtPensione())
+                                        {
+                                            lefm.AddRange(lcm.Select(e => new ElencoFamiliariModel()
+                                            {
+                                                idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                                idFamiliare = e.idConiuge,
+                                                idAttivazioneMagFam = e.idAttivazione,
+                                                idPassaporti = e.idPassaporti,
+                                                Nominativo = e.cognome + " " + e.nome,
+                                                CodiceFiscale = e.codiceFiscale,
+                                                dataInizio = e.dataInizio,
+                                                dataFine = e.dataFine,
+                                                parentela = EnumParentela.Coniuge,
+                                                idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                                Documenti =
+                                                    dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita,
+                                                        EnumParentela.Coniuge),
+                                                HasPensione = dtp.HasPensione(e.idConiuge)
+                                            }));
+                                        }
+
+                                    }
+                                }
                             }
                         }
+
                     }
+
+
                 }
 
                 bool solaLettura = false;

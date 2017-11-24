@@ -80,6 +80,10 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool Modificato { get; set; }
 
+        public decimal? FK_IdFigli { get; set; }
+
+        public decimal idAttivazione { get; set; }
+
         public IList<AltriDatiFamConiugeModel> lAtriDatiFamiliari { get; set; }
         public IList<PercentualeMagFigliModel> lPercentualeMaggiorazioneFigli { get; set; }
 
