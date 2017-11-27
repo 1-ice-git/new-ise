@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASFERIMENTO()
         {
-            this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
@@ -25,6 +24,7 @@ namespace NewISE.EF
             this.TITOLIVIAGGIO = new HashSet<TITOLIVIAGGIO>();
             this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -41,8 +41,6 @@ namespace NewISE.EF
         public bool NOTIFICATRASFERIMENTO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -67,5 +65,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
     }
 }
