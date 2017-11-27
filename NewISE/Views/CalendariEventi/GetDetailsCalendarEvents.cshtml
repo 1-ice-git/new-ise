@@ -1,0 +1,243 @@
+﻿@using NewISE.Models.DBModel
+@using System.Web.Optimization;
+@using System.Security.Claims;
+@using NewISE.Models;
+@using NewISE.Models.Tools;
+@model IEnumerable<NewISE.Models.ViewModel.ElencoElementiHome>
+@{
+    ViewBag.Title = "Dettagli Calendario Evento";
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    var errori = ViewData.ModelState;
+}
+
+
+<div class="modal fade" id="inviaDocModal2" tabindex="-1"
+      role="dialog" aria-labelledby="inviaDocModalLabel2" aria-hidden="true" data-modal-parent="#inviaDocModal" >
+    <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-content alert alert-info text-info"  >
+            <div class="modal-body alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoDettagli2">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align:center">
+                <button type="button" class="btn btn-secondary" onclick="ChiudiNonModal2();" >Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="Amministratore" value="@admin.ToString()" />
+        <div  style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+            <h3 style="text-align:center; color:darkblue">Numero @Model.FirstOrDefault().Stato: @Model.Count()</h3>
+            <table id="tbelencocal" class="table">
+                @{var st = @Model.FirstOrDefault().Stato.ToLower(); }
+                    @if(st.Equals("completati"))
+                    {<thead style="background-color:forestgreen;color:white">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Nominativo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dataInizio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dataScadenza)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NomeFunzione)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Completato)
+                            </th>
+                        </tr>
+                    </thead>}
+                    @if (st.Equals("attivi"))
+                    {<thead style="background-color:#548bbf;color:white">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nominativo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.dataInizio)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.dataScadenza)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NomeFunzione)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Completato)
+                        </th>
+                    </tr>
+                </thead>}
+                    @if (st.Equals("scaduti"))
+                    {<thead style="background-color:red;color:white">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Nominativo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dataInizio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.dataScadenza)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NomeFunzione)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Completato)
+                            </th>
+                        </tr>
+                    </thead>}
+                <tbody>
+              @{ var rowColor = "#ffffff"; }
+             @foreach (var item in Model)
+             {
+                  <tr style="background-color:@rowColor;">
+
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                    </td>
+                    @if (item.dataInizio.HasValue && item.dataInizio.Value < Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.dataInizio)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }
+                    @if (item.dataScadenza.HasValue && item.dataScadenza.Value < Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.dataScadenza)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }
+                    <td>
+                        <a href="javascript:void(0);"
+                           class="anchorDetail" id_dip="@item.IdDipendente"
+                           id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
+                    </td>
+                </tr>
+                 if (@rowColor.Equals("#ffffff"))
+                 {
+                     rowColor = "#D9E6C4";
+                 }
+                 else
+                 {
+                     rowColor = "#ffffff";
+                 }
+             }
+                </tbody>
+            </table>
+        </div>
+
+<script type="text/javascript">
+       
+    //$("#tbelencocal").DataTable({
+        //    "ordering": false,
+        //    "language": {
+        //        "sEmptyTable": "Nessun dato presente nella tabella",
+        //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+        //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+        //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+        //        "sInfoPostFix": "",
+        //        "sInfoThousands": ".",
+        //        "sLengthMenu": "Visualizza _MENU_ elementi",
+        //        "sLoadingRecords": "Caricamento...",
+        //        "sProcessing": "Elaborazione...",
+        //        "sSearch": "Cerca:",
+        //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+        //        "oPaginate": {
+        //            "sFirst": "Inizio",
+        //            "sPrevious": "Precedente",
+        //            "sNext": "Successivo",
+        //            "sLast": "Fine"
+        //        },
+        //        "oAria": {
+        //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+        //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+        //        }
+        //    }
+        //});
+
+
+        $("#btModifica").click(function () {
+            //debugger;
+            $("#formEditTrasf").submit();
+        });
+
+        function CloseTimeModal() {
+            setTimeout(CloseModalFile, 2000);
+            //CloseModalFile();
+        }
+
+        function CloseModalFile() {
+            $('#inviaDocModal2').modal('hide');
+            //RicaricaModificaTrasferimento();
+            setTimeout(RicaricaModificaTrasferimento, 1000);
+            $(".anchorDetail").click();
+        }
+
+        //function DocumentoModal() {
+            $(".anchorDetail").click(function () {
+               // debugger;
+                var rotta = "/Home/DetailsFunzioneEvento";
+                var $buttonClicked = $(this);
+                var idf = $buttonClicked.attr('id_fe');
+                var idd = $buttonClicked.attr('id_dip');
+                $.ajax({
+                    url: rotta,
+                    type: "GET", //Le info testuali saranno passate in POST
+                    data: { "idf": idf, "idd": idd },
+                    dataType: 'html',
+                    async: false,
+                    beforeSend: function () {
+                        // debugger;
+                        //$('#inviaDocModal2').                 // Get your box ...
+                        //  prev('.ui-dialog-titlebar'). // Get title bar,...
+                        //  find('a').                   // ... then get the X close button ...
+                        //  hide();
+                        
+                        //$("#inviaDocModal2.ui-dialog-titlebar-close").hide();
+                        //$("#inviaDocModal2.ui-dialog-titlebar-close").remove();
+                        $('#inviaDocModal2').modal('show');                        
+                        Blocca();
+                    },
+                    success: function (result) {
+                       // debugger;
+                        $("#viewDocumentoDettagli2").empty();
+                        $("#viewDocumentoDettagli2").html(result);                        
+                    },
+                    error: function (error) {
+                        //debugger;
+                        Sblocca();
+                        var msg = error.responseText;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
+            });
+      //  }
+
+
+        function DialogInfo(response) {
+            $("#msgModalInfo").text(response);
+            $('#myModalInfo').modal('toggle');
+        }
+
+        function ChiudiNonModal2() {
+            $('#inviaDocModal2').modal('hide');
+        }
+</script>
+
+

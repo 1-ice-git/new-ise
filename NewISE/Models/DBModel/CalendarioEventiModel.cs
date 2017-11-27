@@ -28,15 +28,21 @@ namespace NewISE.Models.DBModel
         public EnumFunzioniEventi idFunzioneEventi { get; set; }
         public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "La data inizio evento è richiesta.")]
+
         [DataType(DataType.DateTime)]
-        public DateTime DataInizioEvento { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+         public DateTime DataInizioEvento { get; set; }
+
         [Required(ErrorMessage = "La data scadenza è richiesta.")]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataScadenza { get; set; }
         public bool Completato { get; set; }
         [Required(ErrorMessage = "La data completato è richiesta.")]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataCompletato { get; set; }
         public bool Annullato { get; set; }
     }
+
 }

@@ -1060,6 +1060,18 @@
     <Content Include="Immagini\Simbolo euro green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Red.png" />
+    <Content Include="Lib\fullcalendar.css" />
+    <Content Include="Lib\fullcalendar.js" />
+    <Content Include="Lib\fullcalendar.min.css" />
+    <Content Include="Lib\fullcalendar.min.js" />
+    <Content Include="Lib\fullcalendar.print.css" />
+    <Content Include="Lib\fullcalendar.print.min.css" />
+    <Content Include="Lib\gcal.js" />
+    <Content Include="Lib\gcal.min.js" />
+    <Content Include="Lib\jquery-ui.min.js" />
+    <Content Include="Lib\jquery.min.js" />
+    <Content Include="Lib\locale-all.js" />
+    <Content Include="Lib\moment.min.js" />
     <Content Include="ReportViewerWebForm.aspx" />
     <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
     <Content Include="Scripts\autoNumeric\autoNumeric.js" />
@@ -1907,6 +1919,9 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\MyJs.js" />
     <Content Include="Scripts\MyValidateDate.js" />
+    <Content Include="Scripts\plugins\moment.js" />
+    <Content Include="Scripts\plugins\moment.min.js" />
+    <Content Include="Scripts\plugins\MyJs.js" />
     <Content Include="Scripts\plugins\piexif.js" />
     <Content Include="Scripts\plugins\piexif.min.js" />
     <Content Include="Scripts\plugins\purify.js" />
@@ -2396,6 +2411,7 @@
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
+    <Compile Include="Models\DBModel\DiaryEvents.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazionePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazioniMagFam.cs" />
     <Compile Include="Models\DBModel\dtObj\dtCalendarioEventi.cs" />
@@ -2498,6 +2514,7 @@
     <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TrasportoEffettiModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
+    <Compile Include="Models\DBModel\Utils.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />
@@ -2508,6 +2525,7 @@
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
+    <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
@@ -2605,6 +2623,9 @@
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
+    <Content Include="Views\CalendariEventi\Index.cshtml" />
+    <Content Include="Views\CalendariEventi\GetCalendarioEvento.cshtml" />
+    <Content Include="Views\CalendariEventi\GetDetailsCalendarEvents.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ConfermaNuovoConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
@@ -2631,6 +2652,10 @@
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
     <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
     <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
+    <Folder Include="Lib\json\" />
+    <Folder Include="Lib\js\" />
+    <Folder Include="Lib\locale\" />
+    <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

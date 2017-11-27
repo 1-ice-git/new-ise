@@ -10,15 +10,19 @@ namespace NewISE.Models.ViewModel
 {
     public class ElencoElementiHome
     {
-        [Display(Name = "Cognome Nome")]
+        [Display(Name = "Nominativi")]
         public string Nominativo { get; set; }
        
         [Display(Name = "Data Inizio")]
-        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataInizio { get; set; }
 
         [Display(Name = "Data Scadenza")]
-        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        // [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataScadenza { get; set; }
 
         [Display(Name = "Nome Funzione")]
@@ -28,5 +32,6 @@ namespace NewISE.Models.ViewModel
         public bool Completato { get; set; }
         public decimal IdFunzioneEvento { get; set; }
         public decimal IdDipendente { get; set; }
+        public string Stato { get; set; }
     }
 }
