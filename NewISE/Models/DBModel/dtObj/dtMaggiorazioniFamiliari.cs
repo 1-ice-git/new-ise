@@ -97,7 +97,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AttivaRichiesta(decimal idMaggiorazioniFamiliari)
+        public void AttivaRichiesta(decimal idAttivazioneMagFam)
         {
             bool rinunciaMagFam = false;
             bool richiestaAttivazione = false;
@@ -112,7 +112,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             int i = 0;
 
-            this.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
+            this.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -126,8 +126,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         if (rinunciaMagFam == true && richiestaAttivazione == true && attivazione == false)
                         {
-                            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                            var amf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ATTIVAZIONEMAGFAM == false).First();
+                            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
 
                             amf.ATTIVAZIONEMAGFAM = true;
 
@@ -141,7 +141,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
-                                    dtce.ModificaInCompletatoCalendarioEvento(mf.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                                    dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                 }
                             }
                         }
@@ -153,8 +153,8 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     if (datiConiuge == true && siDocConiuge == true || datiFigli == true && siDocFigli == true)
                                     {
-                                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-                                        var amf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ATTIVAZIONEMAGFAM == false).First();
+                                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
 
                                         amf.ATTIVAZIONEMAGFAM = true;
 
@@ -168,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                             {
-                                                dtce.ModificaInCompletatoCalendarioEvento(mf.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                                                dtce.ModificaInCompletatoCalendarioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                             }
                                         }
                                     }
@@ -193,7 +193,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailNotificaRichiesta(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        private void EmailNotificaRichiesta(decimal idAttivazioneMagFam, ModelDBISE db)
         {
             MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI();
             AccountModel am = new AccountModel();
@@ -209,7 +209,9 @@ namespace NewISE.Models.DBModel.dtObj
                 mittente.Nominativo = am.nominativo;
                 mittente.EmailMittente = am.eMail;
 
-                mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                mf = amf.MAGGIORAZIONIFAMILIARI;
 
                 if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                 {
@@ -235,10 +237,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 msgMail.cc.Add(cc);
 
                                 luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-                                //luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
 
-                                //if (luam?.Any() ?? false)
-                                //{
                                 foreach (var uam in luam)
                                 {
                                     var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
@@ -256,8 +255,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 }
 
-                                //if (msgMail.destinatario?.Any() ?? false)
-                                //{
 
                                 msgMail.oggetto =
                                     Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
@@ -268,19 +265,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         tr.DATAPARTENZA.ToLongDateString(),
                                         u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
                                 gmail.sendMail(msgMail);
-                                //}
-                                //else
-                                //{
-                                //throw new Exception(
-                                //"Non è stato possibile inviare l'email. Nessun destinatario inserito.");
-                                //}
 
-                                //}
-                                //else
-                                //{
-                                //    throw new Exception(
-                                //        "Non è stato possibile inviare l'email. Non risulta inserito nessun amministratore.");
-                                //}
                             }
                         }
 
@@ -297,7 +282,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        private void EmailAnnullaRichiesta(decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        private void EmailAnnullaRichiesta(decimal idAttivazioneMagFam, ModelDBISE db)
         {
             MAGGIORAZIONIFAMILIARI mf = new MAGGIORAZIONIFAMILIARI();
             AccountModel am = new AccountModel();
@@ -312,69 +297,80 @@ namespace NewISE.Models.DBModel.dtObj
                 mittente.Nominativo = am.nominativo;
                 mittente.EmailMittente = am.eMail;
 
-                mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
+                if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    TRASFERIMENTO tr = mf.TRASFERIMENTO;
-                    DIPENDENTI d = tr.DIPENDENTI;
-                    UFFICI u = tr.UFFICI;
+                    mf = amf.MAGGIORAZIONIFAMILIARI;
 
-                    cc = new Destinatario()
+                    if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                     {
-                        Nominativo = am.nominativo,
-                        EmailDestinatario = am.eMail
-                    };
+                        TRASFERIMENTO tr = mf.TRASFERIMENTO;
+                        DIPENDENTI d = tr.DIPENDENTI;
+                        UFFICI u = tr.UFFICI;
 
-                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-                    {
-                        using (GestioneEmail gmail = new GestioneEmail())
+                        cc = new Destinatario()
                         {
-                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            Nominativo = am.nominativo,
+                            EmailDestinatario = am.eMail
+                        };
+
+                        using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                        {
+                            using (GestioneEmail gmail = new GestioneEmail())
                             {
-                                msgMail.mittente = mittente;
-                                msgMail.cc.Add(cc);
-
-
-                                if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore || am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
+                                using (ModelloMsgMail msgMail = new ModelloMsgMail())
                                 {
-                                    to = new Destinatario()
+                                    msgMail.mittente = mittente;
+                                    msgMail.cc.Add(cc);
+
+
+                                    if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore || am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
                                     {
-                                        Nominativo = d.COGNOME + " " + d.NOME,
-                                        EmailDestinatario = d.EMAIL
-                                    };
+                                        to = new Destinatario()
+                                        {
+                                            Nominativo = d.COGNOME + " " + d.NOME,
+                                            EmailDestinatario = d.EMAIL
+                                        };
 
-                                    msgMail.destinatario.Add(to);
+                                        msgMail.destinatario.Add(to);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Errore nella fase di annullamento della richiesta. La richiesta di maggiorazioni familiari può essere annullata soltanto dall'amministratore.");
+                                    }
+
+
+                                    if (msgMail.destinatario?.Any() ?? false)
+                                    {
+
+                                        msgMail.oggetto =
+                                            Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioniFamiliari;
+                                        msgMail.corpoMsg =
+                                            string.Format(
+                                                Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioniFamiliari,
+                                                u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")",
+                                                tr.DATAPARTENZA.ToLongDateString());
+                                        gmail.sendMail(msgMail);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Non è stato possibile inviare l'email.");
+                                    }
+
+
+
                                 }
-                                else
-                                {
-                                    throw new Exception("Errore nella fase di annullamento della richiesta. La richiesta di maggiorazioni familiari può essere annullata soltanto dall'amministratore.");
-                                }
-
-
-                                if (msgMail.destinatario?.Any() ?? false)
-                                {
-
-                                    msgMail.oggetto =
-                                        Resources.msgEmail.OggettoAnnullaRichiestaMaggiorazioniFamiliari;
-                                    msgMail.corpoMsg =
-                                        string.Format(
-                                            Resources.msgEmail.MessaggioAnnullaRichiestaMaggiorazioniFamiliari,
-                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")",
-                                            tr.DATAPARTENZA.ToLongDateString());
-                                    gmail.sendMail(msgMail);
-                                }
-                                else
-                                {
-                                    throw new Exception("Non è stato possibile inviare l'email.");
-                                }
-
-
-
                             }
                         }
                     }
                 }
+                else
+                {
+                    throw new Exception("Non è stato possibile inviare l'email.");
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -506,198 +502,9 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        //private void InvioEmailMagFam(decimal idMaggiorazioniFamiliari, ModelDBISE db)
-        //{
-        //    MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
-        //    TrasferimentoModel trm = new TrasferimentoModel();
-        //    DipendentiModel dipendente = new DipendentiModel();
-        //    List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
-        //    AccountModel am = new AccountModel();
-        //    Mittente mittente = new Mittente();
-        //    Destinatario cc = new Destinatario();
-
-        //    try
-        //    {
-
-        //        mfm = this.GetMaggiorazioniFamiliariByID(idMaggiorazioniFamiliari);
-        //        if (mfm != null && mfm.HasValue())
-        //        {
-        //            am = Utility.UtenteAutorizzato();
-
-        //            mittente.Nominativo = am.nominativo;
-        //            mittente.EmailMittente = am.eMail;
-
-        //            using (dtTrasferimento dtt = new dtTrasferimento())
-        //            {
-        //                trm = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari, db);
-
-        //                using (dtDipendenti dtd = new dtDipendenti())
-        //                {
-        //                    dipendente = dtd.GetDipendenteByID(trm.idDipendente, db);
-        //                    if (dipendente != null && dipendente.HasValue())
-        //                    {
-        //                        if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
-        //                        {
-        //                            cc = new Destinatario()
-        //                            {
-        //                                Nominativo = am.nominativo,
-        //                                EmailDestinatario = am.eMail
-        //                            };
-        //                        }
-        //                        else
-        //                        {
-        //                            cc = new Destinatario()
-        //                            {
-        //                                Nominativo = dipendente.Nominativo,
-        //                                EmailDestinatario = dipendente.email
-        //                            };
-        //                        }
 
 
-        //                        using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
-        //                        {
-        //                            using (GestioneEmail gmail = new GestioneEmail())
-        //                            {
-        //                                //luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.SuperAmministratore).ToList());
-        //                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
-
-        //                                if (luam?.Any() ?? false)
-        //                                {
-        //                                    using (ModelloMsgMail msgMail = new ModelloMsgMail())
-        //                                    {
-        //                                        msgMail.mittente = mittente;
-
-        //                                        foreach (var uam in luam)
-        //                                        {
-        //                                            //var uteConn = dtd.GetDipendenteByMatricola(uam.matricola);
-
-        //                                            var client = new RestSharp.RestClient("http://128.1.50.97:82");
-        //                                            var req = new RestSharp.RestRequest("api/dipendente", RestSharp.Method.POST);
-        //                                            req.RequestFormat = RestSharp.DataFormat.Json;
-        //                                            req.AddParameter("matricola", uam.matricola);
-
-        //                                            RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
-
-        //                                            RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
-
-        //                                            RetDipendenteJson retDip = deserial.Deserialize<RetDipendenteJson>(resp);
-
-        //                                            if (resp.StatusCode == System.Net.HttpStatusCode.OK)
-        //                                            {
-        //                                                if (retDip.success == true)
-        //                                                {
-        //                                                    if (retDip.items != null)
-        //                                                    {
-
-        //                                                        if (am.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
-        //                                                        {
-        //                                                            Destinatario dest = new Destinatario()
-        //                                                            {
-        //                                                                Nominativo = am.nominativo,
-        //                                                                EmailDestinatario = am.eMail
-        //                                                            };
-
-        //                                                            msgMail.destinatario.Add(dest);
-        //                                                            return;
-        //                                                        }
-        //                                                        else
-        //                                                        {
-        //                                                            Destinatario dest = new Destinatario()
-        //                                                            {
-        //                                                                Nominativo = retDip.items.nominativo,
-        //                                                                EmailDestinatario = retDip.items.email
-        //                                                            };
-
-        //                                                            msgMail.destinatario.Add(dest);
-        //                                                        }
-
-
-
-
-        //                                                    }
-        //                                                }
-        //                                            }
-        //                                            else
-        //                                            {
-        //                                                using (Config.Config cfg = new Config.Config())
-        //                                                {
-        //                                                    sAdmin sad = new sAdmin();
-        //                                                    sad = cfg.SuperAmministratore();
-        //                                                    if (sad.s_admin?.Any() ?? false)
-        //                                                    {
-        //                                                        var lute =
-        //                                                            sad.s_admin.Where(a => a.username == uam.matricola)
-        //                                                                .ToList();
-        //                                                        if (lute?.Any() ?? false)
-        //                                                        {
-        //                                                            var ute = lute.First();
-
-        //                                                            Destinatario dest = new Destinatario()
-        //                                                            {
-        //                                                                Nominativo = ute.nominatico,
-        //                                                                EmailDestinatario = ute.email
-        //                                                            };
-
-        //                                                            msgMail.destinatario.Add(dest);
-        //                                                        }
-        //                                                    }
-        //                                                }
-        //                                            }
-
-
-        //                                        }
-
-        //                                        if (msgMail.destinatario?.Any() ?? false)
-        //                                        {
-        //                                            msgMail.cc.Add(cc);
-
-        //                                            msgMail.oggetto =
-        //                                                Resources.msgEmail.OggettoNotificaRichiestaMaggiorazioniFamiliari;
-        //                                            msgMail.corpoMsg =
-        //                                                string.Format(
-        //                                                    Resources.msgEmail
-        //                                                        .MessaggioNotificaRichiestaMaggiorazioniFamiliari,
-        //                                                    dipendente.Nominativo);
-
-        //                                            gmail.sendMail(msgMail);
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            throw new Exception("Non è stato possibile inviare l'email.");
-        //                                        }
-
-
-        //                                    }
-
-        //                                }
-        //                            }
-
-        //                        }
-        //                    }
-        //                }
-
-
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new Exception("Non è stato possibile inviare l'email.");
-        //        }
-
-
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-
-
-        //}
-
-        public void AnnullaRichiesta(decimal idMaggiorazioniFamiliari)
+        public void AnnullaRichiesta(decimal idAttivazioneMagFam)
         {
 
             try
@@ -709,16 +516,12 @@ namespace NewISE.Models.DBModel.dtObj
                     try
                     {
 
-                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                        var lamf =
-                                mf.ATTIVAZIONIMAGFAM.Where(
-                                    a => a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false)
-                                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
-                        if (lamf?.Any() ?? true)
+                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                        if (amf?.IDATTIVAZIONEMAGFAM > 0)
                         {
-                            var amf = lamf.First();
 
                             amf.DATAAGGIORNAMENTO = DateTime.Now;
                             amf.ANNULLATO = true;
@@ -763,22 +566,22 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 else
                                 {
-                                    throw new Exception("Errore nella fase d'inserimento della riga di attivazione maggiorazione familiare per l'id maggiorazione familiare: " + mf.IDMAGGIORAZIONIFAMILIARI);
+                                    throw new Exception("Errore nella fase d'inserimento della riga di attivazione maggiorazione familiare per l'id maggiorazione familiare: " + amf.IDMAGGIORAZIONIFAMILIARI);
                                 }
 
                                 if (amf.CONIUGE.Count <= 0 || amf.FIGLI.Count <= 0)
                                 {
                                     using (dtRinunciaMagFam dtrmf = new dtRinunciaMagFam())
                                     {
-                                        dtrmf.AnnullaRinuncia(mf.IDMAGGIORAZIONIFAMILIARI, db);
+                                        dtrmf.AnnullaRinuncia(idAttivazioneMagFam, db);
                                     }
                                 }
 
-                                this.EmailAnnullaRichiesta(idMaggiorazioniFamiliari, db);
+                                this.EmailAnnullaRichiesta(idAttivazioneMagFam, db);
 
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
-                                    dtce.AnnullaMessaggioEvento(mf.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                                    dtce.AnnullaMessaggioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                 }
 
                             }
@@ -807,7 +610,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void NotificaRichiesta(decimal idMaggiorazioniFamiliari)
+        public void NotificaRichiesta(decimal idAttivazioneMagFam)
         {
             bool rinunciaMagFam = false;
             bool richiestaAttivazione = false;
@@ -821,7 +624,7 @@ namespace NewISE.Models.DBModel.dtObj
             bool docFormulario = false;
             int i = 0;
 
-            this.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
+            this.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -833,23 +636,18 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
-                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                        var lamf =
-                            mf.ATTIVAZIONIMAGFAM.Where(
-                                a => a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
-                                .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
-                        if (lamf?.Any() ?? false)
+                        if (amf?.IDATTIVAZIONEMAGFAM > 0)
                         {
-                            var amf = lamf.First();
 
                             if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
                             {
                                 if (datiConiuge == false && datiFigli == false)
                                 {
                                     var rmf =
-                                        mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                        amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
                                             .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                             .First();
 
@@ -863,14 +661,14 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     else
                                     {
-                                        this.EmailNotificaRichiesta(idMaggiorazioniFamiliari, db);
+                                        this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
 
                                         using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                         {
                                             CalendarioEventiModel cem = new CalendarioEventiModel()
                                             {
                                                 idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                 DataInizioEvento = DateTime.Now,
                                                 DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
 
@@ -892,13 +690,13 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         else
                                         {
-                                            this.EmailNotificaRichiesta(idMaggiorazioniFamiliari, db);
+                                            this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
                                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                             {
                                                 CalendarioEventiModel cem = new CalendarioEventiModel()
                                                 {
                                                     idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                    idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                    idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     DataInizioEvento = DateTime.Now,
                                                     DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
 
@@ -939,7 +737,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void SituazioneMagFamPartenza(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
+        public void SituazioneMagFamPartenza(decimal idAttivazioneMagFam, out bool rinunciaMagFam,
                                        out bool richiestaAttivazione, out bool Attivazione,
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
@@ -960,23 +758,18 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(
-                        e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
-                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
                 //var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false);
 
-                if (lamf?.Any() ?? false)
+                if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    var amf = lamf.First();
+                    var mf = amf.MAGGIORAZIONIFAMILIARI;
 
-
-                    if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
+                    if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                     {
-
                         var rmf =
                             mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
                                 .OrderByDescending(a => a.IDRINUNCIAMAGFAM)

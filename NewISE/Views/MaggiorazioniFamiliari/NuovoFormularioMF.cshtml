@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.DocumentiModel
 
 @{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 }
 
 <div class="form-horizontal">
@@ -88,7 +88,7 @@
 
         if (Validazione()) {
 
-            datiForm.append("idMaggiorazioniFamiliari", @idMaggiorazioniFamiliari);
+            datiForm.append("idAttivazioneMagFam", @idAttivazioneMagFam);
             datiForm.append("file", file);
 
             $.ajax({

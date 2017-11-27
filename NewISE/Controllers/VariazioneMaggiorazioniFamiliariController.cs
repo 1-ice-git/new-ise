@@ -202,35 +202,35 @@ namespace NewISE.Controllers
                 //
                 using (dtFigli dtf = new dtFigli())
                 {
-                    List<FigliModel> lfm = dtf.GetListaFigli(idMaggiorazioniFamiliari).ToList();
+                    //List<FigliModel> lfm = dtf.GetListaFigli(idMaggiorazioniFamiliari).ToList();
 
-                    if (lfm?.Any() ?? false)
-                    {
-                        using (dtDocumenti dtd = new dtDocumenti())
-                        {
-                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                            {
-                                foreach (var e in lfm)
-                                {
-                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                    {
-                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                        idFamiliare = e.idFigli,
-                                        idPassaporti = e.idPassaporti,
-                                        Nominativo = e.cognome + " " + e.nome,
-                                        CodiceFiscale = e.codiceFiscale,
-                                        dataInizio = e.dataInizio,
-                                        dataFine = e.dataFine,
-                                        parentela = EnumParentela.Figlio,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
-                                        Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio)
-                                    };
+                    //if (lfm?.Any() ?? false)
+                    //{
+                    //    using (dtDocumenti dtd = new dtDocumenti())
+                    //    {
+                    //        using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                    //        {
+                    //            foreach (var e in lfm)
+                    //            {
+                    //                ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                    //                {
+                    //                    idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                    //                    idFamiliare = e.idFigli,
+                    //                    idPassaporti = e.idPassaporti,
+                    //                    Nominativo = e.cognome + " " + e.nome,
+                    //                    CodiceFiscale = e.codiceFiscale,
+                    //                    dataInizio = e.dataInizio,
+                    //                    dataFine = e.dataFine,
+                    //                    parentela = EnumParentela.Figlio,
+                    //                    idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
+                    //                    Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio)
+                    //                };
 
-                                    lefm.Add(efm);
-                                }
-                            }
-                        }
-                    }
+                    //                lefm.Add(efm);
+                    //            }
+                    //        }
+                    //    }
+                    //}
 
                     //ViewData.Add("callConiuge", false);
 
@@ -264,7 +264,7 @@ namespace NewISE.Controllers
                     //    }
 
                     //    ViewData.Add("solaLettura", solaLettura);
-                        ViewData.Add("solaLettura", false);
+                    ViewData.Add("solaLettura", false);
                     //}
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
@@ -317,29 +317,29 @@ namespace NewISE.Controllers
                 // verifica che il coniuge non sia gia presente
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    var lc = dtc.GetListaConiugeByIdMagFam(idMaggiorazioniFamiliari);
-                    if (lc == null || lc.Count == 0)
-                    {
-                        rfam.Insert(0, new SelectListItem() { Text = "CONIUGE", Value = "1" });
+                    //var lc = dtc.GetListaConiugeByIdMagFam(idMaggiorazioniFamiliari);
+                    //if (lc == null || lc.Count == 0)
+                    //{
+                    //    rfam.Insert(0, new SelectListItem() { Text = "CONIUGE", Value = "1" });
 
-                        using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
-                        {
-                            var ltcm = dttc.GetListTipologiaConiuge();
+                    //    using (dtTipologiaConiuge dttc = new dtTipologiaConiuge())
+                    //    {
+                    //        var ltcm = dttc.GetListTipologiaConiuge();
 
-                            if (ltcm != null && ltcm.Count > 0)
-                            {
-                                rc = (from t in ltcm
-                                      select new SelectListItem()
-                                      {
-                                          Text = t.tipologiaConiuge,
-                                          Value = t.idTipologiaConiuge.ToString()
-                                      }).ToList();
-                                rc.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                            }
+                    //        if (ltcm != null && ltcm.Count > 0)
+                    //        {
+                    //            rc = (from t in ltcm
+                    //                  select new SelectListItem()
+                    //                  {
+                    //                      Text = t.tipologiaConiuge,
+                    //                      Value = t.idTipologiaConiuge.ToString()
+                    //                  }).ToList();
+                    //            rc.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                    //        }
 
-                            lTipologiaConiuge = rc;
-                        }
-                    }
+                    //        lTipologiaConiuge = rc;
+                    //    }
+                    //}
                 }
 
 
@@ -673,9 +673,9 @@ namespace NewISE.Controllers
                 {
                     if (!e.annullato)
                     {
-                        if (e.richiestaAttivazione==false && e.attivazioneMagFam==false && lamf.Count()>1 )
+                        if (e.richiestaAttivazione == false && e.attivazioneMagFam == false && lamf.Count() > 1)
                         {
-                            if(docFormulario)
+                            if (docFormulario)
                             {
                                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
                             }
@@ -1257,7 +1257,7 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(idMaggiorazioniFamiliari,idAttivazione).ToList();
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(idMaggiorazioniFamiliari, idAttivazione).ToList();
                 }
             }
             catch (Exception ex)
@@ -1265,7 +1265,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("TabFormulariInseriti",ldm);
+            return PartialView("TabFormulariInseriti", ldm);
         }
 
 

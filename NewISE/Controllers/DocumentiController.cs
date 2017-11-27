@@ -149,7 +149,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult InserisciFormularioMF(decimal idMaggiorazioniFamiliari, HttpPostedFileBase file)
+        public JsonResult InserisciFormularioMF(decimal idAttivazioneMagFam, HttpPostedFileBase file)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -179,7 +179,7 @@ namespace NewISE.Controllers
 
                             if (dimensioneConsentita)
                             {
-                                dtd.SetFormularioMaggiorazioniFamiliari(ref dm, idMaggiorazioniFamiliari, db);
+                                dtd.SetFormularioMaggiorazioniFamiliari(ref dm, idAttivazioneMagFam, db);
                             }
                             else
                             {

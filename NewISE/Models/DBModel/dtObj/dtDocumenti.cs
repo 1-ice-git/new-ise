@@ -61,21 +61,18 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public IList<DocumentiModel> GetFormulariMaggiorazioniFamiliariPartenza(decimal idMaggiorazioniFamiliari)
+        public IList<DocumentiModel> GetFormulariAttivazioneMagFamPartenza(decimal idAttivazioneMagFam)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(
-                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
-                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
-                if (lamf?.Any() ?? false)
+
+                if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    var amf = lamf.First();
+
                     var ld =
                         amf.DOCUMENTI.Where(
                             a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
@@ -518,23 +515,16 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetFormularioMaggiorazioniFamiliari(ref DocumentiModel dm, decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        public void SetFormularioMaggiorazioniFamiliari(ref DocumentiModel dm, decimal idAttivazioneMagFam, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();
 
             dm.file.InputStream.CopyTo(ms);
+            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-
-            var lamf =
-                mf.ATTIVAZIONIMAGFAM.Where(
-                    a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
-                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
-            if (lamf?.Any() ?? false)
+            if (amf?.IDATTIVAZIONEMAGFAM > 0)
             {
-                var amf = lamf.First();
-
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
                 d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
@@ -545,6 +535,8 @@ namespace NewISE.Models.DBModel.dtObj
                 if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
+                    var mf = amf.MAGGIORAZIONIFAMILIARI;
+
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
                 }
                 else
@@ -556,6 +548,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
             }
+
+
 
 
         }
@@ -944,7 +938,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;
-                        if (e.RICHIESTAATTIVAZIONE==false && e.ATTIVAZIONEMAGFAM==false)
+                        if (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false)
                         {
                             modificabile = true;
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
@@ -974,14 +968,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 IdAttivazione = e.IDATTIVAZIONEMAGFAM,
                                 DataAggiornamento = e.DATAAGGIORNAMENTO,
                                 ColoreSfondo = coloresfondo,
-                                ColoreTesto=coloretesto,
-                                progressivo=i
+                                ColoreTesto = coloretesto,
+                                progressivo = i
                             };
 
                             ldm.Add(amf);
                         }
 
-                        i++;                    
+                        i++;
 
                     }
 
@@ -1073,9 +1067,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     Modificabile = modificabile,
                                     IdAttivazione = e.IDATTIVAZIONEMAGFAM,
                                     DataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    ColoreTesto=coloretesto,
-                                    ColoreSfondo=coloresfondo,
-                                    progressivo=i
+                                    ColoreTesto = coloretesto,
+                                    ColoreSfondo = coloresfondo,
+                                    progressivo = i
                                 };
 
                                 ldm.Add(amf);

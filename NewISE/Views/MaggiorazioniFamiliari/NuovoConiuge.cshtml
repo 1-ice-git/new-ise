@@ -8,8 +8,9 @@
 
 @{
 
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     var errori = ViewData.ModelState;
+
 }
 
 @using (@Ajax.BeginForm("InserisciConiuge", "MaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewConiuge" }))
@@ -17,7 +18,7 @@
     @Html.AntiForgeryToken()
     <div style="padding-left:15px;">
         <div class="form-horizontal">
-            @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
+            @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
 
 
             <div class="panel panel-body" style="padding-left:5px; padding-right:5px; margin-right:10px; margin-top:5px;">
@@ -111,7 +112,7 @@
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -127,7 +128,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                break;
+                                                        break;
         }
 
     }

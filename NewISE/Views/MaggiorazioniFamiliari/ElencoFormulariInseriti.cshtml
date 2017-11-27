@@ -1,7 +1,7 @@
 ﻿
 
 @{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
@@ -40,7 +40,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divTabElencoFormulari">
-            @Html.Action("TabFormulariInseriti", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari })
+            @Html.Action("TabFormulariInseriti", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam })
         </div>
     </div>
 </div>

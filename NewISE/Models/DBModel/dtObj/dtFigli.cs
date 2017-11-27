@@ -19,6 +19,79 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
+
+
+
+        #region Funzioni di validazione custom
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var fm = context.ObjectInstance as FigliModel;
+
+            if (fm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.ATTIVAZIONIMAGFAM.Find(fm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (fm.dataInizio < t.DATAPARTENZA)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                }
+
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+
+            return vr;
+        }
+
+        public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var fm = context.ObjectInstance as FigliModel;
+
+            if (fm != null)
+            {
+
+                if (fm.codiceFiscale != null && fm.codiceFiscale != string.Empty)
+                {
+                    if (Utility.CheckCodiceFiscale(fm.codiceFiscale))
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                    else
+                    {
+                        vr = new ValidationResult("Il Codice Fiscale non è corretto.");
+                    }
+                }
+                else
+                {
+                    vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
+            }
+
+            return vr;
+        }
+        #endregion
+
+
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -116,71 +189,6 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-
-            var fm = context.ObjectInstance as FigliModel;
-
-            if (fm != null)
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var t = db.MAGGIORAZIONIFAMILIARI.Find(fm.idMaggiorazioniFamiliari).TRASFERIMENTO;
-
-                    if (fm.dataInizio < t.DATAPARTENZA)
-                    {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
-                    }
-                    else
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                }
-
-            }
-            else
-            {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
-            }
-
-            return vr;
-        }
-
-
-
-        public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-
-            var fm = context.ObjectInstance as FigliModel;
-
-            if (fm != null)
-            {
-
-                if (fm.codiceFiscale != null && fm.codiceFiscale != string.Empty)
-                {
-                    if (Utility.CheckCodiceFiscale(fm.codiceFiscale))
-                    {
-                        vr = ValidationResult.Success;
-                    }
-                    else
-                    {
-                        vr = new ValidationResult("Il Codice Fiscale non è corretto.");
-                    }
-                }
-                else
-                {
-                    vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-                }
-            }
-            else
-            {
-                vr = new ValidationResult("Il Codice Fiscale è richiesto e deve essere composto da 16 caratteri.");
-            }
-
-            return vr;
-        }
 
         public void SetEscludiPassaporto(decimal idFiglio, ref bool chk)
         {
@@ -423,7 +431,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 dataNotificaTV = item.DATANOTIFICATV,
                                 Modificato = item.MODIFICATO,
                                 FK_IdFigli = item.FK_IDFIGLI,
-                                idAttivazione = idAttivazioneMagFam
+                                idAttivazioneMagFam = idAttivazioneMagFam
 
                             };
 

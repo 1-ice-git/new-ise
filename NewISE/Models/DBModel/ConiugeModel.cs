@@ -80,7 +80,7 @@ namespace NewISE.Models.DBModel
 
         public ConiugeModel ConiugeModificato { get; set; }
 
-        public decimal idAttivazione { get; set; }
+        public decimal idAttivazioneMagFam { get; set; }
 
         public IList<AltriDatiFamConiugeModel> lAltriDatiFamiliari { get; set; }
 

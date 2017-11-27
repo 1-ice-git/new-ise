@@ -17,6 +17,32 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public AttivazioniMagFamModel GetAttivazioneMagFamByID(decimal idAttivazioneMagFam)
+        {
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                amfm = new AttivazioniMagFamModel()
+                {
+                    idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                    idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                    richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                    dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                    attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                    dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                    dataVariazione = amf.DATAVARIAZIONE,
+                    dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                    annullato = amf.ANNULLATO
+                };
+
+            }
+
+            return amfm;
+        }
+
         public AttivazioniMagFamModel GetAttivazioneMagFamIniziale(decimal idMaggiorazioneFamiliare)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();

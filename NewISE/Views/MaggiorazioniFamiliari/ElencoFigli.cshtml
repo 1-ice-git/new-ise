@@ -2,7 +2,7 @@
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 @{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
@@ -13,7 +13,7 @@
     }
     else
     {
-        @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
+        @Ajax.ActionLink("Nuovo figlio", "NuovoFiglio", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il figlio" })
     }
 
 </p>

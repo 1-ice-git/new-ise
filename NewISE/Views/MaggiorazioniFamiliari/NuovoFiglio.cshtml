@@ -7,7 +7,7 @@
 
 @{
 
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 
     var errori = ViewData.ModelState;
 }
@@ -17,8 +17,7 @@
 {
     @Html.AntiForgeryToken()
 
-    @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
-
+    @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
 
 
     <div style="padding-right: 15px;">
@@ -107,7 +106,7 @@
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 
@@ -125,7 +124,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                        break;
+                                        break;
         }
 
     }
