@@ -142,28 +142,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
-                        //delIB.ANNULLATO = true;
-
-                        //var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
-
-                        //if (lprecIB.Count > 0)
-                        //{
-                        //    precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
-                        //    precedenteIB.ANNULLATO = true;
-
-                        //    var ibOld1 = new INDENNITABASE()
-                        //    {
-                        //        IDLIVELLO = precedenteIB.IDLIVELLO,
-                        //        DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
-                        //        DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                        //        VALORE = precedenteIB.VALORE,
-                        //        VALORERESP = precedenteIB.VALORERESP,
-                        //        ANNULLATO = false
-                        //    };
-
-                        //    db.INDENNITABASE.Add(ibOld1);
-                        //}
-
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())

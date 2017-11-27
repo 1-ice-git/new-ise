@@ -8,11 +8,12 @@
 
 <p>
     <a id="btnInsNuovoCoeffIndRichiamo" href="#" onclick="NuovoCoeffIndRichiamo();">Inserisci nuovo Coeff. Ind. Richiamo</a>
+
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblCoeffFasciaKm", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
+        @Html.Label("lblCoeffIndRichiamo", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffIndRichiamo();" })
@@ -21,7 +22,7 @@
     </div>
 </p>
 
-<table id="tbCoeffFasciaKm" class="display" cellspacing="0">
+<table id="tbCoeffIndRichiamo" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -78,6 +79,21 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td style="text-align:center;">
+                    @using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                            <a href="#" onclick="EliminaCoeffIndRichiamo(@item.idRiduzioni );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                    }
+
+
                 </td>
             </tr>
         }
@@ -173,7 +189,7 @@
     }
 
     function NuovoCoeffIndRichiamo() {
-        debugger;
+        //debugger;
 
         var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndRichiamo";
         var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
@@ -223,9 +239,9 @@
 
     }
 
-    function EliminaCoefIndRichiamo(id) {
+    function EliminaCoeffIndRichiamo(id) {
         //debugger;
-        var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaAliquoteContributive";
+        var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaCoeffIndRichiamo";
 
         var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
         var chk = true;

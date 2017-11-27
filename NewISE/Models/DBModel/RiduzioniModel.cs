@@ -38,8 +38,8 @@ namespace NewISE.Models.DBModel
 
         public RegoleCalcoloModel RegolaCalcolo { get; set; }
 
+        public RegoleCalcoloModel FormulaRegolaCalcolo { get; set; }
 
 
-        
     }
 }

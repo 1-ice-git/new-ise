@@ -4,89 +4,40 @@ using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtIndennitaBase : IDisposable
+    public class dtParCoeffIndRichiamo : IDisposable
     {
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase()
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo()
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.INDENNITABASE.ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
-                                {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
-                                },
-                                Riduzioni = new RiduzioniModel()
-                                {
-                                    idRegola = e.RIDUZIONI.IDREGOLA,
-                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
-                                    
-                                }
-
-                            }).ToList();
-                }
-
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public IList<IndennitaBaseModel> getListIndennitaBase(decimal idLivello)
-        {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello).ToList();
-
-                    libm = (from e in lib
-                            select new IndennitaBaseModel()
-                            {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
-                                {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
-                                },
                                 Riduzioni = new RiduzioniModel()
                                 {
                                     idRegola = e.RIDUZIONI.IDREGOLA,
@@ -104,33 +55,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase(bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
-                                {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
-                                },
                                 Riduzioni = new RiduzioniModel()
                                 {
                                     idRegola = e.RIDUZIONI.IDREGOLA,
@@ -148,33 +94,67 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<IndennitaBaseModel> getListIndennitaBase(decimal idLivello, bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
         {
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new IndennitaBaseModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idIndennitaBase = e.IDINDENNITABASE,
-                                idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
-                                valore = e.VALORE,
-                                valoreResponsabile = e.VALORERESP,
+                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                Livello = new LivelloModel()
+                                Riduzioni = new RiduzioniModel()
                                 {
-                                    idLivello = e.LIVELLI.IDLIVELLO,
-                                    DescLivello = e.LIVELLI.LIVELLO
-                                },
+                                    idRegola = e.RIDUZIONI.IDREGOLA,
+                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
+
+                                }
+                            }).ToList();
+                }
+
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati = false)
+        {
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
+
+                    libm = (from e in lib
+                            select new CoefficienteRichiamoModel()
+                            {
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                annullato = e.ANNULLATO,
                                 Riduzioni = new RiduzioniModel()
                                 {
                                     idRegola = e.RIDUZIONI.IDREGOLA,
@@ -196,15 +176,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetIndennitaDiBase(IndennitaBaseModel ibm)
+        public void SetListCoeffIndRichiamo(CoefficienteRichiamoModel ibm)
         {
-            List<INDENNITABASE> libNew = new List<INDENNITABASE>();
+            List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
 
-            INDENNITABASE ibNew = new INDENNITABASE();
+            COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
 
-            INDENNITABASE ibPrecedente = new INDENNITABASE();
+            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
 
-            List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
+            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -214,30 +194,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new INDENNITABASE()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDINDENNITABASE = ibm.idIndennitaBase,
-                                IDLIVELLO = ibm.idLivello,
+                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                 IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                VALORE = ibm.valore,
-                                VALORERESP = ibm.valoreResponsabile,
+                                
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new INDENNITABASE()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDINDENNITABASE = ibm.idIndennitaBase,
-                                IDLIVELLO = ibm.idLivello,
+                               
                                 IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                VALORE = ibm.valore,
-                                VALORERESP = ibm.valoreResponsabile,
+                               
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
@@ -245,15 +221,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     }
                     else
                     {
-                        ibNew = new INDENNITABASE()
+                        ibNew = new COEFFICIENTEINDRICHIAMO()
                         {
-                            IDINDENNITABASE = ibm.idIndennitaBase,
-                            IDLIVELLO = ibm.idLivello,
+                            
                             IDRIDUZIONI = ibm.idRiduzioni,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            VALORE = ibm.valore,
-                            VALORERESP = ibm.valoreResponsabile,
+                            
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
@@ -261,7 +235,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibNew.IDLIVELLO)
+                    var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDRIDUZIONI == ibNew.IDRIDUZIONI)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -278,53 +252,47 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDINDENNITABASE =item.IDINDENNITABASE,
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
                                     libNew.Add(ibOld1);
-                                    
+
                                 }
-                                else if(item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDINDENNITABASE = item.IDINDENNITABASE,
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new INDENNITABASE()
+                                    var ibOld2 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDINDENNITABASE = item.IDINDENNITABASE,
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+ 1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
-                                    
+
                                     libNew.Add(ibOld1);
                                     libNew.Add(ibOld2);
-                                    
+
                                 }
 
                             }
@@ -336,15 +304,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDINDENNITABASE = item.IDINDENNITABASE,
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -360,15 +326,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new INDENNITABASE()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDINDENNITABASE = item.IDINDENNITABASE,
-                                        IDLIVELLO = item.IDLIVELLO,
+                                        
                                         IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        VALORE = item.VALORE,
-                                        VALORERESP = item.VALORERESP,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -378,23 +342,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             }
                         }
 
-                        libNew.Add(ibNew); 
+                        libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.INDENNITABASE.AddRange(libNew);
+                        db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
                     }
                     else
                     {
-                        db.INDENNITABASE.Add(ibNew);
-                        
+                        db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
+
                     }
                     db.SaveChanges();
 
-                    using (objLogAttivita log=new objLogAttivita())
+                    using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "INDENNITABASE", ibNew.IDINDENNITABASE);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di Coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
                     }
-                    
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -405,21 +369,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiPrima(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiSuccessivi(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -428,13 +392,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(IndennitaBaseModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -442,19 +406,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
-        public bool EsistonoMovimentiPrimaUguale(IndennitaBaseModel ibm)
+
+        public bool EsistonoMovimentiPrimaUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.INDENNITABASE.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public void DelIndennitaDiBase(decimal idIndbase)
+        public void DelListCoeffIndRichiamo(decimal idCoeffIndRichiamo)
         {
-            INDENNITABASE precedenteIB = new INDENNITABASE();            
-            INDENNITABASE delIB = new INDENNITABASE();
+            COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
+            COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -463,40 +427,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.INDENNITABASE.Where(a => a.IDINDENNITABASE == idIndbase);
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoeffIndRichiamo);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new INDENNITABASE()
+                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDINDENNITABASE = precedenteIB.IDINDENNITABASE,
-                                IDLIVELLO = precedenteIB.IDLIVELLO,
+                                IDCOEFINDRICHIAMO = precedenteIB.IDCOEFINDRICHIAMO,
                                 IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                VALORE = precedenteIB.VALORE,
-                                VALORERESP = precedenteIB.VALORERESP,
+                                COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
+                                COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
                                 ANNULLATO = false
                             };
 
-                            db.INDENNITABASE.Add(ibOld1);
+                            db.COEFFICIENTEINDRICHIAMO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "INDENNITABASE", idIndbase);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", idCoeffIndRichiamo);
                         }
 
 
@@ -508,9 +471,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-               
+
             }
 
         }
+
     }
 }
