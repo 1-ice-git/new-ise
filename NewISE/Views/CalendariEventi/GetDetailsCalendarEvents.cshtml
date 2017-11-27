@@ -10,22 +10,11 @@
     var errori = ViewData.ModelState;
 }
 
-<style type="text/css">
-    .no-close .a .ui-dialog-titlebar-close {
-        display: none;
-    }
-</style>
-<link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel='stylesheet' />
-<style type="text/css">
-    .ui-dialog .a .ui-dialog-titlebar-close {
-        display: none;
-    }
-</style>
 
 <div class="modal fade" id="inviaDocModal2" tabindex="-1"
-      role="dialog" aria-labelledby="inviaDocModalLabel2" aria-hidden="true" data-modal-parent="#inviaDocModal">
-    <div class="modal-dialog modal-lg " role="document">
-        <div class="modal-content alert alert-info text-info">
+      role="dialog" aria-labelledby="inviaDocModalLabel2" aria-hidden="true" data-modal-parent="#inviaDocModal" >
+    <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-content alert alert-info text-info"  >
             <div class="modal-body alert-info text-info" style="font-size: 1em;">
                 <div id="viewDocumentoDettagli2">
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
@@ -154,7 +143,7 @@
         </div>
 
 <script type="text/javascript">
-
+       
     //$("#tbelencocal").DataTable({
         //    "ordering": false,
         //    "language": {
@@ -219,15 +208,16 @@
                         //  prev('.ui-dialog-titlebar'). // Get title bar,...
                         //  find('a').                   // ... then get the X close button ...
                         //  hide();
-                        $("#inviaDocModal2.ui-dialog-titlebar-close").hide();
-                        $("#inviaDocModal2.ui-dialog-titlebar-close").remove();
-                        $('#inviaDocModal2').modal('show');
+                        
+                        //$("#inviaDocModal2.ui-dialog-titlebar-close").hide();
+                        //$("#inviaDocModal2.ui-dialog-titlebar-close").remove();
+                        $('#inviaDocModal2').modal('show');                        
                         Blocca();
                     },
                     success: function (result) {
                        // debugger;
                         $("#viewDocumentoDettagli2").empty();
-                        $("#viewDocumentoDettagli2").html(result);
+                        $("#viewDocumentoDettagli2").html(result);                        
                     },
                     error: function (error) {
                         //debugger;

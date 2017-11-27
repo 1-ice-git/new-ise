@@ -25,8 +25,8 @@
     }
 </style>
 
-<div class="modal fade" id="inviaDocModal"  data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="inviaDocModal"  data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true" ">
+    <div class="modal-dialog modal-lg" role="document"">
         <div class="modal-content">
             @*<div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -35,9 +35,9 @@
                 <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel" style="text-align:center">Dettagli Calendario Eventi</h3>
             </div>*@
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <button id="chiudi1" type="button" class="close" onclick="ChiudiNonModal();"  aria-label="Close">
+                @*<button id="chiudi1" type="button" class="close" onclick="ChiudiNonModal();"  aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>
+                </button>*@
                 <div id="viewDocumentoDettagli">
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
                 </div>
@@ -75,10 +75,10 @@
             lang: 'It',
             defaultDate: new Date(),//'2017-10-12',            
             editable: true,
-           // navLinks: true,
+            navLinks: true,
             selectable: true,
             eventLimit: true, // allow "more" link when too many events
-                      //events: jar,
+            //events: jar,            
             events: '/CalendariEventi/GetDiaryEvents',
            // timeFormat: 'H(:mm)', // uppercase H for 24-hour clock
             //events: [
