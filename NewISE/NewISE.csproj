@@ -1937,6 +1937,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\VariazioneMagFamColori.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VariazioneMagFamColori.resx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
@@ -2537,6 +2542,8 @@
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2643,6 +2650,10 @@
     <Content Include="App_GlobalResources\ScadenzaFunzioniEventi.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>ScadenzaFunzioniEventi.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\VariazioneMagFamColori.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>VariazioneMagFamColori.designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report1.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report10.rdlc" />
