@@ -871,8 +871,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
                                                 idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
+                                                DataInizioEvento = DateTime.Now.Date,
+                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
 
                                             };
 
@@ -899,8 +899,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
                                                     idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                    DataInizioEvento = DateTime.Now,
-                                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
+                                                    DataInizioEvento = DateTime.Now.Date,
+                                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
 
                                                 };
 
@@ -1513,8 +1513,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
                                                 idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
+                                                DataInizioEvento = DateTime.Now.Date,
+                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
 
                                             };
 
@@ -1541,8 +1541,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
                                                 idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)),
+                                                DataInizioEvento = DateTime.Now.Date,
+                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
 
                                             };
 

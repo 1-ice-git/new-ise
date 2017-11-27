@@ -33,5 +33,10 @@ namespace NewISE.Models.ViewModel
         public decimal IdFunzioneEvento { get; set; }
         public decimal IdDipendente { get; set; }
         public string Stato { get; set; }
+        [Display(Name = "Data Completato")]
+        // [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime? dataCompletato { get; set; }
     }
 }

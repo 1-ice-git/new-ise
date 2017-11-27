@@ -47,7 +47,7 @@
                                 @Html.DisplayNameFor(model => model.NomeFunzione)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Completato)
+                                @Html.DisplayNameFor(model => model.dataCompletato)
                             </th>
                         </tr>
                     </thead>}
@@ -67,7 +67,7 @@
                             @Html.DisplayNameFor(model => model.NomeFunzione)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Completato)
+                            @Html.DisplayNameFor(model => model.dataCompletato)
                         </th>
                     </tr>
                 </thead>}
@@ -87,7 +87,7 @@
                                 @Html.DisplayNameFor(model => model.NomeFunzione)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Completato)
+                                @Html.DisplayNameFor(model => model.dataCompletato)
                             </th>
                         </tr>
                     </thead>}
@@ -125,9 +125,16 @@
                            class="anchorDetail" id_dip="@item.IdDipendente"
                            id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                     </td>
-                    <td>
-                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Completato)</span>
-                    </td>
+                      @if (item.dataInizio.HasValue && item.dataCompletato.Value < Convert.ToDateTime("31/12/9999"))
+                      {
+                          <td style="text-align: center;">
+                              @Html.DisplayFor(modelItem => item.dataCompletato)
+                          </td>
+                      }
+                      else
+                      {
+                          <td style="text-align: center;"></td>
+                      }
                 </tr>
                  if (@rowColor.Equals("#ffffff"))
                  {
