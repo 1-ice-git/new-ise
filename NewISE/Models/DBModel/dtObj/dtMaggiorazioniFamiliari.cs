@@ -747,7 +747,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         foreach (var c in amf.CONIUGE)
                                         {
-                                            dtamf.AssociaConiuge(amfNew.IDATTIVAZIONEMAGFAM, c.IDCONIUGE, db);
+                                            dtamf.AssociaConiugeAttivazione(amfNew.IDATTIVAZIONEMAGFAM, c.IDCONIUGE, db);
                                         }
 
                                         foreach (var f in amf.FIGLI)
