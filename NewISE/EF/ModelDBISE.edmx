@@ -183,8 +183,8 @@
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOEVENTO" Type="date" Nullable="false" />
           <Property Name="COMPLETATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATACOMPLETATO" Type="date" Nullable="false" />
-          <Property Name="DATASCADENZA" Type="date" />
+          <Property Name="DATACOMPLETATO" Type="date" />
+          <Property Name="DATASCADENZA" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CANOMEMAB">
@@ -4087,7 +4087,6 @@
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISEPRO.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ANTICIPI" EntityType="DBISEPRO.ANTICIPI" />
           <EntitySet Name="ATTIVITACRUD" EntityType="DBISEPRO.ATTIVITACRUD" />
-          <EntitySet Name="CALENDARIOEVENTI" EntityType="DBISEPRO.CALENDARIOEVENTI" />
           <EntitySet Name="CANOMEMAB" EntityType="DBISEPRO.CANOMEMAB" />
           <EntitySet Name="CDCGEPE" EntityType="DBISEPRO.CDCGEPE" />
           <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISEPRO.COEFFICIENTEFKM" />
@@ -4165,10 +4164,6 @@
           <AssociationSet Name="R_AC_LA" Association="DBISEPRO.R_AC_LA">
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_FE_CE" Association="DBISEPRO.R_FE_CE">
-            <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
-            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
           <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
@@ -4395,10 +4390,6 @@
             <End Role="TRASPORTOEFFETTI" EntitySet="TRASPORTOEFFETTI" />
           </AssociationSet>
           <EntitySet Name="TRASFERIMENTO" EntityType="DBISEPRO.TRASFERIMENTO" />
-          <AssociationSet Name="R_T_CE" Association="DBISEPRO.R_T_CE">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
-          </AssociationSet>
           <AssociationSet Name="R_DIP_TRASF" Association="DBISEPRO.R_DIP_TRASF">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -4630,6 +4621,15 @@
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
           </AssociationSet>
+          <EntitySet Name="CALENDARIOEVENTI" EntityType="DBISEPRO.CALENDARIOEVENTI" />
+          <AssociationSet Name="R_FE_CE" Association="DBISEPRO.R_FE_CE">
+            <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_CE" Association="DBISEPRO.R_T_CE">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -4679,21 +4679,6 @@
           <Property Name="IDATTIVITACRUD" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DESCRIZIONEATTIVITA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_AC_LA" FromRole="ATTIVITACRUD" ToRole="LOGATTIVITA" />
-        </EntityType>
-        <EntityType Name="CALENDARIOEVENTI">
-          <Key>
-            <PropertyRef Name="IDCALENDARIOEVENTI" />
-          </Key>
-          <Property Name="IDCALENDARIOEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOEVENTO" Type="DateTime" Nullable="false" />
-          <Property Name="COMPLETATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATACOMPLETATO" Type="DateTime" Nullable="false" />
-          <Property Name="DATASCADENZA" Type="DateTime" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="FUNZIONIEVENTI" Relationship="DBISEPRO.R_FE_CE" FromRole="CALENDARIOEVENTI" ToRole="FUNZIONIEVENTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_CE" FromRole="CALENDARIOEVENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="CANOMEMAB">
           <Key>
@@ -5507,20 +5492,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_FE_CE">
-          <End Type="DBISEPRO.FUNZIONIEVENTI" Role="FUNZIONIEVENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNZIONIEVENTI">
-              <PropertyRef Name="IDFUNZIONIEVENTI" />
-            </Principal>
-            <Dependent Role="CALENDARIOEVENTI">
-              <PropertyRef Name="IDFUNZIONIEVENTI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MAB_CMAB">
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6150,7 +6121,6 @@
           <Property Name="DATALETTERA" Type="DateTime" />
           <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
@@ -6168,21 +6138,8 @@
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
+          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
         </EntityType>
-        <Association Name="R_T_CE">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="CALENDARIOEVENTI">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_DIP_TRASF">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6948,6 +6905,49 @@
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
         </Association>
+        <EntityType Name="CALENDARIOEVENTI">
+          <Key>
+            <PropertyRef Name="IDCALENDARIOEVENTI" />
+          </Key>
+          <Property Name="IDCALENDARIOEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDFUNZIONIEVENTI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOEVENTO" Type="DateTime" Nullable="false" />
+          <Property Name="COMPLETATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATACOMPLETATO" Type="DateTime" />
+          <Property Name="DATASCADENZA" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FUNZIONIEVENTI" Relationship="DBISEPRO.R_FE_CE" FromRole="CALENDARIOEVENTI" ToRole="FUNZIONIEVENTI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_CE" FromRole="CALENDARIOEVENTI" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <Association Name="R_FE_CE">
+          <End Type="DBISEPRO.FUNZIONIEVENTI" Role="FUNZIONIEVENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONIEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_CE">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6997,20 +6997,6 @@
               <MappingFragment StoreEntitySet="ATTIVITACRUD">
                 <ScalarProperty Name="DESCRIZIONEATTIVITA" ColumnName="DESCRIZIONEATTIVITA" />
                 <ScalarProperty Name="IDATTIVITACRUD" ColumnName="IDATTIVITACRUD" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CALENDARIOEVENTI">
-            <EntityTypeMapping TypeName="DBISEPRO.CALENDARIOEVENTI">
-              <MappingFragment StoreEntitySet="CALENDARIOEVENTI">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATASCADENZA" ColumnName="DATASCADENZA" />
-                <ScalarProperty Name="DATACOMPLETATO" ColumnName="DATACOMPLETATO" />
-                <ScalarProperty Name="COMPLETATO" ColumnName="COMPLETATO" />
-                <ScalarProperty Name="DATAINIZIOEVENTO" ColumnName="DATAINIZIOEVENTO" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDFUNZIONIEVENTI" ColumnName="IDFUNZIONIEVENTI" />
-                <ScalarProperty Name="IDCALENDARIOEVENTI" ColumnName="IDCALENDARIOEVENTI" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -8161,6 +8147,20 @@
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="CALENDARIOEVENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.CALENDARIOEVENTI">
+              <MappingFragment StoreEntitySet="CALENDARIOEVENTI">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATASCADENZA" ColumnName="DATASCADENZA" />
+                <ScalarProperty Name="DATACOMPLETATO" ColumnName="DATACOMPLETATO" />
+                <ScalarProperty Name="COMPLETATO" ColumnName="COMPLETATO" />
+                <ScalarProperty Name="DATAINIZIOEVENTO" ColumnName="DATAINIZIOEVENTO" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDFUNZIONIEVENTI" ColumnName="IDFUNZIONIEVENTI" />
+                <ScalarProperty Name="IDCALENDARIOEVENTI" ColumnName="IDCALENDARIOEVENTI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

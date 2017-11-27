@@ -19,8 +19,8 @@ namespace NewISE.EF
         public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINIZIOEVENTO { get; set; }
         public bool COMPLETATO { get; set; }
-        public System.DateTime DATACOMPLETATO { get; set; }
-        public Nullable<System.DateTime> DATASCADENZA { get; set; }
+        public Nullable<System.DateTime> DATACOMPLETATO { get; set; }
+        public System.DateTime DATASCADENZA { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual FUNZIONIEVENTI FUNZIONIEVENTI { get; set; }
