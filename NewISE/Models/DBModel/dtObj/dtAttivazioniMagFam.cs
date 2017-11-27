@@ -300,7 +300,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void AssociaConiuge(decimal idAttivazioneFamiliare, decimal idConiuge, ModelDBISE db)
+        public void AssociaConiugeAttivazione(decimal idAttivazioneFamiliare, decimal idConiuge, ModelDBISE db)
         {
             try
             {

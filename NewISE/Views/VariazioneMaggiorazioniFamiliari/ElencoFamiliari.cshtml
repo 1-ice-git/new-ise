@@ -81,7 +81,7 @@
                             if (!solaLettura)
                             {
                                 //@Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
-                                <a href="#" onclick=" ModificaFamiliari(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari)) ">
+                                <a href="#" onclick="ModificaFamiliari(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari))">
                                     <img class="SfondoBordoImg" src="~/Immagini/edit-button.png" width="30" title="Modifica @Html.DisplayFor(modelItem => item.parentela) @Html.DisplayFor(modelItem => item.Nominativo)" />
                                 </a>
                             }
@@ -115,13 +115,13 @@
                     {
                         if (item.HasPensione)
                         {
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
                                 <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
                             </a>
                         }
                         else
                         {
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
                                 <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
                             </a>
                         }
@@ -129,25 +129,37 @@
                     </td>
                     @if (item.idAltriDati > 0)
                     {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare);" id="linkAltriDatiFam">
-                                <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                            </a>
-                        </td>
+                        if (item.parentela == EnumParentela.Coniuge)
+                        {
+                            <td style="text-align: center;">
+                                <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
+                                    <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </a>
+                            </td>
+                        }
+                        if (item.parentela == EnumParentela.Figlio)
+                        {
+                            <td style="text-align: center;">
+                                <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare,@idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
+                                    <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </a>
+                            </td>
+                        }
                     }
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); " id="linkAltriDatiFam">
-                                <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
+                            <a href="#" onclick="AltriDatiFamiliari(@item.idFamiliare,@item.parentela);" id="linkAltriDatiFam">
+                                <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari @Html.DisplayFor(modelItem => item.parentela)" />
                             </a>
                         </td>
+
                     }
 
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari) ) ">
+                            <a href="#" onclick="ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari) ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -155,7 +167,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari)) ">
+                            <a href="#" onclick="ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari)) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -259,14 +271,14 @@
 
     }
 
-    function AltriDatiFamiliari(idConiuge) {
-        //debugger;
+    function AltriDatiFamiliariConiuge(idConiuge, idMaggiorazioniFamiliari) {
+        debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idConiuge: idConiuge },
+            data: { idConiuge: idConiuge, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
             dataType: 'html',
             async: false,
             beforeSend: function () {
