@@ -200,8 +200,8 @@ namespace NewISE.Models.DBModel.dtObj
                         //Completati
                         tmp = (from e in db.CALENDARIOEVENTI
                                where e.COMPLETATO == true &&
-                                     e.DATACOMPLETATO.Month == DateTime.Now.Month &&
-                                     e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                     e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
                                      e.ANNULLATO == false
                                orderby e.DATACOMPLETATO descending
                                select new ElencoElementiHome()
@@ -213,11 +213,11 @@ namespace NewISE.Models.DBModel.dtObj
                                    Completato = e.COMPLETATO,
                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                   dataCompletato= e.DATACOMPLETATO
+                                   dataCompletato = e.DATACOMPLETATO
                                }).ToList();
                         //Attivi
                         tmp1 = (from e in db.CALENDARIOEVENTI
-                                where e.COMPLETATO == false && 
+                                where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
                                       e.DATASCADENZA >= DateTime.Now
                                 orderby e.DATAINIZIOEVENTO descending
@@ -254,8 +254,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         tmp = (from e in db.CALENDARIOEVENTI
                                where e.COMPLETATO == true &&
-                                     e.DATACOMPLETATO.Month == DateTime.Now.Month &&
-                                     e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                     e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                     e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
                                      e.ANNULLATO == false &&
                                      e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
                                orderby e.DATACOMPLETATO descending
@@ -272,7 +272,7 @@ namespace NewISE.Models.DBModel.dtObj
                                }).ToList();
 
                         tmp1 = (from e in db.CALENDARIOEVENTI
-                                where e.COMPLETATO == false && 
+                                where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
                                       e.DATASCADENZA > DateTime.Now &&
                                       e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
@@ -365,17 +365,8 @@ namespace NewISE.Models.DBModel.dtObj
                     //var la = db.CALENDARIOEVENTI.Where(a=>a.ANNULLATO == false && inizio >= a.DATAINIZIOEVENTO && inizio <= a.DATASCADENZA && a.COMPLETATO == false).ToList();
 
                     var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
-                    la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Value.Date).ToList();
-                    //if (la?.Any() ?? false)
-                    //{
-                    //    var n = la.Count;
+                    la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date).ToList();
 
-                    //    var prova = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio.Date <= a.DATASCADENZA.Value.Date).ToList();
-                    //    var prova2 = la.Where(a => inizio >= a.DATAINIZIOEVENTO && inizio <= a.DATASCADENZA.Value).ToList();
-                    //    var prova3 = la.Where(a => a.DATAINIZIOEVENTO <= inizio && a.DATASCADENZA.Value >= inizio).ToList();
-                    //    var prova4 = la.Where(a => a.DATAINIZIOEVENTO.Date <= inizio.Date && a.DATASCADENZA.Value.Date >= inizio.Date).ToList();
-
-                    //}
                     var numeroAttivi = la.Count;
                     int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
                     DateTime attuale;
@@ -425,7 +416,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
                     //a.DATASCADENZA.Value < DateTime.Now).ToList();
                     var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                     inizio.Date > a.DATASCADENZA.Value && inizio <= DateTime.Now).ToList();
+                     inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
                     var numeroScaduti = ls.Count;
                     if (numeroScaduti != 0)
                     {
@@ -476,6 +467,7 @@ namespace NewISE.Models.DBModel.dtObj
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp1 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp2 = new List<ElencoElementiHome>();
+            List<ElencoElementiHome> tmpAll = new List<ElencoElementiHome>();
             AccountModel am = new AccountModel();
             try
             {
@@ -489,8 +481,8 @@ namespace NewISE.Models.DBModel.dtObj
                             case "COMPLETATI":
                                 tmp = (from e in db.CALENDARIOEVENTI
                                        where e.COMPLETATO == true &&
-                                             e.DATACOMPLETATO.Month == DateTime.Now.Month &&
-                                             e.DATACOMPLETATO.Year == DateTime.Now.Year &&
+                                             e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                             e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
                                              e.ANNULLATO == false
                                        orderby e.DATACOMPLETATO descending
                                        select new ElencoElementiHome()
@@ -502,112 +494,127 @@ namespace NewISE.Models.DBModel.dtObj
                                            NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
                                            Completato = e.COMPLETATO,
                                            IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                           Stato =stato ,
+                                           Stato = stato,
                                            dataCompletato = e.DATACOMPLETATO
                                        }).ToList();
                                 break;
                             case "ATTIVI":
 
-                                tmp1 = (from e in db.CALENDARIOEVENTI
-                                        where e.COMPLETATO == false &&
-                                              e.ANNULLATO == false &&
-                                              e.DATASCADENZA >= DateTime.Now
-                                        orderby e.DATAINIZIOEVENTO descending
-                                        select new ElencoElementiHome()
-                                        {
-                                            IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                            Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                            dataInizio = e.DATAINIZIOEVENTO,
-                                            dataScadenza = e.DATASCADENZA,
-                                            NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                            Completato = e.COMPLETATO,
-                                            IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                            Stato = stato,
-                                            dataCompletato = e.DATACOMPLETATO
-                                        }).ToList();
+                                var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                                //la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date).ToList();
+
+                                tmp = (from e in la
+                                       where inizio.Date >= e.DATAINIZIOEVENTO.Date && inizio <= e.DATASCADENZA.Date
+                                       orderby e.DATAINIZIOEVENTO descending
+                                       select new ElencoElementiHome()
+                                       {
+                                           IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                           Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                           dataInizio = e.DATAINIZIOEVENTO,
+                                           dataScadenza = e.DATASCADENZA,
+                                           NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                           Completato = e.COMPLETATO,
+                                           IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                           Stato = stato,
+                                           dataCompletato = e.DATACOMPLETATO
+                                       }).ToList();
                                 break;
-                            case "SCADUTI":                                
-                                tmp2 = (from e in db.CALENDARIOEVENTI
-                                        where e.COMPLETATO == false &&
-                                              e.ANNULLATO == false &&
-                                              e.DATASCADENZA < DateTime.Now
+                            case "SCADUTI":
+                             //           var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                             //inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
+                                tmp = (from e in db.CALENDARIOEVENTI
+                                       where e.COMPLETATO == false &&
+                                             e.ANNULLATO == false &&
+                                             // e.DATASCADENZA < DateTime.Now
+                                             inizio.Date > e.DATASCADENZA && inizio <= DateTime.Now
                                         orderby e.DATASCADENZA descending
-                                        select new ElencoElementiHome()
-                                        {
-                                            IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                            Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                            dataInizio = e.DATAINIZIOEVENTO,
-                                            dataScadenza = e.DATASCADENZA,
-                                            NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                            Completato = e.COMPLETATO,
-                                            IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                            Stato = stato,
-                                            dataCompletato = e.DATACOMPLETATO
-                                        }).ToList();
+                                       select new ElencoElementiHome()
+                                       {
+                                           IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                           Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                           dataInizio = e.DATAINIZIOEVENTO,
+                                           dataScadenza = e.DATASCADENZA,
+                                           NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                           Completato = e.COMPLETATO,
+                                           IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                           Stato = stato,
+                                           dataCompletato = e.DATACOMPLETATO
+                                       }).ToList();
                                 break;
                         }
                     }
                     else
                     {
-                        tmp = (from e in db.CALENDARIOEVENTI
-                               where e.COMPLETATO == true &&
-                                     e.DATACOMPLETATO.Month == DateTime.Now.Month &&
-                                     e.DATACOMPLETATO.Year == DateTime.Now.Year &&
-                                     e.ANNULLATO == false &&
-                                     e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                               orderby e.DATACOMPLETATO descending
-                               select new ElencoElementiHome()
-                               {
-                                   IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                   Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                   dataInizio = e.DATAINIZIOEVENTO,
-                                   dataScadenza = e.DATASCADENZA,
-                                   NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                   Completato = e.COMPLETATO,
-                                   IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                   Stato=stato,
-                                   dataCompletato = e.DATACOMPLETATO
-                               }).ToList();
+                        switch (stato.ToUpper())
+                        {
+                            case "COMPLETATI":
+                                tmp = (from e in db.CALENDARIOEVENTI
+                                       where e.COMPLETATO == true &&
+                                             e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
+                                             e.DATACOMPLETATO.Value.Year == DateTime.Now.Year &&
+                                             e.ANNULLATO == false &&
+                                             e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                                       orderby e.DATACOMPLETATO descending
+                                       select new ElencoElementiHome()
+                                       {
+                                           IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                           Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                           dataInizio = e.DATAINIZIOEVENTO,
+                                           dataScadenza = e.DATASCADENZA,
+                                           NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                           Completato = e.COMPLETATO,
+                                           IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                           Stato = stato,
+                                           dataCompletato = e.DATACOMPLETATO
+                                       }).ToList();
+                                break;
+                            case "ATTIVI":
 
-                        tmp1 = (from e in db.CALENDARIOEVENTI
-                                where e.COMPLETATO == false &&
-                                      e.ANNULLATO == false &&
-                                      e.DATASCADENZA > DateTime.Now &&
-                                      e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                                orderby e.DATASCADENZA descending
-                                orderby e.DATAINIZIOEVENTO descending
-                                select new ElencoElementiHome()
-                                {
-                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                    dataInizio = e.DATAINIZIOEVENTO,
-                                    dataScadenza = e.DATASCADENZA,
-                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                    Completato = e.COMPLETATO,
-                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                    Stato=stato,
-                                    dataCompletato = e.DATACOMPLETATO
-                                }).ToList();
-                        tmp2 = (from e in db.CALENDARIOEVENTI
-                                where e.COMPLETATO == false &&
-                                      e.ANNULLATO == false &&
-                                      e.DATASCADENZA < DateTime.Now &&
+                                var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                                //la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date).ToList();
+                                tmp = (from e in la
+                                       where inizio.Date >= e.DATAINIZIOEVENTO.Date && inizio <= e.DATASCADENZA.Date &&
                                        e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                                orderby e.DATASCADENZA descending
-                                select new ElencoElementiHome()
-                                {
-                                    IdFunzioneEvento = e.IDFUNZIONIEVENTI,
-                                    Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
-                                    dataInizio = e.DATAINIZIOEVENTO,
-                                    dataScadenza = e.DATASCADENZA,
-                                    NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
-                                    Completato = e.COMPLETATO,                                    
-                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
-                                    Stato=stato,
-                                    dataCompletato = e.DATACOMPLETATO
-                                }).ToList();
+                                       orderby e.DATAINIZIOEVENTO descending
+                                       select new ElencoElementiHome()
+                                       {
+                                           IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                           Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                           dataInizio = e.DATAINIZIOEVENTO,
+                                           dataScadenza = e.DATASCADENZA,
+                                           NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                           Completato = e.COMPLETATO,
+                                           IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                           Stato = stato,
+                                           dataCompletato = e.DATACOMPLETATO
+                                       }).ToList();
+                                break;
+                            case "SCADUTI":
+
+                                tmp = (from e in db.CALENDARIOEVENTI
+                                       where e.COMPLETATO == false &&
+                                             e.ANNULLATO == false &&
+                                             // e.DATASCADENZA < DateTime.Now
+                                             inizio.Date > e.DATASCADENZA && inizio <= DateTime.Now &&
+                                             e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
+                                       orderby e.DATASCADENZA descending
+                                       select new ElencoElementiHome()
+                                       {
+                                           IdFunzioneEvento = e.IDFUNZIONIEVENTI,
+                                           Nominativo = e.TRASFERIMENTO.DIPENDENTI.COGNOME + " " + e.TRASFERIMENTO.DIPENDENTI.NOME,
+                                           dataInizio = e.DATAINIZIOEVENTO,
+                                           dataScadenza = e.DATASCADENZA,
+                                           NomeFunzione = e.FUNZIONIEVENTI.NOMEFUNZIONE,
+                                           Completato = e.COMPLETATO,
+                                           IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
+                                           Stato = stato,
+                                           dataCompletato = e.DATACOMPLETATO
+                                       }).ToList();
+                                break;
+                        }
                     }
                 }
+            
                 return tmp;
             }
             catch (Exception eex)

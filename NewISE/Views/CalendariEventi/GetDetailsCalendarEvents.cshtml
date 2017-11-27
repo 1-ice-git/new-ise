@@ -125,7 +125,7 @@
                            class="anchorDetail" id_dip="@item.IdDipendente"
                            id_fe="@item.IdFunzioneEvento"><span class="text-uppercase">@Html.DisplayFor(modelItem => item.NomeFunzione)</span></a>
                     </td>
-                      @if (item.dataInizio.HasValue && item.dataCompletato.Value < Convert.ToDateTime("31/12/9999"))
+                      @if (item.dataCompletato.HasValue && item.dataCompletato.Value < Convert.ToDateTime("31/12/9999"))
                       {
                           <td style="text-align: center;">
                               @Html.DisplayFor(modelItem => item.dataCompletato)
