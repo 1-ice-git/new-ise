@@ -1,4 +1,5 @@
-﻿using NewISE.Models;
+﻿using NewISE.EF;
+using NewISE.Models;
 using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var lib = db.LOGATTIVITA.ToList();
 
@@ -38,7 +39,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                 idTabellaCoinvolta = e.IDTABELLACOINVOLTA,
                                 utenteAutorizzato = new UtenteAutorizzatoModel()
                                 {
-                                   idRuoloUtente = e.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
+                                   //idRuoloUtente = e.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
                                    idUtenteAutorizzato = e.UTENTIAUTORIZZATI.IDUTENTEAUTORIZZATO,
                                    matricola = e.UTENTIAUTORIZZATI.UTENTE
 

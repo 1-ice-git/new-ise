@@ -1,4 +1,5 @@
-﻿using NewISE.Models;
+﻿using NewISE.EF;
+using NewISE.Models;
 using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,14 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var ll = db.UTENTIAUTORIZZATI.ToList();
 
                     llm = (from e in ll
                            select new UtenteAutorizzatoModel()
                            {
-                               idRuoloUtente = e.IDRUOLOUTENTE,
+                               //idRuoloUtente = e.IDRUOLOUTENTE,
                                idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO
                                
                            }).ToList();
@@ -48,13 +49,13 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
             try
             {
-                using (EntitiesDBISE db = new EntitiesDBISE())
+                using (ModelDBISE db = new ModelDBISE())
                 {
                     var liv = db.UTENTIAUTORIZZATI.Find(idUtenteAutorizzato);
 
                     lm = new UtenteAutorizzatoModel()
                     {
-                        idRuoloUtente = liv.IDRUOLOUTENTE,
+                        //idRuoloUtente = liv.IDRUOLOUTENTE,
                         idUtenteAutorizzato = liv.IDUTENTEAUTORIZZATO
                   
                     };

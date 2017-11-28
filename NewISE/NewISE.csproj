@@ -1793,6 +1793,24 @@
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpSpeseDiverse.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\OperazioniEffettuate.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\AltreStatistiche.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\AltreStatistiche2.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\AltreStatistiche4.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\BindWithDbValues.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\Dislocazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\PresenzeLivelli.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\ReportEmployee.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\ReportEmployee1.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\ReportEmployee3.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\ReportViewer.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\RptStoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\AltreStatistiche\StoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita.cshtml" />
+    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita1.cshtml" />
+    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita2.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\OperazioniEffettuate.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -2014,6 +2032,7 @@
     <Compile Include="Areas\Statistiche\Connessione.cs" />
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\LogAttivitaController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
     <Compile Include="Areas\Statistiche\Models\CodiceCoanModel.cs" />
@@ -2021,6 +2040,8 @@
     <Compile Include="Areas\Statistiche\Models\DipEsteroLivelloModel.cs" />
     <Compile Include="Areas\Statistiche\Models\DipEsteroModel.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtDipendenti.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Areas\Statistiche\Models\dtObj\dtUtentiAutorizzati.cs" />
     <Compile Include="Areas\Statistiche\Models\ModelStoriaDipendente.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi.cs" />
     <Compile Include="Areas\Statistiche\Models\Stp_Consuntivo_dei_costi_per_codice_Coan.cs" />
@@ -2630,9 +2651,6 @@
   <ItemGroup>
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
-    <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
-    <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
