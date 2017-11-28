@@ -2152,6 +2152,7 @@
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
+    <Compile Include="Controllers\SospensioneController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
@@ -2410,6 +2411,7 @@
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\ViewModel\SospensioneModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\DiaryEvents.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazionePassaporto.cs" />
@@ -2639,6 +2641,8 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoImportoPensione.cshtml" />
+    <Content Include="Views\Sospensione\Index.cshtml" />
+    <Content Include="Views\Sospensione\GetListaSospensioni.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

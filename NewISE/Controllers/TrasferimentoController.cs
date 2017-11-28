@@ -895,7 +895,8 @@ namespace NewISE.Controllers
                             trm.idRuoloUfficio > 0 &&
                             trm.protocolloLettera != string.Empty &&
                             trm.dataLettera > DateTime.MinValue &&
-                            trm.idDocumento > 0)
+                            trm.idDocumento > 0
+                            )
                         {
                             return Json(new { VerificaCompilazione = 1 });
                         }
