@@ -188,6 +188,7 @@
 
     }
 
+
     function NuovoCoeffIndRichiamo() {
         //debugger;
 
@@ -208,7 +209,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: escludiAnnullati },
+            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

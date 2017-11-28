@@ -1,10 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.ValuteModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
-@{
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
-}
 
 <p>
     <a id="btnInsNuovaValuta" href="#" onclick="NuoveValute();">Inserisci Valuta</a>
@@ -26,10 +22,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.descrizioneValuta)
+                @Html.DisplayNameFor(model => model.idValuta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.valutaUfficiale)
+                @Html.DisplayNameFor(model => model.descrizioneValuta)
             </th>
         </tr>
     </thead>
@@ -38,10 +34,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.descrizioneValuta)
+                    @Html.DisplayFor(model => item.idValuta)
                 </td>
                 <td >
-                    @Html.DisplayFor(modelItem => item.valutaUfficiale)
+                    @Html.DisplayFor(modelItem => item.descrizioneValuta)
                 </td>
             </tr>
         }
@@ -100,14 +96,11 @@
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idValuta: idValuta, escludiAnnullati: chk },
+            data: { idValuta: idValuta },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -149,7 +142,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idValuta: idValuta, escludiAnnullati: chk },
+            data: { idValuta: idValuta },
             dataType: 'html',
             beforeSend: function () {
                //debugger;
@@ -184,9 +177,6 @@
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -199,7 +189,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idValuta: id },
+                            data: { idValuta: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

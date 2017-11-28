@@ -128,7 +128,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovoCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-            CoefficienteRichiamoModel ibm = new CoefficienteRichiamoModel();
+            //CoefficienteRichiamoModel ibm = new CoefficienteRichiamoModel();
 
             try
             {
@@ -146,6 +146,10 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+
+        
+
+
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
