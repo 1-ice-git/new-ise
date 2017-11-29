@@ -33,7 +33,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                idRiduzioni = e.IDRIDUZIONI,
                                idRegola =e.IDREGOLA,
                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                               dataFineValidita =e.DATAFINEVALIDITA,
+                               dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                               //dataFineValidita = e.DATAFINEVALIDITA,
                                percentuale =e.PERCENTUALE,
                                dataAggiornamento =e.DATAAGGIORNAMENTO,
                                annullato =e.ANNULLATO
@@ -63,7 +64,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         idRiduzioni = liv.IDRIDUZIONI,
                         idRegola = liv.IDREGOLA,
                         dataInizioValidita = liv.DATAINIZIOVALIDITA,
-                        dataFineValidita = liv.DATAFINEVALIDITA,
+                        dataFineValidita = liv.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? liv.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                        //dataFineValidita = e.DATAFINEVALIDITA,
                         percentuale = liv.PERCENTUALE,
                         dataAggiornamento = liv.DATAAGGIORNAMENTO,
                         annullato = liv.ANNULLATO

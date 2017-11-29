@@ -33,7 +33,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -68,7 +69,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -103,7 +105,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -138,7 +141,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                //dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -194,13 +198,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new COEFFICIENTEFKM()
                             {
-                                //IDLIVELLO = ibm.idLivello,
-                                //DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                //DATAFINEVALIDITA = Utility.DataFineStop(),
-                                //VALORE = ibm.valore,
-                                //VALORERESP = ibm.valoreResponsabile,
-                                //ANNULLATO = ibm.annullato
-
                                 IDCFKM = ibm.idCfKm,
                                 IDDEFKM = ibm.idDefKm,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
@@ -216,13 +213,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new COEFFICIENTEFKM()
                         {
-                            //IDLIVELLO = ibm.idLivello,
-                            //DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            //DATAFINEVALIDITA = Utility.DataFineStop(),
-                            //VALORE = ibm.valore,
-                            //VALORERESP = ibm.valoreResponsabile,
-                            //ANNULLATO = ibm.annullato
-
                             IDCFKM = ibm.idCfKm,
                             IDDEFKM = ibm.idDefKm,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
@@ -282,13 +272,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new COEFFICIENTEFKM()
                                     {
-                                        //IDLIVELLO = item.IDLIVELLO,
-                                        //DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
-                                        //DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        //VALORE = item.VALORE,
-                                        //VALORERESP = item.VALORERESP,
-                                        //ANNULLATO = false
-
                                         IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
