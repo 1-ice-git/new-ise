@@ -292,12 +292,14 @@ namespace NewISE.Controllers
             }
         }
 
+
+
         [HttpPost]
         public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
         {
             string titoloPagina = string.Empty;
-            decimal idMaggiorazioniFamiliari = 0;
-
+            //decimal idMaggiorazioniFamiliari = 0;
+            //decimal idAttivazioneMagFam = 0;
 
             switch (tipoDoc)
             {
@@ -336,7 +338,13 @@ namespace NewISE.Controllers
                             using (dtConiuge dtc = new dtConiuge())
                             {
                                 var cm = dtc.GetConiugebyID(id);
-                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                                //idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                //{
+                                //    var amf = dtamf.GetAttivazioneMagFamByIdConiuge(cm.idConiuge);
+                                //    idAttivazioneMagFam = amf.idAttivazioneMagFam;
+                                //}
+
                             }
                             break;
                         case EnumParentela.Figlio:
@@ -344,7 +352,7 @@ namespace NewISE.Controllers
                             using (dtFigli dtf = new dtFigli())
                             {
                                 var fm = dtf.GetFigliobyID(id);
-                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
+                                //idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
                             }
                             break;
                         case EnumParentela.Richiedente:
@@ -367,8 +375,9 @@ namespace NewISE.Controllers
             ViewData.Add("titoloPagina", titoloPagina);
             ViewData.Add("tipoDoc", (decimal)tipoDoc);
             ViewData.Add("ID", id);
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            //ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             ViewData.Add("parentela", (decimal)parentela);
+            //ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView();
         }
@@ -498,7 +507,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
+        public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idAttivazioneMagFam = 0)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
@@ -512,10 +521,21 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm =
+                    if (tipoDoc == EnumTipoDoc.Documento_Identita && idAttivazioneMagFam > 0)
+                    {
+                        ldm =
+                            dtd.GetDocumentiFasePartenza(id, tipoDoc, parentela, idAttivazioneMagFam)
+                                .OrderByDescending(a => a.dataInserimento)
+                                .ToList();
+                    }
+                    else
+                    {
+                        ldm =
                         dtd.GetDocumentiByIdTable(id, tipoDoc, parentela)
                             .OrderByDescending(a => a.dataInserimento)
                             .ToList();
+                    }
+
                 }
 
                 switch (chiamante)
@@ -580,7 +600,7 @@ namespace NewISE.Controllers
 
                             if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
                             {
-                                dtmf.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                                dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
                                     out docFormulario);
@@ -728,6 +748,7 @@ namespace NewISE.Controllers
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             ViewData.Add("solaLettura", solaLettura);
             ViewData.Add("idTrasferimento", idTrasferimento);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView(ldm);
         }

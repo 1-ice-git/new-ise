@@ -182,7 +182,7 @@ namespace NewISE.Controllers
                                             dataInizio = e.dataInizio,
                                             dataFine = e.dataFine,
                                             parentela = EnumParentela.Coniuge,
-                                            idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
+                                            //idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
                                             Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge),
                                             HasPensione = dtp.HasPensione(e.idConiuge)
                                         };
@@ -728,7 +728,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                    //adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
                 }
                 using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
@@ -1040,7 +1040,7 @@ namespace NewISE.Controllers
                             pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
-                        dtp.SetNuovoImportoPensione(ref pcm, idConiuge);
+                        //dtp.SetNuovoImportoPensione(ref pcm, idConiuge);
                     }
                 }
                 else
@@ -1070,7 +1070,7 @@ namespace NewISE.Controllers
 
                     if (pcm != null && pcm.HasValue())
                     {
-                        dtp.EliminaImportoPensione(pcm, idConiuge);
+                        //dtp.EliminaImportoPensione(pcm, idConiuge);
                     }
                 }
             }

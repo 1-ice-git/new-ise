@@ -14,10 +14,11 @@ namespace NewISE.Controllers
     public class AltriDatiFamiliariController : Controller
     {
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio)
+        public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio, decimal idAttivazioneMagFam)
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
-            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            //MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
+            //AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
             try
             {
@@ -25,10 +26,13 @@ namespace NewISE.Controllers
                 {
                     adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
                 }
-                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
-                {
-                    mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
-                }
+
+                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                //{
+                //    amfm = dtamf.GetAttivazioniMagFamById(idAttivazioneMagFam);
+                //}
+
+
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
                     bool rinunciaMagFam = false;
@@ -44,7 +48,7 @@ namespace NewISE.Controllers
 
                     bool solaLettura = false;
 
-                    dtmf.SituazioneMagFamPartenza(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -85,7 +89,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioniFamiliari);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             if (adf != null && adf.HasValue())
             {
@@ -97,16 +101,6 @@ namespace NewISE.Controllers
                         adf.Figli = fm;
                     }
                 }
-
-                //using (dtConiuge dtc = new dtConiuge())
-                //{
-                //    if (adf.idConiuge.HasValue)
-                //    {
-                //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                //        adf.Coniuge = cm;
-                //    }
-                //}
-
 
                 return PartialView(adf);
             }
@@ -285,21 +279,18 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
+        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
-            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+            //AttivazioniMagFamModel amfm=new AttivazioniMagFamModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
                 }
-                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
-                {
-                    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
-                }
+
 
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
@@ -316,7 +307,7 @@ namespace NewISE.Controllers
 
                     bool solaLettura = false;
 
-                    dtmf.SituazioneMagFamPartenza(mcm.idMaggiorazioniFamiliari, out rinunciaMagFam,
+                    dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                         out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -366,7 +357,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idMaggiorazioniFamiliari", mcm.idMaggiorazioniFamiliari);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             if (adf != null && adf.HasValue())
             {
@@ -378,7 +369,6 @@ namespace NewISE.Controllers
                         adf.Coniuge = cm;
                     }
                 }
-
 
                 return PartialView(adf);
             }
@@ -413,7 +403,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                    //adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
                 }
                 using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
@@ -487,7 +477,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                    //adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
                 }
                 using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
@@ -552,7 +542,7 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adf, decimal idMaggiorazioniFamiliari)
+        public ActionResult InserisciAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adf, decimal idAttivazioneMagFam)
         {
             try
             {
@@ -563,7 +553,7 @@ namespace NewISE.Controllers
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        dtadf.SetAltriDatiFamiliariFiglio(adf);
+                        dtadf.SetAltriDatiFamiliariFiglio(ref adf, idAttivazioneMagFam);
                     }
                 }
                 else
@@ -579,7 +569,7 @@ namespace NewISE.Controllers
                     }
 
                     ViewData.Add("Comuni", comuni);
-                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
                     using (dtFigli dtf = new dtFigli())
                     {
                         string nominativo = dtf.GetFigliobyID(adf.idFigli.Value).nominativo.ToUpper();
@@ -594,13 +584,13 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adf.idFigli });
+            return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adf.idFigli, idAttivazioneMagFam = idAttivazioneMagFam });
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adf, decimal idMaggiorazioniFamiliari)
+        public ActionResult InserisciAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adf, decimal idAttivazioneMagFam)
         {
             try
             {
@@ -611,7 +601,7 @@ namespace NewISE.Controllers
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        //dtadf.SetAltriDatiFamiliariConiuge(adf);
+                        dtadf.SetAltriDatiFamiliariConiuge(ref adf, idAttivazioneMagFam);
                     }
                 }
                 else
@@ -627,7 +617,7 @@ namespace NewISE.Controllers
                     }
 
                     ViewData.Add("Comuni", comuni);
-                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
                     return PartialView("InserisciAltriDatiFamiliariConiuge", adf);
                 }
@@ -637,10 +627,10 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adf.idConiuge });
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adf.idConiuge, idAttivazioneMagFam = idAttivazioneMagFam });
         }
 
-        public ActionResult ModificaAltriDatiFamiliariFiglio(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
+        public ActionResult ModificaAltriDatiFamiliariFiglio(decimal idAltriDatiFam, decimal idAttivazioneMagFam)
         {
             AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
 
@@ -699,12 +689,12 @@ namespace NewISE.Controllers
             }
 
             ViewData.Add("Comuni", comuni);
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView(adfm);
         }
 
-        public ActionResult ModificaAltriDatiFamiliariConiuge(decimal idAltriDatiFam, decimal idMaggiorazioniFamiliari)
+        public ActionResult ModificaAltriDatiFamiliariConiuge(decimal idAltriDatiFam, decimal idAttivazioneMagFam)
         {
             AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
 
@@ -771,14 +761,14 @@ namespace NewISE.Controllers
             }
 
             ViewData.Add("Comuni", comuni);
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView(adfm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm)
+        public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm, decimal idAttivazioneMagFam)
         {
             try
             {
@@ -794,6 +784,25 @@ namespace NewISE.Controllers
                 }
                 else
                 {
+                    List<Comuni> comuni = new List<Comuni>();
+
+                    try
+                    {
+                        using (StreamReader sr = new StreamReader(Server.MapPath("~/DBComuniItalia/jsonComuniItalia.json")))
+                        {
+                            comuni = JsonConvert.DeserializeObject<List<Comuni>>(sr.ReadToEnd(), new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+                    }
+
+                    ViewData.Add("Comuni", comuni);
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
                     return PartialView("ModificaAltriDatiFamiliariConiuge", adfm);
 
@@ -804,7 +813,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge, idAttivazioneMagFam = idAttivazioneMagFam });
 
 
         }

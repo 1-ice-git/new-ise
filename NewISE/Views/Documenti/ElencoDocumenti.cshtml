@@ -11,6 +11,7 @@
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
     decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 
     EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
     EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
@@ -107,10 +108,10 @@
             switch (enParentela)
             {
                 case EnumParentela.Coniuge:
-                    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
                     break;
                 case EnumParentela.Figlio:
-                    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
                     break;
                 case EnumParentela.Richiedente:
                     break;
@@ -254,129 +255,7 @@
 
         //]
     });
-    //if (!$.fn.DataTable.isDataTable( '#tabElencoDoc' )) {
-    //    $("#tabElencoDoc").DataTable({
-    //        "language": {
-    //            "sEmptyTable": "Nessun dato presente nella tabella",
-    //            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-    //            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-    //            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-    //            "sInfoPostFix": "",
-    //            "sInfoThousands": ".",
-    //            "sLengthMenu": "Visualizza _MENU_ elementi",
-    //            "sLoadingRecords": "Caricamento...",
-    //            "sProcessing": "Elaborazione...",
-    //            "sSearch": "Cerca:",
-    //            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-    //            "oPaginate": {
-    //                "sFirst": "Inizio",
-    //                "sPrevious": "Precedente",
-    //                "sNext": "Successivo",
-    //                "sLast": "Fine"
-    //            },
-    //            "oAria": {
-    //                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-    //                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-    //            }
-    //        },
-    //        "info": false,
-    //        "lengthChange": false,
-    //        "pageLength": 3,
-    //        "searching": false,
-    //        "paging": true,
-    //        "bJQueryUI": true,
-    //        "sDom": 'lfrtip',
-    //        //"destroy": true,
-    //        //"columnDefs": [
-    //        //    {
-    //        //        "targets": [0],
-    //        //        "width": "150px"
-    //        //    }
 
-    //        //]
-    //        //dom: 'Bfrtip',
-    //        //buttons: [
-    //        //    {
-    //        //        text: 'Nuovo Coniuge',
-    //        //        className: 'green',
-    //        //        action: function (e, dt, node, config) {
-    //        //            NuovoConiuge();
-    //        //        }
-    //        //    }
-    //        //],
-    //        //"columnDefs": [
-    //        //    {
-    //        //        "targets": [0],
-    //        //        "visible": false,
-    //        //        "searchable": false
-    //        //    },
-
-    //        //]
-    //    });
-    //}
-    //else {
-    //    $('#tabElencoDoc').DataTable().clear();
-    //    $('#tabElencoDoc').DataTable().draw();
-    //    //$('#tabElencoDoc tbody').empty();
-
-    //    //$("#tabElencoDoc").DataTable({
-    //    //    "language": {
-    //    //        "sEmptyTable": "Nessun dato presente nella tabella",
-    //    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-    //    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-    //    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-    //    //        "sInfoPostFix": "",
-    //    //        "sInfoThousands": ".",
-    //    //        "sLengthMenu": "Visualizza _MENU_ elementi",
-    //    //        "sLoadingRecords": "Caricamento...",
-    //    //        "sProcessing": "Elaborazione...",
-    //    //        "sSearch": "Cerca:",
-    //    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-    //    //        "oPaginate": {
-    //    //            "sFirst": "Inizio",
-    //    //            "sPrevious": "Precedente",
-    //    //            "sNext": "Successivo",
-    //    //            "sLast": "Fine"
-    //    //        },
-    //    //        "oAria": {
-    //    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-    //    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-    //    //        }
-    //    //    },
-    //    //    "info": false,
-    //    //    "lengthChange": false,
-    //    //    "pageLength": 3,
-    //    //    "searching": false,
-    //    //    "paging": true,
-    //    //    "bJQueryUI": true,
-    //    //    "sDom": 'lfrtip',
-    //    //    //"columnDefs": [
-    //    //    //    {
-    //    //    //        "targets": [0],
-    //    //    //        "width": "150px"
-    //    //    //    }
-
-    //    //    //]
-    //    //    //dom: 'Bfrtip',
-    //    //    //buttons: [
-    //    //    //    {
-    //    //    //        text: 'Nuovo Coniuge',
-    //    //    //        className: 'green',
-    //    //    //        action: function (e, dt, node, config) {
-    //    //    //            NuovoConiuge();
-    //    //    //        }
-    //    //    //    }
-    //    //    //],
-    //    //    //"columnDefs": [
-    //    //    //    {
-    //    //    //        "targets": [0],
-    //    //    //        "visible": false,
-    //    //    //        "searchable": false
-    //    //    //    },
-
-    //    //    //]
-    //    //});
-    //}
 
 
 

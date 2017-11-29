@@ -128,23 +128,23 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                }
+                    }
     else
     {
         @:ElencoFigli();
-                }
+                    }
 
 
 
 
     function ElencoFormulariInseriti() {
         var rotta = "/MaggiorazioniFamiliari/ElencoFormulariInseriti";
-        var idAttMafFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt('@idAttivazioneMagFam');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivazioneMagFam: idAttMafFam },
+            data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -267,7 +267,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idMaggiorazioniFamiliari: idAttMagFam },
+            data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -349,12 +349,12 @@
 
     function ConfermaNotificaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/NotificaRichiesta";
-        var idAttMafFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt('@idAttivazioneMagFam');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivazioneMagFam: idAttMafFam },
+            data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;

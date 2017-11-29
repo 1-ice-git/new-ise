@@ -7,27 +7,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using NewISE.EF;
 
 namespace NewISE.Controllers
 {
     public class PensioneConiugeController : Controller
     {
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ElencoPensioniConiuge(decimal idConiuge)
+        public ActionResult ElencoPensioniConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
-            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
 
             try
             {
                 using (dtPensione dtp = new dtPensione())
                 {
-                    lpcm = dtp.GetPensioniByIdConiuge(idConiuge).ToList();
+                    lpcm = dtp.GetPensioniConiuge(idConiuge, idAttivazioneMagFam).ToList();
                 }
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    decimal idMaggiorazioniFamiliari = dtc.GetConiugebyID(idConiuge).idMaggiorazioniFamiliari;
-                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                     {
@@ -44,7 +44,7 @@ namespace NewISE.Controllers
 
                         bool solaLettura = false;
 
-                        dtmf.SituazioneMagFamPartenza(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                        dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                             out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
 
@@ -75,17 +75,42 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult NuovoImportoPensione(decimal idConiuge)
+        public ActionResult NuovoImportoPensione(decimal idConiuge, decimal idAttivazioneMagFam)
         {
-            //PensioneConiugeModel pcm = new PensioneConiugeModel();
 
-            ViewData.Add("idConiuge", idConiuge);
-            return PartialView();
+            try
+            {
+
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
+
+                        ViewData.Add("Trasferimento", tm);
+                    }
+
+                }
+
+                ViewData.Add("idConiuge", idConiuge);
+                ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
+
+                return PartialView();
+            }
+            catch (Exception ex)
+            {
+
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+
+
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
+        public ActionResult InserisciImportoPensione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam)
         {
 
             try
@@ -102,6 +127,19 @@ namespace NewISE.Controllers
                         }
                         catch (Exception ex)
                         {
+                            ViewData.Add("idConiuge", idConiuge);
+                            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
+                            using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                            {
+                                var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                                using (dtTrasferimento dtt = new dtTrasferimento())
+                                {
+                                    var tm = dtt.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
+
+                                    ViewData.Add("Trasferimento", tm);
+                                }
+
+                            }
                             ModelState.AddModelError("", ex.Message);
                             return PartialView("NuovoImportoPensione", pcm);
                         }
@@ -112,12 +150,24 @@ namespace NewISE.Controllers
                             pcm.dataFineValidita = Utility.DataFineStop();
                         }
 
-                        dtp.SetNuovoImportoPensione(ref pcm, idConiuge);
+                        dtp.SetNuovoImportoPensione(ref pcm, idConiuge, idAttivazioneMagFam);
                     }
                 }
                 else
                 {
-                    //ViewData.Add("idMaggiorazioneConiuge", pcm.idMaggiorazioneConiuge);
+                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                    {
+                        var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var tm = dtt.GetTrasferimentoByIDMagFam(mfm.idMaggiorazioniFamiliari);
+
+                            ViewData.Add("Trasferimento", tm);
+                        }
+
+                    }
+                    ViewData.Add("idConiuge", idConiuge);
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
                     return PartialView("NuovoImportoPensione", pcm);
                 }
             }
@@ -126,66 +176,11 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
+            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge, idAttivazioneMagFam = idAttivazioneMagFam });
         }
 
-        //public ActionResult ModificaPensione(decimal idPensioneConiuge)
-        //{
-        //    PensioneConiugeModel pcm = new PensioneConiugeModel();
-
-        //    try
-        //    {
-        //        using (dtPensione dtp = new dtPensione())
-        //        {
-        //            pcm = dtp.GetPensioneByID(idPensioneConiuge);
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-
-        //    return PartialView(pcm);
-        //}
-
-        //[AcceptVerbs(HttpVerbs.Post)]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult ModificaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            using (dtPensione dtp = new dtPensione())
-        //            {
-        //                pcm.dataAggiornamento = DateTime.Now;
-        //                pcm.annullato = false;
-        //                if (!pcm.dataFineValidita.HasValue)
-        //                {
-        //                    pcm.dataFineValidita = Utility.DataFineStop();
-        //                }
-
-        //                dtp.EditImportoPensione(pcm, idConiuge);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return PartialView("ModificaPensione", pcm);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-
-        //    return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
-        //}
-
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EliminaPensione(decimal idPensione, decimal idConiuge)
+        public ActionResult EliminaPensione(decimal idPensione, decimal idConiuge, decimal idAttivazioneMagFam)
         {
             PensioneConiugeModel pcm = new PensioneConiugeModel();
 
@@ -197,7 +192,7 @@ namespace NewISE.Controllers
 
                     if (pcm != null && pcm.HasValue())
                     {
-                        dtp.EliminaImportoPensione(pcm, idConiuge);
+                        dtp.EliminaImportoPensione(pcm, idConiuge, idAttivazioneMagFam);
                     }
                 }
             }
@@ -208,7 +203,7 @@ namespace NewISE.Controllers
             }
 
 
-            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge });
+            return RedirectToAction("ElencoPensioniConiuge", new { idConiuge = idConiuge, idAttivazioneMagFam = idAttivazioneMagFam });
         }
 
     }

@@ -1094,13 +1094,9 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
 
-                    //var mf = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari);
-
-
-
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        var tm = dtt.GetTrasferimentoByIDMagFam(cm.idMaggiorazioniFamiliari);
+                        var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
 
                         using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                         {
@@ -1116,6 +1112,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                     }
 
+
+                    if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
+                    {
+                        var amf = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam);
+                        cm.idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI;
+                    }
 
                     using (dtConiuge dtc = new dtConiuge())
                     {

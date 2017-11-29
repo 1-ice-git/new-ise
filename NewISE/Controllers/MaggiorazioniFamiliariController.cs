@@ -319,11 +319,11 @@ namespace NewISE.Controllers
                 using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                 {
 
-                    var amf = dtamf.GetAttivazioneMagFamByID(idAttivazioneMagFam);
+                    //var amf = dtamf.GetAttivazioneMagFamByID(idAttivazioneMagFam);
 
                     using (dtFigli dtf = new dtFigli())
                     {
-                        List<FigliModel> lfm = dtf.GetListaFigliByIdAttivazione(amf.idAttivazioneMagFam).ToList();
+                        List<FigliModel> lfm = dtf.GetListaFigliByIdAttivazione(idAttivazioneMagFam).ToList();
 
                         if (lfm?.Any() ?? false)
                         {
@@ -344,8 +344,8 @@ namespace NewISE.Controllers
                                             dataInizio = e.dataInizio,
                                             dataFine = e.dataFine,
                                             parentela = EnumParentela.Figlio,
-                                            idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiByIdTable(e.idFigli, EnumTipoDoc.Documento_Identita, EnumParentela.Figlio)
+                                            idAltriDati = dtadf.GetAlttriDatiFamiliariFiglioFasePartenza(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
+                                            Documenti = dtd.GetDocumentiIdentitaFigli(e.idFigli, idAttivazioneMagFam)
                                         };
 
                                         lefm.Add(efm);
@@ -378,57 +378,42 @@ namespace NewISE.Controllers
         public ActionResult ElencoConiuge(decimal idAttivazioneMagFam)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
-            AttivazioniMagFamModel amf = new AttivazioniMagFamModel();
+
 
             try
             {
                 using (dtConiuge dtc = new dtConiuge())
                 {
 
-                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    List<ConiugeModel> lcm = dtc.GetListaConiugeByIdAttivazione(idAttivazioneMagFam).ToList();
+
+                    if (lcm?.Any() ?? false)
                     {
-                        amf = dtamf.GetAttivazioneMagFamByID(idAttivazioneMagFam);
-
-                        if (amf?.idAttivazioneMagFam > 0)
+                        using (dtDocumenti dtd = new dtDocumenti())
                         {
-                            List<ConiugeModel> lcm = dtc.GetListaConiugeByIdAttivazione(amf.idAttivazioneMagFam).ToList();
-
-                            if (lcm?.Any() ?? false)
+                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                             {
-                                using (dtDocumenti dtd = new dtDocumenti())
+                                using (dtPensione dtp = new dtPensione())
                                 {
-                                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                    lefm.AddRange(lcm.Select(e => new ElencoFamiliariModel()
                                     {
-                                        using (dtPensione dtp = new dtPensione())
-                                        {
-                                            lefm.AddRange(lcm.Select(e => new ElencoFamiliariModel()
-                                            {
-                                                idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                                idFamiliare = e.idConiuge,
-                                                idAttivazioneMagFam = e.idAttivazioneMagFam,
-                                                idPassaporti = e.idPassaporti,
-                                                Nominativo = e.cognome + " " + e.nome,
-                                                CodiceFiscale = e.codiceFiscale,
-                                                dataInizio = e.dataInizio,
-                                                dataFine = e.dataFine,
-                                                parentela = EnumParentela.Coniuge,
-                                                idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge).idAltriDatiFam,
-                                                Documenti =
-                                                    dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita,
-                                                        EnumParentela.Coniuge),
-                                                HasPensione = dtp.HasPensione(e.idConiuge)
-                                            }));
-                                        }
-
-                                    }
+                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                        idFamiliare = e.idConiuge,
+                                        idAttivazioneMagFam = e.idAttivazioneMagFam,
+                                        idPassaporti = e.idPassaporti,
+                                        Nominativo = e.cognome + " " + e.nome,
+                                        CodiceFiscale = e.codiceFiscale,
+                                        dataInizio = e.dataInizio,
+                                        dataFine = e.dataFine,
+                                        parentela = EnumParentela.Coniuge,
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiugeFasePartenza(e.idConiuge, idAttivazioneMagFam).idAltriDatiFam,
+                                        Documenti =
+                                            dtd.GetDocumentiIdentitaConiuge(e.idConiuge, idAttivazioneMagFam),
+                                        HasPensione = dtp.HasPensione(e.idConiuge, idAttivazioneMagFam)
+                                    }));
                                 }
                             }
                         }
-                        else
-                        {
-                            throw new Exception("Errre!!! Attivazione maggiorazione familiare non presente.");
-                        }
-
                     }
 
                 }
@@ -436,7 +421,6 @@ namespace NewISE.Controllers
                 bool solaLettura = false;
                 solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
                 ViewData.Add("solaLettura", solaLettura);
-
 
                 ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
@@ -515,6 +499,12 @@ namespace NewISE.Controllers
                     lTipologiaConiuge = r;
                 }
 
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoByIdAttMagFam(idAttivazioneMagFam);
+
+                    ViewData.Add("Trasferimento", tm);
+                }
 
             }
             catch (Exception ex)
@@ -669,6 +659,13 @@ namespace NewISE.Controllers
                             lTipologiaConiuge = r;
                         }
 
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var tm = dtt.GetTrasferimentoByIdAttMagFam(idAttivazioneMagFam);
+
+                            ViewData.Add("Trasferimento", tm);
+                        }
+
 
                         ViewBag.lTipologiaConiuge = lTipologiaConiuge;
                         ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
@@ -699,6 +696,12 @@ namespace NewISE.Controllers
                         lTipologiaConiuge = r;
                     }
 
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoByIdAttMagFam(idAttivazioneMagFam);
+
+                        ViewData.Add("Trasferimento", tm);
+                    }
 
                     ViewBag.lTipologiaConiuge = lTipologiaConiuge;
                     ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);

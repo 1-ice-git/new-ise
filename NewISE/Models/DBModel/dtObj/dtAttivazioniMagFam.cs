@@ -17,6 +17,36 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public AttivazioniMagFamModel GetAttivazioneMagFamByIdConiuge(decimal idConiuge)
+        {
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var amf =
+                    db.CONIUGE.Find(idConiuge)
+                        .ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM)
+                        .First(a => a.ANNULLATO == false);
+
+                amfm = new AttivazioniMagFamModel()
+                {
+                    idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                    idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                    richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                    dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                    attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                    dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                    dataVariazione = amf.DATAVARIAZIONE,
+                    dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                    annullato = amf.ANNULLATO
+                };
+
+            }
+
+            return amfm;
+
+        }
+
         public AttivazioniMagFamModel GetAttivazioneMagFamByID(decimal idAttivazioneMagFam)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
@@ -369,6 +399,31 @@ namespace NewISE.Models.DBModel.dtObj
                 if (i <= 0)
                 {
                     throw new Exception(string.Format("Impossibile associare il figlio per l'attivazione familiare {0}.", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaAltriDatiFamiliari(decimal idAttivazioneFamiliare, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adf = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                amf.ALTRIDATIFAM.Add(adf);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il i dati per l'attivazione familiare {0}.", idAttivazioneFamiliare));
                 }
             }
             catch (Exception ex)
