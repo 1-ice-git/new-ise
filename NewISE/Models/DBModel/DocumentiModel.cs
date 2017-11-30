@@ -68,6 +68,9 @@ namespace NewISE.Models.DBModel
         public DateTime dataInserimento { get; set; }
 
 
+        public decimal fk_documenti { get; set; }
+
+
         [Required(ErrorMessage = "Il Documento è richiesto.")]
         [DataType(DataType.Upload)]
         [Display(AutoGenerateField = true, AutoGenerateFilter = false, Name = "Documento")]

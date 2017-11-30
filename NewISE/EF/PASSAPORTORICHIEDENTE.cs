@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PASSAPORTORICHIEDENTE()
         {
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONIPASSAPORTI = new HashSet<ATTIVAZIONIPASSAPORTI>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDPASSAPORTORICHIEDENTE { get; set; }
@@ -30,8 +30,8 @@ namespace NewISE.EF
     
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

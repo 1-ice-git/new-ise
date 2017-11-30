@@ -23,8 +23,8 @@ namespace NewISE.EF
             this.TEORICI = new HashSet<TEORICI>();
             this.TITOLIVIAGGIO = new HashSet<TITOLIVIAGGIO>();
             this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -62,10 +62,10 @@ namespace NewISE.EF
         public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

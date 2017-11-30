@@ -145,19 +145,10 @@
         <AssociationConnector Association="DBISEPRO.R_U_T" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="27" PointY="48.875" />
         <AssociationConnector Association="DBISEPRO.R_T_MF" />
-        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="31.5" PointY="54.875" />
-        <AssociationConnector Association="DBISEPRO.R_TD_D" />
-        <AssociationConnector Association="DBISEPRO.DOC_TRASPEFF" />
-        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
-        <AssociationConnector Association="DBISEPRO.MAB_DOC" />
-        <AssociationConnector Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" />
-        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="33.75" PointY="50.375" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" Width="1.5" PointX="38.25" PointY="53" />
         <AssociationConnector Association="DBISEPRO.R_P_PR" />
         <AssociationConnector Association="DBISEPRO.R_T_P" />
-        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
-        <AssociationConnector Association="DBISEPRO.PASSRICH_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIPASSAPORTI" Width="1.5" PointX="36" PointY="49.875" />
         <AssociationConnector Association="DBISEPRO.R_P_AP" />
         <AssociationConnector Association="DBISEPRO.PASSRICH_ATTPASS" />
@@ -170,7 +161,6 @@
         <AssociationConnector Association="DBISEPRO.ATT_ADF" />
         <AssociationConnector Association="DBISEPRO.ATT_PENSIONE" />
         <AssociationConnector Association="DBISEPRO.ATT_RMF" />
-        <AssociationConnector Association="DBISEPRO.ATTMAGFAM_DOC" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="38.25" PointY="56.25" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="41.25" PointY="54.25" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
@@ -191,13 +181,24 @@
         <AssociationConnector Association="DBISEPRO.AP_F" />
         <AssociationConnector Association="DBISEPRO.C_P" />
         <AssociationConnector Association="DBISEPRO.C_PC" />
-        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
         <AssociationConnector Association="DBISEPRO.F_IPS" />
-        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.PMF_F" />
         <EntityTypeShape EntityType="DBISEPRO.CALENDARIOEVENTI" Width="1.5" PointX="12.625" PointY="39.625" />
         <AssociationConnector Association="DBISEPRO.R_FE_CE" />
         <AssociationConnector Association="DBISEPRO.R_T_CE" />
+        <EntityTypeShape EntityType="DBISEPRO.DOCUMENTI" Width="1.5" PointX="43.5" PointY="57" />
+        <AssociationConnector Association="DBISEPRO.R_D_D" />
+        <AssociationConnector Association="DBISEPRO.R_TD_D" />
+        <AssociationConnector Association="DBISEPRO.ATTMAGFAM_DOC" />
+        <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
+        <AssociationConnector Association="DBISEPRO.DOC_TRASPEFF" />
+        <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
+        <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
+        <AssociationConnector Association="DBISEPRO.MAB_DOC" />
+        <AssociationConnector Association="DBISEPRO.PASSAPORTI_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.PASSRICH_DOC" />
+        <AssociationConnector Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" />
+        <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
