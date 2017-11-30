@@ -1168,7 +1168,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     using (dtConiuge dtc = new dtConiuge())
                     {
-                        dtc.EditConiuge(cm, db);
+                        dtc.EditConiugeMagFam(cm, db);
                     }
 
 
@@ -1182,67 +1182,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        //public MaggiorazioniFamiliariModel GetMaggiorazioneFamiliare(decimal idTrasferimento, DateTime dt)
-        //{
-        //    MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
-
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        var lmf = db.MAGGIORAZIONEFAMILIARI.Where(a => a.ANNULLATO == false && a.PRATICACONCLUSA == false && a.IDTRASFERIMENTO == idTrasferimento).OrderByDescending(a => a.DATACONCLUSIONE).ToList();
-        //        if (lmf?.Any() ?? false)
-        //        {
-        //            var mc = lmf.First();
-        //            var lpmg = mc.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
-        //            if (lpmg != null && lpmg.Count > 0)
-        //            {
-        //                var pmg = lpmg.First();
-
-        //                var lpc = mc.PENSIONE.Where(a => a.ANNULLATO == false && dt >= a.DATAINIZIO && dt <= a.DATAFINE).OrderByDescending(a => a.DATAINIZIO).ToList();
-
-        //                if (lpc != null && lpc.Count > 0)
-        //                {
-        //                    //var pc = lpc.First();
-
-        //                    mcm = new MaggiorazioniFamiliariModel()
-        //                    {
-        //                        idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
-        //                        idTrasferimento = mc.IDTRASFERIMENTO,
-        //                        idPercentualeMaggiorazioneConiuge = pmg.IDPERCMAGCONIUGE,
-        //                        lPensioneConiuge = (from e in lpc
-        //                                            select new PensioneConiugeModel()
-        //                                            {
-        //                                                idPensioneConiuge = e.IDPENSIONE,
-        //                                                importoPensione = e.IMPORTOPENSIONE,
-        //                                                dataInizioValidita = e.DATAINIZIO,
-        //                                                dataFineValidita = e.DATAFINE,
-        //                                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-        //                                                annullato = e.ANNULLATO
-        //                                            }).ToList(),
-        //                        dataInizioValidita = mc.DATAINIZIOVALIDITA,
-        //                        dataFineValidita = mc.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : mc.DATAFINEVALIDITA,
-        //                        dataAggiornamento = mc.DATAAGGIORNAMENTO,
-        //                        annullato = mc.ANNULLATO,
-        //                    };
-        //                }
-        //                else
-        //                {
-        //                    mcm = new MaggiorazioniFamiliariModel()
-        //                    {
-        //                        idMaggiorazioneConiuge = mc.IDMAGGIORAZIONECONIUGE,
-        //                        idTrasferimento = mc.IDTRASFERIMENTO,
-        //                        idPercentualeMaggiorazioneConiuge = pmg.IDPERCMAGCONIUGE,
-        //                        dataInizioValidita = mc.DATAINIZIOVALIDITA,
-        //                        dataFineValidita = mc.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : mc.DATAFINEVALIDITA,
-        //                        dataAggiornamento = mc.DATAAGGIORNAMENTO,
-        //                        annullato = mc.ANNULLATO,
-        //                    };
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return mcm;
-        //}
 
         public void NotificaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
         {

@@ -316,55 +316,50 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                using (dtFigli dtf = new dtFigli())
                 {
+                    List<FigliModel> lfm = dtf.GetListaFigliByIdAttivazione(idAttivazioneMagFam).ToList();
 
-                    //var amf = dtamf.GetAttivazioneMagFamByID(idAttivazioneMagFam);
-
-                    using (dtFigli dtf = new dtFigli())
+                    if (lfm?.Any() ?? false)
                     {
-                        List<FigliModel> lfm = dtf.GetListaFigliByIdAttivazione(idAttivazioneMagFam).ToList();
-
-                        if (lfm?.Any() ?? false)
+                        using (dtDocumenti dtd = new dtDocumenti())
                         {
-                            using (dtDocumenti dtd = new dtDocumenti())
+                            using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                             {
-                                using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
+                                foreach (var e in lfm)
                                 {
-                                    foreach (var e in lfm)
+                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
                                     {
-                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                        {
-                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                            idFamiliare = e.idFigli,
-                                            idAttivazioneMagFam = e.idAttivazioneMagFam,
-                                            idPassaporti = e.idPassaporti,
-                                            Nominativo = e.cognome + " " + e.nome,
-                                            CodiceFiscale = e.codiceFiscale,
-                                            dataInizio = e.dataInizio,
-                                            dataFine = e.dataFine,
-                                            parentela = EnumParentela.Figlio,
-                                            idAltriDati = dtadf.GetAlttriDatiFamiliariFiglioFasePartenza(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiIdentitaFigli(e.idFigli, idAttivazioneMagFam)
-                                        };
+                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                        idFamiliare = e.idFigli,
+                                        idAttivazioneMagFam = e.idAttivazioneMagFam,
+                                        idPassaporti = e.idPassaporti,
+                                        Nominativo = e.cognome + " " + e.nome,
+                                        CodiceFiscale = e.codiceFiscale,
+                                        dataInizio = e.dataInizio,
+                                        dataFine = e.dataFine,
+                                        parentela = EnumParentela.Figlio,
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglioFasePartenza(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
+                                        Documenti = dtd.GetDocumentiIdentitaFigli(e.idFigli, idAttivazioneMagFam)
+                                    };
 
-                                        lefm.Add(efm);
-                                    }
+                                    lefm.Add(efm);
                                 }
                             }
                         }
-
-                        //ViewData.Add("callConiuge", false);
-
-                        bool solaLettura = false;
-                        solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
-                        ViewData.Add("solaLettura", solaLettura);
-
-                        ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
-
-                        return PartialView(lefm);
                     }
+
+
+
+                    bool solaLettura = false;
+                    solaLettura = this.SolaLetturaPartenza(idAttivazioneMagFam);
+                    ViewData.Add("solaLettura", solaLettura);
+
+                    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
+
+                    return PartialView(lefm);
                 }
+
 
             }
             catch (Exception ex)
@@ -457,6 +452,13 @@ namespace NewISE.Controllers
                     }
 
                     lTipologiaFiglio = r;
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tm = dtt.GetTrasferimentoByIdAttMagFam(idAttivazioneMagFam);
+
+                    ViewData.Add("Trasferimento", tm);
                 }
             }
             catch (Exception ex)
@@ -719,7 +721,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult ModificaConiuge(decimal idConiuge)
+        public ActionResult ModificaConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             ConiugeModel cm = new ConiugeModel();
 
@@ -753,13 +755,25 @@ namespace NewISE.Controllers
 
                     ViewBag.lTipologiaConiuge = lTipologiaConiuge;
                 }
+
+                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                {
+                    var mf = dtmf.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoByIDMagFam(mf.idMaggiorazioniFamiliari);
+
+                        ViewData.Add("Trasferimento", tm);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            //ViewData.Add("idTrasferimento", idTrasferimento);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
             return PartialView(cm);
         }
 
@@ -801,6 +815,20 @@ namespace NewISE.Controllers
 
                         ViewBag.lTipologiaConiuge = lTipologiaConiuge;
                     }
+
+                    using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                    {
+                        var mf = dtmf.GetMaggiorazioniFamiliaribyConiuge(cm.idConiuge);
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var tm = dtt.GetTrasferimentoByIDMagFam(mf.idMaggiorazioniFamiliari);
+
+                            ViewData.Add("Trasferimento", tm);
+                        }
+                    }
+
+                    ViewData.Add("idAttivazioneMagFam", cm.idAttivazioneMagFam);
+
                     return PartialView("ModificaConiuge", cm);
                 }
             }

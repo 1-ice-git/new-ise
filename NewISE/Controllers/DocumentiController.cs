@@ -295,7 +295,7 @@ namespace NewISE.Controllers
 
 
         [HttpPost]
-        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
+        public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante, decimal idAttivazioneMagFam = 0)
         {
             string titoloPagina = string.Empty;
             //decimal idMaggiorazioniFamiliari = 0;
@@ -335,25 +335,25 @@ namespace NewISE.Controllers
                     {
                         case EnumParentela.Coniuge:
                             titoloPagina = "Documento d'identità (Coniuge)";
-                            using (dtConiuge dtc = new dtConiuge())
-                            {
-                                var cm = dtc.GetConiugebyID(id);
-                                //idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
-                                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                                //{
-                                //    var amf = dtamf.GetAttivazioneMagFamByIdConiuge(cm.idConiuge);
-                                //    idAttivazioneMagFam = amf.idAttivazioneMagFam;
-                                //}
+                            //using (dtConiuge dtc = new dtConiuge())
+                            //{
+                            //    var cm = dtc.GetConiugebyID(id);
+                            //    //idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                            //    //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                            //    //{
+                            //    //    var amf = dtamf.GetAttivazioneMagFamByIdConiuge(cm.idConiuge);
+                            //    //    idAttivazioneMagFam = amf.idAttivazioneMagFam;
+                            //    //}
 
-                            }
+                            //}
                             break;
                         case EnumParentela.Figlio:
                             titoloPagina = "Documento d'identità (Figlio)";
-                            using (dtFigli dtf = new dtFigli())
-                            {
-                                var fm = dtf.GetFigliobyID(id);
-                                //idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
-                            }
+                            //using (dtFigli dtf = new dtFigli())
+                            //{
+                            //    var fm = dtf.GetFigliobyID(id);
+                            //    //idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
+                            //}
                             break;
                         case EnumParentela.Richiedente:
                             titoloPagina = "Documento d'identità (Richiedente)";
@@ -377,13 +377,13 @@ namespace NewISE.Controllers
             ViewData.Add("ID", id);
             //ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             ViewData.Add("parentela", (decimal)parentela);
-            //ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
+            ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView();
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SalvaDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
+        public ActionResult SalvaDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, decimal idAttivazioneMagFam = 0)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -457,9 +457,17 @@ namespace NewISE.Controllers
                                             {
                                                 case EnumParentela.Coniuge:
                                                     dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                    if (idAttivazioneMagFam > 0)
+                                                    {
+                                                        dtd.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
+                                                    }
                                                     break;
                                                 case EnumParentela.Figlio:
                                                     dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                    if (idAttivazioneMagFam > 0)
+                                                    {
+                                                        dtd.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
+                                                    }
                                                     break;
                                                 case EnumParentela.Richiedente:
                                                     dtd.AddDocumentoPassaportoFromRichiedente(ref dm, id, db);//ID è riferito all'idTrasferimento.
@@ -467,6 +475,7 @@ namespace NewISE.Controllers
                                                 default:
                                                     throw new ArgumentOutOfRangeException("parentela");
                                             }
+
                                             break;
                                         case EnumTipoDoc.Lettera_Trasferimento:
                                             break;
@@ -521,20 +530,10 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    if (tipoDoc == EnumTipoDoc.Documento_Identita && idAttivazioneMagFam > 0)
-                    {
-                        ldm =
-                            dtd.GetDocumentiFasePartenza(id, tipoDoc, parentela, idAttivazioneMagFam)
-                                .OrderByDescending(a => a.dataInserimento)
-                                .ToList();
-                    }
-                    else
-                    {
-                        ldm =
-                        dtd.GetDocumentiByIdTable(id, tipoDoc, parentela)
+                    ldm =
+                        dtd.GetDocumentiByIdTable(id, tipoDoc, parentela, idAttivazioneMagFam)
                             .OrderByDescending(a => a.dataInserimento)
                             .ToList();
-                    }
 
                 }
 
@@ -754,7 +753,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult NumeroDocumentiSalvati(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela)
+        public JsonResult NumeroDocumentiSalvati(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, decimal idAttivitaMagFam = 0)
         {
             int nDoc = 0;
 
@@ -762,7 +761,7 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    nDoc = dtd.GetDocumentiByIdTable(id, tipoDoc, parentela).Count;
+                    nDoc = dtd.GetDocumentiByIdTable(id, tipoDoc, parentela, idAttivitaMagFam).Count;
                 }
             }
             catch (Exception ex)

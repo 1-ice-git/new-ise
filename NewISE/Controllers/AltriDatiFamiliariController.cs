@@ -288,7 +288,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
+                    adf = dtadf.GetAlttriDatiFamiliariConiugeFasePartenza(idConiuge, idAttivazioneMagFam);
                 }
 
 

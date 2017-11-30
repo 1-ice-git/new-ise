@@ -131,7 +131,8 @@ namespace NewISE.Models.DBModel.dtObj
                     c.DOCUMENTI.Where(
                         a =>
                             a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
-                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam));
+                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                        .OrderByDescending(a => a.IDDOCUMENTO);
 
 
                 if (ld?.Any() ?? false)
@@ -161,12 +162,13 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var f = db.FIGLI.Find(idFiglio);
+                var fi = db.FIGLI.Find(idFiglio);
                 var ld =
-                    f.DOCUMENTI.Where(
+                    fi.DOCUMENTI.Where(
                         a =>
                             a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
-                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam));
+                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam))
+                        .OrderByDescending(a => a.IDTIPODOCUMENTO);
 
                 if (ld?.Any() ?? false)
                 {
@@ -194,14 +196,14 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="tipodoc"></param>
         /// <param name="parentela"></param>
         /// <returns></returns>
-        public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
+        public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente, decimal idAttivazioneMagFam = 0)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 List<DOCUMENTI> ld = new List<DOCUMENTI>();
-                ATTIVAZIONIMAGFAM amf = new ATTIVAZIONIMAGFAM();
+                //ATTIVAZIONIMAGFAM amf = new ATTIVAZIONIMAGFAM();
 
                 switch (tipodoc)
                 {
@@ -249,22 +251,64 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Trasloco:
                         break;
                     case EnumTipoDoc.Documento_Identita:
-
-                        switch (parentela)
+                        if (idAttivazioneMagFam > 0)
                         {
-                            case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                            switch (parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    var c = db.CONIUGE.Find(id);
+                                    ld =
+                                        c.DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc &&
+                                                 a.ATTIVAZIONIMAGFAM.Any(
+                                                     b =>
+                                                         b.ANNULLATO == false &&
+                                                         b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                                            .OrderByDescending(a => a.IDDOCUMENTO)
+                                            .ToList();
 
-                                break;
-                            case EnumParentela.Richiedente:
-                                ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
+
+                                    break;
+                                case EnumParentela.Figlio:
+                                    var f = db.FIGLI.Find(id);
+                                    ld =
+                                        f.DOCUMENTI.Where(
+                                            a =>
+                                                a.IDTIPODOCUMENTO == (decimal)tipodoc &&
+                                                a.ATTIVAZIONIMAGFAM.Any(
+                                                    b =>
+                                                        b.ANNULLATO == false &&
+                                                        b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                                            .OrderByDescending(a => a.IDDOCUMENTO)
+                                            .ToList();
+
+                                    break;
+                                case EnumParentela.Richiedente:
+                                    ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("parentela");
+                            }
                         }
+                        else
+                        {
+                            switch (parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                case EnumParentela.Figlio:
+                                    ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+
+                                    break;
+                                case EnumParentela.Richiedente:
+                                    ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("parentela");
+                            }
+                        }
+
                         break;
                     case EnumTipoDoc.Lettera_Trasferimento:
                         break;
