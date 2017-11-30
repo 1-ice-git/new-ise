@@ -94,7 +94,7 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariAttivazioneMagFamPartenza(idAttivazioneMagFam).ToList();
+                    ldm = dtd.GetFormulariAttivazioneMagFam(idAttivazioneMagFam).ToList();
                 }
             }
             catch (Exception ex)
@@ -125,7 +125,7 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariAttivazioneMagFamPartenza(idAttivazioneMagFam).ToList();
+                    ldm = dtd.GetFormulariAttivazioneMagFam(idAttivazioneMagFam).ToList();
                 }
             }
             catch (Exception ex)
@@ -400,9 +400,8 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Coniuge,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiugeFasePartenza(e.idConiuge, idAttivazioneMagFam).idAltriDatiFam,
-                                        Documenti =
-                                            dtd.GetDocumentiIdentitaConiuge(e.idConiuge, idAttivazioneMagFam),
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariConiuge(e.idConiuge, idAttivazioneMagFam).idAltriDatiFam,
+                                        Documenti = dtd.GetDocumentiIdentitaConiuge(e.idConiuge, idAttivazioneMagFam),
                                         HasPensione = dtp.HasPensione(e.idConiuge, idAttivazioneMagFam)
                                     }));
                                 }

@@ -134,7 +134,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
+                    //adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
                 }
                 using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
@@ -208,7 +208,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
+                    //adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
                 }
                 using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
                 {
@@ -281,7 +281,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiugeFasePartenza(idConiuge, idAttivazioneMagFam);
+                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
                 }
 
 

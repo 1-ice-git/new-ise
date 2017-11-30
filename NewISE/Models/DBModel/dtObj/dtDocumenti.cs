@@ -87,7 +87,7 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public IList<DocumentiModel> GetFormulariAttivazioneMagFamPartenza(decimal idAttivazioneMagFam)
+        public IList<DocumentiModel> GetFormulariAttivazioneMagFam(decimal idAttivazioneMagFam)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 

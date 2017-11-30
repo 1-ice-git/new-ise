@@ -100,12 +100,12 @@
     function NuovoFormulario() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/NuovoFormularioMF";
-        var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
+        var idAttivazioneMagFam = @idAttivazioneMagFam;
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { idAttivazioneMagFam: idAttivazioneMagFam },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -135,12 +135,12 @@
     function TabElencoFormulari() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/TabFormulariInseriti";
-        var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
+        var idAttivazioneMagFam = @idAttivazioneMagFam;
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            data: { idAttivazioneMagFam: idAttivazioneMagFam },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -175,16 +175,7 @@
         TabElencoFormulari();
     });
 
-    //function CloseTimeModalFormulario() {
-    //    setTimeout(CloseModalFileFormulario, 1000);
-    //    //CloseModalFile();
-    //}
 
-    //function CloseModalFileFormulario() {
-    //    $('#ModalNuovoFormulario').modal('hide');
-    //    //RicaricaModificaTrasferimento();
-    //    setTimeout(TabElencoFormulari, 1000);
-    //}
 
 
 </script>
