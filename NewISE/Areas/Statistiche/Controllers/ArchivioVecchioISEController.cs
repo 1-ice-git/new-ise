@@ -2607,9 +2607,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                     var details = new Stp_Spese__di_avvicendamento();
                     details.MATRICOLA = rdr["MATRICOLA"].ToString();
                     details.NOMINATIVO = rdr["NOMINATIVO"].ToString();
+                    details.LIVELLO = rdr["LIVELLO"].ToString();
                     details.CODICE_SEDE = rdr["CODICE_SEDE"].ToString();
                     details.DESCRIZIONE_SEDE = rdr["DESCRIZIONE_SEDE"].ToString();
-                    details.DATA = rdr["DATA"].ToString();
+                    //details.DATA = rdr["DATA"].ToString();
+                    details.DATA = Convert.ToDateTime(rdr["DATA"]).ToString("dd/MM/yyyy");
                     details.SPESA = rdr["SPESA"].ToString();
                     details.INDENITA_IN_VALUTA = rdr["INDENITA_IN_VALUTA"].ToString();
                     model.Add(details);
