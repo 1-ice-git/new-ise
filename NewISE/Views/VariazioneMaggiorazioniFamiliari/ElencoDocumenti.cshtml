@@ -91,7 +91,7 @@
                         }
                         else
                         {
-                            <a href="#" onclick="SostituisciDocumento(@id, @chiamante)" id="linkSostituisciDoc">Sostituisci</a>
+                            <a href="#" onclick="SostituisciDocumento(@id, @chiamante,@item.idDocumenti)" id="linkSostituisciDoc">Sostituisci</a>
                         }
                     </td>
                 </tr>
@@ -237,10 +237,10 @@
         $('#hiEliminaDoc').val(idDocumento);
     }
 
-    function SostituisciDoc(idDocumento) {
-        $('#' + nuovoModalReplace).modal('show');
-        $('#hiEliminaDoc').val(idDocumento);
-    }
+    //function SostituisciDoc(idDocumento) {
+    //    $('#' + nuovoModalReplace).modal('show');
+    //    $('#hiEliminaDoc').val(idDocumento);
+    //}
 
     
     function ConfermaEliminaDoc() {
@@ -452,7 +452,7 @@
 
     }
 
-    function SostituisciDocumento(id, Chiamante) {
+    function SostituisciDocumento(id, Chiamante, idDocumento) {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/SostituisciDocumento";
         var TipoDocumento = parseInt(@tipoDoc);
@@ -461,7 +461,7 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante },
+            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante, idDocumento: idDocumento },
             dataType: 'html',
             async: false,
             beforeSend: function () {
