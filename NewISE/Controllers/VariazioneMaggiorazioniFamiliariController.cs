@@ -1624,7 +1624,7 @@ namespace NewISE.Controllers
                                             {
                                                 case EnumParentela.Coniuge:
                                                     dtvmf.AssociaDocumentoConiuge(ref dm, idFamiliare, db);
-
+                                                    
                                                     var c = db.CONIUGE.Find(idFamiliare);
                                                     var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
                                                     if (att.ATTIVAZIONEMAGFAM==false && att.RICHIESTAATTIVAZIONE==false)
