@@ -13,6 +13,7 @@
     decimal tipoDoc = (decimal)ViewData["tipoDoc"];
     string titoloPagina = ViewData["titoloPagina"].ToString();
     decimal id = (decimal)ViewData["ID"];
+    decimal idDocumento = (decimal)ViewData["idDocumento"];
     decimal idMaggiorazioniFamiliari = (decimal)ViewData["idMaggiorazioniFamiliari"];
     decimal parentela = (decimal)ViewData["parentela"];
 
@@ -67,8 +68,9 @@
         validateInitialCount: true,
         uploadExtraData: function () {
             return {
+                idDocumento: parseInt('@idDocumento'),
                 tipoDoc: parseInt('@tipoDoc'),
-                id: parseInt('@id'),
+                idFamiliare: parseInt('@id'),
                 parentela: parseInt(@parentela),
             };
         },

@@ -1458,7 +1458,7 @@ namespace NewISE.Controllers
             return PartialView(ldm);
         }
 
-        public ActionResult SostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
+        public ActionResult SostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante, decimal idDocumento)
         {
             string titoloPagina = string.Empty;
             decimal idMaggiorazioniFamiliari = 0;
@@ -1502,6 +1502,7 @@ namespace NewISE.Controllers
             ViewData.Add("titoloPagina", titoloPagina);
             ViewData.Add("tipoDoc", (decimal)tipoDoc);
             ViewData.Add("ID", id);
+            ViewData.Add("idDocumento", idDocumento);
             ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
             ViewData.Add("parentela", (decimal)parentela);
 
@@ -1579,7 +1580,7 @@ namespace NewISE.Controllers
 
         
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult ConfermaSostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
+        public ActionResult ConfermaSostituisciDocumento(decimal idDoc, EnumTipoDoc tipoDoc, decimal idFamiliare, EnumParentela parentela)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -1622,14 +1623,23 @@ namespace NewISE.Controllers
                                             switch (parentela)
                                             {
                                                 case EnumParentela.Coniuge:
-                                                    dtvmf.AssociaDocumentoConiuge(ref dm, id, db);
-                                                    
-                                                    var c = db.CONIUGE.Find(id);
+                                                    dtvmf.AssociaDocumentoConiuge(ref dm, idFamiliare, db);
+
+                                                    var c = db.CONIUGE.Find(idFamiliare);
                                                     var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
                                                     if (att.ATTIVAZIONEMAGFAM==false && att.RICHIESTAATTIVAZIONE==false)
                                                     {
-                                                        dtvmf.AssociaDocumentoAttivazione(att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
-                                                    }else
+                                                        dm.fk_documenti = idDoc;
+                                                        if(db.SaveChanges()>0)
+                                                        {
+                                                            dtvmf.AssociaDocumentoAttivazione(att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
+                                                        }
+                                                        else
+                                                        {
+                                                            throw new Exception(string.Format("Non è stato possibile aggiornare il documento."));
+                                                        }
+                                                    }
+                                                    else
                                                     {
                                                         att.ANNULLATO = true;
 
