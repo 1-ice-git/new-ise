@@ -159,7 +159,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick="ElencoDocumentiConiuge(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari) ) ">
+                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari) ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -167,7 +167,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick="ElencoDocumentiConiuge(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari)) ">
+                            <a href="#" onclick="ElencoDocumentiFamiliare(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.VariazioneMaggiorazioniFamiliari)) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -212,25 +212,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
-    });
+      });
 
     
     PulsantiNotificaAttivaMagFam();
@@ -272,7 +254,7 @@
     }
 
     function AltriDatiFamiliariConiuge(idConiuge, idMaggiorazioniFamiliari) {
-        debugger;
+        //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
@@ -297,7 +279,7 @@
 
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;
@@ -348,14 +330,14 @@
 
     }
 
-    function ElencoDocumentiConiuge(id, tipoDoc, idParentela, chiamante) {
+    function ElencoDocumentiFamiliare(idFamiliare, tipoDoc, idParentela, chiamante) {
         //debugger;
-        var rotta = "/Documenti/ElencoDocumenti";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante },
+            data: { idFamiliare: idFamiliare, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -374,7 +356,7 @@
 
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam();
             },
             error: function (error) {
                 //debugger;

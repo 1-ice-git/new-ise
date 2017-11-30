@@ -724,89 +724,101 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge, decimal idMaggiorazioniFamiliari)
+        public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+           
 
             try
             {
-                using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
+                using (var db = new ModelDBISE())
                 {
-                    adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge, idMaggiorazioniFamiliari);
-                }
-                //using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
-                //{
-                //    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
-                //}
+                    var c = db.CONIUGE.Find(idConiuge);
 
-                using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
-                {
-                    bool rinunciaMagFam = false;
-                    bool richiestaAttivazione = false;
-                    bool attivazione = false;
-                    bool datiConiuge = false;
-                    bool datiParzialiConiuge = false;
-                    bool datiFigli = false;
-                    bool datiParzialiFigli = false;
-                    bool siDocConiuge = false;
-                    bool siDocFigli = false;
-                    bool docFormulario = false;
-                    bool inLavorazione = false;
-
-                    bool solaLettura = false;
-
-                    dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                        out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
-
-                    if (richiestaAttivazione == true)
+                    decimal idMaggiorazioniFamiliari = 0;
+                    idMaggiorazioniFamiliari = c.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI;
+                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+           
+                    using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-                        solaLettura = true;
+                        adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge,idMaggiorazioniFamiliari);
                     }
-                    else
+                    ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+
+                    //using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+                    //{
+                    //    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                    //}
+
+                    using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-                        solaLettura = false;
-                    }
+                        bool rinunciaMagFam = false;
+                        bool richiestaAttivazione = false;
+                        bool attivazione = false;
+                        bool datiConiuge = false;
+                        bool datiParzialiConiuge = false;
+                        bool datiFigli = false;
+                        bool datiParzialiFigli = false;
+                        bool siDocConiuge = false;
+                        bool siDocFigli = false;
+                        bool docFormulario = false;
+                        bool inLavorazione = false;
 
-                    ViewData.Add("solaLettura", solaLettura);
-                }
+                        bool solaLettura = false;
 
-                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                {
-                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
+                        dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                            out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
 
-                    if (pc != null && pc.HasValue())
-                    {
-                        switch (pc.idTipologiaConiuge)
+                        if (richiestaAttivazione == true)
                         {
-                            case TipologiaConiuge.Residente:
-                                adf.residente = true;
-                                adf.ulterioreMagConiuge = false;
-                                break;
+                            solaLettura = true;
+                        }
+                        else
+                        {
+                            solaLettura = false;
+                        }
 
-                            case TipologiaConiuge.NonResidente:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = false;
-                                break;
+                        ViewData.Add("solaLettura", solaLettura);
+                    }
 
-                            case TipologiaConiuge.NonResidenteCarico:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = true;
-                                break;
+                    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                    {
+                        PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
 
-                            default:
-                                break;
+                        if (pc != null && pc.HasValue())
+                        {
+                            switch (pc.idTipologiaConiuge)
+                            {
+                                case TipologiaConiuge.Residente:
+                                    adf.residente = true;
+                                    adf.ulterioreMagConiuge = false;
+                                    break;
+
+                                case TipologiaConiuge.NonResidente:
+                                    adf.residente = false;
+                                    adf.ulterioreMagConiuge = false;
+                                    break;
+
+                                case TipologiaConiuge.NonResidenteCarico:
+                                    adf.residente = false;
+                                    adf.ulterioreMagConiuge = true;
+                                    break;
+
+                                default:
+                                    break;
+                            }
                         }
                     }
                 }
+                //}
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
             if (adf != null && adf.HasValue())
             {
@@ -919,12 +931,13 @@ namespace NewISE.Controllers
             {
                 adfm.dataAggiornamento = DateTime.Now;
                 adfm.annullato = false;
-
+             
                 if (ModelState.IsValid)
                 {
                     using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
                     {
                         dtadf.EditVariazioneAltriDatiFamiliariConiuge(adfm);
+
                     }
                 }
                 else
@@ -939,7 +952,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge});
 
 
         }
@@ -1329,6 +1342,356 @@ namespace NewISE.Controllers
                     db.Database.CurrentTransaction.Rollback();
                     return Json(new { err = ex.Message });
                 }
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            ConiugeModel cm = new ConiugeModel();
+            bool solaLettura = false;
+            decimal idTrasferimento = 0;
+            decimal idMaggiorazioniFamiliari = 0;
+
+
+            try
+            {
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    ldm =
+                        dtd.GetDocumentiByIdTable(idFamiliare, tipoDoc, parentela)
+                            .OrderByDescending(a => a.dataInserimento)
+                            .ToList();
+                }
+
+                switch (chiamante)
+                {
+                    case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+
+                        switch (parentela)
+                        {
+                            case EnumParentela.Coniuge:
+                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                {
+                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyConiuge(idFamiliare);
+                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+                                    }
+
+                                }
+                                break;
+                            case EnumParentela.Figlio:
+                                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                                {
+                                    var mfm = dtmf.GetMaggiorazioniFamiliaribyFiglio(idFamiliare);
+                                    idMaggiorazioniFamiliari = mfm.idMaggiorazioniFamiliari;
+                                    using (dtTrasferimento dtt = new dtTrasferimento())
+                                    {
+                                        idTrasferimento = dtt.GetTrasferimentoByIDMagFam(idMaggiorazioniFamiliari).idTrasferimento;
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
+                        }
+
+
+                        using (dtVariazioniMaggiorazioneFamiliare dtmf = new dtVariazioniMaggiorazioneFamiliare())
+                        {
+                            bool rinunciaMagFam = false;
+                            bool richiestaAttivazione = false;
+                            bool attivazione = false;
+                            bool datiConiuge = false;
+                            bool datiParzialiConiuge = false;
+                            bool datiFigli = false;
+                            bool datiParzialiFigli = false;
+                            bool siDocConiuge = false;
+                            bool siDocFigli = false;
+                            bool docFormulario = false;
+                            bool inLavorazione = false;
+
+
+                            if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
+                            {
+                                dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                                    out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
+                                    out docFormulario,out inLavorazione);
+
+                                if (richiestaAttivazione == true)
+                                {
+                                    solaLettura = true;
+                                }
+                                else
+                                {
+                                    solaLettura = false;
+                                }
+                            }
+                            else
+                            {
+                                solaLettura = false;
+                            }
+
+                        }
+                        break;
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            ViewData.Add("id", idFamiliare);
+            ViewData.Add("chiamante", chiamante);
+            ViewData.Add("tipoDoc", tipoDoc);
+            ViewData.Add("parentela", parentela);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("solaLettura", solaLettura);
+            ViewData.Add("idTrasferimento", idTrasferimento);
+
+            return PartialView(ldm);
+        }
+
+        public ActionResult SostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
+        {
+            string titoloPagina = string.Empty;
+            decimal idMaggiorazioniFamiliari = 0;
+
+
+            switch (tipoDoc)
+            {
+                case EnumTipoDoc.Documento_Identita:
+                    switch (parentela)
+                    {
+                        case EnumParentela.Coniuge:
+                            titoloPagina = "Documento d'identità (Coniuge)";
+                            using (dtConiuge dtc = new dtConiuge())
+                            {
+                                var cm = dtc.GetConiugebyID(id);
+                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Figlio:
+                            titoloPagina = "Documento d'identità (Figlio)";
+                            using (dtFigli dtf = new dtFigli())
+                            {
+                                var fm = dtf.GetFigliobyID(id);
+                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Richiedente:
+                            titoloPagina = "Documento d'identità (Richiedente)";
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("parentela");
+                    }
+
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("tipoDoc");
+            }
+
+            ViewData.Add("titoloPagina", titoloPagina);
+            ViewData.Add("tipoDoc", (decimal)tipoDoc);
+            ViewData.Add("ID", id);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("parentela", (decimal)parentela);
+
+            return PartialView();
+        }
+
+        public ActionResult NuovoDocumentoMagFam(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante)
+        {
+            string titoloPagina = string.Empty;
+            decimal idMaggiorazioniFamiliari = 0;
+
+
+            switch (tipoDoc)
+            {
+                case EnumTipoDoc.Documento_Identita:
+                    switch (parentela)
+                    {
+                        case EnumParentela.Coniuge:
+                            titoloPagina = "Documento d'identità (Coniuge)";
+                            using (dtConiuge dtc = new dtConiuge())
+                            {
+                                var cm = dtc.GetConiugebyID(id);
+                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Figlio:
+                            titoloPagina = "Documento d'identità (Figlio)";
+                            using (dtFigli dtf = new dtFigli())
+                            {
+                                var fm = dtf.GetFigliobyID(id);
+                                idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari;
+                            }
+                            break;
+                        case EnumParentela.Richiedente:
+                            titoloPagina = "Documento d'identità (Richiedente)";
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("parentela");
+                    }
+
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("tipoDoc");
+            }
+
+            ViewData.Add("titoloPagina", titoloPagina);
+            ViewData.Add("tipoDoc", (decimal)tipoDoc);
+            ViewData.Add("ID", id);
+            ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
+            ViewData.Add("parentela", (decimal)parentela);
+
+            return PartialView();
+        }
+
+        public JsonResult EliminaDocumento(decimal idDocumento, EnumChiamante chiamante)
+        {
+
+            try
+            {
+                using (dtVariazioniMaggiorazioneFamiliare dtd = new dtVariazioniMaggiorazioneFamiliare())
+                {
+                    dtd.DeleteDocumentoMagFam(idDocumento, chiamante);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+
+            return Json(new { errore = "", msg = "Eliminazione effettuata con successo." });
+        }
+
+        
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult ConfermaSostituisciDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+
+                    //throw new Exception("Simulazione errore");
+
+                    foreach (string item in Request.Files)
+                    {
+
+                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
+
+                        using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                        {
+                            DocumentiModel dm = new DocumentiModel();
+                            bool esisteFile = false;
+                            bool gestisceEstensioni = false;
+                            bool dimensioneConsentita = false;
+                            string dimensioneMaxConsentita = string.Empty;
+
+                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                                out dimensioneConsentita, out dimensioneMaxConsentita, tipoDoc);
+
+                            if (esisteFile)
+                            {
+                                if (gestisceEstensioni == false)
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                }
+
+                                if (dimensioneConsentita)
+                                {
+
+                                    switch (tipoDoc)
+                                    {
+                                        case EnumTipoDoc.Documento_Identita:
+                                            switch (parentela)
+                                            {
+                                                case EnumParentela.Coniuge:
+                                                    dtvmf.AssociaDocumentoConiuge(ref dm, id, db);
+                                                    
+                                                    var c = db.CONIUGE.Find(id);
+                                                    var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
+                                                    if (att.ATTIVAZIONEMAGFAM==false && att.RICHIESTAATTIVAZIONE==false)
+                                                    {
+                                                        dtvmf.AssociaDocumentoAttivazione(att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
+                                                    }else
+                                                    {
+                                                        att.ANNULLATO = true;
+
+                                                        //crea una nuova attivazione
+                                                        ATTIVAZIONIMAGFAM newamf = new ATTIVAZIONIMAGFAM()
+                                                        {
+                                                            IDMAGGIORAZIONIFAMILIARI = att.IDMAGGIORAZIONIFAMILIARI,
+                                                            RICHIESTAATTIVAZIONE = false,
+                                                            DATARICHIESTAATTIVAZIONE = null,
+                                                            ATTIVAZIONEMAGFAM = false,
+                                                            DATAATTIVAZIONEMAGFAM = null,
+                                                            ANNULLATO = false,
+                                                            DATAVARIAZIONE = DateTime.Now,
+                                                            DATAAGGIORNAMENTO = DateTime.Now,
+                                                        };
+                                                        db.ATTIVAZIONIMAGFAM.Add(newamf);
+                                                        if (db.SaveChanges()>0)
+                                                        {
+                                                            dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
+                                                        }
+                                                    }
+                                                    break;
+                                                case EnumParentela.Figlio:
+                                                    //dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                    break;
+                                                default:
+                                                    throw new ArgumentOutOfRangeException("parentela");
+                                            }
+                                            break;
+                                        
+                                        default:
+                                            throw new ArgumentOutOfRangeException("tipoDoc");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception(
+                                        "Il documento selezionato supera la dimensione massima consentita (" +
+                                        dimensioneMaxConsentita + " Mb).");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Il documento è obbligatorio.");
+                            }
+
+                        }
+
+
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+
+                    return Json(new { error = ex.Message });
+                };
+
             }
         }
 
