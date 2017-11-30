@@ -551,6 +551,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var c in amf.CONIUGE)
                                         {
                                             dtamf.AssociaConiuge(amfNew.IDATTIVAZIONEMAGFAM, c.IDCONIUGE, db);
+
                                         }
 
                                         foreach (var f in amf.FIGLI)
@@ -561,6 +562,14 @@ namespace NewISE.Models.DBModel.dtObj
                                         foreach (var d in amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari))
                                         {
                                             dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
+                                        }
+
+                                        using (dtDocumenti dtd = new dtDocumenti())
+                                        {
+                                            foreach (var d in amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita))
+                                            {
+                                                dtd.AssociaDocumentoAttivazione(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
+                                            }
                                         }
                                     }
                                 }
