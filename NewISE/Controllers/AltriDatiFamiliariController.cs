@@ -17,20 +17,13 @@ namespace NewISE.Controllers
         public ActionResult AltriDatiFamiliariFiglio(decimal idFiglio, decimal idAttivazioneMagFam)
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
-            //MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
-            //AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
+                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio, idAttivazioneMagFam);
                 }
-
-                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                //{
-                //    amfm = dtamf.GetAttivazioniMagFamById(idAttivazioneMagFam);
-                //}
 
 
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())

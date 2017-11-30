@@ -4,6 +4,22 @@
     box-sizing: border-box;
 }
 
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #EEEEEE;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #EEEEEE;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #EEEEEE;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #EEEEEE;
+}
+
 html {
     /*height: 99%;
     width: 99% !important;

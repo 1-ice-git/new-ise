@@ -267,7 +267,6 @@ namespace NewISE.Models.DBModel.dtObj
                 ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
                 DATANOTIFICATV = fm.dataNotificaTV
 
-
             };
 
             db.FIGLI.Add(f);
@@ -283,11 +282,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                 {
-                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+                    //AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
-                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(fm.idMaggiorazioniFamiliari, db);
+                    //amfm = dtamf.GetAttivazioneMagFamDaLavorare(fm.idMaggiorazioniFamiliari, db);
 
-                    dtamf.AssociaFiglio(amfm.idAttivazioneMagFam, f.IDFIGLI, db);
+                    dtamf.AssociaFiglio(fm.idAttivazioneMagFam, f.IDFIGLI, db);
 
                 }
 

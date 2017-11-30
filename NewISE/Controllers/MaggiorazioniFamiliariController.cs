@@ -339,7 +339,7 @@ namespace NewISE.Controllers
                                         dataInizio = e.dataInizio,
                                         dataFine = e.dataFine,
                                         parentela = EnumParentela.Figlio,
-                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglioFasePartenza(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
+                                        idAltriDati = dtadf.GetAlttriDatiFamiliariFiglio(e.idFigli, idAttivazioneMagFam).idAltriDatiFam,
                                         Documenti = dtd.GetDocumentiIdentitaFigli(e.idFigli, idAttivazioneMagFam)
                                     };
 
@@ -373,7 +373,6 @@ namespace NewISE.Controllers
         public ActionResult ElencoConiuge(decimal idAttivazioneMagFam)
         {
             List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
-
 
             try
             {
@@ -460,6 +459,8 @@ namespace NewISE.Controllers
 
                     ViewData.Add("Trasferimento", tm);
                 }
+
+
             }
             catch (Exception ex)
             {
