@@ -338,6 +338,7 @@
           <Property Name="FILEDOCUMENTO" Type="blob" Nullable="false" />
           <Property Name="DATAINSERIMENTO" Type="date" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DOCUMENTO_NORMACALCOLO">
           <Key>
@@ -6906,6 +6907,7 @@
           <Property Name="FILEDOCUMENTO" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <Property Name="DATAINSERIMENTO" Type="DateTime" Nullable="false" />
           <Property Name="FK_IDDOCUMENTO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MODIFICATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DOCUMENTI1" Relationship="DBISEPRO.R_D_D" FromRole="DOCUMENTI" ToRole="DOCUMENTI1" />
           <NavigationProperty Name="DOCUMENTI2" Relationship="DBISEPRO.R_D_D" FromRole="DOCUMENTI1" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TIPODOCUMENTI" Relationship="DBISEPRO.R_TD_D" FromRole="DOCUMENTI" ToRole="TIPODOCUMENTI" />
@@ -8112,6 +8114,7 @@
           <EntitySetMapping Name="DOCUMENTI">
             <EntityTypeMapping TypeName="DBISEPRO.DOCUMENTI">
               <MappingFragment StoreEntitySet="DOCUMENTI">
+                <ScalarProperty Name="MODIFICATO" ColumnName="MODIFICATO" />
                 <ScalarProperty Name="FK_IDDOCUMENTO" ColumnName="FK_IDDOCUMENTO" />
                 <ScalarProperty Name="DATAINSERIMENTO" ColumnName="DATAINSERIMENTO" />
                 <ScalarProperty Name="FILEDOCUMENTO" ColumnName="FILEDOCUMENTO" />

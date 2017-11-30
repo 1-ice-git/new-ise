@@ -37,6 +37,7 @@ namespace NewISE.EF
         public byte[] FILEDOCUMENTO { get; set; }
         public System.DateTime DATAINSERIMENTO { get; set; }
         public Nullable<decimal> FK_IDDOCUMENTO { get; set; }
+        public bool MODIFICATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI1 { get; set; }
