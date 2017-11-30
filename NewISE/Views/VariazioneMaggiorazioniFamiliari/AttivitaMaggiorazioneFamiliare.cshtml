@@ -330,9 +330,9 @@
                     $("#btAnnullaMagFam_Var").addClass("disabled");
 
                     ///Se risulta in lavorazione abilito la il pulsante notifica
-                    if (docFormulario == true) {
-                    //if (inLavorazione == true) {
-                            $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
+                    //if (docFormulario == true) {
+                    if (inLavorazione == true) {
+                        $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                     } else {
                         ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione

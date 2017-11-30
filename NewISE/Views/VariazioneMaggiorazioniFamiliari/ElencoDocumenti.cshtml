@@ -1,0 +1,500 @@
+﻿@using System.Diagnostics
+@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+
+
+@{
+
+    decimal id = (decimal)ViewData["id"];
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
+    decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
+
+    EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
+    EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
+    EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
+
+    int nDoc = 0;
+
+    if (Model != null && Model.Any())
+    {
+        nDoc = Model.Count();
+    }
+
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+
+    //bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool solaLettura = false;
+
+}
+
+
+@Html.Hidden("hiEliminaDoc")
+
+<p style="padding-left: 15px;">
+    @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
+
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled" disabled="disabled">Nuovo documento</button>
+    }
+    else
+    {
+        <button class="btn btn-success" onclick="NuovoDocumento(@id, @chiamante)">Nuovo documento</button>
+    }
+
+</p>
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+    <table id="tabElencoDoc" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeDocumento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.estensione)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInserimento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.file)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                    <td style="text-align: center; width: 10%;">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
+                            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                        </a>
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @if (solaLettura)
+                        {
+                            <a href="#" class="disabled">Sostituisci</a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="SostituisciDocumento(@id, @chiamante)" id="linkSostituisciDoc">Sostituisci</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+</div>
+<p style="padding-left: 15px;">
+    @switch (enChiamante)
+    {
+        case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+            @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+
+</p>
+
+
+<div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NewnotificaModelLabel">Documenti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="NewViewDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="ReplaceDocModal" tabindex="-2" role="dialog" aria-labelledby="ReplaceDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="ReplacenotificaModelLabel">Documenti</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="ReplaceViewDocumento">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="DelDocModal" tabindex="-2" role="dialog" aria-labelledby="DelDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DelnotificaModelLabel">ATTENZIONE!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="DelViewDocumento">
+                    Procedere con l'eliminazione del documento?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btEliminaDoc" type="button" class="btn btn-info" onclick="ConfermaEliminaDoc();">Procedere</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    //debugger;
+    var guid = jQuery.guid++;
+
+    var nuovoIDTable = "tabElencoDoc" + guid;
+    var nuovoIdModalDelete = "DelDocModal" + guid;
+    var nuovoModalIns = "NewDocModal" + guid;
+    var nuovoModalReplace = "ReplaceDocModal" + guid;
+
+    $("#tabElencoDoc").prop("id", nuovoIDTable);
+    $("#DelDocModal").prop("id", nuovoIdModalDelete);
+    $("#NewDocModal").prop("id", nuovoModalIns);
+    $("#ReplaceDocModal").prop("id", nuovoModalReplace);
+
+
+    $("#" + nuovoIDTable).DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 3,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "destroy": true,
+    });
+
+    
+
+    function EliminaDoc(idDocumento) {
+        $('#' + nuovoIdModalDelete).modal('show');
+        $('#hiEliminaDoc').val(idDocumento);
+    }
+
+    function SostituisciDoc(idDocumento) {
+        $('#' + nuovoModalReplace).modal('show');
+        $('#hiEliminaDoc').val(idDocumento);
+    }
+
+    
+    function ConfermaEliminaDoc() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/EliminaDocumento";
+        var idDoc = parseInt($("#hiEliminaDoc").val());
+        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idDocumento: idDoc,
+                chiamante: chiamante
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    $('#'+ nuovoIdModalDelete).modal('hide');
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+
+    }
+
+    
+    function ConfermaSostituisciDoc() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaSostituisciDocumento";
+        var id = parseInt(@id);
+        var parentela = parseInt(@Convert.ToDecimal(enParentela));
+        var tipoDoc = parseInt(@Convert.ToDecimal(enTipoDoc));
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                tipoDoc: tipoDoc,
+                id: id,
+                parentela: parentela
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    $('#'+ nuovoModalReplace).modal('hide');
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+
+                Sblocca();
+
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+
+    }
+
+    
+
+    $('#' + nuovoIdModalDelete).on('hidden.bs.modal', function(e) {
+        //debugger;
+        AggiornaElencoDoc();
+        //$(this).remove();
+    });
+
+    $('#' + nuovoModalReplace).on('hidden.bs.modal', function(e) {
+        //debugger;
+        AggiornaElencoDoc();
+        //$(this).remove();
+    });
+
+    $('#' + nuovoModalIns).on('hidden.bs.modal', function(e) {
+        //debugger;
+        AggiornaElencoDoc();
+        //$(this).remove();
+    });
+
+
+    function AggiornaElencoDoc() {
+        //debugger;
+        var nDocOld = parseInt(@nDoc);
+        var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
+
+        if (newDoc != nDocOld) {
+            ElencoDocumentiFamiliare(@id, @tipoDoc, @parentela, @chiamante);
+        }
+    }
+
+
+    function PrelevaNumeroDocumentiAttuali(id, tipoDoc, parentela ) {
+        //debugger;
+        var rotta = "/Documenti/NumeroDocumentiSalvati";
+        var nDoc = 0;
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { id: id, tipoDoc: tipoDoc, parentela: parentela },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.errore === "") {
+                    nDoc = parseInt(result.nDoc);
+                } else {
+                    ErroreElaborazioneAjax(result.errore);
+                }
+            },
+            complete: {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+        return nDoc;
+    }
+
+    function NuovoDocumento(id, Chiamante) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoDocumentoMagFam";
+        var TipoDocumento = parseInt(@tipoDoc);
+        var Parentela = parseInt(@parentela);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $('#'+ nuovoModalIns).modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#NewViewDocumento").empty();
+                $("#NewViewDocumento").html(result);
+
+                var titoloPagina = $("#titoloPagina").val();
+                $("#NewnotificaModelLabel").empty();
+                $("#NewnotificaModelLabel").html('Documenti ' + titoloPagina);
+
+
+            },
+            complete: {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function SostituisciDocumento(id, Chiamante) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/SostituisciDocumento";
+        var TipoDocumento = parseInt(@tipoDoc);
+        var Parentela = parseInt(@parentela);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $('#'+ nuovoModalReplace).modal('show');
+            },
+            success: function (result) {
+                debugger;
+                $("#ReplaceViewDocumento").empty();
+                $("#ReplaceViewDocumento").html(result);
+
+                var titoloPagina = $("#titoloPagina").val();
+                $("#ReplacenotificaModelLabel").empty();
+                $("#ReplacenotificaModelLabel").html('Documenti ' + titoloPagina);
+
+
+            },
+            complete: {
+
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+</script>

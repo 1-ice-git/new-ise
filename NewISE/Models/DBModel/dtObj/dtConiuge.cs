@@ -696,34 +696,35 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<VariazioneConiugeModel> lcm = new List<VariazioneConiugeModel>();
             List<CONIUGE> lc = new List<CONIUGE>();
+            CONIUGE c = new CONIUGE();
 
             using (ModelDBISE db = new ModelDBISE())
             {
 
                 var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var lamf = mf.ATTIVAZIONIMAGFAM
+                var amf = mf.ATTIVAZIONIMAGFAM
                             .Where(e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
 
-                foreach (var att in lamf)
-                {
+                //foreach (var att in lamf)
+                //{
                     bool modificabile = false;
 
-                    lc = att.CONIUGE.ToList();
+                    lc = amf.CONIUGE.ToList();
 
                     if (lc?.Any() ?? false)
                     {
-                        if (att.ANNULLATO==false && att.ATTIVAZIONEMAGFAM==false & att.RICHIESTAATTIVAZIONE==false)
+                        if (amf.ANNULLATO==false && amf.ATTIVAZIONEMAGFAM==false & amf.RICHIESTAATTIVAZIONE==false)
                         {
                             modificabile = true;
                         }
-                        if (lc.Count()>1)
-                        {
+                        //if (lc.Count()>1)
+                        //{
                             foreach (var e in lc)
                             {
-                                if(e.MODIFICATO==false && e.FK_IDCONIUGE!=null)
-                                {
+                                //if(e.MODIFICATO==false && e.FK_IDCONIUGE!=null)
+                                //{
                                     VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                     {
                                         modificabile=modificabile,
@@ -745,34 +746,34 @@ namespace NewISE.Models.DBModel.dtObj
                                     };
                                     lcm.Add(cm);
                                     break;
-                                }
+                                //}
                             }
-                        }
-                        else
-                        {
-                            var con = lc.First();
-                            VariazioneConiugeModel cm = new VariazioneConiugeModel()
-                            {
-                                modificabile = modificabile,
-                                idConiuge = con.IDCONIUGE,
-                                idMaggiorazioniFamiliari = con.IDMAGGIORAZIONIFAMILIARI,
-                                idTipologiaConiuge = (EnumTipologiaConiuge)con.IDTIPOLOGIACONIUGE,
-                                idPassaporti = con.IDPASSAPORTI,
-                                idTitoloViaggio = con.IDTITOLOVIAGGIO,
-                                nome = con.NOME,
-                                cognome = con.COGNOME,
-                                codiceFiscale = con.CODICEFISCALE,
-                                dataInizio = con.DATAINIZIOVALIDITA,
-                                dataFine = con.DATAFINEVALIDITA,
-                                dataAggiornamento = con.DATAAGGIORNAMENTO,
-                                escludiPassaporto = con.ESCLUDIPASSAPORTO,
-                                dataNotificaPP = con.DATANOTIFICAPP,
-                                escludiTitoloViaggio = con.ESCLUDITITOLOVIAGGIO,
-                                dataNotificaTV = con.DATANOTIFICATV
-                            };
-                        lcm.Add(cm);
-                        }
-                    }
+                        //}
+                        //else
+                        //{
+                        //    var con = lc.First();
+                        //    VariazioneConiugeModel cm = new VariazioneConiugeModel()
+                        //    {
+                        //        modificabile = modificabile,
+                        //        idConiuge = con.IDCONIUGE,
+                        //        idMaggiorazioniFamiliari = con.IDMAGGIORAZIONIFAMILIARI,
+                        //        idTipologiaConiuge = (EnumTipologiaConiuge)con.IDTIPOLOGIACONIUGE,
+                        //        idPassaporti = con.IDPASSAPORTI,
+                        //        idTitoloViaggio = con.IDTITOLOVIAGGIO,
+                        //        nome = con.NOME,
+                        //        cognome = con.COGNOME,
+                        //        codiceFiscale = con.CODICEFISCALE,
+                        //        dataInizio = con.DATAINIZIOVALIDITA,
+                        //        dataFine = con.DATAFINEVALIDITA,
+                        //        dataAggiornamento = con.DATAAGGIORNAMENTO,
+                        //        escludiPassaporto = con.ESCLUDIPASSAPORTO,
+                        //        dataNotificaPP = con.DATANOTIFICAPP,
+                        //        escludiTitoloViaggio = con.ESCLUDITITOLOVIAGGIO,
+                        //        dataNotificaTV = con.DATANOTIFICATV
+                        //    };
+                        //lcm.Add(cm);
+                        //}
+                    //}
                 }
             }
             return lcm;

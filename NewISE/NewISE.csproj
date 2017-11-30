@@ -2639,6 +2639,12 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoImportoPensione.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumenti.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoDocumentoMagFam.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\SostituisciDocumento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
