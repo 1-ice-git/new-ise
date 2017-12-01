@@ -500,9 +500,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     //amfm = dtamf.GetAttivazioneMagFamDaLavorare(cm.idMaggiorazioniFamiliari, db);
 
-                    dtamf.AssociaConiuge(cm.idAttivazioneMagFam, c.IDCONIUGE, db);
+                    dtamf.AssociaConiugeAttivazione(cm.idAttivazioneMagFam, c.IDCONIUGE, db);
 
-                    dtamf.AssociaConiugeAttivazione(amfm.idAttivazioneMagFam, c.IDCONIUGE, db);
                 }
 
                 using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
@@ -586,70 +585,70 @@ namespace NewISE.Models.DBModel.dtObj
 
                 //foreach (var att in lamf)
                 //{
-                    bool modificabile = false;
+                bool modificabile = false;
 
-                    lc = amf.CONIUGE.ToList();
+                lc = amf.CONIUGE.ToList();
 
-                    if (lc?.Any() ?? false)
+                if (lc?.Any() ?? false)
+                {
+                    //if (att.ANNULLATO == false && att.ATTIVAZIONEMAGFAM == false & att.RICHIESTAATTIVAZIONE == false)
+                    //{
+                    //    modificabile = true;
+                    //}
+                    //if (lc.Count()>1)
+                    //{
+                    foreach (var e in lc)
                     {
-                        if (att.ANNULLATO == false && att.ATTIVAZIONEMAGFAM == false & att.RICHIESTAATTIVAZIONE == false)
+                        //if(e.MODIFICATO==false && e.FK_IDCONIUGE!=null)
+                        //{
+                        VariazioneConiugeModel cm = new VariazioneConiugeModel()
                         {
-                            modificabile = true;
-                        }
-                        //if (lc.Count()>1)
-                        //{
-                            foreach (var e in lc)
-                            {
-                                //if(e.MODIFICATO==false && e.FK_IDCONIUGE!=null)
-                                //{
-                                    VariazioneConiugeModel cm = new VariazioneConiugeModel()
-                                    {
-                                        modificabile=modificabile,
-                                        idConiuge = e.IDCONIUGE,
-                                        idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
-                                        idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                                        idPassaporti = e.IDPASSAPORTI,
-                                        idTitoloViaggio = e.IDTITOLOVIAGGIO,
-                                        nome = e.NOME,
-                                        cognome = e.COGNOME,
-                                        codiceFiscale = e.CODICEFISCALE,
-                                        dataInizio = e.DATAINIZIOVALIDITA,
-                                        dataFine = e.DATAFINEVALIDITA,
-                                        dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                        escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                                        dataNotificaPP = e.DATANOTIFICAPP,
-                                        escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                                        dataNotificaTV = e.DATANOTIFICATV
-                                    };
-                                    lcm.Add(cm);
-                                    break;
-                                //}
-                            }
+                            modificabile = modificabile,
+                            idConiuge = e.IDCONIUGE,
+                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
+                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                            idPassaporti = e.IDPASSAPORTI,
+                            idTitoloViaggio = e.IDTITOLOVIAGGIO,
+                            nome = e.NOME,
+                            cognome = e.COGNOME,
+                            codiceFiscale = e.CODICEFISCALE,
+                            dataInizio = e.DATAINIZIOVALIDITA,
+                            dataFine = e.DATAFINEVALIDITA,
+                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            escludiPassaporto = e.ESCLUDIPASSAPORTO,
+                            dataNotificaPP = e.DATANOTIFICAPP,
+                            escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
+                            dataNotificaTV = e.DATANOTIFICATV
+                        };
+                        lcm.Add(cm);
+                        break;
                         //}
-                        //else
-                        //{
-                        //    var con = lc.First();
-                        //    VariazioneConiugeModel cm = new VariazioneConiugeModel()
-                        //    {
-                        //        modificabile = modificabile,
-                        //        idConiuge = con.IDCONIUGE,
-                        //        idMaggiorazioniFamiliari = con.IDMAGGIORAZIONIFAMILIARI,
-                        //        idTipologiaConiuge = (EnumTipologiaConiuge)con.IDTIPOLOGIACONIUGE,
-                        //        idPassaporti = con.IDPASSAPORTI,
-                        //        idTitoloViaggio = con.IDTITOLOVIAGGIO,
-                        //        nome = con.NOME,
-                        //        cognome = con.COGNOME,
-                        //        codiceFiscale = con.CODICEFISCALE,
-                        //        dataInizio = con.DATAINIZIOVALIDITA,
-                        //        dataFine = con.DATAFINEVALIDITA,
-                        //        dataAggiornamento = con.DATAAGGIORNAMENTO,
-                        //        escludiPassaporto = con.ESCLUDIPASSAPORTO,
-                        //        dataNotificaPP = con.DATANOTIFICAPP,
-                        //        escludiTitoloViaggio = con.ESCLUDITITOLOVIAGGIO,
-                        //        dataNotificaTV = con.DATANOTIFICATV
-                        //    };
-                        //lcm.Add(cm);
-                        //}
+                    }
+                    //}
+                    //else
+                    //{
+                    //    var con = lc.First();
+                    //    VariazioneConiugeModel cm = new VariazioneConiugeModel()
+                    //    {
+                    //        modificabile = modificabile,
+                    //        idConiuge = con.IDCONIUGE,
+                    //        idMaggiorazioniFamiliari = con.IDMAGGIORAZIONIFAMILIARI,
+                    //        idTipologiaConiuge = (EnumTipologiaConiuge)con.IDTIPOLOGIACONIUGE,
+                    //        idPassaporti = con.IDPASSAPORTI,
+                    //        idTitoloViaggio = con.IDTITOLOVIAGGIO,
+                    //        nome = con.NOME,
+                    //        cognome = con.COGNOME,
+                    //        codiceFiscale = con.CODICEFISCALE,
+                    //        dataInizio = con.DATAINIZIOVALIDITA,
+                    //        dataFine = con.DATAFINEVALIDITA,
+                    //        dataAggiornamento = con.DATAAGGIORNAMENTO,
+                    //        escludiPassaporto = con.ESCLUDIPASSAPORTO,
+                    //        dataNotificaPP = con.DATANOTIFICAPP,
+                    //        escludiTitoloViaggio = con.ESCLUDITITOLOVIAGGIO,
+                    //        dataNotificaTV = con.DATANOTIFICATV
+                    //    };
+                    //lcm.Add(cm);
+                    //}
                     //}
                 }
             }

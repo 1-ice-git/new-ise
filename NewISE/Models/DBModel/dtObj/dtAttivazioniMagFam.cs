@@ -112,7 +112,6 @@ namespace NewISE.Models.DBModel.dtObj
             return amfm;
         }
 
-
         public IList<AttivazioniMagFamModel> GetListAttivazioniMagFamByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
             List<AttivazioniMagFamModel> lamfm = new List<AttivazioniMagFamModel>();
@@ -196,7 +195,6 @@ namespace NewISE.Models.DBModel.dtObj
             return amfm;
         }
 
-
         public AttivazioniMagFamModel GetUltimaAttivazioneMagFam(decimal idMaggiorazioneFamiliare, ModelDBISE db)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
@@ -221,7 +219,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return amfm;
         }
-
 
         public void SetAttivaziomeMagFam(ref AttivazioniMagFamModel amfm, ModelDBISE db)
         {

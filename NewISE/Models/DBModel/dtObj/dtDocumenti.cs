@@ -765,8 +765,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
+                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                    {
+                        dtamf.AssociaDocumentoAttivazione(amf.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
+                    }
 
-                    this.AssociaDocumentoAttivazione(amf.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                 }
             }
 

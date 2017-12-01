@@ -398,105 +398,110 @@ namespace NewISE.Controllers
 
                         HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
 
-                        using (dtDocumenti dtd = new dtDocumenti())
+                        using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                         {
-                            DocumentiModel dm = new DocumentiModel();
-                            bool esisteFile = false;
-                            bool gestisceEstensioni = false;
-                            bool dimensioneConsentita = false;
-                            string dimensioneMaxConsentita = string.Empty;
-
-                            Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
-                                out dimensioneConsentita, out dimensioneMaxConsentita, tipoDoc);
-
-                            if (esisteFile)
+                            using (dtDocumenti dtd = new dtDocumenti())
                             {
-                                if (gestisceEstensioni == false)
-                                {
-                                    throw new Exception(
-                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
-                                }
+                                DocumentiModel dm = new DocumentiModel();
+                                bool esisteFile = false;
+                                bool gestisceEstensioni = false;
+                                bool dimensioneConsentita = false;
+                                string dimensioneMaxConsentita = string.Empty;
 
-                                if (dimensioneConsentita)
+                                Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                                    out dimensioneConsentita, out dimensioneMaxConsentita, tipoDoc);
+
+                                if (esisteFile)
                                 {
-                                    switch (tipoDoc)
+                                    if (gestisceEstensioni == false)
                                     {
-                                        case EnumTipoDoc.Carta_Imbarco:
-                                        case EnumTipoDoc.Titolo_Viaggio:
-                                            switch (parentela)
-                                            {
-                                                case EnumParentela.Coniuge:
-                                                    dtd.AddDocumentoFromConiuge(ref dm, id, db);
-                                                    break;
-                                                case EnumParentela.Figlio:
-                                                    dtd.AddDocumentoFromFiglio(ref dm, id, db);
-                                                    break;
-                                                case EnumParentela.Richiedente:
-                                                    dtd.AddDocumentoTitoloViaggioFromRichiedente(ref dm, id, db);
-                                                    break;
-                                                default:
-                                                    throw new ArgumentOutOfRangeException("parentela");
-                                            }
-                                            break;
-                                        case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                                            break;
-                                        case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                                            break;
-                                        case EnumTipoDoc.Attestazione_Spese_Abitazione:
-                                            break;
-                                        case EnumTipoDoc.Clausole_Contratto_Alloggio:
-                                            break;
-                                        case EnumTipoDoc.Copia_Contratto_Locazione:
-                                            break;
-                                        case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
-                                            break;
-                                        case EnumTipoDoc.Attestazione_Trasloco:
-                                            break;
-                                        case EnumTipoDoc.Documento_Identita:
-                                            switch (parentela)
-                                            {
-                                                case EnumParentela.Coniuge:
-                                                    dtd.AddDocumentoFromConiuge(ref dm, id, db);
-                                                    if (idAttivazioneMagFam > 0)
-                                                    {
-                                                        dtd.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
-                                                    }
-                                                    break;
-                                                case EnumParentela.Figlio:
-                                                    dtd.AddDocumentoFromFiglio(ref dm, id, db);
-                                                    if (idAttivazioneMagFam > 0)
-                                                    {
-                                                        dtd.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
-                                                    }
-                                                    break;
-                                                case EnumParentela.Richiedente:
-                                                    dtd.AddDocumentoPassaportoFromRichiedente(ref dm, id, db);//ID è riferito all'idTrasferimento.
-                                                    break;
-                                                default:
-                                                    throw new ArgumentOutOfRangeException("parentela");
-                                            }
+                                        throw new Exception(
+                                            "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                    }
 
-                                            break;
-                                        case EnumTipoDoc.Lettera_Trasferimento:
-                                            break;
+                                    if (dimensioneConsentita)
+                                    {
+                                        switch (tipoDoc)
+                                        {
+                                            case EnumTipoDoc.Carta_Imbarco:
+                                            case EnumTipoDoc.Titolo_Viaggio:
+                                                switch (parentela)
+                                                {
+                                                    case EnumParentela.Coniuge:
+                                                        dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                        break;
+                                                    case EnumParentela.Figlio:
+                                                        dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                        break;
+                                                    case EnumParentela.Richiedente:
+                                                        dtd.AddDocumentoTitoloViaggioFromRichiedente(ref dm, id, db);
+                                                        break;
+                                                    default:
+                                                        throw new ArgumentOutOfRangeException("parentela");
+                                                }
+                                                break;
+                                            case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
+                                                break;
+                                            case EnumTipoDoc.Dichiarazione_Costo_Locazione:
+                                                break;
+                                            case EnumTipoDoc.Attestazione_Spese_Abitazione:
+                                                break;
+                                            case EnumTipoDoc.Clausole_Contratto_Alloggio:
+                                                break;
+                                            case EnumTipoDoc.Copia_Contratto_Locazione:
+                                                break;
+                                            case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
+                                                break;
+                                            case EnumTipoDoc.Attestazione_Trasloco:
+                                                break;
+                                            case EnumTipoDoc.Documento_Identita:
+                                                switch (parentela)
+                                                {
+                                                    case EnumParentela.Coniuge:
+                                                        dtd.AddDocumentoFromConiuge(ref dm, id, db);
+                                                        if (idAttivazioneMagFam > 0)
+                                                        {
+                                                            dtamf.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
+                                                        }
+                                                        break;
+                                                    case EnumParentela.Figlio:
+                                                        dtd.AddDocumentoFromFiglio(ref dm, id, db);
+                                                        if (idAttivazioneMagFam > 0)
+                                                        {
+                                                            dtamf.AssociaDocumentoAttivazione(idAttivazioneMagFam, dm.idDocumenti, db);
+                                                        }
+                                                        break;
+                                                    case EnumParentela.Richiedente:
+                                                        dtd.AddDocumentoPassaportoFromRichiedente(ref dm, id, db);//ID è riferito all'idTrasferimento.
+                                                        break;
+                                                    default:
+                                                        throw new ArgumentOutOfRangeException("parentela");
+                                                }
 
-                                        default:
-                                            throw new ArgumentOutOfRangeException("tipoDoc");
+                                                break;
+                                            case EnumTipoDoc.Lettera_Trasferimento:
+                                                break;
+
+                                            default:
+                                                throw new ArgumentOutOfRangeException("tipoDoc");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Il documento selezionato supera la dimensione massima consentita (" +
+                                            dimensioneMaxConsentita + " Mb).");
                                     }
                                 }
                                 else
                                 {
-                                    throw new Exception(
-                                        "Il documento selezionato supera la dimensione massima consentita (" +
-                                        dimensioneMaxConsentita + " Mb).");
+                                    throw new Exception("Il documento è obbligatorio.");
                                 }
-                            }
-                            else
-                            {
-                                throw new Exception("Il documento è obbligatorio.");
-                            }
 
+                            }
                         }
+
+
 
 
                     }
