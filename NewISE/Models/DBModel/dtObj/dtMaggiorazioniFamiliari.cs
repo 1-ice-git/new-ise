@@ -515,32 +515,30 @@ namespace NewISE.Models.DBModel.dtObj
 
                     try
                     {
+                        ///Prelevo la riga del ciclo di autorizzazione che si vuole annullare.
+                        var amfOld = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-
-
-                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
-
-                        if (amf?.IDATTIVAZIONEMAGFAM > 0)
+                        if (amfOld?.IDATTIVAZIONEMAGFAM > 0)
                         {
 
-                            amf.DATAAGGIORNAMENTO = DateTime.Now;
-                            amf.ANNULLATO = true;
+                            amfOld.DATAAGGIORNAMENTO = DateTime.Now;
+                            amfOld.ANNULLATO = true;///Annullo la riga del ciclo di autorizzazione.
 
                             int i = db.SaveChanges();
 
                             if (i > 0)
                             {
-
+                                ///Creo una nuova riga per il ciclo di autorizzazione.
                                 ATTIVAZIONIMAGFAM amfNew = new ATTIVAZIONIMAGFAM()
                                 {
-                                    IDMAGGIORAZIONIFAMILIARI = amf.IDMAGGIORAZIONIFAMILIARI,
+                                    IDMAGGIORAZIONIFAMILIARI = amfOld.IDMAGGIORAZIONIFAMILIARI,
                                     RICHIESTAATTIVAZIONE = false,
                                     ATTIVAZIONEMAGFAM = false,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     ANNULLATO = false,
                                 };
 
-                                db.ATTIVAZIONIMAGFAM.Add(amfNew);
+                                db.ATTIVAZIONIMAGFAM.Add(amfNew);///Consolido la riga del ciclo di autorizzazione.
 
                                 int j = db.SaveChanges();
 
@@ -548,25 +546,105 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                                     {
-                                        foreach (var c in amf.CONIUGE)
+                                        ///Cliclo tutte le righe valide per il coniuge collegate alla vecchia riga per il ciclo di autorizzazione.
+                                        foreach (var cOld in amfOld.CONIUGE)
                                         {
-                                            dtamf.AssociaConiuge(amfNew.IDATTIVAZIONEMAGFAM, c.IDCONIUGE, db);
+                                            ///Creo una nuova riga per il coniuge con le informazioni della vecchia riga.
+                                            CONIUGE cnew = new CONIUGE()
+                                            {
+                                                IDTIPOLOGIACONIUGE = cOld.IDTIPOLOGIACONIUGE,
+                                                IDMAGGIORAZIONIFAMILIARI = cOld.IDMAGGIORAZIONIFAMILIARI,
+                                                IDPASSAPORTI = cOld.IDPASSAPORTI,
+                                                IDTITOLOVIAGGIO = cOld.IDTITOLOVIAGGIO,
+                                                NOME = cOld.NOME,
+                                                COGNOME = cOld.COGNOME,
+                                                CODICEFISCALE = cOld.CODICEFISCALE,
+                                                DATAINIZIOVALIDITA = cOld.DATAINIZIOVALIDITA,
+                                                DATAFINEVALIDITA = cOld.DATAFINEVALIDITA,
+                                                ESCLUDIPASSAPORTO = cOld.ESCLUDIPASSAPORTO,
+                                                ESCLUDITITOLOVIAGGIO = cOld.ESCLUDITITOLOVIAGGIO,
+                                                DATANOTIFICAPP = cOld.DATANOTIFICAPP,
+                                                DATANOTIFICATV = cOld.DATANOTIFICATV,
+                                                DATAAGGIORNAMENTO = cOld.DATAAGGIORNAMENTO,
+                                                MODIFICATO = cOld.MODIFICATO,
+                                                FK_IDCONIUGE = cOld.FK_IDCONIUGE
+                                            };
+
+                                            amfNew.CONIUGE.Add(cnew);///Inserisco la nuova riga per il coniuge associata alla nuova riga per il ciclo di autorizzazione.
+
+                                            int j2 = db.SaveChanges();
+
+                                            if (j2 > 0)
+                                            {
+                                                ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
+                                                var ladfOld =
+                                                    cOld.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                                        .OrderByDescending(a => a.IDALTRIDATIFAM);
+
+                                                if (ladfOld?.Any() ?? false)
+                                                {
+                                                    var adfOld = ladfOld.First();
+                                                    ///Creo una nuova riga di altri dati familiari identica alla vechia riga.
+                                                    ALTRIDATIFAM adfNew = new ALTRIDATIFAM()
+                                                    {
+                                                        IDCONIUGE = adfOld.IDCONIUGE,
+                                                        DATANASCITA = adfOld.DATANASCITA,
+                                                        CAPNASCITA = adfOld.CAPNASCITA,
+                                                        COMUNENASCITA = adfOld.COMUNENASCITA,
+                                                        PROVINCIANASCITA = adfOld.PROVINCIANASCITA,
+                                                        NAZIONALITA = adfOld.NAZIONALITA,
+                                                        INDIRIZZORESIDENZA = adfOld.INDIRIZZORESIDENZA,
+                                                        CAPRESIDENZA = adfOld.CAPRESIDENZA,
+                                                        COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
+                                                        PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
+                                                        DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
+                                                        ANNULLATO = adfOld.ANNULLATO
+                                                    };
+
+                                                    cnew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al coniuge
+
+                                                    ///Verifico se la vecchia riga di altri dati familiari era collegata alla vecchia riga del ciclo di autorizzazione,
+                                                    /// se si associo la nuova riga di altri dati familiari alla nuova riga del ciclo di autorizzazione.
+                                                    if (adfOld.ATTIVAZIONIMAGFAM?.Any(a => a.IDATTIVAZIONEMAGFAM == amfOld.IDATTIVAZIONEMAGFAM) ?? false)
+                                                    {
+                                                        dtamf.AssociaAltriDatiFamiliari(amfNew.IDATTIVAZIONEMAGFAM, adfNew.IDALTRIDATIFAM, db);
+                                                    }
+
+
+
+                                                }
+
+                                                var ldOld =
+                                                    cOld.DOCUMENTI.Where(
+                                                        a =>
+                                                            a.IDTIPODOCUMENTO ==
+                                                            (decimal)EnumTipoDoc.Documento_Identita);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Errore nella fase d'insrimento per le informazioni altri dati familiari.");
+                                            }
+
+
+
+
+
 
                                         }
 
-                                        foreach (var f in amf.FIGLI)
+                                        foreach (var f in amfOld.FIGLI)
                                         {
                                             dtamf.AssociaFiglio(amfNew.IDATTIVAZIONEMAGFAM, f.IDFIGLI, db);
                                         }
 
-                                        foreach (var d in amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari))
+                                        foreach (var d in amfOld.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari))
                                         {
                                             dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                         }
 
                                         using (dtDocumenti dtd = new dtDocumenti())
                                         {
-                                            foreach (var d in amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita))
+                                            foreach (var d in amfOld.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita))
                                             {
                                                 dtd.AssociaDocumentoAttivazione(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                             }
@@ -575,10 +653,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 else
                                 {
-                                    throw new Exception("Errore nella fase d'inserimento della riga di attivazione maggiorazione familiare per l'id maggiorazione familiare: " + amf.IDMAGGIORAZIONIFAMILIARI);
+                                    throw new Exception("Errore nella fase d'inserimento della riga di attivazione maggiorazione familiare per l'id maggiorazione familiare: " + amfOld.IDMAGGIORAZIONIFAMILIARI);
                                 }
 
-                                if (amf.CONIUGE.Count <= 0 || amf.FIGLI.Count <= 0)
+                                if (amfOld.CONIUGE.Count <= 0 || amfOld.FIGLI.Count <= 0)
                                 {
                                     using (dtRinunciaMagFam dtrmf = new dtRinunciaMagFam())
                                     {
@@ -590,13 +668,13 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                                 {
-                                    dtce.AnnullaMessaggioEvento(amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
+                                    dtce.AnnullaMessaggioEvento(amfOld.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari, db);
                                 }
 
                             }
                             else
                             {
-                                throw new Exception("Errore nella fase di annullamento della riga di attivazione maggiorazione familiare per l'id: " + amf.IDATTIVAZIONEMAGFAM);
+                                throw new Exception("Errore nella fase di annullamento della riga di attivazione maggiorazione familiare per l'id: " + amfOld.IDATTIVAZIONEMAGFAM);
                             }
 
                         }
