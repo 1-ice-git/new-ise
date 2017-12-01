@@ -17,6 +17,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        #region Funzioni di validazione custom
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -27,7 +28,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var t = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari).TRASFERIMENTO;
+                    var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                     if (cm.dataInizio < t.DATAPARTENZA)
                     {
@@ -79,6 +80,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+        #endregion
 
 
 
@@ -384,7 +386,7 @@ namespace NewISE.Models.DBModel.dtObj
                                escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
                                dataNotificaTV = e.DATANOTIFICATV,
                                FK_idConiuge = e.FK_IDCONIUGE,
-                               idAttivazione = idAttivazioneMagFam,
+                               idAttivazioneMagFam = idAttivazioneMagFam,
                                Modificato = e.MODIFICATO
 
                            }).ToList();
@@ -471,7 +473,10 @@ namespace NewISE.Models.DBModel.dtObj
                 ESCLUDIPASSAPORTO = cm.escludiPassaporto,
                 DATANOTIFICAPP = cm.dataNotificaPP,
                 ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
-                DATANOTIFICATV = cm.dataNotificaTV
+                DATANOTIFICATV = cm.dataNotificaTV,
+                MODIFICATO = cm.Modificato,
+                FK_IDCONIUGE = cm.FK_idConiuge
+
 
             };
 
@@ -491,9 +496,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                 {
-                    AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+                    //AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
 
-                    amfm = dtamf.GetAttivazioneMagFamDaLavorare(cm.idMaggiorazioniFamiliari, db);
+                    //amfm = dtamf.GetAttivazioneMagFamDaLavorare(cm.idMaggiorazioniFamiliari, db);
+
+                    dtamf.AssociaConiuge(cm.idAttivazioneMagFam, c.IDCONIUGE, db);
+
                     dtamf.AssociaConiugeAttivazione(amfm.idAttivazioneMagFam, c.IDCONIUGE, db);
                 }
 
@@ -511,14 +519,17 @@ namespace NewISE.Models.DBModel.dtObj
 
             }
         }
-
-        public void EditConiuge(ConiugeModel cm, ModelDBISE db)
+        /// <summary>
+        /// Modifica del coniuge lato maggiorazioni familiari.
+        /// </summary>
+        /// <param name="cm">Oggetto ConiugeModel</param>
+        /// <param name="db">Oggetto ModelDBISE</param>
+        public void EditConiugeMagFam(ConiugeModel cm, ModelDBISE db)
         {
             try
             {
                 var c = db.CONIUGE.Find(cm.idConiuge);
 
-                DateTime dtIni = cm.dataInizio.Value;
                 DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
 
                 if (c != null && c.IDCONIUGE > 0)
@@ -527,6 +538,12 @@ namespace NewISE.Models.DBModel.dtObj
                         c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
                         c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
                     {
+                        c.IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge;
+                        c.NOME = cm.nome;
+                        c.COGNOME = cm.cognome;
+                        c.CODICEFISCALE = cm.codiceFiscale;
+                        c.DATAINIZIOVALIDITA = cm.dataInizio.Value;
+                        c.DATAFINEVALIDITA = dtFin;
                         c.DATAAGGIORNAMENTO = DateTime.Now;
 
                         int i = db.SaveChanges();
@@ -537,156 +554,16 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-
-
                             decimal idTrasferimento = db.MAGGIORAZIONIFAMILIARI.Find(c.IDMAGGIORAZIONIFAMILIARI).TRASFERIMENTO.IDTRASFERIMENTO;
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Annulla la riga", "CONIUGE", db, idTrasferimento, c.IDCONIUGE);
-
-
-
-
-                            ConiugeModel newc = new ConiugeModel()
-                            {
-                                idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
-                                idTipologiaConiuge = cm.idTipologiaConiuge,
-                                idPassaporti = cm.idPassaporti,
-                                idTitoloViaggio = cm.idTitoloViaggio,
-                                nome = cm.nome,
-                                cognome = cm.cognome,
-                                codiceFiscale = cm.codiceFiscale,
-                                dataInizio = cm.dataInizio.Value,
-                                dataFine = dtFin,
-                                escludiPassaporto = cm.escludiPassaporto,
-                                dataNotificaPP = cm.dataNotificaPP,
-                                escludiTitoloViaggio = cm.escludiTitoloViaggio,
-                                dataNotificaTV = cm.dataNotificaTV
-                            };
-
-                            this.SetConiuge(ref newc, db);
-
-                            #region AltriDatiFamiliari
-
-                            var ladf =
-                                c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
-                            if (ladf?.Any() ?? false)
-                            {
-                                var adf = ladf.First();
-                                adf.DATAAGGIORNAMENTO = DateTime.Now;
-                                adf.ANNULLATO = true;
-
-                                int j = db.SaveChanges();
-                                if (j > 0)
-                                {
-                                    AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel()
-                                    {
-                                        idConiuge = newc.idConiuge,
-                                        nazionalita = adf.NAZIONALITA,
-                                        indirizzoResidenza = adf.INDIRIZZORESIDENZA,
-                                        capResidenza = adf.CAPRESIDENZA,
-                                        comuneResidenza = adf.COMUNERESIDENZA,
-                                        provinciaResidenza = adf.PROVINCIARESIDENZA,
-                                        dataAggiornamento = DateTime.Now,
-                                        annullato = false
-                                    };
-                                    using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
-                                    {
-                                        dtadf.SetAltriDatiFamiliariConiuge(adfm, db);
-                                    }
-                                }
-
-                            }
-                            #endregion
-
-                            #region Associa Percentuali maggiorazioni coniuge
-                            using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                            {
-                                List<PercentualeMagConiugeModel> lpmcm =
-                                    dtpc.GetListaPercentualiMagConiugeByRangeDate(cm.idTipologiaConiuge, dtIni, dtFin, db)
-                                        .ToList();
-
-                                if (lpmcm?.Any() ?? false)
-                                {
-                                    foreach (var pmcm in lpmcm)
-                                    {
-                                        dtpc.AssociaPercentualeMaggiorazioneConiuge(newc.idConiuge, pmcm.idPercentualeConiuge, db);
-                                    }
-                                }
-                                else
-                                {
-                                    throw new Exception("Non è presente nessuna percentuale del coniuge.");
-                                }
-                            }
-                            #endregion
-
-                            #region Associa documenti
-
-                            var ld = c.DOCUMENTI;
-
-                            if (ld?.Any() ?? false)
-                            {
-                                using (dtDocumenti dtd = new dtDocumenti())
-                                {
-                                    foreach (var d in ld)
-                                    {
-                                        dtd.AssociaDocumentoConiuge(newc.idConiuge, d.IDDOCUMENTO, db);
-                                    }
-                                }
-
-                            }
-
-                            #endregion
-
-                            #region Associa Pensioni
-                            using (dtPensione dtp = new dtPensione())
-                            {
-                                List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
-
-                                lpcm = dtp.GetPensioniByIdConiuge(cm.idConiuge, db).OrderBy(a => a.dataInizioValidita).ToList();
-
-                                if (lpcm?.Any() ?? false)
-                                {
-                                    var pcmFirst = lpcm.First();
-                                    var pcmLast = lpcm.Last();
-
-                                    if (pcmFirst.dataInizioValidita < cm.dataInizio.Value)
-                                    {
-                                        pcmFirst.dataInizioValidita = cm.dataInizio.Value;
-                                        dtp.SetNuovoImportoPensione(pcmFirst, newc.idConiuge, db);
-                                    }
-
-                                    if (pcmLast.dataFineValidita > cm.dataFine)
-                                    {
-                                        pcmLast.dataFineValidita = cm.dataFine;
-                                        dtp.SetNuovoImportoPensione(pcmLast, newc.idConiuge, db);
-                                    }
-
-                                    foreach (var pcm in lpcm)
-                                    {
-
-                                        if (pcm.idPensioneConiuge != pcmFirst.idPensioneConiuge && pcm.idPensioneConiuge != pcmLast.idPensioneConiuge)
-                                        {
-                                            dtp.SetNuovoImportoPensione(pcm, newc.idConiuge, db);
-                                        }
-
-
-                                    }
-
-
-                                }
-
-                            }
-                            #endregion
-
-
                         }
                     }
                 }
 
-                //db.Database.CurrentTransaction.Commit();
             }
             catch (Exception ex)
             {
-                //db.Database.CurrentTransaction.Rollback();
+
                 throw ex;
             }
         }
@@ -715,7 +592,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (lc?.Any() ?? false)
                     {
-                        if (amf.ANNULLATO==false && amf.ATTIVAZIONEMAGFAM==false & amf.RICHIESTAATTIVAZIONE==false)
+                        if (att.ANNULLATO == false && att.ATTIVAZIONEMAGFAM == false & att.RICHIESTAATTIVAZIONE == false)
                         {
                             modificabile = true;
                         }

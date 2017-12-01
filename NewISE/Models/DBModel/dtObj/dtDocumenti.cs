@@ -17,6 +17,9 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+
+
         public void AssociaDocumentoConiuge(decimal idConiuge, decimal idDocumento, ModelDBISE db)
         {
             try
@@ -61,21 +64,18 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
-        public IList<DocumentiModel> GetFormulariMaggiorazioniFamiliariPartenza(decimal idMaggiorazioniFamiliari)
+        public IList<DocumentiModel> GetFormulariAttivazioneMagFam(decimal idAttivazioneMagFam)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-                var lamf =
-                    mf.ATTIVAZIONIMAGFAM.Where(
-                        a => (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true) || a.ANNULLATO == false)
-                        .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
-                if (lamf?.Any() ?? false)
+
+                if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    var amf = lamf.First();
+
                     var ld =
                         amf.DOCUMENTI.Where(
                             a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari)
@@ -95,10 +95,76 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public IList<DocumentiModel> GetDocumentiIdentitaConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+
+                var c = db.CONIUGE.Find(idConiuge);
+
+                var ld =
+                    c.DOCUMENTI.Where(
+                        a =>
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                        .OrderByDescending(a => a.IDDOCUMENTO);
 
 
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = f
+                                 });
+                }
 
 
+            }
+
+            return ldm;
+        }
+
+        public IList<DocumentiModel> GetDocumentiIdentitaFigli(decimal idFiglio, decimal idAttivitaMagFam)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var fi = db.FIGLI.Find(idFiglio);
+                var ld =
+                    fi.DOCUMENTI.Where(
+                        a =>
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                            a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam))
+                        .OrderByDescending(a => a.IDTIPODOCUMENTO);
+
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = f
+                                 });
+                }
+            }
+
+            return ldm;
+        }
 
         /// <summary>
         /// 
@@ -107,13 +173,14 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="tipodoc"></param>
         /// <param name="parentela"></param>
         /// <returns></returns>
-        public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
+        public IList<DocumentiModel> GetDocumentiByIdTable(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente, decimal idAttivazioneMagFam = 0)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 List<DOCUMENTI> ld = new List<DOCUMENTI>();
+                //ATTIVAZIONIMAGFAM amf = new ATTIVAZIONIMAGFAM();
 
                 switch (tipodoc)
                 {
@@ -161,21 +228,64 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Trasloco:
                         break;
                     case EnumTipoDoc.Documento_Identita:
-
-                        switch (parentela)
+                        if (idAttivazioneMagFam > 0)
                         {
-                            case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            case EnumParentela.Richiedente:
-                                ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
+                            switch (parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    var c = db.CONIUGE.Find(id);
+                                    ld =
+                                        c.DOCUMENTI.Where(
+                                            a => a.IDTIPODOCUMENTO == (decimal)tipodoc &&
+                                                 a.ATTIVAZIONIMAGFAM.Any(
+                                                     b =>
+                                                         b.ANNULLATO == false &&
+                                                         b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                                            .OrderByDescending(a => a.IDDOCUMENTO)
+                                            .ToList();
+
+
+                                    break;
+                                case EnumParentela.Figlio:
+                                    var f = db.FIGLI.Find(id);
+                                    ld =
+                                        f.DOCUMENTI.Where(
+                                            a =>
+                                                a.IDTIPODOCUMENTO == (decimal)tipodoc &&
+                                                a.ATTIVAZIONIMAGFAM.Any(
+                                                    b =>
+                                                        b.ANNULLATO == false &&
+                                                        b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam))
+                                            .OrderByDescending(a => a.IDDOCUMENTO)
+                                            .ToList();
+
+                                    break;
+                                case EnumParentela.Richiedente:
+                                    ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("parentela");
+                            }
                         }
+                        else
+                        {
+                            switch (parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                case EnumParentela.Figlio:
+                                    ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+
+                                    break;
+                                case EnumParentela.Richiedente:
+                                    ld = db.PASSAPORTORICHIEDENTE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException("parentela");
+                            }
+                        }
+
                         break;
                     case EnumTipoDoc.Lettera_Trasferimento:
                         break;
@@ -518,23 +628,16 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetFormularioMaggiorazioniFamiliari(ref DocumentiModel dm, decimal idMaggiorazioniFamiliari, ModelDBISE db)
+        public void SetFormularioMaggiorazioniFamiliari(ref DocumentiModel dm, decimal idAttivazioneMagFam, ModelDBISE db)
         {
             MemoryStream ms = new MemoryStream();
             DOCUMENTI d = new DOCUMENTI();
 
             dm.file.InputStream.CopyTo(ms);
+            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
-            var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-
-            var lamf =
-                mf.ATTIVAZIONIMAGFAM.Where(
-                    a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
-                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
-            if (lamf?.Any() ?? false)
+            if (amf?.IDATTIVAZIONEMAGFAM > 0)
             {
-                var amf = lamf.First();
-
                 d.NOMEDOCUMENTO = dm.nomeDocumento;
                 d.ESTENSIONE = dm.estensione;
                 d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari;
@@ -545,6 +648,8 @@ namespace NewISE.Models.DBModel.dtObj
                 if (db.SaveChanges() > 0)
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
+                    var mf = amf.MAGGIORAZIONIFAMILIARI;
+
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario maggiorazioni familiari).", "Documenti", db, mf.TRASFERIMENTO.IDTRASFERIMENTO, dm.idDocumenti);
                 }
                 else
@@ -556,6 +661,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw new Exception("Errore nella fase di inserimento del formulario maggiorazioni familiari.");
             }
+
+
 
 
         }
@@ -638,6 +745,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             var c = db.CONIUGE.Find(idConiuge);
             var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+            var amf = c.ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First(a => a.ANNULLATO == false);
 
             if (c != null && c.IDCONIUGE > 0)
             {
@@ -657,6 +765,8 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     dm.idDocumenti = d.IDDOCUMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
+
+                    this.AssociaDocumentoAttivazione(amf.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                 }
             }
 
@@ -944,7 +1054,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
                         bool modificabile = false;
-                        if (e.RICHIESTAATTIVAZIONE==false && e.ATTIVAZIONEMAGFAM==false)
+                        if (e.RICHIESTAATTIVAZIONE == false && e.ATTIVAZIONEMAGFAM == false)
                         {
                             modificabile = true;
                             coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
@@ -974,14 +1084,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 IdAttivazione = e.IDATTIVAZIONEMAGFAM,
                                 DataAggiornamento = e.DATAAGGIORNAMENTO,
                                 ColoreSfondo = coloresfondo,
-                                ColoreTesto=coloretesto,
-                                progressivo=i
+                                ColoreTesto = coloretesto,
+                                progressivo = i
                             };
 
                             ldm.Add(amf);
                         }
 
-                        i++;                    
+                        i++;
 
                     }
 
@@ -1073,9 +1183,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     Modificabile = modificabile,
                                     IdAttivazione = e.IDATTIVAZIONEMAGFAM,
                                     DataAggiornamento = e.DATAAGGIORNAMENTO,
-                                    ColoreTesto=coloretesto,
-                                    ColoreSfondo=coloresfondo,
-                                    progressivo=i
+                                    ColoreTesto = coloretesto,
+                                    ColoreSfondo = coloresfondo,
+                                    progressivo = i
                                 };
 
                                 ldm.Add(amf);

@@ -2,7 +2,7 @@
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 @{
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
@@ -17,7 +17,7 @@
         }
         else
         {
-            @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
+            @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
         }
 
     }
@@ -29,7 +29,7 @@
         }
         else
         {
-            @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
+            @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
         }
 
     }
@@ -90,7 +90,7 @@
                     @if (item.HasPensione)
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkPensione">
                                 <img src='~/Immagini/Simbolo semplice Euro Green.png' width='30' title="Pensione" />
                             </a>
                         </td>
@@ -98,7 +98,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare); " id="linkPensione">
+                            <a href="#" onclick=" Pensione(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkPensione">
                                 <img src="~/Immagini/Simbolo semplice Euro Red.png" width="30" title="Pensione" />
                             </a>
                         </td>
@@ -106,7 +106,7 @@
                     @if (item.idAltriDati > 0)
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare);" id="linkAltriDatiFam">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam );" id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Green.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -114,7 +114,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare); " id="linkAltriDatiFam">
+                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Red.png" width="30" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -123,7 +123,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) ) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -131,7 +131,7 @@
                     else
                     {
                         <td style="text-align: center;">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari)) ">
+                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari), @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
                             </a>
                         </td>
@@ -143,27 +143,7 @@
     </table>
 </div>
 
-@*<div class="modal fade " id="DocModal" tabindex="-1" role="dialog" aria-labelledby="DocModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Documenti</h3>
-                </div>
-                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                    <p id="viewDocumento">
-                        <img src="~/Immagini/Loading/ajax-loader (1).gif" />
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button id="btUpload" type="button" class="btn btn-info" onclick="">Salva</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                </div>
-            </div>
-        </div>
-    </div>*@
+
 <script type="text/javascript">
 
     $("#tabElencoConiuge").DataTable({
@@ -220,14 +200,14 @@
     PulsantiNotificaAttivaMagFam();
 
 
-    function Pensione(idConiuge) {
+    function Pensione(idConiuge, idAttivazioneMagFam) {
         //debugger;
         var rotta = "/PensioneConiuge/ElencoPensioniConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idConiuge: idConiuge },
+            data: { idConiuge: idConiuge, idAttivazioneMagFam: idAttivazioneMagFam },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -255,14 +235,14 @@
 
     }
 
-    function AltriDatiFamiliari(idConiuge) {
+    function AltriDatiFamiliari(idConiuge, idAttivazioneMagFam) {
         //debugger;
         var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiuge";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idConiuge: idConiuge },
+            data: { idConiuge: idConiuge, idAttivazioneMagFam: idAttivazioneMagFam },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -332,14 +312,14 @@
 
     }
 
-    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante) {
+    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante, idAttivazioneMagFam) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante },
+            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante, idAttivazioneMagFam: idAttivazioneMagFam },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -371,39 +351,4 @@
     }
 
 
-
-
-    //   function DocumentoModal() {
-    //    //debugger;
-    //    var rotta = "/Documenti/LetteraDiTrasferimento";
-    //    var idTrasferimento = parseInt($("#idTrasferimento").val());
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST", //Le info testuali saranno passate in POST
-    //        data: { idTrasferimento: idTrasferimento },
-    //        dataType: 'html',
-    //        async: false,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            $('#inviaDocModal').modal('show');
-    //            //Blocca();
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            $("#viewDocumento").empty();
-    //            $("#viewDocumento").html(result);
-
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            //Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-
-    //}
 </script>

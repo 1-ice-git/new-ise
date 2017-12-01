@@ -1,4 +1,5 @@
 ﻿
+@using NewISE.Models.DBModel
 @model NewISE.Models.DBModel.FigliModel
 
 <link href="~/Content/css/NuovoFiglio.css" rel="stylesheet" />
@@ -7,9 +8,11 @@
 
 @{
 
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
+    TrasferimentoModel tm = (TrasferimentoModel)ViewData["Trasferimento"];
 
     var errori = ViewData.ModelState;
+
 }
 
 
@@ -17,9 +20,8 @@
 {
     @Html.AntiForgeryToken()
 
-    @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
-
-
+    @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
+    @Html.Hidden("idMaggiorazioniFamiliari", tm.idTrasferimento)
 
     <div style="padding-right: 15px;">
         <div class="form-horizontal">
@@ -61,7 +63,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.dataInizio, htmlAttributes: new { @class = "control-label col-xs-2" })
                 <div class="col-xs-10">
-                    @Html.TextBoxFor(model => model.dataInizio, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.dataInizio, new { @class = "form-control", placeholder = tm.dataPartenza.ToShortDateString() })
                     @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
                 </div>
             </div>
@@ -107,7 +109,7 @@
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 
@@ -125,7 +127,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                        break;
+                                                    break;
         }
 
     }
