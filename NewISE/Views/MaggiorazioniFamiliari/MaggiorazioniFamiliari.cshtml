@@ -1,10 +1,9 @@
-﻿@*@model NewISE.Models.DBModel.MaggiorazioniFamiliariModel*@
+﻿<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
 
 @{
 
     bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
-
-    //decimal idMagFam = Model.idMaggiorazioniFamiliari;
     decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 
 }
@@ -123,16 +122,26 @@
 
 
 <script type="text/javascript">
-    $('#tabsMaggiorazioniFamiliari').tab();
+    $.noConflict();
+    jQuery(document).ready(function ($) {
+        $('#tabsMaggiorazioniFamiliari').tab();
+    });
+
+
+
+    //$(function () {
+    //    $('#tabsMaggiorazioniFamiliari').tab();
+    //});
+
 
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                    }
+                                                                }
     else
     {
         @:ElencoFigli();
-                    }
+                                                                }
 
 
 

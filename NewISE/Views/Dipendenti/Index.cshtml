@@ -1,4 +1,5 @@
-﻿<link href="~/Content/Dipendenti.css" rel="stylesheet" />
+﻿
+<link href="~/Content/Dipendenti.css" rel="stylesheet" />
 
 @{
     ViewBag.Title = "Dipendenti";
@@ -7,6 +8,8 @@
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
 
 }
+
+
 
 <input type="hidden" id="hMatricola" value="" />
 <input type="hidden" id="hAmministratore" value="@admin.ToString()" />

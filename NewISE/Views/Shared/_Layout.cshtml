@@ -1,12 +1,32 @@
 ﻿@using System.Web.Optimization;
 @using System.Security.Claims;
+@using System.Security.Policy
 @using NewISE.Models;
 @using NewISE.Models.Tools;
+
+
 
 <!DOCTYPE html>
 
 <html>
 <head>
+
+    @{
+        bool reale = false;
+        AccountModel ac = new AccountModel();
+        AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+        string nominativo = string.Empty;
+
+        ac = Utility.UtenteAutorizzato();
+
+        if (ac != null && ac.idUtenteAutorizzato > 0)
+        {
+            nominativo = ac.nominativo + " (" + ac.utente + ")";
+        }
+
+
+    }
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     @*<meta name="viewport" content="width=device-width, initial-scale=1.0">*@
@@ -20,6 +40,8 @@
 
     @Scripts.Render("~/Scripts/select2")
     @Scripts.Render("~/bundles/jqueryBlock")
+
+
 
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
@@ -96,55 +118,18 @@
 
 
 
-    @{
-        bool reale = false;
-        AccountModel ac = new AccountModel();
-        AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-        string nominativo = string.Empty;
 
-        ac = Utility.UtenteAutorizzato();
-
-        if (ac != null && ac.idUtenteAutorizzato > 0)
-        {
-            nominativo = ac.nominativo + " (" + ac.utente + ")";
-        }
-
-        //if (currentClaimsPrincipal.Identity.IsAuthenticated)
-        //{
-        //    foreach (Claim claim in currentClaimsPrincipal.Claims)
-        //    {
-        //        if (claim.Type == ClaimTypes.NameIdentifier)
-        //        {
-        //            idUtente = Convert.ToDecimal(claim.Value);
-        //        }
-        //        else if (claim.Type == ClaimTypes.Name)
-        //        {
-        //            nome = claim.Value;
-        //        }
-        //        else if (claim.Type == ClaimTypes.Surname)
-        //        {
-        //            cognome = claim.Value;
-        //        }
-        //        else if (claim.Type == ClaimTypes.GivenName)
-        //        {
-        //            matricola = claim.Value;
-        //        }
-        //    }
-        //}
-
-        //if (!string.IsNullOrWhiteSpace(cognome) && !string.IsNullOrWhiteSpace(nome))
-        //{
-        //    nominativo = cognome + " " + nome + " (" + matricola + ")";
-        //}
-
-    }
 
     <script type="text/javascript">
+
         $(document).tooltip();
         $("input[type=submit]").button();
         $("input[type=button]").button();
     </script>
+
 </head>
+
+
 <body>
 
     <div>
@@ -191,7 +176,7 @@
                 }
             </div>
             <div class="col-xs-8 text-right ">
-                <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a class="btn_link">Elaborazioni</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Statistiche")">Statistiche</a> | <a class="btn_link"  onclick="Blocca();" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link">Notifiche</a> | <a class="btn_link">Utenze</a>
+                <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a class="btn_link">Elaborazioni</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Statistiche")">Statistiche</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link">Notifiche</a> | <a class="btn_link">Utenze</a>
             </div>
         </div>
     </div>

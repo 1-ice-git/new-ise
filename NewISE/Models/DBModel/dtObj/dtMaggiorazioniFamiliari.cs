@@ -554,7 +554,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             //dtamf.AssociaConiugeAttivazione(amfNew.IDATTIVAZIONEMAGFAM, cOld.IDCONIUGE, db);
 
                                             ///Creo una nuova riga per il coniuge con le informazioni della vecchia riga.
-                                            CONIUGE cnew = new CONIUGE()
+                                            CONIUGE cNew = new CONIUGE()
                                             {
                                                 IDTIPOLOGIACONIUGE = cOld.IDTIPOLOGIACONIUGE,
                                                 IDMAGGIORAZIONIFAMILIARI = cOld.IDMAGGIORAZIONIFAMILIARI,
@@ -574,12 +574,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FK_IDCONIUGE = cOld.FK_IDCONIUGE
                                             };
 
-                                            amfNew.CONIUGE.Add(cnew);///Inserisco la nuova riga per il coniuge associata alla nuova riga per il ciclo di autorizzazione.
+                                            amfNew.CONIUGE.Add(cNew);///Inserisco la nuova riga per il coniuge associata alla nuova riga per il ciclo di autorizzazione.
 
                                             int j2 = db.SaveChanges();
 
                                             if (j2 > 0)
                                             {
+                                                #region Altri dati familiari coniuge
                                                 ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
                                                 var ladfOld =
                                                     cOld.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
@@ -605,7 +606,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         ANNULLATO = adfOld.ANNULLATO
                                                     };
 
-                                                    cnew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al coniuge
+                                                    cNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al coniuge
 
                                                     int j3 = db.SaveChanges();
 
@@ -620,10 +621,13 @@ namespace NewISE.Models.DBModel.dtObj
                                                     }
                                                     else
                                                     {
-                                                        throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione altri dati familiari.");
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione altri dati familiari per il coniuge.");
                                                     }
 
                                                 }
+                                                #endregion
+
+                                                #region Documenti identità coniuge
                                                 ///Prelevo tutti i vecchi documenti d'identità.
                                                 var ldOld =
                                                     cOld.DOCUMENTI.Where(
@@ -632,7 +636,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                             a.IDTIPODOCUMENTO ==
                                                             (decimal)EnumTipoDoc.Documento_Identita);
 
-                                                foreach (var dOld in ldOld)
+                                                foreach (DOCUMENTI dOld in ldOld)
                                                 {
                                                     ///Creo la nuova riga per il documento con l'informazioni della vecchia riga.
                                                     DOCUMENTI dNew = new DOCUMENTI()
@@ -646,7 +650,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO
                                                     };
 
-                                                    cnew.DOCUMENTI.Add(dNew);///Consolido il documento associandolo alla nuova riga del coniuge.
+                                                    cNew.DOCUMENTI.Add(dNew);///Consolido il documento associandolo alla nuova riga del coniuge.
 
                                                     int j4 = db.SaveChanges();
 
@@ -664,18 +668,70 @@ namespace NewISE.Models.DBModel.dtObj
                                                         throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione documenti d'identità");
                                                     }
                                                 }
+                                                #endregion
+
+                                                #region Pensioni
+
+                                                var lpOld = cOld.PENSIONE.Where(a => a.ANNULLATO == false);
+
+                                                foreach (PENSIONE pOld in lpOld)
+                                                {
+                                                    PENSIONE pNew = new PENSIONE()
+                                                    {
+                                                        IMPORTOPENSIONE = pOld.IMPORTOPENSIONE,
+                                                        DATAINIZIO = pOld.DATAINIZIO,
+                                                        DATAFINE = pOld.DATAFINE,
+                                                        DATAAGGIORNAMENTO = pOld.DATAAGGIORNAMENTO,
+                                                        ANNULLATO = pOld.ANNULLATO
+                                                    };
+
+                                                    cNew.PENSIONE.Add(pNew);
+
+                                                    int j5 = db.SaveChanges();
+
+                                                    if (j5 > 0)
+                                                    {
+                                                        if (pOld.ATTIVAZIONIMAGFAM?.Any(a => a.IDATTIVAZIONEMAGFAM == amfOld.IDATTIVAZIONEMAGFAM) ?? false)
+                                                        {
+                                                            dtamf.AssociaPensioneAttivazione(amfNew.IDATTIVAZIONEMAGFAM, pNew.IDPENSIONE, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione pensioni.");
+                                                    }
+                                                }
+
+                                                #endregion
+
+                                                #region Percentuale maggiorazione coniuge
+                                                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                                                {
+                                                    DateTime dtIni = cNew.DATAINIZIOVALIDITA;
+                                                    DateTime dtFin = cNew.DATAFINEVALIDITA;
+
+                                                    List<PercentualeMagConiugeModel> lpmcm =
+                                                        dtpc.GetListaPercentualiMagConiugeByRangeDate((EnumTipologiaConiuge)cNew.IDTIPOLOGIACONIUGE, dtIni, dtFin, db).ToList();
+
+                                                    if (lpmcm?.Any() ?? false)
+                                                    {
+                                                        foreach (var pmcm in lpmcm)
+                                                        {
+                                                            dtpc.AssociaPercentualeMaggiorazioneConiuge(cNew.IDCONIUGE, pmcm.idPercentualeConiuge, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Non è presente nessuna percentuale del coniuge.");
+                                                    }
+                                                }
+                                                #endregion
 
                                             }
                                             else
                                             {
                                                 throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione coniuge.");
                                             }
-
-
-
-
-
-
                                         }
                                         #endregion
 
@@ -708,6 +764,141 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             if (x > 0)
                                             {
+                                                #region Altri dati familiari
+                                                ///Prelevo la vecchia riga di altri dati familiari collegati alla vecchia riga del coniuge.
+                                                var ladfOld =
+                                                    fOld.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
+                                                        .OrderByDescending(a => a.IDALTRIDATIFAM);
+
+                                                if (ladfOld?.Any() ?? false)///Esiste questo controllo ma è impossibile che si verifichi il contrario perché gli altri dati familiari sono obbligatori per attivare il ciclo di autorizzazione.
+                                                {
+                                                    var adfOld = ladfOld.First();
+                                                    ///Creo una nuova riga di altri dati familiari identica alla vechia riga.
+                                                    ALTRIDATIFAM adfNew = new ALTRIDATIFAM()
+                                                    {
+                                                        IDCONIUGE = adfOld.IDCONIUGE,
+                                                        DATANASCITA = adfOld.DATANASCITA,
+                                                        CAPNASCITA = adfOld.CAPNASCITA,
+                                                        COMUNENASCITA = adfOld.COMUNENASCITA,
+                                                        PROVINCIANASCITA = adfOld.PROVINCIANASCITA,
+                                                        NAZIONALITA = adfOld.NAZIONALITA,
+                                                        INDIRIZZORESIDENZA = adfOld.INDIRIZZORESIDENZA,
+                                                        CAPRESIDENZA = adfOld.CAPRESIDENZA,
+                                                        COMUNERESIDENZA = adfOld.COMUNERESIDENZA,
+                                                        PROVINCIARESIDENZA = adfOld.PROVINCIARESIDENZA,
+                                                        DATAAGGIORNAMENTO = adfOld.DATAAGGIORNAMENTO,
+                                                        ANNULLATO = adfOld.ANNULLATO
+                                                    };
+
+                                                    fNew.ALTRIDATIFAM.Add(adfNew);///La consolido e l'associo al figlio
+
+                                                    int x2 = db.SaveChanges();
+
+                                                    if (x2 > 0)
+                                                    {
+                                                        ///Verifico se la vecchia riga di altri dati familiari era collegata alla vecchia riga del ciclo di autorizzazione,
+                                                        /// se si associo la nuova riga di altri dati familiari alla nuova riga del ciclo di autorizzazione.
+                                                        if (adfOld.ATTIVAZIONIMAGFAM?.Any(a => a.IDATTIVAZIONEMAGFAM == amfOld.IDATTIVAZIONEMAGFAM) ?? false)
+                                                        {
+                                                            dtamf.AssociaAltriDatiFamiliari(amfNew.IDATTIVAZIONEMAGFAM, adfNew.IDALTRIDATIFAM, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione altri dati familiari per i figli.");
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region Documenti
+                                                ///Prelevo tutti i vecchi documenti d'identità.
+                                                var ldOld =
+                                                    fOld.DOCUMENTI.Where(
+                                                        a =>
+                                                            a.MODIFICATO == false &&
+                                                            a.IDTIPODOCUMENTO ==
+                                                            (decimal)EnumTipoDoc.Documento_Identita);
+
+                                                foreach (var dOld in ldOld)
+                                                {
+                                                    ///Creo la nuova riga per il documento con l'informazioni della vecchia riga.
+                                                    DOCUMENTI dNew = new DOCUMENTI()
+                                                    {
+                                                        IDTIPODOCUMENTO = dOld.IDTIPODOCUMENTO,
+                                                        NOMEDOCUMENTO = dOld.NOMEDOCUMENTO,
+                                                        ESTENSIONE = dOld.ESTENSIONE,
+                                                        FILEDOCUMENTO = dOld.FILEDOCUMENTO,
+                                                        DATAINSERIMENTO = dOld.DATAINSERIMENTO,
+                                                        MODIFICATO = dOld.MODIFICATO,
+                                                        FK_IDDOCUMENTO = dOld.FK_IDDOCUMENTO
+                                                    };
+
+                                                    fNew.DOCUMENTI.Add(dNew);///Consolido il documento associandolo alla nuova riga del coniuge.
+
+                                                    int j4 = db.SaveChanges();
+
+                                                    if (j4 > 0)
+                                                    {
+                                                        ///Verifico se il vecchio documento era associato al vecchio ciclo di autorizzazione,
+                                                        /// se si, la nuova riga del documento l'associo alla nuova riga per il ciclo di autorizzazione.
+                                                        if (dOld.ATTIVAZIONIMAGFAM?.Any(a => a.IDATTIVAZIONEMAGFAM == amfOld.IDATTIVAZIONEMAGFAM) ?? false)
+                                                        {
+                                                            dtamf.AssociaDocumentoAttivazione(amfNew.IDATTIVAZIONEMAGFAM, dNew.IDDOCUMENTO, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Fase elaborazione documenti d'identità");
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region Indennità primo segretario
+                                                using (dtIndennitaPrimoSegretario dtips = new dtIndennitaPrimoSegretario())
+                                                {
+                                                    DateTime dtIni = fNew.DATAINIZIOVALIDITA;
+                                                    DateTime dtFin = fNew.DATAFINEVALIDITA;
+
+                                                    List<IndennitaPrimoSegretModel> lipsm =
+                                                        dtips.GetIndennitaPrimoSegretario(dtIni, dtFin, db).ToList();
+
+                                                    if (lipsm?.Any() ?? false)
+                                                    {
+                                                        foreach (var ipsm in lipsm)
+                                                        {
+                                                            dtips.AssociaIndennitaPrimoSegretarioFiglio(fNew.IDFIGLI, ipsm.idIndPrimoSegr, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception(
+                                                            "Errore nella fase di annulla richiesta. Non è presente nessuna indennità di primo segretario per il figlio che si vuole inserire.");
+                                                    }
+                                                }
+                                                #endregion
+
+                                                #region Percentuale maggiorazioni figli
+                                                using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
+                                                {
+                                                    DateTime dtIni = fNew.DATAINIZIOVALIDITA;
+                                                    DateTime dtFin = fNew.DATAFINEVALIDITA;
+
+                                                    List<PercentualeMagFigliModel> lpmfm =
+                                                        dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fNew.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db).ToList();
+
+                                                    if (lpmfm?.Any() ?? false)
+                                                    {
+                                                        foreach (var pmfm in lpmfm)
+                                                        {
+                                                            dtpf.AssociaPercentualeMaggiorazioneFigli(fNew.IDFIGLI, pmfm.idPercMagFigli, db);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Errore nella fase di annulla richiesta. Non è presente nessuna percentuale per il figlio.");
+                                                    }
+                                                }
+                                                #endregion
 
                                             }
                                             else
@@ -724,13 +915,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                         }
 
-                                        using (dtDocumenti dtd = new dtDocumenti())
-                                        {
-                                            foreach (var d in amfOld.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita))
-                                            {
-                                                //dtd.AssociaDocumentoAttivazione(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
-                                            }
-                                        }
+
                                     }
                                 }
                                 else

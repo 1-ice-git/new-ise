@@ -31,7 +31,7 @@ namespace NewISE.Models.DBModel
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-         public DateTime DataInizioEvento { get; set; }
+        public DateTime DataInizioEvento { get; set; }
 
         [Required(ErrorMessage = "La data scadenza è richiesta.")]
         [DataType(DataType.DateTime)]
@@ -41,7 +41,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data completato è richiesta.")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime DataCompletato { get; set; }
+        public DateTime? DataCompletato { get; set; }
         public bool Annullato { get; set; }
     }
 

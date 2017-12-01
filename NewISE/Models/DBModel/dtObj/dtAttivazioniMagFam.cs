@@ -455,5 +455,30 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void AssociaPensioneAttivazione(decimal idAttivazioneMagFam, decimal idPensione, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PENSIONE).Load();
+                var p = db.PENSIONE.Find(idPensione);
+                amf.PENSIONE.Add(p);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare la pensione per la fase di attivazione. {0}", idAttivazioneMagFam));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }
