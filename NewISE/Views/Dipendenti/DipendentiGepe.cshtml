@@ -72,7 +72,7 @@
     });
 
     function GestioneAbilitazioneMenu(matricola) {
-        //debugger;
+      //  debugger;
 
         if (MenuGestioneTrasferimento(matricola) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -96,6 +96,16 @@
             $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
 
+        if (MenuSospensione(matricola) == 1) {
+            $("#lkSospensione").removeAttr("disabled");
+            $("#mnSospensione").removeClass("disabled");
+            $('#lkSospensione').attr('onClick', 'Sospensione();');
+        }
+        else {
+            $("#lkSospensione").attr("disabled", "disabled");
+            $("#mnSospensione").addClass("disabled");
+            $("#lkSospensione").removeAttr("onClick");
+        }
 
     }
 
@@ -264,6 +274,54 @@
         return valoreRitorno;
     }
 
+    function MenuSospensione(matricola) {
+        //debugger;
+        var rotta = "/Sospensione/VerificaSospensione";
+        
+        var valoreRitorno = 0;
+
+        if (matricola != "" && matricola != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                   // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaSospensione != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
 
     function FiltraDipendente() {
         //debugger;

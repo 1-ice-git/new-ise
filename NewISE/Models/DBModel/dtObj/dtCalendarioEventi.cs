@@ -75,27 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
         {
-            //int funzEv = (int)fe;
-            //using (ModelDBISE db = new ModelDBISE())
-            //{
-            //    var result = db.CALENDARIOEVENTI.Where(c => c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv).ToList();
-            //    foreach (var x in result)
-            //    {
-            //        CALENDARIOEVENTI y = db.CALENDARIOEVENTI.Find(x.IDCALENDARIOEVENTI);
-            //        y.COMPLETATO = true;
-            //        y.DATACOMPLETATO = DateTime.Now;
-            //        int i = db.SaveChanges();
-            //        if (i <= 0)
-            //        {
-            //            throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
-            //        }
-            //        else
-            //        {
-            //            Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica in 'Completato' dell'evento relativo al calendario eventi.",
-            //              "CALENDARIOEVENTI", db, x.IDTRASFERIMENTO, x.IDCALENDARIOEVENTI);
-            //        }
-            //    }
-            //}
+            
             using (ModelDBISE db = new ModelDBISE())
             {
                 decimal funzEv = (decimal)fe;
@@ -189,10 +169,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-
                 bool admin = Utility.Amministratore(out am);
-
-
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     if (admin)
@@ -356,105 +333,144 @@ namespace NewISE.Models.DBModel.dtObj
             List<CalendarViewModel> ElencoAttivita = new List<CalendarViewModel>();
 
             CalendarViewModel attivi = new CalendarViewModel();
-
+            AccountModel am = new AccountModel();
             try
             {
-
+                bool admin = Utility.Amministratore(out am);
                 using (ModelDBISE db = new ModelDBISE())
-                {
-                    //var la = db.CALENDARIOEVENTI.Where(a=>a.ANNULLATO == false && inizio >= a.DATAINIZIOEVENTO && inizio <= a.DATASCADENZA && a.COMPLETATO == false).ToList();
-
-                    var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
-                    la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date).ToList();
-
-                    var numeroAttivi = la.Count;
-                    int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
-                    DateTime attuale;
-                    if (inizio.Day != 1)
+                {                    
+                    if (admin)
                     {
-                        attuale = inizio.AddMonths(1);
-                        meseCorrente = attuale.Month;
-                        annoCorrente = attuale.Year;
-                    }
-
-
-
-                    string StringDate = string.Format("{0:yyyy-MM-dd}", inizio.Date);
-                    //string StartDateString = StringDate + "T00:00:00"; //ISO 8601 format
-                    // string EndDateString = StringDate + "T23:59:59";
-                    if (numeroAttivi != 0)
-                    {
-                        attivi = new CalendarViewModel()
+                        var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                        la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date).ToList();
+                        var numeroAttivi = la.Count;
+                        int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
+                        DateTime attuale;
+                        if (inizio.Day != 1)
                         {
-                            title = "Attivi: " + numeroAttivi.ToString(),// + "\nCompletati:" + numeroCompletati.ToString() + "\nScaduti: " + numeroScaduti.ToString(),
-                                                                         // Completati = "Completati: " + numeroCompletati.ToString(),
-                            start = StringDate,
-                            end = StringDate,
-                            // color="blue"
-                        };
-                        ElencoAttivita.Add(attivi);
+                            attuale = inizio.AddMonths(1);
+                            meseCorrente = attuale.Month;
+                            annoCorrente = attuale.Year;
+                        }
+                        string StringDate = string.Format("{0:yyyy-MM-dd}", inizio.Date);
+                        //string StartDateString = StringDate + "T00:00:00"; //ISO 8601 format
+                        // string EndDateString = StringDate + "T23:59:59";
+                        if (numeroAttivi != 0)
+                        {
+                            attivi = new CalendarViewModel()
+                            {
+                                title = "Attivi: " + numeroAttivi.ToString(),// + "\nCompletati:" + numeroCompletati.ToString() + "\nScaduti: " + numeroScaduti.ToString(),
+                                                                             // Completati = "Completati: " + numeroCompletati.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                // color="blue"
+                            };
+                            ElencoAttivita.Add(attivi);
+                        }
+                        CalendarViewModel completati = new CalendarViewModel();
+                        var lc = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == true &&
+                        a.DATAINIZIOEVENTO.Month == meseCorrente &&
+                        a.DATAINIZIOEVENTO.Year == annoCorrente).ToList();
+                        var numeroCompletati = lc.Count;
+                        if (numeroCompletati != 0)
+                        {
+                            completati = new CalendarViewModel()
+                            {
+                                title = "Completati: " + numeroCompletati.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                color = "green"
+                            };
+                            ElencoAttivita.Add(completati);
+                        }
+
+                        CalendarViewModel scaduti = new CalendarViewModel();
+                        //var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                        //a.DATASCADENZA.Value < DateTime.Now).ToList();
+                        var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                         inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
+                        var numeroScaduti = ls.Count;
+                        if (numeroScaduti != 0)
+                        {
+                            scaduti = new CalendarViewModel()
+                            {
+                                title = "Scaduti: " + numeroScaduti.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                color = "red"
+                            };
+                            ElencoAttivita.Add(scaduti);
+                        }
+                    }
+                    else
+                    {
+                        var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
+                        la = la.Where(a => inizio.Date >= a.DATAINIZIOEVENTO.Date && inizio <= a.DATASCADENZA.Date &&
+                         a.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente).ToList();
+                        var numeroAttivi = la.Count;
+                        int meseCorrente = inizio.Month, annoCorrente = inizio.Year;
+                        DateTime attuale;
+                        if (inizio.Day != 1)
+                        {
+                            attuale = inizio.AddMonths(1);
+                            meseCorrente = attuale.Month;
+                            annoCorrente = attuale.Year;
+                        }
+                        string StringDate = string.Format("{0:yyyy-MM-dd}", inizio.Date);
+                        //string StartDateString = StringDate + "T00:00:00"; //ISO 8601 format
+                        // string EndDateString = StringDate + "T23:59:59";
+                        if (numeroAttivi != 0)
+                        {
+                            attivi = new CalendarViewModel()
+                            {
+                                title = "Attivi: " + numeroAttivi.ToString(),// + "\nCompletati:" + numeroCompletati.ToString() + "\nScaduti: " + numeroScaduti.ToString(),
+                                                                             // Completati = "Completati: " + numeroCompletati.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                // color="blue"
+                            };
+                            ElencoAttivita.Add(attivi);
+                        }
+                        CalendarViewModel completati = new CalendarViewModel();
+                        var lc = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == true &&
+                        a.DATAINIZIOEVENTO.Month == meseCorrente &&
+                        a.DATAINIZIOEVENTO.Year == annoCorrente 
+                        && a.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente).ToList();
+                        var numeroCompletati = lc.Count;
+                        if (numeroCompletati != 0)
+                        {
+                            completati = new CalendarViewModel()
+                            {
+                                title = "Completati: " + numeroCompletati.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                color = "green"
+                            };
+                            ElencoAttivita.Add(completati);
+                        }
+
+                        CalendarViewModel scaduti = new CalendarViewModel();
+                        //var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                        //a.DATASCADENZA.Value < DateTime.Now).ToList();
+                        var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                         inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now
+                         && a.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente).ToList();
+                        var numeroScaduti = ls.Count;
+                        if (numeroScaduti != 0)
+                        {
+                            scaduti = new CalendarViewModel()
+                            {
+                                title = "Scaduti: " + numeroScaduti.ToString(),
+                                start = StringDate,
+                                end = StringDate,
+                                color = "red"
+                            };
+                            ElencoAttivita.Add(scaduti);
+                        }
                     }
 
-                    CalendarViewModel completati = new CalendarViewModel();
-                    var lc = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == true &&
-                    a.DATAINIZIOEVENTO.Month == meseCorrente &&
-                    a.DATAINIZIOEVENTO.Year == annoCorrente).ToList();
-                    var numeroCompletati = lc.Count;
-                    if (numeroCompletati != 0)
-                    {
-                        completati = new CalendarViewModel()
-                        {
-                            title = "Completati: " + numeroCompletati.ToString(),
-                            start = StringDate,
-                            end = StringDate,
-                            color = "green"
-                        };
-                        ElencoAttivita.Add(completati);
-                    }
-
-                    CalendarViewModel scaduti = new CalendarViewModel();
-                    //var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                    //a.DATASCADENZA.Value < DateTime.Now).ToList();
-                    var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                     inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
-                    var numeroScaduti = ls.Count;
-                    if (numeroScaduti != 0)
-                    {
-                        scaduti = new CalendarViewModel()
-                        {
-                            title = "Scaduti: " + numeroScaduti.ToString(),
-                            start = StringDate,
-                            end = StringDate,
-                            color = "red"
-                        };
-                        ElencoAttivita.Add(scaduti);
-                    }
+                    return ElencoAttivita;
                 }
-
-                return ElencoAttivita;
-
-                //using (ModelDBISE db = new ModelDBISE())
-                //{
-                //    int contaAtt = db.CALENDARIOEVENTI
-                //       .Where(p => p.COMPLETATO == false && p.DATAINIZIOEVENTO >= inizio)
-                //       .Select(g => new { }).Count();
-                //    int a = contaAtt;
-                //    string titolo = "Attivi " + a.ToString();
-
-                //    attivi = (from e in db.CALENDARIOEVENTI
-                //              where e.COMPLETATO == false && e.DATAINIZIOEVENTO >= inizio
-                //              select new CalendarViewModel()
-                //              {
-                //                  id = e.IDCALENDARIOEVENTI,
-                //                  title = titolo,
-                //                  start = (DateTime)e.DATAINIZIOEVENTO,
-                //                  //   end=(DateTime)e.DATASCADENZA,                                  
-                //              }).Distinct().ToList();
-                //    x.AddRange(attivi);           
-
-
-                //    return x;
-                //}
             }
             catch (Exception ex)
             {
