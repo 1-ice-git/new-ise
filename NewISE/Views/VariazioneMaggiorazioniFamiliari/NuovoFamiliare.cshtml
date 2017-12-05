@@ -17,7 +17,7 @@
 
 }
 
-@using (@Ajax.BeginForm("InserisciFamiliare", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliare", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewFamiliare" }))
+@using (@Ajax.BeginForm("InserisciFamiliare", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewFamiliare" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left:15px;padding-right:35px">
@@ -35,7 +35,7 @@
                     <div id="divCombo" class="col-xs-4">
                         @Html.Label("Tipo Familiare", htmlAttributes: new { @class = "control-label" })
                         <div class="select2-container select2-container--classic">
-                            @Html.DropDownList("lTipologiaFamiliare", ViewBag.lTipologiaFamiliare as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "NuovoFamiliare();" })
+                            @Html.DropDownList("lTipologiaFamiliare", ViewBag.lTipologiaFamiliare as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "NuovoFamiliare();", @onclick = "NuovoFamiliare();" })
                         </div>
                     </div>
                 </div>
@@ -54,23 +54,19 @@
 
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @*@Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })*@
 </p>
-
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/MyValidateDate.js"></script>
 
 <script type="text/javascript">
 
     function NuovoFamiliare() {
-        //debugger;
-        var tipofamiliare = $("#lTipologiaFamiliare").val();
-        var idMaggiorazioniFamiliari = $("#idMaggiorazioniFamiliari").val();
+        debugger;
+        //var tipofamiliare = $("#lTipologiaFamiliare").val();
+        //var idMaggiorazioniFamiliari = $("#idMaggiorazioniFamiliari").val();
 
         if (tipofamiliare == 1)
         {
-            var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoConiuge";
+            //var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoConiuge";
         }
         if (tipofamiliare != "" && tipofamiliare != undefined) {
             $.ajax({
@@ -109,4 +105,6 @@
 
 
 </script>
+
+
 

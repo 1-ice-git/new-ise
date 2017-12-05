@@ -1179,9 +1179,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public IList<DocumentiModel> GetDocumentiById(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
+        public IList<VariazioneDocumentiModel> GetDocumentiById(decimal id, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
         {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -1190,21 +1190,50 @@ namespace NewISE.Models.DBModel.dtObj
                 switch (tipodoc)
                 {
                     case EnumTipoDoc.Documento_Identita:
+                        #region enum documento identita
 
                         switch (parentela)
                         {
                             case EnumParentela.Coniuge:
-                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                #region enum_coniuge
+                                ld = db.CONIUGE.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc && ((a.FK_IDDOCUMENTO==null && a.MODIFICATO==false) ||(a.FK_IDDOCUMENTO>0 && a.MODIFICATO==false))).ToList();
+                                bool modificabile;
+
+                                foreach (var e in ld)
+                                {
+                                    //var num_atttivazioni = db.DOCUMENTI.Where(x => x.IDDOCUMENTO == e.IDDOCUMENTO).Count();
+                                    var num_atttivazioni = db.DOCUMENTI.Find(e.IDDOCUMENTO).CONIUGE.Count();
+                                    modificabile = false;
+
+                                    if (num_atttivazioni==1 && e.FK_IDDOCUMENTO==null)
+                                    {
+                                        modificabile = true;
+                                    }
+
+                                    var dm = new VariazioneDocumentiModel()
+                                    {
+                                        idDocumenti=e.IDDOCUMENTO,
+                                        dataInserimento=e.DATAINSERIMENTO,
+                                        Modificabile = modificabile,
+                                        nomeDocumento=e.NOMEDOCUMENTO,
+                                        estensione=e.ESTENSIONE
+                                    };
+                                    ldm.Add(dm);
+
+                                }
+                                #endregion
                                 break;
+
                             case EnumParentela.Figlio:
-                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                ld = db.FIGLI.Find(id).DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc && ((a.FK_IDDOCUMENTO == null && a.MODIFICATO == false) || (a.FK_IDDOCUMENTO > 0 && a.MODIFICATO == false))).ToList();
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException("parentela");
                         }
+                        #endregion
                         break;
                     case EnumTipoDoc.Formulario_Maggiorazioni_Familiari:
-
+                        //da rivedere
                         ld = db.ATTIVAZIONIMAGFAM.Find(id)
                             .DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc)
                             .OrderByDescending(a => a.DATAINSERIMENTO).ToList();
@@ -1215,20 +1244,21 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
 
-                if (ld?.Any() ?? false)
-                {
-                    ldm.AddRange(from d in ld
-                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                                 select new DocumentiModel()
-                                 {
-                                     idDocumenti = d.IDDOCUMENTO,
-                                     nomeDocumento = d.NOMEDOCUMENTO,
-                                     estensione = d.ESTENSIONE,
-                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                                     dataInserimento = d.DATAINSERIMENTO,
-                                     file = f
-                                 });
-                }
+                //if (ld?.Any() ?? false)
+                //{
+                //    ldm.AddRange(from d in ld
+                //                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                //                 select new VariazioneDocumentiModel()
+                //                 {
+                //                     idDocumenti = d.IDDOCUMENTO,
+                //                     nomeDocumento = d.NOMEDOCUMENTO,
+                //                     estensione = d.ESTENSIONE,
+                //                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                //                     dataInserimento = d.DATAINSERIMENTO,
+                //                     Modificabile=false,
+                //                     file = f
+                //                 });
+                //}
 
 
             }
@@ -1253,6 +1283,8 @@ namespace NewISE.Models.DBModel.dtObj
                 d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
+                d.MODIFICATO = dm.Modificato;
+                d.FK_IDDOCUMENTO = dm.fk_iddocumento;
 
                 c.DOCUMENTI.Add(d);
 
@@ -1265,8 +1297,6 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
-
-
 
     }
 
