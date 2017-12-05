@@ -33,16 +33,25 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public IList<PensioneConiugeModel> GetPensioniByIdConiuge(decimal idConiuge)
+        /// <summary>
+        /// Preleva le pensioni del coniuge passato come id, relatve all'attivazione passata come ID
+        /// </summary>
+        /// <param name="idConiuge">ID del coniufe</param>
+        /// <param name="idAttivazioneMagFam">ID dell'attivazione</param>
+        /// <returns></returns>
+        public IList<PensioneConiugeModel> GetPensioniConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             List<PensioneConiugeModel> lpc = new List<PensioneConiugeModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lp =
-                    db.CONIUGE.Find(idConiuge)
-                        .PENSIONE.Where(a => a.ANNULLATO == false)
-                        .OrderBy(a => a.DATAINIZIO)
-                        .ToList();
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                var c = amf.CONIUGE.First(a => a.IDCONIUGE == idConiuge);
+
+
+                var lp = c.PENSIONE.Where(a => a.ANNULLATO == false)
+                    .OrderBy(a => a.DATAINIZIO)
+                    .ToList();
                 if (lp?.Any() ?? false)
                 {
                     lpc = (from e in lp
@@ -127,6 +136,38 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public IList<PensioneConiugeModel> GetPensioniByIdConiuge(decimal idConiuge)
+        {
+            List<PensioneConiugeModel> lpc = new List<PensioneConiugeModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lp =
+                db.CONIUGE.Find(idConiuge)
+                    .PENSIONE.Where(a => a.ANNULLATO == false)
+                    .OrderBy(a => a.DATAINIZIO)
+                    .ToList();
+                if (lp?.Any() ?? false)
+                {
+                    lpc = (from e in lp
+                           select new PensioneConiugeModel()
+                           {
+                               idPensioneConiuge = e.IDPENSIONE,
+                               importoPensione = e.IMPORTOPENSIONE,
+                               dataInizioValidita = e.DATAINIZIO,
+                               dataFineValidita = e.DATAFINE,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO
+                           }).ToList();
+                }
+            }
+
+            return lpc;
+
+        }
+
+
+
 
         public PensioneConiugeModel GetPensioneByID(decimal idPensione)
         {
@@ -156,7 +197,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void EliminaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
+        public void EliminaImportoPensione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam)
         {
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
 
@@ -184,7 +225,7 @@ namespace NewISE.Models.DBModel.dtObj
                             annullato = false,
                         };
 
-                        SetPensioneConiuge(ref pcmNew, idConiuge, db);
+                        SetPensioneConiuge(ref pcmNew, idConiuge, idAttivazioneMagFam, db);
                     }
                     else
                     {
@@ -204,7 +245,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void EditImportoPensione(PensioneConiugeModel pcm, decimal idConiuge)
+        public void EditImportoPensione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam)
         {
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
             PensioneConiugeModel pcmSuccessivo = new PensioneConiugeModel();
@@ -243,10 +284,10 @@ namespace NewISE.Models.DBModel.dtObj
                                         annullato = false,
                                     };
 
-                                    SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                                    SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                                 }
 
-                                SetPensioneConiuge(ref pcm, idConiuge, db);
+                                SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
 
                                 if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
                                 {
@@ -260,13 +301,13 @@ namespace NewISE.Models.DBModel.dtObj
                                         annullato = false,
                                     };
 
-                                    SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                                    SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                                 }
 
                             }
                             else
                             {
-                                SetPensioneConiuge(ref pcm, idConiuge, db);
+                                SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
                             }
                         }
                         else
@@ -285,7 +326,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     annullato = false,
                                 };
 
-                                SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                                SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                             }
                         }
 
@@ -302,7 +343,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public void SetNuovoImportoPensione(PensioneConiugeModel pcm, decimal idConiuge, ModelDBISE db)
+        public void SetNuovoImportoPensione(PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, ModelDBISE db)
         {
 
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
@@ -340,10 +381,10 @@ namespace NewISE.Models.DBModel.dtObj
                             annullato = false,
                         };
 
-                        SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                     }
 
-                    SetPensioneConiuge(ref pcm, idConiuge, db);
+                    SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
 
                     if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
                     {
@@ -357,13 +398,13 @@ namespace NewISE.Models.DBModel.dtObj
                             annullato = false,
                         };
 
-                        SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                        SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                     }
 
                 }
                 else
                 {
-                    SetPensioneConiuge(ref pcm, idConiuge, db);
+                    SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
                 }
 
                 //db.Database.CurrentTransaction.Commit();
@@ -376,7 +417,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void SetNuovoImportoPensione(ref PensioneConiugeModel pcm, decimal idConiuge)
+        public void SetNuovoImportoPensione(ref PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam)
         {
 
             PensioneConiugeModel pcmPrecedente = new PensioneConiugeModel();
@@ -415,10 +456,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 annullato = false,
                             };
 
-                            SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                         }
 
-                        SetPensioneConiuge(ref pcm, idConiuge, db);
+                        SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
 
                         if (pcm.dataFineValidita < pcmSuccessivo.dataFineValidita)
                         {
@@ -432,13 +473,13 @@ namespace NewISE.Models.DBModel.dtObj
                                 annullato = false,
                             };
 
-                            SetPensioneConiuge(ref pcmLav, idConiuge, db);
+                            SetPensioneConiuge(ref pcmLav, idConiuge, idAttivazioneMagFam, db);
                         }
 
                     }
                     else
                     {
-                        SetPensioneConiuge(ref pcm, idConiuge, db);
+                        SetPensioneConiuge(ref pcm, idConiuge, idAttivazioneMagFam, db);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -457,7 +498,11 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-                var lpc = db.CONIUGE.Find(idConiuge).PENSIONE.Where(a => a.ANNULLATO == false && a.DATAFINE < pcm.dataInizioValidita).OrderByDescending(a => a.DATAFINE).ToList();
+                var lpc =
+                    db.CONIUGE.Find(idConiuge)
+                        .PENSIONE.Where(a => a.ANNULLATO == false && a.DATAFINE < pcm.dataInizioValidita)
+                        .OrderByDescending(a => a.DATAFINE)
+                        .ToList();
 
                 if (lpc != null && lpc.Count > 0)
                 {
@@ -518,7 +563,7 @@ namespace NewISE.Models.DBModel.dtObj
             return lpcm;
         }
 
-        public void SetPensioneConiuge(ref PensioneConiugeModel pcm, decimal idConiuge, ModelDBISE db)
+        public void SetPensioneConiuge(ref PensioneConiugeModel pcm, decimal idConiuge, decimal idAttivazioneMagFam, ModelDBISE db)
         {
             try
             {
@@ -545,6 +590,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     decimal idTrasferimento = pc.CONIUGE.First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un importo pensione", "PENSIONE", db, idTrasferimento, pc.IDPENSIONE);
+
+                    this.AssociaPensioneAttivazioneMagFam(idAttivazioneMagFam, pc.IDPENSIONE, db);
                 }
 
             }
@@ -552,6 +599,35 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw ex;
             }
+        }
+
+        public void AssociaPensioneAttivazioneMagFam(decimal idAttivazioneMagFam, decimal idPensione, ModelDBISE db)
+        {
+            try
+            {
+                var at = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(at);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PENSIONE).Load();
+                var p = db.PENSIONE.Find(idPensione);
+
+                at.PENSIONE.Add(p);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare la pensione all'arrivazione " + idAttivazioneMagFam);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
         }
 
         public void SetPensione(ref PensioneConiugeModel pcm)
@@ -627,12 +703,12 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
         /// <summary>
-        /// Preleva una lista di importi pensione per l'idMaggiorazioneConiuge maggiori alla data di inizio passata
+        /// 
         /// </summary>
         /// <param name="idMaggiorazioneConiuge"></param>
         /// <param name="dtIni"></param>
         /// <returns></returns>
-        public IList<PensioneConiugeModel> GetListaPensioneConiugeByMaggiorazioneConiuge(decimal idMaggiorazioneConiuge, DateTime dtIni)
+        public IList<PensioneConiugeModel> GetListaPensioneConiugeByMaggiorazioneConiuge(decimal idConiuge, DateTime dtIni)
         {
             List<PensioneConiugeModel> lpcm = new List<PensioneConiugeModel>();
 
@@ -688,6 +764,38 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ret;
         }
+        /// <summary>
+        /// Verifica se è presente la pensione per l'attività passata.
+        /// </summary>
+        /// <param name="idConiuge"></param>
+        /// <param name="idAttivitaMagFam"></param>
+        /// <returns></returns>
+        public bool HasPensione(decimal idConiuge, decimal idAttivitaMagFam)
+        {
+            bool ret = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+
+                if (c != null && c.IDCONIUGE > 0)
+                {
+                    var lpc = c.PENSIONE.Where(a => a.ANNULLATO == false && a.ATTIVAZIONIMAGFAM.Any(b => b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam)).ToList();
+                    if (lpc?.Any() ?? false)
+                    {
+                        ret = true;
+                    }
+                    else
+                    {
+                        ret = false;
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+
 
         public void AnnullaMovimentiPensione(IList<PensioneConiugeModel> lpcm, ModelDBISE db)
         {

@@ -3,7 +3,7 @@
 
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
-    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
@@ -17,13 +17,13 @@
 
 <p style="margin-top: 5px; padding-left:15px;">
 
-    @if (solaLettura) 
+    @if (solaLettura)
     {
         <button class="btn btn-default disabled">Nuovo importo</button>
     }
     else
     {
-        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "PensioneConiuge", new { idConiuge = idConiuge, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
     }
 
 </p>
@@ -85,7 +85,7 @@
 </div>
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">
@@ -158,13 +158,18 @@
         //debugger;
         var idPensioneConiuge = $('#hdIdImportoPensione').val();
         var idConiuge = parseInt('@idConiuge');
-        var rotta = "/PensioneConiuge/EliminaPensione";
+        var idAttivazioneMagFam = parseInt('@idAttivazioneMagFam');
 
+        var rotta = "/PensioneConiuge/EliminaPensione";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idPensione: idPensioneConiuge, idConiuge: idConiuge },
+            data: {
+                idPensione: idPensioneConiuge,
+                idConiuge: idConiuge,
+                idAttivazioneMagFam: idAttivazioneMagFam
+            },
             dataType: 'html',
             async: true,
             beforeSend: function () {

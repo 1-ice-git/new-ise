@@ -17,6 +17,62 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public AttivazioniMagFamModel GetAttivazioneMagFamByIdConiuge(decimal idConiuge)
+        {
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var amf =
+                    db.CONIUGE.Find(idConiuge)
+                        .ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM)
+                        .First(a => a.ANNULLATO == false);
+
+                amfm = new AttivazioniMagFamModel()
+                {
+                    idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                    idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                    richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                    dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                    attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                    dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                    dataVariazione = amf.DATAVARIAZIONE,
+                    dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                    annullato = amf.ANNULLATO
+                };
+
+            }
+
+            return amfm;
+
+        }
+
+        public AttivazioniMagFamModel GetAttivazioneMagFamByID(decimal idAttivazioneMagFam)
+        {
+            AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+                amfm = new AttivazioniMagFamModel()
+                {
+                    idAttivazioneMagFam = amf.IDATTIVAZIONEMAGFAM,
+                    idMaggiorazioniFamiliari = amf.IDMAGGIORAZIONIFAMILIARI,
+                    richiestaAttivazione = amf.RICHIESTAATTIVAZIONE,
+                    dataRichiestaAttivazione = amf.DATARICHIESTAATTIVAZIONE,
+                    attivazioneMagFam = amf.ATTIVAZIONEMAGFAM,
+                    dataAttivazioneMagFam = amf.DATAATTIVAZIONEMAGFAM,
+                    dataVariazione = amf.DATAVARIAZIONE,
+                    dataAggiornamento = amf.DATAAGGIORNAMENTO,
+                    annullato = amf.ANNULLATO
+                };
+
+            }
+
+            return amfm;
+        }
+
         public AttivazioniMagFamModel GetAttivazioneMagFamIniziale(decimal idMaggiorazioneFamiliare)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
@@ -55,7 +111,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return amfm;
         }
-
 
         public IList<AttivazioniMagFamModel> GetListAttivazioniMagFamByIdMagFam(decimal idMaggiorazioniFamiliari)
         {
@@ -140,7 +195,6 @@ namespace NewISE.Models.DBModel.dtObj
             return amfm;
         }
 
-
         public AttivazioniMagFamModel GetUltimaAttivazioneMagFam(decimal idMaggiorazioneFamiliare, ModelDBISE db)
         {
             AttivazioniMagFamModel amfm = new AttivazioniMagFamModel();
@@ -165,7 +219,6 @@ namespace NewISE.Models.DBModel.dtObj
 
             return amfm;
         }
-
 
         public void SetAttivaziomeMagFam(ref AttivazioniMagFamModel amfm, ModelDBISE db)
         {
@@ -343,6 +396,81 @@ namespace NewISE.Models.DBModel.dtObj
                 if (i <= 0)
                 {
                     throw new Exception(string.Format("Impossibile associare il figlio per l'attivazione familiare {0}.", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaAltriDatiFamiliari(decimal idAttivazioneFamiliare, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adf = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                amf.ALTRIDATIFAM.Add(adf);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il i dati per l'attivazione familiare {0}.", idAttivazioneFamiliare));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaDocumentoAttivazione(decimal idAttivazioneMagFam, decimal idDocumento, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.DOCUMENTI).Load();
+                var d = db.DOCUMENTI.Find(idDocumento);
+                amf.DOCUMENTI.Add(d);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il documento per la fase di attivazione. {0}", idAttivazioneMagFam));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaPensioneAttivazione(decimal idAttivazioneMagFam, decimal idPensione, ModelDBISE db)
+        {
+            try
+            {
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = System.Data.Entity.EntityState.Modified;
+                item.Collection(a => a.PENSIONE).Load();
+                var p = db.PENSIONE.Find(idPensione);
+                amf.PENSIONE.Add(p);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare la pensione per la fase di attivazione. {0}", idAttivazioneMagFam));
                 }
             }
             catch (Exception ex)

@@ -3,7 +3,7 @@
 
 @{
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
-    var idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    var idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 }
 
 <link href="~/Content/css/CheckBoxRadio.css" rel="stylesheet" />
@@ -21,7 +21,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.idAltriDatiFam)
             @Html.HiddenFor(model => model.idFigli)
-
+            @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.dataNascita, new { @class = "control-label col-md-2" })
@@ -154,7 +154,7 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariFiglio", "AltriDatiFamiliari", new { idFiglio = Model.idFigli }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariFiglio", "AltriDatiFamiliari", new { idFiglio = Model.idFigli, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 @if (comuni != null && comuni.Any())
@@ -167,12 +167,12 @@
         }
     </datalist>
 
-        <datalist id="ListaProvincie">
-            @foreach (var d in comuni.GroupBy(a => a.provincia.nome).Select(a => a.First()).OrderBy(a => a.provincia.nome))
-            {
-                <option value="@d.provincia.nome" />
-            }
-        </datalist>
+    <datalist id="ListaProvincie">
+        @foreach (var d in comuni.GroupBy(a => a.provincia.nome).Select(a => a.First()).OrderBy(a => a.provincia.nome))
+        {
+            <option value="@d.provincia.nome" />
+        }
+    </datalist>
         <datalist id="ListaCap">
             @foreach (var d in comuni)
             {

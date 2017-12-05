@@ -263,6 +263,56 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public TrasferimentoModel GetTrasferimentoByIdAttMagFam(decimal idAttivazioneMagFam)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                    if (amf?.IDATTIVAZIONEMAGFAM > 0)
+                    {
+                        var mf = amf.MAGGIORAZIONIFAMILIARI;
+                        var t = mf.TRASFERIMENTO;
+
+                        if (t != null && t.IDTRASFERIMENTO > 0)
+                        {
+                            tm = new TrasferimentoModel()
+                            {
+                                idTrasferimento = t.IDTRASFERIMENTO,
+                                idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                                idUfficio = t.IDUFFICIO,
+                                idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                                idDipendente = t.IDDIPENDENTE,
+                                idTipoCoan = t.IDTIPOCOAN,
+                                dataPartenza = t.DATAPARTENZA,
+                                dataRientro = t.DATARIENTRO,
+                                coan = t.COAN,
+                                protocolloLettera = t.PROTOCOLLOLETTERA,
+                                dataLettera = t.DATALETTERA,
+                                notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                                dataAggiornamento = t.DATAAGGIORNAMENTO
+
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Non è stato possibile intercettare il trasferimento con l'id Attivazione maggiorazione familiare: (" + idAttivazioneMagFam + ")");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return tm;
+        }
+
         public TrasferimentoModel GetTrasferimentoByIDMagFam(decimal idMaggiorazioniFamiliari)
         {
             TrasferimentoModel tm = new TrasferimentoModel();

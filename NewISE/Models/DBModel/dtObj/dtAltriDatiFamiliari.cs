@@ -159,7 +159,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AltriDatiFamFiglioModel GetAlttriDatiFamiliariFiglio(decimal idFiglio)
+        public AltriDatiFamFiglioModel GetAlttriDatiFamiliariFiglio(decimal idFiglio, decimal idAttivitaMagFam)
         {
             AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
 
@@ -167,29 +167,44 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ladf = db.FIGLI.Find(idFiglio).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+                    //var ladf = db.FIGLI.Find(idFiglio).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+                    var f = db.FIGLI.Find(idFiglio);
 
-                    if (ladf?.Any() ?? false)
+                    if (f?.IDFIGLI > 0)
                     {
-                        var adf = ladf.First();
+                        var ladf =
+                            f.ALTRIDATIFAM.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.ATTIVAZIONIMAGFAM.Any(
+                                        b => b.ANNULLATO == false && b.IDATTIVAZIONEMAGFAM == idAttivitaMagFam));
 
-                        adfm = new AltriDatiFamFiglioModel()
+
+                        if (ladf?.Any() ?? false)
                         {
-                            idAltriDatiFam = adf.IDALTRIDATIFAM,
-                            idFigli = adf.IDFIGLI,
-                            dataNascita = adf.DATANASCITA,
-                            capNascita = adf.CAPNASCITA,
-                            comuneNascita = adf.COMUNENASCITA,
-                            provinciaNascita = adf.PROVINCIANASCITA,
-                            nazionalita = adf.NAZIONALITA,
-                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
-                            capResidenza = adf.CAPRESIDENZA,
-                            comuneResidenza = adf.COMUNERESIDENZA,
-                            provinciaResidenza = adf.PROVINCIARESIDENZA,
-                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                            annullato = adf.ANNULLATO
-                        };
+                            var adf = ladf.First();
+
+                            adfm = new AltriDatiFamFiglioModel()
+                            {
+                                idAltriDatiFam = adf.IDALTRIDATIFAM,
+                                idFigli = adf.IDFIGLI,
+                                dataNascita = adf.DATANASCITA,
+                                capNascita = adf.CAPNASCITA,
+                                comuneNascita = adf.COMUNENASCITA,
+                                provinciaNascita = adf.PROVINCIANASCITA,
+                                nazionalita = adf.NAZIONALITA,
+                                indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                                capResidenza = adf.CAPRESIDENZA,
+                                comuneResidenza = adf.COMUNERESIDENZA,
+                                provinciaResidenza = adf.PROVINCIARESIDENZA,
+                                dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                                annullato = adf.ANNULLATO
+                            };
+                        }
                     }
+
+
+
 
                     return adfm;
                 }
@@ -200,7 +215,141 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AltriDatiFamConiugeModel GetAlttriDatiFamiliariConiuge(decimal idConiuge)
+        ////public AltriDatiFamFiglioModel GetAlttriDatiFamiliariFiglioFasePartenza(decimal idFiglio, decimal idAttivitaMagFam)
+        ////{
+        ////    AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
+
+        ////    try
+        ////    {
+        ////        using (ModelDBISE db = new ModelDBISE())
+        ////        {
+        ////            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivitaMagFam);
+
+        ////            var ladf = amf.FIGLI.First(a => a.IDFIGLI == idFiglio).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+
+        ////            if (ladf?.Any() ?? false)
+        ////            {
+        ////                var adf = ladf.First();
+
+        ////                adfm = new AltriDatiFamFiglioModel()
+        ////                {
+        ////                    idAltriDatiFam = adf.IDALTRIDATIFAM,
+        ////                    idFigli = adf.IDFIGLI,
+        ////                    dataNascita = adf.DATANASCITA,
+        ////                    capNascita = adf.CAPNASCITA,
+        ////                    comuneNascita = adf.COMUNENASCITA,
+        ////                    provinciaNascita = adf.PROVINCIANASCITA,
+        ////                    nazionalita = adf.NAZIONALITA,
+        ////                    indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+        ////                    capResidenza = adf.CAPRESIDENZA,
+        ////                    comuneResidenza = adf.COMUNERESIDENZA,
+        ////                    provinciaResidenza = adf.PROVINCIARESIDENZA,
+        ////                    dataAggiornamento = adf.DATAAGGIORNAMENTO,
+        ////                    annullato = adf.ANNULLATO
+        ////                };
+        ////            }
+
+        ////            return adfm;
+        ////        }
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        throw ex;
+        ////    }
+        ////}
+
+        //public AltriDatiFamConiugeModel GetAlttriDatiFamiliariConiugeFasePartenza(decimal idConiuge, decimal idAttivazioneMagFam)
+        //{
+        //    AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
+
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+
+        //            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+
+        //            var ladf = amf.CONIUGE.First(a => a.IDCONIUGE == idConiuge).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+
+        //            if (ladf?.Any() ?? false)
+        //            {
+        //                var adf = ladf.First();
+
+        //                adfm = new AltriDatiFamConiugeModel()
+        //                {
+        //                    idAltriDatiFam = adf.IDALTRIDATIFAM,
+        //                    idConiuge = adf.IDCONIUGE,
+        //                    nazionalita = adf.NAZIONALITA,
+        //                    indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+        //                    capResidenza = adf.CAPRESIDENZA,
+        //                    comuneResidenza = adf.COMUNERESIDENZA,
+        //                    provinciaResidenza = adf.PROVINCIARESIDENZA,
+        //                    dataAggiornamento = adf.DATAAGGIORNAMENTO,
+        //                    annullato = adf.ANNULLATO
+        //                };
+        //            }
+
+
+        //            return adfm;
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+
+
+
+
+        //}
+
+
+
+        //public AltriDatiFamFiglioModel GetAlttriDatiFamiliariFiglioFasePartenza(decimal idFiglio, decimal idAttivitaMagFam)
+        //{
+        //    AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
+
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivitaMagFam);
+
+        //            var ladf = amf.FIGLI.First(a => a.IDFIGLI == idFiglio).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
+
+        //            if (ladf?.Any() ?? false)
+        //            {
+        //                var adf = ladf.First();
+
+        //                adfm = new AltriDatiFamFiglioModel()
+        //                {
+        //                    idAltriDatiFam = adf.IDALTRIDATIFAM,
+        //                    idFigli = adf.IDFIGLI,
+        //                    dataNascita = adf.DATANASCITA,
+        //                    capNascita = adf.CAPNASCITA,
+        //                    comuneNascita = adf.COMUNENASCITA,
+        //                    provinciaNascita = adf.PROVINCIANASCITA,
+        //                    nazionalita = adf.NAZIONALITA,
+        //                    indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+        //                    capResidenza = adf.CAPRESIDENZA,
+        //                    comuneResidenza = adf.COMUNERESIDENZA,
+        //                    provinciaResidenza = adf.PROVINCIARESIDENZA,
+        //                    dataAggiornamento = adf.DATAAGGIORNAMENTO,
+        //                    annullato = adf.ANNULLATO
+        //                };
+        //            }
+
+        //            return adfm;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        public AltriDatiFamConiugeModel GetAlttriDatiFamiliariConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
 
@@ -208,29 +357,37 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ladf = db.CONIUGE.Find(idConiuge).ALTRIDATIFAM.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDALTRIDATIFAM);
 
-                    if (ladf?.Any() ?? false)
+                    var c = db.CONIUGE.Find(idConiuge);
+
+                    if (c?.IDCONIUGE > 0)
                     {
-                        var adf = ladf.First();
+                        var ladf =
+                            c.ALTRIDATIFAM.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    a.ATTIVAZIONIMAGFAM.Any(
+                                        b => b.ANNULLATO == false && b.IDATTIVAZIONEMAGFAM == idAttivazioneMagFam));
 
-                        adfm = new AltriDatiFamConiugeModel()
+
+                        if (ladf?.Any() ?? false)
                         {
-                            idAltriDatiFam = adf.IDALTRIDATIFAM,
-                            idConiuge = adf.IDCONIUGE,
-                            nazionalita = adf.NAZIONALITA,
-                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
-                            capResidenza = adf.CAPRESIDENZA,
-                            comuneResidenza = adf.COMUNERESIDENZA,
-                            provinciaResidenza = adf.PROVINCIARESIDENZA,
-                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                            annullato = adf.ANNULLATO
-                        };
+                            var adf = ladf.First();
+
+                            adfm = new AltriDatiFamConiugeModel()
+                            {
+                                idAltriDatiFam = adf.IDALTRIDATIFAM,
+                                idConiuge = adf.IDCONIUGE,
+                                nazionalita = adf.NAZIONALITA,
+                                indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                                capResidenza = adf.CAPRESIDENZA,
+                                comuneResidenza = adf.COMUNERESIDENZA,
+                                provinciaResidenza = adf.PROVINCIARESIDENZA,
+                                dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                                annullato = adf.ANNULLATO
+                            };
+                        }
                     }
-
-
-                    return adfm;
-
                 }
             }
             catch (Exception ex)
@@ -239,11 +396,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
-
+            return adfm;
 
         }
-
-
 
 
         /// <exception cref="Exception"></exception>
@@ -414,34 +569,55 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void SetAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adfm)
+        public void SetAltriDatiFamiliariFiglio(ref AltriDatiFamFiglioModel adfm, decimal idAttivitaMagFam)
         {
             using (var db = new ModelDBISE())
             {
-                var adf = new ALTRIDATIFAM
+                db.Database.BeginTransaction();
+
+                try
                 {
-                    IDFIGLI = adfm.idFigli,
-                    DATANASCITA = adfm.dataNascita.Value,
-                    CAPNASCITA = adfm.capNascita,
-                    COMUNENASCITA = adfm.comuneNascita,
-                    PROVINCIANASCITA = adfm.provinciaNascita,
-                    NAZIONALITA = adfm.nazionalita,
-                    INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
-                    CAPRESIDENZA = adfm.capResidenza,
-                    COMUNERESIDENZA = adfm.comuneResidenza,
-                    PROVINCIARESIDENZA = adfm.provinciaResidenza,
-                    DATAAGGIORNAMENTO = adfm.dataAggiornamento,
-                    ANNULLATO = adfm.annullato
-                };
+                    var adf = new ALTRIDATIFAM
+                    {
+                        IDFIGLI = adfm.idFigli,
+                        DATANASCITA = adfm.dataNascita.Value,
+                        CAPNASCITA = adfm.capNascita,
+                        COMUNENASCITA = adfm.comuneNascita,
+                        PROVINCIANASCITA = adfm.provinciaNascita,
+                        NAZIONALITA = adfm.nazionalita,
+                        INDIRIZZORESIDENZA = adfm.indirizzoResidenza,
+                        CAPRESIDENZA = adfm.capResidenza,
+                        COMUNERESIDENZA = adfm.comuneResidenza,
+                        PROVINCIARESIDENZA = adfm.provinciaResidenza,
+                        DATAAGGIORNAMENTO = adfm.dataAggiornamento,
+                        ANNULLATO = adfm.annullato
+                    };
 
-                db.FIGLI.Find(adfm.idFigli).ALTRIDATIFAM.Add(adf);
+                    db.FIGLI.Find(adfm.idFigli).ALTRIDATIFAM.Add(adf);
 
-                if (db.SaveChanges() > 0)
-                {
-                    decimal idTrasf = db.FIGLI.Find(adfm.idFigli).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+                    if (db.SaveChanges() > 0)
+                    {
+                        adfm.idAltriDatiFam = adf.IDALTRIDATIFAM;
 
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Figlio).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+                        decimal idTrasf = db.FIGLI.Find(adfm.idFigli).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Figlio).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+
+                        using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                        {
+                            dtamf.AssociaAltriDatiFamiliari(idAttivitaMagFam, adf.IDALTRIDATIFAM, db);
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
                 }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+
             }
         }
 
@@ -482,6 +658,12 @@ namespace NewISE.Models.DBModel.dtObj
                         decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                         Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+
+                        using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                        {
+                            dtamf.AssociaAltriDatiFamiliari(idAttivitaMagFam, adf.IDALTRIDATIFAM, db);
+                        }
+
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -501,7 +683,7 @@ namespace NewISE.Models.DBModel.dtObj
         //<exception cref = "DbUpdateException" > Si è verificato un errore durante l'invio degli aggiornamenti al database.</exception>
         //<exception cref = "DbUpdateConcurrencyException" > Un comando di database non ha influito sul numero previsto di righe.Questo indica in genere una violazione della concorrenza ottimistica, ovvero che una riga è cambiata nel database rispetto a quando è stata eseguita la query.</exception>
         //<exception cref = "DbEntityValidationException" > Il salvataggio è stato annullato perché la convalida dei valori di proprietà delle entità non è riuscita.</exception>
-        public void SetAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adfm, ModelDBISE db)
+        public void SetAltriDatiFamiliariConiuge(ref AltriDatiFamConiugeModel adfm, decimal idAttivitaMagFam, ModelDBISE db)
         {
 
             var adf = new ALTRIDATIFAM
@@ -524,9 +706,16 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (db.SaveChanges() > 0)
             {
+                adfm.idAltriDatiFam = adf.IDALTRIDATIFAM;
+
                 decimal idTrasf = db.CONIUGE.Find(adfm.idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento altri dati familiare (Coniuge).", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
+
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                {
+                    dtamf.AssociaAltriDatiFamiliari(idAttivitaMagFam, adf.IDALTRIDATIFAM, db);
+                }
             }
 
         }

@@ -91,10 +91,7 @@ div.form-group {
     display: block;
 }
 
-#divControlliNuovoTrasf {
-    padding-top: 5px;
-    padding-right: 5px;
-}
+
 
 /*#region Dipendenti */
 #ContenitoreDipendentiGepe {
@@ -115,6 +112,8 @@ div.form-group {
 /*#region Nuovo trasferimento */
 
 #divControlliNuovoTrasf {
+    padding-top: 5px;
+    padding-right: 5px;
     font-size: 1.05em;
 }
 

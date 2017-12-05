@@ -1,4 +1,5 @@
-﻿@model NewISE.Models.DBModel.PensioneConiugeModel
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.DBModel.PensioneConiugeModel
 
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
@@ -6,7 +7,8 @@
 
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
-
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idConiuge"]);
+    TrasferimentoModel tm = (TrasferimentoModel)ViewData["Trasferimento"];
     var errori = ViewData.ModelState;
 
 }
@@ -17,6 +19,7 @@
         @Html.AntiForgeryToken()
 
         @Html.Hidden("idConiuge", idConiuge)
+        @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
 
         <div class="form-horizontal">
             <h4>Nuova Pensione Coniuge</h4>
@@ -27,11 +30,11 @@
                 <div class="col-xs-10">
                     @if (Model != null && Model.dataInizioValidita > DateTime.MinValue)
                     {
-                        @Html.TextBoxFor(model => model.dataInizioValidita, String.Format("{0:dd/MM/yyyy}", Model.dataInizioValidita), new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.dataInizioValidita, String.Format("{0:dd/MM/yyyy}", Model.dataInizioValidita), new { @class = "form-control", placeholder = tm.dataPartenza.ToShortDateString() })
                     }
                     else
                     {
-                        @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control", placeholder = tm.dataPartenza.ToShortDateString() })
                     }
                     @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
                 </div>
@@ -99,14 +102,12 @@
             </div>
         </div>
 
-
-
     }
 </div>
 
 
 <div style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "PensioneConiuge", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "PensioneConiuge", new { idConiuge = idConiuge, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -119,7 +120,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                          break;
+                        break;
         }
 
     }
