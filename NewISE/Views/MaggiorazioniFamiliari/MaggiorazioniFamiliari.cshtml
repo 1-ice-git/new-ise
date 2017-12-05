@@ -1,5 +1,5 @@
-﻿<script src="~/Scripts/jquery-2.2.4.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
+﻿@*<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>*@
 
 @{
 
@@ -33,7 +33,6 @@
 </div>
 
 <div class="row">
-
     <div class="col-xs-8" style="margin-top: 10px; margin-bottom: 10px;">
         <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
@@ -122,10 +121,13 @@
 
 
 <script type="text/javascript">
-    $.noConflict();
-    jQuery(document).ready(function ($) {
-        $('#tabsMaggiorazioniFamiliari').tab();
-    });
+    //$.noConflict();
+
+
+
+
+
+    $('#tabsMaggiorazioniFamiliari').tab();
 
 
 
@@ -137,11 +139,11 @@
     @if (callConiuge)
     {
         @:ElencoConiuge();
-                                                                }
+                                                                                }
     else
     {
         @:ElencoFigli();
-                                                                }
+                                                                                }
 
 
 

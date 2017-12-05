@@ -13,11 +13,11 @@ namespace NewISE.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery-ui-{version}.js",
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/bootstrap-modal.js*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtruisive*",
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
@@ -40,9 +40,9 @@ namespace NewISE.App_Start
             //          "~/Content/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
-                      "~/Content/font-awesome.min.css"));         
+                      "~/Content/font-awesome.min.css"));
 
-            
+
 
             bundles.Add(new StyleBundle("~/Content/css/select2CSS").Include(
                 "~/Content/css/select2.min.css"));
