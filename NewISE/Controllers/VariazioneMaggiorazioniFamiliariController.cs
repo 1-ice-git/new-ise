@@ -1348,7 +1348,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ElencoDocumenti(decimal idFamiliare, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante)
         {
-            List<DocumentiModel> ldm = new List<DocumentiModel>();
+            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
             ConiugeModel cm = new ConiugeModel();
             bool solaLettura = false;
             decimal idTrasferimento = 0;
@@ -1358,10 +1358,10 @@ namespace NewISE.Controllers
             try
             {
 
-                using (dtDocumenti dtd = new dtDocumenti())
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf= new dtVariazioniMaggiorazioneFamiliare())
                 {
                     ldm =
-                        dtd.GetDocumentiByIdTable(idFamiliare, tipoDoc, parentela)
+                        dtvmf.GetDocumentiById(idFamiliare, tipoDoc, parentela)
                             .OrderByDescending(a => a.dataInserimento)
                             .ToList();
                 }
@@ -1616,33 +1616,35 @@ namespace NewISE.Controllers
 
                                 if (dimensioneConsentita)
                                 {
-
                                     switch (tipoDoc)
                                     {
                                         case EnumTipoDoc.Documento_Identita:
                                             switch (parentela)
                                             {
                                                 case EnumParentela.Coniuge:
+                                                    dm.fk_iddocumento = idDoc;
                                                     dtvmf.AssociaDocumentoConiuge(ref dm, idFamiliare, db);
-                                                    
+
                                                     var c = db.CONIUGE.Find(idFamiliare);
                                                     var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
                                                     if (att.ATTIVAZIONEMAGFAM==false && att.RICHIESTAATTIVAZIONE==false)
                                                     {
-                                                        dm.fk_documenti = idDoc;
+                                                        var dm_originale = db.DOCUMENTI.Find(idDoc);
+                                                        dm_originale.MODIFICATO = true;
+    
                                                         if(db.SaveChanges()>0)
                                                         {
                                                             dtvmf.AssociaDocumentoAttivazione(att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
                                                         else
                                                         {
-                                                            throw new Exception(string.Format("Non è stato possibile aggiornare il documento."));
+                                                            throw new Exception(string.Format("Non è stato possibile sostituire il documento."));
                                                         }
                                                     }
                                                     else
                                                     {
                                                         att.ANNULLATO = true;
-
+    
                                                         //crea una nuova attivazione
                                                         ATTIVAZIONIMAGFAM newamf = new ATTIVAZIONIMAGFAM()
                                                         {

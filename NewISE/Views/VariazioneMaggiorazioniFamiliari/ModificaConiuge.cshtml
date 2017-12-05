@@ -1,7 +1,12 @@
 ﻿@model NewISE.Models.DBModel.ConiugeModel
 
-<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
-<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
+@*<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>*@
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/MyValidateDate.js"></script>
+
 
 @{
     //decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
@@ -128,9 +133,6 @@
     @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/MyValidateDate.js"></script>
 
 
 <script type="text/javascript">
@@ -142,7 +144,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                                      break;
+            break;
         }
 
     }

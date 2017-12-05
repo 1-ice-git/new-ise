@@ -1,6 +1,6 @@
 ﻿@using System.Diagnostics
 @using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
 
 
 @{
@@ -91,7 +91,14 @@
                         }
                         else
                         {
-                            <a href="#" onclick="SostituisciDocumento(@id, @chiamante,@item.idDocumenti)" id="linkSostituisciDoc">Sostituisci</a>
+                            if (item.Modificabile)
+                            {
+                                <a href="#" onclick="EliminaDocumento(@id, @chiamante,@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="SostituisciDocumento(@id, @chiamante,@item.idDocumenti)" id="linkSostituisciDoc">Sostituisci</a>
+                            }
                         }
                     </td>
                 </tr>
@@ -291,7 +298,7 @@
     }
 
     
-    function ConfermaSostituisciDoc() {
+    @*function ConfermaSostituisciDoc() {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaSostituisciDocumento";
         var id = parseInt(@id);
@@ -338,7 +345,7 @@
         });
 
 
-    }
+    }*@
 
     
 
