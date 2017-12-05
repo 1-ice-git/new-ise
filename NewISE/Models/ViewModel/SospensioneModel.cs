@@ -30,13 +30,16 @@ namespace NewISE.Models.ViewModel
         public DateTime DataFineSospensione { get; set; }
 
         [Required(ErrorMessage = "La data inserimento è richiesta.")]
-        [Display(Name = "Data Inserimento")]
+        [Display(Name = "Data Aggiornamento")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime DataInserimento { get; set; }
+        public DateTime DataAggiornamento { get; set; }
 
         [Display(Name = "GG Sospensione")]
-        public decimal NumeroGiorni { get; set; }
+        public int NumeroGiorni { get; set; }
+        [Display(Name = "Tipo Sospensione")]
+        public string TipoSospensione { get; set; }
+        public bool ANNULLATO { get; set; }
         
     }
 

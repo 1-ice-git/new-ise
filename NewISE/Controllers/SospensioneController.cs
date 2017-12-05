@@ -79,22 +79,65 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult GetListaSospensioni()
+        
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult ElencoSospensioni(decimal matricola)
         {
+            ViewData["matricola"]=matricola;
             List<SospensioneModel> tmp = new List<SospensioneModel>();
-            //try
-            //{
-            //    using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
-            //    {
-            //        tmp = dtcal.GetListaElementiHome().ToList();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            //}
+            try
+            {
+                using (dtSospensione dtcal = new dtSospensione())
+                {
+                    tmp.AddRange(dtcal.GetLista_Sospensioni(matricola));
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
             return PartialView(tmp);
         }
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        public ActionResult NuovaSospensione(decimal matricola)
+        {
+            List<SospensioneModel> tmp = new List<SospensioneModel>();
+            try
+            {
+                using (dtSospensione dtcal = new dtSospensione())
+                {
+                    tmp.AddRange(dtcal.GetLista_Sospensioni(matricola));
+                    ViewBag.matricola = matricola;
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(tmp);
+        }
+
+        public ActionResult AttivitaSospensione(string matricola)
+        {
+            using (dtTrasferimento dtt = new dtTrasferimento())
+            {
+                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+
+                if (tr != null && tr.HasValue())
+                {
+                    ViewBag.idTrasferimento = tr.idTrasferimento;
+                }
+                else
+                {
+                    throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
+                }
+            }
+
+            ViewBag.matricola = matricola;
+
+            return PartialView("AttivitaSospensione");
+        }
+
 
     }
 }

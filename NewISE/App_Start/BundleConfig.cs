@@ -51,7 +51,8 @@ namespace NewISE.App_Start
                         "~/Scripts/select2.min.js",
                         "~/Scripts/i18n/it.js"));
 
-
+            bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
+               "~/Scripts/jquery.unobtrusive*"));
 
         }
     }

@@ -1035,7 +1035,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\delete.png" />
     <Content Include="Immagini\edit-button.png" />
+    <Content Include="Immagini\edit.png" />
     <Content Include="Immagini\Eliminazione.png" />
     <Content Include="Immagini\EliminazioneDisable.png" />
     <Content Include="Immagini\Errore.gif" />
@@ -1863,6 +1865,7 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery-2.2.4.js" />
     <Content Include="Scripts\jquery-2.2.4.min.js" />
     <Content Include="Scripts\jquery-2.2.4.min.map" />
@@ -2411,6 +2414,7 @@
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\ViewModel\SospensioneModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\DiaryEvents.cs" />
@@ -2642,7 +2646,9 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoPensioniConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoImportoPensione.cshtml" />
     <Content Include="Views\Sospensione\Index.cshtml" />
-    <Content Include="Views\Sospensione\GetListaSospensioni.cshtml" />
+    <Content Include="Views\Sospensione\ElencoSospensioni.cshtml" />
+    <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
+    <Content Include="Views\Sospensione\AttivitaSospensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
