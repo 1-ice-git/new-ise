@@ -1219,7 +1219,7 @@ namespace NewISE.Controllers
             {
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
-                    dtmf.AnnullaRichiesta(idMaggiorazioniFamiliari);
+                    //dtmf.AnnullaRichiesta(idMaggiorazioniFamiliari);
                 }
             }
             catch (Exception ex)
