@@ -204,7 +204,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                
+
                 var c = db.CONIUGE.Find(cm.idConiuge);
 
                 bool rinunciaMagFam = false;
@@ -242,7 +242,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var last_attivazione_coniuge = c.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
 
                         //verifica se ultima attivazione valida coniuge e' notificata
-                        if (last_attivazione_coniuge.ATTIVAZIONEMAGFAM && last_attivazione_coniuge.RICHIESTAATTIVAZIONE && last_attivazione_coniuge.ANNULLATO==false)
+                        if (last_attivazione_coniuge.ATTIVAZIONEMAGFAM && last_attivazione_coniuge.RICHIESTAATTIVAZIONE && last_attivazione_coniuge.ANNULLATO == false)
                         {
                             //verifica se l'ultima attivazione non e' notificata
                             if (last_attivazione.ATTIVAZIONEMAGFAM && last_attivazione.RICHIESTAATTIVAZIONE && last_attivazione.ANNULLATO == false)
@@ -251,11 +251,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 ATTIVAZIONIMAGFAM newmf = new ATTIVAZIONIMAGFAM()
                                 {
                                     IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
-                                    RICHIESTAATTIVAZIONE=false,
-                                    DATARICHIESTAATTIVAZIONE=null,
-                                    ATTIVAZIONEMAGFAM=false,
-                                    DATAATTIVAZIONEMAGFAM=null,
-                                    ANNULLATO=false,
+                                    RICHIESTAATTIVAZIONE = false,
+                                    DATARICHIESTAATTIVAZIONE = null,
+                                    ATTIVAZIONEMAGFAM = false,
+                                    DATAATTIVAZIONEMAGFAM = null,
+                                    ANNULLATO = false,
                                     DATAVARIAZIONE = DateTime.Now,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
@@ -285,12 +285,12 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataNotificaPP = cm.dataNotificaPP,
                                     escludiTitoloViaggio = cm.escludiTitoloViaggio,
                                     dataNotificaTV = cm.dataNotificaTV,
-                                    FK_idConiuge=cm.idConiuge,
-                                    Modificato=false
+                                    FK_idConiuge = cm.idConiuge,
+                                    Modificato = false
                                 };
-                            
-                                decimal new_idconiuge=this.SetConiuge(ref newc, db, newmf.IDATTIVAZIONEMAGFAM);
-                            
+
+                                decimal new_idconiuge = this.SetConiuge(ref newc, db, newmf.IDATTIVAZIONEMAGFAM);
+
                             }
                             else
                             {
@@ -316,7 +316,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 decimal new_idconiuge = this.SetConiuge(ref newc, db, last_attivazione.IDATTIVAZIONEMAGFAM);
                             }
-                            
+
                         }
                         else
                         {
@@ -339,7 +339,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //db.Database.CurrentTransaction.Commit();
                         }
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -394,11 +394,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                     using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                     {
-                        dtamf.AssociaConiugeAttivazione(idAttivazione, c.IDCONIUGE,db);
+                        dtamf.AssociaConiugeAttivazione(idAttivazione, c.IDCONIUGE, db);
                     }
 
                     return c.IDCONIUGE;
-                        
+
                 }
 
             }
@@ -410,7 +410,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-       
+
 
 
 
@@ -626,6 +626,7 @@ namespace NewISE.Models.DBModel.dtObj
                 idMaggiorazioniFamiliari = idMaggiorazioniFamiliari,
                 richiestaAttivazione = false,
                 attivazioneMagFam = false,
+                dataVariazione = DateTime.Now,
                 dataAggiornamento = DateTime.Now,
                 annullato = false
             };
@@ -737,22 +738,22 @@ namespace NewISE.Models.DBModel.dtObj
                                 .Where(e => (e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false)
                                 .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
-                   // var lamf = db.ATTIVAZIONIMAGFAM.Where(a => a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                    // var lamf = db.ATTIVAZIONIMAGFAM.Where(a => a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
 
-                    
+
                     foreach (var e in lamf)
                     {
-                        if(e.ANNULLATO==false || (e.ATTIVAZIONEMAGFAM && e.RICHIESTAATTIVAZIONE))
+                        if (e.ANNULLATO == false || (e.ATTIVAZIONEMAGFAM && e.RICHIESTAATTIVAZIONE))
                         {
                             var n_adf = e.ALTRIDATIFAM.Count();
 
-                            if (n_adf>0)
+                            if (n_adf > 0)
                             {
                                 var adf = e.ALTRIDATIFAM.OrderByDescending(a => a.IDALTRIDATIFAM).First();
 
-                                if (adf.IDALTRIDATIFAM>0 && adf != null)
+                                if (adf.IDALTRIDATIFAM > 0 && adf != null)
                                 {
-                                    if(adf.IDCONIUGE>0 && adf.IDFIGLI==null)
+                                    if (adf.IDCONIUGE > 0 && adf.IDFIGLI == null)
                                     {
                                         adfm = new AltriDatiFamConiugeModel()
                                         {
@@ -801,10 +802,10 @@ namespace NewISE.Models.DBModel.dtObj
                     //    if (amf != null && amf.IDATTIVAZIONEMAGFAM>0)
                     //    {
                     var adf = db.ALTRIDATIFAM.Find(adfm.idAltriDatiFam);
-    
+
                     if (adf != null && adf.IDALTRIDATIFAM > 0)
                     {
-                        
+
 
                         decimal idMaggiorazioniFamiliari = 0;
                         idMaggiorazioniFamiliari = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI;
@@ -816,7 +817,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var amf = lamf.First();
 
-                        if (amf.ATTIVAZIONEMAGFAM && amf.RICHIESTAATTIVAZIONE && amf.ANNULLATO==false)
+                        if (amf.ATTIVAZIONEMAGFAM && amf.RICHIESTAATTIVAZIONE && amf.ANNULLATO == false)
                         {
                             adf.ANNULLATO = true;
                             if (db.SaveChanges() > 0)
@@ -826,13 +827,13 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idTrasf = adf.CONIUGE.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
                                 }
-    
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione logica altri dati familiari.", "ALTRIDATIFAM", db, idTrasf, adf.IDALTRIDATIFAM);
-    
+
                                 var adfNew = new ALTRIDATIFAM
                                 {
                                     IDCONIUGE = adfm.idConiuge,
-                                    DATANASCITA =  DateTime.MinValue,
+                                    DATANASCITA = DateTime.MinValue,
                                     CAPNASCITA = "VUOTO",
                                     COMUNENASCITA = "VUOTO",
                                     PROVINCIANASCITA = "VUOTO",
@@ -844,15 +845,15 @@ namespace NewISE.Models.DBModel.dtObj
                                     DATAAGGIORNAMENTO = adfm.dataAggiornamento,
                                     ANNULLATO = adfm.annullato
                                 };
-    
+
                                 db.ALTRIDATIFAM.Add(adfNew);
-    
+
                                 if (db.SaveChanges() > 0)
                                 {
-                                    this.AssociaAltriDatiFamiliariConiuge(adfNew.IDCONIUGE, adfNew.IDALTRIDATIFAM, db );
-    
+                                    this.AssociaAltriDatiFamiliariConiuge(adfNew.IDCONIUGE, adfNew.IDALTRIDATIFAM, db);
+
                                     this.AssociaAltriDatiFamiliariAttivazione(adfNew.IDALTRIDATIFAM, amf.IDATTIVAZIONEMAGFAM, db);
-    
+
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
                                     db.Database.CurrentTransaction.Commit();
                                 }
@@ -1024,9 +1025,9 @@ namespace NewISE.Models.DBModel.dtObj
                         //var trasf = d.CONIUGE.OrderByDescending(x => x.IDCONIUGE).First().MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
 
-                        var a = t.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
+                        var a = t.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
 
-                        if (a.ATTIVAZIONEMAGFAM==false && a.RICHIESTAATTIVAZIONE==false)
+                        if (a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false)
                         {
                             db.DOCUMENTI.Remove(d);
                         }
@@ -1065,21 +1066,21 @@ namespace NewISE.Models.DBModel.dtObj
                             //riassocia tutti i documenti tranne quello da cancellare
                             foreach (var e in ld)
                             {
-                                if (e.IDDOCUMENTO!=d.IDDOCUMENTO)
+                                if (e.IDDOCUMENTO != d.IDDOCUMENTO)
                                 {
                                     using (dtDocumenti dtd = new dtDocumenti())
                                     {
-                                        dtd.AssociaDocumentoConiuge(idConiuge, e.IDDOCUMENTO,db);
+                                        dtd.AssociaDocumentoConiuge(idConiuge, e.IDDOCUMENTO, db);
                                     }
-                                    this.AssociaDocumentoAttivazione(e.IDDOCUMENTO, idAttivazioneMF_new,db);
+                                    this.AssociaDocumentoAttivazione(e.IDDOCUMENTO, idAttivazioneMF_new, db);
                                 }
                             }
 
                             var adf = db.CONIUGE.Find(idConiuge).ALTRIDATIFAM.OrderByDescending(x => x.IDALTRIDATIFAM).First();
                             if (adf != null && adf.IDALTRIDATIFAM > 0)
                             {
-                                this.AssociaADF_Attivazione(adf.IDALTRIDATIFAM, idAttivazioneMF_new,db);
-                                this.AssociaConiugeAttivazione(idConiuge, idAttivazioneMF_new,db);
+                                this.AssociaADF_Attivazione(adf.IDALTRIDATIFAM, idAttivazioneMF_new, db);
+                                this.AssociaConiugeAttivazione(idConiuge, idAttivazioneMF_new, db);
                             }
                         }
                         //db.DOCUMENTI.Remove(d);
@@ -1107,7 +1108,7 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        
+
 
 
         public void AssociaDocumentoAttivazione(decimal idAttivazione, decimal idDocumento, ModelDBISE db)
@@ -1115,7 +1116,7 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
                 var att = db.ATTIVAZIONIMAGFAM.Find(idAttivazione);
-                var item = db.Entry< ATTIVAZIONIMAGFAM>(att);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(att);
                 item.State = System.Data.Entity.EntityState.Modified;
                 item.Collection(a => a.DOCUMENTI).Load();
                 var d = db.DOCUMENTI.Find(idDocumento);

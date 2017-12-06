@@ -15,6 +15,14 @@ using MaggiorazioniFamiliariModel = NewISE.Models.DBModel.MaggiorazioniFamiliari
 
 namespace NewISE.Controllers
 {
+
+    public enum EnumCallElenco
+    {
+        Coniuge = 1,
+        Figli = 2,
+        Formulari = 3
+    }
+
     public class MaggiorazioniFamiliariController : Controller
     {
 
@@ -171,12 +179,12 @@ namespace NewISE.Controllers
         public JsonResult AnnullaRichiesta(decimal idAttivazioneMagFam)
         {
             string errore = "";
-
+            decimal idAttivazioneMagFamNew = 0;
             try
             {
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
-                    dtmf.AnnullaRichiesta(idAttivazioneMagFam);
+                    dtmf.AnnullaRichiesta(idAttivazioneMagFam, out idAttivazioneMagFamNew);
                 }
             }
             catch (Exception ex)
@@ -189,7 +197,8 @@ namespace NewISE.Controllers
                 Json(
                     new
                     {
-                        err = errore
+                        err = errore,
+                        idAttivazioneMagFamNew = idAttivazioneMagFamNew
                     });
         }
 
@@ -218,6 +227,11 @@ namespace NewISE.Controllers
                         err = errore
                     });
         }
+
+
+
+
+
         [HttpPost]
         public JsonResult PulsantiNotificaAttivaMagFam(decimal idAttivazioneMagFam)
         {
@@ -234,9 +248,19 @@ namespace NewISE.Controllers
             bool siDocFigli = false;
             bool docFormulario = false;
 
+
+
             try
             {
                 amministratore = Utility.Amministratore();
+
+                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                {
+
+                }
+
+
+
                 using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                 {
                     dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
@@ -271,7 +295,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento, bool callConiuge = true)
+        public ActionResult MaggiorazioniFamiliari(decimal idTrasferimento, EnumCallElenco callElenco = EnumCallElenco.Coniuge)
         {
             MaggiorazioniFamiliariModel mfm = new MaggiorazioniFamiliariModel();
 
@@ -303,7 +327,7 @@ namespace NewISE.Controllers
             }
 
 
-            ViewData.Add("callConiuge", callConiuge);
+            ViewData.Add("callElenco", callElenco);
 
             return PartialView();
         }

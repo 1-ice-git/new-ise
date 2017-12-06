@@ -1,13 +1,15 @@
-﻿@*<script src="~/Scripts/jquery-2.2.4.min.js"></script>
+﻿@using NewISE.Controllers
+@*<script src="~/Scripts/jquery-2.2.4.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>*@
 
 @{
 
-    bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
+    EnumCallElenco callElenco = (EnumCallElenco)ViewData["callElenco"];
     decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 
 }
 
+@Html.Hidden("idAttivitaMagFam", idAttivazioneMagFam)
 
 <div class="row">
     <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
@@ -121,42 +123,35 @@
 
 
 <script type="text/javascript">
-    //$.noConflict();
-
-
-
-
 
     $('#tabsMaggiorazioniFamiliari').tab();
 
 
-
-    //$(function () {
-    //    $('#tabsMaggiorazioniFamiliari').tab();
-    //});
-
-
-    @if (callConiuge)
+    @if (callElenco == EnumCallElenco.Coniuge)
     {
         @:ElencoConiuge();
-                                                                                }
-    else
+            }
+    else if (callElenco == EnumCallElenco.Figli)
     {
         @:ElencoFigli();
-                                                                                }
-
-
+            }
+    else if (callElenco == EnumCallElenco.Formulari)
+    {
+        @:ElencoFormulariInseriti();
+            }
 
 
     function ElencoFormulariInseriti() {
+        //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoFormulariInseriti";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'html',
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -190,13 +185,15 @@
     function ElencoConiuge() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoConiuge";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
+
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'html',
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -228,13 +225,14 @@
     function ElencoFigli() {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/ElencoFigli";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'html',
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();
@@ -273,7 +271,7 @@
 
     function ConfermaAnnullaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AnnullaRichiesta";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
@@ -290,7 +288,13 @@
                 //debugger;
 
                 if (result.err == "") {
+
+                    $('#idAttivitaMagFam').val(result.idAttivazioneMagFamNew);
+
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFormulariInseriti();
+                    ElencoConiuge();
+                    ElencoFigli();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -311,7 +315,7 @@
 
     function ConfermaAttivazioneRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AttivaRichiesta";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
@@ -360,7 +364,7 @@
 
     function ConfermaNotificaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/NotificaRichiesta";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
@@ -399,16 +403,17 @@
 
     }
 
-    function PulsantiNotificaAttivaMagFam() {
+    function PulsantiNotificaAttivaMagFam(idAttivazioneMagFamNew) {
         //debugger;
         var rotta = "/MaggiorazioniFamiliari/PulsantiNotificaAttivaMagFam";
-        var idAttMagFam = parseInt('@idAttivazioneMagFam');
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: { idAttivazioneMagFam: idAttMagFam },
             dataType: 'json',
+            async: false,
             beforeSend: function () {
                 //debugger;
                 //VerificaAutenticazione();

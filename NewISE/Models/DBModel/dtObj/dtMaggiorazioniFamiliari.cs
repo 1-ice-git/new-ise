@@ -131,6 +131,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                             amf.ATTIVAZIONEMAGFAM = true;
+                            amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
 
                             i = db.SaveChanges();
 
@@ -505,8 +506,9 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-        public void AnnullaRichiesta(decimal idAttivazioneMagFam)
+        public void AnnullaRichiesta(decimal idAttivazioneMagFam, out decimal idAttivazioneMagFamNew)
         {
+            idAttivazioneMagFamNew = 0;
 
             try
             {
@@ -535,6 +537,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     IDMAGGIORAZIONIFAMILIARI = amfOld.IDMAGGIORAZIONIFAMILIARI,
                                     RICHIESTAATTIVAZIONE = false,
                                     ATTIVAZIONEMAGFAM = false,
+                                    DATAVARIAZIONE = DateTime.Now,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     ANNULLATO = false,
                                 };
@@ -545,6 +548,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (j > 0)
                                 {
+                                    idAttivazioneMagFamNew = amfNew.IDATTIVAZIONEMAGFAM;
+
                                     using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                                     {
                                         #region Coniuge
@@ -910,10 +915,32 @@ namespace NewISE.Models.DBModel.dtObj
                                         }
                                         #endregion
 
-                                        foreach (var d in amfOld.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari))
+                                        #region Formulari
+
+                                        var ldFormulariOld =
+                                            amfOld.DOCUMENTI.Where(
+                                                a =>
+                                                    a.IDTIPODOCUMENTO ==
+                                                    (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+
+                                        foreach (var d in ldFormulariOld)
                                         {
-                                            dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
+                                            DOCUMENTI dNew = new DOCUMENTI()
+                                            {
+                                                IDTIPODOCUMENTO = d.IDTIPODOCUMENTO,
+                                                NOMEDOCUMENTO = d.NOMEDOCUMENTO,
+                                                ESTENSIONE = d.ESTENSIONE,
+                                                FILEDOCUMENTO = d.FILEDOCUMENTO,
+                                                DATAINSERIMENTO = d.DATAINSERIMENTO,
+                                                MODIFICATO = d.MODIFICATO,
+                                                FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
+                                            };
+
+                                            amfNew.DOCUMENTI.Add(d);
+
+                                            //dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                         }
+                                        #endregion
 
 
                                     }
@@ -1007,6 +1034,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     rmf.RINUNCIAMAGGIORAZIONI = true;
                                     amf.RICHIESTAATTIVAZIONE = true;
+                                    amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
 
                                     i = db.SaveChanges();
                                     if (i <= 0)
@@ -1037,6 +1065,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     if (datiParzialiConiuge == false && datiParzialiFigli == false)
                                     {
                                         amf.RICHIESTAATTIVAZIONE = true;
+                                        amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
+
                                         i = db.SaveChanges();
                                         if (i <= 0)
                                         {
