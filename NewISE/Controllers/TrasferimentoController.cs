@@ -145,7 +145,7 @@ namespace NewISE.Controllers
         }
 
 
-        public ActionResult InfoTrasferimento(string matricola = "", decimal idTrasferimento = 0)
+        public ActionResult InfoTrasferimento(decimal idTrasferimento)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
 
@@ -153,15 +153,7 @@ namespace NewISE.Controllers
             {
                 using (dtTrasferimento dtdt = new dtTrasferimento())
                 {
-                    if (matricola != "")
-                    {
-                        dit = dtdt.GetInfoTrasferimento(matricola);
-                    }
-                    else if (idTrasferimento > 0)
-                    {
-                        dit = dtdt.GetInfoTrasferimento(idTrasferimento);
-                    }
-
+                    dit = dtdt.GetInfoTrasferimento(idTrasferimento);
 
                     if (dit.CDCDestinazione == string.Empty)
                     {
@@ -205,19 +197,21 @@ namespace NewISE.Controllers
             }
         }
 
-        public ActionResult NuovoTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
             var lRuoloUfficio = new List<SelectListItem>();
             var lTipologiaCoan = new List<SelectListItem>();
 
+
             try
             {
                 using (dtDipendenti dtd = new dtDipendenti())
                 {
-                    var d = dtd.GetDipendenteByMatricola(Convert.ToInt16(matricola));
+                    var d = dtd.GetDipendenteByMatricola(matricola);
                     ViewBag.Dipendente = d;
+                    matricola = d.matricola;
                 }
 
                 ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
@@ -232,18 +226,18 @@ namespace NewISE.Controllers
 
                 using (dtTrasferimento dttr = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dttr.GetUltimoSoloTrasferimentoByMatricola(matricola);
+
+                    if (idTrasferimento > 0)
                     {
-                        if (trm != null && trm.HasValue())
-                        {
-                            return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-                        }
-                        else
-                        {
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
-                            return PartialView();
-                        }
+                        TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
+                        return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
                     }
+                    else
+                    {
+                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
+                        return PartialView();
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -272,6 +266,7 @@ namespace NewISE.Controllers
 
                 ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                 ViewBag.Matricola = matricola;
+                // ViewData.Add("idTrasferimento", idTrasferimento);
 
                 using (dtTrasferimento dttr = new dtTrasferimento())
                 {
@@ -706,7 +701,7 @@ namespace NewISE.Controllers
                             }
 
                             ricaricaInfoTrasf = true;
-                            return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
+                            return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, idTrasferimento = trm.idTrasferimento, ricaricaInfoTrasf = ricaricaInfoTrasf });
                         }
                     }
                     catch (Exception ex)
@@ -861,17 +856,18 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult VerirficaCompilazioneTrasferimento(string matricola = "")
+        public JsonResult VerirficaCompilazioneTrasferimento(decimal idTrasferimento)
         {
             try
             {
-                if (matricola == string.Empty)
+                if (idTrasferimento == 0)
                 {
-                    throw new Exception("La matricola non risulta valorizzata.");
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
                 }
+
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
                     if (trm != null && trm.HasValue())
                     {
                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
@@ -918,29 +914,32 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult GestioneTrasferimento(string matricola)
+        public ActionResult GestioneTrasferimento(decimal idTrasferimento)
         {
 
-            ViewBag.matricola = matricola;
+            ViewBag.idTrasferimento = idTrasferimento;
 
             return PartialView();
         }
 
-        public ActionResult AttivitaTrasferimento(string matricola)
+        public ActionResult AttivitaTrasferimento(decimal idTrasferimento)
         {
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
-
-                    if (tr != null && tr.HasValue())
+                    var tr = dtt.GetTrasferimentoById(idTrasferimento);
+                    using (dtDipendenti dtd = new dtDipendenti())
                     {
-                        ViewBag.idTrasferimento = tr.idTrasferimento;
-                    }
-                    else
-                    {
-                        throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
+                        var d = dtd.GetDipendenteByIDTrasf(idTrasferimento);
+                        if (tr != null && tr.HasValue())
+                        {
+                            ViewBag.idTrasferimento = tr.idTrasferimento;
+                        }
+                        else
+                        {
+                            throw new Exception("Nessun trasferimento per la matricola (" + d.matricola + ")");
+                        }
                     }
                 }
             }
@@ -956,17 +955,18 @@ namespace NewISE.Controllers
         }
 
 
-        public JsonResult VerificaMaggiorazioneFamiliare(string matricola = "")
+        public JsonResult VerificaMaggiorazioneFamiliare(decimal idTrasferimento)
         {
             try
             {
-                if (matricola == string.Empty)
+                if (idTrasferimento > 0)
                 {
                     throw new Exception("La matricola non risulta valorizzata.");
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+
                     if (trm != null && trm.HasValue())
                     {
                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
@@ -974,21 +974,20 @@ namespace NewISE.Controllers
                             trm.RuoloUfficio = dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento, DateTime.Now).RuoloUfficio;
                             trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
                         }
+
                         using (dtMaggiorazioniFamiliari dtd = new dtMaggiorazioniFamiliari())
                         {
                             MaggiorazioniFamiliariModel dm = dtd.GetMaggiorazioniFamiliariByID(trm.idTrasferimento);
-                            
+
                             if (dm.idMaggiorazioniFamiliari.ToString() != null)
                             {
-                                return Json(new { idmaggiorazione=dm.idMaggiorazioniFamiliari.ToString() });
+                                return Json(new { idmaggiorazione = dm.idMaggiorazioniFamiliari.ToString() });
                             }
                             else
                             {
-                                return Json(new { idmaggiorazione=0 });
+                                return Json(new { idmaggiorazione = 0 });
                             }
-
                         }
-
                     }
                     else
                     {
@@ -1056,6 +1055,53 @@ namespace NewISE.Controllers
             }
 
 
+        }
+
+        public ActionResult ElencoTrasferimento(int matricola, decimal idTrasferimento = 0)
+        {
+            var r = new List<SelectListItem>();
+
+            try
+            {
+
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    if (matricola > 0)
+                    {
+                        var lt = dtt.GetListaTrasferimento(matricola);
+                        if (lt?.Any() ?? false)
+                        {
+                            r = (from e in lt
+                                 select new SelectListItem()
+                                 {
+                                     Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + (e.dataRientro.HasValue == true ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                                     Value = e.idTrasferimento.ToString()
+                                 }).ToList();
+
+                            if (idTrasferimento == 0)
+                            {
+                                r.First().Selected = true;
+                            }
+                            else
+                            {
+                                r.First(a => a.Value == idTrasferimento.ToString()).Selected = true;
+                            }
+
+                        }
+                    }
+
+                    ViewBag.ListaTrasferimento = r;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView();
         }
 
 

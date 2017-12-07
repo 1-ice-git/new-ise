@@ -56,98 +56,97 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        //public static ValidationResult VerificaRequiredDataLettera(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
 
-        //    var tr = context.ObjectInstance as TrasferimentoModel;
+        public IList<TrasferimentoModel> GetListaTrasferimento(int matricola)
+        {
+            List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var d = db.DIPENDENTI.First(a => a.MATRICOLA == matricola);
 
-        //    if (tr != null)
-        //    {
-        //        if ((tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty) || tr.file != null || tr.idDocumento > 0)
-        //        {
-        //            if (tr.dataLettera.HasValue)
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("La data della lettera è richiesta.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            vr = ValidationResult.Success;
-        //        }
-        //    }
+                    if (d?.IDDIPENDENTE > 0)
+                    {
+                        var lt = d.TRASFERIMENTO.OrderByDescending(a => a.DATAPARTENZA);
 
-        //    return vr;
-        //}
+                        if (lt?.Any() ?? false)
+                        {
+                            ltm = (from t in lt
+                                   select new TrasferimentoModel()
+                                   {
+                                       idTrasferimento = t.IDTRASFERIMENTO,
+                                       idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                                       idUfficio = t.IDUFFICIO,
+                                       idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                                       idDipendente = t.IDDIPENDENTE,
+                                       idTipoCoan = t.IDTIPOCOAN,
+                                       dataPartenza = t.DATAPARTENZA,
+                                       dataRientro = t.DATARIENTRO,
+                                       coan = t.COAN,
+                                       protocolloLettera = t.PROTOCOLLOLETTERA,
+                                       dataLettera = t.DATALETTERA,
+                                       notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                                       dataAggiornamento = t.DATAAGGIORNAMENTO,
+                                       StatoTrasferimento = new StatoTrasferimentoModel()
+                                       {
+                                           idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                                           descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                                       },
+                                       TipoTrasferimento = new TipoTrasferimentoModel()
+                                       {
+                                           idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                           descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                                       },
+                                       Ufficio = new UfficiModel()
+                                       {
+                                           idUfficio = t.UFFICI.IDUFFICIO,
+                                           codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                           descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                       },
+                                       Dipendente = new DipendentiModel()
+                                       {
+                                           idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                                           matricola = t.DIPENDENTI.MATRICOLA,
+                                           nome = t.DIPENDENTI.NOME,
+                                           cognome = t.DIPENDENTI.COGNOME,
+                                           dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                                           dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                                           indirizzo = t.DIPENDENTI.INDIRIZZO,
+                                           cap = t.DIPENDENTI.CAP,
+                                           citta = t.DIPENDENTI.CITTA,
+                                           provincia = t.DIPENDENTI.PROVINCIA,
+                                           email = t.DIPENDENTI.EMAIL,
+                                           telefono = t.DIPENDENTI.TELEFONO,
+                                           fax = t.DIPENDENTI.FAX,
+                                           abilitato = t.DIPENDENTI.ABILITATO,
+                                           dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                                       },
+                                       TipoCoan = new TipologiaCoanModel()
+                                       {
+                                           idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                           descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                                       },
+                                   }).ToList();
+                        }
 
-        //public static ValidationResult VerificaRequiredDocumentoLettera(HttpPostedFileBase v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
 
-        //    var tr = context.ObjectInstance as TrasferimentoModel;
+                    }
+                    else
+                    {
+                        throw new Exception("Nessun dipendente presente sul database per la matricola selezionata.");
+                    }
 
-        //    if (tr != null)
-        //    {
-        //        if (tr.dataLettera.HasValue || (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty))
-        //        {
-        //            if (tr.file != null || tr.idDocumento > 0)
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("La lettera di trasferimento è richiesta.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            vr = ValidationResult.Success;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        vr = ValidationResult.Success;
-        //    }
+                }
+            }
+            catch (Exception ex)
+            {
 
-        //    return vr;
-        //}
+                throw ex;
+            }
 
-        //public static ValidationResult VerificaRequiredProtocolloLettera(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
-
-        //    var tr = context.ObjectInstance as TrasferimentoModel;
-
-        //    if (tr != null)
-        //    {
-        //        if (tr.dataLettera.HasValue || tr.file != null || tr.idDocumento > 0)
-        //        {
-        //            if (tr.protocolloLettera != null && tr.protocolloLettera.Trim() != string.Empty)
-        //            {
-        //                vr = ValidationResult.Success;
-        //            }
-        //            else
-        //            {
-        //                vr = new ValidationResult("Il Protocollo della lettera è richiesto.");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            vr = ValidationResult.Success;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        vr = ValidationResult.Success;
-        //    }
-
-        //    return vr;
-        //}
-
+            return ltm;
+        }
 
 
         public void GestioneAttivitaTrasferimento(decimal idTrasferimento,

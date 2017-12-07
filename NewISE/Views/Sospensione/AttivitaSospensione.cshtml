@@ -5,8 +5,8 @@
     //bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
 
     //decimal idMafFam = Model.idMaggiorazioniFamiliari;
-    decimal idMagFam = ViewBag.idTrasferimento;
-    decimal matricola = ViewBag.matricola;
+    decimal idTrasferimento = ViewBag.idTrasferimento;
+
     //decimal idMafFam = ViewBag.idMagFam;
 
 }
@@ -40,17 +40,17 @@
 
     ElencoSospensioni();
 
-    
-    
+
+
     function ElencoSospensioni() {
         //debugger;
         var rotta = "/Sospensione/ElencoSospensioni";
-        var matricola = parseInt('@matricola');
+        var idTrasferimento = parseInt('@idTrasferimento');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { matricola: matricola },
+            data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -82,7 +82,7 @@
     }
 
 
-    
+
 
 </script>
 

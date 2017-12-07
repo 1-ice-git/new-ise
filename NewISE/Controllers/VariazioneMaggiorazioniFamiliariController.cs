@@ -126,23 +126,27 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult AttivitaMaggiorazioneFamiliare(string matricola)
+        public ActionResult AttivitaMaggiorazioneFamiliare(decimal idTrasferimento)
         {
             using (dtTrasferimento dtt = new dtTrasferimento())
             {
-                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+                var tr = dtt.GetTrasferimentoById(idTrasferimento);
 
-                if (tr != null && tr.HasValue())
+                using (dtDipendenti dtd = new dtDipendenti())
                 {
-                    ViewBag.idTrasferimento = tr.idTrasferimento;
+                    var d = dtd.GetDipendenteByIDTrasf(idTrasferimento);
+                    if (tr != null && tr.HasValue())
+                    {
+                        ViewBag.idTrasferimento = tr.idTrasferimento;
+                    }
+                    else
+                    {
+                        throw new Exception("Nessun trasferimento per la matricola (" + d.matricola + ")");
+                    }
+
                 }
-                else
-                {
-                    throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
-                }
+
             }
-
-            ViewBag.matricola = matricola;
 
             return PartialView("AttivitaMaggiorazioneFamiliare");
         }
@@ -175,22 +179,22 @@ namespace NewISE.Controllers
                                     //   {
                                     var e = lcm.First();
 
-                                        ElencoFamiliariModel efm = new ElencoFamiliariModel()
-                                        {
-                                            idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
-                                            idFamiliare = e.idConiuge,
-                                            idPassaporti = e.idPassaporti,
-                                            Nominativo = e.cognome + " " + e.nome,
-                                            CodiceFiscale = e.codiceFiscale,
-                                            dataInizio = e.dataInizio,
-                                            dataFine = e.dataFine,
-                                            parentela = EnumParentela.Coniuge,
-                                            idAltriDati = dtadf.GetAltriDatiFamiliariConiuge(e.idConiuge, idMaggiorazioniFamiliari).idAltriDatiFam,
-                                            Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge),
-                                            HasPensione = dtp.HasPensione(e.idConiuge)
-                                        };
+                                    ElencoFamiliariModel efm = new ElencoFamiliariModel()
+                                    {
+                                        idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
+                                        idFamiliare = e.idConiuge,
+                                        idPassaporti = e.idPassaporti,
+                                        Nominativo = e.cognome + " " + e.nome,
+                                        CodiceFiscale = e.codiceFiscale,
+                                        dataInizio = e.dataInizio,
+                                        dataFine = e.dataFine,
+                                        parentela = EnumParentela.Coniuge,
+                                        idAltriDati = dtadf.GetAltriDatiFamiliariConiuge(e.idConiuge, idMaggiorazioniFamiliari).idAltriDatiFam,
+                                        Documenti = dtd.GetDocumentiByIdTable(e.idConiuge, EnumTipoDoc.Documento_Identita, EnumParentela.Coniuge),
+                                        HasPensione = dtp.HasPensione(e.idConiuge)
+                                    };
 
-                                        lefm.Add(efm);
+                                    lefm.Add(efm);
                                     //}
                                 }
 
@@ -268,7 +272,7 @@ namespace NewISE.Controllers
                     //    }
 
                     //    ViewData.Add("solaLettura", solaLettura);
-                        ViewData.Add("solaLettura", false);
+                    ViewData.Add("solaLettura", false);
                     //}
 
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
@@ -678,9 +682,9 @@ namespace NewISE.Controllers
                 {
                     if (!e.annullato)
                     {
-                        if (e.richiestaAttivazione==false && e.attivazioneMagFam==false && lamf.Count()>1 )
+                        if (e.richiestaAttivazione == false && e.attivazioneMagFam == false && lamf.Count() > 1)
                         {
-                            if(docFormulario)
+                            if (docFormulario)
                             {
                                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
                             }
@@ -728,7 +732,7 @@ namespace NewISE.Controllers
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
             MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
-           
+
 
             try
             {
@@ -739,10 +743,10 @@ namespace NewISE.Controllers
                     decimal idMaggiorazioniFamiliari = 0;
                     idMaggiorazioniFamiliari = c.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI;
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-           
+
                     using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
                     {
-                        adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge,idMaggiorazioniFamiliari);
+                        adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge, idMaggiorazioniFamiliari);
                     }
                     ViewData.Add("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari);
 
@@ -931,7 +935,7 @@ namespace NewISE.Controllers
             {
                 adfm.dataAggiornamento = DateTime.Now;
                 adfm.annullato = false;
-             
+
                 if (ModelState.IsValid)
                 {
                     using (dtVariazioniMaggiorazioneFamiliare dtadf = new dtVariazioniMaggiorazioneFamiliare())
@@ -952,7 +956,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge});
+            return RedirectToAction("AltriDatiFamiliariConiuge", new { idConiuge = adfm.idConiuge });
 
 
         }
@@ -1276,7 +1280,7 @@ namespace NewISE.Controllers
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    ldm = dtd.GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(idMaggiorazioniFamiliari,idAttivazione).ToList();
+                    ldm = dtd.GetFormulariMaggiorazioniFamiliariVariazioneByIdAttivazione(idMaggiorazioniFamiliari, idAttivazione).ToList();
                 }
             }
             catch (Exception ex)
@@ -1284,7 +1288,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView("TabFormulariInseriti",ldm);
+            return PartialView("TabFormulariInseriti", ldm);
         }
 
 
@@ -1359,7 +1363,7 @@ namespace NewISE.Controllers
             try
             {
 
-                using (dtVariazioniMaggiorazioneFamiliare dtvmf= new dtVariazioniMaggiorazioneFamiliare())
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
                     ldm =
                         dtvmf.GetDocumentiById(idFamiliare, tipoDoc, parentela)
@@ -1421,7 +1425,7 @@ namespace NewISE.Controllers
                                 dtmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
                                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
-                                    out docFormulario,out inLavorazione);
+                                    out docFormulario, out inLavorazione);
 
                                 if (richiestaAttivazione == true)
                                 {
@@ -1579,7 +1583,7 @@ namespace NewISE.Controllers
             return Json(new { errore = "", msg = "Eliminazione effettuata con successo." });
         }
 
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ConfermaSostituisciDocumento(decimal idDoc, EnumTipoDoc tipoDoc, decimal idFamiliare, EnumParentela parentela)
         {
@@ -1627,13 +1631,13 @@ namespace NewISE.Controllers
                                                     dtvmf.AssociaDocumentoConiuge(ref dm, idFamiliare, db);
 
                                                     var c = db.CONIUGE.Find(idFamiliare);
-                                                    var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO==false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
-                                                    if (att.ATTIVAZIONEMAGFAM==false && att.RICHIESTAATTIVAZIONE==false)
+                                                    var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First();
+                                                    if (att.ATTIVAZIONEMAGFAM == false && att.RICHIESTAATTIVAZIONE == false)
                                                     {
                                                         var dm_originale = db.DOCUMENTI.Find(idDoc);
                                                         dm_originale.MODIFICATO = true;
-    
-                                                        if(db.SaveChanges()>0)
+
+                                                        if (db.SaveChanges() > 0)
                                                         {
                                                             dtvmf.AssociaDocumentoAttivazione(att.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -1645,7 +1649,7 @@ namespace NewISE.Controllers
                                                     else
                                                     {
                                                         att.ANNULLATO = true;
-    
+
                                                         //crea una nuova attivazione
                                                         ATTIVAZIONIMAGFAM newamf = new ATTIVAZIONIMAGFAM()
                                                         {
@@ -1659,7 +1663,7 @@ namespace NewISE.Controllers
                                                             DATAAGGIORNAMENTO = DateTime.Now,
                                                         };
                                                         db.ATTIVAZIONIMAGFAM.Add(newamf);
-                                                        if (db.SaveChanges()>0)
+                                                        if (db.SaveChanges() > 0)
                                                         {
                                                             dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -1672,7 +1676,7 @@ namespace NewISE.Controllers
                                                     throw new ArgumentOutOfRangeException("parentela");
                                             }
                                             break;
-                                        
+
                                         default:
                                             throw new ArgumentOutOfRangeException("tipoDoc");
                                     }

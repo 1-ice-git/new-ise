@@ -57,12 +57,15 @@
         </div>
     </div>
 </div>
-
+<div id="divElencoTrasferimento" style="margin-top: 70px;">
+    @Html.Action("ElencoTrasferimento", "Trasferimento", new { matricola = matricola })
+</div>
 <script type="text/javascript">
+
     //debugger;
     $("#hMatricola").val('@matricola');
 
-    InfoTrasferimento('@matricola');
+    InfoTrasferimento();
     //debugger;
     GestioneMenu();
 
@@ -71,10 +74,10 @@
         FiltraDipendente();
     });
 
-    function GestioneAbilitazioneMenu(matricola) {
-      //  debugger;
+    function GestioneAbilitazioneMenu(idTrasferimento) {
+        //debugger;
 
-        if (MenuGestioneTrasferimento(matricola) == 1) {
+        if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
             $("#mnGestioneTrasferimento").removeClass("disabled");
             $('#lkGestioneTrasferimento').attr('onClick', 'GestioneTrasferimento();');
@@ -85,7 +88,7 @@
             $("#lkGestioneTrasferimento").removeAttr("onClick");
         }
 
-        if (MenuMaggiorazioneFamiliare(matricola) == 1) {
+        if (MenuMaggiorazioneFamiliare(idTrasferimento) == 1) {
             $("#lkMaggiorazioneFamiliare").removeAttr("disabled");
             $("#mnMaggiorazioneFamiliare").removeClass("disabled");
             $('#lkMaggiorazioneFamiliare').attr('onClick', 'MaggiorazioneFamiliare();');
@@ -96,7 +99,7 @@
             $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
 
-        if (MenuSospensione(matricola) == 1) {
+        if (MenuSospensione(idTrasferimento) == 1) {
             $("#lkSospensione").removeAttr("disabled");
             $("#mnSospensione").removeClass("disabled");
             $('#lkSospensione').attr('onClick', 'Sospensione();');
@@ -111,15 +114,14 @@
 
     function GestioneMenu() {
         //debugger;
-        var matr = $("#Nominativo").val();
+        var idTrasferimento = $("#listaTrasferimento").val();
 
-        if (matr != "" && matr != '0') {
+        if (idTrasferimento != undefined && idTrasferimento != "" && idTrasferimento > 0) {
             SvuotaTab();
             $("#lkNuovoTrasferimento").removeAttr("disabled");
             $("#mnNuovoTrasferimento").removeClass("disabled");
 
-            GestioneAbilitazioneMenu(matr);
-
+            GestioneAbilitazioneMenu(idTrasferimento);
         }
         else {
             SvuotaTab();
@@ -175,16 +177,16 @@
 
     });
 
-    function MenuGestioneTrasferimento(matricola) {
+    function MenuGestioneTrasferimento(idTrasferimento) {
         //debugger;
         var rotta = "/Trasferimento/VerirficaCompilazioneTrasferimento";
         var valoreRitorno = 0;
 
-        if (matricola != "" && matricola != undefined) {
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { matricola: matricola },
+                data: { idTrasferimento: idTrasferimento },
                 dataType: 'json',
                 async: false,
                 beforeSend: function () {
@@ -224,18 +226,18 @@
     }
 
 
-    function MenuMaggiorazioneFamiliare(matricola) {
+    function MenuMaggiorazioneFamiliare(idTrasferimento) {
         //debugger;
         var rotta = "/Trasferimento/VerificaMaggiorazioneFamiliare";
         //da sostituire con
         //var rotta = "/Trasferimento/VerificaMaggiorazioneFamiliareByStatoTrasferimento";
         var valoreRitorno = 0;
 
-        if (matricola != "" && matricola != undefined) {
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { matricola: matricola },
+                data: { idTrasferimento: idTrasferimento },
                 dataType: 'json',
                 async: false,
                 beforeSend: function () {
@@ -274,17 +276,17 @@
         return valoreRitorno;
     }
 
-    function MenuSospensione(matricola) {
+    function MenuSospensione(idTrasferimento) {
         //debugger;
         var rotta = "/Sospensione/VerificaSospensione";
-        
+
         var valoreRitorno = 0;
 
-        if (matricola != "" && matricola != undefined) {
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { matricola: matricola },
+                data: { idTrasferimento: idTrasferimento },
                 dataType: 'json',
                 async: false,
                 beforeSend: function () {
@@ -293,7 +295,7 @@
 
                 },
                 success: function (result) {
-                   // debugger;
+                    // debugger;
 
                     if (result.err == "" || result.err == undefined) {
                         if (result.VerificaSospensione != 0) {
@@ -363,21 +365,18 @@
         }
     }
 
-    function InfoTrasferimento(matricola) {
+    function InfoTrasferimento() {
         //debugger;
 
-        if (matricola == "") {
-            return;
-        }
-        else {
-            $("#hMatricola").val(matricola);
-        }
+        var idTrasferimento = $("#listaTrasferimento").val();
+
         var rotta = "/Trasferimento/InfoTrasferimento";
-        if (matricola != "") {
+
+        if (idTrasferimento > 0) {
             $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { matricola: matricola },
+                data: { idTrasferimento: idTrasferimento },
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
@@ -388,7 +387,6 @@
                 },
                 success: function (result) {
                     //debugger;
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
                     $("#ContenitoreDatiTrasf").empty();
                     $("#ContenitoreDatiTrasf").html(result);
 
@@ -408,8 +406,6 @@
             });
         }
     }
-
-
 
 
 </script>

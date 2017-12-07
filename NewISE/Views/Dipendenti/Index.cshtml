@@ -16,6 +16,8 @@
 
 <input type="hidden" id="hMenuInLavorazione" value="" />
 
+@Html.Hidden("hidTrasferimento")
+
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
         <div id="ContenitoreDipendentiGepe">
@@ -85,13 +87,14 @@
     function NuovoTrasferimento() {
         //debugger;
 
-        var matricola = $("#hMatricola").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
+        var matricola = $('#hMatricola').val();
         rotta = "/Trasferimento/NuovoTrasferimento";
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { matricola: matricola },
+            data: { idTrasferimento: idTrasferimento, matricola: matricola },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -123,13 +126,13 @@
     }
 
     function GestioneTrasferimento() {
-        var matricola = $("#hMatricola").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/Trasferimento/GestioneTrasferimento";
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { matricola: matricola },
+            data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -159,13 +162,13 @@
     }
 
     function MaggiorazioneFamiliare() {
-        var matricola = $("#hMatricola").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/VariazioneMaggiorazioniFamiliari/AttivitaMaggiorazioneFamiliare";
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { matricola: matricola },
+            data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -195,14 +198,14 @@
     }
 
     function Sospensione() {
-       // debugger;
-        var matricola = $("#hMatricola").val();
+        // debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/Sospensione/ElencoSospensioni";
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { matricola: matricola },
+            data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

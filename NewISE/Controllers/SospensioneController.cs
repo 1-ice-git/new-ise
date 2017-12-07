@@ -21,17 +21,18 @@ namespace NewISE.Controllers
         {
             return View();
         }
-        public JsonResult VerificaSospensione(string matricola = "")
+        public JsonResult VerificaSospensione(decimal idTrasferimento)
         {
             try
             {
-                if (matricola == string.Empty)
+                if (idTrasferimento > 0)
                 {
-                    throw new Exception("La matricola non risulta valorizzata.");
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dtt.GetTrasferimentoAttivoNotificato(matricola);
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+
                     if (trm != null && trm.HasValue())
                     {
                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
@@ -48,7 +49,7 @@ namespace NewISE.Controllers
 
                         if (trm.idTipoTrasferimento > 0 &&
                             trm.idUfficio > 0 &&
-                            trm.idStatoTrasferimento == (decimal)EnumStatoTraferimento.Attivo  &&
+                            trm.idStatoTrasferimento == (decimal)EnumStatoTraferimento.Attivo &&
                             trm.idDipendente > 0 &&
                             trm.idTipoCoan > 0 &&
                             trm.dataPartenza > DateTime.MinValue &&
@@ -79,17 +80,17 @@ namespace NewISE.Controllers
 
         }
 
-        
+
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult ElencoSospensioni(decimal matricola)
+        public ActionResult ElencoSospensioni(decimal idTrasferimento)
         {
-            ViewData["matricola"]=matricola;
+            ViewData["idTrasferimento"] = idTrasferimento;
             List<SospensioneModel> tmp = new List<SospensioneModel>();
             try
             {
                 using (dtSospensione dtcal = new dtSospensione())
                 {
-                    tmp.AddRange(dtcal.GetLista_Sospensioni(matricola));
+                    tmp.AddRange(dtcal.GetLista_Sospensioni(idTrasferimento));
                 }
             }
             catch (Exception ex)
@@ -99,15 +100,15 @@ namespace NewISE.Controllers
             return PartialView(tmp);
         }
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult NuovaSospensione(decimal matricola)
+        public ActionResult NuovaSospensione(decimal idTrasferimento)
         {
             List<SospensioneModel> tmp = new List<SospensioneModel>();
             try
             {
                 using (dtSospensione dtcal = new dtSospensione())
                 {
-                    tmp.AddRange(dtcal.GetLista_Sospensioni(matricola));
-                    ViewBag.matricola = matricola;
+                    tmp.AddRange(dtcal.GetLista_Sospensioni(idTrasferimento));
+                    ViewBag.idTrasferimento = idTrasferimento;
                 }
             }
             catch (Exception ex)
@@ -117,23 +118,27 @@ namespace NewISE.Controllers
             return PartialView(tmp);
         }
 
-        public ActionResult AttivitaSospensione(string matricola)
+        public ActionResult AttivitaSospensione(decimal idTrasferimento)
         {
             using (dtTrasferimento dtt = new dtTrasferimento())
             {
-                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+                var tr = dtt.GetSoloTrasferimentoById(idTrasferimento);
 
-                if (tr != null && tr.HasValue())
+                using (dtDipendenti dtd = new dtDipendenti())
                 {
-                    ViewBag.idTrasferimento = tr.idTrasferimento;
+                    var d = dtd.GetDipendenteByIDTrasf(idTrasferimento);
+                    if (tr != null && tr.HasValue())
+                    {
+                        ViewBag.idTrasferimento = tr.idTrasferimento;
+                    }
+                    else
+                    {
+                        throw new Exception("Nessun trasferimento per la matricola (" + d.matricola + ")");
+                    }
                 }
-                else
-                {
-                    throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
-                }
+
+
             }
-
-            ViewBag.matricola = matricola;
 
             return PartialView("AttivitaSospensione");
         }

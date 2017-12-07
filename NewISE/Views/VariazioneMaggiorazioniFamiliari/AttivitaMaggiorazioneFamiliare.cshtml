@@ -5,7 +5,7 @@
     //bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
 
     //decimal idMafFam = Model.idMaggiorazioniFamiliari;
-    decimal idMagFam = ViewBag.idTrasferimento;
+    decimal idMagFam = Convert.ToDecimal(ViewBag.idTrasferimento);
     //decimal idMafFam = ViewBag.idMagFam;
 
 }
@@ -412,8 +412,8 @@
                                                 $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                                 $("#btAttivaMagFam_Var").addClass("disabled");
                                             } else {
-                                            //    $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
-                                            //    $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
+                                                //    $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
+                                                //    $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                                             }
 
                                             //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
@@ -504,4 +504,3 @@
 
 
 </script>
-

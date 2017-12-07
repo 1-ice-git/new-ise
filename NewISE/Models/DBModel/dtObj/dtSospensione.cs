@@ -39,10 +39,10 @@ namespace NewISE.Models.DBModel.dtObj
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento Sospensione",
                         "SOSPENSIONE", db, ca.IDTRASFERIMENTO, ca.IDSOSPENSIONE);
                 }
-            }            
+            }
         }
 
-        public void DeleteSospensione( SospensioneModel cem)
+        public void DeleteSospensione(SospensioneModel cem)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -67,48 +67,28 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public List<SospensioneModel> GetLista_Sospensioni(decimal matricola)
+        public List<SospensioneModel> GetLista_Sospensioni(decimal idTrasferimento)
         {
             AccountModel am = new AccountModel();
             List<SospensioneModel> tmp = new List<SospensioneModel>();
-            bool admin = Utility.Amministratore(out am);
             using (ModelDBISE db = new ModelDBISE())
             {
-                if (admin)
-                {
-                    var lce = db.DIPENDENTI.Where(c => c.MATRICOLA == matricola);
-                    //decimal g = lce.FirstOrDefault().IDDIPENDENTE;
-                    tmp = (from e in db.SOSPENSIONE
-                           where e.ANNULLATO == false && e.TRASFERIMENTO.IDDIPENDENTE == lce.FirstOrDefault().IDDIPENDENTE 
-                           select new SospensioneModel()
-                           {
-                               DataInizioSospensione = e.DATAINIZIO,
-                               DataFineSospensione = e.DATAFINE,
-                               TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
-                               DataAggiornamento = e.DATAAGGIORNAMENTO,
-                               NumeroGiorni = DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
-                           }).ToList();
-                    return tmp;
-                }
-                else
-                {
-                    var lce = db.DIPENDENTI.Where(c => c.MATRICOLA == matricola);
-                    //decimal g = lce.FirstOrDefault().IDDIPENDENTE;
-                    tmp = (from e in db.SOSPENSIONE
-                           where e.ANNULLATO == false && e.TRASFERIMENTO.IDDIPENDENTE == lce.FirstOrDefault().IDDIPENDENTE &&
-                            e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente &&
-                            e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente
-                           select new SospensioneModel()
-                           {
-                               DataInizioSospensione = e.DATAINIZIO,
-                               DataFineSospensione = e.DATAFINE,
-                               TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
-                               DataAggiornamento = e.DATAAGGIORNAMENTO,
-                               NumeroGiorni = DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
-                           }).ToList();
-                    return tmp;
-                }
-            }       
+                var lt = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                tmp = (from e in lt.SOSPENSIONE
+                       where e.ANNULLATO == false
+                       orderby e.DATAFINE descending
+                       select new SospensioneModel()
+                       {
+                           DataInizioSospensione = e.DATAINIZIO,
+                           DataFineSospensione = e.DATAFINE,
+                           TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
+                           DataAggiornamento = e.DATAAGGIORNAMENTO,
+                           NumeroGiorni = DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
+                       }).ToList();
+
+                return tmp;
+            }
         }
     }
 }

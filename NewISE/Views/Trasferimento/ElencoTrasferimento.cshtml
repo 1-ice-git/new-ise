@@ -1,0 +1,22 @@
+﻿<div class="form-horizontal">
+    <div class="form-group">
+        @Html.Label("lblListaTrasferimento", "Trasferimento", new { @class = "control-label col-xs-3" })
+        <div id="divCombo2" class="col-xs-9">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "listaTrasferimento", @class = "form-control select2 select2-select" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#listaTrasferimento").select2({
+        placeholder: "Seleziona il trasferimento",
+        allowClear: true,
+        language: "it",
+        width: '335'
+    });
+
+    $("#hidTrasferimento").val($('#listaTrasferimento').val());
+
+</script>

@@ -9,6 +9,9 @@ namespace NewISE.Models
 {
     public class dipInfoTrasferimentoModel
     {
+        [Key]
+        public decimal idTrasferimento { get; set; }
+
         [Display(Name = "Stato Trasferimento")]
         public EnumStatoTraferimento statoTrasferimento { get; set; }
 

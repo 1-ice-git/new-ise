@@ -254,9 +254,8 @@
 <script type="text/javascript">
     //ValorizzaAbilitaModifica('@AbilitaNotifica.ToString()');
     RicaricaInfoTrasferimento();
-    //AbilitaMenuGestioneTrasferimento();
     AbilitaDisabilitaCoan();
-    AbilitaMenuGestioneTrasferimento('@vMatricola');
+    AbilitaMenuGestioneTrasferimento('@Model.idTrasferimento');
 
 
     function NotifcaModal() {
@@ -399,7 +398,7 @@
                     //EmptyTextBox();
                     DialogInfo(result.msg);
                     $("#btNotifica").attr("disabled", "disabled");
-                    AbilitaMenuGestioneTrasferimento('@vMatricola');
+                    AbilitaMenuGestioneTrasferimento(idTrasferimento);
 
                 }
                 else {
@@ -425,15 +424,16 @@
 
     function RicaricaInfoTrasferimento() {
         var rit = '@ricaricaInfoTrasf.ToString()';
-        var vMatricola = '@vMatricola';
+        //var vMatricola = '@vMatricola';
+        var idTrasferimento = parseInt($("#idTrasferimento").val());
         var boolrit = rit == 'True'
         if (boolrit == true) {
-            InfoTrasferimento(vMatricola);
+            InfoTrasferimento(idTrasferimento);
         }
     }
 
-    function AbilitaMenuGestioneTrasferimento(matricola) {
-        GestioneAbilitazioneMenu(matricola);
+    function AbilitaMenuGestioneTrasferimento(idTrasferimento) {
+        GestioneAbilitazioneMenu(idTrasferimento);
     }
 
     function RicaricaModificaTrasferimento() {

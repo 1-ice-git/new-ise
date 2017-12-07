@@ -2,7 +2,7 @@
 @model IEnumerable<NewISE.Models.ViewModel.SospensioneModel>
 
 @{
-   decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
@@ -13,19 +13,19 @@
     }
     else
     {
-        @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { matricola = matricola }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkEditSospensione" })
+        @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkEditSospensione" })
     }
 
-@*@Ajax.ActionLink("Nuova Sospensione", // <-- Text to display
-                "NuovaSospensione", // <-- Action Method Name
-                "Sospensione", //  <--Controller Name
-                new AjaxOptions()
-                {
-                    UpdateTargetId = "tabElencoSospensioni", // <-- DOM element ID to update
-                    InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                    HttpMethod = "GET" // <-- HTTP method(Post/Get)
-                })
-    }*@
+    @*@Ajax.ActionLink("Nuova Sospensione", // <-- Text to display
+                    "NuovaSospensione", // <-- Action Method Name
+                    "Sospensione", //  <--Controller Name
+                    new AjaxOptions()
+                    {
+                        UpdateTargetId = "tabElencoSospensioni", // <-- DOM element ID to update
+                        InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
+                        HttpMethod = "GET" // <-- HTTP method(Post/Get)
+                    })
+        }*@
 
 </p>
 
@@ -45,14 +45,14 @@
                 </th>
                 <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.DataAggiornamento)
-                </th>  
-                <th style="text-align: center;"></th>              
+                </th>
+                <th style="text-align: center;"></th>
                 <th style="text-align: center;">
                     @Html.DisplayNameFor(model => model.NumeroGiorni)
-                </th> 
+                </th>
             </tr>
         </thead>
-    
+
         <tbody>
             @{ var rowColor = "#ffffff"; }
             @foreach (var item in Model)
@@ -117,29 +117,29 @@
 
 <script type="text/javascript">
     $("#tabListaSospensioni").DataTable({
-    "language": {
-        "sEmptyTable": "Nessun dato presente nella tabella",
-        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-        "sInfoPostFix": "",
-        "sInfoThousands": ".",
-        "sLengthMenu": "Visualizza _MENU_ elementi",
-        "sLoadingRecords": "Caricamento...",
-        "sProcessing": "Elaborazione...",
-        "sSearch": "Cerca:",
-        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-        "oPaginate": {
-            "sFirst": "Inizio",
-            "sPrevious": "Precedente",
-            "sNext": "Successivo",
-            "sLast": "Fine"
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
         },
-             "oAria": {
-                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-             }
-    },
         "info": false,
         "lengthChange": false,
         "pageLength": 5,
@@ -147,8 +147,8 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        });
-    
+    });
+
 
 
 
