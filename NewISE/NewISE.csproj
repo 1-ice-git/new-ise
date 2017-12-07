@@ -310,6 +310,7 @@
     <Content Include="Content\css\NuovoConiuge.css" />
     <Content Include="Content\css\NuovoFiglio.css" />
     <Content Include="Content\css\OverrideBootstrap.css" />
+    <Content Include="Content\css\OverrideSelect2.css" />
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\css\SystemCSS.css" />

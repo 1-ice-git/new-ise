@@ -1,0 +1,17 @@
+﻿.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single .select2-selection__clear {
+    display: none;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--multiple {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection__choice__remove {
+    display: none;
+}
