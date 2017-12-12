@@ -58,21 +58,61 @@
     </div>
 </div>
 <div id="divElencoTrasferimento" style="margin-top: 70px;">
-    @Html.Action("ElencoTrasferimento", "Trasferimento", new { matricola = matricola })
+
 </div>
+
 <script type="text/javascript">
 
     //debugger;
-    $("#hMatricola").val('@matricola');
 
-    InfoTrasferimento();
+    $("#hMatricola").val($("#Nominativo").val());
+
+    //InfoTrasferimento();
     //debugger;
-    GestioneMenu();
+    //GestioneMenu();
+    ElencoTrasferimento();
 
     $("#Nominativo").change(function () {
         //debugger;
         FiltraDipendente();
     });
+
+    function ElencoTrasferimento() {
+        var rotta = "/Trasferimento/ElencoTrasferimento";
+        var matricola = $("#Nominativo").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+                //$("#ContenitoreDipendentiGepe").empty();
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divElencoTrasferimento").empty();
+                $("#divElencoTrasferimento").html(result);
+
+                //InfoTrasferimento(matricola);
+                //GestioneMenu();
+            },
+            complete: function () {
+                MenuDaVisualizzare();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
         //debugger;
@@ -114,7 +154,7 @@
 
     function GestioneMenu() {
         //debugger;
-        var idTrasferimento = $("#listaTrasferimento").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
 
         if (idTrasferimento != undefined && idTrasferimento != "" && idTrasferimento > 0) {
             SvuotaTab();
@@ -368,7 +408,7 @@
     function InfoTrasferimento() {
         //debugger;
 
-        var idTrasferimento = $("#listaTrasferimento").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
 
         var rotta = "/Trasferimento/InfoTrasferimento";
 

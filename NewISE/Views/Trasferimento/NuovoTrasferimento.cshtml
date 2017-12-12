@@ -7,9 +7,11 @@
 
 @{
     bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
-    string vMatricola = (string)ViewBag.Matricola;
+    int vMatricola = (int)ViewBag.Matricola;
 
     DipendentiModel d = (DipendentiModel)ViewBag.Dipendente;
+
+    decimal idTrasferimentoOld = ViewBag.idTrasferimentoOld != null ? (decimal)ViewBag.idTrasferimentoOld : 0;
 
 }
 
@@ -26,16 +28,20 @@
         @Html.Hidden("matricola", vMatricola)
         @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
 
+        @Html.Hidden("idTrasferimentoOld", idTrasferimentoOld)
+
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div style="padding-top:3px;">
             <div class="form-group">
                 @Html.LabelFor(model => model.idTipoTrasferimento, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-3">
                     <div class="select2-container select2-container--classic ">
-                    @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                        @Html.DropDownList("idTipoTrasferimento", ViewBag.ListTipoTrasferimento as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idTipoTrasferimento, "", new { @class = "text-danger" })
-                    
+
                 </div>
             </div>
 
@@ -100,12 +106,7 @@
                 Notifica
             </button>
         </div>
-        <div class="col-xs-1">
-            <button class="btn btn-default btn-sm disabled" disabled id="btStampa">
-                <i class="fa fa-2x fa-print" aria-hidden="true"></i>
-                Stampa
-            </button>
-        </div>
+
     </div>
 </div>
 

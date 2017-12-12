@@ -197,13 +197,86 @@ namespace NewISE.Controllers
             }
         }
 
-        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false)
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
+        public ActionResult NuovoTrasferimentoDaUt(decimal idTrasfOld)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
             var lRuoloUfficio = new List<SelectListItem>();
             var lTipologiaCoan = new List<SelectListItem>();
 
+            int matricola = 0;
+            bool ricaricaInfoTrasf = true;
+
+            try
+            {
+                using (dtDipendenti dtd = new dtDipendenti())
+                {
+                    var d = dtd.GetDipendenteByIDTrasf(idTrasfOld);
+                    ViewBag.Dipendente = d;
+                    matricola = d.matricola;
+                }
+
+                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+
+                ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
+                ViewBag.ListUfficio = lUffici;
+                ViewBag.ListRuolo = lRuoloUfficio;
+                ViewBag.ListTipoCoan = lTipologiaCoan;
+
+                ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
+                ViewBag.Matricola = matricola;
+
+                ViewBag.idTrasferimentoOld = idTrasfOld;
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var tOld = dtt.GetSoloTrasferimentoById(idTrasfOld);
+
+                    if (tOld?.idTrasferimento > 0)
+                    {
+                        if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                        {
+                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                            ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+
+                        }
+                        else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        {
+                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona).ToString());
+                            ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                        }
+                        else
+                        {
+                            return PartialView("ErrorPartial", new MsgErr() { msg = "Impossibile inserire un nuovo trasferimento con stato del trasferimento ha: " + tOld.idStatoTrasferimento.ToString() });
+                        }
+                        return PartialView("NuovoTrasferimento");
+                    }
+                    else
+                    {
+                        return PartialView("ErrorPartial", new MsgErr() { msg = "Trasferimento inesistente." });
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+        }
+
+
+
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false)
+        {
+            var lTipoTrasferimento = new List<SelectListItem>();
+            var lUffici = new List<SelectListItem>();
+            var lRuoloUfficio = new List<SelectListItem>();
+            var lTipologiaCoan = new List<SelectListItem>();
 
             try
             {
@@ -230,11 +303,11 @@ namespace NewISE.Controllers
                     if (idTrasferimento > 0)
                     {
                         TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
-                        return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
+                        return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
                     }
                     else
                     {
-                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
+                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
                         return PartialView();
                     }
 
@@ -248,7 +321,7 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ModificaTrasferimento(decimal idTrasferimento, string matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult ModificaTrasferimento(decimal idTrasferimento, int matricola, bool ricaricaInfoTrasf = false)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
@@ -272,10 +345,6 @@ namespace NewISE.Controllers
                 {
                     var trm = dttr.GetTrasferimentoById(idTrasferimento);
 
-
-
-
-
                     using (dtDipendenti dtd = new dtDipendenti())
                     {
                         var d = dtd.GetDipendenteByID(trm.idDipendente);
@@ -288,7 +357,7 @@ namespace NewISE.Controllers
 
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 2.ToString() || a.Value == 3.ToString());
                             ViewBag.ListUfficio = lUffici.Where(a => a.Value != trm.idUfficio.ToString());
-                            return PartialView();
+                            return PartialView(trm);
 
                         case EnumStatoTraferimento.Da_Attivare:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == trm.idTipoTrasferimento.ToString());
@@ -325,7 +394,7 @@ namespace NewISE.Controllers
 
                         case EnumStatoTraferimento.Terminato:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
-                            return PartialView();
+                            return PartialView(trm);
 
                         default:
 
@@ -341,7 +410,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, int matricola, bool ricaricaInfoTrasf = false)
         {
             try
             {
@@ -531,12 +600,12 @@ namespace NewISE.Controllers
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciTrasferimento(TrasferimentoModel trm, string matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult InserisciTrasferimento(TrasferimentoModel trm, int matricola, bool ricaricaInfoTrasf = false, decimal idTrasferimentoOld = 0)
         {
             try
             {
                 //trm.idTrasferimento = 0;
-                trm.idStatoTrasferimento = (decimal)EnumStatoTraferimento.Da_Attivare;
+                trm.idStatoTrasferimento = EnumStatoTraferimento.Da_Attivare;
                 trm.dataAggiornamento = DateTime.Now;
 
 
@@ -555,6 +624,12 @@ namespace NewISE.Controllers
                                     db.Database.BeginTransaction();
 
                                     dttr.SetTrasferimento(ref trm, db);
+
+                                    if (idTrasferimentoOld > 0)
+                                    {
+                                        dttr.SetStatoTrasferimento(idTrasferimentoOld, EnumStatoTraferimento.Terminato);
+                                    }
+
 
                                     using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
                                     {
@@ -727,6 +802,48 @@ namespace NewISE.Controllers
                             ViewBag.Dipendente = d;
                         }
 
+                        ViewBag.idTrasferimentoOld = idTrasferimentoOld;
+                        if (idTrasferimentoOld > 0)
+                        {
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var tOld = dtt.GetSoloTrasferimentoById(idTrasferimentoOld);
+                                if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                                {
+                                    ViewBag.ListTipoTrasferimento =
+                                        lTipoTrasferimento.Where(
+                                            a =>
+                                                a.Value == "" ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                    ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                                }
+                                else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                                {
+                                    ViewBag.ListTipoTrasferimento =
+                                        lTipoTrasferimento.Where(
+                                            a =>
+                                                a.Value == "" ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() ||
+                                                a.Value ==
+                                                Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona)
+                                                    .ToString());
+                                    ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                                }
+                                else
+                                {
+                                    return PartialView("ErrorPartial",
+                                        new MsgErr()
+                                        {
+                                            msg =
+                                                "Impossibile inserire un nuovo trasferimento con stato del trasferimento ha: " +
+                                                tOld.idStatoTrasferimento.ToString()
+                                        });
+                                }
+                            }
+                        }
+
                         ModelState.AddModelError("", ex.Message);
 
                         //ViewBag.Modifica = modifica;
@@ -757,7 +874,29 @@ namespace NewISE.Controllers
                         ViewBag.Dipendente = d;
                     }
 
-                    //ViewBag.Modifica = modifica;
+                    ViewBag.idTrasferimentoOld = idTrasferimentoOld;
+                    if (idTrasferimentoOld > 0)
+                    {
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var tOld = dtt.GetSoloTrasferimentoById(idTrasferimentoOld);
+                            if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
+                            {
+                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                                ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                            }
+                            else if (tOld.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                            {
+                                ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEstero).ToString() || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.EsteroEsteroStessaRegiona).ToString());
+                                ViewBag.ListUfficio = lUffici.Where(a => a.Value != tOld.idUfficio.ToString());
+                            }
+                            else
+                            {
+                                return PartialView("ErrorPartial", new MsgErr() { msg = "Impossibile inserire un nuovo trasferimento con stato del trasferimento ha: " + tOld.idStatoTrasferimento.ToString() });
+                            }
+                        }
+                    }
+
 
                     return PartialView("NuovoTrasferimento", trm);
                 }
@@ -1057,14 +1196,14 @@ namespace NewISE.Controllers
 
         }
 
+        [Authorize(Roles = "1 ,2")]
+        [HttpPost]
         public ActionResult ElencoTrasferimento(int matricola, decimal idTrasferimento = 0)
         {
             var r = new List<SelectListItem>();
 
             try
             {
-
-
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     if (matricola > 0)

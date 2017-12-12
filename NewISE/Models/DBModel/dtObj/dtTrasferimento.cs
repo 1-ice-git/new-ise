@@ -22,8 +22,6 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-
-
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -78,7 +76,7 @@ namespace NewISE.Models.DBModel.dtObj
                                        idTrasferimento = t.IDTRASFERIMENTO,
                                        idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                                        idUfficio = t.IDUFFICIO,
-                                       idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                                       idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                                        idDipendente = t.IDDIPENDENTE,
                                        idTipoCoan = t.IDTIPOCOAN,
                                        dataPartenza = t.DATAPARTENZA,
@@ -283,7 +281,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idTrasferimento = t.IDTRASFERIMENTO,
                                 idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                                 idUfficio = t.IDUFFICIO,
-                                idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                                idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                                 idDipendente = t.IDDIPENDENTE,
                                 idTipoCoan = t.IDTIPOCOAN,
                                 dataPartenza = t.DATAPARTENZA,
@@ -329,7 +327,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idTrasferimento = t.IDTRASFERIMENTO,
                             idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                             idUfficio = t.IDUFFICIO,
-                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                             idDipendente = t.IDDIPENDENTE,
                             idTipoCoan = t.IDTIPOCOAN,
                             dataPartenza = t.DATAPARTENZA,
@@ -373,7 +371,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idTrasferimento = t.IDTRASFERIMENTO,
                         idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                         idUfficio = t.IDUFFICIO,
-                        idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                         idDipendente = t.IDDIPENDENTE,
                         idTipoCoan = t.IDTIPOCOAN,
                         dataPartenza = t.DATAPARTENZA,
@@ -416,7 +414,7 @@ namespace NewISE.Models.DBModel.dtObj
                            idTrasferimento = t.IDTRASFERIMENTO,
                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                            idUfficio = t.IDUFFICIO,
-                           idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                           idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                            idDipendente = t.IDDIPENDENTE,
                            idTipoCoan = t.IDTIPOCOAN,
                            dataPartenza = t.DATAPARTENZA,
@@ -498,7 +496,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idTrasferimento = t.IDTRASFERIMENTO,
                             idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                             idUfficio = t.IDUFFICIO,
-                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                             idDipendente = t.IDDIPENDENTE,
                             idTipoCoan = t.IDTIPOCOAN,
                             dataPartenza = t.DATAPARTENZA,
@@ -538,7 +536,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idTrasferimento = t.IDTRASFERIMENTO,
                             idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                             idUfficio = t.IDUFFICIO,
-                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                             idDipendente = t.IDDIPENDENTE,
                             idTipoCoan = t.IDTIPOCOAN,
                             dataPartenza = t.DATAPARTENZA,
@@ -583,7 +581,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 idTrasferimento = t.IDTRASFERIMENTO,
                                 idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                                 idUfficio = t.IDUFFICIO,
-                                idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                                idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                                 idDipendente = t.IDDIPENDENTE,
                                 idTipoCoan = t.IDTIPOCOAN,
                                 dataPartenza = t.DATAPARTENZA,
@@ -667,7 +665,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idTrasferimento = t.IDTRASFERIMENTO,
                             idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
                             idUfficio = t.IDUFFICIO,
-                            idStatoTrasferimento = t.IDSTATOTRASFERIMENTO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
                             idDipendente = t.IDDIPENDENTE,
                             idTipoCoan = t.IDTIPOCOAN,
                             dataPartenza = t.DATAPARTENZA,
@@ -840,6 +838,26 @@ namespace NewISE.Models.DBModel.dtObj
             return dit;
         }
 
+        public void SetStatoTrasferimento(decimal idTrasferimento, EnumStatoTraferimento stato)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                t.IDSTATOTRASFERIMENTO = (decimal)stato;
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Non è stato possibile modificare lo stato del trasferimento." + " Stato: " + stato.ToString() + " Trasferimento: " + idTrasferimento);
+                }
+
+
+
+            }
+        }
+
         public void SetTrasferimento(ref TrasferimentoModel trm, ModelDBISE db)
         {
             TRASFERIMENTO tr;
@@ -848,7 +866,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento,
                 IDUFFICIO = trm.idUfficio,
-                IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento,
+                IDSTATOTRASFERIMENTO = (decimal)trm.idStatoTrasferimento,
                 IDDIPENDENTE = trm.idDipendente,
                 IDTIPOCOAN = trm.idTipoCoan,
                 DATAPARTENZA = trm.dataPartenza,
@@ -887,7 +905,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
                     tr.IDUFFICIO = trm.idUfficio;
-                    tr.IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento;
+                    tr.IDSTATOTRASFERIMENTO = (decimal)trm.idStatoTrasferimento;
                     tr.IDDIPENDENTE = trm.idDipendente;
                     tr.IDTIPOCOAN = trm.idTipoCoan;
                     tr.DATAPARTENZA = trm.dataPartenza;
@@ -916,7 +934,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
                 tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
-                tr.IDSTATOTRASFERIMENTO = trm.idStatoTrasferimento > 0 ? trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
+                tr.IDSTATOTRASFERIMENTO = Convert.ToDecimal(trm.idStatoTrasferimento) > 0 ? (decimal)trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
                 tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
                 tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
                 tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
@@ -949,7 +967,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idTrasferimento = tr.IDTRASFERIMENTO,
                         idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                         idUfficio = tr.IDUFFICIO,
-                        idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                         idDipendente = tr.IDDIPENDENTE,
                         idTipoCoan = tr.IDTIPOCOAN,
                         dataPartenza = tr.DATAPARTENZA,
@@ -981,7 +999,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idTrasferimento = tr.IDTRASFERIMENTO,
                     idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                     idUfficio = tr.IDUFFICIO,
-                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                     idDipendente = tr.IDDIPENDENTE,
                     idTipoCoan = tr.IDTIPOCOAN,
                     dataPartenza = tr.DATAPARTENZA,
@@ -1014,7 +1032,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idTrasferimento = tr.IDTRASFERIMENTO,
                         idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                         idUfficio = tr.IDUFFICIO,
-                        idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                         idDipendente = tr.IDDIPENDENTE,
                         idTipoCoan = tr.IDTIPOCOAN,
                         dataPartenza = tr.DATAPARTENZA,
@@ -1086,7 +1104,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idTrasferimento = tr.IDTRASFERIMENTO,
                         idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                         idUfficio = tr.IDUFFICIO,
-                        idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                        idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                         idDipendente = tr.IDDIPENDENTE,
                         idTipoCoan = tr.IDTIPOCOAN,
                         dataPartenza = tr.DATAPARTENZA,
@@ -1158,7 +1176,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idTrasferimento = tr.IDTRASFERIMENTO,
                     idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                     idUfficio = tr.IDUFFICIO,
-                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                     idDipendente = tr.IDDIPENDENTE,
                     idTipoCoan = tr.IDTIPOCOAN,
                     dataPartenza = tr.DATAPARTENZA,
@@ -1254,7 +1272,7 @@ namespace NewISE.Models.DBModel.dtObj
                     idTrasferimento = tr.IDTRASFERIMENTO,
                     idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
                     idUfficio = tr.IDUFFICIO,
-                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idStatoTrasferimento = (EnumStatoTraferimento)tr.IDSTATOTRASFERIMENTO,
                     idDipendente = tr.IDDIPENDENTE,
                     idTipoCoan = tr.IDTIPOCOAN,
                     dataPartenza = tr.DATAPARTENZA,

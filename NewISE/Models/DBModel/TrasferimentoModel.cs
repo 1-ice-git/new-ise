@@ -23,7 +23,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Stato trasferimento richiesto")]
         [Display(Name = "Stato Trasferimento")]
-        public decimal idStatoTrasferimento { get; set; }
+        public EnumStatoTraferimento idStatoTrasferimento { get; set; }
 
         [Required(ErrorMessage = "Dipendente richiesto")]
         [Display(Name = "Dipendente")]

@@ -53,13 +53,13 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public StatoTrasferimentoModel GetStatoTrasferimentoByID(decimal idStatoTrasferimento)
+        public StatoTrasferimentoModel GetStatoTrasferimentoByID(EnumStatoTraferimento idStatoTrasferimento)
         {
             StatoTrasferimentoModel stm = new StatoTrasferimentoModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var st = db.STATOTRASFERIMENTO.Find(idStatoTrasferimento);
+                var st = db.STATOTRASFERIMENTO.Find((decimal)idStatoTrasferimento);
                 if (st != null && st.IDSTATOTRASFERIMENTO > 0)
                 {
                     stm = new StatoTrasferimentoModel()

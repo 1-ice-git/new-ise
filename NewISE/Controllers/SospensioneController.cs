@@ -49,7 +49,7 @@ namespace NewISE.Controllers
 
                         if (trm.idTipoTrasferimento > 0 &&
                             trm.idUfficio > 0 &&
-                            trm.idStatoTrasferimento == (decimal)EnumStatoTraferimento.Attivo &&
+                            trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo &&
                             trm.idDipendente > 0 &&
                             trm.idTipoCoan > 0 &&
                             trm.dataPartenza > DateTime.MinValue &&
