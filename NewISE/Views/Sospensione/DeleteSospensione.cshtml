@@ -1,0 +1,147 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.DBModel.SospensioneModel
+
+@{
+    ViewBag.Title = "Elimina Sospensione";
+    decimal idSospensione = (decimal)ViewBag.idSospensione;
+  //  decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
+   // decimal matricola = (decimal)ViewBag.matricola;
+    var errori = ViewData.ModelState;
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+}
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;" id="cv">
+    <fieldset>
+        @*<div class="modal-header" align="center">
+            @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><b>x</b></button>*@
+        @*<p><h1 id="myModalLabel" style="color:darkblue">@Html.DisplayFor(modelItem => modelItem.TipoSospensione)</h1></p>
+            </div>*@
+        @Html.Hidden("idSospensione")
+        <table id="tbelencocal" class="table" style="font-size:18px">
+            <tr class="dl-horizontal">
+                <td>
+                    @Html.DisplayNameFor(model => model.DataInizioSospensione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.DataInizioSospensione)
+                </td>
+            </tr>
+            <tr class="dl-horizontal">
+                <td>
+                    @Html.DisplayNameFor(model => model.DataFineSospensione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.DataFineSospensione)
+                </td>
+            </tr>
+            <tr class="dl-horizontal">
+                <td>
+                    @Html.DisplayNameFor(model => model.TipoSospensione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.TipoSospensione)
+                </td>
+            </tr>
+            <tr class="dl-horizontal">
+                <td>
+                    @Html.DisplayNameFor(model => model.DataAggiornamento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.DataAggiornamento)
+                </td>
+            </tr>
+
+        </table>
+        <div>
+            
+            
+            <div style="text-align:center"><input type="button" value="Elimina Sospensione" onclick="Elimina();" class="btn btn-default" /></div>
+
+        </div>
+    </fieldset>
+    <div>
+        <script type="text/javascript">
+            function AggiornaElenco() {
+                //  var datiForm = new FormData();
+              //  debugger;
+
+                // ElencoSospensioni();
+                var idTrasferimento = @idTrasferimento;
+
+                $.ajax({
+                    url: "/Sospensione/DatiTabElencoSospensione",
+                    type: "post",
+                    //data: $("form").serialize(), //if you need to post Model data, use this
+                    // data : $form.serialize(),
+
+                    // data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+                    data: {
+                        idTrasferimento: idTrasferimento,
+                    },
+                    dataType: 'html',
+                    async: false,
+                    beforeSend: function () {
+                        //debugger;
+                        // $("#inviaDocModalsosp").hide();
+                        //$('#inviaDocModalsosp').modal('hide');
+                    },
+                    success: function (result) {
+                        // $('#inviaFormularioTVModal').modal('hide');
+                       // debugger;
+                        //$('body').removeClass('modal-open');
+                        //$('.modal-backdrop').remove();
+                        $("#divElencoSosp").empty();
+                        $("#divElencoSosp").html(result);
+                    },
+                    complete:function()
+                        {
+                            
+                        },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        debugger;
+                        var msg = errorThrow.err;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
+
+                
+            }
+
+            function Elimina()
+            {
+                // debugger;
+                $('#inviaDocModalsosp').modal('hide');
+                var rotta = "/Sospensione/Elimina_Sospensione";
+                $.ajax({
+                    url: rotta,
+                    data: {
+                        idSospensione: @idSospensione,
+                    },
+                    type:'post',
+                    dataType: 'html',
+                    async: false,
+                    beforeSend: function () {
+                        //debugger;
+                        // $("#inviaDocModalsosp").hide();
+
+                    },
+                    success: function (result) {
+                        //   $('#inviaDocModalsosp').modal('hide');
+                        AggiornaElenco();
+                    },
+                    complete: function () {
+                        //Sblocca();
+                        //AggiornaElenco();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        debugger;
+                        var msg = errorThrow.err;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
+            }
+
+        </script>
+    </div>
+
+</div>

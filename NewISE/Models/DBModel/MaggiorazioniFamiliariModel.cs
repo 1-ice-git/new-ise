@@ -24,13 +24,9 @@ namespace NewISE.Models.DBModel
 
         public IList<ConiugeModel> ListaConiuge { get; set; }
         public IList<FigliModel> ListaFigli { get; set; }
-
-
         public bool HasValue()
         {
             return idMaggiorazioniFamiliari > 0 ? true : false;
         }
-
-
     }
 }

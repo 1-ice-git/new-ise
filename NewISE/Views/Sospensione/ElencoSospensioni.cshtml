@@ -1,155 +1,148 @@
 ﻿@using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.ViewModel.SospensioneModel>
 
 @{
-    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];    
+    bool solaLettura = false;
 }
-<p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-    @if (solaLettura)
-    {
 
-        <button href="#" class="btn btn-default disabled" disabled="disabled">Nuova Sospensione</button>
-    }
-    else
-    {
-        @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkEditSospensione" })
-    }
+    <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
+        @if (solaLettura)
+        {
+            <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Nuova Sospensione</button>
+        }
+        else
+        {
+            @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkNuovaSospensione" })
+        }
+    </p>
 
-    @*@Ajax.ActionLink("Nuova Sospensione", // <-- Text to display
-                    "NuovaSospensione", // <-- Action Method Name
-                    "Sospensione", //  <--Controller Name
-                    new AjaxOptions()
-                    {
-                        UpdateTargetId = "tabElencoSospensioni", // <-- DOM element ID to update
-                        InsertionMode = InsertionMode.Replace, // <-- Replace the content of DOM element
-                        HttpMethod = "GET" // <-- HTTP method(Post/Get)
-                    })
-        }*@
+<div id="divElencoSosp">
+    @Html.Action("DatiTabElencoSospensione", "Sospensione", new { idTrasferimento = idTrasferimento })
+</div>
 
-</p>
 
-<div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
-
-    <table id="tabListaSospensioni" class="table-striped" cellspacing="0">
-        <thead>
-            <tr>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.DataInizioSospensione)
-                </th>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.DataFineSospensione)
-                </th>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.TipoSospensione)
-                </th>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.DataAggiornamento)
-                </th>
-                <th style="text-align: center;"></th>
-                <th style="text-align: center;">
-                    @Html.DisplayNameFor(model => model.NumeroGiorni)
-                </th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @{ var rowColor = "#ffffff"; }
-            @foreach (var item in Model)
-            {
-                <tr style="background-color:@rowColor;">
-                    @if (item.DataInizioSospensione != null && item.DataInizioSospensione < Convert.ToDateTime("31/12/9999"))
-                    {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.DataInizioSospensione)
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;"></td>
-                    }
-                    @if (item.DataFineSospensione != null && item.DataFineSospensione < Convert.ToDateTime("31/12/9999"))
-                    {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.DataFineSospensione)
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;"></td>
-                    }
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.TipoSospensione)
-                    </td>
-                    @if (item.DataAggiornamento != null && item.DataAggiornamento < Convert.ToDateTime("31/12/9999"))
-                    {
-                        <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => item.DataAggiornamento)
-                        </td>
-                    }
-                    else
-                    {
-                        <td style="text-align: center;"></td>
-                    }
-                    <td style="text-align: center;">
-                        <a href="javascript:void(0);"
-                           class="anchorDetail" id_Sosp="@item.idSospensione"><span class="text-uppercase" title="Modifica"><img src="~/Immagini/edit.png" /></span></a>
-                        <a href="javascript:void(0);"
-                           class="anchorDetail2" id_Sosp="@item.idSospensione"><span class="text-uppercase" title="Elimina"><img src="~/Immagini/delete.png" /></span></a>
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.NumeroGiorni)
-                    </td>
-                </tr>
-                if (@rowColor.Equals("#ffffff"))
-                {
-                    rowColor = "#D9E6C4";
-                }
-                else
-                {
-                    rowColor = "#ffffff";
-                }
-            }
-        </tbody>
-    </table>
-    <br />
+<div class="modal fade" id="inviaDocModalsosp" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align:center">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel" >Conferma Eliminazione Sospensione</h3>
+                </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoDettaglisosp">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:white;text-align:center">
+                <div>
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
-    $("#tabListaSospensioni").DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 5,
-        "searching": false,
-        "paging": false,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
-    });
+
+    
 
 
 
 
+
+    //$("#tbelencocal").DataTable({
+    //    "ordering": false,
+    //    "language": {
+    //        "sEmptyTable": "Nessun dato presente nella tabella",
+    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+    //        "sInfoPostFix": "",
+    //        "sInfoThousands": ".",
+    //        "sLengthMenu": "Visualizza _MENU_ elementi",
+    //        "sLoadingRecords": "Caricamento...",
+    //        "sProcessing": "Elaborazione...",
+    //        "sSearch": "Cerca:",
+    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+    //        "oPaginate": {
+    //            "sFirst": "Inizio",
+    //            "sPrevious": "Precedente",
+    //            "sNext": "Successivo",
+    //            "sLast": "Fine"
+    //        },
+    //        "oAria": {
+    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    //        }
+    //    }
+    //});
+
+
+
+    //function DocumentoModal2(matr) {
+        $(".anchorDetailDelete").click(function () {
+          //  debugger;
+            var rotta = "/Sospensione/DeleteSospensione";
+            var $buttonClicked = $(this);
+            var idSospensione = $buttonClicked.attr('id_Sosp');
+            //var id_Sosp = $buttonClicked.attr('id_Sosp');
+            $.ajax({
+                url: rotta,
+                type: "post", //Le info testuali saranno passate in POST
+                data: { idSospensione: idSospensione },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    // debugger;
+                    $('#inviaDocModalsosp').modal('show');
+                    //Blocca();
+                },
+                success: function (result) {
+                   //  debugger;
+                    $("#viewDocumentoDettaglisosp").empty();
+                    $("#viewDocumentoDettaglisosp").html(result);                    
+                },
+                error: function (error) {
+                    debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                    $('#inviaDocModalsosp').modal('hide');
+                }
+            });
+        });
+   // }
+
+        $(".anchorDetailEdit").click(function () {
+            // debugger;
+              var rotta = "/Sospensione/EditSospensione";
+            var $buttonClicked = $(this);
+            var idSospensione = $buttonClicked.attr('idSosp');
+            
+            $.ajax({
+                url: rotta,
+                type: "post", //Le info testuali saranno passate in POST
+                data: { idSospensione: idSospensione },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                   //  debugger;
+                    //Blocca();
+                },
+                success: function (result) {
+                   // debugger;
+                    $("#tabElencoSospensioni").empty();
+                    $("#tabElencoSospensioni").html(result);                    
+                },
+                error: function (error) {
+                    debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        });
 </script>
