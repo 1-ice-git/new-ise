@@ -5,11 +5,9 @@
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-   // decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
-    decimal matricola = Convert.ToDecimal(ViewBag.matricola);
     var errori = ViewData.ModelState;
     decimal idSospensione = Convert.ToDecimal(ViewData["idSospensione"]);
-            }
+}
 
 <style>
     div .col-xs-10 {
@@ -28,7 +26,7 @@
             @Html.HiddenFor(model => model.idTrasferimento)           
             @Html.Hidden("id_TipoSospensione", 1)
             @Html.Hidden("idSospensione", idSospensione)
-            @Html.Hidden("matricola", matricola)
+            @Html.Hidden("idTrasferimento", idTrasferimento)
             <div class="row">
                 <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
                     <div class="form-group">
@@ -89,7 +87,7 @@
 }
 
 <p style="padding-left: 15px">
-    @Ajax.ActionLink("Torna indietro", "AttivitaSospensione", "Sospensione", new { matricola = matricola }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AttivitaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
