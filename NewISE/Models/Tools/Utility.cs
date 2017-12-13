@@ -321,7 +321,7 @@ namespace NewISE.Models.Tools
             }
 
 
-            return Convert.ToDateTime(giorno + DateTime.Now.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + DateTime.Now.Year.ToString());
+            return Convert.ToDateTime(giorno + "/" + DateTime.Now.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + DateTime.Now.Year.ToString());
         }
 
         public static DateTime DataFineStop()
