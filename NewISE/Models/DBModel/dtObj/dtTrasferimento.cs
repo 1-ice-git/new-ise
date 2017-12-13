@@ -1271,6 +1271,34 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+        public TrasferimentoModel GetTrasferimentoByIdSosp(decimal idSospensione)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
 
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var s = db.SOSPENSIONE.Find(idSospensione);
+                var tr = s.TRASFERIMENTO;
+
+                tm = new TrasferimentoModel()
+                {
+                    idTrasferimento = tr.IDTRASFERIMENTO,
+                    idTipoTrasferimento = tr.IDTIPOTRASFERIMENTO,
+                    idUfficio = tr.IDUFFICIO,
+                    idStatoTrasferimento = tr.IDSTATOTRASFERIMENTO,
+                    idDipendente = tr.IDDIPENDENTE,
+                    idTipoCoan = tr.IDTIPOCOAN,
+                    dataPartenza = tr.DATAPARTENZA,
+                    dataRientro = tr.DATARIENTRO,
+                    coan = tr.COAN,
+                    protocolloLettera = tr.PROTOCOLLOLETTERA,
+                    dataLettera = tr.DATALETTERA,
+                    notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
+                    dataAggiornamento = tr.DATAAGGIORNAMENTO
+                };
+            }
+
+            return tm;
+        }
     }
 }

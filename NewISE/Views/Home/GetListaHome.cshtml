@@ -246,7 +246,7 @@
                 var idd = $buttonClicked.attr('id_dip');
                 $.ajax({
                     url: rotta,
-                    type: "GET", //Le info testuali saranno passate in POST
+                    type: "POST", //Le info testuali saranno passate in POST
                     data: { "idf": idf, "idd": idd },
                     dataType: 'html',
                     async: false,

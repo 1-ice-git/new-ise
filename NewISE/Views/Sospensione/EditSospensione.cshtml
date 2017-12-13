@@ -5,10 +5,11 @@
 
 @{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
-    decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
+   // decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
+    decimal matricola = Convert.ToDecimal(ViewBag.matricola);
     var errori = ViewData.ModelState;
-    string ModelloMsg = errori["ErroreRangeDate"].ToString();
-}
+    decimal idSospensione = Convert.ToDecimal(ViewData["idSospensione"]);
+            }
 
 <style>
     div .col-xs-10 {
@@ -16,19 +17,18 @@
     }
 </style>
 
-@using (@Ajax.BeginForm("InserisciSospensione", "Sospensione", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewSospensione" }))
+@using (@Ajax.BeginForm("ModificaSospensione", "Sospensione", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditSospensione" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left: 15px;padding-right:50px">
         <div class="form-horizontal">
-            <h4>Nuova Sospensione</h4>
+            <h4>Modifica Sospensione</h4>
             <hr />
             @Html.HiddenFor(model => model.idTipoSospensione)
-            @Html.HiddenFor(model => model.idTrasferimento)
-            @Html.Hidden("matricola", matricola)
-
+            @Html.HiddenFor(model => model.idTrasferimento)           
             @Html.Hidden("id_TipoSospensione", 1)
-
+            @Html.Hidden("idSospensione", idSospensione)
+            @Html.Hidden("matricola", matricola)
             <div class="row">
                 <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
                     <div class="form-group">
@@ -36,34 +36,34 @@
                         <div class="select2-container select2-container--classic col-xs-8">
                             @*@Html.DropDownListFor(Model => Model.idTipoSospensione, ViewBag.lTipologiaSospensione as IEnumerable<SelectListItem>, new { @id = "tipoSospensione", @class = "form-control select2 select2-select", @onchange = "" })*@
                             @Html.DropDownList("idTipoSospensione", ViewBag.lTipologiaSospensione as IEnumerable<SelectListItem>, new { @id = "tipoSospensione", @class = "form-control select2 select2-select", @onchange = "" })
-                            </div>
-                            @Html.ValidationMessageFor(model => model.idTipoSospensione, "", new { @class = "text-danger" })
                         </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.DataInizioSospensione, htmlAttributes: new { @class = "control-label col-xs-4" })
-                                <div class="col-xs-8">
-                                    @Html.TextBoxFor(model => model.DataInizioSospensione, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(Model => Model.DataFineSospensione, htmlAttributes: new { @class = "control-label col-xs-4" })
-                                <div class="col-xs-8">
-                                    @Html.TextBoxFor(Model => Model.DataFineSospensione, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
-                                </div>
-                            </div>
-                        </div>
-
+                        @Html.ValidationMessageFor(model => model.idTipoSospensione, "", new { @class = "text-danger" })
+                    </div>
                     <div class="form-group">
-                        <div class="col-xs-offset-4 col-xs-10">
-                            <input type="submit" value="Salva" class="btn btn-default" />
+                        @Html.LabelFor(model => model.DataInizioSospensione, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(model => model.DataInizioSospensione, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(Model => Model.DataFineSospensione, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(Model => Model.DataFineSospensione, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <div class="form-group">
+                    <div class="col-xs-offset-4 col-xs-10">
+                        <input type="submit" value="Salva" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
         </div>
 
-     
+    </div>
+
+
 
         <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -86,24 +86,19 @@
             </div>
         </div>
 
-    }
+}
 
-    <p style="padding-left: 15px">
-        @Ajax.ActionLink("Torna indietro", "AttivitaSospensione", "Sospensione", new { matricola = matricola }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-    </p>
+<p style="padding-left: 15px">
+    @Ajax.ActionLink("Torna indietro", "AttivitaSospensione", "Sospensione", new { matricola = matricola }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
 
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/Scripts/MyValidateDate.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/MyValidateDate.js"></script>
 
 
 
-    <script type="text/javascript">
-
-        @*@if (ModelloMsg != "")
-        {
-            @:InfoElaborazioneAjax(ModelloMsg);*@
-        }
+<script type="text/javascript">
 
         //PulsantiNotificaAttivaMagFam();
 
@@ -144,7 +139,7 @@
         //}
 
 
-        $('#formNewSospensione').submit(function () {
+        $('#formEditSospensione').submit(function () {
             //debugger;
             var form = $(this);
             if (!form.valid()) {
@@ -169,6 +164,6 @@
             disabled: 'disabled'
         });
 
-    </script>
+</script>
 
 

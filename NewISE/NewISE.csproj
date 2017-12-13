@@ -2424,7 +2424,8 @@
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
-    <Compile Include="Models\ViewModel\SospensioneModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaSospensioneModel.cs" />
+    <Compile Include="Models\DBModel\SospensioneModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
     <Compile Include="Models\DBModel\DiaryEvents.cs" />
     <Compile Include="Models\DBModel\dtObj\dtAttivazionePassaporto.cs" />
@@ -2664,6 +2665,9 @@
     <Content Include="Views\Sospensione\ElencoSospensioni.cshtml" />
     <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
     <Content Include="Views\Sospensione\AttivitaSospensione.cshtml" />
+    <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
+    <Content Include="Views\Sospensione\EditSospensione.cshtml" />
+    <Content Include="Views\Sospensione\DatiTabElencoSospensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2677,11 +2681,11 @@
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
     <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
     <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
-    <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
     <Folder Include="Scripts\DayPilot\" />
+    <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

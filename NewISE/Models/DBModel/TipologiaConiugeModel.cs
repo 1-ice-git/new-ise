@@ -16,4 +16,5 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Coniuge")]
         public string tipologiaConiuge { get; set; }
     }
+    
 }

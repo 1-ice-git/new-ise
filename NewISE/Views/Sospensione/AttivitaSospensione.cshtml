@@ -1,29 +1,16 @@
 ﻿@model NewISE.Models.DBModel.MaggiorazioniFamiliariModel
 
 @{
-
     //bool callConiuge = Convert.ToBoolean(ViewData["callConiuge"]);
-
     //decimal idMafFam = Model.idMaggiorazioniFamiliari;
-    decimal idMagFam = ViewBag.idTrasferimento;
-    decimal matricola = ViewBag.matricola;
+ //   decimal idMagFam = ViewBag.idTrasferimento;
+    //  decimal matricola = ViewBag.matricola;
+    decimal matricola = Convert.ToDecimal(ViewData["matricola"]);
     //decimal idMafFam = ViewBag.idMagFam;
-
 }
-
 
 <div class="row">
     <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
-        <div class="nav nav-justified nav-tabs">
-            <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaSospensioni">
-                <li id="mnSospensioni">
-                    <a data-toggle="tab" href="#tabElencoSospensioni" id="lkElencoSospensioni" onclick="ElencoSospensioni();">Sospensioni</a>
-                </li>
-                <li id="mnSospensioni">
-                    <a data-toggle="tab" href="#tabFormulari_Var" id="lkFormulariVar" onclick="ElencoFormulariInseriti();">Formulari</a>
-                </li>
-            </ul>
-        </div>
         <div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">
             <div class="active tab-pane" id="tabElencoSospensioni"></div>
             <div class="tab-pane" id="tabFormulari_Var"></div>
@@ -31,17 +18,11 @@
     </div>
 </div>
 
-
-
-
-
 <script type="text/javascript">
     $('#tabsAttivitaSospensioni').tab();
 
     ElencoSospensioni();
 
-    
-    
     function ElencoSospensioni() {
         //debugger;
         var rotta = "/Sospensione/ElencoSospensioni";
@@ -52,22 +33,23 @@
             url: rotta,
             data: { matricola: matricola },
             dataType: 'html',
-            beforeSend: function () {
+            beforeSend: function (result) {
                 //debugger;
                 //VerificaAutenticazione();
                 //$("#DialogNewDoc").dialog("destroy");
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
             success: function (result) {
-                debugger;
+              //  debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$('#inviaDocModalsosp').modal('hide');
                 $("#tabElencoSospensioni").empty();
                 $("#tabElencoSospensioni").html(result);
 
                 //RicercaDocumenti();
 
             },
-            complete: function () {
+            complete: function (result) {
                 // TEST
                 //PulsantiNotificaAttivaMagFam();
             },
@@ -81,8 +63,8 @@
 
     }
 
+   
 
-    
 
 </script>
 
