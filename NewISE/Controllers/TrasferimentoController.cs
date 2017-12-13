@@ -297,21 +297,21 @@ namespace NewISE.Controllers
                 ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                 ViewBag.Matricola = matricola;
 
-                using (dtTrasferimento dttr = new dtTrasferimento())
+                //using (dtTrasferimento dttr = new dtTrasferimento())
+                //{
+
+                if (idTrasferimento > 0)
                 {
-
-                    if (idTrasferimento > 0)
-                    {
-                        TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
-                        return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-                    }
-                    else
-                    {
-                        ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
-                        return PartialView();
-                    }
-
+                    //TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
+                    return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
                 }
+                else
+                {
+                    ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == Convert.ToDecimal(EnumTipoTrasferimento.SedeEstero).ToString());
+                    return PartialView();
+                }
+
+                //}
             }
             catch (Exception ex)
             {
@@ -355,13 +355,31 @@ namespace NewISE.Controllers
                     {
                         case EnumStatoTraferimento.Attivo:
 
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 2.ToString() || a.Value == 3.ToString());
+                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.EsteroEstero).ToString() || a.Value == ((decimal)EnumTipoTrasferimento.EsteroEsteroStessaRegiona).ToString());
                             ViewBag.ListUfficio = lUffici.Where(a => a.Value != trm.idUfficio.ToString());
+                            using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            {
+                                trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
+                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                            }
+
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = new DocumentiModel();
+
+                                dm = dtd.GetDocumentoByIdTrasferimento(trm.idTrasferimento);
+                                if (dm != null && dm.file != null)
+                                {
+                                    trm.idDocumento = dm.idDocumenti;
+                                    trm.file = dm.file;
+                                    trm.Documento = dm;
+                                }
+                            }
+
                             return PartialView(trm);
 
                         case EnumStatoTraferimento.Da_Attivare:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == trm.idTipoTrasferimento.ToString());
-                            //ViewBag.Modifica = true;
 
                             using (dtRuoloUfficio dtru = new dtRuoloUfficio())
                             {
@@ -388,12 +406,29 @@ namespace NewISE.Controllers
                             trm.Ufficio = new UfficiModel();
                             trm.RuoloUfficio = new RuoloUfficioModel();
 
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
+                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
 
                             return PartialView();
 
                         case EnumStatoTraferimento.Terminato:
-                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == 1.ToString());
+                            ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
+                            using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            {
+                                trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
+                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                            }
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = new DocumentiModel();
+
+                                dm = dtd.GetDocumentoByIdTrasferimento(trm.idTrasferimento);
+                                if (dm != null && dm.file != null)
+                                {
+                                    trm.idDocumento = dm.idDocumenti;
+                                    trm.file = dm.file;
+                                    trm.Documento = dm;
+                                }
+                            }
                             return PartialView(trm);
 
                         default:

@@ -19,7 +19,11 @@ namespace NewISE.Models.DBModel.dtObj
         public RuoloUfficioModel GetRuoloUfficioValidoByIdTrasferimento(decimal idTrasferimento)
         {
             RuoloUfficioModel rum = new RuoloUfficioModel();
-            DateTime dtDatiParametri = DateTime.Now;
+            DateTime dtDatiParametri;
+            DateTime dtRientro;
+            DateTime dataAttuale = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            DateTime dataInizioMEseCorrente = Utility.GetDtInizioMeseCorrente();
+            DateTime dataFineMeseCorrente = Utility.GetDtFineMeseCorrente();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -29,11 +33,13 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (tr.DATARIENTRO.HasValue)
                     {
-                        dtDatiParametri = tr.DATARIENTRO.Value;
+                        dtRientro = tr.DATARIENTRO.Value;
+
+                        dtDatiParametri = dtRientro > dataFineMeseCorrente ? dataAttuale : dtRientro;
                     }
                     else
                     {
-                        dtDatiParametri = tr.DATAPARTENZA > Utility.GetDtInizioMeseCorrente() ? tr.DATAPARTENZA : Utility.GetDtInizioMeseCorrente();
+                        dtDatiParametri = tr.DATAPARTENZA > dataInizioMEseCorrente ? tr.DATAPARTENZA : dataAttuale;
                     }
 
                     var lru = tr.INDENNITA.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
@@ -53,17 +59,18 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
-                return rum;
+            return rum;
         }
 
         public IList<RuoloUfficioModel> GetListRuoloUfficio()
         {
             List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
 
-            using (ModelDBISE db=new ModelDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 lru = (from e in db.RUOLOUFFICIO
-                       select new RuoloUfficioModel() {
+                       select new RuoloUfficioModel()
+                       {
                            idRuoloUfficio = e.IDRUOLO,
                            DescrizioneRuolo = e.DESCRUOLO
                        }).ToList();
@@ -111,9 +118,9 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        
 
-        
+
+
 
 
     }
