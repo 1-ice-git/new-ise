@@ -303,7 +303,7 @@
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
-                //VerificaAutenticazione();
+                VerificaAutenticazione();
                 //$("#DialogNewDoc").dialog("destroy");
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
@@ -323,126 +323,79 @@
                     var docFormulario = result.docFormulario;
                     var inLavorazione = result.inLavorazione;
 
-                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                    $("#btAttivaMagFam_Var").addClass("disabled");
+                    //$("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                    //$("#btAttivaMagFam_Var").addClass("disabled");
 
-                    $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                    $("#btAnnullaMagFam_Var").addClass("disabled");
+                    //$("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                    //$("#btAnnullaMagFam_Var").addClass("disabled");
+
 
                     ///Se risulta in lavorazione abilito la il pulsante notifica
-                    //if (docFormulario == true) {
-                    if (inLavorazione == true) {
+                    if (inLavorazione)
+                    {
                         $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
-                    } else {
+                    }
+                    else
+                    {
                         ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
-                        if (rinuncia == true && richiesta == true) {
+                        if (rinuncia && richiesta)
+                        {
                             $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                             $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                            //$("#chkMagFamiliariR").attr('checked', true);
-
-                            if (attivazione == true) {
+                            if (attivazione)
+                            {
                                 $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                 $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                //$("#chkMagFamiliariSR").attr('checked', true);
-
-                            } else {
-                                if (admin == true) {
-                                    $("#btAttivaMagFam_Var").removeAttr("disabled");
-                                    $("#btAttivaMagFam_Var").removeClass("disabled");
-
-                                    $("#btAnnullaMagFam_Var").removeAttr("disabled");
-                                    $("#btAnnullaMagFam_Var").removeClass("disabled");
-                                } else {
-                                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                    $("#btAttivaMagFam_Var").addClass("disabled");
-                                }
-
-                                //$("#chkMagFamiliariSR").attr('checked', false);
                             }
-
-                        } else {
-                            if (richiesta == true) {
+                        }
+                        else
+                        {
+                            if (richiesta)
+                            {
                                 $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                                 $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                //$("#chkMagFamiliariR").attr('checked', true);
-
-                                if (attivazione == true) {
+                                if (attivazione)
+                                {
                                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                     $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                    //$("#chkMagFamiliariSR").attr('checked', true);
-
-                                } else {
-                                    if (admin == true) {
+                                }
+                                else
+                                {
+                                    if (admin)
+                                    {
                                         $("#btAttivaMagFam_Var").removeAttr("disabled");
                                         $("#btAttivaMagFam_Var").removeClass("disabled");
 
                                         $("#btAnnullaMagFam_Var").removeAttr("disabled");
                                         $("#btAnnullaMagFam_Var").removeClass("disabled");
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                         $("#btAttivaMagFam_Var").addClass("disabled");
+
+                                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                                        $("#btAnnullaMagFam_Var").addClass("disabled");
                                     }
-                                    //$("#chkMagFamiliariSR").attr('checked', false);
                                 }
-                            } else {
-                                if ((datiConiuge == true || datiFigli == true)) {
-                                    if (datiParzialiConiuge == true || datiParzialiFigli == true) {
-                                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+                            }
+                            else
+                            {
+                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btAttivaMagFam_Var").addClass("disabled");
-                                    } else {
-                                        if (((siDocConiuge == false && datiConiuge == true) || (siDocFigli == false && datiFigli == true)) && docFormulario == false) {
-                                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+                                $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                                $("#btAttivaMagFam_Var").addClass("disabled");
 
-                                            $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                            $("#btAttivaMagFam_Var").addClass("disabled");
-                                        } else {
-                                            if ((datiConiuge == true || datiFigli == true) && docFormulario == false) {
-                                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
-
-                                                $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                                $("#btAttivaMagFam_Var").addClass("disabled");
-                                            } else {
-                                            //    $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
-                                            //    $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
-                                            }
-
-                                            //$("#btAttivaMagFam").removeAttr("disabled", "disabled");
-                                            //$("#btAttivaMagFam").removeClass("disabled");
-                                        }
-                                    }
-
-                                } else {
-                                    if (docFormulario == false) {
-                                        //$("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
-                                        //$("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
-                                    } else {
-                                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
-
-                                        $("#btAnnullaMagFam_Var").removeAttr("disabled");
-                                        $("#btAnnullaMagFam_Var").removeClass("disabled");
-                                    }
-
-                                }
-
-                                //$("#chkMagFamiliariR").attr('checked', false);
+                                $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                                $("#btAnnullaMagFam_Var").addClass("disabled");
                             }
                         }
                     }
-
-                    ////////GestioneAttivitaTrasferimento();
-                    //ElencoFamiliari();
-
+                    //GestioneAttivitaTrasferimento();
 
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -456,7 +409,6 @@
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
-
             }
 
         });

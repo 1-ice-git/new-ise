@@ -1037,13 +1037,16 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
+    <Content Include="Immagini\delete.png" />
     <Content Include="Immagini\edit-button.png" />
+    <Content Include="Immagini\edit.png" />
     <Content Include="Immagini\Eliminazione.png" />
     <Content Include="Immagini\EliminazioneDisable.png" />
     <Content Include="Immagini\Errore.gif" />
     <Content Include="Immagini\Errore2.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
+    <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
     <Content Include="Immagini\Loading\source.gif" />
     <Content Include="Immagini\Logo ISE.png" />
@@ -1062,6 +1065,8 @@
     <Content Include="Immagini\Simbolo euro green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Red.png" />
+    <Content Include="Immagini\switch_old.png" />
+    <Content Include="Immagini\switch2.png" />
     <Content Include="Lib\fullcalendar.css" />
     <Content Include="Lib\fullcalendar.js" />
     <Content Include="Lib\fullcalendar.min.css" />
@@ -2569,8 +2574,10 @@
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2667,11 +2674,11 @@
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
     <Folder Include="Areas\Statistiche\Views\LogAttivita\" />
     <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
-    <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
     <Folder Include="Scripts\DayPilot\" />
+    <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

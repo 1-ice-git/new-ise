@@ -60,13 +60,13 @@
 <script type="text/javascript">
 
     function NuovoFamiliare() {
-        debugger;
-        //var tipofamiliare = $("#lTipologiaFamiliare").val();
-        //var idMaggiorazioniFamiliari = $("#idMaggiorazioniFamiliari").val();
+        //debugger;
+        var tipofamiliare = $("#lTipologiaFamiliare").val();
+        var idMaggiorazioniFamiliari = $("#idMaggiorazioniFamiliari").val();
 
         if (tipofamiliare == 1)
         {
-            //var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoConiuge";
+            var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoConiuge";
         }
         if (tipofamiliare != "" && tipofamiliare != undefined) {
             $.ajax({
