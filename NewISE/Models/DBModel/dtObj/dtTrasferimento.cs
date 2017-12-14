@@ -55,6 +55,27 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public bool EsisteTrasferimentoSuccessivo(decimal idTrasferimento)
+        {
+            bool ret = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var ts = db.TRASFERIMENTO.Where(a => a.DATAPARTENZA > t.DATARIENTRO);
+
+                if (ts?.Any() ?? false)
+                {
+                    ret = true;
+                }
+
+            }
+
+            return ret;
+
+        }
+
+
         public IList<TrasferimentoModel> GetListaTrasferimento(int matricola)
         {
             List<TrasferimentoModel> ltm = new List<TrasferimentoModel>();
@@ -838,6 +859,38 @@ namespace NewISE.Models.DBModel.dtObj
             return dit;
         }
 
+
+        public void TerminaTrasferimento(decimal idTrasferimentoOld, DateTime dataPartenzaNewTrasf, ModelDBISE db)
+        {
+
+            try
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimentoOld);
+
+                if (!t.DATARIENTRO.HasValue)
+                {
+                    t.DATARIENTRO = dataPartenzaNewTrasf.AddDays(-1);
+
+                    int i = db.SaveChanges();
+                    if (i <= 0)
+                    {
+                        throw new Exception("Impossibile terminare il trasferimento.");
+                    }
+
+                    this.SetStatoTrasferimento(idTrasferimentoOld, EnumStatoTraferimento.Terminato, db);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
+
         public void SetStatoTrasferimento(decimal idTrasferimento, EnumStatoTraferimento stato)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -845,6 +898,8 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 t.IDSTATOTRASFERIMENTO = (decimal)stato;
+
+
 
                 int i = db.SaveChanges();
 
@@ -856,6 +911,23 @@ namespace NewISE.Models.DBModel.dtObj
 
 
             }
+        }
+        public void SetStatoTrasferimento(decimal idTrasferimento, EnumStatoTraferimento stato, ModelDBISE db)
+        {
+
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            t.IDSTATOTRASFERIMENTO = (decimal)stato;
+
+
+
+            int i = db.SaveChanges();
+
+            if (i <= 0)
+            {
+                throw new Exception("Non è stato possibile modificare lo stato del trasferimento." + " Stato: " + stato.ToString() + " Trasferimento: " + idTrasferimento);
+            }
+
         }
 
         public void SetTrasferimento(ref TrasferimentoModel trm, ModelDBISE db)

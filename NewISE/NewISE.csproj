@@ -2669,6 +2669,7 @@
     <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
     <Content Include="Views\Sospensione\EditSospensione.cshtml" />
     <Content Include="Views\Sospensione\DatiTabElencoSospensione.cshtml" />
+    <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

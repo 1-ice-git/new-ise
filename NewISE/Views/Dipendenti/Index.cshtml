@@ -248,6 +248,139 @@
         }
     }
 
+    function InfoTrasferimento() {
+        //debugger;
 
+        var idTrasferimento = $("#hidTrasferimento").val();
+
+        var rotta = "/Trasferimento/InfoTrasferimento";
+
+        if (idTrasferimento > 0) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#ContenitoreDatiTrasf").empty();
+                    $("#ContenitoreDatiTrasf").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        } else {
+            $("#ContenitoreDatiTrasf").empty();
+        }
+    }
+
+    function FiltraDipendente() {
+        //debugger;
+        var rotta = "/Dipendenti/DipendentiGepe";
+        var matricola = $("#Nominativo").val();
+
+        if (matricola != "" && matricola != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                },
+                success: function (result) {
+                    //debugger;
+
+                    $("#ContenitoreDipendentiGepe").empty();
+                    $("#ContenitoreDipendentiGepe").html(result);
+
+                    ElencoTrasferimento();
+                },
+                complete: function () {
+                    MenuDaVisualizzare();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+    }
+
+    function GestioneMenu() {
+        debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+
+        if (idTrasferimento != undefined && idTrasferimento != "" && idTrasferimento > 0) {
+            SvuotaTab();
+            $("#lkNuovoTrasferimento").removeAttr("disabled");
+            $("#mnNuovoTrasferimento").removeClass("disabled");
+
+            GestioneAbilitazioneMenu(idTrasferimento);
+        }
+        else {
+            SvuotaTab();
+
+            $("#lkNuovoTrasferimento").attr("disabled", "disabled");
+            $("#mnNuovoTrasferimento").addClass("disabled");
+
+            $("#lkGestioneTrasferimento").attr("disabled", "disabled");
+            $("#mnGestioneTrasferimento").addClass("disabled");
+
+            $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
+            $("#mnMaggiorazioneFamiliare").addClass("disabled");
+
+            $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
+            $("#mnMaggiorazioneAbitazione").addClass("disabled");
+
+            $("#lkCongediPermessi").attr("disabled", "disabled");
+            $("#mnCongediPermessi").addClass("disabled");
+
+            $("#lkSospensione").attr("disabled", "disabled");
+            $("#mnSospensione").addClass("disabled");
+
+            $("#lkRichiamo").attr("disabled", "disabled");
+            $("#mnRichiamo").addClass("disabled");
+
+            $("#lkIndennità").attr("disabled", "disabled");
+            $("#mnIndennità").addClass("disabled");
+
+            $("#lkRiepilogoVoci").attr("disabled", "disabled");
+            $("#mnRiepilogoVoci").addClass("disabled");
+
+        }
+
+    }
+
+    function SvuotaTab() {
+        //debugger;
+
+        $("#tabNuovoTrasferimento").empty();
+        $("#tabGestioneTrasferimento").empty();
+        $("#tabMaggiorazioneFamiliare").empty();
+        $("#tabMaggiorazioneAbitazione").empty();
+        $("#tabCongediPermessi").empty();
+        $("#tabSospensione").empty();
+        $("#tabRichiamo").empty();
+        $("#tabIndennita").empty();
+        $("#RiepilogoVoci").empty();
+    }
 
 </script>

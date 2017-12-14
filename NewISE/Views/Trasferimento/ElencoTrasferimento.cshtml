@@ -14,14 +14,19 @@
         placeholder: "Seleziona il trasferimento",
         allowClear: true,
         language: "it",
-        width: '335'
+        width: '335',
+        allowClear: false
     });
 
     $("#ElencolistaTrasferimento").change(function () {
+
+        $("#hidTrasferimento").val($('#ElencolistaTrasferimento').val());
+
         //debugger;
         InfoTrasferimento();
         //debugger;
         GestioneMenu();
+        MenuDaVisualizzare();
     });
 
     var idTrasf = $('#ElencolistaTrasferimento').val();
