@@ -13,10 +13,11 @@
 
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
 
 }
 
-@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
+@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left: 15px; padding-right:5px;">
@@ -26,7 +27,9 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             @Html.HiddenFor(model => model.idConiuge)
-            @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
+           @* @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)*@
+            @Html.Hidden("idAttivazione", idAttivazione)
+
 
             @Html.HiddenFor(model => model.residente)
             @Html.HiddenFor(model => model.ulterioreMagConiuge)
@@ -168,7 +171,7 @@
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <datalist id="ListaComuni">

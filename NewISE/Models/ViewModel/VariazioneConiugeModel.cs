@@ -12,6 +12,7 @@ namespace NewISE.Models.DBModel
     public class VariazioneConiugeModel: ConiugeModel
     {
         public bool modificabile;
+        public bool eliminabile;
 
     }
 }

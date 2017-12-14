@@ -2,9 +2,10 @@
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
     //decimal idMaggiorazioneConiuge = Convert.ToDecimal(ViewData["idMaggiorazioneConiuge"]);
 
-    //decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+    decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
 
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 
@@ -106,9 +107,14 @@
     }
     else
     {
-        @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+        @Ajax.ActionLink("Modifica", "ModificaAltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idAltriDatiFam = Model.idAltriDatiFam, idMaggiorazioniFamiliari = idMaggiorazioniFamiliari, idAttivazione=idAttivazione }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
     }
     | @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>
+
+<script type="text/javascript">
+    PulsantiNotificaAttivaMagFam();
+</script>
+
 

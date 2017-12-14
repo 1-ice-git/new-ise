@@ -22,7 +22,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "Maggiorazione familiari")]
         [Display(Name = "Maggiorazione familiari")]
         public decimal idMaggiorazioniFamiliari { get; set; }
-        [Required(ErrorMessage = "La tipologia del coniuge è rochiesta.")]
+        [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
         [Required(ErrorMessage = "Il passaporto è richiesto.")]
@@ -51,6 +51,7 @@ namespace NewISE.Models.DBModel
         public DateTime? dataInizio { get; set; }
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        [CustomValidation(typeof(dtConiuge), "VerificaDataFine")]
         public DateTime? dataFine { get; set; }
 
         [Required(ErrorMessage = "La data aggiornamento è richiesta.")]

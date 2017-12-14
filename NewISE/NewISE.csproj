@@ -1047,6 +1047,7 @@
     <Content Include="Immagini\Errore2.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
+    <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
     <Content Include="Immagini\Loading\source.gif" />
     <Content Include="Immagini\Logo ISE.png" />
@@ -1065,6 +1066,8 @@
     <Content Include="Immagini\Simbolo euro green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Red.png" />
+    <Content Include="Immagini\switch_old.png" />
+    <Content Include="Immagini\switch2.png" />
     <Content Include="Lib\fullcalendar.css" />
     <Content Include="Lib\fullcalendar.js" />
     <Content Include="Lib\fullcalendar.min.css" />
@@ -2577,8 +2580,10 @@
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

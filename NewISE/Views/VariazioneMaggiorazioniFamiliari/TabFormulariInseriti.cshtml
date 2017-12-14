@@ -11,16 +11,16 @@
 <table class="table"  id="tabElencoFormulariInseriti_Var">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.progressivo )
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.estensione)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInserimento)
             </th>
             <th></th>
@@ -33,13 +33,13 @@
             <tr>
                 @if (item.Modificabile)
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
                         (@Html.DisplayFor(modelItem => item.progressivo ))
                     </td>
                 }
                 else
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
                         (@Html.DisplayFor(modelItem => item.progressivo ))
                     </td>
                 }
@@ -58,13 +58,13 @@
                 }
                 @if (item.Modificabile)
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                         @Html.DisplayFor(modelItem => item.estensione)
                     </td>
                 }
                 else
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                         @Html.DisplayFor(modelItem => item.estensione)
                     </td>
                 }
@@ -72,42 +72,30 @@
 
                 @if (item.Modificabile)
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
                 }
                 else
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
                 }
 
-                @if (item.Modificabile)
-                {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
-                    </td>
-                }
-                else
-                {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
-                    </td>
-                }
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                </td>
 
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
                 @if (item.Modificabile)
                 {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        <button class="btn btn-link" onclick="EliminaFormulario(@item.idDocumenti);">Elimina </button>
-                    </td>
+                    <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                    </a>
+                        @*<button class="btn btn-link" onclick="EliminaFormulario(@item.idDocumenti);">Elimina </button>*@
                 }
-                else
-                {
-                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        <button class="btn btn-link disabled" disabled>Elimina</button>
-                    </td>
-                }
+                </td>
             </tr>
         }
     </tbody>
@@ -170,25 +158,6 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "order": [[3, "desc"]]
-       
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
     });
 
     function EliminaFormulario(idDoc) {
@@ -213,7 +182,7 @@
             beforeSend: function () {
                 //debugger;
                 VerificaAutenticazione();
-                //Blocca();
+                Blocca();
 
             },
             success: function (result) {

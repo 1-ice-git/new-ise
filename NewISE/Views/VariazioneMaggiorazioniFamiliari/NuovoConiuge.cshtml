@@ -1,12 +1,14 @@
 ﻿@model NewISE.Models.DBModel.ConiugeModel
 
+<link href="~/Content/css/NuovoConiuge.css" rel="stylesheet" />
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
     var errori = ViewData.ModelState;
-    
 }
 
 <style>
@@ -22,10 +24,20 @@
         <div class="form-horizontal">
             <h4>Inserire Dati Coniuge</h4>
             <hr />
-            @Html.HiddenFor(model => model.idConiuge)
-            @Html.HiddenFor(model => model.idMaggiorazioniFamiliari)
-            @Html.HiddenFor(model => model.idPassaporti)
-            @Html.HiddenFor(model => model.idTitoloViaggio)
+            @*-@Html.HiddenFor(model => model.idConiuge)
+            
+            -@Html.HiddenFor(model => model.idMaggiorazioniFamiliari)
+            -@Html.HiddenFor(model => model.idPassaporti)
+            -@Html.HiddenFor(model => model.idTitoloViaggio)
+            -@Html.HiddenFor(model => model.Modificato)
+            -@Html.HiddenFor(model => model.FK_idConiuge)
+            
+            -@Html.HiddenFor(model => model.escludiTitoloViaggio)
+            -@Html.HiddenFor(model => model.escludiPassaporto)
+            -@Html.HiddenFor(model => model.dataAggiornamento )*@
+
+            @Html.Hidden("idMaggiorazioniFamiliari", idMaggiorazioniFamiliari)
+            @Html.Hidden("idAttivazioneMagFam", idAttivazioneMagFam)
 
 
             <div class="row">
@@ -93,7 +105,7 @@
                 </div>
                 <div class="modal-body alert alert-warning text-warning">
                     <p id="msgModalWarning" class="text-warning">
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                       @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                     </p>
                 </div>
                 <div class="modal-footer">

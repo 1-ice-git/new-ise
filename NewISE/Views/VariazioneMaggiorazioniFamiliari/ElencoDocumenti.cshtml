@@ -76,12 +76,12 @@
                     <td class="text-center" style="width: 10%;">
                         @Html.DisplayFor(modelItem => item.estensione)
                     </td>
-                    <td class="text-center" style="width: 10%;">
+                    <td class="text-center" style="width: 20%;">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
                     <td style="text-align: center; width: 10%;">
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
-                            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                            <img width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                         </a>
                     </td>
                     <td class="text-center" style="width: 10%;">
@@ -93,11 +93,15 @@
                         {
                             if (item.Modificabile)
                             {
-                                <a href="#" onclick="EliminaDocumento(@id, @chiamante,@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
+                                <a href="#" onclick="EliminaDocumento(@id, @chiamante,@item.idDocumenti)" id="linkEliminaDoc">
+                                    <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Documento" />
+                                </a>
                             }
                             else
                             {
-                                <a href="#" onclick="SostituisciDocumento(@id, @chiamante,@item.idDocumenti)" id="linkSostituisciDoc">Sostituisci</a>
+                                <a href="#" onclick="SostituisciDocumento(@id, @chiamante,@item.idDocumenti)" id="linkSostituisciDoc">
+                                    <img width="17" src="../../Immagini/switch.png" title="Sostituisci&nbsp;Documento" />
+                                </a>
                             }
                         }
                     </td>
@@ -235,11 +239,12 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
+        "order": [[3, "desc"]]
     });
 
     
 
-    function EliminaDoc(idDocumento) {
+    function EliminaDocumento(id, Chiamante, idDocumento) {
         $('#' + nuovoIdModalDelete).modal('show');
         $('#hiEliminaDoc').val(idDocumento);
     }
@@ -298,55 +303,6 @@
     }
 
     
-    @*function ConfermaSostituisciDoc() {
-        //debugger;
-        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaSostituisciDocumento";
-        var id = parseInt(@id);
-        var parentela = parseInt(@Convert.ToDecimal(enParentela));
-        var tipoDoc = parseInt(@Convert.ToDecimal(enTipoDoc));
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                tipoDoc: tipoDoc,
-                id: id,
-                parentela: parentela
-            },
-            dataType: 'json',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //Blocca();
-
-            },
-            success: function (result) {
-                //debugger;
-                if (result.errore === "") {
-                    $('#'+ nuovoModalReplace).modal('hide');
-                    PulsantiNotificaAttivaMagFam();
-                } else {
-                    ErroreElaborazioneAjax(result.msg);
-                }
-            },
-            complete: function () {
-
-                Sblocca();
-
-            },
-            error: function (error) {
-                //debugger;
-                Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-
-        });
-
-
-    }*@
-
     
 
     $('#' + nuovoIdModalDelete).on('hidden.bs.modal', function(e) {
@@ -374,14 +330,14 @@
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
 
         if (newDoc != nDocOld) {
-            ElencoDocumentiFamiliare(@id, @tipoDoc, @parentela, @chiamante);
+            ElencoDocumentiFamiliare(@id, @tipoDoc, @parentela, @chiamante,@idMaggiorazioniFamiliari);
         }
     }
 
 
     function PrelevaNumeroDocumentiAttuali(id, tipoDoc, parentela ) {
         //debugger;
-        var rotta = "/Documenti/NumeroDocumentiSalvati";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/NumeroDocumentiSalvatiMF";
         var nDoc = 0;
         $.ajax({
             url: rotta,
@@ -478,7 +434,7 @@
                 $('#'+ nuovoModalReplace).modal('show');
             },
             success: function (result) {
-                debugger;
+                //debugger;
                 $("#ReplaceViewDocumento").empty();
                 $("#ReplaceViewDocumento").html(result);
 

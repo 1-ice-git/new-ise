@@ -148,7 +148,7 @@
                 //debugger;
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
-                //Blocca();
+                Blocca();
                 //$('#ModalNuovoFormulario').modal('show');
             },
             success: function (result) {
@@ -159,7 +159,7 @@
             },
             error: function (error) {
                 //debugger;
-                //Sblocca();
+                Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
