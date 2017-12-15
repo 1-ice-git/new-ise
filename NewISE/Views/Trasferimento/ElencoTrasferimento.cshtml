@@ -21,12 +21,16 @@
     $("#ElencolistaTrasferimento").change(function () {
 
         $("#hidTrasferimento").val($('#ElencolistaTrasferimento').val());
-
+        $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
+        NuovoTrasferimento();
         //debugger;
         InfoTrasferimento();
         //debugger;
         GestioneMenu();
         MenuDaVisualizzare();
+
+
+
     });
 
     var idTrasf = $('#ElencolistaTrasferimento').val();
@@ -35,5 +39,7 @@
     InfoTrasferimento();
     //debugger;
     GestioneMenu();
+
+    MenuDaVisualizzare();
 
 </script>
