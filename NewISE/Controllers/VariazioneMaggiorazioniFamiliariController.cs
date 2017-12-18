@@ -163,6 +163,34 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult ElencoFamiliari(decimal idMaggiorazioniFamiliari)
         {
+
+            bool rinunciaMagFam = false;
+            bool richiestaAttivazione = false;
+            bool attivazione = false;
+            bool datiConiuge = false;
+            bool datiParzialiConiuge = false;
+            bool datiFigli = false;
+            bool datiParzialiFigli = false;
+            bool siDocConiuge = false;
+            bool siDocFigli = false;
+            bool docFormulario = false;
+            bool inLavorazione = false;
+
+            bool solaLettura = false;
+
+            using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+            {
+
+                dtvmf.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
+                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
+
+                if (richiestaAttivazione)
+                {
+                    solaLettura = true;
+                }
+            }
+
             List<VariazioneElencoFamiliariModel> lefm = new List<VariazioneElencoFamiliariModel>();
 
             try
@@ -217,7 +245,6 @@ namespace NewISE.Controllers
                 using (dtFigli dtf = new dtFigli())
                 {
                     var check_nuovo_figlio = 1;
-                    var solaLettura = 0;
 
                     //da rifare
                     //List<FigliModel> lfm = dtf.GetListaFigli(idMaggiorazioniFamiliari).ToList();
@@ -1310,15 +1337,24 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult AnnullaRichiesta(decimal idMaggiorazioniFamiliari)
+        public JsonResult AnnullaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
         {
             string errore = "";
+            decimal idAttivazioneMagFamNew = 0;
 
             try
             {
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                using (var db = new ModelDBISE())
                 {
-                    //dtmf.AnnullaRichiesta(idMaggiorazioniFamiliari);
+                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                    {
+                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                        {
+                            var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
+
+                            dtmf.AnnullaRichiesta(amf.IDATTIVAZIONEMAGFAM, out idAttivazioneMagFamNew);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

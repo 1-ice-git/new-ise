@@ -3,21 +3,21 @@
 
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
-    decimal solaLettura = Convert.ToDecimal(ViewData["solaLettura"]);
-    decimal check_nuovo_coniuge = Convert.ToDecimal(ViewData["check_nuovo_coniuge"]);
-    decimal check_nuovo_figlio = Convert.ToDecimal(ViewData["check_nuovo_figlio"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool check_nuovo_coniuge = Convert.ToBoolean(ViewData["check_nuovo_coniuge"]);
+    bool check_nuovo_figlio = Convert.ToBoolean(ViewData["check_nuovo_figlio"]);
 }
 
 @Html.Hidden("hiEliminaConiuge")
 
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-    @if (solaLettura==1)
+    @if (solaLettura)
     {
         <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Coniuge</button>
     }
     else
     {
-        if (check_nuovo_coniuge==1)
+        if (check_nuovo_coniuge)
         {
             @Ajax.ActionLink("Nuovo Coniuge", "NuovoConiuge", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo coniuge", @id = "linkEditConiuge" })
         }
@@ -29,7 +29,7 @@
     }
 
 
-    @if (solaLettura==1)
+    @if (solaLettura)
     {
         <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Figlio</button>
     }
@@ -178,7 +178,7 @@
                         </td>
                     }
                     <td style="text-align: center;">
-                    @if (solaLettura==0)
+                    @if (!solaLettura)
                     {
                         if (item.parentela == EnumParentela.Coniuge)
                         {
@@ -195,7 +195,7 @@
                     }
                     </td>
                     <td style="text-align: center;">
-                        @if (solaLettura==0)
+                        @if (!solaLettura)
                         {
                             if (item.eliminabile)
                             {
