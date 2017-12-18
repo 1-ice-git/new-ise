@@ -1555,136 +1555,6 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void NotificaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
-        {
-            bool rinunciaMagFam = false;
-            bool richiestaAttivazione = false;
-            bool attivazione = false;
-            bool datiConiuge = false;
-            bool datiParzialiConiuge = false;
-            bool datiFigli = false;
-            bool datiParzialiFigli = false;
-            bool siDocConiuge = false;
-            bool siDocFigli = false;
-            bool docFormulario = false;
-            int i = 0;
-
-            this.SituazioneMagFamVariazione(idMaggiorazioniFamiliari, out rinunciaMagFam,
-                out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
-
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    db.Database.BeginTransaction();
-
-                    try
-                    {
-                        var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
-
-                        var lamf =
-                            mf.ATTIVAZIONIMAGFAM.Where(
-                                a => a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
-                                .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
-
-                        if (lamf?.Any() ?? false)
-                        {
-                            var amf = lamf.First();
-
-                            if (rinunciaMagFam == false && richiestaAttivazione == false && attivazione == false)
-                            {
-                                if (datiConiuge == false && datiFigli == false)
-                                {
-                                    var rmf =
-                                        mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
-                                            .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-                                            .First();
-
-                                    rmf.RINUNCIAMAGGIORAZIONI = true;
-                                    amf.RICHIESTAATTIVAZIONE = true;
-
-                                    i = db.SaveChanges();
-                                    if (i <= 0)
-                                    {
-                                        throw new Exception("Errore nella fase d'inserimento per la rinuncia delle maggiorazioni familiari.");
-                                    }
-                                    else
-                                    {
-                                        this.EmailNotificaRichiesta(idMaggiorazioniFamiliari, db);
-
-                                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                        {
-                                            CalendarioEventiModel cem = new CalendarioEventiModel()
-                                            {
-                                                idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now.Date,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
-
-                                            };
-
-                                            dtce.InsertCalendarioEvento(ref cem, db);
-                                        }
-                                    }
-                                }
-                                else if (datiConiuge == true || datiFigli == true || docFormulario == true)
-                                {
-                                    //if ((datiParzialiConiuge == false && datiParzialiFigli == false) || docFormulario==true)
-                                    //{
-                                    amf.RICHIESTAATTIVAZIONE = true;
-                                    i = db.SaveChanges();
-                                    if (i <= 0)
-                                    {
-                                        throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
-                                    }
-                                    else
-                                    {
-                                        this.EmailNotificaRichiesta(idMaggiorazioniFamiliari, db);
-                                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
-                                        {
-                                            CalendarioEventiModel cem = new CalendarioEventiModel()
-                                            {
-                                                idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
-                                                idTrasferimento = mf.TRASFERIMENTO.IDTRASFERIMENTO,
-                                                DataInizioEvento = DateTime.Now.Date,
-                                                DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
-
-                                            };
-
-                                            dtce.InsertCalendarioEvento(ref cem, db);
-                                        }
-                                    }
-                                    //}
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Errore nella notifica della richiesta di attivazione per le maggiorazioni familiari, record ATTIVAZIONEMAGFAM non trovato.");
-                        }
-
-
-
-                        db.Database.CurrentTransaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        db.Database.CurrentTransaction.Rollback();
-                        throw ex;
-                    }
-
-
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-        }
 
         public void SituazioneMagFamVariazione(decimal idMaggiorazioniFamiliari, out bool rinunciaMagFam,
                                out bool richiestaAttivazione, out bool Attivazione,
@@ -1826,11 +1696,60 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                 }
-
-
-
             }
+        }
 
+        public void NotificaRichiestaVariazione(decimal idAttivazioneMagFam)
+        {
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    db.Database.BeginTransaction();
+
+                    try
+                    {
+                        var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                        amf.RICHIESTAATTIVAZIONE = true;
+                        amf.DATARICHIESTAATTIVAZIONE = DateTime.Now.Date;
+                        amf.DATAAGGIORNAMENTO = DateTime.Now.Date;
+
+                        var i = db.SaveChanges();
+                        if (i <= 0)
+                        {
+                            throw new Exception("Errore nella fase d'inserimento per la richiesta attivazione per le maggiorazioni familiari.");
+                        }
+                        else
+                        {
+                            this.EmailNotificaRichiesta(idAttivazioneMagFam, db);
+
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                            {
+                                CalendarioEventiModel cem = new CalendarioEventiModel()
+                                {
+                                    idFunzioneEventi = EnumFunzioniEventi.RichiestaMaggiorazioniFamiliari,
+                                    idTrasferimento = amf.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI,
+                                    DataInizioEvento = DateTime.Now.Date,
+                                    DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaMaggiorazioniFamiliari)).Date,
+                                };
+
+                                dtce.InsertCalendarioEvento(ref cem, db);
+                            }
+                        }
+
+                        db.Database.CurrentTransaction.Commit();
+                    }   
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
