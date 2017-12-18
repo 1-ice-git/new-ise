@@ -1976,6 +1976,8 @@
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffIndRichiamo.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParIndSist.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParPrimoSegr.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoAliquoteContributive.cs" />
