@@ -1,46 +1,48 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
-using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtParCoefficienteKm: IDisposable
+    public class dtParCoeffIndRichiamo : IDisposable
     {
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm()
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo()
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEFKM.ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.ToList();
 
                     libm = (from e in lib
-                            select new CoeffFasciaKmModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idCfKm = e.IDCFKM,
-                                idDefKm = e.IDDEFKM,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 //dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteKm = e.COEFFICIENTEKM,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                km = new DefFasciaKmModel()
+                                Riduzioni = new RiduzioniModel()
                                 {
-                                    idDefKm = e.DEFFASCIACHILOMETRICA.IDDEFKM,
-                                    km = e.DEFFASCIACHILOMETRICA.KM
+                                    idRegola = e.RIDUZIONI.IDREGOLA,
+                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
+
                                 }
                             }).ToList();
                 }
@@ -53,30 +55,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal idCfKm)
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni)
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDCFKM == idCfKm).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
 
                     libm = (from e in lib
-                            select new CoeffFasciaKmModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idCfKm = e.IDCFKM,
-                                idDefKm = e.IDDEFKM,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 //dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteKm = e.COEFFICIENTEKM,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                km = new DefFasciaKmModel()
+                                Riduzioni = new RiduzioniModel()
                                 {
-                                    idDefKm = e.DEFFASCIACHILOMETRICA.IDDEFKM,
-                                    km = e.DEFFASCIACHILOMETRICA.KM
+                                    idRegola = e.RIDUZIONI.IDREGOLA,
+                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
+
                                 }
                             }).ToList();
                 }
@@ -89,30 +94,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new CoeffFasciaKmModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idCfKm = e.IDCFKM,
-                                idDefKm = e.IDDEFKM,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 //dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteKm = e.COEFFICIENTEKM,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                km = new DefFasciaKmModel()
+                                Riduzioni = new RiduzioniModel()
                                 {
-                                    idDefKm = e.DEFFASCIACHILOMETRICA.IDDEFKM,
-                                    km = e.DEFFASCIACHILOMETRICA.KM
+                                    idRegola = e.RIDUZIONI.IDREGOLA,
+                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
+
                                 }
                             }).ToList();
                 }
@@ -125,30 +133,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal idCfKm, bool escludiAnnullati = false)
+        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati = false)
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDCFKM == idCfKm && a.ANNULLATO == escludiAnnullati).ToList();
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
 
                     libm = (from e in lib
-                            select new CoeffFasciaKmModel()
+                            select new CoefficienteRichiamoModel()
                             {
-                                idCfKm = e.IDCFKM,
-                                idDefKm = e.IDDEFKM,
+                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 //dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteKm = e.COEFFICIENTEKM,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                km = new DefFasciaKmModel()
+                                Riduzioni = new RiduzioniModel()
                                 {
-                                    idDefKm = e.DEFFASCIACHILOMETRICA.IDDEFKM,
-                                    km = e.DEFFASCIACHILOMETRICA.KM
+                                    idRegola = e.RIDUZIONI.IDREGOLA,
+                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
+
                                 }
                             }).ToList();
                 }
@@ -165,15 +176,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetCoeffFasciaKm(CoeffFasciaKmModel ibm)
+        public void SetListCoeffIndRichiamo(CoefficienteRichiamoModel ibm)
         {
-            List<COEFFICIENTEFKM> libNew = new List<COEFFICIENTEFKM>();
+            List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
 
-            COEFFICIENTEFKM ibNew = new COEFFICIENTEFKM();
+            COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
 
-            COEFFICIENTEFKM ibPrecedente = new COEFFICIENTEFKM();
+            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
 
-            List<COEFFICIENTEFKM> lArchivioIB = new List<COEFFICIENTEFKM>();
+            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -183,41 +194,37 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
                         {
-                            ibNew = new COEFFICIENTEFKM()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDCFKM = ibm.idCfKm,
-                                IDDEFKM = ibm.idDefKm,
+                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                COEFFICIENTEKM = ibm.coefficienteKm,
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
                         else
                         {
-                            ibNew = new COEFFICIENTEFKM()
+                            ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDCFKM = ibm.idCfKm,
-                                IDDEFKM = ibm.idDefKm,
+                               
+                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                COEFFICIENTEKM = ibm.coefficienteKm,
+                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
-
                             };
                         }
                     }
                     else
                     {
-                        ibNew = new COEFFICIENTEFKM()
+                        ibNew = new COEFFICIENTEINDRICHIAMO()
                         {
-                            IDCFKM = ibm.idCfKm,
-                            IDDEFKM = ibm.idDefKm,
+                            
+                            IDRIDUZIONI = ibm.idRiduzioni,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                            COEFFICIENTEKM = ibm.coefficienteKm,
+                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
@@ -225,7 +232,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.IDCFKM == ibNew.IDCFKM)
+                    var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDRIDUZIONI == ibNew.IDRIDUZIONI)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -242,14 +249,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTEFKM()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
                                         
-                                        IDCFKM = item.IDCFKM,
-                                        IDDEFKM =item.IDDEFKM,
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -259,24 +265,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTEFKM()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCFKM = item.IDCFKM,
-                                        IDDEFKM = item.IDDEFKM,
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
+                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
 
-                                    var ibOld2 = new COEFFICIENTEFKM()
+                                    var ibOld2 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCFKM = item.IDCFKM,
-                                        IDDEFKM = item.IDDEFKM,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -295,13 +301,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTEFKM()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCFKM = item.IDCFKM,
-                                        IDDEFKM = item.IDDEFKM,
+                                        
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -317,14 +323,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                                 else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
-                                    var ibOld1 = new COEFFICIENTEFKM()
+                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
                                         
-                                        IDCFKM = item.IDCFKM,
-                                        IDDEFKM = item.IDDEFKM,
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTEKM = item.COEFFICIENTEKM,
+                                        
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
@@ -337,18 +342,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        db.COEFFICIENTEFKM.AddRange(libNew);
+                        db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
                     }
                     else
                     {
-                        db.COEFFICIENTEFKM.Add(ibNew);
+                        db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
 
                     }
                     db.SaveChanges();
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di fascia km.", "COEFFICIENTEFKM", ibNew.IDCFKM);
+                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di Coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -361,21 +366,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiPrima(CoeffFasciaKmModel ibm)
+        public bool EsistonoMovimentiPrima(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDCFKM == ibm.idCfKm).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public bool EsistonoMovimentiSuccessivi(CoeffFasciaKmModel ibm)
+        public bool EsistonoMovimentiSuccessivi(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDCFKM == ibm.idCfKm).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -384,13 +389,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public bool EsistonoMovimentiSuccessiviUguale(CoeffFasciaKmModel ibm)
+        public bool EsistonoMovimentiSuccessiviUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDCFKM == ibm.idCfKm).Count() > 0 ? true : false;
+                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -399,60 +404,59 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-
-
-        public bool EsistonoMovimentiPrimaUguale(CoeffFasciaKmModel ibm)
+        public bool EsistonoMovimentiPrimaUguale(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTEFKM.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDCFKM == ibm.idCfKm).Count() > 0 ? true : false;
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDRIDUZIONI == ibm.idRiduzioni).Count() > 0 ? true : false;
             }
         }
 
-        public void DelCoeffFasciaKm(decimal idCfKm)
+        public void DelListCoeffIndRichiamo(decimal idCoeffIndRichiamo)
         {
-            COEFFICIENTEFKM precedenteIB = new COEFFICIENTEFKM();
-            COEFFICIENTEFKM delIB = new COEFFICIENTEFKM();
-            
+            COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
+            COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
+
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDCFKM == idCfKm);
+                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoeffIndRichiamo);
 
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.COEFFICIENTEFKM.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
 
-                            var ibOld1 = new COEFFICIENTEFKM()
+                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                             {
-                                
-                                IDCFKM = precedenteIB.IDCFKM,
-                                IDDEFKM = precedenteIB.IDDEFKM,
+                                IDCOEFINDRICHIAMO = precedenteIB.IDCOEFINDRICHIAMO,
+                                IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                COEFFICIENTEKM = precedenteIB.COEFFICIENTEKM,
+                                COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
+                                COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
                                 ANNULLATO = false
                             };
 
-                            db.COEFFICIENTEFKM.Add(ibOld1);
+                            db.COEFFICIENTEINDRICHIAMO.Add(ibOld1);
                         }
 
                         db.SaveChanges();
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Coefficiente Km.", "COEFFICIENTEFKM", idCfKm);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", idCoeffIndRichiamo);
                         }
 
 

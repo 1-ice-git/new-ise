@@ -15,53 +15,51 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoeffIndRichiamo(bool escludiAnnullati, decimal idDefKm = 0)
+        public ActionResult CoeffIndRichiamo(bool escludiAnnullati, decimal idRiduzioni = 0)
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
             var r = new List<SelectListItem>();
-            List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
+            List<RiduzioniModel> llm = new List<RiduzioniModel>();
 
             try
             {
-                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
                 {
-                    llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
+                    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.idRiduzioni).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.km,
-                                 Value = t.idDefKm.ToString()
+                                 Text = t.percentuale.ToString(),
+                                 Value = t.idRiduzioni.ToString()
                              }).ToList();
 
-                        if (idDefKm == 0)
+                        if (idRiduzioni == 0)
                         {
                             r.First().Selected = true;
-                            idDefKm = Convert.ToDecimal(r.First().Value);
+                            idRiduzioni = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
+                            r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
                         }
                     }
 
                     ViewBag.CoeffIndRichiamo = r;
                 }
 
-
-
-                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListCoeffIndRichiamo(idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListCoeffFasciaKm(idDefKm).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListCoeffIndRichiamo(idRiduzioni).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -77,43 +75,42 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoeffIndRichiamoLivello(decimal idDefKm, bool escludiAnnullati)
+        public ActionResult CoeffIndRichiamoLivello(decimal idRiduzioni, bool escludiAnnullati)
         {
-            List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
+            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
             var r = new List<SelectListItem>();
-            List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
+            List<RiduzioniModel> llm = new List<RiduzioniModel>();
 
             try
             {
-                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
                 {
-
-                    llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
+                    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
                              select new SelectListItem()
                              {
-                                 Text = t.km,
-                                 Value = t.idDefKm.ToString()
+                                 Text = t.percentuale.ToString(),
+                                 Value = t.idRiduzioni.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
+                        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
                     }
 
                     ViewBag.CoeffIndRichiamo = r;
                 }
 
-                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListCoeffFasciaKm(llm.Where(a => a.idDefKm == idDefKm).First().idDefKm, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListCoeffIndRichiamo(llm.Where(a => a.idRiduzioni == idRiduzioni).First().idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListCoeffFasciaKm(llm.Where(a => a.idDefKm == idDefKm).First().idDefKm).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListCoeffIndRichiamo(llm.Where(a => a.idRiduzioni == idRiduzioni).First().idRiduzioni).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -128,21 +125,21 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovoCoeffIndRichiamo(decimal idDefKm, bool escludiAnnullati)
+        public ActionResult NuovoCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
-            CoeffFasciaKmModel ibm = new CoeffFasciaKmModel();
+            //CoefficienteRichiamoModel ibm = new CoefficienteRichiamoModel();
 
             try
             {
-                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
                 {
-                    var lm = dtl.GetFasciaKm(idDefKm);
+                    var lm = dtl.GetCoeffRiduzioni(idRiduzioni);
                     ViewBag.CoeffIndRichiamo = lm;
                 }
+
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                return PartialView("NuovoCoeffIndRichiamo");
+                return PartialView();
             }
             catch (Exception ex)
             {
@@ -150,9 +147,13 @@ namespace NewISE.Areas.Parametri.Controllers
             }
         }
 
+        
+
+
+
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciCoeffIndRichiamo(CoeffFasciaKmModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciCoeffIndRichiamo(CoefficienteRichiamoModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
 
@@ -160,22 +161,23 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                    using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
                     {
-                        dtib.SetCoeffFasciaKm(ibm);
+                        
+                        dtib.SetCoefficienteRichiamo(ibm);
                     }
 
-                    return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
+                    return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = ibm.idRiduzioni });
                 }
                 else
                 {
-                    using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                    using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
                     {
-                        var lm = dtl.GetFasciaKm(ibm.idDefKm);
+                        var lm = dtl.GetCoeffRiduzioni(ibm.idRiduzioni);
                         ViewBag.CoeffIndRichiamo = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    return PartialView("NuovoCoeffFasciakm", ibm);
+                    return PartialView("NuovoCoeffIndRichiamo", ibm);
                 }
             }
             catch (Exception ex)
@@ -186,17 +188,17 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idCfKm, decimal idDefKm)
+        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idRiduzioni, decimal idCoeffIndRichiamo)
         {
 
             try
             {
-                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
                 {
-                    dtib.DelCoeffFasciaKm(idDefKm);
+                    dtib.DelCoefficienteRichiamo(idRiduzioni);
                 }
 
-                return RedirectToAction("CoefficienteFasciaKm", new { escludiAnnullati = escludiAnnullati, idDefKm = idDefKm });
+                return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = idRiduzioni });
             }
             catch (Exception ex)
             {
@@ -206,7 +208,5 @@ namespace NewISE.Areas.Parametri.Controllers
 
 
         }
-
-
     }
 }

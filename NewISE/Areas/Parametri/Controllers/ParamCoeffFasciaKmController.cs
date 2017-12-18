@@ -49,9 +49,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                     ViewBag.CoeffFasciaKm = r;
                 }
-
                 
-
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
                     if (escludiAnnullati)

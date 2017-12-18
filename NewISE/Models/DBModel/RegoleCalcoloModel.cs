@@ -45,5 +45,7 @@ namespace NewISE.Models.DBModel
 
         public TipoRegolaCalcoloModel TipoRegolaCalcolo { get; set; }
         public NormaCalcoloModel NormaCalcolo { get; set; }
+       
+
     }
 }

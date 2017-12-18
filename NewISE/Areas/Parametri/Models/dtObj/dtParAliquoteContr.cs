@@ -400,7 +400,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public void DelAliquoteContributive(decimal idTipoAliqContr)
+        public void DelAliquoteContributive(decimal idTipoContributo)
         {
             ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
             ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
@@ -412,7 +412,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoAliqContr);
+                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo);
 
                     if (lib.Count() > 0)
                     {
@@ -444,7 +444,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idTipoAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idTipoContributo);
                         }
 
 

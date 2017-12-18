@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.ValuteModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
+
 <p>
     <a id="btnInsNuovaValuta" href="#" onclick="NuoveValute();">Inserisci Valuta</a>
 </p>
@@ -10,45 +11,34 @@
         @Html.Label("lblValuta0", "Seleziona Valuta", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idValuta", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVValuta();", @onClick = "PrelevaPVValuta();" })
+                @Html.DropDownList("idValuta", ViewBag.Valute as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVValuta();", @onClick = "PrelevaPVValuta();" })
             </div>
         </div>
     </div>
 </p>
 
 
-<table id="tbIndBase" class="display" cellspacing="0">
+<table id="tbValuta" class="display" cellspacing="0">
     <thead>
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model.idValuta)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.descrizioneValuta)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.valutaUfficiale)
-            </th>
-
-            @*<th></th>*@
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-
                 <td>
+                    @Html.DisplayFor(modelItem => item.idValuta)
+                </td>
+                <td >
                     @Html.DisplayFor(modelItem => item.descrizioneValuta)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.valutaUfficiale)
-                </td>
-                @*<td style="text-align:center;display:none">
-                        @using (dtValute dtib = new dtValute())
-                        {
-                            <a href="#" onclick="EliminaValuta(@item.idValuta );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-
-                    </td>*@
             </tr>
         }
     </tbody>
@@ -106,14 +96,11 @@
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idValuta: idValuta, escludiAnnullati: chk },
+            data: { idValuta: idValuta },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -155,7 +142,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idValuta: idValuta, escludiAnnullati: chk },
+            data: { idValuta: idValuta },
             dataType: 'html',
             beforeSend: function () {
                //debugger;
@@ -190,9 +177,6 @@
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -205,7 +189,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idValuta: id },
+                            data: { idValuta: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

@@ -66,9 +66,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
-
-
-
+        
     }
 }

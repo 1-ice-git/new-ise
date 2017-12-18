@@ -46,7 +46,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.Valute = r;
                 }
 
                 using (dtValute dtib = new dtValute())
@@ -91,7 +91,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
                     }
 
-                    ViewBag.LivelliList = r;
+                    ViewBag.Valute = r;
                 }
 
                 using (dtValute dtib = new dtValute())

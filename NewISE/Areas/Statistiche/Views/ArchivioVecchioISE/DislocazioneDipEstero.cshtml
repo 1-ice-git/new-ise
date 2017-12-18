@@ -85,7 +85,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.sede)
-                   
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.valuta)
@@ -186,7 +185,7 @@
             
             rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
             
-            var descr_ufficio = $("#codicesede").select2('val');
+            var codicesede = $("#codicesede").select2('val');
             var data = $("#datepicker").val();
             
             var chk = true;

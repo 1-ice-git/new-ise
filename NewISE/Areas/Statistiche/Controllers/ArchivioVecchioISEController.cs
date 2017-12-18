@@ -36,7 +36,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 t.Add(new SelectListItem() { Text = "Spese diverse", Value = "5" });
                 t.Add(new SelectListItem() { Text = "Spese di avvicendamento", Value = "6" });
                 t.Add(new SelectListItem() { Text = "Storia del dipendente", Value = "7" });
-                t.Add(new SelectListItem() { Text = "Operazioni effettuate- Indennità di Sede Estera", Value = "10" });
+                //t.Add(new SelectListItem() { Text = "Operazioni effettuate- Indennità di Sede Estera", Value = "10" });
 
                 ViewBag.VecchioIse = t;
                 return PartialView();
@@ -1075,7 +1075,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 cmd1.Parameters.Add("@V_UTENTE", OracleDbType.Varchar2, 50).Value = V_UTENTE;
                 cmd1.Parameters.Add("@V_DATA", OracleDbType.Varchar2, 50).Value = V_DATA;
-                cmd1.Parameters.Add("@V_UFFICIO", OracleDbType.Varchar2, 50).Value = V_UFFICIO;
+                cmd1.Parameters.Add("@V_UFFICIO", OracleDbType.Varchar2, 50).Value = codicesede;
 
                 //cmd1.Parameters.Add("@V_UTENTE", "fantomas");
                 //cmd1.Parameters.Add("@V_DATA", "15/09/2017");
@@ -1086,7 +1086,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE SEDE ='" + V_UFFICIO + "' Order By SEDE, NOMINATIVO";
 
-                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + V_UFFICIO + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
+                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
 
                 using (OracleCommand cmd = new OracleCommand())
                 {
@@ -1906,6 +1906,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 //return View("ViewName", model);
                 return PartialView("OpCanoneAnticipato", model);
+
+                
             }
         }
 
@@ -2605,9 +2607,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                     var details = new Stp_Spese__di_avvicendamento();
                     details.MATRICOLA = rdr["MATRICOLA"].ToString();
                     details.NOMINATIVO = rdr["NOMINATIVO"].ToString();
+                    details.LIVELLO = rdr["LIVELLO"].ToString();
                     details.CODICE_SEDE = rdr["CODICE_SEDE"].ToString();
                     details.DESCRIZIONE_SEDE = rdr["DESCRIZIONE_SEDE"].ToString();
-                    details.DATA = rdr["DATA"].ToString();
+                    //details.DATA = rdr["DATA"].ToString();
+                    details.DATA = Convert.ToDateTime(rdr["DATA"]).ToString("dd/MM/yyyy");
                     details.SPESA = rdr["SPESA"].ToString();
                     details.INDENITA_IN_VALUTA = rdr["INDENITA_IN_VALUTA"].ToString();
                     model.Add(details);

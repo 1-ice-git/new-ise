@@ -12,11 +12,9 @@
 
     RiduzioniModel lm = (RiduzioniModel)ViewBag.CoeffIndRichiamo;
     string CoeffIndRichiamo = lm.idRiduzioni.ToString();
-    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idRiduzioni = lm.idRiduzioni;
-
-
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idRiduzioni = lm.idRiduzioni;
+    
 }
 
 @using (Ajax.BeginForm("InserisciCoeffIndRichiamo", "ParamCoeffIndRichiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
@@ -31,7 +29,7 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idCoefIndRichiamo)
+        @*@Html.HiddenFor(model => model.idCoefIndRichiamo)*@
         @Html.HiddenFor(model => model.idRiduzioni)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
 
@@ -155,7 +153,7 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
+        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
 
         var idRiduzioni = parseFloat('@idRiduzioni');
         var chk = true;

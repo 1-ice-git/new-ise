@@ -48,5 +48,7 @@ namespace NewISE.Models.DBModel
         public bool annullato { get; set; } = false;
 
         public UfficiModel Ufficio { get; set; }
+
+        public RiduzioniModel Riduzioni { get; set; }
     }
 }

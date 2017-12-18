@@ -21,6 +21,8 @@
     </div>
 </p>
 
+
+
 <table id="tbCoeffFasciaKm" class="display" cellspacing="0">
     <thead>
         <tr>
@@ -73,6 +75,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
+                <td style="text-align:center;">
+                    @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                            <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                    }
+
+
+                </td>
             </tr>
         }
     </tbody>
@@ -105,6 +122,7 @@
             }
         }
     });
+
     $("#idDefKm").select2({
         placeholder: "Seleziona nuovo Coefficiente di Fascia Km",
         allowClear: true,
@@ -128,9 +146,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $.ajax({
             type: "POST",
@@ -179,9 +197,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $.ajax({
             type: "POST",
@@ -229,9 +247,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

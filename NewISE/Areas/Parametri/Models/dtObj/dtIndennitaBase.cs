@@ -442,9 +442,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-       
-
+        
         public bool EsistonoMovimentiPrimaUguale(IndennitaBaseModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
