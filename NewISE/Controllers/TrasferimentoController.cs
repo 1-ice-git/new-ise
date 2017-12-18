@@ -1239,9 +1239,9 @@ namespace NewISE.Controllers
         {
             try
             {
-                if (idTrasferimento > 0)
+                if (idTrasferimento.Equals(null))
                 {
-                    throw new Exception("La matricola non risulta valorizzata.");
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {

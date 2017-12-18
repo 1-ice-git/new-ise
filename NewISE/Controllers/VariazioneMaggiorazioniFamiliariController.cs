@@ -126,25 +126,37 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult AttivitaMaggiorazioneFamiliare(string matricola)
+        public ActionResult AttivitaMaggiorazioneFamiliare(decimal idTrasferimento)
         {
-            using (dtTrasferimento dtt = new dtTrasferimento())
+            try
             {
-                var tr = dtt.GetUltimoSoloTrasferimentoByMatricola(matricola);
+                //using (var db = new ModelDBISE())
+                //{
+                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                    {
+                        var tr = idTrasferimento;
+    
+                        if (!tr.Equals(null))
+                        {
+                            //var amf = dtvmf.GetAttivazioneById(idTrasferimento, EnumTipoTabella.Trasferimento, db);
 
-                if (tr != null && tr.HasValue())
-                {
-                    ViewBag.idTrasferimento = tr.idTrasferimento;
-                }
-                else
-                {
-                    throw new Exception("Nessun trasferimento per la matricola (" + matricola + ")");
-                }
+                            //ViewData.Add("idAttivazioneMagFam", amf.IDATTIVAZIONEMAGFAM);
+                            ViewData.Add("idTrasferimento", tr);
+                        }
+                        else
+                        {
+                            throw new Exception("Nessun trasferimento impostato.");
+                        }
+                    }
+                //}
+
+                return PartialView();
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            ViewBag.matricola = matricola;
-
-            return PartialView("AttivitaMaggiorazioneFamiliare");
         }
 
 
@@ -1243,9 +1255,17 @@ namespace NewISE.Controllers
 
             try
             {
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                using (var db = new ModelDBISE())
                 {
-                    dtmf.NotificaRichiestaVariazione(idMaggiorazioniFamiliari);
+                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                    {
+                        using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                        {
+                            var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
+
+                            dtmf.NotificaRichiestaVariazione(amf.IDATTIVAZIONEMAGFAM);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
