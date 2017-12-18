@@ -9,7 +9,7 @@ namespace NewISE.Models.DBModel
 {
     public enum EnumTipoSospensione
     {
-        TipoSospesione1 = 1,
+        Idennita = 1,
         TipoSospensione2 = 2,
         TipoSospensione3 = 3        
     }
@@ -30,8 +30,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data fine sospensione è richiesta.")]
         [Display(Name = "Data Fine")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
-        [CustomValidation(typeof(dtSospensione), "VerificaDataFine")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]        
         public DateTime? DataFineSospensione { get; set; }
         
         [Required(ErrorMessage = "La data inserimento è richiesta.")]
@@ -42,9 +41,10 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "GG Sospensione")]
         public int NumeroGiorni { get; set; }
-        [Display(Name = "Tipo Sospensione")]
+        
         public string TipoSospensione { get; set; }
         public bool ANNULLATO { get; set; }
+        [Display(Name = "Tipo Sospensione")]
         public decimal idTipoSospensione { get; set; }
     }
 

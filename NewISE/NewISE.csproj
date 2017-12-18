@@ -2669,12 +2669,12 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\SostituisciDocumento.cshtml" />
     <Content Include="Views\Sospensione\Index.cshtml" />
     <Content Include="Views\Sospensione\ElencoSospensioni.cshtml" />
-    <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
+    <Content Include="Views\Sospensione\NuovaSospensione_old.cshtml" />
     <Content Include="Views\Sospensione\AttivitaSospensione.cshtml" />
-    <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
     <Content Include="Views\Sospensione\EditSospensione.cshtml" />
     <Content Include="Views\Sospensione\DatiTabElencoSospensione.cshtml" />
-    <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
+    <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
+    <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
