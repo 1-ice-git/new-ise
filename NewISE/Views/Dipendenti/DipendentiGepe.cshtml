@@ -96,7 +96,23 @@
             $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
 
+        //if (MenuRichiamo(matricola) == 1) {
+        //    $("#lkRichiamo").removeAttr("disabled");
+        //    $("#mnRichiamo").removeClass("disabled");
+        //    $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        //}
+        //else {
+        //    $("#lkRichiamo").attr("disabled", "disabled");
+        //    $("#mnRichiamo").addClass("disabled");
+        //    $("#lkRichiamo").removeAttr("onClick");
+        //}
 
+        
+            $("#lkRichiamo").removeAttr("disabled");
+            $("#mnRichiamo").removeClass("disabled");
+            $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        
+        
     }
 
     function GestioneMenu() {
@@ -264,6 +280,52 @@
         return valoreRitorno;
     }
 
+    function MenuRichiamo(matricola) {
+        debugger;
+        var rotta = "/Trasferimento/VerificaRichiamo";
+        
+        var valoreRitorno = 0;
+
+        if (matricola != "" && matricola != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { matricola: matricola },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idmaggiorazione != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
 
     function FiltraDipendente() {
         //debugger;
@@ -350,8 +412,5 @@
             });
         }
     }
-
-
-
 
 </script>

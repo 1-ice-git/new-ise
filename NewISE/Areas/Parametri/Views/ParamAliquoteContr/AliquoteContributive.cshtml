@@ -231,10 +231,11 @@
         //debugger;
         var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
 
-        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
+        //var idAliqContr = parseInt($("#idAliqContr").select2('val'));
+        var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
         var chk = true;
 
-        if (isNaN(idAliqContr)) {
+        if (isNaN(idTipoContributo)) {
             $("#divPViewParametri").empty();
             return false;
         }

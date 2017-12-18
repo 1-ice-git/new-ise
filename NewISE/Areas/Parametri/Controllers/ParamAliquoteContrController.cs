@@ -184,14 +184,14 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaAliquoteContributive(bool escludiAnnullati, decimal idAliqContr, decimal idTipoAliqContr)
+        public ActionResult EliminaAliquoteContributive(bool escludiAnnullati, decimal idAliqContr, decimal idTipoContributo)
         {
 
             try
             {
                 using (dtParAliquoteContr dtib = new dtParAliquoteContr())
                 {
-                    dtib.DelAliquoteContributive(idTipoAliqContr);
+                    dtib.DelAliquoteContributive(idTipoContributo);
                 }
 
                 return RedirectToAction("AliquoteContributive", new { escludiAnnullati = escludiAnnullati, idAliqContr = idAliqContr });

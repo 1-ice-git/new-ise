@@ -1057,6 +1057,28 @@ namespace NewISE.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult VerificaRichiamo(string matricola = "")
+        {
+            if (matricola == string.Empty)
+            {
+                throw new Exception("La matricola non risulta valorizzata.");
+            }
+
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+            return PartialView("VerificaRichiamo");
+        }
+
 
     }
 }

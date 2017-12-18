@@ -41,7 +41,7 @@
                 <li class="disabled" id="mnMaggiorazioneAbitazione"><a id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
                 <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Congedi e Permessi</a></li>
                 <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
-                <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
+                <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" onclick="Richiamo();">Richiamo</a></li>
                 <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
                 <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
             </ul>
@@ -183,7 +183,40 @@
         });
     }
 
+    function Richiamo() {
+        debugger;
+        var matricola = $("#hMatricola").val();
+        rotta = "/Richiamo/Richiamo";
 
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabRichiamo").empty();
+                $("#tabRichiamo").html(result);
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRichiamo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
 
     function MenuDaVisualizzare() {
         //debugger;
@@ -198,7 +231,4 @@
                 break;
         }
     }
-
-
-
 </script>
