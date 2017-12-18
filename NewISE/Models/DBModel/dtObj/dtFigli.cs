@@ -106,11 +106,11 @@ namespace NewISE.Models.DBModel.dtObj
             var p = db.PASSAPORTI.Find(idPassaporto);
             if (AllOnlyNotify)
             {
-                lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lf = p.FIGLI.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lf?.Any() ?? false)
@@ -121,17 +121,12 @@ namespace NewISE.Models.DBModel.dtObj
                            idFigli = e.IDFIGLI,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
-                           idPassaporti = e.IDPASSAPORTI,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                           dataNotificaPP = e.DATANOTIFICAPP,
-                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                           dataNotificaTV = e.DATANOTIFICATV
                        }).ToList();
             }
 
@@ -156,11 +151,11 @@ namespace NewISE.Models.DBModel.dtObj
             var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
             if (AllOnlyNotify)
             {
-                lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lf = tv.FIGLI.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lf?.Any() ?? false)
@@ -171,17 +166,12 @@ namespace NewISE.Models.DBModel.dtObj
                            idFigli = e.IDFIGLI,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
-                           idPassaporti = e.IDPASSAPORTI,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                           dataNotificaPP = e.DATANOTIFICAPP,
-                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                           dataNotificaTV = e.DATANOTIFICATV
                        }).ToList();
             }
 
@@ -197,7 +187,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var f = db.FIGLI.Find(idFiglio);
                 if (f != null && f.IDFIGLI > 0)
                 {
-                    f.ESCLUDIPASSAPORTO = true;
+                    //f.ESCLUDIPASSAPORTO = true;
                     int i = db.SaveChanges();
 
                     if (i <= 0)
@@ -206,7 +196,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        chk = f.ESCLUDIPASSAPORTO;
+                        //chk = f.ESCLUDIPASSAPORTO;
                         decimal idTrasferimento =
                             db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
@@ -226,7 +216,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var f = db.FIGLI.Find(idFiglio);
                 if (f != null && f.IDFIGLI > 0)
                 {
-                    f.ESCLUDITITOLOVIAGGIO = f.ESCLUDITITOLOVIAGGIO == false ? true : false;
+                    //f.ESCLUDITITOLOVIAGGIO = f.ESCLUDITITOLOVIAGGIO == false ? true : false;
                     int i = db.SaveChanges();
 
                     if (i <= 0)
@@ -235,7 +225,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        chk = f.ESCLUDITITOLOVIAGGIO;
+                        //chk = f.ESCLUDITITOLOVIAGGIO;
                         decimal idTrasferimento =
                             db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
@@ -254,18 +244,12 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDMAGGIORAZIONIFAMILIARI = fm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIAFIGLIO = (decimal)fm.idTipologiaFiglio,
-                IDPASSAPORTI = fm.idPassaporti,
-                IDTITOLOVIAGGIO = fm.idTitoloViaggio,
                 NOME = fm.nome.ToUpper(),
                 COGNOME = fm.cognome.ToUpper(),
                 CODICEFISCALE = fm.codiceFiscale.ToUpper(),
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-                ESCLUDIPASSAPORTO = fm.escludiPassaporto,
-                DATANOTIFICAPP = fm.dataNotificaPP,
-                ESCLUDITITOLOVIAGGIO = fm.escludiTitoloViaggio,
-                DATANOTIFICATV = fm.dataNotificaTV
 
             };
 
@@ -322,18 +306,12 @@ namespace NewISE.Models.DBModel.dtObj
                         idFigli = f.IDFIGLI,
                         idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
-                        idPassaporti = f.IDPASSAPORTI,
-                        idTitoloViaggio = f.IDTITOLOVIAGGIO,
                         nome = f.NOME,
                         cognome = f.COGNOME,
                         codiceFiscale = f.CODICEFISCALE,
                         dataInizio = f.DATAINIZIOVALIDITA,
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
-                        escludiPassaporto = f.ESCLUDIPASSAPORTO,
-                        dataNotificaPP = f.DATANOTIFICAPP,
-                        escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO,
-                        dataNotificaTV = f.DATANOTIFICATV
                     };
                 }
             }
@@ -371,17 +349,14 @@ namespace NewISE.Models.DBModel.dtObj
                                      idFigli = f.IDFIGLI,
                                      idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
                                      idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
-                                     idPassaporti = f.IDPASSAPORTI,
-                                     idTitoloViaggio = f.IDTITOLOVIAGGIO,
                                      nome = f.NOME,
                                      cognome = f.COGNOME,
                                      codiceFiscale = f.CODICEFISCALE,
                                      dataInizio = f.DATAINIZIOVALIDITA,
                                      dataFine = f.DATAFINEVALIDITA,
                                      dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                     escludiPassaporto = f.ESCLUDIPASSAPORTO,
-                                     dataNotificaPP = f.DATANOTIFICAPP,
-                                     escludiTitoloViaggio = f.ESCLUDITITOLOVIAGGIO
+
+
                                  });
                 }
             }
@@ -416,18 +391,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 idFigli = item.IDFIGLI,
                                 idMaggiorazioniFamiliari = item.IDMAGGIORAZIONIFAMILIARI,
                                 idTipologiaFiglio = (EnumTipologiaFiglio)item.IDTIPOLOGIAFIGLIO,
-                                idPassaporti = item.IDPASSAPORTI,
-                                idTitoloViaggio = item.IDTITOLOVIAGGIO,
                                 nome = item.NOME,
                                 cognome = item.COGNOME,
                                 codiceFiscale = item.CODICEFISCALE,
                                 dataInizio = item.DATAINIZIOVALIDITA,
                                 dataFine = item.DATAFINEVALIDITA,
                                 dataAggiornamento = item.DATAAGGIORNAMENTO,
-                                escludiPassaporto = item.ESCLUDIPASSAPORTO,
-                                dataNotificaPP = item.DATANOTIFICAPP,
-                                escludiTitoloViaggio = item.ESCLUDITITOLOVIAGGIO,
-                                dataNotificaTV = item.DATANOTIFICATV,
                                 Modificato = item.MODIFICATO,
                                 FK_IdFigli = item.FK_IDFIGLI,
                                 idAttivazioneMagFam = idAttivazioneMagFam

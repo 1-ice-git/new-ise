@@ -18,9 +18,10 @@ namespace NewISE.EF
         public CONIUGE()
         {
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
+            this.AP_C = new HashSet<AP_C>();
             this.CONIUGE1 = new HashSet<CONIUGE>();
+            this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
-            this.ATTIVAZIONIPASSAPORTI = new HashSet<ATTIVAZIONIPASSAPORTI>();
             this.PENSIONE = new HashSet<PENSIONE>();
             this.PERCENTUALEMAGCONIUGE = new HashSet<PERCENTUALEMAGCONIUGE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
@@ -34,29 +35,23 @@ namespace NewISE.EF
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ESCLUDIPASSAPORTO { get; set; }
-        public Nullable<System.DateTime> DATANOTIFICAPP { get; set; }
-        public decimal IDTITOLOVIAGGIO { get; set; }
-        public Nullable<System.DateTime> DATANOTIFICATV { get; set; }
-        public bool ESCLUDITITOLOVIAGGIO { get; set; }
         public decimal IDMAGGIORAZIONIFAMILIARI { get; set; }
-        public decimal IDPASSAPORTI { get; set; }
         public Nullable<decimal> FK_IDCONIUGE { get; set; }
         public bool MODIFICATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
-        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AP_C> AP_C { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE1 { get; set; }
         public virtual CONIUGE CONIUGE2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PENSIONE> PENSIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

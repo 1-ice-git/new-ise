@@ -563,7 +563,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Trasloco:
                         break;
                     case EnumTipoDoc.Documento_Identita:
-                        t = d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI).First().TRASFERIMENTO;
+                        //t = d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Lettera_Trasferimento:
                         t = d.TRASFERIMENTO.OrderByDescending(a => a.IDTRASFERIMENTO).First();
@@ -792,7 +792,7 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
 
-                p.DOCUMENTI.Add(d);
+                //p.DOCUMENTI.Add(d);
 
                 if (db.SaveChanges() > 0)
                 {
@@ -898,10 +898,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 case EnumChiamante.Trasferimento:
                                     break;
                                 case EnumChiamante.Passaporti:
-                                    t =
-                                        d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI)
-                                            .First()
-                                            .TRASFERIMENTO;
+                                    //t =
+                                    //    d.PASSAPORTI.OrderByDescending(a => a.IDPASSAPORTI)
+                                    //        .First()
+                                    //        .TRASFERIMENTO;
                                     break;
                                 default:
                                     throw new ArgumentOutOfRangeException("chiamante");

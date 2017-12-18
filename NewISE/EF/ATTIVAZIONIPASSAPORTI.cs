@@ -17,9 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ATTIVAZIONIPASSAPORTI()
         {
+            this.FIGLIPASSAPORTO = new HashSet<FIGLIPASSAPORTO>();
             this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
-            this.CONIUGE = new HashSet<CONIUGE>();
-            this.FIGLI = new HashSet<FIGLI>();
         }
     
         public decimal IDATTIVAZIONIPASSAPORTI { get; set; }
@@ -28,16 +27,14 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool PRATICACONCLUSA { get; set; }
         public Nullable<System.DateTime> DATAPRATICACONCLUSA { get; set; }
+        public System.DateTime DATAVARIAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public System.DateTime DATAVARIAZIONE { get; set; }
     
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FIGLI> FIGLI { get; set; }
+        public virtual PASSAPORTI PASSAPORTI { get; set; }
     }
 }

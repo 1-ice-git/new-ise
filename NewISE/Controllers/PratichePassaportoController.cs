@@ -133,7 +133,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    gppm = dtpp.GestionePulsantiPassaportoById(idPassaporto);
+                    //gppm = dtpp.GestionePulsantiPassaportoById(idPassaporto);
                     if (gppm != null)
                     {
                         notificaRichiesta = gppm.notificaRichiesta;

@@ -455,97 +455,97 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void SetNotificaRichiesta(decimal idTitoloViaggio)
         {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                db.Database.BeginTransaction();
+            //using (ModelDBISE db = new ModelDBISE())
+            //{
+            //    db.Database.BeginTransaction();
 
-                try
-                {
-                    var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+            //    try
+            //    {
+            //        var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
 
-                    var tr = tv.TRASFERIMENTO;
+            //        var tr = tv.TRASFERIMENTO;
 
-                    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                    {
-                        tv.NOTIFICARICHIESTA = true;
-                        tv.DATANOTIFICARICHIESTA = DateTime.Now;
+            //        if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            //        {
+            //            tv.NOTIFICARICHIESTA = true;
+            //            tv.DATANOTIFICARICHIESTA = DateTime.Now;
 
-                        int i = db.SaveChanges();
+            //            int i = db.SaveChanges();
 
-                        if (i <= 0)
-                        {
-                            throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
-                        }
-                        else
-                        {
-                            Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-                                "Notifica della richiesta dei titoli di viaggio.", "TITOLIVIAGGIO", db,
-                                tr.IDTRASFERIMENTO, tv.IDTITOLOVIAGGIO);
+            //            if (i <= 0)
+            //            {
+            //                throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
+            //            }
+            //            else
+            //            {
+            //                Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
+            //                    "Notifica della richiesta dei titoli di viaggio.", "TITOLIVIAGGIO", db,
+            //                    tr.IDTRASFERIMENTO, tv.IDTITOLOVIAGGIO);
 
-                            this.InvioEmailTitoliViaggioRichiesta(tv.IDTITOLOVIAGGIO, db);
+            //                this.InvioEmailTitoliViaggioRichiesta(tv.IDTITOLOVIAGGIO, db);
 
-                            var lc =
-                            tv.CONIUGE.Where(
-                                a =>
-                                    a.ESCLUDITITOLOVIAGGIO == false &&
-                                    a.DATANOTIFICATV.HasValue == false).ToList();
-                            if (lc?.Any() ?? false)
-                            {
-                                foreach (var c in lc)
-                                {
+            //                var lc =
+            //                tv.CONIUGE.Where(
+            //                    a =>
+            //                        a.ESCLUDITITOLOVIAGGIO == false &&
+            //                        a.DATANOTIFICATV.HasValue == false).ToList();
+            //                if (lc?.Any() ?? false)
+            //                {
+            //                    foreach (var c in lc)
+            //                    {
 
-                                    c.DATANOTIFICATV = DateTime.Now;
+            //                        c.DATANOTIFICATV = DateTime.Now;
 
-                                    Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-                                        "Notifica della richiesta dei titoli di viaggio.", "CONIUGE", db,
-                                        tr.IDTRASFERIMENTO, c.IDCONIUGE);
+            //                        Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
+            //                            "Notifica della richiesta dei titoli di viaggio.", "CONIUGE", db,
+            //                            tr.IDTRASFERIMENTO, c.IDCONIUGE);
 
-                                }
-                            }
+            //                    }
+            //                }
 
-                            var lf =
-                                tv.FIGLI.Where(
-                                    a =>
-                                        a.ESCLUDITITOLOVIAGGIO == false &&
-                                        a.DATANOTIFICATV.HasValue == false).ToList();
-                            if (lf?.Any() ?? false)
-                            {
-                                foreach (var f in lf)
-                                {
-                                    f.DATANOTIFICATV = DateTime.Now;
+            //                var lf =
+            //                    tv.FIGLI.Where(
+            //                        a =>
+            //                            a.ESCLUDITITOLOVIAGGIO == false &&
+            //                            a.DATANOTIFICATV.HasValue == false).ToList();
+            //                if (lf?.Any() ?? false)
+            //                {
+            //                    foreach (var f in lf)
+            //                    {
+            //                        f.DATANOTIFICATV = DateTime.Now;
 
-                                    Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
-                                       "Notifica della richiesta dei titoli di viaggio.", "Figli", db,
-                                       tr.IDTRASFERIMENTO, f.IDFIGLI);
-                                }
-                            }
-                            if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
-                            {
+            //                        Utility.PreSetLogAttivita(EnumAttivitaCrud.Modifica,
+            //                           "Notifica della richiesta dei titoli di viaggio.", "Figli", db,
+            //                           tr.IDTRASFERIMENTO, f.IDFIGLI);
+            //                    }
+            //                }
+            //                if ((lc?.Any() ?? false) || (lf?.Any() ?? false))
+            //                {
 
-                                int j = db.SaveChanges();
+            //                    int j = db.SaveChanges();
 
-                                if (j <= 0)
-                                {
-                                    //var log = db.Database.Log;
+            //                    if (j <= 0)
+            //                    {
+            //                        //var log = db.Database.Log;
 
-                                    throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
-                                }
-                            }
-
-
-                        }
-                    }
+            //                        throw new Exception("Non è stato possibile inserire la notifica di richiesta per le pratiche di passaporto.");
+            //                    }
+            //                }
 
 
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
+            //            }
+            //        }
 
-            }
+
+            //        db.Database.CurrentTransaction.Commit();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        db.Database.CurrentTransaction.Rollback();
+            //        throw ex;
+            //    }
+
+            //}
         }
 
 
@@ -858,24 +858,24 @@ namespace NewISE.Models.DBModel.dtObj
         {
             TitoloViaggioModel tvm = new TitoloViaggioModel();
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var tv = db.FIGLI.Find(idFiglio).TITOLIVIAGGIO;
+            //using (ModelDBISE db = new ModelDBISE())
+            //{
+            //    var tv = db.FIGLI.Find(idFiglio).TITOLIVIAGGIO;
 
-                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                {
-                    tvm = new TitoloViaggioModel()
-                    {
-                        idTitoloViaggio = tv.IDTITOLOVIAGGIO,
-                        notificaRichiesta = tv.NOTIFICARICHIESTA,
-                        dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
-                        praticaConclusa = tv.PRATICACONCLUSA,
-                        dataPraticaConclusa = tv.DATAPRATICACONCLUSA,
-                        personalmente = tv.PERSONALMENTE,
-                        escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO,
-                    };
-                }
-            }
+            //    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            //    {
+            //        tvm = new TitoloViaggioModel()
+            //        {
+            //            idTitoloViaggio = tv.IDTITOLOVIAGGIO,
+            //            notificaRichiesta = tv.NOTIFICARICHIESTA,
+            //            dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
+            //            praticaConclusa = tv.PRATICACONCLUSA,
+            //            dataPraticaConclusa = tv.DATAPRATICACONCLUSA,
+            //            personalmente = tv.PERSONALMENTE,
+            //            escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO,
+            //        };
+            //    }
+            //}
 
             return tvm;
         }
@@ -885,24 +885,24 @@ namespace NewISE.Models.DBModel.dtObj
         {
             TitoloViaggioModel tvm = new TitoloViaggioModel();
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var tv = db.CONIUGE.Find(idConiuge).TITOLIVIAGGIO;
+            //using (ModelDBISE db = new ModelDBISE())
+            //{
+            //    var tv = db.CONIUGE.Find(idConiuge).TITOLIVIAGGIO;
 
-                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                {
-                    tvm = new TitoloViaggioModel()
-                    {
-                        idTitoloViaggio = tv.IDTITOLOVIAGGIO,
-                        notificaRichiesta = tv.NOTIFICARICHIESTA,
-                        dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
-                        praticaConclusa = tv.PRATICACONCLUSA,
-                        dataPraticaConclusa = tv.DATAPRATICACONCLUSA,
-                        personalmente = tv.PERSONALMENTE,
-                        escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO,
-                    };
-                }
-            }
+            //    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            //    {
+            //        tvm = new TitoloViaggioModel()
+            //        {
+            //            idTitoloViaggio = tv.IDTITOLOVIAGGIO,
+            //            notificaRichiesta = tv.NOTIFICARICHIESTA,
+            //            dataNotificaRichiesta = tv.DATANOTIFICARICHIESTA,
+            //            praticaConclusa = tv.PRATICACONCLUSA,
+            //            dataPraticaConclusa = tv.DATAPRATICACONCLUSA,
+            //            personalmente = tv.PERSONALMENTE,
+            //            escludiTitoloViaggio = tv.ESCLUDITITOLOVIAGGIO,
+            //        };
+            //    }
+            //}
 
             return tvm;
         }

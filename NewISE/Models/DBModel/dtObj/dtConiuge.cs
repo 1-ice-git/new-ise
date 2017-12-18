@@ -102,11 +102,11 @@ namespace NewISE.Models.DBModel.dtObj
                 var p = db.PASSAPORTI.Find(idPassaporto);
                 if (AllOnlyNotify)
                 {
-                    lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                    //lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 }
                 else
                 {
-                    lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                    //lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 }
 
 
@@ -118,18 +118,12 @@ namespace NewISE.Models.DBModel.dtObj
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                               idPassaporti = e.IDPASSAPORTI,
-                               idTitoloViaggio = e.IDTITOLOVIAGGIO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
                                dataInizio = e.DATAINIZIOVALIDITA,
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                               dataNotificaPP = e.DATANOTIFICAPP,
-                               escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                               dataNotificaTV = e.DATANOTIFICATV
                            }).ToList();
                 }
             }
@@ -152,11 +146,11 @@ namespace NewISE.Models.DBModel.dtObj
             var p = db.PASSAPORTI.Find(idPassaporto);
             if (AllOnlyNotify)
             {
-                lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lc = p.CONIUGE.Where(a => a.ESCLUDIPASSAPORTO == false && a.DATANOTIFICAPP.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lc?.Any() ?? false)
@@ -167,18 +161,12 @@ namespace NewISE.Models.DBModel.dtObj
                            idConiuge = e.IDCONIUGE,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                           idPassaporti = e.IDPASSAPORTI,
-                           idTitoloViaggio = e.IDTITOLOVIAGGIO,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                           dataNotificaPP = e.DATANOTIFICAPP,
-                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                           dataNotificaTV = e.DATANOTIFICATV
                        }).ToList();
             }
 
@@ -201,11 +189,11 @@ namespace NewISE.Models.DBModel.dtObj
             var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
             if (AllOnlyNotify)
             {
-                lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
             else
             {
-                lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                //lc = tv.CONIUGE.Where(a => a.ESCLUDITITOLOVIAGGIO == false && a.DATANOTIFICATV.HasValue == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
             }
 
             if (lc?.Any() ?? false)
@@ -216,18 +204,12 @@ namespace NewISE.Models.DBModel.dtObj
                            idConiuge = e.IDCONIUGE,
                            idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                            idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                           idPassaporti = e.IDPASSAPORTI,
-                           idTitoloViaggio = e.IDTITOLOVIAGGIO,
                            nome = e.NOME,
                            cognome = e.COGNOME,
                            codiceFiscale = e.CODICEFISCALE,
                            dataInizio = e.DATAINIZIOVALIDITA,
                            dataFine = e.DATAFINEVALIDITA,
                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                           escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                           dataNotificaPP = e.DATANOTIFICAPP,
-                           escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                           dataNotificaTV = e.DATANOTIFICATV
                        }).ToList();
             }
 
@@ -262,18 +244,12 @@ namespace NewISE.Models.DBModel.dtObj
                             idConiuge = c.IDCONIUGE,
                             idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                             idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                            idPassaporti = c.IDPASSAPORTI,
-                            idTitoloViaggio = c.IDTITOLOVIAGGIO,
                             nome = c.NOME,
                             cognome = c.COGNOME,
                             codiceFiscale = c.CODICEFISCALE,
                             dataInizio = c.DATAINIZIOVALIDITA,
                             dataFine = c.DATAFINEVALIDITA,
                             dataAggiornamento = c.DATAAGGIORNAMENTO,
-                            escludiPassaporto = c.ESCLUDIPASSAPORTO,
-                            dataNotificaPP = c.DATANOTIFICAPP,
-                            escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
-                            dataNotificaTV = c.DATANOTIFICATV
                         };
                     }
 
@@ -300,18 +276,12 @@ namespace NewISE.Models.DBModel.dtObj
                     idConiuge = c.IDCONIUGE,
                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                     idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                    idPassaporti = c.IDPASSAPORTI,
-                    idTitoloViaggio = c.IDTITOLOVIAGGIO,
                     nome = c.NOME,
                     cognome = c.COGNOME,
                     codiceFiscale = c.CODICEFISCALE,
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
-                    dataNotificaPP = c.DATANOTIFICAPP,
-                    escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
-                    dataNotificaTV = c.DATANOTIFICATV
                 };
             }
 
@@ -333,18 +303,12 @@ namespace NewISE.Models.DBModel.dtObj
                         idConiuge = c.IDCONIUGE,
                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                         idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                        idPassaporti = c.IDPASSAPORTI,
-                        idTitoloViaggio = c.IDTITOLOVIAGGIO,
                         nome = c.NOME,
                         cognome = c.COGNOME,
                         codiceFiscale = c.CODICEFISCALE,
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
-                        escludiPassaporto = c.ESCLUDIPASSAPORTO,
-                        dataNotificaPP = c.DATANOTIFICAPP,
-                        escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
-                        dataNotificaTV = c.DATANOTIFICATV
                     };
                 }
             }
@@ -373,18 +337,12 @@ namespace NewISE.Models.DBModel.dtObj
                                idConiuge = e.IDCONIUGE,
                                idMaggiorazioniFamiliari = e.IDMAGGIORAZIONIFAMILIARI,
                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
-                               idPassaporti = e.IDPASSAPORTI,
-                               idTitoloViaggio = e.IDTITOLOVIAGGIO,
                                nome = e.NOME,
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
                                dataInizio = e.DATAINIZIOVALIDITA,
                                dataFine = e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                               escludiPassaporto = e.ESCLUDIPASSAPORTO,
-                               dataNotificaPP = e.DATANOTIFICAPP,
-                               escludiTitoloViaggio = e.ESCLUDITITOLOVIAGGIO,
-                               dataNotificaTV = e.DATANOTIFICATV,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
                                Modificato = e.MODIFICATO
@@ -403,7 +361,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var c = db.CONIUGE.Find(idConiuge);
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    c.ESCLUDIPASSAPORTO = c.ESCLUDIPASSAPORTO == false ? true : false;
+                    //c.ESCLUDIPASSAPORTO = c.ESCLUDIPASSAPORTO == false ? true : false;
 
                     int i = db.SaveChanges();
 
@@ -413,7 +371,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        chk = c.ESCLUDIPASSAPORTO;
+                        //chk = c.ESCLUDIPASSAPORTO;
                         decimal idTrasferimento =
                             db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
@@ -433,7 +391,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var c = db.CONIUGE.Find(idConiuge);
                 if (c != null && c.IDCONIUGE > 0)
                 {
-                    c.ESCLUDITITOLOVIAGGIO = c.ESCLUDITITOLOVIAGGIO == false ? true : false;
+                    //c.ESCLUDITITOLOVIAGGIO = c.ESCLUDITITOLOVIAGGIO == false ? true : false;
 
                     int i = db.SaveChanges();
 
@@ -443,7 +401,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        chk = c.ESCLUDITITOLOVIAGGIO;
+                        //chk = c.ESCLUDITITOLOVIAGGIO;
                         decimal idTrasferimento =
                             db.CONIUGE.Find(idConiuge).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
 
@@ -462,18 +420,12 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 IDMAGGIORAZIONIFAMILIARI = cm.idMaggiorazioniFamiliari,
                 IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge,
-                IDPASSAPORTI = cm.idPassaporti,
-                IDTITOLOVIAGGIO = cm.idTitoloViaggio,
                 NOME = cm.nome.ToUpper(),
                 COGNOME = cm.cognome.ToUpper(),
                 CODICEFISCALE = cm.codiceFiscale.ToUpper(),
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                ESCLUDIPASSAPORTO = cm.escludiPassaporto,
-                DATANOTIFICAPP = cm.dataNotificaPP,
-                ESCLUDITITOLOVIAGGIO = cm.escludiTitoloViaggio,
-                DATANOTIFICATV = cm.dataNotificaTV,
                 MODIFICATO = cm.Modificato,
                 FK_IDCONIUGE = cm.FK_idConiuge
 
@@ -535,7 +487,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (c.DATAINIZIOVALIDITA != cm.dataInizio.Value || c.DATAFINEVALIDITA != dtFin ||
                         c.IDTIPOLOGIACONIUGE != (decimal)cm.idTipologiaConiuge || c.NOME != cm.nome || c.COGNOME != cm.cognome ||
-                        c.CODICEFISCALE != cm.codiceFiscale || c.IDPASSAPORTI != cm.idPassaporti || c.IDTITOLOVIAGGIO != cm.idTitoloViaggio)
+                        c.CODICEFISCALE != cm.codiceFiscale)
                     {
                         c.IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge;
                         c.NOME = cm.nome;
@@ -584,37 +536,31 @@ namespace NewISE.Models.DBModel.dtObj
                             .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
                 bool modificabile = false;
-                
+
                 if (amfl?.Any() ?? false)
                 {
                     foreach (var e in amfl)
                     {
-                        lc = e.CONIUGE.Where(y => y.MODIFICATO==false).ToList();
+                        lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
                         if (lc?.Any() ?? false)
                         {
-                            foreach (var c in lc )
+                            foreach (var c in lc)
                             {
                                 VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                 {
-                                    eliminabile = (c.FK_IDCONIUGE>0 || c.MODIFICATO == true) ? false : true,
+                                    eliminabile = (c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) ? false : true,
                                     modificabile = modificabile,
                                     idConiuge = c.IDCONIUGE,
                                     idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
                                     idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                    idPassaporti = c.IDPASSAPORTI,
-                                    idTitoloViaggio = c.IDTITOLOVIAGGIO,
                                     nome = c.NOME,
                                     cognome = c.COGNOME,
                                     codiceFiscale = c.CODICEFISCALE,
                                     dataInizio = c.DATAINIZIOVALIDITA,
                                     dataFine = c.DATAFINEVALIDITA,
                                     dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                    escludiPassaporto = c.ESCLUDIPASSAPORTO,
-                                    dataNotificaPP = c.DATANOTIFICAPP,
-                                    escludiTitoloViaggio = c.ESCLUDITITOLOVIAGGIO,
-                                    dataNotificaTV = c.DATANOTIFICATV,
-                                    Modificato=c.MODIFICATO,
-                                    FK_idConiuge=c.FK_IDCONIUGE
+                                    Modificato = c.MODIFICATO,
+                                    FK_idConiuge = c.FK_IDCONIUGE
                                 };
                                 lcm.Add(cm);
                                 //break;
@@ -638,7 +584,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                    if (cm.dataInizio!= null && cm.dataFine<Utility.DataFineStop())
+                    if (cm.dataInizio != null && cm.dataFine < Utility.DataFineStop())
                     {
                         if (cm.dataInizio >= cm.dataFine)
                         {

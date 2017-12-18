@@ -31,10 +31,10 @@ namespace NewISE.Models.DBModel.dtObj
                     switch (parentela)
                     {
                         case EnumParentela.Coniuge:
-                            p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
+                            //p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
                             break;
                         case EnumParentela.Figlio:
-                            p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
+                            //p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
                             break;
                         case EnumParentela.Richiedente:
                             p = db.PASSAPORTI.Find(idFamiliare);
@@ -188,9 +188,9 @@ namespace NewISE.Models.DBModel.dtObj
                 var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
                 var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
                 item.State = EntityState.Modified;
-                item.Collection(a => a.CONIUGE).Load();
+                //item.Collection(a => a.CONIUGE).Load();
                 var c = db.CONIUGE.Find(idConiuge);
-                ap.CONIUGE.Add(c);
+                //ap.CONIUGE.Add(c);
 
                 int i = db.SaveChanges();
 
@@ -215,9 +215,9 @@ namespace NewISE.Models.DBModel.dtObj
                 var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
                 var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
                 item.State = EntityState.Modified;
-                item.Collection(a => a.FIGLI).Load();
+                //item.Collection(a => a.FIGLI).Load();
                 var f = db.FIGLI.Find(idFiglio);
-                ap.FIGLI.Add(f);
+                //ap.FIGLI.Add(f);
 
                 int i = db.SaveChanges();
 
@@ -238,16 +238,16 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PASSAPORTORICHIEDENTE pr = new PASSAPORTORICHIEDENTE()
             {
-                IDPASSAPORTI = prm.idPassaporti,
-                ESCLUDIPASSAPORTO = prm.EscludiPassaporto,
-                DATAESCLUDIPASSAPORTO = prm.DataEscludiPassaporto,
+                //IDPASSAPORTI = prm.idPassaporti,
+                //ESCLUDIPASSAPORTO = prm.EscludiPassaporto,
+                //DATAESCLUDIPASSAPORTO = prm.DataEscludiPassaporto,
                 DATAAGGIORNAMENTO = prm.DataAggiornamento,
                 ANNULLATO = prm.annullato
             };
 
             var p = db.PASSAPORTI.Find(prm.idPassaporti);
 
-            p.PASSAPORTORICHIEDENTE.Add(pr);
+            //p.PASSAPORTORICHIEDENTE.Add(pr);
 
             int i = db.SaveChanges();
 
@@ -255,9 +255,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 prm.idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE;
 
-                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                    "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
-                    pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
+                //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                //    "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
+                //    pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
 
 
             }

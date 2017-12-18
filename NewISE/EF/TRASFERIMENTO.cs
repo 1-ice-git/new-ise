@@ -62,10 +62,10 @@ namespace NewISE.EF
         public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual PASSAPORTI PASSAPORTI { get; set; }
     }
 }
