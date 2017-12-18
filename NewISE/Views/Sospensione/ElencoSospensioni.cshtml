@@ -17,9 +17,9 @@
         }
     </p>
 
-<div id="divElencoSosp">
-    @Html.Action("DatiTabElencoSospensione", "Sospensione", new { idTrasferimento = idTrasferimento })
-</div>
+    <div id="divElencoSosp">
+        @Html.Action("DatiTabElencoSospensione", "Sospensione", new { idTrasferimento = idTrasferimento })
+    </div>
 
 
 <div class="modal fade" id="inviaDocModalsosp" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
@@ -46,64 +46,30 @@
 </div>
 
 <script type="text/javascript">
-
-    
-
-
-
-
-
-    //$("#tbelencocal").DataTable({
-    //    "ordering": false,
-    //    "language": {
-    //        "sEmptyTable": "Nessun dato presente nella tabella",
-    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-    //        "sInfoPostFix": "",
-    //        "sInfoThousands": ".",
-    //        "sLengthMenu": "Visualizza _MENU_ elementi",
-    //        "sLoadingRecords": "Caricamento...",
-    //        "sProcessing": "Elaborazione...",
-    //        "sSearch": "Cerca:",
-    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-    //        "oPaginate": {
-    //            "sFirst": "Inizio",
-    //            "sPrevious": "Precedente",
-    //            "sNext": "Successivo",
-    //            "sLast": "Fine"
-    //        },
-    //        "oAria": {
-    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-    //        }
-    //    }
-    //});
-
-
-
     //function DocumentoModal2(matr) {
         $(".anchorDetailDelete").click(function () {
           //  debugger;
             var rotta = "/Sospensione/DeleteSospensione";
             var $buttonClicked = $(this);
             var idSospensione = $buttonClicked.attr('id_Sosp');
-            //var id_Sosp = $buttonClicked.attr('id_Sosp');
+            var idTrasferimento = parseInt('@idTrasferimento');
             $.ajax({
                 url: rotta,
                 type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione },
+                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
                     // debugger;
-                    $('#inviaDocModalsosp').modal('show');
+                   // $('#inviaDocModalsosp').modal('show');
                     //Blocca();
                 },
                 success: function (result) {
                    //  debugger;
-                    $("#viewDocumentoDettaglisosp").empty();
-                    $("#viewDocumentoDettaglisosp").html(result);                    
+                    //$("#viewDocumentoDettaglisosp").empty();
+                    //$("#viewDocumentoDettaglisosp").html(result);          
+                    $("#tabElencoSospensioni").empty();
+                    $("#tabElencoSospensioni").html(result);
                 },
                 error: function (error) {
                  //   debugger;
@@ -121,11 +87,12 @@
               var rotta = "/Sospensione/EditSospensione";
             var $buttonClicked = $(this);
             var idSospensione = $buttonClicked.attr('idSosp');
-            
+            var idTrasferimento = parseInt('@idTrasferimento');
+
             $.ajax({
                 url: rotta,
                 type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione },
+                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
@@ -133,7 +100,7 @@
                     //Blocca();
                 },
                 success: function (result) {
-                   // debugger;
+                    // debugger;                   
                     $("#tabElencoSospensioni").empty();
                     $("#tabElencoSospensioni").html(result);                    
                 },
@@ -145,4 +112,40 @@
                 }
             });
         });
+
+    $("#tabListaSospensioni").DataTable({
+        "ordering": false,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 6,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+    });
+
+    
 </script>

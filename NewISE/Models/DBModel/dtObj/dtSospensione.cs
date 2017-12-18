@@ -53,8 +53,9 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 TRASFERIMENTO trasf = db.TRASFERIMENTO.Find(idtrasferimento);
-                var  tmp = (from e in trasf.SOSPENSIONE  where e.ANNULLATO == false 
-                        select new SospensioneModel()
+                var  tmp = (from e in trasf.SOSPENSIONE  where e.ANNULLATO == false
+                            orderby e.DATAINIZIO ascending
+                            select new SospensioneModel()
                         {
                             idSospensione=e.IDSOSPENSIONE,
                             DataInizioSospensione = e.DATAINIZIO,
@@ -62,7 +63,7 @@ namespace NewISE.Models.DBModel.dtObj
                             TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
                             DataAggiornamento = e.DATAAGGIORNAMENTO,
                             // NumeroGiorni =DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
-                            NumeroGiorni = Convert.ToInt32((e.DATAFINE - e.DATAINIZIO).TotalDays)
+                            NumeroGiorni = Convert.ToInt32((e.DATAFINE.AddDays(1) - e.DATAINIZIO).TotalDays)
                         }).ToList();
                     return tmp;
             }       
@@ -81,13 +82,20 @@ namespace NewISE.Models.DBModel.dtObj
             return tmp;
         }
 
-        public static bool CompresaInUnIntervallo(DateTime inizio,DateTime fine,decimal id_Trasferimento)
+        public static bool CompresaInUnIntervallo(DateTime inizio,DateTime fine,decimal id_Trasferimento,decimal idSospensione=0)
         {
             bool result = false;
             using (ModelDBISE db = new ModelDBISE())
             {
+                var nsp = 0;
                 var t = db.TRASFERIMENTO.Find(id_Trasferimento);
-                var nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO && fine < a.DATAFINE)).Count();
+
+                if (idSospensione == 0)
+                    nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO && fine < a.DATAFINE)).Count();
+                else
+                    nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO 
+                    && fine < a.DATAFINE && a.IDSOSPENSIONE!=idSospensione)).Count();
+
                 if (nsp != 0) result = true;
             }
             return result;
@@ -108,20 +116,40 @@ namespace NewISE.Models.DBModel.dtObj
                     using (ModelDBISE db = new ModelDBISE())
                     {
                         DateTime t = db.TRASFERIMENTO.Find(fm.idTrasferimento).DATAPARTENZA;
-                        if (fm.DataInizioSospensione > t)
+                        if (fm.DataInizioSospensione < t)
                         {
-                            vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio sospensione maggiore della data di partenza del trasferimento ({0}).", t.ToShortDateString()));
+                            vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio sospensione minore della data di partenza del trasferimento ({0}).", t.ToShortDateString()));
                         }
                         else
                         {
+                            var nsp = 0;
                             var tr = db.TRASFERIMENTO.Find(fm.idTrasferimento);
-                            var nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && (fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione < a.DATAFINE)).Count();
-                            if (nsp != 0)
+                            if (fm.idSospensione == 0)
+                                nsp  = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE).Count();
+                            else                           
+                                nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE 
+                                && a.IDSOSPENSIONE!=fm.idSospensione).Count();
+
+                            if (nsp > 0)
                             {
                                 vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio sospensione in quanto compresa in un intervallo ({0}).", fm.DataInizioSospensione.Value.ToShortDateString()));
                             }
                             else
-                                vr = ValidationResult.Success;
+                            {
+                                if (fm.idSospensione == 0)
+                                    nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataFineSospensione >= a.DATAINIZIO && fm.DataFineSospensione <= a.DATAFINE).Count();
+                                else
+                                    nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataFineSospensione >= a.DATAINIZIO && fm.DataFineSospensione <= a.DATAFINE
+                                    && a.IDSOSPENSIONE != fm.idSospensione).Count();
+                                if (nsp > 0)
+                                {
+                                    vr = new ValidationResult(string.Format("Impossibile inserire la data di fine sospensione in quanto compresa in un intervallo ({0}).", fm.DataFineSospensione.Value.ToShortDateString()));
+                                }
+                                else
+                                {
+                                    vr = ValidationResult.Success;
+                                }
+                            }
                         }
                     }
                 }
@@ -133,56 +161,57 @@ namespace NewISE.Models.DBModel.dtObj
             return vr;
         }
 
-        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-            var fm = context.ObjectInstance as SospensioneModel;
-            if (fm != null)
-            {
-                if (fm.DataFineSospensione<fm.DataInizioSospensione)
-                {
-                    vr = new ValidationResult("La data di fine sospensione deve essere maggiore della data inizio sospensione.");
-                }
-                else
-                {
-                    using (ModelDBISE db = new ModelDBISE())
-                    {
-                        var tr = db.TRASFERIMENTO.Find(fm.idTrasferimento);
-                        DateTime t = tr.DATARIENTRO.HasValue == true ? tr.DATARIENTRO.Value : Utility.DataFineStop();
-                        if (fm.DataFineSospensione > t)
-                        {
-                            vr = new ValidationResult(string.Format("Impossibile inserire la data fine sospensione maggiore della data di rientro del trasferimento ({0}).", t.ToShortDateString()));
-                        }
-                        else
-                        {
-                            var t_r = db.TRASFERIMENTO.Find(fm.idTrasferimento);
-                            var nsp = t_r.SOSPENSIONE.Where(a => a.ANNULLATO == false && fm.DataFineSospensione > a.DATAINIZIO && fm.DataFineSospensione <= a.DATAFINE).Count();
-                            if (nsp != 0)
-                            {
-                                vr = new ValidationResult(string.Format("Impossibile inserire la data di fine sospensione in quanto compresa in un intervallo ({0}).", fm.DataFineSospensione.Value.ToShortDateString()));
-                            }
-                            vr = ValidationResult.Success;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                vr = new ValidationResult("La data fine sospensione è richiesta.");
-            }
-            return vr;
-        }
+        //public static ValidationResult VerificaDataFine(string v, ValidationContext context)
+        //{
+        //    ValidationResult vr = ValidationResult.Success;
+        //    var fm = context.ObjectInstance as SospensioneModel;
+        //    if (fm != null)
+        //    {
+        //        if (fm.DataFineSospensione<fm.DataInizioSospensione)
+        //        {
+        //            vr = new ValidationResult("La data di fine sospensione deve essere maggiore della data inizio sospensione.");
+        //        }
+        //        else
+        //        {
+        //            using (ModelDBISE db = new ModelDBISE())
+        //            {
+        //                var tr = db.TRASFERIMENTO.Find(fm.idTrasferimento);
+        //                DateTime t = tr.DATARIENTRO.HasValue == true ? tr.DATARIENTRO.Value : Utility.DataFineStop();
+        //                if (fm.DataFineSospensione > t)
+        //                {
+        //                    vr = new ValidationResult(string.Format("Impossibile inserire la data fine sospensione maggiore della data di rientro del trasferimento ({0}).", t.ToShortDateString()));
+        //                }
+        //                else
+        //                {
+        //                    var t_r = db.TRASFERIMENTO.Find(fm.idTrasferimento);
+        //                    var nsp = t_r.SOSPENSIONE.Where(a => a.ANNULLATO == false && fm.DataFineSospensione > a.DATAINIZIO && fm.DataFineSospensione <= a.DATAFINE).Count();
+        //                    if (nsp != 0)
+        //                    {
+        //                        vr = new ValidationResult(string.Format("Impossibile inserire la data di fine sospensione in quanto compresa in un intervallo ({0}).", fm.DataFineSospensione.Value.ToShortDateString()));
+        //                    }
+        //                    vr = ValidationResult.Success;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        vr = new ValidationResult("La data fine sospensione è richiesta.");
+        //    }
+        //    return vr;
+        //}
         #endregion
         public bool dateValide(DateTime inizio,DateTime fine)
         {
             if (inizio > fine) return false;
             return true;
         }
-        public void InserisciSospensione(SospensioneModel sosp,decimal idTipoSospensione)
+        public string[] InserisciSospensione(SospensioneModel sosp,decimal idTipoSospensione)
         {
-            if (!CompresaInUnIntervallo(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value, sosp.idTrasferimento))
-            {
-                if (dateValide(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value))
+            string[] my_array = new string[] { "0", "0" };
+            if (dateValide(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value))
+            { 
+                if (!CompresaInUnIntervallo(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value, sosp.idTrasferimento,sosp.idSospensione))
                 {
                     using (var db = new ModelDBISE())
                     {
@@ -219,13 +248,18 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    throw new Exception("Le date non sono valide");
+                    my_array[0] = "2"; my_array[1] = "Impossibile inserire una sopsensione con il periodo incluso in una sopsensione esistente.";                   
+                    return my_array;
+                    //throw new Exception("Le date non sono valide");
                 }
             }
             else
             {
-                throw new Exception("Controllare i dati inseriti");
+                my_array[0] = "1"; my_array[1] = "Data Inizio non deve essere superiore alla data fine";                
+                return my_array;
+               // throw new Exception("Controllare i dati inseriti");
             }
+            return my_array;
         }
 
         public IList<TipologiaSospensioneModel> GetListTipologiaSospensione()
@@ -248,17 +282,17 @@ namespace NewISE.Models.DBModel.dtObj
             return ltcm;
         }
 
-        public void Modifica_Sospensione(SospensioneModel sospmod)
+        public string[] Modifica_Sospensione(SospensioneModel sospmod)
         {
+            string[] my_array = new string[] { "0", "0" };
             try
             {
-                if (!CompresaInUnIntervallo(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value, sospmod.idTrasferimento))
+                if (dateValide(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value))
                 {
-                    if (dateValide(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value))
+                    if (!CompresaInUnIntervallo(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value, sospmod.idTrasferimento,sospmod.idSospensione))
                     {
                         using (ModelDBISE db = new ModelDBISE())
                         {
-
                             SOSPENSIONE sosp = db.SOSPENSIONE.Find(sospmod.idSospensione);
                             sosp.IDTIPOSOSPENSIONE = sospmod.idTipoSospensione;
                             sosp.DATAINIZIO = sospmod.DataInizioSospensione.Value;
@@ -280,18 +314,21 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        throw new Exception("Errore dei dati inseriti");
+                        my_array[0] = "2"; my_array[1] = "Impossibile inserire una sopsensione con il periodo incluso in una sopsensione esistente.";
+                        return my_array;
                     }
                 }
                 else
                 {
-                    throw new Exception("Date incluse nell'intevallo");
+                    my_array[0] = "1"; my_array[1] = "Data Inizio non deve essere superiore alla data fine";
+                    return my_array;
                 }
             }
             catch (Exception ex)
             {
                  throw ex;
             }
+            return my_array;
         }
         public SospensioneModel getSospensioneById(decimal idSospensione)
         {
