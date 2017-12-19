@@ -2170,6 +2170,7 @@
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
+    <Compile Include="Controllers\RichiamoController.cs" />
     <Compile Include="Controllers\SospensioneController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
@@ -2429,7 +2430,9 @@
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
+    <Compile Include="Models\DBModel\RichiamoModel.cs" />
     <Compile Include="Models\DBModel\TipologiaSospensioneModel.cs" />
     <Compile Include="Models\DBModel\SospensioneModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
@@ -2677,6 +2680,14 @@
     <Content Include="Views\Sospensione\DatiTabElencoSospensione.cshtml" />
     <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
     <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
+    <Content Include="Views\Richiamo\Richiamo.cshtml" />
+    <Content Include="Views\Richiamo\VerificaRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\AttivitaRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\DatiTabElencoRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\DeleteRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\EditRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\ElencoRichiamo.cshtml" />
+    <Content Include="Views\Richiamo\NuovoRichiamo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

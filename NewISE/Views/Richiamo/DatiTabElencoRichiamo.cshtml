@@ -1,0 +1,110 @@
+﻿
+@model IEnumerable<NewISE.Models.DBModel.RichiamoModel>
+
+<div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
+
+    <table id="tabListaRichiamo" class="table-striped" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.IDTRASFRICHIAMO)
+                </th>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.DATAOPERAZIONE)
+                </th>
+                
+                <th style="text-align: center;"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{ var rowColor = "#ffffff"; }
+
+            @foreach (var item in Model)
+            {
+                <tr style="background-color:@rowColor;">
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.IDTRASFRICHIAMO)
+                    </td>
+                    @*@if (item.DataInizioSospensione != null && item.DataInizioSospensione < Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.DataInizioSospensione)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }
+                    @if (item.DataFineSospensione != null && item.DataFineSospensione < Convert.ToDateTime("31/12/9999"))
+                    {
+                        <td style="text-align: center;">
+                            @Html.DisplayFor(modelItem => item.DataFineSospensione)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;"></td>
+                    }*@
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.DATAOPERAZIONE)
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="javascript:void(0);"
+                           class="anchorDetailDelete" id_Sosp="@item.IDTRASFRICHIAMO"><span class="text-uppercase" title="Elimina"><img src="~/Immagini/delete.png" /></span></a>
+                        &nbsp;&nbsp;
+                        <a href="javascript:void(@item.IDTRASFRICHIAMO);"
+                           class="anchorDetailEdit" idSosp="@item.IDTRASFRICHIAMO"><span class="text-uppercase" title="Modifica"><img src="~/Immagini/edit.png" /></span></a>
+                    </td>
+                </tr>
+                if (@rowColor.Equals("#ffffff"))
+                {
+                    rowColor = "#D9E6C4";
+                }
+                else
+                {
+                    rowColor = "#ffffff";
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<script type="text/javascript">
+
+    //$("#tabListaRichiamo").DataTable({
+    //    "ordering": false,
+    //    "language": {
+    //        "sEmptyTable": "Nessun dato presente nella tabella",
+    //        "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+    //        "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+    //        "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+    //        "sInfoPostFix": "",
+    //        "sInfoThousands": ".",
+    //        "sLengthMenu": "Visualizza _MENU_ elementi",
+    //        "sLoadingRecords": "Caricamento...",
+    //        "sProcessing": "Elaborazione...",
+    //        "sSearch": "Cerca:",
+    //        "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+    //        "oPaginate": {
+    //            "sFirst": "Inizio",
+    //            "sPrevious": "Precedente",
+    //            "sNext": "Successivo",
+    //            "sLast": "Fine"
+    //        },
+    //        "oAria": {
+    //            "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+    //            "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+    //        }
+    //    },
+    //       "info": false,
+    //       // "lengthChange": false,
+    //        "pageLength": 6,
+    //        "searching": false,
+    //        "paging": true,
+    //        "bJQueryUI": true,
+    //        "sDom": 'lfrtip',
+    //});
+
+</script>

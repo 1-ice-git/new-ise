@@ -53,8 +53,16 @@
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
                 }
+                @if (admin)
+                {
+                    <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" onclick="Richiamo();">Richiamo</a></li>
+                }
+                else
+                {
+                    <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
 
-                <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
+                }
+
                 <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
                 <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
             </ul>
@@ -197,7 +205,7 @@
     }
 
     function Sospensione() {
-        // debugger;
+        //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/Sospensione/AttivitaSospensione";
 
@@ -233,6 +241,42 @@
         });
     }
 
+    function Richiamo() {
+        debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/Richiamo/AttivitaRichiamo";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabRichiamo").empty();
+                $("#tabRichiamo").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRichiamo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
 
     function MenuDaVisualizzare() {
         //debugger;
@@ -405,6 +449,25 @@
             $("#lkSospensione").removeAttr("onClick");
         }
 
+        //if (MenuRichiamo(idTrasferimento) == 1) {
+        //    $("#lkRichiamo").removeAttr("disabled");
+        //    $("#mnRichiamo").removeClass("disabled");
+        //    $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        //}
+        //else {
+        //    $("#lkRichiamo").attr("disabled", "disabled");
+        //    $("#mnRichiamo").addClass("disabled");
+        //    $("#lkRichiamo").removeAttr("onClick");
+        //}
+
+        $("#lkSospensione").removeAttr("disabled");
+        $("#mnSospensione").removeClass("disabled");
+        $('#lkSospensione').attr('onClick', 'Sospensione();');
+
+        $("#lkRichiamo").removeAttr("disabled");
+        $("#mnRichiamo").removeClass("disabled");
+        $('#lkRichiamo').attr('onClick', 'Richiamo();');
+
     }
 
     function SvuotaTab() {
@@ -570,6 +633,55 @@
         return valoreRitorno;
     }
 
+    function MenuRichiamo(idTrasferimento) {
+        debugger;
+        //var rotta = "/Richiamo/Richiamo";
+        var rotta = "/Sospensione/VerificaRichiamo";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaSospensione != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
 
 
 </script>

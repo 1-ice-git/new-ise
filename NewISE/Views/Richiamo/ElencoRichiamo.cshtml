@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<NewISE.Models.DBModel.RichiamoModel>
+﻿@using NewISE.Models.DBModel
 
 @{
 
@@ -7,22 +6,21 @@
     bool solaLettura = false;
 }
 
-aaaaaaaaaaaaaaaaaaaaaaaaaa
-
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
     @if (solaLettura)
     {
-        <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Richiamo</button>
+        <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Nuovo Richiamo</button>
     }
     else
     {
-        @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkNuovaSospensione" })
+        @Ajax.ActionLink("Nuovo Richiamo", "NuovoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo Richiamo", @id = "linkNuovoRichiamo" })
     }
 </p>
 
 <div id="divElencoSosp">
-    @Html.Action("DatiTabElencoSospensione", "Sospensione", new { idTrasferimento = idTrasferimento })
+    @Html.Action("DatiTabElencoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento })
 </div>
+
 
 <div class="modal fade" id="inviaDocModalsosp" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -51,14 +49,14 @@ aaaaaaaaaaaaaaaaaaaaaaaaaa
     //function DocumentoModal2(matr) {
         $(".anchorDetailDelete").click(function () {
           //  debugger;
-            var rotta = "/Sospensione/DeleteSospensione";
+            var rotta = "/Richiamo/DeleteRichiamo";
             var $buttonClicked = $(this);
-            var idSospensione = $buttonClicked.attr('id_Sosp');
+            var idTrasfRichiamo = $buttonClicked.attr('idTrasfRichiamo');
             var idTrasferimento = parseInt('@idTrasferimento');
             $.ajax({
                 url: rotta,
                 type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
+                data: { idTrasfRichiamo: idTrasfRichiamo, idTrasferimento: idTrasferimento },
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
@@ -70,8 +68,8 @@ aaaaaaaaaaaaaaaaaaaaaaaaaa
                    //  debugger;
                     //$("#viewDocumentoDettaglisosp").empty();
                     //$("#viewDocumentoDettaglisosp").html(result);
-                    $("#tabElencoSospensioni").empty();
-                    $("#tabElencoSospensioni").html(result);
+                    $("#tabElencoRichiamo").empty();
+                    $("#tabElencoRichiamo").html(result);
                 },
                 error: function (error) {
                  //   debugger;
@@ -86,15 +84,15 @@ aaaaaaaaaaaaaaaaaaaaaaaaaa
 
         $(".anchorDetailEdit").click(function () {
             // debugger;
-              var rotta = "/Sospensione/EditSospensione";
+            var rotta = "/Richiamo/EditRichiamo";
             var $buttonClicked = $(this);
-            var idSospensione = $buttonClicked.attr('idSosp');
+            var idTrasfRichiamo = $buttonClicked.attr('idTrasfRichiamo');
             var idTrasferimento = parseInt('@idTrasferimento');
 
             $.ajax({
                 url: rotta,
                 type: "post", //Le info testuali saranno passate in POST
-                data: { idSospensione: idSospensione, idTrasferimento: idTrasferimento },
+                data: { idTrasfRichiamo: idTrasfRichiamo, idTrasferimento: idTrasferimento },
                 dataType: 'html',
                 async: false,
                 beforeSend: function () {
@@ -103,8 +101,8 @@ aaaaaaaaaaaaaaaaaaaaaaaaaa
                 },
                 success: function (result) {
                     // debugger;
-                    $("#tabElencoSospensioni").empty();
-                    $("#tabElencoSospensioni").html(result);
+                    $("#tabElencoRichiamo").empty();
+                    $("#tabElencoRichiamo").html(result);
                 },
                 error: function (error) {
                 //    debugger;
@@ -115,7 +113,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaa
             });
         });
 
-    $("#tabListaSospensioni").DataTable({
+    $("#tabListaRichiamo").DataTable({
         "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
