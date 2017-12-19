@@ -2170,6 +2170,7 @@
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
+    <Compile Include="Controllers\RichiamoController.cs" />
     <Compile Include="Controllers\SospensioneController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
@@ -2701,6 +2702,7 @@
     <Content Include="Views\Sospensione\DatiTabElencoSospensione.cshtml" />
     <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
     <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
+    <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
