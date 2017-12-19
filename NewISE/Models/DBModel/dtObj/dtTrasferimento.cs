@@ -236,12 +236,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region Titoli di viaggio
 
-                var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
-                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                {
-                    richiesteTV = tv.NOTIFICARICHIESTA;
-                    concluseTV = tv.PRATICACONCLUSA;
-                }
+                //var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
+                //if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                //{
+                //    richiesteTV = tv.NOTIFICARICHIESTA;
+                //    concluseTV = tv.PRATICACONCLUSA;
+                //}
 
                 #endregion
             }

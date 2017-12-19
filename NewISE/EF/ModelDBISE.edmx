@@ -115,6 +115,19 @@
           <Property Name="IDATTIVAZIONEMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRINUNCIAMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="ATTIVAZIONETITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="date" />
+          <Property Name="ATTIVAZIONERICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAATTIVAZIONERICHIESTA" Type="date" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="ATTIVAZIONIMAGFAM">
           <Key>
             <PropertyRef Name="IDATTIVAZIONEMAGFAM" />
@@ -156,6 +169,14 @@
             <PropertyRef Name="IDDOCUMENTO" />
           </Key>
           <Property Name="IDATTIVAZIONEMAGFAM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ATV_DOC">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="C_P">
@@ -281,6 +302,18 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="CONIUGETITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDCONIUGETITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDCONIUGETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDCONIUGE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTITOLOVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
             <PropertyRef Name="IDCONTABILITA" />
@@ -403,6 +436,18 @@
           <Property Name="IDPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDATTIVAZIONIPASSAPORTI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="INCLUDIPASSAPORTO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FIGLITITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDFIGLITITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDFIGLITITOLIVIAGGIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTITOLOVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -1033,22 +1078,17 @@
           <Key>
             <PropertyRef Name="IDTITOLOVIAGGIO" />
           </Key>
-          <Property Name="IDTITOLOVIAGGIO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="date" />
-          <Property Name="PRATICACONCLUSA" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="DATAPRATICACONCLUSA" Type="date" />
-          <Property Name="PERSONALMENTE" Type="number" Precision="1" Scale="0" Nullable="false" />
-          <Property Name="ESCLUDITITOLOVIAGGIO" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TITOLIVIAGGIO_DOCUMENTI">
-          <Key>
-            <PropertyRef Name="IDDOCUMENTO" />
-            <PropertyRef Name="IDTITOLOVIAGGIO" />
-          </Key>
-          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTITOLOVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TITOLIVIAGGIORICHIEDENTE">
+          <Key>
+            <PropertyRef Name="IDTITOLIVIAGGIORICHIEDENTE" />
+          </Key>
+          <Property Name="IDTITOLIVIAGGIORICHIEDENTE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TRASF_DOC">
           <Key>
@@ -1085,6 +1125,14 @@
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TVR_DOC">
+          <Key>
+            <PropertyRef Name="IDTITOLIVIAGGIORICHIEDENTE" />
+            <PropertyRef Name="IDDOCUMENTO" />
+          </Key>
+          <Property Name="IDTITOLIVIAGGIORICHIEDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="UFFICI">
           <Key>
@@ -1317,17 +1365,59 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_B_B_D">
-          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="1">
+        <Association Name="R_ATV_ATVD">
+          <End Role="ATTIVAZIONETITOLIVIAGGIO" Type="Self.ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="TITOLIVIAGGIO_DOCUMENTI" Type="Self.TITOLIVIAGGIO_DOCUMENTI" Multiplicity="*" />
+          <End Role="ATV_DOC" Type="Self.ATV_DOC" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="TITOLIVIAGGIO">
-              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
             </Principal>
-            <Dependent Role="TITOLIVIAGGIO_DOCUMENTI">
-              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            <Dependent Role="ATV_DOC">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATV_CTV">
+          <End Role="ATTIVAZIONETITOLIVIAGGIO" Type="Self.ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CONIUGETITOLIVIAGGIO" Type="Self.CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATV_FTV">
+          <End Role="ATTIVAZIONETITOLIVIAGGIO" Type="Self.ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIGLITITOLIVIAGGIO" Type="Self.FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATV_TVR">
+          <End Role="ATTIVAZIONETITOLIVIAGGIO" Type="Self.ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TITOLIVIAGGIORICHIEDENTE" Type="Self.TITOLIVIAGGIORICHIEDENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="TITOLIVIAGGIORICHIEDENTE">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1457,6 +1547,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_C_CTV">
+          <End Role="CONIUGE" Type="Self.CONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CONIUGETITOLIVIAGGIO" Type="Self.CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONIUGE">
+              <PropertyRef Name="IDCONIUGE" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDCONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_CFK_TEFK">
           <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1527,16 +1631,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_B_D">
+        <Association Name="R_D_ATVD">
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="TITOLIVIAGGIO_DOCUMENTI" Type="Self.TITOLIVIAGGIO_DOCUMENTI" Multiplicity="*" />
+          <End Role="ATV_DOC" Type="Self.ATV_DOC" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DOCUMENTI">
               <PropertyRef Name="IDDOCUMENTO" />
             </Principal>
-            <Dependent Role="TITOLIVIAGGIO_DOCUMENTI">
+            <Dependent Role="ATV_DOC">
               <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -1649,6 +1753,20 @@
               <PropertyRef Name="IDDOCUMENTO" />
             </Principal>
             <Dependent Role="TRASF_DOC">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_TVRD">
+          <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TVR_DOC" Type="Self.TVR_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTI">
+              <PropertyRef Name="IDDOCUMENTO" />
+            </Principal>
+            <Dependent Role="TVR_DOC">
               <PropertyRef Name="IDDOCUMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -1817,6 +1935,20 @@
               <PropertyRef Name="IDFIGLI" />
             </Principal>
             <Dependent Role="FIGLIPASSAPORTO">
+              <PropertyRef Name="IDFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_F_FTV">
+          <End Role="FIGLI" Type="Self.FIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIGLITITOLIVIAGGIO" Type="Self.FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIGLI">
+              <PropertyRef Name="IDFIGLI" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
               <PropertyRef Name="IDFIGLI" />
             </Dependent>
           </ReferentialConstraint>
@@ -2609,13 +2741,13 @@
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="*" />
+          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="TRASFERIMENTO">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="TITOLIVIAGGIO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3079,6 +3211,48 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_TV_ATV">
+          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ATTIVAZIONETITOLIVIAGGIO" Type="Self.ATTIVAZIONETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TV_CTV">
+          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CONIUGETITOLIVIAGGIO" Type="Self.CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TV_FTV">
+          <End Role="TITOLIVIAGGIO" Type="Self.TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FIGLITITOLIVIAGGIO" Type="Self.FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_TV_V">
           <End Role="TIPOVOCE" Type="Self.TIPOVOCE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3090,6 +3264,20 @@
             </Principal>
             <Dependent Role="VOCI">
               <PropertyRef Name="IDTIPOVOCE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TVR_TVRD">
+          <End Role="TITOLIVIAGGIORICHIEDENTE" Type="Self.TITOLIVIAGGIORICHIEDENTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TVR_DOC" Type="Self.TVR_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIORICHIEDENTE">
+              <PropertyRef Name="IDTITOLIVIAGGIORICHIEDENTE" />
+            </Principal>
+            <Dependent Role="TVR_DOC">
+              <PropertyRef Name="IDTITOLIVIAGGIORICHIEDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3287,10 +3475,12 @@
           <EntitySet Name="ATT_ADF" EntityType="Self.ATT_ADF" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATT_PENSIONE" EntityType="Self.ATT_PENSIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATT_RMF" EntityType="Self.ATT_RMF" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONETITOLIVIAGGIO" EntityType="Self.ATTIVAZIONETITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATTIVAZIONIMAGFAM" EntityType="Self.ATTIVAZIONIMAGFAM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATTIVAZIONIPASSAPORTI" EntityType="Self.ATTIVAZIONIPASSAPORTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ATTMAGFAM_DOC" EntityType="Self.ATTMAGFAM_DOC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="ATV_DOC" EntityType="Self.ATV_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISEPRO" store:Type="Tables" />
@@ -3302,6 +3492,7 @@
           <EntitySet Name="CONIUGE" EntityType="Self.CONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONIUGE_DOC" EntityType="Self.CONIUGE_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONIUGEPASSAPORTO" EntityType="Self.CONIUGEPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="Self.DEFFASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
@@ -3313,6 +3504,7 @@
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISEPRO" store:Type="Tables" />
@@ -3381,10 +3573,11 @@
           <EntitySet Name="TIPOTRASPORTO" EntityType="Self.TIPOTRASPORTO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TIPOVOCE" EntityType="Self.TIPOVOCE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TITOLIVIAGGIO" EntityType="Self.TITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="TITOLIVIAGGIO_DOCUMENTI" EntityType="Self.TITOLIVIAGGIO_DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="TITOLIVIAGGIORICHIEDENTE" EntityType="Self.TITOLIVIAGGIORICHIEDENTE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASF_DOC" EntityType="Self.TRASF_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TRASPORTOEFFETTI" EntityType="Self.TRASPORTOEFFETTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="TVR_DOC" EntityType="Self.TVR_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="UFFICI" EntityType="Self.UFFICI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="Self.UTENTIAUTORIZZATI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="Self.VALUTAUFFICIO" Schema="ISEPRO" store:Type="Tables" />
@@ -3442,9 +3635,21 @@
             <End Role="ATTIVAZIONIPASSAPORTI" EntitySet="ATTIVAZIONIPASSAPORTI" />
             <End Role="PASSAPORTORICHIEDENTE" EntitySet="PASSAPORTORICHIEDENTE" />
           </AssociationSet>
-          <AssociationSet Name="R_B_B_D" Association="Self.R_B_B_D">
-            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
-            <End Role="TITOLIVIAGGIO_DOCUMENTI" EntitySet="TITOLIVIAGGIO_DOCUMENTI" />
+          <AssociationSet Name="R_ATV_ATVD" Association="Self.R_ATV_ATVD">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="ATV_DOC" EntitySet="ATV_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATV_CTV" Association="Self.R_ATV_CTV">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATV_FTV" Association="Self.R_ATV_FTV">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATV_TVR" Association="Self.R_ATV_TVR">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
           </AssociationSet>
           <AssociationSet Name="R_C_ADF" Association="Self.R_C_ADF">
             <End Role="CONIUGE" EntitySet="CONIUGE" />
@@ -3482,6 +3687,10 @@
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="CONIUGEPASSAPORTO" EntitySet="CONIUGEPASSAPORTO" />
           </AssociationSet>
+          <AssociationSet Name="R_C_CTV" Association="Self.R_C_CTV">
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
           <AssociationSet Name="R_CFK_TEFK" Association="Self.R_CFK_TEFK">
             <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
             <End Role="TE_FK" EntitySet="TE_FK" />
@@ -3502,9 +3711,9 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="ATTMAGFAM_DOC" EntitySet="ATTMAGFAM_DOC" />
           </AssociationSet>
-          <AssociationSet Name="R_D_B_D" Association="Self.R_D_B_D">
+          <AssociationSet Name="R_D_ATVD" Association="Self.R_D_ATVD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-            <End Role="TITOLIVIAGGIO_DOCUMENTI" EntitySet="TITOLIVIAGGIO_DOCUMENTI" />
+            <End Role="ATV_DOC" EntitySet="ATV_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_D_CD" Association="Self.R_D_CD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -3537,6 +3746,10 @@
           <AssociationSet Name="R_D_T_D" Association="Self.R_D_T_D">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASF_DOC" EntitySet="TRASF_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_TVRD" Association="Self.R_D_TVRD">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TVR_DOC" EntitySet="TVR_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_D_UA" Association="Self.R_D_UA">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -3585,6 +3798,10 @@
           <AssociationSet Name="R_F_FP" Association="Self.R_F_FP">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="FIGLIPASSAPORTO" EntitySet="FIGLIPASSAPORTO" />
+          </AssociationSet>
+          <AssociationSet Name="R_F_FTV" Association="Self.R_F_FTV">
+            <End Role="FIGLI" EntitySet="FIGLI" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
           </AssociationSet>
           <AssociationSet Name="R_F_PMF_F" Association="Self.R_F_PMF_F">
             <End Role="FIGLI" EntitySet="FIGLI" />
@@ -3946,9 +4163,25 @@
             <End Role="TIPOTRASPORTO" EntitySet="TIPOTRASPORTO" />
             <End Role="TRASPORTOEFFETTI" EntitySet="TRASPORTOEFFETTI" />
           </AssociationSet>
+          <AssociationSet Name="R_TV_ATV" Association="Self.R_TV_ATV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_TV_CTV" Association="Self.R_TV_CTV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_TV_FTV" Association="Self.R_TV_FTV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
+          </AssociationSet>
           <AssociationSet Name="R_TV_V" Association="Self.R_TV_V">
             <End Role="TIPOVOCE" EntitySet="TIPOVOCE" />
             <End Role="VOCI" EntitySet="VOCI" />
+          </AssociationSet>
+          <AssociationSet Name="R_TVR_TVRD" Association="Self.R_TVR_TVRD">
+            <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
+            <End Role="TVR_DOC" EntitySet="TVR_DOC" />
           </AssociationSet>
           <AssociationSet Name="R_U_FC" Association="Self.R_U_FC">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -4063,7 +4296,6 @@
           <EntitySet Name="TIPOTRASFERIMENTO" EntityType="DBISEPRO.TIPOTRASFERIMENTO" />
           <EntitySet Name="TIPOTRASPORTO" EntityType="DBISEPRO.TIPOTRASPORTO" />
           <EntitySet Name="TIPOVOCE" EntityType="DBISEPRO.TIPOVOCE" />
-          <EntitySet Name="TITOLIVIAGGIO" EntityType="DBISEPRO.TITOLIVIAGGIO" />
           <EntitySet Name="TRASPORTOEFFETTI" EntityType="DBISEPRO.TRASPORTOEFFETTI" />
           <EntitySet Name="UFFICI" EntityType="DBISEPRO.UFFICI" />
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="DBISEPRO.UTENTIAUTORIZZATI" />
@@ -4359,10 +4591,6 @@
             <End Role="TIPOTRASFERIMENTO" EntitySet="TIPOTRASFERIMENTO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
-          <AssociationSet Name="R_T_B" Association="DBISEPRO.R_T_B">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
-          </AssociationSet>
           <AssociationSet Name="R_T_TE" Association="DBISEPRO.R_T_TE">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="TRASPORTOEFFETTI" EntitySet="TRASPORTOEFFETTI" />
@@ -4433,10 +4661,6 @@
           <AssociationSet Name="MAB_DOC" Association="DBISEPRO.MAB_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="TITOLIVIAGGIO_DOCUMENTI" Association="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI">
-            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
           <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -4558,6 +4782,55 @@
           <AssociationSet Name="PMF_F" Association="DBISEPRO.PMF_F">
             <End Role="FIGLI" EntitySet="FIGLI" />
             <End Role="PERCENTUALEMAGFIGLI" EntitySet="PERCENTUALEMAGFIGLI" />
+          </AssociationSet>
+          <EntitySet Name="ATTIVAZIONETITOLIVIAGGIO" EntityType="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" />
+          <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="DBISEPRO.CONIUGETITOLIVIAGGIO" />
+          <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="DBISEPRO.FIGLITITOLIVIAGGIO" />
+          <EntitySet Name="TITOLIVIAGGIO" EntityType="DBISEPRO.TITOLIVIAGGIO" />
+          <EntitySet Name="TITOLIVIAGGIORICHIEDENTE" EntityType="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" />
+          <AssociationSet Name="R_ATV_CTV" Association="DBISEPRO.R_ATV_CTV">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATV_FTV" Association="DBISEPRO.R_ATV_FTV">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_ATV_TVR" Association="DBISEPRO.R_ATV_TVR">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="R_TV_ATV" Association="DBISEPRO.R_TV_ATV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_C_CTV" Association="DBISEPRO.R_C_CTV">
+            <End Role="CONIUGE" EntitySet="CONIUGE" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_TV_CTV" Association="DBISEPRO.R_TV_CTV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_F_FTV" Association="DBISEPRO.R_F_FTV">
+            <End Role="FIGLI" EntitySet="FIGLI" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_TV_FTV" Association="DBISEPRO.R_TV_FTV">
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+            <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_B" Association="DBISEPRO.R_T_B">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="TITOLIVIAGGIO" EntitySet="TITOLIVIAGGIO" />
+          </AssociationSet>
+          <AssociationSet Name="TVR_DOC" Association="DBISEPRO.TVR_DOC">
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+            <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="ATV_DOC" Association="DBISEPRO.ATV_DOC">
+            <End Role="ATTIVAZIONETITOLIVIAGGIO" EntitySet="ATTIVAZIONETITOLIVIAGGIO" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -5250,21 +5523,6 @@
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TIPOELABORAZIONE" Relationship="DBISEPRO.R_TE_TV" FromRole="TIPOVOCE" ToRole="TIPOELABORAZIONE" />
           <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_TV_V" FromRole="TIPOVOCE" ToRole="VOCI" />
-        </EntityType>
-        <EntityType Name="TITOLIVIAGGIO">
-          <Key>
-            <PropertyRef Name="IDTITOLOVIAGGIO" />
-          </Key>
-          <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
-          <Property Name="PRATICACONCLUSA" Type="Boolean" Nullable="false" />
-          <Property Name="DATAPRATICACONCLUSA" Type="DateTime" />
-          <Property Name="PERSONALMENTE" Type="Boolean" Nullable="false" />
-          <Property Name="ESCLUDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_B" FromRole="TITOLIVIAGGIO" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" FromRole="TITOLIVIAGGIO" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TRASPORTOEFFETTI">
           <Key>
@@ -6059,13 +6317,13 @@
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISEPRO.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
-          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
           <NavigationProperty Name="TRASPORTOEFFETTI" Relationship="DBISEPRO.R_T_TE" FromRole="TRASFERIMENTO" ToRole="TRASPORTOEFFETTI" />
           <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
+          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
         </EntityType>
         <Association Name="R_DIP_TRASF">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
@@ -6218,20 +6476,6 @@
             </Principal>
             <Dependent Role="TRASFERIMENTO">
               <PropertyRef Name="IDTIPOTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_B">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TITOLIVIAGGIO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6460,11 +6704,12 @@
           <NavigationProperty Name="TRASPORTOEFFETTI" Relationship="DBISEPRO.DOC_TRASPEFF" FromRole="DOCUMENTI" ToRole="TRASPORTOEFFETTI" />
           <NavigationProperty Name="NORMACALCOLO" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="DOCUMENTI" ToRole="NORMACALCOLO" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_DOC" FromRole="DOCUMENTI" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" FromRole="DOCUMENTI" ToRole="TITOLIVIAGGIO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="PASSAPORTORICHIEDENTE" Relationship="DBISEPRO.PASSRICH_DOC" FromRole="DOCUMENTI" ToRole="PASSAPORTORICHIEDENTE" />
           <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="DOCUMENTI" ToRole="CONIUGE" />
           <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="DOCUMENTI" ToRole="FIGLI" />
+          <NavigationProperty Name="TITOLIVIAGGIORICHIEDENTE" Relationship="DBISEPRO.TVR_DOC" FromRole="DOCUMENTI" ToRole="TITOLIVIAGGIORICHIEDENTE" />
+          <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.ATV_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
         </EntityType>
         <Association Name="R_D_D">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="0..1">
@@ -6509,10 +6754,6 @@
         <Association Name="MAB_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-        </Association>
-        <Association Name="TITOLIVIAGGIO_DOCUMENTI">
-          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="*" />
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
         <Association Name="TRASF_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
@@ -6718,6 +6959,7 @@
           <NavigationProperty Name="PENSIONE" Relationship="DBISEPRO.C_P" FromRole="CONIUGE" ToRole="PENSIONE" />
           <NavigationProperty Name="PERCENTUALEMAGCONIUGE" Relationship="DBISEPRO.C_PC" FromRole="CONIUGE" ToRole="PERCENTUALEMAGCONIUGE" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.CONIUGE_DOC" FromRole="CONIUGE" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="CONIUGETITOLIVIAGGIO" Relationship="DBISEPRO.R_C_CTV" FromRole="CONIUGE" ToRole="CONIUGETITOLIVIAGGIO" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -6745,6 +6987,7 @@
           <NavigationProperty Name="INDENNITAPRIMOSEGRETARIO" Relationship="DBISEPRO.F_IPS" FromRole="FIGLI" ToRole="INDENNITAPRIMOSEGRETARIO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.FIGLI_DOC" FromRole="FIGLI" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PERCENTUALEMAGFIGLI" Relationship="DBISEPRO.PMF_F" FromRole="FIGLI" ToRole="PERCENTUALEMAGFIGLI" />
+          <NavigationProperty Name="FIGLITITOLIVIAGGIO" Relationship="DBISEPRO.R_F_FTV" FromRole="FIGLI" ToRole="FIGLITITOLIVIAGGIO" />
         </EntityType>
         <Association Name="R_C_ADF">
           <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="0..1">
@@ -6945,6 +7188,210 @@
         <Association Name="PMF_F">
           <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAGFIGLI" Role="PERCENTUALEMAGFIGLI" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ATTIVAZIONETITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="ATTIVAZIONERICHIESTA" Type="Boolean" Nullable="false" />
+          <Property Name="DATAATTIVAZIONERICHIESTA" Type="DateTime" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CONIUGETITOLIVIAGGIO" Relationship="DBISEPRO.R_ATV_CTV" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="CONIUGETITOLIVIAGGIO" />
+          <NavigationProperty Name="FIGLITITOLIVIAGGIO" Relationship="DBISEPRO.R_ATV_FTV" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="FIGLITITOLIVIAGGIO" />
+          <NavigationProperty Name="TITOLIVIAGGIORICHIEDENTE" Relationship="DBISEPRO.R_ATV_TVR" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="TITOLIVIAGGIORICHIEDENTE" />
+          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_ATV" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="TITOLIVIAGGIO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.ATV_DOC" FromRole="ATTIVAZIONETITOLIVIAGGIO" ToRole="DOCUMENTI" />
+        </EntityType>
+        <EntityType Name="CONIUGETITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDCONIUGETITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDCONIUGETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDCONIUGE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.R_ATV_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
+          <NavigationProperty Name="CONIUGE" Relationship="DBISEPRO.R_C_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="CONIUGE" />
+          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_CTV" FromRole="CONIUGETITOLIVIAGGIO" ToRole="TITOLIVIAGGIO" />
+        </EntityType>
+        <EntityType Name="FIGLITITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDFIGLITITOLIVIAGGIO" />
+          </Key>
+          <Property Name="IDFIGLITITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDFIGLI" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.R_ATV_FTV" FromRole="FIGLITITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
+          <NavigationProperty Name="FIGLI" Relationship="DBISEPRO.R_F_FTV" FromRole="FIGLITITOLIVIAGGIO" ToRole="FIGLI" />
+          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_FTV" FromRole="FIGLITITOLIVIAGGIO" ToRole="TITOLIVIAGGIO" />
+        </EntityType>
+        <EntityType Name="TITOLIVIAGGIO">
+          <Key>
+            <PropertyRef Name="IDTITOLOVIAGGIO" />
+          </Key>
+          <Property Name="IDTITOLOVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_ATV" FromRole="TITOLIVIAGGIO" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
+          <NavigationProperty Name="CONIUGETITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_CTV" FromRole="TITOLIVIAGGIO" ToRole="CONIUGETITOLIVIAGGIO" />
+          <NavigationProperty Name="FIGLITITOLIVIAGGIO" Relationship="DBISEPRO.R_TV_FTV" FromRole="TITOLIVIAGGIO" ToRole="FIGLITITOLIVIAGGIO" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_B" FromRole="TITOLIVIAGGIO" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <EntityType Name="TITOLIVIAGGIORICHIEDENTE">
+          <Key>
+            <PropertyRef Name="IDTITOLIVIAGGIORICHIEDENTE" />
+          </Key>
+          <Property Name="IDTITOLIVIAGGIORICHIEDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDATTIVAZIONETITOLIVIAGGIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="RICHIEDITITOLOVIAGGIO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.R_ATV_TVR" FromRole="TITOLIVIAGGIORICHIEDENTE" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TVR_DOC" FromRole="TITOLIVIAGGIORICHIEDENTE" ToRole="DOCUMENTI" />
+        </EntityType>
+        <Association Name="R_ATV_CTV">
+          <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONIUGETITOLIVIAGGIO" Role="CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATV_FTV">
+          <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FIGLITITOLIVIAGGIO" Role="FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ATV_TVR">
+          <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Role="TITOLIVIAGGIORICHIEDENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Principal>
+            <Dependent Role="TITOLIVIAGGIORICHIEDENTE">
+              <PropertyRef Name="IDATTIVAZIONETITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TV_ATV">
+          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="ATTIVAZIONETITOLIVIAGGIO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_C_CTV">
+          <End Type="DBISEPRO.CONIUGE" Role="CONIUGE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONIUGETITOLIVIAGGIO" Role="CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CONIUGE">
+              <PropertyRef Name="IDCONIUGE" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDCONIUGE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TV_CTV">
+          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CONIUGETITOLIVIAGGIO" Role="CONIUGETITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="CONIUGETITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_F_FTV">
+          <End Type="DBISEPRO.FIGLI" Role="FIGLI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FIGLITITOLIVIAGGIO" Role="FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FIGLI">
+              <PropertyRef Name="IDFIGLI" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
+              <PropertyRef Name="IDFIGLI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TV_FTV">
+          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FIGLITITOLIVIAGGIO" Role="FIGLITITOLIVIAGGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Principal>
+            <Dependent Role="FIGLITITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_B">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TVR_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Role="TITOLIVIAGGIORICHIEDENTE" Multiplicity="*" />
+        </Association>
+        <Association Name="ATV_DOC">
+          <End Type="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Role="ATTIVAZIONETITOLIVIAGGIO" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -7577,20 +8024,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TITOLIVIAGGIO">
-            <EntityTypeMapping TypeName="DBISEPRO.TITOLIVIAGGIO">
-              <MappingFragment StoreEntitySet="TITOLIVIAGGIO">
-                <ScalarProperty Name="ESCLUDITITOLOVIAGGIO" ColumnName="ESCLUDITITOLOVIAGGIO" />
-                <ScalarProperty Name="PERSONALMENTE" ColumnName="PERSONALMENTE" />
-                <ScalarProperty Name="DATAPRATICACONCLUSA" ColumnName="DATAPRATICACONCLUSA" />
-                <ScalarProperty Name="PRATICACONCLUSA" ColumnName="PRATICACONCLUSA" />
-                <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
-                <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDTITOLOVIAGGIO" ColumnName="IDTITOLOVIAGGIO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TRASPORTOEFFETTI">
             <EntityTypeMapping TypeName="DBISEPRO.TRASPORTOEFFETTI">
               <MappingFragment StoreEntitySet="TRASPORTOEFFETTI">
@@ -7961,14 +8394,6 @@
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TITOLIVIAGGIO_DOCUMENTI" TypeName="DBISEPRO.TITOLIVIAGGIO_DOCUMENTI" StoreEntitySet="TITOLIVIAGGIO_DOCUMENTI">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="TITOLIVIAGGIO">
-              <ScalarProperty Name="IDTITOLOVIAGGIO" ColumnName="IDTITOLOVIAGGIO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
             <EndProperty Name="TRASFERIMENTO">
               <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
@@ -8156,6 +8581,80 @@
             </EndProperty>
             <EndProperty Name="FIGLI">
               <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ATTIVAZIONETITOLIVIAGGIO">
+            <EntityTypeMapping TypeName="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO">
+              <MappingFragment StoreEntitySet="ATTIVAZIONETITOLIVIAGGIO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAATTIVAZIONERICHIESTA" ColumnName="DATAATTIVAZIONERICHIESTA" />
+                <ScalarProperty Name="ATTIVAZIONERICHIESTA" ColumnName="ATTIVAZIONERICHIESTA" />
+                <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
+                <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CONIUGETITOLIVIAGGIO">
+            <EntityTypeMapping TypeName="DBISEPRO.CONIUGETITOLIVIAGGIO">
+              <MappingFragment StoreEntitySet="CONIUGETITOLIVIAGGIO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RICHIEDITITOLOVIAGGIO" ColumnName="RICHIEDITITOLOVIAGGIO" />
+                <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
+                <ScalarProperty Name="IDTITOLOVIAGGIO" ColumnName="IDTITOLOVIAGGIO" />
+                <ScalarProperty Name="IDCONIUGE" ColumnName="IDCONIUGE" />
+                <ScalarProperty Name="IDCONIUGETITOLIVIAGGIO" ColumnName="IDCONIUGETITOLIVIAGGIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FIGLITITOLIVIAGGIO">
+            <EntityTypeMapping TypeName="DBISEPRO.FIGLITITOLIVIAGGIO">
+              <MappingFragment StoreEntitySet="FIGLITITOLIVIAGGIO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RICHIEDITITOLOVIAGGIO" ColumnName="RICHIEDITITOLOVIAGGIO" />
+                <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
+                <ScalarProperty Name="IDTITOLOVIAGGIO" ColumnName="IDTITOLOVIAGGIO" />
+                <ScalarProperty Name="IDFIGLI" ColumnName="IDFIGLI" />
+                <ScalarProperty Name="IDFIGLITITOLIVIAGGIO" ColumnName="IDFIGLITITOLIVIAGGIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TITOLIVIAGGIO">
+            <EntityTypeMapping TypeName="DBISEPRO.TITOLIVIAGGIO">
+              <MappingFragment StoreEntitySet="TITOLIVIAGGIO">
+                <ScalarProperty Name="IDTITOLOVIAGGIO" ColumnName="IDTITOLOVIAGGIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TITOLIVIAGGIORICHIEDENTE">
+            <EntityTypeMapping TypeName="DBISEPRO.TITOLIVIAGGIORICHIEDENTE">
+              <MappingFragment StoreEntitySet="TITOLIVIAGGIORICHIEDENTE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="RICHIEDITITOLOVIAGGIO" ColumnName="RICHIEDITITOLOVIAGGIO" />
+                <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
+                <ScalarProperty Name="IDTITOLIVIAGGIORICHIEDENTE" ColumnName="IDTITOLIVIAGGIORICHIEDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TVR_DOC" TypeName="DBISEPRO.TVR_DOC" StoreEntitySet="TVR_DOC">
+            <EndProperty Name="TITOLIVIAGGIORICHIEDENTE">
+              <ScalarProperty Name="IDTITOLIVIAGGIORICHIEDENTE" ColumnName="IDTITOLIVIAGGIORICHIEDENTE" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ATV_DOC" TypeName="DBISEPRO.ATV_DOC" StoreEntitySet="ATV_DOC">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="ATTIVAZIONETITOLIVIAGGIO">
+              <ScalarProperty Name="IDATTIVAZIONETITOLIVIAGGIO" ColumnName="IDATTIVAZIONETITOLIVIAGGIO" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>
