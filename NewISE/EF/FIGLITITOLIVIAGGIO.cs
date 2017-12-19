@@ -14,6 +14,12 @@ namespace NewISE.EF
     
     public partial class FIGLITITOLIVIAGGIO
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FIGLITITOLIVIAGGIO()
+        {
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+        }
+    
         public decimal IDFIGLITITOLIVIAGGIO { get; set; }
         public decimal IDFIGLI { get; set; }
         public decimal IDTITOLOVIAGGIO { get; set; }
@@ -25,5 +31,7 @@ namespace NewISE.EF
         public virtual ATTIVAZIONETITOLIVIAGGIO ATTIVAZIONETITOLIVIAGGIO { get; set; }
         public virtual FIGLI FIGLI { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

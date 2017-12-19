@@ -93,7 +93,6 @@ namespace NewISE.EF
         public virtual DbSet<PENSIONE> PENSIONE { get; set; }
         public virtual DbSet<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
-        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<AP_C> AP_C { get; set; }
         public virtual DbSet<AP_F> AP_F { get; set; }
         public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
@@ -108,5 +107,6 @@ namespace NewISE.EF
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
+        public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }
