@@ -49,16 +49,15 @@ namespace NewISE.Models.DBModel.dtObj
             DocumentiModel dm = new DocumentiModel();
             using (ModelDBISE db = new ModelDBISE())
             {
-                var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
-                var ld =
-                    tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio)
-                        .OrderByDescending(a => a.IDDOCUMENTO);
-                if (ld?.Any() ?? false)
-                {
-                    var d = ld.First();
+                //var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
+                //var ld = tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio)
+                //        .OrderByDescending(a => a.IDDOCUMENTO);
+                //if (ld?.Any() ?? false)
+                //{
+                //    var d = ld.First();
 
-                    dm = this.GetDocumento(d.IDDOCUMENTO, db);
-                }
+                //    dm = this.GetDocumento(d.IDDOCUMENTO, db);
+                //}
             }
 
             return dm;
@@ -206,7 +205,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 var tv = db.TITOLIVIAGGIO.Find(id);
                                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                                 {
-                                    ld = tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
+                                    //ld = tv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipodoc).ToList();
                                 }
                                 break;
                             default:
@@ -548,7 +547,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Carta_Imbarco:
                     case EnumTipoDoc.Titolo_Viaggio:
                     case EnumTipoDoc.Formulario_Titoli_Viaggio:
-                        t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
+                        //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                     case EnumTipoDoc.Dichiarazione_Costo_Locazione:
@@ -592,38 +591,38 @@ namespace NewISE.Models.DBModel.dtObj
             dm.file.InputStream.CopyTo(ms);
 
             var tv = db.TITOLIVIAGGIO.Find(idTitoloViaggio);
-            var ld = tv.DOCUMENTI;
+            //var ld = tv.DOCUMENTI;
 
-            if (ld?.Any() ?? false)
-            {
-                d = ld.First();
-                d.NOMEDOCUMENTO = dm.nomeDocumento;
-                d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
-                d.DATAINSERIMENTO = dm.dataInserimento;
-                d.FILEDOCUMENTO = ms.ToArray();
+            //if (ld?.Any() ?? false)
+            //{
+            //    d = ld.First();
+            //    d.NOMEDOCUMENTO = dm.nomeDocumento;
+            //    d.ESTENSIONE = dm.estensione;
+            //    d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
+            //    d.DATAINSERIMENTO = dm.dataInserimento;
+            //    d.FILEDOCUMENTO = ms.ToArray();
 
-                if (db.SaveChanges() > 0)
-                {
-                    dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
-                }
-            }
-            else
-            {
-                d.NOMEDOCUMENTO = dm.nomeDocumento;
-                d.ESTENSIONE = dm.estensione;
-                d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
-                d.DATAINSERIMENTO = dm.dataInserimento;
-                d.FILEDOCUMENTO = ms.ToArray();
-                ld.Add(d);
+            //    if (db.SaveChanges() > 0)
+            //    {
+            //        dm.idDocumenti = d.IDDOCUMENTO;
+            //        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
+            //    }
+            //}
+            //else
+            //{
+            //    d.NOMEDOCUMENTO = dm.nomeDocumento;
+            //    d.ESTENSIONE = dm.estensione;
+            //    d.IDTIPODOCUMENTO = (decimal)EnumTipoDoc.Formulario_Titoli_Viaggio;
+            //    d.DATAINSERIMENTO = dm.dataInserimento;
+            //    d.FILEDOCUMENTO = ms.ToArray();
+            //    ld.Add(d);
 
-                if (db.SaveChanges() > 0)
-                {
-                    dm.idDocumenti = d.IDDOCUMENTO;
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
-                }
-            }
+            //    if (db.SaveChanges() > 0)
+            //    {
+            //        dm.idDocumenti = d.IDDOCUMENTO;
+            //        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (formulario titoli viaggio).", "Documenti", db, tv.IDTRASFERIMENTO, dm.idDocumenti);
+            //    }
+            //}
 
 
         }
@@ -809,30 +808,30 @@ namespace NewISE.Models.DBModel.dtObj
         public void AddDocumentoTitoloViaggioFromRichiedente(ref DocumentiModel dm, decimal idTrasferimento, ModelDBISE db)
         {
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            if (t != null && t.IDTRASFERIMENTO > 0)
-            {
-                var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
-                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                {
-                    MemoryStream ms = new MemoryStream();
-                    DOCUMENTI d = new DOCUMENTI();
-                    dm.file.InputStream.CopyTo(ms);
+            //if (t != null && t.IDTRASFERIMENTO > 0)
+            //{
+            //    var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
+            //    if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+            //    {
+            //        MemoryStream ms = new MemoryStream();
+            //        DOCUMENTI d = new DOCUMENTI();
+            //        dm.file.InputStream.CopyTo(ms);
 
-                    d.NOMEDOCUMENTO = dm.nomeDocumento;
-                    d.ESTENSIONE = dm.estensione;
-                    d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
-                    d.DATAINSERIMENTO = dm.dataInserimento;
-                    d.FILEDOCUMENTO = ms.ToArray();
+            //        d.NOMEDOCUMENTO = dm.nomeDocumento;
+            //        d.ESTENSIONE = dm.estensione;
+            //        d.IDTIPODOCUMENTO = (decimal)dm.tipoDocumento;
+            //        d.DATAINSERIMENTO = dm.dataInserimento;
+            //        d.FILEDOCUMENTO = ms.ToArray();
 
-                    tv.DOCUMENTI.Add(d);
+            //        tv.DOCUMENTI.Add(d);
 
-                    if (db.SaveChanges() > 0)
-                    {
-                        dm.idDocumenti = d.IDDOCUMENTO;
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
-                    }
-                }
-            }
+            //        if (db.SaveChanges() > 0)
+            //        {
+            //            dm.idDocumenti = d.IDDOCUMENTO;
+            //            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
+            //        }
+            //    }
+            //}
         }
 
 
@@ -851,7 +850,7 @@ namespace NewISE.Models.DBModel.dtObj
                         case EnumTipoDoc.Carta_Imbarco:
                         case EnumTipoDoc.Titolo_Viaggio:
                         case EnumTipoDoc.Formulario_Titoli_Viaggio:
-                            t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
+                            //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                         case EnumTipoDoc.Dichiarazione_Costo_Locazione:
@@ -956,7 +955,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Carta_Imbarco:
                     case EnumTipoDoc.Titolo_Viaggio:
                     case EnumTipoDoc.Formulario_Titoli_Viaggio:
-                        t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
+                        //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                     case EnumTipoDoc.Dichiarazione_Costo_Locazione:

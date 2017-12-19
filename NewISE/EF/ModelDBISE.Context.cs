@@ -80,7 +80,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOTRASFERIMENTO> TIPOTRASFERIMENTO { get; set; }
         public virtual DbSet<TIPOTRASPORTO> TIPOTRASPORTO { get; set; }
         public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
-        public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
@@ -104,5 +103,10 @@ namespace NewISE.EF
         public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
+        public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
+        public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
+        public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
+        public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
     }
 }
