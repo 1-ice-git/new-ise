@@ -52,9 +52,8 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 TRASFERIMENTO trasf = db.TRASFERIMENTO.Find(idtrasferimento);
-                
                 var tmp = (from e in trasf.RICHIAMO
-                           where e.IDTRASFRICHIAMO == IDTRASFRICHIAMO
+                           
                            select new RichiamoModel()
                            {
                             IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,

@@ -141,7 +141,7 @@ namespace NewISE.Controllers
             {
                 using (dtRichiamo dtcal = new dtRichiamo())
                 {
-                    tmp.AddRange(dtcal.GetLista_Richiamo(idTrasferimento));
+                    //tmp.AddRange(dtcal.GetLista_Richiamo(idTrasferimento));
                 }
             }
             catch (Exception ex)
@@ -171,37 +171,8 @@ namespace NewISE.Controllers
         public ActionResult NuovoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
-            List<SelectListItem> lTipologiaRichiamo;
-            try
-            {
-                lTipologiaRichiamo = new List<SelectListItem>();
-                var r = new List<SelectListItem>();
-                using (dtRichiamo dttc = new dtRichiamo())
-                {
-                    //var ltcm = dttc.GetListTipologiaSospensione();
 
-                    //if (ltcm != null && ltcm.Count > 0)
-                    //{
-                    //    r = (from t in ltcm
-                    //         select new SelectListItem()
-                    //         {
-                    //             Text = t.Descrizione,
-                    //             Value = t.idTipologiaSospensione.ToString()
-                    //         }).ToList();
-                    //    //  r.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                    //}
-                    lTipologiaRichiamo = r;
-                }
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-            ViewBag.lTipologiaRichiamo = lTipologiaRichiamo;
-            
-            RichiamoModel tmp = new RichiamoModel();
-            tmp.idTrasferimento = (decimal)ViewData["idTrasferimento"];
-            return PartialView(tmp);
+            return PartialView();
         }
 
         public ActionResult AttivitaRichiamo(decimal idTrasferimento)

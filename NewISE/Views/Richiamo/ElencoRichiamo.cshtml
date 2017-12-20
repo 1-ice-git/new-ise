@@ -13,7 +13,7 @@
     }
     else
     {
-        @Ajax.ActionLink("Nuovo Richiamo", "NuovoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo Richiamo", @id = "linkNuovoRichiamo" })
+        @Ajax.ActionLink("Richiamo", "NuovoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo Richiamo", @id = "linkNuovoRichiamo" })
     }
 </p>
 

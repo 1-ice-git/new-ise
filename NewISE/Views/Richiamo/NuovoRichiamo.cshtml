@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <div class="col-xs-offset-4 col-xs-10">
                         <input type="submit" value="Salva" class="btn btn-default" />
-                        @*<input type="button" value="Salva" onclick="SalvaSospensione();" class="btn btn-default" />*@
+                        
                     </div>
                 </div>
             </div>
@@ -58,74 +58,14 @@
 
 
 
-    <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
-                </div>
-                <div class="modal-body alert alert-warning text-warning">
-                    <p id="msgModalWarning" class="text-warning">
-                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-}
-
+  
 <p style="padding-left: 15px">
-    @*@Ajax.ActionLink("Torna indietro", "AttivitaRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoRichiamo", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })*@
+    @Ajax.ActionLink("Torna indietro", "AttivitaRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoRichiamo", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/MyValidateDate.js"></script>
 
 
 
-<script type="text/javascript">
 
-
-        @foreach (var e in errori)
-        {
-            if (e.Value.Errors.Count > 0)
-            {
-                @:DialogModalError('True');
-                break;
-            }
-
-        }
-
-        $('#DATAOPERAZIONE').datepicker({
-            showAnim: "slide",
-        });
-
-        $('#formNewRichiamo').submit(function () {
-            //debugger;
-            var form = $(this);
-            if (!form.valid()) {
-                DialogModalError('True');
-            }
-
-        });
-
-        function DialogModalError(err) {
-            //debugger;
-
-            if (err == 'True') {
-                $('#myModalErrorModel').modal('toggle');
-            }
-        }
-
-        
-</script>
 
 
