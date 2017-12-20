@@ -2716,6 +2716,7 @@
     <Content Include="Views\Richiamo\EditRichiamo.cshtml" />
     <Content Include="Views\Richiamo\ElencoRichiamo.cshtml" />
     <Content Include="Views\Richiamo\NuovoRichiamo.cshtml" />
+    <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

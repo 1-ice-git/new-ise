@@ -36,8 +36,8 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         esito = true;
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Cancellazione Richiamo",
-                            "RICHIAMO", db, ca.IDTRASFRICHIAMO);
+                        //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Cancellazione Richiamo",
+                        //    "RICHIAMO", db, ca.IDTRASFRICHIAMO);
                     }
                 }
             }
@@ -56,8 +56,8 @@ namespace NewISE.Models.DBModel.dtObj
                            
                            select new RichiamoModel()
                            {
-                            IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,
-                            DATAOPERAZIONE = e.DATAOPERAZIONE
+                            //IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,
+                            //DATAOPERAZIONE = e.DATAOPERAZIONE
                            }).ToList();
                 return tmp;
             }
@@ -65,17 +65,17 @@ namespace NewISE.Models.DBModel.dtObj
 
         public RichiamoModel getRichiamoById(decimal idTrasfRichiamo)
         {
-            RichiamoModel tmp;
+            RichiamoModel tmp = new RichiamoModel();
             using (ModelDBISE db = new ModelDBISE())
             {
-                tmp = (from e in db.RICHIAMO
-                       where e.IDTRASFRICHIAMO == idTrasfRichiamo
-                       select new RichiamoModel()
-                       {   
-                           IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,
-                           DATAOPERAZIONE = e.DATAOPERAZIONE
+                //tmp = (from e in db.RICHIAMO
+                //       where e.IDTRASFRICHIAMO == idTrasfRichiamo
+                //       select new RichiamoModel()
+                //       {   
+                //           IDTRASFRICHIAMO = e.IDTRASFRICHIAMO,
+                //           DATAOPERAZIONE = e.DATAOPERAZIONE
 
-                       }).ToList().FirstOrDefault();
+                //       }).ToList().FirstOrDefault();
             }
             return tmp;
         }
@@ -99,15 +99,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 //IDTIPOSOSPENSIONE = idTipoSospensione,// sosp.idTipoSospensione,
                                 //DATAAGGIORNAMENTO = DateTime.Now
 
-                                IDTRASFRICHIAMO = sosp.IDTRASFRICHIAMO,
-                                DATAOPERAZIONE = sosp.DATAOPERAZIONE
+                                //IDTRASFRICHIAMO = sosp.IDTRASFRICHIAMO,
+                                //DATAOPERAZIONE = sosp.DATAOPERAZIONE
                             };
                             db.RICHIAMO.Add(sospnew);
 
                             if (db.SaveChanges() > 0)
                             {
-                                sosp.IDTRASFRICHIAMO = sospnew.IDTRASFRICHIAMO;
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento RICHIAMO avvenuta con successo", "RICHIAMO", db, sospnew.IDTRASFRICHIAMO, sospnew.IDTRASFRICHIAMO);
+                                //sosp.IDTRASFRICHIAMO = sospnew.IDTRASFRICHIAMO;
+                                //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento RICHIAMO avvenuta con successo", "RICHIAMO", db, sospnew.IDTRASFRICHIAMO, sospnew.IDTRASFRICHIAMO);
                                 db.Database.CurrentTransaction.Commit();
                             }
                             else
@@ -136,7 +136,7 @@ namespace NewISE.Models.DBModel.dtObj
                         using (ModelDBISE db = new ModelDBISE())
                         {
                             RICHIAMO sosp = db.RICHIAMO.Find(sospmod.IDTRASFRICHIAMO);
-                            sosp.DATAOPERAZIONE = sospmod.DATAOPERAZIONE;
+                            //sosp.DATAOPERAZIONE = sospmod.DATAOPERAZIONE;
                             
                             int i = db.SaveChanges();
 
