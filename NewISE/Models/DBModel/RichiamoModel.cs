@@ -10,9 +10,20 @@ namespace NewISE.Models.DBModel
     public class RichiamoModel
     {
         [Key]
-        public decimal IDTRASFRICHIAMO { get; set; }
-        public decimal idTrasferimento { get; set; }
-        public DateTime DATAOPERAZIONE { get; set; }
+        public decimal IdRichiamo { get; set; }
+        public decimal IdTrasferimento { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "La Data di Rientro è richiesta")]
+        public DateTime DataRientro { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Aggiornamento")]
+        public DateTime DataAggiornamento { get; set; }
+        public decimal annullato { get; set; }
+               
        
     }
 }

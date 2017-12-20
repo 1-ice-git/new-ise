@@ -1,152 +1,103 @@
-﻿@using NewISE.Models.DBModel
+﻿@model NewISE.Models.DBModel.RichiamoModel
+
+@using System.Web.Optimization
+@using NewISE.Models.DBModel
 
 @{
 
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-    bool solaLettura = false;
+    
 }
 
-<p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-    @if (solaLettura)
+<div class="form-horizontal">
+    @using (@Ajax.BeginForm("InserisciRichiamo", "Richiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabRichiamo", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formRichiamo" }))
     {
-        <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Nuovo Richiamo</button>
-    }
-    else
-    {
-        @Ajax.ActionLink("Richiamo", "NuovoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo Richiamo", @id = "linkNuovoRichiamo" })
-    }
-</p>
+        <div class="form-horizontal">
+            <h4>Richiamo</h4>
+            <hr />
 
-<div id="divElencoSosp">
-    @Html.Action("DatiTabElencoRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento })
+            @Html.Hidden("idTrasferimento", idTrasferimento)
+
+            <div class="row">
+                <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DataAggiornamento, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(model => model.DataAggiornamento, "{0:dd/MM/yyyy}", new { @readonly = "readonly", @class = "form-control col-xs-4" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DataRientro, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(model => model.DataRientro, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
+                        </div>
+                    </div>
+
+                </div>
+
+                @*<div class="form-group">
+                    <div class="col-xs-offset-4 col-xs-10">
+                        <input type="submit" value="Salva" class="btn btn-default" />
+                    </div>
+                </div>
+                <br /><br />*@
+            </div>
+
+
+        </div>
+    }
+
+    <div class="form-group ">
+        <div class="col-xs-offset-8 col-xs-1">
+            <button class="btn btn-default btn-sm" onclick="inserisci();" id="btSalva">
+                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                Salva
+            </button>
+        </div>
+        <div class="col-xs-1">
+            <button class="btn btn-default btn-sm disabled" disabled id="btNotifica">
+                <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                Notifica
+            </button>
+        </div>
+
+    </div>
 </div>
 
-
-<div class="modal fade" id="inviaDocModalsosp" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="myModalInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header" style="text-align:center">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Conferma Eliminazione Richiamo</h3>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">Info!!!</h4>
             </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <div id="viewDocumentoDettaglisosp">
-                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
-                </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info"></p>
             </div>
-            <div class="modal-footer" style="background-color:white;text-align:center">
-                <div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-                </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
 </div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
 <script type="text/javascript">
-    //function DocumentoModal2(matr) {
-        $(".anchorDetailDelete").click(function () {
-          //  debugger;
-            var rotta = "/Richiamo/DeleteRichiamo";
-            var $buttonClicked = $(this);
-            var idTrasfRichiamo = $buttonClicked.attr('idTrasfRichiamo');
-            var idTrasferimento = parseInt('@idTrasferimento');
-            $.ajax({
-                url: rotta,
-                type: "post", //Le info testuali saranno passate in POST
-                data: { idTrasfRichiamo: idTrasfRichiamo, idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                    // debugger;
-                   // $('#inviaDocModalsosp').modal('show');
-                    //Blocca();
-                },
-                success: function (result) {
-                   //  debugger;
-                    //$("#viewDocumentoDettaglisosp").empty();
-                    //$("#viewDocumentoDettaglisosp").html(result);
-                    $("#tabElencoRichiamo").empty();
-                    $("#tabElencoRichiamo").html(result);
-                },
-                error: function (error) {
-                 //   debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                    $('#inviaDocModalsosp').modal('hide');
-                }
-            });
-        });
-   // }
-
-        $(".anchorDetailEdit").click(function () {
-            // debugger;
-            var rotta = "/Richiamo/EditRichiamo";
-            var $buttonClicked = $(this);
-            var idTrasfRichiamo = $buttonClicked.attr('idTrasfRichiamo');
-            var idTrasferimento = parseInt('@idTrasferimento');
-
-            $.ajax({
-                url: rotta,
-                type: "post", //Le info testuali saranno passate in POST
-                data: { idTrasfRichiamo: idTrasfRichiamo, idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                async: false,
-                beforeSend: function () {
-                   //  debugger;
-                    //Blocca();
-                },
-                success: function (result) {
-                    // debugger;
-                    $("#tabElencoRichiamo").empty();
-                    $("#tabElencoRichiamo").html(result);
-                },
-                error: function (error) {
-                //    debugger;
-                    //Sblocca();
-                    var msg = error.responseText;
-                    ErroreElaborazioneAjax(msg);
-                }
-            });
-        });
-
-    $("#tabListaRichiamo").DataTable({
-        "ordering": false,
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        },
-        "info": false,
-        "lengthChange": false,
-        "pageLength": 6,
-        "searching": false,
-        "paging": true,
-        "bJQueryUI": true,
-        "sDom": 'lfrtip',
+    $('#DataRientro').datepicker({
+        showButtonPanel: true,
+        showAnim: "slide",
     });
 
-
+    function inserisci() {
+        //debugger;
+        $("#formRichiamo").submit();
+    }
 </script>
-
