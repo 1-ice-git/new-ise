@@ -25,7 +25,7 @@ namespace NewISE.Models.DBModel.dtObj
             psm = new PrimaSistemazioneModel()
             {
                 idPrimaSistemazione = ps.IDPRIMASISTEMAZIONE,
-                dataOperazione = ps.DATAOPERAZIONE
+
             };
 
             return psm;
@@ -89,7 +89,7 @@ namespace NewISE.Models.DBModel.dtObj
             PRIMASITEMAZIONE ps = new PRIMASITEMAZIONE()
             {
                 IDPRIMASISTEMAZIONE = psm.idPrimaSistemazione,
-                DATAOPERAZIONE = psm.dataOperazione,
+
             };
 
             db.PRIMASITEMAZIONE.Add(ps);

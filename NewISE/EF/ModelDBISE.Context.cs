@@ -55,9 +55,7 @@ namespace NewISE.EF
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
-        public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
-        public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
@@ -109,5 +107,7 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
         public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
+        public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
+        public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
     }
 }

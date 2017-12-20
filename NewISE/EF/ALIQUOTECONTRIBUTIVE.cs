@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ALIQUOTECONTRIBUTIVE()
         {
-            this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
+            this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
         }
     
         public decimal IDALIQCONTR { get; set; }
@@ -32,8 +32,8 @@ namespace NewISE.EF
         public virtual MAB_ALIQCONTR MAB_ALIQCONTR { get; set; }
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
     }
 }

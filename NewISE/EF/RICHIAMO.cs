@@ -21,13 +21,16 @@ namespace NewISE.EF
             this.COEFFICIENTEINDRICHIAMO = new HashSet<COEFFICIENTEINDRICHIAMO>();
         }
     
-        public decimal IDTRASFRICHIAMO { get; set; }
-        public System.DateTime DATAOPERAZIONE { get; set; }
+        public decimal IDRICHIAMO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public System.DateTime DATARIENTRO { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }
