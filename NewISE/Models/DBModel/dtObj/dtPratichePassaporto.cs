@@ -36,8 +36,8 @@ namespace NewISE.Models.DBModel.dtObj
                     idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE,
                     //idPassaporti = pr.IDPASSAPORTI,
                     //EscludiPassaporto = pr.ESCLUDIPASSAPORTO,
-                    //DataEscludiPassaporto = pr.DATAESCLUDIPASSAPORTO,
-                    DataAggiornamento = pr.DATAAGGIORNAMENTO,
+                    //DataEscludiPassapor
+                    dataAggiornamento = pr.DATAAGGIORNAMENTO,
                     annullato = pr.ANNULLATO
                 };
             }
