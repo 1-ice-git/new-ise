@@ -20,12 +20,12 @@ namespace NewISE.EF
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.AP_C = new HashSet<AP_C>();
             this.CONIUGE1 = new HashSet<CONIUGE>();
-            this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
             this.PENSIONE = new HashSet<PENSIONE>();
             this.PERCENTUALEMAGCONIUGE = new HashSet<PERCENTUALEMAGCONIUGE>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
         }
     
         public decimal IDCONIUGE { get; set; }
@@ -47,8 +47,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE1 { get; set; }
         public virtual CONIUGE CONIUGE2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual TIPOLOGIACONIUGE TIPOLOGIACONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -61,5 +59,7 @@ namespace NewISE.EF
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
     }
 }

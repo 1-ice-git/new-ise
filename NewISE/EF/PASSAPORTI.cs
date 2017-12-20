@@ -20,6 +20,7 @@ namespace NewISE.EF
             this.ATTIVAZIONIPASSAPORTI = new HashSet<ATTIVAZIONIPASSAPORTI>();
             this.CONIUGEPASSAPORTO = new HashSet<CONIUGEPASSAPORTO>();
             this.FIGLIPASSAPORTO = new HashSet<FIGLIPASSAPORTO>();
+            this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
         }
     
         public decimal IDPASSAPORTI { get; set; }
@@ -30,6 +31,8 @@ namespace NewISE.EF
         public virtual ICollection<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

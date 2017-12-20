@@ -25,7 +25,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult ElencoFamiliariPassaporti(decimal idTrasferimento)
         {
-            List<ElencoFamiliariModel> lefm = new List<ElencoFamiliariModel>();
+            List<ElencoFamiliariPassaportoModel> lefm = new List<ElencoFamiliariPassaportoModel>();
 
             try
             {

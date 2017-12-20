@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using NewISE.EF;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
+using NewISE.EF;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -154,31 +154,31 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AssociaRichiedente(decimal idAttivazionePassaporto, decimal idPassaportoRichiedente, ModelDBISE db)
-        {
-            try
-            {
-                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
-                var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
-                item.State = EntityState.Modified;
-                item.Collection(a => a.PASSAPORTORICHIEDENTE).Load();
-                var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
-                ap.PASSAPORTORICHIEDENTE.Add(pr);
+        //public void AssociaRichiedente(decimal idAttivazionePassaporto, decimal idPassaportoRichiedente, ModelDBISE db)
+        //{
+        //    try
+        //    {
+        //        var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+        //        var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
+        //        item.State = EntityState.Modified;
+        //        item.Collection(a => a.PASSAPORTORICHIEDENTE).Load();
+        //        var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
+        //        ap.PASSAPORTORICHIEDENTE.Add(pr);
 
-                int i = db.SaveChanges();
+        //        int i = db.SaveChanges();
 
 
-                if (i <= 0)
-                {
-                    throw new Exception("Impossibile associare il richiedente per l'attivazione del passaporto.");
-                }
-            }
-            catch (Exception ex)
-            {
+        //        if (i <= 0)
+        //        {
+        //            throw new Exception("Impossibile associare il richiedente per l'attivazione del passaporto.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public void AssociaConiuge(decimal idAttivazionePassaporto, decimal idConiuge, ModelDBISE db)
         {
@@ -238,16 +238,17 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PASSAPORTORICHIEDENTE pr = new PASSAPORTORICHIEDENTE()
             {
-                //IDPASSAPORTI = prm.idPassaporti,
-                //ESCLUDIPASSAPORTO = prm.EscludiPassaporto,
-                //DATAESCLUDIPASSAPORTO = prm.DataEscludiPassaporto,
-                DATAAGGIORNAMENTO = prm.DataAggiornamento,
-                ANNULLATO = prm.annullato
+                IDPASSAPORTI = prm.idPassaporto,
+                IDATTIVAZIONIPASSAPORTI = prm.idAttivazionePassaporti,
+                INCLUDIPASSAPORTO = prm.includiPassaporto,
+                DATAAGGIORNAMENTO = DateTime.Now,
+                ANNULLATO = false,
+
             };
 
-            var p = db.PASSAPORTI.Find(prm.idPassaporti);
+            var ap = db.ATTIVAZIONIPASSAPORTI.Find(prm.idAttivazionePassaporti);
 
-            //p.PASSAPORTORICHIEDENTE.Add(pr);
+            ap.PASSAPORTORICHIEDENTE.Add(pr);
 
             int i = db.SaveChanges();
 
@@ -255,9 +256,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 prm.idPassaportoRichiedente = pr.IDPASSAPORTORICHIEDENTE;
 
-                //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                //    "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
-                //    pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                    "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
+                    pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
 
 
             }

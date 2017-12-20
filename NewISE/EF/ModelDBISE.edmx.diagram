@@ -37,7 +37,7 @@
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" Width="1.5" PointX="26.5" PointY="55.875" />
         <EntityTypeShape EntityType="DBISEPRO.PRIMASITEMAZIONE" Width="1.5" PointX="29" PointY="59.875" />
         <EntityTypeShape EntityType="DBISEPRO.REGOLECALCOLO" Width="1.5" PointX="20.25" PointY="76.625" />
-        <EntityTypeShape EntityType="DBISEPRO.RICHIAMO" Width="1.5" PointX="27" PointY="62.75" />
+        <EntityTypeShape EntityType="DBISEPRO.RICHIAMO" PointX="29" PointY="62.625" Width="1.5" />
         <EntityTypeShape EntityType="DBISEPRO.RIDUZIONI" Width="1.5" PointX="22.5" PointY="76.625" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLOACCESSO" Width="1.5" PointX="0.75" PointY="42.75" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLODIPENDENTE" Width="1.5" PointX="16.5" PointY="52.5" />
@@ -157,17 +157,7 @@
         <AssociationConnector Association="DBISEPRO.R_T_CE" />
         <EntityTypeShape EntityType="DBISEPRO.AP_C" Width="1.5" PointX="33.75" PointY="58.125" />
         <EntityTypeShape EntityType="DBISEPRO.AP_F" Width="1.5" PointX="48" PointY="56" />
-        <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIPASSAPORTI" Width="1.5" PointX="11" PointY="53.75" />
-        <EntityTypeShape EntityType="DBISEPRO.CONIUGEPASSAPORTO" Width="1.5" PointX="33.75" PointY="54.5" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLIPASSAPORTO" Width="1.5" PointX="48" PointY="52.5" />
-        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="8.75" PointY="54.375" />
-        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" Width="1.5" PointX="45.75" PointY="57.5" />
-        <AssociationConnector Association="DBISEPRO.R_AP_FP" />
-        <AssociationConnector Association="DBISEPRO.R_AP_PR" />
-        <AssociationConnector Association="DBISEPRO.R_P_AP" />
-        <AssociationConnector Association="DBISEPRO.R_P_CP" />
-        <AssociationConnector Association="DBISEPRO.R_P_FP" />
-        <AssociationConnector Association="DBISEPRO.R_T_P" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGE" Width="1.5" PointX="31.5" PointY="53.5" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLI" Width="1.5" PointX="45.75" PointY="51.125" />
         <AssociationConnector Association="DBISEPRO.R_C_ADF" />
@@ -175,7 +165,6 @@
         <AssociationConnector Association="DBISEPRO.R_C_APC" />
         <AssociationConnector Association="DBISEPRO.R_F_APF" />
         <AssociationConnector Association="DBISEPRO.R_C_C" />
-        <AssociationConnector Association="DBISEPRO.R_C_CP" />
         <AssociationConnector Association="DBISEPRO.R_MF_C" />
         <AssociationConnector Association="DBISEPRO.R_TC_C" />
         <AssociationConnector Association="DBISEPRO.R_F_F" />
@@ -214,9 +203,24 @@
         <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.FTV_DOC" />
         <AssociationConnector Association="DBISEPRO.MAB_DOC" />
-        <AssociationConnector Association="DBISEPRO.PASSRICH_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TVR_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.RINUNCIARICHIESTATITOLIVIAGGIO" Width="1.5" PointX="13.25" PointY="68.375" />
+        <AssociationConnector Association="DBISEPRO.R_ATV_RRTV" />
+        <EntityTypeShape EntityType="DBISEPRO.CONIUGEPASSAPORTO" Width="1.5" PointX="33.75" PointY="54.625" />
+        <AssociationConnector Association="DBISEPRO.R_C_CP" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIPASSAPORTI" Width="1.5" PointX="11" PointY="53.75" />
+        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="8.75" PointY="54.25" />
+        <EntityTypeShape EntityType="DBISEPRO.PASSAPORTORICHIEDENTE" Width="1.5" PointX="38.25" PointY="56" />
+        <AssociationConnector Association="DBISEPRO.R_AP_CP" />
+        <AssociationConnector Association="DBISEPRO.R_AP_FP" />
+        <AssociationConnector Association="DBISEPRO.R_AP_PR" />
+        <AssociationConnector Association="DBISEPRO.R_P_AP" />
+        <AssociationConnector Association="DBISEPRO.R_P_CP" />
+        <AssociationConnector Association="DBISEPRO.R_P_FP" />
+        <AssociationConnector Association="DBISEPRO.R_P_PR" />
+        <AssociationConnector Association="DBISEPRO.R_T_P" />
+        <AssociationConnector Association="DBISEPRO.PASSRICH_DOC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

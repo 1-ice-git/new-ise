@@ -2360,6 +2360,9 @@
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\RINUNCIARICHIESTATITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RUOLOACCESSO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2575,6 +2578,7 @@
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
+    <Compile Include="Models\ViewModel\ElencoFamiliariPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
     <Compile Include="Models\loginModel.cs" />
@@ -2703,6 +2707,8 @@
     <Content Include="Views\Sospensione\NuovaSospensione.cshtml" />
     <Content Include="Views\Sospensione\DeleteSospensione.cshtml" />
     <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
+    <Content Include="Views\Richiamo\Richiamo.cshtml" />
+    <Content Include="Views\Richiamo\VerificaRichiamo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

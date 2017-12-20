@@ -12,18 +12,14 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class FIGLIPASSAPORTO
+    public partial class RINUNCIARICHIESTATITOLIVIAGGIO
     {
-        public decimal IDFIGLIPASSAPORTO { get; set; }
-        public decimal IDFIGLI { get; set; }
-        public decimal IDPASSAPORTI { get; set; }
-        public decimal IDATTIVAZIONIPASSAPORTI { get; set; }
-        public bool INCLUDIPASSAPORTO { get; set; }
+        public decimal IDRINUNCIARICHIESTATV { get; set; }
+        public decimal IDATTIVAZIONETITOLIVIAGGIO { get; set; }
+        public bool PROVVEDEROPERSONALMENTE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual FIGLI FIGLI { get; set; }
-        public virtual ATTIVAZIONIPASSAPORTI ATTIVAZIONIPASSAPORTI { get; set; }
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
+        public virtual ATTIVAZIONETITOLIVIAGGIO ATTIVAZIONETITOLIVIAGGIO { get; set; }
     }
 }

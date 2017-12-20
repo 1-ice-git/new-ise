@@ -21,6 +21,7 @@ namespace NewISE.EF
             this.FIGLITITOLIVIAGGIO = new HashSet<FIGLITITOLIVIAGGIO>();
             this.TITOLIVIAGGIORICHIEDENTE = new HashSet<TITOLIVIAGGIORICHIEDENTE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.RINUNCIARICHIESTATITOLIVIAGGIO = new HashSet<RINUNCIARICHIESTATITOLIVIAGGIO>();
         }
     
         public decimal IDATTIVAZIONETITOLIVIAGGIO { get; set; }
@@ -41,5 +42,7 @@ namespace NewISE.EF
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RINUNCIARICHIESTATITOLIVIAGGIO> RINUNCIARICHIESTATITOLIVIAGGIO { get; set; }
     }
 }

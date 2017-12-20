@@ -14,17 +14,17 @@ namespace NewISE.Models
         public decimal idPassaportoRichiedente { get; set; }
         [Required(ErrorMessage = "Il passaporto è richiesto.")]
         [Display(Name = "Passaporto")]
-        public decimal idPassaporti { get; set; }
+        public decimal idPassaporto { get; set; }
+        [Required(ErrorMessage = "L'attivazione del passaporto è richiesta.")]
+        [Display(Name = "Att. Passaporto")]
+        public decimal idAttivazionePassaporti { get; set; }
         [Required(ErrorMessage = "Escludi passaporto è richiesto.")]
         [Display(Name = "Escludi passaporto")]
         [DefaultValue(false)]
-        public bool EscludiPassaporto { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data escl. pass.")]
-        public DateTime? DataEscludiPassaporto { get; set; }
+        public bool includiPassaporto { get; set; }
         [Display(Name = "Data agg.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DataAggiornamento { get; set; }
+        public DateTime dataAggiornamento { get; set; }
         [Required(ErrorMessage = "Annullato è richiesto.")]
         [DefaultValue(false)]
         public bool annullato { get; set; }

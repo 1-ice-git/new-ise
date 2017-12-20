@@ -95,11 +95,7 @@ namespace NewISE.EF
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DbSet<AP_C> AP_C { get; set; }
         public virtual DbSet<AP_F> AP_F { get; set; }
-        public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
-        public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
-        public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
-        public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
         public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
@@ -108,5 +104,10 @@ namespace NewISE.EF
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual DbSet<RINUNCIARICHIESTATITOLIVIAGGIO> RINUNCIARICHIESTATITOLIVIAGGIO { get; set; }
+        public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
+        public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
+        public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
+        public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
     }
 }

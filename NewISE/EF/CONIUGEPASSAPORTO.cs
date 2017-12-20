@@ -22,7 +22,8 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
+        public virtual ATTIVAZIONIPASSAPORTI ATTIVAZIONIPASSAPORTI { get; set; }
+        public virtual PASSAPORTI PASSAPORTI { get; set; }
     }
 }
