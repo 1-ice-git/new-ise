@@ -141,11 +141,22 @@ namespace NewISE.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    using (dtRichiamo dttr = new dtRichiamo())
+                    {
+                        using (ModelDBISE db = new ModelDBISE())
+                        {
+                            try
+                            {
 
+                            }
+                            catch (Exception)
+                            {
 
-
+                                throw;
+                            }
+                        }
+                    }
                 }
-
             }
             catch (Exception)
             {
