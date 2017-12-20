@@ -1,0 +1,71 @@
+﻿@model NewISE.Models.DBModel.RichiamoModel
+@using NewISE.Models
+
+<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
+<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    var errori = ViewData.ModelState;
+}
+
+<style>
+    div .col-xs-10 {
+        padding-right: 25px;
+    }
+</style>
+
+@using (@Ajax.BeginForm("InserisciRichiamo", "Richiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoRichiamo", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewRichiamo" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="padding-left: 15px;padding-right:50px">
+        <div class="form-horizontal">
+            <h4>Nuovo Richiamo</h4>
+            <hr />
+
+            @Html.HiddenFor(model => model.idTrasferimento)
+            @Html.Hidden("idTrasferimento", idTrasferimento)
+
+
+            <div class="row">
+                <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IDTRASFRICHIAMO, new { @class = "control-label col-xs-4" })
+                        <div class="select2-container select2-container--classic col-xs-8">
+                            
+                        </div>
+                        @Html.ValidationMessageFor(model => model.IDTRASFRICHIAMO, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DATAOPERAZIONE, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        <div class="col-xs-8">
+                            @Html.TextBoxFor(model => model.DATAOPERAZIONE, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-offset-4 col-xs-10">
+                        <input type="submit" value="Salva" class="btn btn-default" />
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+  
+<p style="padding-left: 15px">
+    @Ajax.ActionLink("Torna indietro", "AttivitaRichiamo", "Richiamo", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoRichiamo", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
+
+
+
+
+
+
+

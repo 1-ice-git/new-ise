@@ -1,0 +1,60 @@
+﻿
+@model IEnumerable<NewISE.Models.DBModel.RichiamoModel>
+
+
+<br /><br />
+Dati del Richiamo del dipendente
+<br /><br />
+
+<div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
+
+    <table id="tabListaRichiamo" class="table-striped" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.IDTRASFRICHIAMO)
+                </th>
+                <th style="text-align: center;">
+                    @Html.DisplayNameFor(model => model.DATAOPERAZIONE)
+                </th>
+                
+                <th style="text-align: center;"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{ var rowColor = "#ffffff"; }
+
+            @foreach (var item in Model)
+            {
+                <tr style="background-color:@rowColor;">
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.IDTRASFRICHIAMO)
+                    </td>
+                   
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => item.DATAOPERAZIONE)
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="javascript:void(0);"
+                           class="anchorDetailDelete" id_Sosp="@item.IDTRASFRICHIAMO"><span class="text-uppercase" title="Elimina"><img src="~/Immagini/delete.png" /></span></a>
+                        &nbsp;&nbsp;
+                        <a href="javascript:void(@item.IDTRASFRICHIAMO);"
+                           class="anchorDetailEdit" idSosp="@item.IDTRASFRICHIAMO"><span class="text-uppercase" title="Modifica"><img src="~/Immagini/edit.png" /></span></a>
+                    </td>
+                </tr>
+                if (@rowColor.Equals("#ffffff"))
+                {
+                    rowColor = "#D9E6C4";
+                }
+                else
+                {
+                    rowColor = "#ffffff";
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+</div>
+
+
