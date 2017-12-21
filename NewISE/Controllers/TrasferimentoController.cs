@@ -912,7 +912,8 @@ namespace NewISE.Controllers
                                 catch (Exception ex)
                                 {
                                     db.Database.CurrentTransaction.Rollback();
-                                    return PartialView("ErrorPartial", new HandleErrorInfo(ex, "Trasferimento", "InserisciTrasferimento"));
+                                    //return PartialView("ErrorPartial", new HandleErrorInfo(ex, "Trasferimento", "InserisciTrasferimento"));
+                                    throw ex;
                                 }
                             }
 

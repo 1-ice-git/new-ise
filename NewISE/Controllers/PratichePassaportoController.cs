@@ -18,6 +18,7 @@ namespace NewISE.Controllers
         {
 
             ViewData.Add("idTrasferimento", idTrasferimento);
+
             return PartialView();
 
         }
@@ -43,13 +44,13 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult ColonnaElencoDoc(decimal idFamiliare, EnumParentela parentela)
+        public ActionResult ColonnaElencoDoc(decimal idFamiliarePassaporto, EnumParentela parentela)
         {
-            ElencoFamiliariModel efm = new ElencoFamiliariModel();
+            ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
 
             using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
             {
-                efm = dtpp.GetDatiForColElencoDoc(idFamiliare, parentela);
+                efm = dtpp.GetDatiForColElencoDoc(idFamiliarePassaporto, parentela);
             }
 
             return PartialView(efm);

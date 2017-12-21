@@ -2333,6 +2333,9 @@
     <Compile Include="EF\PENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\PERCENTUALEANTICIPOTM.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\PERCENTUALEDISAGIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2717,6 +2720,7 @@
     <Content Include="Views\Richiamo\ElencoRichiamo.cshtml" />
     <Content Include="Views\Richiamo\NuovoRichiamo.cshtml" />
     <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
+    <Content Include="Views\Documenti\ElencoDocumentiPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

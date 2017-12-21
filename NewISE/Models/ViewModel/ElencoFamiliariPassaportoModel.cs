@@ -8,8 +8,16 @@ using System.Web;
 
 namespace NewISE.Models.ViewModel
 {
+    public struct HasDoc
+    {
+        public EnumTipoDoc tipoDoc { get; set; }
+        public bool esisteDoc { get; set; }
+    }
+
     public class ElencoFamiliariPassaportoModel
     {
+        public decimal idAttivazionePassaporti { get; set; }
+
         public decimal idFamiliarePassaporto { get; set; }
         [Display(Name = "Nominativo")]
         public string nominativo { get; set; }
@@ -27,6 +35,6 @@ namespace NewISE.Models.ViewModel
         [DefaultValue(false)]
         public bool richiedi { get; set; }
 
-        public bool HasDoc { get; set; }
+        public HasDoc HasDoc { get; set; }
     }
 }

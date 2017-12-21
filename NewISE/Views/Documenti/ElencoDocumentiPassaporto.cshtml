@@ -1,0 +1,48 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+
+
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+    <table id="tabElencoDoc" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nomeDocumento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.estensione)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInserimento)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.file)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                    <td class="text-center" style="width: 10%;">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                    <td style="text-align: center; width: 10%;">
+                        <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
+                            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+
+    </table>
+</div>

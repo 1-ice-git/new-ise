@@ -12,24 +12,22 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class COEFFICIENTEFKM
+    public partial class PERCENTUALEANTICIPOTM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public COEFFICIENTEFKM()
+        public PERCENTUALEANTICIPOTM()
         {
-            this.UFFICI = new HashSet<UFFICI>();
+            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
         }
     
-        public decimal IDCFKM { get; set; }
-        public decimal IDDEFKM { get; set; }
+        public decimal IDPERCANTICIPOTM { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal COEFFICIENTEKM { get; set; }
+        public byte PERCENTUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual DEFFASCIACHILOMETRICA DEFFASCIACHILOMETRICA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UFFICI> UFFICI { get; set; }
+        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
     }
 }

@@ -520,6 +520,37 @@ namespace NewISE.Controllers
             }
         }
 
+        public ActionResult ElencoDocumentiPassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipoDoc, EnumParentela parentela)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            try
+            {
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        using (dtDocumenti dtd = new dtDocumenti())
+                        {
+                            ldm = dtd.GetDocumentiIdentitaConiugePassaporto(idFamiliarePassaporto).ToList();
+                        }
+                        break;
+                    case EnumParentela.Figlio:
+                        break;
+                    case EnumParentela.Richiedente:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("parentela");
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+
+            return PartialView(ldm);
+
+        }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult ElencoDocumenti(decimal id, EnumTipoDoc tipoDoc, EnumParentela parentela, EnumChiamante chiamante, decimal idAttivazioneMagFam = 0)
         {

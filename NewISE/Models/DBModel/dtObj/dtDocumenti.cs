@@ -94,6 +94,39 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
+
+        public IList<DocumentiModel> GetDocumentiIdentitaConiugePassaporto(decimal idConiugePassaporto)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
+                var c = cp.CONIUGE;
+                var ld = c.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
+                                                 a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = f
+                                 });
+                }
+            }
+
+            return ldm;
+        }
+
+
         public IList<DocumentiModel> GetDocumentiIdentitaConiuge(decimal idConiuge, decimal idAttivazioneMagFam)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
@@ -164,6 +197,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             return ldm;
         }
+
+
+
 
         /// <summary>
         /// 
