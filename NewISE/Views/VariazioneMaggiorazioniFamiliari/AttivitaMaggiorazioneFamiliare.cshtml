@@ -210,7 +210,7 @@
     }
 
     function ConfermaAttivazioneRichiesta() {
-        var rotta = "/VariazioneMaggiorazioniFamiliari/AttivaRichiesta";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAttivaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
 
         $.ajax({
@@ -229,6 +229,7 @@
 
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFamiliari();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -258,7 +259,7 @@
 
 
     function ConfermaNotificaRichiesta() {
-        var rotta = "/VariazioneMaggiorazioniFamiliari/NotificaRichiestaVariazione";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaNotificaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
 
         $.ajax({
@@ -277,6 +278,7 @@
 
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFamiliari();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -326,14 +328,14 @@
                     var docFormulario = result.docFormulario;
                     var inLavorazione = result.inLavorazione;
 
-                    //$("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                    //$("#btAttivaMagFam_Var").addClass("disabled");
+                    $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                    $("#btAttivaMagFam_Var").addClass("disabled");
 
-                    //$("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                    //$("#btAnnullaMagFam_Var").addClass("disabled");
+                    $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                    $("#btAnnullaMagFam_Var").addClass("disabled");
 
 
-                    ///Se risulta in lavorazione abilito la il pulsante notifica
+                    //Se risulta in lavorazione abilito la il pulsante notifica
                     if (inLavorazione)
                     {
                         $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
@@ -421,7 +423,7 @@
     }
 
     function ConfermaAnnullaRichiesta() {
-        var rotta = "/VariazioneMaggiorazioniFamiliari/AnnullaRichiestaVariazione";
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAnnullaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
 
         $.ajax({
@@ -440,6 +442,8 @@
 
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
+                    ElencoFamiliari();
+
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
