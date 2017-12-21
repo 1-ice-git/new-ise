@@ -185,7 +185,7 @@ namespace NewISE.Controllers
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                 out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
 
-                if (richiestaAttivazione)
+                if (richiestaAttivazione && attivazione==false)
                 {
                     solaLettura = true;
                 }
@@ -1276,7 +1276,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult NotificaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
+        public JsonResult ConfermaNotificaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
         {
             string errore = "";
 
@@ -1311,15 +1311,20 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public JsonResult AttivaRichiesta(decimal idMaggiorazioniFamiliari)
+        public JsonResult ConfermaAttivaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
         {
             string errore = "";
 
             try
             {
-                using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
+                using (var db = new ModelDBISE())
                 {
-                    dtmf.AttivaRichiesta(idMaggiorazioniFamiliari);
+                    using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                    {
+                        var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
+
+                        dtvmf.AttivaRichiestaVariazione(amf.IDATTIVAZIONEMAGFAM, idMaggiorazioniFamiliari);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1337,7 +1342,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public JsonResult AnnullaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
+        public JsonResult ConfermaAnnullaRichiestaVariazione(decimal idMaggiorazioniFamiliari)
         {
             string errore = "";
             decimal idAttivazioneMagFamNew = 0;

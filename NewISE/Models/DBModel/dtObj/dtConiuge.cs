@@ -528,42 +528,50 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
 
-                var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
 
-                var amfl = mf.ATTIVAZIONIMAGFAM
+                    var amfl = mf.ATTIVAZIONIMAGFAM
                             .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
                             .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
-                bool modificabile = false;
+                    var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
 
-                if (amfl?.Any() ?? false)
-                {
-                    foreach (var e in amfl)
+
+                    bool modificabile = false;
+                    
+                    if (amfl?.Any() ?? false)
                     {
-                        lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
-                        if (lc?.Any() ?? false)
+                        foreach (var e in amfl)
                         {
-                            foreach (var c in lc)
+                        //var e = amfl.First();
+
+                            lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
+                            if (lc?.Any() ?? false)
                             {
-                                VariazioneConiugeModel cm = new VariazioneConiugeModel()
+                                foreach (var c in lc)
                                 {
-                                    eliminabile = (c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) ? false : true,
-                                    modificabile = modificabile,
-                                    idConiuge = c.IDCONIUGE,
-                                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                    nome = c.NOME,
-                                    cognome = c.COGNOME,
-                                    codiceFiscale = c.CODICEFISCALE,
-                                    dataInizio = c.DATAINIZIOVALIDITA,
-                                    dataFine = c.DATAFINEVALIDITA,
-                                    dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                    Modificato = c.MODIFICATO,
-                                    FK_idConiuge = c.FK_IDCONIUGE
-                                };
-                                lcm.Add(cm);
-                                //break;
+                                    VariazioneConiugeModel cm = new VariazioneConiugeModel()
+                                    {
+                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) || amf.ATTIVAZIONEMAGFAM) ? false : true,
+                                        modificabile = modificabile,
+                                        idConiuge = c.IDCONIUGE,
+                                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                        nome = c.NOME,
+                                        cognome = c.COGNOME,
+                                        codiceFiscale = c.CODICEFISCALE,
+                                        dataInizio = c.DATAINIZIOVALIDITA,
+                                        dataFine = c.DATAFINEVALIDITA,
+                                        dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                        Modificato = c.MODIFICATO,
+                                        FK_idConiuge = c.FK_IDCONIUGE
+                                    };
+                                    lcm.Add(cm);
+                                    //break;
+                                }
                             }
                         }
                     }
