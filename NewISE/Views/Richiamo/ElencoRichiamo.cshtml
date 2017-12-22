@@ -4,27 +4,30 @@
 @using NewISE.Models.DBModel
 
 @{
-
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-    
+
+    //TrasferimentoModel dataPartenza = (TrasferimentoModel)ViewData["dataPartenza"];
+
 }
 
 <div class="form-horizontal">
     @using (@Ajax.BeginForm("InserisciRichiamo", "Richiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabRichiamo", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formRichiamo" }))
     {
         <div class="form-horizontal">
-            <h4>Richiamo</h4>
-            <hr />
-
+           
             @Html.Hidden("idTrasferimento", idTrasferimento)
+            @*@Html.Hidden("dataPartenza", dataPartenza)*@
 
+           
             <div class="row">
                 <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.DataAggiornamento, htmlAttributes: new { @class = "control-label col-xs-4" })
+                        @*@Html.LabelFor(model => model.DataAggiornamento, htmlAttributes: new { @class = "control-label col-xs-4" })*@
+                        @Html.Label("lbldataPartenza", "dataPartenza", new { @class = "control-label col-xs-4" })
                         <div class="col-xs-8">
-                            @Html.TextBoxFor(model => model.DataAggiornamento, "{0:dd/MM/yyyy}", new { @readonly = "readonly", @class = "form-control col-xs-4" })
+                            @*@Html.TextBoxFor(model => model.DataAggiornamento, "{0:dd/MM/yyyy}", new { @readonly = "readonly", @class = "form-control col-xs-4" })*@
+                            @Html.TextBox("dataPartenza", ViewData["dataPartenza"], new { @readonly = "readonly", @class = "form-control col-xs-4" })
                         </div>
                     </div>
                     <br />

@@ -28,6 +28,8 @@ namespace NewISE.Controllers
             try
             {
                 ViewData["idTrasferimento"] = idTrasferimento;
+                ViewData["dataPartenza"] = "Inserire qui la Data come idTrasferimento";
+                
             }
             catch (Exception ex)
             {
@@ -43,6 +45,8 @@ namespace NewISE.Controllers
         public ActionResult ElencoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+            ViewData["dataPartenza"] = "Inserire qui la Data come idTrasferimento";
+
 
             try
             {
@@ -71,6 +75,8 @@ namespace NewISE.Controllers
         public JsonResult VerificaRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+            ViewData["dataPartenza"] = "Inserire qui la Data come idTrasferimento";
+
             try
             {
                 if (idTrasferimento <= 0)
@@ -84,6 +90,7 @@ namespace NewISE.Controllers
                         trm.statoTrasferimento == EnumStatoTraferimento.Terminato))
                     {
                         ViewData["idTrasferimento"] = idTrasferimento;
+
                         return Json(new { VerificaRichiamo = 1 });
                     }
                     else
@@ -136,40 +143,58 @@ namespace NewISE.Controllers
         public ActionResult InserisciRichiamo(RichiamoModel ri, decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
-
+            
             try
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtRichiamo dttr = new dtRichiamo())
+                    try
                     {
-                        using (ModelDBISE db = new ModelDBISE())
+                        using (dtRichiamo dtrichiamo = new dtRichiamo())
                         {
-                            try
+                            using (ModelDBISE db = new ModelDBISE())
                             {
+                                try
+                                {
+                                    db.Database.BeginTransaction();
+                                    dtrichiamo.SetRichiamo(ref ri, db);
 
-                            }
-                            catch (Exception)
-                            {
+                                    //dtrichiamo.EditTrasferimento(ref trm, db);
 
-                                throw;
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                catch (Exception ex)
+                                {
+                                    db.Database.CurrentTransaction.Rollback();
+                                    return PartialView("ErrorPartial", new HandleErrorInfo(ex, "Richiamo", "InserisciRichiamo"));
+                                }
                             }
                         }
+
+                        
+
+                        return RedirectToAction("ElencoRichiamo", new { idTrasferimento = ri.idTrasferimento });
                     }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", ex.Message);
+                        return PartialView("ElencoRichiamo", ri);
+                    }
+
+                }
+                else
+                {
+
+                    return PartialView("ElencoRichiamo", ri);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return View();
+            
         }
-
-
-
-
 
 
     }
