@@ -22,7 +22,6 @@ namespace NewISE.Controllers
             return View();
             //return PartialView("Richiamo");
         }
-
         public ActionResult AttivitaRichiamo(decimal idTrasferimento)
         {
             try
@@ -38,8 +37,7 @@ namespace NewISE.Controllers
 
             return PartialView("AttivitaRichiamo");
         }
-
-        
+                
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         [Authorize(Roles = "1 ,2")]
         public ActionResult ElencoRichiamo(decimal idTrasferimento)
@@ -71,7 +69,6 @@ namespace NewISE.Controllers
 
             return PartialView("Richiamo");
         }
-
         public JsonResult VerificaRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -105,9 +102,6 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
-        
-        
-
         public ActionResult DatiTabElencoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -126,7 +120,6 @@ namespace NewISE.Controllers
             return PartialView(tmp);
 
         }
-
         
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult NuovoRichiamo(decimal idTrasferimento)
@@ -135,8 +128,6 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
-
-
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         [Authorize(Roles = "1 ,2")]

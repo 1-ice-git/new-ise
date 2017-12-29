@@ -1,6 +1,90 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Indennita_Estera>
 
 
+@{
+    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+}
+
+
+<div class="row">
+    <div class="col-xs-3">
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
+            <button class="btn btn-default btn-sm" onclick=" DownloadFormulario(); ">
+                <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
+                Stampa
+            </button>
+
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+
+            @if (solaLettura)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled="disabled">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
+                    Stampa
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
+                    Stampa
+                </button>
+            }
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="ModalDownloadFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Operazione Effettuate - Indennità di Sede Estera </h3>
+            </div>
+            <div class="modal-body modal-lg alert alert-info text-info" style="font-size: 1em;">
+                <div id="RptOpIndennitaEstera">
+                    @*@Html.Action("RptOpIndennitaEstera", "ArchivioVecchioISE")*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNuovoFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="NuovoFormularioLabel">Operazione Effettuate - Indennità di Sede Estera </h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divViewNuovoFormulario">
+                    @*@Html.Action("RptOpIndennitaEstera", "ArchivioVecchioISE")*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="form-horizontal">
     <div class="form-group">
         <hr />
@@ -153,6 +237,12 @@
 
             }
         });
+
+
+    function DownloadFormulario() {
+        //debugger
+            $('#ModalDownloadFormulario').modal().show();
+        }
 
         function invia() {
             //debugger
@@ -337,6 +427,12 @@
             });
 
         }
+
+
+        $("#ModalNuovoFormulario").on("hidden.bs.modal", function () {
+            //debugger;
+            RptOpIndennitaEstera();
+        });
             
 </script>
 
