@@ -1283,20 +1283,20 @@ namespace NewISE.Controllers
 
         }
 
-        public JsonResult VerificaMaggiorazioneFamiliareByStatoTrasferimento(string matricola = "")
+        public JsonResult VerificaMaggiorazioneFamiliareByStatoTrasferimento(decimal idTrasferimento)
         {
             try
             {
-                if (matricola == string.Empty)
+                if (idTrasferimento.Equals(null))
                 {
-                    throw new Exception("La matricola non risulta valorizzata.");
+                    throw new Exception("Il trasferimento non risulta valorizzata.");
                 }
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    TrasferimentoModel trm = dtt.GetUltimoTrasferimentoByMatricola(matricola);
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
                     if (trm != null && trm.HasValue())
                     {
-                        if ((EnumStatoTraferimento)trm.StatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        if ((EnumStatoTraferimento)trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || (EnumStatoTraferimento)trm.idStatoTrasferimento==EnumStatoTraferimento.Terminato)
                         {
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {

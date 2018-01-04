@@ -1,5 +1,5 @@
 ﻿@using NewISE.DBComuniItalia
-@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
+@model NewISE.Models.DBModel.AltriDatiFamFiglioModel
 
 @{
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
@@ -12,16 +12,48 @@
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
-@using (@Ajax.BeginForm("ConfermaModificaAdfConiuge","VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formEditADF" }))
+@using (@Ajax.BeginForm("ConfermaModificaAdfFiglio", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formEditADF" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left: 15px;">
         <div class="form-horizontal">
-            <h4>Modifica Altri Dati Familiari Coniuge</h4>
+            <h4>Modifica Altri Dati Familiari Figlio</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.idAltriDatiFam)
-            @Html.HiddenFor(model => model.idConiuge)
+            @Html.HiddenFor(model => model.idFigli )
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataNascita, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataNascita, "{0:dd/MM/yyyy}", new { @class = "form-control", @style = "max-width:100px;", @placeholder = "gg/mm/aaaa" })
+                    @Html.ValidationMessageFor(model => model.dataNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.capNascita, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.capNascita, new { htmlAttributes = new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" } })
+                    @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.comuneNascita, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.comuneNascita, new { htmlAttributes = new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" } })
+                    @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.provinciaNascita, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.provinciaNascita, new { htmlAttributes = new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" } })
+                    @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.nazionalita, new { @class = "control-label col-md-2" })
@@ -38,6 +70,7 @@
                     @Html.ValidationMessageFor(model => model.indirizzoResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.capResidenza, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -53,6 +86,7 @@
                     @Html.ValidationMessageFor(model => model.comuneResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.provinciaResidenza, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -60,11 +94,12 @@
                     @Html.ValidationMessageFor(model => model.provinciaResidenza, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.residente, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @if (Model.residente)
-                    {
+                {
                         <div class="checkbox disabled">
                             <label style="font-size: 1.5em">
                                 <input type="checkbox" value="" disabled="disabled" checked="checked">
@@ -83,11 +118,12 @@
                     }
                 </div>
             </div>
+
             <div class="form-group">
-                @Html.LabelFor(model => model.ulterioreMagConiuge, new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.studente, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @if (Model.ulterioreMagConiuge)
-                    {
+                    @if (Model.studente)
+                {
                         <div class="checkbox disabled">
                             <label style="font-size: 1.5em">
                                 <input type="checkbox" value="" disabled="disabled" checked="checked">
@@ -134,11 +170,10 @@
             </div>
         </div>
     </div>
-
 }
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new { idConiuge = Model.idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "AltriDatiFamiliariFiglio", "VariazioneMaggiorazioniFamiliari", new { idFiglio = Model.idFigli }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 @if (comuni != null && comuni.Any())
 {
@@ -191,3 +226,4 @@
         }
     }
 </script>
+

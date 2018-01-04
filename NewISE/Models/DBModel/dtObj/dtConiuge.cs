@@ -16,7 +16,6 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-
         #region Funzioni di validazione custom
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
@@ -456,14 +455,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
 
-                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
-                {
-                    AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+                //using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                //{
+                //    AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
 
-                    apm = dtap.GetAttivazionePassaportiDaLavorare(cm.idMaggiorazioniFamiliari, db);
-                    dtap.AssociaConiuge(apm.idAttivazioniPassaporti, cm.idConiuge, db);
+                //    apm = dtap.GetAttivazionePassaportiDaLavorare(cm.idMaggiorazioniFamiliari, db);
+                //    dtap.AssociaConiuge(apm.idAttivazioniPassaporti, cm.idConiuge, db);
 
-                }
+                //}
 
 
 
@@ -537,7 +536,7 @@ namespace NewISE.Models.DBModel.dtObj
                             .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
                             .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
-                    var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
+                    //var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
 
 
                     bool modificabile = false;
@@ -555,7 +554,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                     {
-                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) || amf.ATTIVAZIONEMAGFAM) ? false : true,
+                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
                                         modificabile = modificabile,
                                         idConiuge = c.IDCONIUGE,
                                         idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,

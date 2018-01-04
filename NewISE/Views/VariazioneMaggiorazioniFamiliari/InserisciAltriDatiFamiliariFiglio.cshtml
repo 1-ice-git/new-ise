@@ -1,21 +1,16 @@
-﻿@model NewISE.Models.DBModel.AltriDatiFamConiugeModel
+﻿@model NewISE.Models.DBModel.AltriDatiFamFiglioModel
 @using NewISE.DBComuniItalia
-@using System.Linq;
-@using System.Collections;
-@using System.Collections.Generic;
 
 <link href="~/Content/css/CheckBoxRadio.css" rel="stylesheet" />
-
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
-
 @{
     List<Comuni> comuni = (List<Comuni>)ViewData["Comuni"];
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
 }
 
-@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
+@using (@Ajax.BeginForm("InserisciAltriDatiFamiliariFiglio", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
     <div style="padding-left: 15px; padding-right:5px;">
@@ -23,10 +18,42 @@
             <h4> Inserisci Altri Dati Familiari</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.idConiuge)
+            @Html.HiddenFor(model => model.idFigli)
             @Html.Hidden("idAttivazione", idAttivazione)
             @Html.HiddenFor(model => model.residente)
-            @Html.HiddenFor(model => model.ulterioreMagConiuge)
+            @Html.HiddenFor(model => model.studente)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.dataNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.dataNascita, new { @class = "form-control", @style = "max-width:100px;", @placeholder = "gg/mm/aaaa" })
+                    @Html.ValidationMessageFor(model => model.dataNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
+                    @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.comuneNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaComuni" })
+                    @Html.ValidationMessageFor(model => model.comuneNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.provinciaNascita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.provinciaNascita, new { @class = "form-control text-uppercase", @style = "max-width:250px;", @list = "ListaProvincie" })
+                    @Html.ValidationMessageFor(model => model.provinciaNascita, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.nazionalita, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -93,9 +120,9 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ulterioreMagConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.studente, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @if (Model.ulterioreMagConiuge)
+                    @if (Model.studente)
                     {
                         <div class="checkbox disabled">
                             <label style="font-size:1.5em">
@@ -123,6 +150,7 @@
             </div>
         </div>
     </div>
+
 }
 
 <p style="padding-left: 15px;">
@@ -148,10 +176,9 @@
         {
             <option value="@item.ToString()" />
         }
-
     }
 </datalist>
+
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/MyValidateDate.js"></script>
-

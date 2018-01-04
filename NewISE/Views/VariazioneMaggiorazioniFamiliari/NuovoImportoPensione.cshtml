@@ -3,25 +3,20 @@
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
-
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
-
     var errori = ViewData.ModelState;
-
 }
 
 <div style="padding-left:15px; padding-right:10px;">
     @using (@Ajax.BeginForm("InserisciImportoPensione", "VariazioneMaggiorazioniFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewPensione" }))
     {
         @Html.AntiForgeryToken()
-
         @Html.Hidden("idConiuge", idConiuge)
 
         <div class="form-horizontal">
             <h4>Nuova Pensione Coniuge</h4>
             <hr />
-
             <div class="form-group">
                 @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-xs-2" })
                 <div class="col-xs-10">
@@ -33,7 +28,6 @@
                     {
                         @Html.TextBoxFor(model => model.dataInizioValidita, new { @class = "form-control" })
                     }
-                    @*@Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
@@ -48,7 +42,6 @@
                     {
                         @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
                     }
-                    @*@Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })*@
                 </div>
             </div>
             <div class="form-group">
@@ -66,8 +59,6 @@
                             @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
                         </div>
                     }
-
-                    @*@Html.ValidationMessageFor(model => model.importoPensione, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
@@ -98,12 +89,8 @@
                 </div>
             </div>
         </div>
-
-
-
     }
 </div>
-
 
 <div style="padding-left: 15px;">
     @Ajax.ActionLink("Torna indietro", "ElencoPensioniConiuge", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
@@ -119,15 +106,13 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                          break;
+            break;
         }
 
     }
 
-
     function DialogModalError(err) {
         //debugger;
-
         if (err == 'True') {
             $('#ModalErrorNewImpPensione').modal('toggle');
         }
@@ -143,16 +128,13 @@
             var ip = $("#importoPensione").autoNumeric("get");
             $("#importoPensione").val(ip.replace(".", ","));
         }
-
     });
 
     $('#dataInizioValidita').datepicker({
-        //showButtonPanel: true,
         showAnim: "slide",
     });
 
     $('#dataFineValidita').datepicker({
-        //showButtonPanel: true,
         showAnim: "slide",
     });
 
@@ -163,12 +145,7 @@
         aSign: ''
     });
 
-
     $.culture = Globalize.culture("it-IT");
-    //$.validator.methods.date = function (value, element) {
-    //    return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
-    //}
-
 
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));

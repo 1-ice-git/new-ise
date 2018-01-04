@@ -1,13 +1,11 @@
 ﻿@using NewISE.Models.DBModel
 <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
-
 <script src="~/Scripts/plugins/piexif.js"></script>
 <script src="~/Scripts/plugins/sortable.js"></script>
 <script src="~/Scripts/plugins/purify.js"></script>
 <script src="~/Scripts/fileinput.min.js"></script>
 <script src="~/Content/bootstrap-fileinput/themes/fa/theme.min.js"></script>
 <script src="~/Scripts/locales/it.js"></script>
-
 
 @{
     decimal tipoDoc = (decimal)ViewData["tipoDoc"];
@@ -16,7 +14,6 @@
     decimal idDocumento = (decimal)ViewData["idDocumento"];
     decimal idMaggiorazioniFamiliari = (decimal)ViewData["idMaggiorazioniFamiliari"];
     decimal parentela = (decimal)ViewData["parentela"];
-
 }
 
 @Html.Hidden("titoloPagina", titoloPagina)
@@ -81,26 +78,19 @@
         resizeImage: true,
         elErrorContainer: '#divError',
         required: true,
-        //showRemove: false,
-        //showUpload: false
-
-
     });
+
     $('#files').on('fileuploaded', function (event, data, previewId, index) {
         //debugger;
-
-
     });
 
     $('#files').on('filebatchuploaderror', function (event, data, previewId, index) {
         //debugger;
-        //$("#divError").html(previewId);
     });
 
     $('#file').on('filebatchuploadcomplete', function (event, data, previewId, index) {
         //debugger;
     });
-
 
 </script>
 

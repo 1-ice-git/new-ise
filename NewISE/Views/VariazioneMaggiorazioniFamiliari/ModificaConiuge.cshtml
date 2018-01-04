@@ -1,17 +1,11 @@
 ﻿@model NewISE.Models.DBModel.ConiugeModel
 
-@*<script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
-<script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>*@
-
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/MyValidateDate.js"></script>
 
-
 @{
-    //decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     var errori = ViewData.ModelState;
-
 }
 
 <style>
@@ -27,15 +21,11 @@
         <div class="form-horizontal">
             <h4>Modifica del Coniuge</h4>
             <hr />
-            @*@Html.ValidationSummary(true, "", new {@class = "text-danger"})*@
             @Html.HiddenFor(model => model.idConiuge)
             @Html.HiddenFor(model => model.idMaggiorazioniFamiliari)
             @Html.HiddenFor(model => model.idPassaporti)
             @Html.HiddenFor(model => model.idTitoloViaggio)
             @Html.HiddenFor(model => model.idAttivazioneMagFam)
-
-
-
 
             <div class="row">
                 <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
@@ -44,24 +34,20 @@
                         <div class="select2-container select2-container--classic col-xs-8">
                             @Html.DropDownList("idTipologiaConiuge", ViewBag.lTipologiaConiuge as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                         </div>
-                        @*@Html.ValidationMessageFor(model => model.idTipologiaConiuge, "", new { @class = "text-danger" })*@
 
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.dataInizio, htmlAttributes: new { @class = "control-label col-xs-4" })
                         <div class="col-xs-8">
                             @Html.TextBoxFor(model => model.dataInizio, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
-                            @*@Html.ValidationMessageFor(model => model.dataInizio, "", new {@class = "text-danger"})*@
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.dataFine, htmlAttributes: new { @class = "control-label col-xs-4" })
-
                         @if (Model.dataFine.HasValue && Model.dataFine.Value < Convert.ToDateTime("31/12/9999"))
-                {
+                        {
                             <div class="col-xs-8">
                                 @Html.TextBoxFor(model => model.dataFine, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
-                                @*@Html.ValidationMessageFor(model => model.dataFine, "", new {@class = "text-danger"})*@
                             </div>
                         }
                         else
@@ -69,17 +55,14 @@
                             <div class="col-xs-8">
                                 @Html.TextBox("dataFine", "", "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-4" })
                             </div>
-
                         }
                     </div>
                 </div>
                 <div class="col-xs-5" style="padding-top:5px; padding-bottom:5px">
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.nome, htmlAttributes: new { @class = "control-label col-xs-4" })
                         <div class="col-xs-8">
                             @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control text-uppercase col-xs-4" } })
-                            @*@Html.ValidationMessageFor(model => model.nome, "", new {@class = "text-danger"})*@
                         </div>
                     </div>
 
@@ -87,7 +70,6 @@
                         @Html.LabelFor(model => model.cognome, htmlAttributes: new { @class = "control-label col-xs-4" })
                         <div class="col-xs-8">
                             @Html.EditorFor(model => model.cognome, new { htmlAttributes = new { @class = "form-control text-uppercase col-xs-4" } })
-                            @*@Html.ValidationMessageFor(model => model.cognome, "", new {@class = "text-danger"})*@
                         </div>
                     </div>
 
@@ -95,7 +77,6 @@
                         @Html.LabelFor(model => model.codiceFiscale, htmlAttributes: new { @class = "control-label col-xs-4" })
                         <div class="col-xs-8">
                             @Html.EditorFor(model => model.codiceFiscale, new { htmlAttributes = new { @class = "form-control text-uppercase col-xs-4" } })
-                            @*@Html.ValidationMessageFor(model => model.codiceFiscale, "", new {@class = "text-danger"})*@
                         </div>
                     </div>
                 </div>
@@ -106,7 +87,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -136,12 +116,7 @@
     @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = Model.idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
-
-
 <script type="text/javascript">
-
-    //PulsantiNotificaAttivaMagFam();
-
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
@@ -149,7 +124,6 @@
             @:DialogModalError('True');
             break;
         }
-
     }
 
     $("#idTipologiaConiuge").select2({
@@ -161,12 +135,10 @@
     });
 
     $('#dataInizio').datepicker({
-        //showButtonPanel: true,
         showAnim: "slide",
     });
 
     $('#dataFine').datepicker({
-        //showButtonPanel: true,
         showAnim: "slide",
     });
 
@@ -176,12 +148,10 @@
         if (!form.valid()) {
             DialogModalError('True');
         }
-
     });
 
     function DialogModalError(err) {
         //debugger;
-
         if (err == 'True') {
             $('#myModalErrorModel').modal('toggle');
         }

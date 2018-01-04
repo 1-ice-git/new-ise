@@ -1,6 +1,5 @@
 ﻿@using NewISE.Models.ViewModel
 @using NewISE.Models.DBModel
-@*model IEnumerable<NewISE.Models.DBModel.DocumentiModel>*@
 @model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
 
 @{
@@ -88,13 +87,16 @@
                 </td>
 
                 <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                @if (item.Modificabile)
-                {
-                    <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
-                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
-                    </a>
-                        @*<button class="btn btn-link" onclick="EliminaFormulario(@item.idDocumenti);">Elimina </button>*@
-                }
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                        </a>
+                    }
+                    else
+                    {
+                    <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
                 </td>
             </tr>
         }
@@ -122,7 +124,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
     $("#tabElencoFormulariInseriti_Var").DataTable({
@@ -183,28 +184,21 @@
                 //debugger;
                 VerificaAutenticazione();
                 Blocca();
-
             },
             success: function (result) {
                 //debugger;
-
                 if (result.err != "" && result.err != undefined) {
                     ErroreElaborazioneAjax(result.err);
                 }
                 else {
-
                     InfoElaborazioneAjax(result.msg);
-                    //CloseTimeModalFormulario();
-                    //TabElencoFormulari();
                     PulsantiNotificaAttivaMagFam();
                 }
             },
             complete: function () {
-                //$("#btUpload").removeAttr("disabled");
             },
             error: function (error) {
                 //debugger;
-
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
@@ -213,7 +207,6 @@
 
     $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
         //debugger;
-        //TabElencoFormulari();
         ElencoFormulariInseriti();
     });
 </script>

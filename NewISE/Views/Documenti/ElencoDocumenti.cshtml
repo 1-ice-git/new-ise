@@ -81,17 +81,22 @@
                     </td>
                     <td style="text-align: center; width: 10%;">
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
-                            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                            <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                         </a>
                     </td>
                     <td class="text-center" style="width: 10%;">
                         @if (solaLettura)
                         {
-                            <a href="#" class="disabled">Elimina</a>
+                            //<a href="#" class="disabled">Elimina</a>
+                            <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+
                         }
                         else
                         {
-                            <a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
+                            //<a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
+                            <a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                            </a>
                         }
                     </td>
                 </tr>

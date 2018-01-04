@@ -1039,6 +1039,7 @@
     <Content Include="Immagini\2.GIF" />
     <Content Include="Immagini\39.gif" />
     <Content Include="Immagini\delete.png" />
+    <Content Include="Immagini\delete_grey.png" />
     <Content Include="Immagini\edit-button.png" />
     <Content Include="Immagini\edit.png" />
     <Content Include="Immagini\Eliminazione.png" />
@@ -1048,6 +1049,7 @@
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\switch.png" />
+    <Content Include="Immagini\switch3.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
     <Content Include="Immagini\Loading\source.gif" />
     <Content Include="Immagini\Logo ISE.png" />
@@ -1066,6 +1068,7 @@
     <Content Include="Immagini\Simbolo euro green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Green.png" />
     <Content Include="Immagini\Simbolo semplice Euro Red.png" />
+    <Content Include="Immagini\switch_grey.png" />
     <Content Include="Immagini\switch_old.png" />
     <Content Include="Immagini\switch2.png" />
     <Content Include="Lib\fullcalendar.css" />
@@ -2613,6 +2616,7 @@
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
@@ -2682,13 +2686,11 @@
     <Content Include="Views\CalendariEventi\GetCalendarioEvento.cshtml" />
     <Content Include="Views\CalendariEventi\GetDetailsCalendarEvents.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
-    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ConfermaNuovoConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoFamiliari.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoConiuge.cshtml" />
-    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFamiliare.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\InserisciAltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AltriDatiFamiliariConiuge.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariConiuge.cshtml" />
@@ -2717,6 +2719,10 @@
     <Content Include="Views\Richiamo\ElencoRichiamo.cshtml" />
     <Content Include="Views\Richiamo\NuovoRichiamo.cshtml" />
     <Content Include="Views\Trasferimento\ElencoTrasferimento.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\InserisciAltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\AltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

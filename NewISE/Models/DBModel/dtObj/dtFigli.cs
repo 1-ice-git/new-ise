@@ -436,6 +436,60 @@ namespace NewISE.Models.DBModel.dtObj
             return ret;
         }
 
+        public IList<VariazioneFigliModel> GetListaAttivazioniFigliByIdMagFam(decimal idMaggiorazioniFamiliari)
+        {
+            List<VariazioneFigliModel> lfm = new List<VariazioneFigliModel>();
+            List<FIGLI> lf = new List<FIGLI>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
+                {
+
+                    var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+
+                    var amfl = mf.ATTIVAZIONIMAGFAM
+                            .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
+                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+                    bool modificabile = false;
+
+                    if (amfl?.Any() ?? false)
+                    {
+                        foreach (var e in amfl)
+                        {
+                            lf = e.FIGLI.Where(y => y.MODIFICATO == false).ToList();
+                            if (lf?.Any() ?? false)
+                            {
+                                foreach (var f in lf)
+                                {
+                                    VariazioneFigliModel fm = new VariazioneFigliModel()
+                                    {
+                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
+                                        modificabile = modificabile,
+                                        idFigli = f.IDFIGLI,
+                                        idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
+                                        idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
+                                        nome = f.NOME,
+                                        cognome = f.COGNOME,
+                                        codiceFiscale = f.CODICEFISCALE,
+                                        dataInizio = f.DATAINIZIOVALIDITA,
+                                        dataFine = f.DATAFINEVALIDITA,
+                                        dataAggiornamento = f.DATAAGGIORNAMENTO,
+                                        Modificato = f.MODIFICATO,
+                                        FK_IdFigli = f.FK_IDFIGLI
+                                    };
+                                    lfm.Add(fm);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return lfm;
+        }
+
+
 
     }
 }

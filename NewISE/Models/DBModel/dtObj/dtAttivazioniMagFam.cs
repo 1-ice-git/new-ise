@@ -382,6 +382,33 @@ namespace NewISE.Models.DBModel.dtObj
                 throw ex;
             }
         }
+        public void AssociaFiglioAttivazione(decimal idAttivazioneFamiliare, decimal idFiglio, ModelDBISE db)
+        {
+            try
+            {
+
+                var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneFamiliare);
+                var item = db.Entry<ATTIVAZIONIMAGFAM>(amf);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.FIGLI).Load();
+                var f = db.FIGLI.Find(idFiglio);
+                amf.FIGLI.Add(f);
+
+                int i = db.SaveChanges();
+
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare il figlio per l'attivazione familiare {0}.", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
         public void AssociaFiglio(decimal idAttivazioneFamiliare, decimal idFiglio, ModelDBISE db)
         {

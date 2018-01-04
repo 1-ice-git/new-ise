@@ -2,20 +2,15 @@
 @using NewISE.Models.DBModel
 @model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
 
-
 @{
-
     decimal id = (decimal)ViewData["id"];
     decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
-
     decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
     decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
-
     EnumChiamante enChiamante = (EnumChiamante)ViewData["chiamante"];
     EnumTipoDoc enTipoDoc = (EnumTipoDoc)ViewData["tipoDoc"];
     EnumParentela enParentela = (EnumParentela)ViewData["parentela"];
-
     int nDoc = 0;
 
     if (Model != null && Model.Any())
@@ -24,16 +19,12 @@
     }
 
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
-
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
-
 
 @Html.Hidden("hiEliminaDoc")
 
 <p style="padding-left: 15px;">
-    @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
-
     @if (solaLettura)
     {
         <button class="btn btn-default disabled" disabled="disabled">Nuovo documento</button>
@@ -42,7 +33,6 @@
     {
         <button class="btn btn-success" onclick="NuovoDocumento(@id, @chiamante)">Nuovo documento</button>
     }
-
 </p>
 
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
@@ -85,7 +75,8 @@
                     <td class="text-center" style="width: 10%;">
                         @if (solaLettura)
                         {
-                            <a href="#" class="disabled">Sostituisci</a>
+                            //<a href="#" class="disabled">Sostituisci</a>
+                            <img width="17" src="../../Immagini/switch_grey.png" title="Sostituisci&nbsp;Documento" />
                         }
                         else
                         {
@@ -106,8 +97,6 @@
                 </tr>
             }
         </tbody>
-
-
     </table>
 </div>
 <p style="padding-left: 15px;">
@@ -119,9 +108,7 @@
         default:
             throw new ArgumentOutOfRangeException();
     }
-
 </p>
-
 
 <div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -165,7 +152,6 @@
     </div>
 </div>
 
-
 <div class="modal fade " id="DelDocModal" tabindex="-2" role="dialog" aria-labelledby="DelDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -188,12 +174,9 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
     //debugger;
     var guid = jQuery.guid++;
-
     var nuovoIDTable = "tabElencoDoc" + guid;
     var nuovoIdModalDelete = "DelDocModal" + guid;
     var nuovoModalIns = "NewDocModal" + guid;
@@ -203,7 +186,6 @@
     $("#DelDocModal").prop("id", nuovoIdModalDelete);
     $("#NewDocModal").prop("id", nuovoModalIns);
     $("#ReplaceDocModal").prop("id", nuovoModalReplace);
-
 
     $("#" + nuovoIDTable).DataTable({
         "language": {
@@ -240,19 +222,11 @@
         "order": [[3, "desc"]]
     });
 
-    
-
     function EliminaDocumento(id, Chiamante, idDocumento) {
         $('#' + nuovoIdModalDelete).modal('show');
         $('#hiEliminaDoc').val(idDocumento);
     }
 
-    //function SostituisciDoc(idDocumento) {
-    //    $('#' + nuovoModalReplace).modal('show');
-    //    $('#hiEliminaDoc').val(idDocumento);
-    //}
-
-    
     function ConfermaEliminaDoc() {
         //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/EliminaDocumento";
@@ -294,42 +268,30 @@
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
-
         });
-
-
     }
-
-    
-    
 
     $('#' + nuovoIdModalDelete).on('hidden.bs.modal', function(e) {
         //debugger;
         AggiornaElencoDoc();
-        //$(this).remove();
     });
 
     $('#' + nuovoModalReplace).on('hidden.bs.modal', function(e) {
         //debugger;
         AggiornaElencoDoc();
-        //$(this).remove();
     });
 
     $('#' + nuovoModalIns).on('hidden.bs.modal', function(e) {
         //debugger;
         AggiornaElencoDoc();
-        //$(this).remove();
     });
-
 
     function AggiornaElencoDoc() {
         //debugger;
         var nDocOld = parseInt(@nDoc);
         var newDoc = PrelevaNumeroDocumentiAttuali(@id, @tipoDoc, @parentela);
 
-        if (newDoc != nDocOld) {
-            ElencoDocumentiFamiliare(@id, @tipoDoc, @parentela, @chiamante,@idMaggiorazioniFamiliari);
-        }
+        ElencoDocumentiFamiliare(@id, @tipoDoc, @parentela, @chiamante,@idMaggiorazioniFamiliari);
     }
 
 
@@ -348,7 +310,6 @@
             },
             success: function (result) {
                 //debugger;
-
                 if (result.errore === "") {
                     nDoc = parseInt(result.nDoc);
                 } else {
@@ -356,8 +317,6 @@
                 }
             },
             complete: {
-
-
             },
             error: function (error) {
                 //debugger;
@@ -396,12 +355,8 @@
                 var titoloPagina = $("#titoloPagina").val();
                 $("#NewnotificaModelLabel").empty();
                 $("#NewnotificaModelLabel").html('Documenti ' + titoloPagina);
-
-
             },
             complete: {
-
-
             },
             error: function (error) {
                 //debugger;
@@ -435,16 +390,11 @@
                 //debugger;
                 $("#ReplaceViewDocumento").empty();
                 $("#ReplaceViewDocumento").html(result);
-
                 var titoloPagina = $("#titoloPagina").val();
                 $("#ReplacenotificaModelLabel").empty();
                 $("#ReplacenotificaModelLabel").html('Documenti ' + titoloPagina);
-
-
             },
             complete: {
-
-
             },
             error: function (error) {
                 //debugger;
@@ -453,9 +403,5 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
-
     }
-
-
-
 </script>
