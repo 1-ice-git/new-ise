@@ -254,10 +254,10 @@ namespace NewISE.Controllers
             {
                 amministratore = Utility.Amministratore();
 
-                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
-                {
+                //using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                //{
 
-                }
+                //}
 
 
 

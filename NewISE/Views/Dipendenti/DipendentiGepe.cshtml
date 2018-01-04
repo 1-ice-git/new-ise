@@ -77,6 +77,8 @@
     });
 
     function ElencoTrasferimento() {
+        //debugger;
+
         var rotta = "/Trasferimento/ElencoTrasferimento";
         var matricola = $("#Nominativo").val();
 
@@ -98,6 +100,7 @@
 
             },
             complete: function () {
+                //GestioneMenu();
                 MenuDaVisualizzare();
             },
             error: function (jqXHR, textStatus, errorThrow) {
@@ -110,7 +113,7 @@
     }
 
     //function GestioneAbilitazioneMenu(idTrasferimento) {
-      //  debugger;
+    //  debugger;
 
 
 

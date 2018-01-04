@@ -413,6 +413,14 @@
             }
             return s.join(dec);
         }
+
+        function blink(selector) {
+            $(selector).fadeOut('slow', function () {
+                $(this).fadeIn('slow', function () {
+                    blink(this);
+                });
+            });
+        }
     </script>
 </body>
 </html>

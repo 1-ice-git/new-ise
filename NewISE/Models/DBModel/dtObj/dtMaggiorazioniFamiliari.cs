@@ -942,7 +942,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     using (dtRinunciaMagFam dtrmf = new dtRinunciaMagFam())
                                     {
-                                        dtrmf.AnnullaRinuncia(idAttivazioneMagFam, db);
+                                        dtrmf.AnnullaRinuncia(idAttivazioneMagFam, idAttivazioneMagFamNew, db);
                                     }
                                 }
 
@@ -1142,12 +1142,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
                     {
-                        var rmf =
-                            mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
-                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
-                                .First();
+                        var lrmf =
+                            amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                                .OrderByDescending(a => a.IDRINUNCIAMAGFAM);
 
-                        rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
+                        if (lrmf?.Any() ?? false)
+                        {
+                            var rmf = lrmf.First();
+
+                            rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
+                        }
+                        else
+                        {
+                            rinunciaMagFam = false;
+                        }
+
+
                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                         Attivazione = amf.ATTIVAZIONEMAGFAM;
 
@@ -1158,7 +1168,6 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             docFormulario = true;
                         }
-
 
                         if (mf.CONIUGE != null)
                         {
@@ -1738,7 +1747,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
                         db.Database.CurrentTransaction.Commit();
-                    }   
+                    }
                     catch (Exception ex)
                     {
                         db.Database.CurrentTransaction.Rollback();

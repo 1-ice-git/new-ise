@@ -1,31 +1,69 @@
 ﻿@using NewISE.Models.DBModel
-@model NewISE.Models.ViewModel.ElencoFamiliariModel
+@model NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel
 
-@*<span>@Model.idFamiliare</span>*@
-@if (Model.Documenti?.Any() ?? false)
+
+@if (Model.HasDoc.esisteDoc)
 {
-    if (Model.escludiPassaporto)
+    if (Model.richiedi)
     {
-        @*<img class="SfondoBordoImg " src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30px" height="30px" disabled="disabled" />*@
-    }
-    else
-    {
-        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, @Convert.ToDecimal(Model.Documenti.First().tipoDocumento) , @Convert.ToDecimal(Model.parentela) , @Convert.ToDecimal(EnumChiamante.Passaporti) , @Model.idMaggiorazioniFamiliari ) ">
+        <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) ) ">
             <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
         </a>
     }
+
 }
 else
 {
-    if (Model.escludiPassaporto)
+    if (Model.richiedi)
     {
-        @*<img class="SfondoBordoImg " src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30px" height="30px" disabled="disabled" />*@
-    }
-    else
-    {
-        <a href="#" onclick=" ElencoDocumenti(@Model.idFamiliare, 10, @Convert.ToDecimal(Model.parentela) , @Convert.ToDecimal(EnumChiamante.Passaporti) , @Model.idMaggiorazioniFamiliari ) ">
+        <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) ) ">
             <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
         </a>
     }
+
 }
 
+
+<script type="text/javascript">
+    function ElencoDocumentiPassaporto(idFamiliarePassaporto, tipoDoc, idParentela) {
+        debugger;
+        var rotta = "/Documenti/ElencoDocumentiPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliarePassaporto: idFamiliarePassaporto,
+                tipoDoc: tipoDoc,
+                parentela: idParentela
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#divPassaporto").empty();
+                $("#divPassaporto").html(result);
+                GestionePulsantiNotificaAndConcludiPassaporto();
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+</script>

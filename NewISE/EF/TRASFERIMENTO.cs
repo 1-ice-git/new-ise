@@ -21,10 +21,10 @@ namespace NewISE.EF
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.TEORICI = new HashSet<TEORICI>();
-            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
+            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -54,8 +54,6 @@ namespace NewISE.EF
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -67,5 +65,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
     }
 }

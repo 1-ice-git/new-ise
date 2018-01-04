@@ -17,21 +17,27 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASPORTOEFFETTI()
         {
-            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.PERCENTUALEANTICIPOTM = new HashSet<PERCENTUALEANTICIPOTM>();
         }
     
         public decimal IDTRASPORTOEFFETTI { get; set; }
         public decimal IDTIPOTRASPORTO { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
+        public bool NOTIFICARICHIESTA { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
+        public bool PAGAANTICIPO { get; set; }
+        public Nullable<System.DateTime> DATAPAGAANTICIPO { get; set; }
+        public bool PAGASALDO { get; set; }
+        public Nullable<System.DateTime> DATAPAGASALDO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual TIPOTRASPORTO TIPOTRASPORTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEANTICIPOTM> PERCENTUALEANTICIPOTM { get; set; }
     }
 }

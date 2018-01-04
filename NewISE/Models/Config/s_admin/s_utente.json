@@ -20,8 +20,21 @@
       "nome": "Giancarlo",
       "cognome": "Albano",
       "email": "jean.ravelomanantsoa@valueson.it"
-    }
-
+    },
+    {
+      "username": "2519",
+      "password": "ise",
+      "nome": "Andrea",
+      "cognome": "Ambra",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "2986",
+      "password": "ise",
+      "nome": "Luigi",
+      "cognome": "Vignanelli",
+      "email": "mauro.arduini@ritspa.it"
+    },
 
   ]
 
