@@ -334,49 +334,39 @@
 
 
                     ///Se risulta in lavorazione abilito la il pulsante notifica
-                    if (inLavorazione)
-                    {
+                    if (inLavorazione) {
                         $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                     }
-                    else
-                    {
+                    else {
                         ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
-                        if (rinuncia && richiesta)
-                        {
+                        if (rinuncia && richiesta) {
                             $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                             $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                            if (attivazione)
-                            {
+                            if (attivazione) {
                                 $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                 $("#btAttivaMagFam_Var").addClass("disabled");
                             }
                         }
-                        else
-                        {
-                            if (richiesta)
-                            {
+                        else {
+                            if (richiesta) {
                                 $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                                 $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                                if (attivazione)
-                                {
+                                if (attivazione) {
                                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                     $("#btAttivaMagFam_Var").addClass("disabled");
                                 }
-                                else
-                                {
-                                    if (admin)
-                                    {
+                                else {
+                                    if (admin) {
                                         $("#btAttivaMagFam_Var").removeAttr("disabled");
                                         $("#btAttivaMagFam_Var").removeClass("disabled");
 
                                         $("#btAnnullaMagFam_Var").removeAttr("disabled");
                                         $("#btAnnullaMagFam_Var").removeClass("disabled");
                                     }
-                                    else
-                                    {
+                                    else {
                                         $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                         $("#btAttivaMagFam_Var").addClass("disabled");
 
@@ -385,8 +375,7 @@
                                     }
                                 }
                             }
-                            else
-                            {
+                            else {
                                 $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                                 $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 

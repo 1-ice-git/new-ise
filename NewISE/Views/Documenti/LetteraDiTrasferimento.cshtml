@@ -19,13 +19,14 @@
     <div class="form-group">
         @Html.LabelFor(model => model.protocolloLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
         <div class="col-xs-9">
-            <div id="divProtocolloLettera" style="display:inline-block;">
+            <div id="divProtocolloLettera" style="display: inline-block;">
                 @Html.TextBoxFor(model => model.protocolloLettera, new { @class = "form-control", style = "width:250px;" })
             </div>
             <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
             @*@Html.ValidationMessageFor(model => model.protocolloLettera, "", new { @class = "text-danger" })*@
         </div>
     </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.dataLettera, htmlAttributes: new { @class = "control-label col-xs-3" })
         <div class="col-xs-9 form-inline">

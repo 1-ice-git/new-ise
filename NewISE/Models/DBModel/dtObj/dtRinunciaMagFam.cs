@@ -14,11 +14,13 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void AnnullaRinuncia(decimal idAttivazioneMagFam, ModelDBISE db)
+        public void AnnullaRinuncia(decimal idAttivazioneMagFamOld, decimal idAttivazioneMagFamNew, ModelDBISE db)
         {
-            var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+            var amfOld = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFamOld);
+            var amfNew = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFamNew);
+
             var lrmf =
-                amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false && a.RINUNCIAMAGGIORAZIONI == true)
+                amfOld.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false && a.RINUNCIAMAGGIORAZIONI == true)
                     .OrderByDescending(a => a.IDRINUNCIAMAGFAM);
             if (lrmf?.Any() ?? false)
             {
@@ -30,7 +32,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (i > 0)
                 {
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Annullato, "Annullamento della riga di rinuncia delle maggiorazioni familiari.", "RINUNCIAMAGGIORAZIONIFAMILIARI", db, amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, rmf.IDRINUNCIAMAGFAM);
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Annullato, "Annullamento della riga di rinuncia delle maggiorazioni familiari.", "RINUNCIAMAGGIORAZIONIFAMILIARI", db, amfOld.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, rmf.IDRINUNCIAMAGFAM);
 
                     RINUNCIAMAGGIORAZIONIFAMILIARI rmfNew = new RINUNCIAMAGGIORAZIONIFAMILIARI()
                     {
@@ -40,18 +42,18 @@ namespace NewISE.Models.DBModel.dtObj
                         ANNULLATO = false
                     };
 
-                    db.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmfNew);
+                    amfNew.RINUNCIAMAGGIORAZIONIFAMILIARI.Add(rmfNew);
 
                     int j = db.SaveChanges();
 
-                    if (i <= 0)
+                    if (j <= 0)
                     {
-                        throw new Exception("Errore nella fase d'inserimento della nuova riga di rinuncia maggiorazioni familiari per l'ID maggiorazioni familiari: " + amf.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI);
+                        throw new Exception("Errore nella fase d'inserimento della nuova riga di rinuncia maggiorazioni familiari per l'ID maggiorazioni familiari: " + amfNew.MAGGIORAZIONIFAMILIARI.IDMAGGIORAZIONIFAMILIARI);
                     }
                     else
                     {
 
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga per la gestione della rinuncia delle maggiorazioni familiari.", "RINUNCIAMAGGIORAZIONIFAMILIARI", db, amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, rmfNew.IDRINUNCIAMAGFAM);
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova riga per la gestione della rinuncia delle maggiorazioni familiari.", "RINUNCIAMAGGIORAZIONIFAMILIARI", db, amfNew.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO, rmfNew.IDRINUNCIAMAGFAM);
                     }
                 }
                 else

@@ -1047,7 +1047,7 @@ namespace NewISE.Models.DBModel.dtObj
                         coan = tr.COAN,
                         protocolloLettera = tr.PROTOCOLLOLETTERA,
                         dataLettera = tr.DATALETTERA,
-                        notificaTrasferimento = trm.notificaTrasferimento,
+                        notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
                         dataAggiornamento = tr.DATAAGGIORNAMENTO,
 
                     };
@@ -1079,7 +1079,7 @@ namespace NewISE.Models.DBModel.dtObj
                     coan = tr.COAN,
                     protocolloLettera = tr.PROTOCOLLOLETTERA,
                     dataLettera = tr.DATALETTERA,
-                    notificaTrasferimento = trm.notificaTrasferimento,
+                    notificaTrasferimento = tr.NOTIFICATRASFERIMENTO,
                     dataAggiornamento = tr.DATAAGGIORNAMENTO,
 
                 };

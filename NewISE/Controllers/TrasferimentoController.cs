@@ -767,6 +767,8 @@ namespace NewISE.Controllers
 
                                     if (idTrasferimentoOld > 0)
                                     {
+
+
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
                                         //ricaricaTrasferimenti = true;
                                     }
@@ -1136,6 +1138,70 @@ namespace NewISE.Controllers
             }
         }
 
+
+        [HttpPost]
+        public JsonResult VerificaStatoStrasferimentoJsonResult(decimal idTrasferimento)
+        {
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+
+                    if (trm?.idTrasferimento > 0)
+                    {
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        {
+                            return Json(new { StatoTrasferimento = (decimal)trm.idStatoTrasferimento });
+                        }
+                        else
+                        {
+                            return Json(new { StatoTrasferimento = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { StatoTrasferimento = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
+        public JsonResult VerificaNotificaTrasferimento(decimal idTrasferimento)
+        {
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
+
+                    if (trm?.idTrasferimento > 0)
+                    {
+                        if (trm.notificaTrasferimento)
+                        {
+                            return Json(new { notificaTrasferimento = trm.notificaTrasferimento == true ? 1 : 0 });
+                        }
+                        else
+                        {
+                            return Json(new { notificaTrasferimento = 0 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { notificaTrasferimento = 0 });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
         [HttpPost]
         public JsonResult VerirficaCompilazioneTrasferimento(decimal idTrasferimento)
         {
@@ -1338,11 +1404,12 @@ namespace NewISE.Controllers
 
         }
 
-        [Authorize(Roles = "1 ,2")]
+
         [HttpPost]
         public ActionResult ElencoTrasferimento(int matricola, decimal idTrasferimento = 0)
         {
             var r = new List<SelectListItem>();
+            bool admin = false;
 
             try
             {
@@ -1373,6 +1440,10 @@ namespace NewISE.Controllers
                     }
 
                     ViewBag.ListaTrasferimento = r;
+
+                    admin = Utility.Amministratore();
+
+                    ViewBag.Amministratore = admin;
                 }
 
 

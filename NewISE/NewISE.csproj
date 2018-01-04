@@ -2678,7 +2678,6 @@
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
     <Content Include="Views\Home\GetListaHome.cshtml" />
     <Content Include="Views\Home\DetailsFunzioneEvento.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\CalendariEventi\Index.cshtml" />

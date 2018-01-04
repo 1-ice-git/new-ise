@@ -1,9 +1,22 @@
-﻿<div class="form-horizontal">
+﻿
+@{
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+}
+
+<div class="form-horizontal">
     <div class="form-group">
         @Html.Label("lblListaTrasferimento", "Trasferimento", new { @class = "control-label col-xs-3" })
         <div id="divCombo2" class="col-xs-9">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select" })
+                @if (admin)
+                {
+                    @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select" })
+                }
+                else
+                {
+                    @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select disabled", @disabled = "disabled" })
+                }
+
             </div>
         </div>
     </div>
