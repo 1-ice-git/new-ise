@@ -71,11 +71,16 @@
                         @*@Ajax.ActionLink("Modifica", "ModificaPensione", new { idPensioneConiuge = item.idPensioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |*@
                         @if (solaLettura)
                         {
-                            <a href="#" style="pointer-events: none; cursor: default; opacity: 0.6; text-decoration: none;">Elimina</a>
+                            //<a href="#" style="pointer-events: none; cursor: default; opacity: 0.6; text-decoration: none;">Elimina</a>
+                            <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
                         }
                         else
                         {
-                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
+                            //<a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
+                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione')" id="linkEliminaPensione">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Pensione" />
+                            </a>
+
                         }
                     </td>
                 </tr>

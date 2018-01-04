@@ -1,5 +1,4 @@
 ﻿@model NewISE.Models.DBModel.DocumentiModel
-
 @{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
 }
@@ -21,7 +20,6 @@
     </div>
 </div>
 
-
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/ValidationWithBoot.js"></script>
 
@@ -38,33 +36,23 @@
         if (file != null && file != undefined) {
             var splitFile = file.split("\\");
             var nomeFile = splitFile[splitFile.length - 1];
-
             var estensioniValide = new Array(".pdf");
             var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
             if (estensioniValide.contiene(estensione)) {
-
-                //$("#NomeFile").val(nomeFile);
-                //$("#EstensioneFile").val(estensione);
-
                 $("#spanNomeFile").html(nomeFile);
                 return true;
             } else {
-
                 MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il .pdf");
-
                 return false;
             }
         }
-
     });
 
 
     function Validazione() {
         //debugger;
         var ret = false;
-
         var file = $("#file").val();
-
         if (file != null && file != undefined && file != "") {
             $("#divFile").removeClass('BordoRosso');
             ret = true;
@@ -73,22 +61,17 @@
             $("#divFile").addClass('BordoRosso');
             ret = false;
         }
-
         return ret;
     }
 
 
     function SalvaDocumento() {
-
         //debugger;
         var datiForm = new FormData();
         var rotta = "/VariazioneMaggiorazioniFamiliari/InserisciFormularioMF";
-
-
         var file = $("#file")[0].files[0];
 
         if (Validazione()) {
-
             datiForm.append("idMaggiorazioniFamiliari", @idMaggiorazioniFamiliari);
             datiForm.append("file", file);
 
@@ -112,19 +95,15 @@
                 //un content type errato
                 success: function (result) {
                     //debugger;
-
                     if (result.err != "" && result.err != undefined) {
                         ErroreElaborazioneAjax(result.err);
                     }
                     else {
                         InfoElaborazioneAjax(result.msg);
                         PulsantiNotificaAttivaMagFam();
-                        //CloseTimeModalFormulario();
                     }
-
                 },
                 complete: function () {
-                    //$("#btUpload").removeAttr("disabled");
                 },
                 error: function (error) {
                     //debugger;
@@ -136,12 +115,5 @@
                 }
             });
         }
-        //else {
-        //    DialogInfo("Prima di inviare la lettera di trasferimento è necessario compilare i campi con asterisco.");
-        //}
-
     }
-
-
-
 </script>

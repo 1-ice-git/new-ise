@@ -8,20 +8,17 @@
 <script src="~/Content/bootstrap-fileinput/themes/fa/theme.min.js"></script>
 <script src="~/Scripts/locales/it.js"></script>
 
-
 @{
     decimal tipoDoc = (decimal)ViewData["tipoDoc"];
     string titoloPagina = ViewData["titoloPagina"].ToString();
     decimal id = (decimal)ViewData["ID"];
     decimal idMaggiorazioniFamiliari = (decimal)ViewData["idMaggiorazioniFamiliari"];
     decimal parentela = (decimal)ViewData["parentela"];
-
 }
 
 @Html.Hidden("titoloPagina", titoloPagina)
 
 <div style="padding-left: 15px; padding-right: 10px;">
-    @*<label class="control-label">Seleziona i files</label>*@
     <input id="files" name="files[]" type="file" multiple class="file-loading">
     <div id="divError" class="text-center text-error text-danger">
     </div>
@@ -42,16 +39,9 @@
             var estensioniValide = new Array(".pdf");
             var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
             if (estensioniValide.contiene(estensione)) {
-
-                //$("#NomeFile").val(nomeFile);
-                //$("#EstensioneFile").val(estensione);
-
-                //$("#spanNomeFile").html(nomeFile);
                 return true;
             } else {
-
                 MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
-
                 return false;
             }
         }
@@ -85,25 +75,16 @@
         resizeImage: true,
         elErrorContainer: '#divError',
         required: true,
-        //showRemove: false,
-        //showUpload: false
-
-
     });
     $('#files').on('fileuploaded', function (event, data, previewId, index) {
         //debugger;
-
-
     });
 
     $('#files').on('filebatchuploaderror', function (event, data, previewId, index) {
         //debugger;
-        //$("#divError").html(previewId);
     });
 
     $('#file').on('filebatchuploadcomplete', function (event, data, previewId, index) {
         //debugger;
     });
-
-
 </script>

@@ -1,7 +1,6 @@
-﻿
-
-@{
+﻿@{
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
 <div class="row">
@@ -11,17 +10,25 @@
                 <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
                 Download formulario
             </button>
-
         </div>
     </div>
-    <div class="col-xs-2">
+    <div class="col-xs-3">
         <div style="margin-top: 10px; margin-bottom: 10px;">
-            <button class="btn btn-default btn-sm" onclick="NuovoFormulario();">
-                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
-                Inserisci formulario
-            </button>
+            @if (solaLettura)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled="disabled">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Inserisci formulario
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
+                    <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                    Inserisci formulario
+                </button>
+            }
         </div>
-
     </div>
     <div id="divCombo" class="col-xs-6">
         <div style="margin-top: 10px; margin-bottom: 10px;">
@@ -32,7 +39,6 @@
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-xs-12">
         <div id="divTabElencoFormulari_Var">
@@ -40,8 +46,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="modal fade" id="ModalDownloadFormulario_Var" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -62,7 +66,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="ModalNuovoFormulario_Var" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -85,10 +88,7 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
-
     function DownloadFormulario() {
         $('#ModalDownloadFormulario_Var').modal().show();
     }
@@ -97,7 +97,6 @@
         //debugger;
         ElencoFormulariInseriti();
     });
-
 
     function NuovoFormulario() {
         //debugger;
@@ -121,7 +120,6 @@
                 //debugger;
                 $("#divViewNuovoFormulario_Var").empty();
                 $("#divViewNuovoFormulario_Var").html(result);
-
             },
             error: function (error) {
                 //debugger;
@@ -131,7 +129,6 @@
             }
         });
     }
-
 
     function TabElencoFormulari() {
         //debugger;
@@ -149,7 +146,6 @@
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 Blocca();
-                //$('#ModalNuovoFormulario').modal('show');
             },
             success: function (result) {
                 //debugger;
@@ -184,9 +180,7 @@
                 beforeSend: function () {
                     //debugger;
                     VerificaAutenticazione();
-                    //$('#inviaDocModal').modal('show');
                     //Blocca();
-                    //$('#ModalNuovoFormulario').modal('show');
                 },
                 success: function (result) {
                     //debugger;
@@ -206,30 +200,12 @@
         {
             TabElencoFormulari();
         }
-
     }
-
-
-
-
-
 
     $("#ModalNuovoFormulario_Var").on("hidden.bs.modal", function() {
         //debugger;
         TabElencoFormulari();
     });
-
-    //function CloseTimeModalFormulario() {
-    //    setTimeout(CloseModalFileFormulario, 1000);
-    //    //CloseModalFile();
-    //}
-
-    //function CloseModalFileFormulario() {
-    //    $('#ModalNuovoFormulario').modal('hide');
-    //    //RicaricaModificaTrasferimento();
-    //    setTimeout(TabElencoFormulari, 1000);
-    //}
-
 
 </script>
 

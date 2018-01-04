@@ -9,6 +9,7 @@
 }
 
 @Html.Hidden("hiEliminaConiuge")
+@Html.Hidden("hiEliminaFiglio")
 
 <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
     @if (solaLettura)
@@ -25,9 +26,7 @@
         {
             <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo Coniuge</button>
         }
-
     }
-
 
     @if (solaLettura)
     {
@@ -36,14 +35,10 @@
     else
     {
         @Ajax.ActionLink("Nuovo Figlio", "NuovoFiglio", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuovo figlio", @id = "linkEditFiglio" })
-
     }
-
-
 </p>
 
 <div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
-
     <table id="tabElencoFamiliari" class="table-striped" cellspacing="0">
         <thead>
             <tr>
@@ -75,14 +70,12 @@
                 </th>
                 <th>
                 </th>
-
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
                     </td>
@@ -208,11 +201,16 @@
                                 }
                                 if (item.parentela == EnumParentela.Figlio)
                                 {
-                                    <a href="#" onclick="Elimina__Figlio(@item.idFamiliare);">
+                                    <a href="#" onclick="EliminaFiglio(@item.idFamiliare);">
                                         <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Figlio" />
                                     </a>
                                 }
                             }
+                            else
+                            {
+                                <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                            }
+
                         }
                     </td>
                 </tr>
@@ -238,6 +236,28 @@
             </div>
             <div class="modal-footer">
                 <button id="btEliminaConiuge" type="button" class="btn btn-info" onclick="ConfermaEliminaConiuge();">Procedere</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="DelFiglioModal" tabindex="-2" role="dialog" aria-labelledby="DelFiglioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DelnotificaModelLabel">ATTENZIONE!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="DelViewFiglio">
+                    Procedere con l'eliminazione del figlio?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btEliminaFiglio" type="button" class="btn btn-info" onclick="ConfermaEliminaFiglio();">Procedere</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -286,6 +306,11 @@
     function EliminaConiuge(idConiuge) {
         $('#DelConiugeModal').modal('show');
         $('#hiEliminaConiuge').val(idConiuge);
+    }
+
+    function EliminaFiglio(idFiglio) {
+        $('#DelFiglioModal').modal('show');
+        $('#hiEliminaFiglio').val(idFiglio);
     }
 
 
@@ -359,6 +384,42 @@
         });
 
     }
+
+    function AltriDatiFamiliariFiglio(idFiglio, idMaggiorazioniFamiliari) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/AltriDatiFamiliariFiglio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idFiglio: idFiglio, idMaggiorazioniFamiliari: idMaggiorazioniFamiliari },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabFamiliari").empty();
+                $("#tabFamiliari").html(result);
+            },
+            complete: function () {
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
 
     function ElencoDocumentiFamiliare(idFamiliare, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
         //debugger;
@@ -473,11 +534,8 @@
     }
 
     function ConfermaEliminaConiuge() {
-        debugger;
+        //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaEliminaConiuge";
-        var idMaggiorazioniFamiliari = parseInt(@idMaggiorazioniFamiliari);
-        var solaLettura = parseInt(@solaLettura);
-        var check_nuovo_coniuge = parseInt(@check_nuovo_coniuge);
         var idConiuge = parseInt($("#hiEliminaConiuge").val());
 
 
@@ -485,10 +543,10 @@
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                idConiuge: idConiuge,
-                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
-                solaLettura: solaLettura,
-                check_nuovo_coniuge: check_nuovo_coniuge
+                idConiuge: idConiuge
+                //idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
+                //solaLettura: solaLettura,
+                //check_nuovo_coniuge: check_nuovo_coniuge
             },
             dataType: 'json',
             async: false,
@@ -523,23 +581,16 @@
 
     }
 
-    function Elimina__Figlio(idFamiliare) {
-        var rotta = "/VariazioneMaggiorazioniFamiliari/EliminaFiglio";
-
-        var idMaggiorazioniFamiliari = @idMaggiorazioniFamiliari;
-        var solaLettura = @solaLettura;
-        var check_nuovo_figlio= @check_nuovo_figlio;
+    function ConfermaEliminaFiglio() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaEliminaFiglio";
+        var idFiglio = parseInt($("#hiEliminaFiglio").val());
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: {
-                idFiglio: idFamiliare,
-                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari,
-                solaLettura: solaLettura,
-                check_nuovo_figlio: check_nuovo_figlio
-            },
-            dataType: 'html',
+            data: { idFiglio: idFiglio },
+            dataType: 'json',
             async: false,
             beforeSend: function () {
                 //debugger;
@@ -548,12 +599,18 @@
             },
             success: function (result) {
                 //debugger;
-                $("#tabFamiliari").empty();
-                $("#tabFamiliari").html(result);
+                if (result.errore === "") {
+                    $('#DelFiglioModal').modal('hide');
+                    PulsantiNotificaAttivaMagFam();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+                //$("#tabFamiliari").empty();
+                //$("#tabFamiliari").html(result);
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
                 Sblocca();
             },
             error: function (error) {
@@ -566,7 +623,12 @@
 
     }
 
-    $('#DelConiugeModal').on('hidden.bs.modal', function(e) {
+    $('#DelConiugeModal').on('hidden.bs.modal', function (e) {
+        //debugger;
+        ElencoFamiliari();
+    });
+
+    $('#DelFiglioModal').on('hidden.bs.modal', function (e) {
         //debugger;
         ElencoFamiliari();
     });

@@ -7,16 +7,9 @@
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
 }
 
-@*<style>
-        a.dt-button.green {
-            color: green;
-        }
-    </style>*@
-
 @Html.Hidden("hdIdImportoPensione")
 
 <p style="margin-top: 5px; padding-left:15px;">
-
     @if (solaLettura) 
     {
         <button class="btn btn-default disabled">Nuovo importo</button>
@@ -25,13 +18,11 @@
     {
         @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
     }
-
 </p>
 <div style="padding-left:15px; padding-right:10px;">
     <table id="TabPensioni" cellspacing="0">
         <thead>
             <tr>
-
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizioValidita)
                 </th>
@@ -41,15 +32,14 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.importoPensione)
                 </th>
-
-                <th></th>
+                <th>
+                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizioValidita)
                     </td>
@@ -68,14 +58,15 @@
                         @Html.DisplayFor(modelItem => item.importoPensione)
                     </td>
                     <td class="text-center">
-                        @*@Ajax.ActionLink("Modifica", "ModificaPensione", new { idPensioneConiuge = item.idPensioneConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divOperazioniAttivitaTrasf", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }) |*@
                         @if (solaLettura)
                         {
-                            <a href="#" style="pointer-events: none; cursor: default; opacity: 0.6; text-decoration: none;">Elimina</a>
+                            <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
                         }
                         else
                         {
-                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione');">Elimina</a>
+                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione')" id="linkEliminaPensione">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Pensione" />
+                            </a>
                         }
                     </td>
                 </tr>
@@ -111,6 +102,8 @@
 </div>
 
 <script type="text/javascript">
+    PulsantiNotificaAttivaMagFam();
+
     $('#TabPensioni').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
@@ -177,15 +170,12 @@
             },
             success: function (result) {
                 //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
                 $("#tabFamiliari").empty();
                 $("#tabFamiliari").html(result);
-
+                PulsantiNotificaAttivaMagFam();
             },
             complete: function () {
-
-
+                AggiornaElencoPensioni();
             },
             error: function (error) {
                 //debugger;
@@ -194,8 +184,10 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
-
     }
 
+    function AggiornaElencoPensioni() {
+        Pensione(@idConiuge);
+    }
 
 </script>
