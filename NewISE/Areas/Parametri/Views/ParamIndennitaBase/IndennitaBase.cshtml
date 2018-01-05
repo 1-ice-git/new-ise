@@ -2,8 +2,8 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
+   // bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
 }
 
 <p>
@@ -15,7 +15,8 @@
         @Html.Label("lblLivello0", "Seleziona Livello", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();", @onClick = "PrelevaPVIndBase();" })
+                @Html.DropDownList("idLivello", ViewBag.LivelliList  as IEnumerable<SelectListItem>
+               , new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();", @onClick = "PrelevaPVIndBase();" })
             </div>
         </div>
     </div>
@@ -69,17 +70,18 @@
                 <td style="text-align:center;">
                     @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                        if (dtib.IndennitaBaseAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                        {
+                            if (dtib.EsistonoMovimentiPrima(item))
+                            {
+                               <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
-
-
                 </td>
             </tr>
         }
@@ -124,22 +126,26 @@
 
     });
 
+    $('#idLivello').val(@idLivello);
+
+
+
+
     $("#btnInsNuovaInd").button();
 
     function PrelevaPVIndBase() {
-        //debugger;
+       //debugger;
         rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
-
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var chk = true;
+        
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -189,9 +195,10 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+
+           if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $.ajax({
             type: "POST",
@@ -228,20 +235,21 @@
     }
 
     function EliminaIndbase(id) {
-        //debugger;
+       // debugger;
         var rotta = "/Parametri/ParamIndennitaBase/EliminaIndennitaBase";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var chk = true;
+       
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

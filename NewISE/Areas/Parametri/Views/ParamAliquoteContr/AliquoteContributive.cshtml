@@ -2,10 +2,18 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    //bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    //decimal idAliqContr = ViewBag.idAliqContr == null ? 0 : (decimal)ViewBag.idAliqContr;
+    //decimal idTipoContributo = ViewBag.idTipoContributo == null ? 0 : (decimal)ViewBag.idTipoContributo;
+    bool escludiAnnullati = ViewData["escludiAnnullati"] == null ? false : (bool)ViewData["escludiAnnullati"];
+    decimal idAliqContr = ViewData["idTipoContributo"] == null ? 0 : (decimal)ViewData["idTipoContributo"];
+    decimal idTipoContributo = ViewData["idTipoContributo"] == null ? 0 : (decimal)ViewData["idTipoContributo"];
 
+    if (TempData["Aliquote"] != null)
+    {
+        ViewBag.Aliquote= (IEnumerable<SelectListItem>)TempData["Aliquote"];
+    }
 }
-
 <p>
     <a id="btnInsNuovaAliquota" href="#" onclick="NuoveAliquote();">Inserisci Aliquota</a>
 </p>
@@ -15,7 +23,8 @@
         @Html.Label("lblAliquota", "Seleziona Aliquota ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idTipoContributo", ViewBag.Aliquote as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
+                @Html.DropDownList("idTipoContributo",ViewBag.Aliquote as IEnumerable<SelectListItem>,
+               new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVAliquota();", @onClick = "PrelevaPVAliquota();" })
             </div>
         </div>
     </div>
@@ -67,7 +76,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtAliquoteContr dtib = new dtAliquoteContr())
+                    @*@using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -77,15 +86,27 @@
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                    }*@
+                    @using (dtAliquoteContr dtib = new dtAliquoteContr())
+                    {
+                        if (dtib.AliquoteContributiveAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (dtib.EsistonoMovimentiPrima(item))
+                            {
+                                <a href="#" onclick="EliminaAliquota(@item.idAliqContr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
-
-
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<div id="dialog-confirm" title="Elimina aliquota contributicva?" class="hide">
+<div id="dialog-confirm" title="Elimina aliquota contributiva?" class="hide">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della aliquota contributiva?</p>
 </div>
 
@@ -124,22 +145,25 @@
 
     });
 
+    $('#idAliqContr').val(@idAliqContr);
+
     $("#btnInsNuovaAliquota").button();
 
     function PrelevaPVAliquota() {
-        //debugger;
+       // debugger;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
         rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
 
         var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
-        var chk = true;
+
+        $("#hiTipoContributo").val(idTipoContributo);
 
         if (isNaN(idTipoContributo)) {
             $("#divPViewParametri").empty();
             return false;
-        }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
         }
 
         $.ajax({
@@ -177,20 +201,25 @@
     }
 
     function NuoveAliquote() {
-        //debugger;
+      //  debugger;
 
         var rotta = "/Parametri/ParamAliquoteContr/NuovaAliquotaContributiva";
         var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
-        var chk = false;
+        $("#hiTipoContributo").val(idTipoContributo);
 
         if (isNaN(idTipoContributo)) {
             //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare una aliquota per procedere.");
-            return false;
+            //AlertDialog("Selezionare una aliquota per procedere.");
+            //return false;
+            idTipoContributo = $("#hiTipoContributo").val();
         }
-
+        @*var chk = false;
         if ('@escludiAnnullati' == 'true') {
             chk = false;
+        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -228,22 +257,31 @@
     }
 
     function EliminaAliquota(id) {
-        //debugger;
+       // debugger;
         var rotta = "/Parametri/ParamAliquoteContr/EliminaAliquoteContributive";
 
-        var idAliqContr = parseInt($("#idAliqContr").select2('val'));
-        var chk = true;
-
-        if (isNaN(idAliqContr)) {
-            $("#divPViewParametri").empty();
-            return false;
+       // var idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
+        var idTipoContributo = parseInt($("#hiTipoContributo").val());
+        if (isNaN(idTipoContributo)) {
+            //$("#divPViewParametri").empty();
+            //return false;
+            idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
         }
+        //if (idTipoContributo==0)
+        //    idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
 
+        
+        @*var chk = true;
         if ('@escludiAnnullati' == 'true') {
             chk = false;
-        }
+        }*@
 
-        $('#dialog-confirm').dialog({
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+        
+        $('#dialog-confirm').dialog({            
             autoOpen: true,
             width: 400,
             buttons: [
@@ -255,7 +293,9 @@
                             type: "POST",
                             url: rotta,
                             data: { escludiAnnullati: chk, idTipoContributo: idTipoContributo, idAliqContr: id },
-                            dataType: 'html',
+                            dataType: 'HTML',
+                            cache: false,
+                            async:false,
                             beforeSend: function () {
                                 //debugger;
                                 //VerificaAutenticazione();
@@ -266,6 +306,14 @@
                             success: function (result) {
                                 //debugger;
                                 //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //if (result.err == "")
+                                //{
+                                //    //refresh la pagina
+                                //}
+                                //else
+                                //{
+                                //    AlertDialog(result.msg);
+                                //}
                                 $("#divPViewParametri").empty();
                                 $("#divPViewParametri").html(result);
 

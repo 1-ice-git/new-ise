@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Areas.Parametri.Models.dtObj;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,11 +17,15 @@ namespace NewISE.Models.DBModel
         public decimal idLivello { get; set; }
 
         public decimal? idRiduzioni { get; set; }
+
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data ini. validità")]
+        [Display(Name = "Data inizio validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtIndennitaBase), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
+        
         [Display(Name = "Data fin. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
@@ -28,11 +33,11 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name = "Valore")]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
+      //  [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Valore resp.")]
-        [DisplayFormat(DataFormatString = "{0:P2}")]
+       // [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

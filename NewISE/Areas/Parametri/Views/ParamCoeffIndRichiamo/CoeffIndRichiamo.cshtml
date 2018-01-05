@@ -127,15 +127,18 @@
         rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
 
         var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
-        var chk = true;
 
         if (isNaN(idRiduzioni)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
+        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({

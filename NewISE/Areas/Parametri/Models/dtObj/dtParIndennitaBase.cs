@@ -135,7 +135,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
+                    bool Allincluded = true;
+                    if (escludiAnnullati) Allincluded = false;
+                    List<INDENNITABASE> lib=new List<INDENNITABASE>();
+                    if (!Allincluded)
+                        lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.INDENNITABASE.Where(a => a.IDLIVELLO == idLivello).ToList();
 
                     libm = (from e in lib
                             select new IndennitaBaseModel()
@@ -332,9 +338,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         db.INDENNITABASE.AddRange(libNew);
                     }
                     else
-                    {
+                    {                       
                         db.INDENNITABASE.Add(ibNew);
-
+                        ///////////////////////////////////////// ///////////////////////////////////////// ////Jean Rick////////////////////////////////////////
+                        var entitaLista = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibNew.IDLIVELLO).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                        if (entitaLista.Count != 0)
+                        {
+                            var entita = entitaLista.First();
+                            var ibInMezzo = new INDENNITABASE()
+                            {
+                                IDLIVELLO = ibNew.IDLIVELLO,
+                                DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+                                DATAFINEVALIDITA = entita.DATAINIZIOVALIDITA.AddDays(-1),
+                                VALORE = 0,
+                                VALORERESP = 0,
+                                ANNULLATO = false
+                            };
+                            db.INDENNITABASE.Add(ibInMezzo);
+                        }
+     //////////////////////////////////////////////////////////////////////////////////////fine Jean Rick/////////////////////////////////////////                        
                     }
                     db.SaveChanges();
 
@@ -358,6 +380,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 return db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDLIVELLO == ibm.idLivello).Count() > 0 ? true : false;
+            }
+        }
+        public bool IndennitaBaseAnnullato(IndennitaBaseModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.INDENNITABASE.Where(a => a.IDLIVELLO == ibm.idLivello && a.IDINDENNITABASE==ibm.idIndennitaBase).First().ANNULLATO==true ? true : false;
             }
         }
 
@@ -420,17 +449,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         delIB = lib.First();
                         delIB.ANNULLATO = true;
 
-                        var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+                        var lprecIB = db.INDENNITABASE.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA
+                        && a.ANNULLATO == false  && a.IDLIVELLO==delIB.IDLIVELLO).OrderByDescending(a => a.IDINDENNITABASE).ToList();//corretto
 
                         if (lprecIB.Count > 0)
                         {
                             precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
                             precedenteIB.ANNULLATO = true;
-
+                            delIB.ANNULLATO=true;//corretto
                             var ibOld1 = new INDENNITABASE()
                             {
                                 IDLIVELLO = precedenteIB.IDLIVELLO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                 // DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,//corretto
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 VALORE = precedenteIB.VALORE,
                                 VALORERESP = precedenteIB.VALORERESP,

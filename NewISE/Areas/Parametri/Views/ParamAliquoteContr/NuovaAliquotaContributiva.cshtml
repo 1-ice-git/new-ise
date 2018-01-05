@@ -9,13 +9,15 @@
 
 @{
     TipoAliquoteContributiveModel lm = (TipoAliquoteContributiveModel)ViewBag.descrizione;
-    string descrizione = lm.descrizione;
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipoContributo = lm.idTipoAliqContr;
+    string descrizione = lm!=null?lm.descrizione:"";
 
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idTipoContributo = lm != null ? lm.idTipoAliqContr:0;
+
+    var errori = ViewData.ModelState;
 }
 
-@using (Ajax.BeginForm("InserisciAliquoteContributive", "ParamAliquoteContr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciAliquoteContributive", "ParamAliquoteContr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" },new { id = "formAliqContr" }))
 {
     @Html.AntiForgeryToken()
 
@@ -29,7 +31,7 @@
         </div>
 
         @Html.HiddenFor(model => model.idTipoContributo)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -80,7 +82,53 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-warning text-warning">
+                <p id="msgModalWarning" class="text-warning">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+ //   debugger;
+    @foreach(var e in errori)
+    {
+        if(e.Value.Errors.Count>0)
+        {
+            @:DialogModalError('True');
+                break;
+        }
+    }
+
+    //$('#formAliqContr').submit(function () {
+    //  //  debugger;
+    //    var form = $(this);
+    //    if (!form.valid()) {
+    //        DialogModalError('True');
+    //    }
+    //});
+
+    function DialogModalError(err) {
+        //debugger;
+        if (err == 'True') {
+            $('#myModalErrorModel').modal('toggle');
+        }
+    }
+
     Globalize.culture("it-IT");
 
     $("#aliquota").autoNumeric('init',
@@ -89,6 +137,8 @@
 	    aDec: ',',
 	    aSign: ''
 	});
+
+    //var x= $("#hiTipoContributo").val();
 
     $('form').submit(function () {
         //debugger;
@@ -129,17 +179,20 @@
         rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
 
         var idTipoContributo = parseFloat('@idTipoContributo');
-        var chk = true;
+       
 
         if (isNaN(idTipoContributo)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
+        @*var chk = true;
         if ('@escludiAnnullati' == 'true') {
             chk = false;
+        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
-
         $.ajax({
             type: "POST",
             url: rotta,
