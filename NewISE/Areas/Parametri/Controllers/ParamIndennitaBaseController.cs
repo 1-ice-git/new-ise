@@ -15,6 +15,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaBase(bool escludiAnnullati, decimal idLivello = 0)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
@@ -31,7 +32,7 @@ namespace NewISE.Areas.Parametri.Controllers
                              select new SelectListItem()
                              {
                                  Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
+                                 Value = t.idLivello.ToString()                               
                              }).ToList();
 
                         if (idLivello == 0)
@@ -52,24 +53,26 @@ namespace NewISE.Areas.Parametri.Controllers
                 //{
                 //    lrm = dtpr.getListRiduzioni()
                 //}
-
+               
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaBase(idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //if (escludiAnnullati==true)
+                    //{
+                    //  //  escludiAnnullati = false;
+                    //    libm = dtib.getListIndennitaBase(idLivello, false).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
+                    //else
+                    //{
+                    //    libm = dtib.getListIndennitaBase(idLivello,true).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
+                    libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+            ViewBag.idLivello = idLivello;
 
             ViewBag.escludiAnnullati = escludiAnnullati;
 
@@ -80,6 +83,8 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaBaseLivello(decimal idLivello, bool escludiAnnullati)
         {
+            ViewBag.idLivello = idLivello;
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
@@ -98,7 +103,7 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Text = t.DescLivello,
                                  Value = t.idLivello.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                         r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                     }
 
                     ViewBag.LivelliList = r;
@@ -106,15 +111,16 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //if (escludiAnnullati==true)
+                    //{
+                    //   // escludiAnnullati = false;
+                    //    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
+                    //else
+                    //{
+                    //    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
+                    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -200,6 +206,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaBase", ibm);
+                  //  return RedirectToAction("NuovaIndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
                 }
             }
             catch (Exception ex)

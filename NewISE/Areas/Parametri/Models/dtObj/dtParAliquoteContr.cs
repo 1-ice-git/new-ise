@@ -389,9 +389,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-
-
+        
         public bool EsistonoMovimentiPrimaUguale(AliquoteContributiveModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -400,20 +398,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public void DelAliquoteContributive(decimal idTipoContributo)
+        // public void DelAliquoteContributive(decimal idTipoAliqContr)
+        public void DelAliquoteContributive(decimal idAliqContr)
         {
             ALIQUOTECONTRIBUTIVE precedenteIB = new ALIQUOTECONTRIBUTIVE();
             ALIQUOTECONTRIBUTIVE delIB = new ALIQUOTECONTRIBUTIVE();
-
-
+            
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
                 {
                     db.Database.BeginTransaction();
 
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo);
-
+                    //var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoAliqContr);
+                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == idAliqContr);
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
@@ -429,11 +427,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                             {
 
-                                IDALIQCONTR = precedenteIB.IDALIQCONTR,
+                              //  IDALIQCONTR = precedenteIB.IDALIQCONTR,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 ALIQUOTA = precedenteIB.ALIQUOTA,
-
+                                IDTIPOCONTRIBUTO= precedenteIB.IDTIPOCONTRIBUTO,
                                 ANNULLATO = false
                             };
 
@@ -444,10 +442,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idTipoContributo);
+                            //log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idTipoAliqContr);
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
                         }
-
-
                         db.Database.CurrentTransaction.Commit();
                     }
                 }

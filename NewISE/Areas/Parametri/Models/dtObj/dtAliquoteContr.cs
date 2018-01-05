@@ -3,8 +3,10 @@ using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -198,7 +200,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 ALIQUOTA = ibm.aliquota,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,//ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -207,12 +209,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ibNew = new ALIQUOTECONTRIBUTIVE()
                             {
                                 
-                                IDALIQCONTR = ibm.idAliqContr,
+                               // IDALIQCONTR = ibm.idAliqContr,
                                 IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA =Utility.DataFineStop(),
                                 ALIQUOTA = ibm.aliquota,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,//ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -225,10 +227,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDALIQCONTR = ibm.idAliqContr,
                             IDTIPOCONTRIBUTO = ibm.idTipoContributo,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             ALIQUOTA = ibm.aliquota,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
-                            ANNULLATO = ibm.annullato
+                            DATAAGGIORNAMENTO =  DateTime.Now,//ibm.dataAggiornamento,
+                            ANNULLATO = ibm.annullato,                            
                         };
                     }
 
@@ -447,7 +449,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new ALIQUOTECONTRIBUTIVE()
                             {
-                                
                                 IDALIQCONTR = precedenteIB.IDALIQCONTR,
                                 IDTIPOCONTRIBUTO = precedenteIB.IDTIPOCONTRIBUTO,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
@@ -456,18 +457,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAAGGIORNAMENTO = precedenteIB.DATAAGGIORNAMENTO,
                                 ANNULLATO = false
                             };
-
                             db.ALIQUOTECONTRIBUTIVE.Add(ibOld1);
                         }
-
                         db.SaveChanges();
-
                         using (objLogAttivita log = new objLogAttivita())
                         {
                             log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "ALIQUOTECONTRIBUTIVE", idAliqContr);
                         }
-
-
                         db.Database.CurrentTransaction.Commit();
                     }
                 }
@@ -476,10 +472,38 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-
             }
-
         }
 
+        public bool AliquoteContributiveAnnullato(AliquoteContributiveModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == ibm.idAliqContr && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).First().ANNULLATO == true ? true : false;
+            }
+        }
+
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as AliquoteContributiveModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
+        
     }
 }
