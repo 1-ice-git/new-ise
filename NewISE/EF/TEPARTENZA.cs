@@ -12,24 +12,24 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASITEMAZIONE
+    public partial class TEPARTENZA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRIMASITEMAZIONE()
+        public TEPARTENZA()
         {
-            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
-            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
-            this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
+            this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
+            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
+            this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
         }
     
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDTEPARTENZA { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
+        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
+        public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
     }
 }

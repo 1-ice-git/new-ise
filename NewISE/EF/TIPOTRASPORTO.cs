@@ -14,16 +14,7 @@ namespace NewISE.EF
     
     public partial class TIPOTRASPORTO
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TIPOTRASPORTO()
-        {
-            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
-        }
-    
         public decimal IDTIPOTRASPORTO { get; set; }
         public string DESCTIPOTRASPORTO { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
     }
 }

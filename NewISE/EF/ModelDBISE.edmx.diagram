@@ -7,7 +7,6 @@
       <Diagram DiagramId="4958bec9273c4d1baf3367bac1e5fa14" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="DBISEPRO.ACCESSI" Width="1.5" PointX="5.25" PointY="41.125" />
         <EntityTypeShape EntityType="DBISEPRO.ALIQUOTECONTRIBUTIVE" Width="1.5" PointX="26.75" PointY="65.5" />
-        <EntityTypeShape EntityType="DBISEPRO.ANTICIPI" Width="1.5" PointX="31.25" PointY="59.625" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITACRUD" Width="1.5" PointX="6" PointY="37.125" />
         <EntityTypeShape EntityType="DBISEPRO.CANOMEMAB" Width="1.5" PointX="10.5" PointY="61" />
         <EntityTypeShape EntityType="DBISEPRO.CDCGEPE" Width="1.5" PointX="3" PointY="50.125" />
@@ -212,16 +211,35 @@
         <AssociationConnector Association="DBISEPRO.RICHIAMO_ALIQCONTR" />
         <AssociationConnector Association="DBISEPRO.RICHIAMO_COEFFRICH" />
         <EntityTypeShape EntityType="DBISEPRO.PRIMASITEMAZIONE" Width="1.5" PointX="29" PointY="60.875" />
-        <AssociationConnector Association="DBISEPRO.R_PS_A" />
         <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
         <AssociationConnector Association="DBISEPRO.IS_PS" />
         <AssociationConnector Association="DBISEPRO.PS_AC" />
-        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTM" Width="1.5" PointX="39" PointY="52.875" />
-        <EntityTypeShape EntityType="DBISEPRO.TRASPORTOEFFETTI" Width="1.5" PointX="41.25" PointY="55.25" />
-        <AssociationConnector Association="DBISEPRO.R_TT_TE" />
-        <AssociationConnector Association="DBISEPRO.R_T_TE" />
-        <AssociationConnector Association="DBISEPRO.DOC_TRASPEFF" />
-        <AssociationConnector Association="DBISEPRO.PERC_ANT_TE_TE" />
+        <EntityTypeShape EntityType="DBISEPRO.ANTICIPOSALDOTE" Width="1.5" PointX="12.75" PointY="33.875" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVITATEPARTENZA" Width="1.5" PointX="15" PointY="38.875" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVITATERIENTRO" Width="1.5" PointX="18" PointY="59.875" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" Width="1.5" PointX="8.5" PointY="24" />
+        <EntityTypeShape EntityType="DBISEPRO.TEPARTENZA" Width="1.5" PointX="10.75" PointY="43.375" />
+        <EntityTypeShape EntityType="DBISEPRO.TERIENTRO" Width="1.5" PointX="12.75" PointY="58.375" />
+        <EntityTypeShape EntityType="DBISEPRO.TIPOANTICIPOTRASPORTOEFFETTI" Width="1.5" PointX="6.25" PointY="24.625" />
+        <AssociationConnector Association="DBISEPRO.R_ASTE_ATEP" />
+        <AssociationConnector Association="DBISEPRO.R_ASTE_ATER" />
+        <AssociationConnector Association="DBISEPRO.R_TEP_ATEP" />
+        <AssociationConnector Association="DBISEPRO.R_TER_ATER" />
+        <AssociationConnector Association="DBISEPRO.R_TATE_PATE" />
+        <AssociationConnector Association="DBISEPRO.R_T_TEP" />
+        <AssociationConnector Association="DBISEPRO.R_T_TER" />
+        <AssociationConnector Association="DBISEPRO.DOC_ATEP" />
+        <AssociationConnector Association="DBISEPRO.DOC_ATER" />
+        <AssociationConnector Association="DBISEPRO.TEP_FK" />
+        <AssociationConnector Association="DBISEPRO.TEP_PATE" />
+        <AssociationConnector Association="DBISEPRO.TER_FK" />
+        <AssociationConnector Association="DBISEPRO.TER_PATE" />
+        <EntityTypeShape EntityType="DBISEPRO.ANTICIPI" Width="1.5" PointX="36.5" PointY="61.75" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVITAANTICIPI" Width="1.5" PointX="31.25" PointY="60.5" />
+        <EntityTypeShape EntityType="DBISEPRO.TIPOLOGIAANTICIPI" Width="1.5" PointX="34.25" PointY="65" />
+        <AssociationConnector Association="DBISEPRO.R_AA_A" />
+        <AssociationConnector Association="DBISEPRO.R_TA_A" />
+        <AssociationConnector Association="DBISEPRO.R_PS_AA" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

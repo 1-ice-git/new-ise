@@ -24,7 +24,6 @@ namespace NewISE.EF
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
-            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -65,7 +64,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
+        public virtual TEPARTENZA TEPARTENZA { get; set; }
+        public virtual TERIENTRO TERIENTRO { get; set; }
     }
 }

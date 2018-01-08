@@ -27,7 +27,6 @@ namespace NewISE.EF
     
         public virtual DbSet<ACCESSI> ACCESSI { get; set; }
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
-        public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
@@ -108,7 +107,15 @@ namespace NewISE.EF
         public virtual DbSet<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         public virtual DbSet<RICHIAMO> RICHIAMO { get; set; }
         public virtual DbSet<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
-        public virtual DbSet<PERCENTUALEANTICIPOTM> PERCENTUALEANTICIPOTM { get; set; }
-        public virtual DbSet<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
+        public virtual DbSet<ANTICIPOSALDOTE> ANTICIPOSALDOTE { get; set; }
+        public virtual DbSet<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
+        public virtual DbSet<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
+        public virtual DbSet<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        public virtual DbSet<TEPARTENZA> TEPARTENZA { get; set; }
+        public virtual DbSet<TERIENTRO> TERIENTRO { get; set; }
+        public virtual DbSet<TIPOANTICIPOTRASPORTOEFFETTI> TIPOANTICIPOTRASPORTOEFFETTI { get; set; }
+        public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
+        public virtual DbSet<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
+        public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
     }
 }

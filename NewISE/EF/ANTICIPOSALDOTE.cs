@@ -12,24 +12,21 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASITEMAZIONE
+    public partial class ANTICIPOSALDOTE
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRIMASITEMAZIONE()
+        public ANTICIPOSALDOTE()
         {
-            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
-            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
-            this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
+            this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
+            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
         }
     
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDANTIVIPOSALDOTE { get; set; }
+        public string TIPO { get; set; }
     
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
+        public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
+        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
     }
 }

@@ -2202,6 +2202,9 @@
     <Compile Include="EF\ANTICIPI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ANTICIPOSALDOTE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\AP_C.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2217,7 +2220,16 @@
     <Compile Include="EF\ATTIVAZIONIPASSAPORTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ATTIVITAANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ATTIVITACRUD.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITATEPARTENZA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\ATTIVITATERIENTRO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\CALENDARIOEVENTI.cs">
@@ -2337,7 +2349,7 @@
     <Compile Include="EF\PENSIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\PERCENTUALEANTICIPOTM.cs">
+    <Compile Include="EF\PERCENTUALEANTICIPOTE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\PERCENTUALEDISAGIO.cs">
@@ -2391,10 +2403,19 @@
     <Compile Include="EF\TEORICI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TEPARTENZA.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TERIENTRO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TFR.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOALIQUOTECONTRIBUTIVE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOANTICIPOTRASPORTOEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPODOCUMENTI.cs">
@@ -2404,6 +2425,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOLIQUIDAZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TIPOLOGIAANTICIPI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOLOGIACOAN.cs">
@@ -2440,9 +2464,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TRASPORTOEFFETTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\UFFICI.cs">

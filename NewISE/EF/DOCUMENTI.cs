@@ -29,7 +29,8 @@ namespace NewISE.EF
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
             this.TITOLIVIAGGIORICHIEDENTE = new HashSet<TITOLIVIAGGIORICHIEDENTE>();
             this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
-            this.TRASPORTOEFFETTI = new HashSet<TRASPORTOEFFETTI>();
+            this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
+            this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
         }
     
         public decimal IDDOCUMENTO { get; set; }
@@ -68,6 +69,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASPORTOEFFETTI> TRASPORTOEFFETTI { get; set; }
+        public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
     }
 }

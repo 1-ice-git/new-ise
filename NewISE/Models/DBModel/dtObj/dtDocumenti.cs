@@ -593,7 +593,7 @@ namespace NewISE.Models.DBModel.dtObj
                         t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
-                        t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
+                        //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Attestazione_Trasloco:
                         break;
@@ -896,7 +896,7 @@ namespace NewISE.Models.DBModel.dtObj
                             t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
-                            t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
+                            //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Attestazione_Trasloco:
                             break;
@@ -1001,7 +1001,7 @@ namespace NewISE.Models.DBModel.dtObj
                         t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
-                        t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
+                        //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Attestazione_Trasloco:
                         break;

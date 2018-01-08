@@ -12,15 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class ANTICIPI
+    public partial class TIPOLOGIAANTICIPI
     {
-        public decimal IDATTIVITAANTICIPI { get; set; }
-        public decimal IDTIPOLOGIAANTICIPI { get; set; }
-        public decimal PERCENTUALEANTICIPO { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public TIPOLOGIAANTICIPI()
+        {
+            this.ANTICIPI = new HashSet<ANTICIPI>();
+        }
     
-        public virtual ATTIVITAANTICIPI ATTIVITAANTICIPI { get; set; }
-        public virtual TIPOLOGIAANTICIPI TIPOLOGIAANTICIPI { get; set; }
+        public decimal IDTIPOLOGIAANTICIPI { get; set; }
+        public string DESCTIPOANTICIPO { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANTICIPI> ANTICIPI { get; set; }
     }
 }
