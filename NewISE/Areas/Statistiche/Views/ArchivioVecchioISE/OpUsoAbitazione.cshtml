@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Uso_Abitazione>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Uso Abitazione"></div>
+
+@*<button id="opener">xx</button>*@
 
 <div class="form-horizontal">
     <div class="form-group">
@@ -20,7 +25,8 @@
 
 <div class="form-group">
     <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Uso Abitazione </a>
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Uso Abitazione </a>*@
+        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Uso Abitazione</a>
     </div>
     <div class="col-md-3">
         <a href="#" onclick="OpUsoAbitazione()">Visualizza il Riepilogo delle Operazioni effettuate - Uso Abitazione </a>

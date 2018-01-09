@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Parametri\Contenuti\CSS\Parametri.css" />
+    <Content Include="Areas\Statistiche\Content\NoScroller.css" />
     <Content Include="Areas\Statistiche\Content\Statistiche.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.min.css" />

@@ -1,89 +1,9 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Indennita_Estera>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Indennità Estera"></div>
 
-@{
-    decimal idAttivazioneMagFam = Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
-    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-}
-
-
-<div class="row">
-    <div class="col-xs-3">
-        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
-            <button class="btn btn-default btn-sm" onclick=" DownloadFormulario(); ">
-                <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
-                Stampa
-            </button>
-
-        </div>
-    </div>
-    <div class="col-xs-2">
-        <div style="margin-top: 10px; margin-bottom: 10px;">
-
-            @if (solaLettura)
-            {
-                <button class="btn btn-default btn-sm disabled" disabled="disabled">
-                    <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
-                    Stampa
-                </button>
-            }
-            else
-            {
-                <button class="btn btn-default btn-sm" onclick=" NuovoFormulario(); ">
-                    <i aria-hidden="true" class="fa fa-2x fa-file-text-o"></i>
-                    Stampa
-                </button>
-            }
-
-        </div>
-
-    </div>
-</div>
-
-
-<div class="modal fade" id="ModalDownloadFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioLabel">Operazione Effettuate - Indennità di Sede Estera </h3>
-            </div>
-            <div class="modal-body modal-lg alert alert-info text-info" style="font-size: 1em;">
-                <div id="RptOpIndennitaEstera">
-                    @*@Html.Action("RptOpIndennitaEstera", "ArchivioVecchioISE")*@
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="ModalNuovoFormulario" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoFormularioLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="NuovoFormularioLabel">Operazione Effettuate - Indennità di Sede Estera </h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <div id="divViewNuovoFormulario">
-                    @*@Html.Action("RptOpIndennitaEstera", "ArchivioVecchioISE")*@
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+@*<button id="opener">xx</button>*@
 
 <div class="form-horizontal">
     <div class="form-group">
@@ -105,7 +25,8 @@
 
 <div class="form-group">
     <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
     </div>
     <div class="col-md-3">
         <a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
@@ -208,6 +129,7 @@
 </table>
 
 <script type="text/javascript">
+
     $('#tb_Op_Indennita_Estera').DataTable({
             "order": [],
             "scrollY": 220,
@@ -238,11 +160,77 @@
             }
         });
 
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
 
-    function DownloadFormulario() {
-        //debugger
-            $('#ModalDownloadFormulario').modal().show();
-        }
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+         height: windowHeight, width: windowWidth 
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+
+                rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+
+                var data = $("#datepicker").datepicker().val()
+                var data1 = $("#datepicker1").datepicker().val()
+
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        V_DATA: data,
+                        V_DATA1: data1
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+                      
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+                       
+                       
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+           
+
+
+        });
+    });
+
+    
 
         function invia() {
             //debugger
@@ -251,6 +239,8 @@
 
             window.location.href = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
         };
+
+
 
         /* Custom filtering function which will search data in column four between two values */
         $.fn.dataTable.ext.search.push(
@@ -428,12 +418,7 @@
 
         }
 
-
-        $("#ModalNuovoFormulario").on("hidden.bs.modal", function () {
-            //debugger;
-            RptOpIndennitaEstera();
-        });
-            
+                
 </script>
 
 
