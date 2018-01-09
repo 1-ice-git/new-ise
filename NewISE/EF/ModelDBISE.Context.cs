@@ -28,7 +28,6 @@ namespace NewISE.EF
         public virtual DbSet<ACCESSI> ACCESSI { get; set; }
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
-        public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
@@ -44,12 +43,9 @@ namespace NewISE.EF
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
-        public virtual DbSet<MAB_ALIQCONTR> MAB_ALIQCONTR { get; set; }
-        public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
         public virtual DbSet<OA> OA { get; set; }
-        public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
@@ -117,5 +113,9 @@ namespace NewISE.EF
         public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
         public virtual DbSet<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
+        public virtual DbSet<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
+        public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
+        public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
     }
 }

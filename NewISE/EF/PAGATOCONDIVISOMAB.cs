@@ -16,12 +16,14 @@ namespace NewISE.EF
     {
         public decimal IDPAGATOCONDIVISO { get; set; }
         public decimal IDMAB { get; set; }
+        public decimal IDATTIVAZIONEMAB { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public bool PAGATO { get; set; }
+        public bool CONDIVISO { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

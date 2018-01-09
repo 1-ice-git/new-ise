@@ -18,7 +18,7 @@ namespace NewISE.EF
         public TFR()
         {
             this.INDENNITA = new HashSet<INDENNITA>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.CANOMEMAB = new HashSet<CANOMEMAB>();
         }
     
         public decimal IDTFR { get; set; }
@@ -33,6 +33,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
     }
 }

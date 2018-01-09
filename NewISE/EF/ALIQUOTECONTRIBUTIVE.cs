@@ -29,7 +29,6 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual MAB_ALIQCONTR MAB_ALIQCONTR { get; set; }
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }

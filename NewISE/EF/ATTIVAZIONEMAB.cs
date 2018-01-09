@@ -12,34 +12,35 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class MAGGIORAZIONEABITAZIONE
+    public partial class ATTIVAZIONEMAB
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MAGGIORAZIONEABITAZIONE()
+        public ATTIVAZIONEMAB()
         {
             this.CANOMEMAB = new HashSet<CANOMEMAB>();
+            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
-            this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
-            this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
-        public decimal IDMAB { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public System.DateTime DATAINIZIOMAB { get; set; }
-        public System.DateTime DATAFINEMAB { get; set; }
-        public bool ANTICIPOANNUALE { get; set; }
+        public Nullable<decimal> IDTRASFERIMENTO { get; set; }
+        public bool NOTIFICARICHIESTA { get; set; }
+        public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
+        public bool ATTIVAZIONE { get; set; }
+        public Nullable<System.DateTime> DATAATTIVAZIONE { get; set; }
+        public System.DateTime DATAVARIAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

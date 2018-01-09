@@ -2211,6 +2211,9 @@
     <Compile Include="EF\AP_F.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\ATTIVAZIONEMAB.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\ATTIVAZIONETITOLIVIAGGIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2302,9 +2305,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\LOGATTIVITA.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\MAB_ALIQCONTR.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\MAGGIORAZIONEABITAZIONE.cs">

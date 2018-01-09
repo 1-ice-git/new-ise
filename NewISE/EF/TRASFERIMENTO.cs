@@ -18,12 +18,12 @@ namespace NewISE.EF
         public TRASFERIMENTO()
         {
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.TEORICI = new HashSet<TEORICI>();
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
+            this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -45,8 +45,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -66,5 +64,7 @@ namespace NewISE.EF
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         public virtual TEPARTENZA TEPARTENZA { get; set; }
         public virtual TERIENTRO TERIENTRO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
     }
 }

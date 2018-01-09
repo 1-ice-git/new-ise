@@ -590,7 +590,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Spese_Abitazione:
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     case EnumTipoDoc.Copia_Contratto_Locazione:
-                        t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                        //t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                         //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
@@ -893,7 +893,7 @@ namespace NewISE.Models.DBModel.dtObj
                         case EnumTipoDoc.Attestazione_Spese_Abitazione:
                         case EnumTipoDoc.Clausole_Contratto_Alloggio:
                         case EnumTipoDoc.Copia_Contratto_Locazione:
-                            t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                            //t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                             //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;
@@ -998,7 +998,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.Attestazione_Spese_Abitazione:
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     case EnumTipoDoc.Copia_Contratto_Locazione:
-                        t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
+                        //t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
                         //t = d.TRASPORTOEFFETTI.OrderByDescending(a => a.IDTRASPORTOEFFETTI).First().TRASFERIMENTO;

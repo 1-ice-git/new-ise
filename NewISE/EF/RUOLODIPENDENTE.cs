@@ -18,7 +18,6 @@ namespace NewISE.EF
         public RUOLODIPENDENTE()
         {
             this.INDENNITA = new HashSet<INDENNITA>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
         }
     
         public decimal IDRUOLODIPENDENTE { get; set; }
@@ -31,7 +30,5 @@ namespace NewISE.EF
         public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

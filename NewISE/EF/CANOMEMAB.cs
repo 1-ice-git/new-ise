@@ -14,7 +14,14 @@ namespace NewISE.EF
     
     public partial class CANOMEMAB
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CANOMEMAB()
+        {
+            this.TFR = new HashSet<TFR>();
+        }
+    
         public decimal IDCANONE { get; set; }
+        public decimal IDATTIVAZIONEMAB { get; set; }
         public decimal IDMAB { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
@@ -22,6 +29,9 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TFR> TFR { get; set; }
     }
 }
