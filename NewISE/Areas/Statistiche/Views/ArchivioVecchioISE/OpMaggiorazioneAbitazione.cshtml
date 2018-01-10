@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Magg_Abitaz>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Maggiorazione Abitazione"></div>
+
+@*<button id="opener">xx</button>*@
 
 <div class="form-horizontal">
     <div class="form-group">
@@ -20,7 +25,8 @@
 
 <div class="form-group">
     <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>*@
+        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>
     </div>
     <div class="col-md-3">
         <a href="#" onclick="OpMaggiorazioneAbitazione()">Visualizza il Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione </a>
@@ -136,6 +142,74 @@
             }
         });
     
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+
+            //rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+
         function invia() {
             //debugger
             var DATA = $("#datepicker").datepicker().val()
