@@ -3,6 +3,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -188,7 +189,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTEKM = ibm.coefficienteKm,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -201,7 +202,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 COEFFICIENTEKM = ibm.coefficienteKm,
-                                DATAAGGIORNAMENTO = System.DateTime.Now,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -216,7 +217,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             COEFFICIENTEKM = ibm.coefficienteKm,
-                            DATAAGGIORNAMENTO = System.DateTime.Now,
+                            DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -249,7 +250,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -265,7 +266,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -276,7 +277,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -301,7 +302,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -323,7 +324,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -465,5 +466,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         }
 
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as CoeffFasciaKmModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
     }
 }

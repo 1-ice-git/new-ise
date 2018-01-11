@@ -33,8 +33,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -69,8 +70,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -105,8 +107,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -124,8 +127,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
-        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal idCfKm, bool escludiAnnullati = false)
+        public bool CoefficienteFasciaKmAnnullato(CoeffFasciaKmModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.COEFFICIENTEFKM.Where(a => a.IDCFKM == ibm.idCfKm && a.IDDEFKM == ibm.idDefKm).First().ANNULLATO == true ? true : false;
+            }
+        }
+        public IList<CoeffFasciaKmModel> getListCoeffFasciaKm(decimal iddefkm, bool escludiAnnullati = false)
         {
             List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
 
@@ -133,7 +142,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEFKM.Where(a => a.IDCFKM == idCfKm && a.ANNULLATO == escludiAnnullati).ToList();
+                    List<COEFFICIENTEFKM> lib = new List<COEFFICIENTEFKM>();
+                    
+                    if(escludiAnnullati==true)
+                        lib = db.COEFFICIENTEFKM.Where(a => a.IDDEFKM == iddefkm && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.COEFFICIENTEFKM.Where(a => a.IDDEFKM == iddefkm).ToList();
 
                     libm = (from e in lib
                             select new CoeffFasciaKmModel()
@@ -141,8 +155,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCfKm = e.IDCFKM,
                                 idDefKm = e.IDDEFKM,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoeffFasciaKmModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                dataAggiornamento=e.DATAAGGIORNAMENTO,
                                 coefficienteKm = e.COEFFICIENTEKM,
                                 annullato = e.ANNULLATO,
                                 km = new DefFasciaKmModel()
@@ -190,7 +205,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTEKM = ibm.coefficienteKm,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -203,7 +218,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTEKM = ibm.coefficienteKm,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
 
                             };
@@ -218,7 +233,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                             COEFFICIENTEKM = ibm.coefficienteKm,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -250,7 +265,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -266,7 +281,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -277,7 +292,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -302,10 +317,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
-
                                     libNew.Add(ibOld1);
                                 }
                             }
@@ -319,13 +333,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        
                                         IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEKM = item.COEFFICIENTEKM,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 

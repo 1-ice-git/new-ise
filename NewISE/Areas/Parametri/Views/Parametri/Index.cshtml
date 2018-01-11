@@ -74,6 +74,7 @@
                 $("#divPViewParametri").empty();
                 return false;
             }
+            idLivello = parseInt($("#hiTipoContributo").val());
             switch (tabParam) {
                 //case 0:// Indennita di base
                 //    rotta = "/Parametri/ParamIndennitaBase/IndennitaBase";
@@ -121,11 +122,9 @@
                 //    rotta = "/Parametri/ParamMaggAnnuali/MaggiorazioniAnnuali";
                 //    break;
                 //default:
-
           
                 case 0:// Aliquote Contributive
                     rotta = "/Parametri/ParamAliquoteContr/AliquoteContributive";
-                    idLivello = parseInt($("#hiTipoContributo").val());
                     break;
                 case 1:// Coefficiente Fascia Chilometrica
                     rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKm";

@@ -17,7 +17,7 @@
 
 }
 
-@using (Ajax.BeginForm("InserisciCoeffFasciaKm", "ParamCoeffFasciaKm", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciCoeffFasciaKm", "ParamCoeffFasciaKm", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovoCoeffFasciaKm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -30,7 +30,7 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idDefKm)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -38,7 +38,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffFasciaKm</label>
+                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffFasciaKm.ToString()</label>
                 </div>
             </div>
         </div>
@@ -67,13 +67,13 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.dataAggiornamento, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.dataAggiornamento, new { htmlAttributes = new { @class = "form-control number" } })
+                @Html.EditorFor(model => model.dataAggiornamento, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataAggiornamento, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -138,6 +138,10 @@
         inline: true,
     });
     $('#dataFineValidita').datepicker({
+        inline: true,
+    });
+
+    $('#dataAggiornamento').datepicker({
         inline: true,
     });
 

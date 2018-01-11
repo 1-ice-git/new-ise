@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Models.DBModel
 {
@@ -19,6 +20,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fin. validità")]
@@ -28,21 +30,20 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente Indennita di Richiamo")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
         public decimal coefficienteRichiamo { get; set; }
 
         [Required(ErrorMessage = "Il coefficiente Indennita Base è richiesto.")]
         [Display(Name = "Coefficiente Indennita Base")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
         public decimal coefficienteIndBase { get; set; }
 
-        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+       // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Data Aggiornamento")]
-        public DateTime dataAggiornamento { get; set; }
+        public DateTime dataAggiornamento { get; set; }// = DateTime.Now;
 
-        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
