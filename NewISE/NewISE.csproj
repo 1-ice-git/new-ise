@@ -2770,6 +2770,9 @@
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtPassaportoRichiedente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
@@ -2973,7 +2976,6 @@
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioPassaporto.cshtml" />
     <Content Include="Views\PratichePassaporto\ColonnaElencoDoc.cshtml" />
     <Content Include="Views\PratichePassaporto\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
-    <Content Include="Views\PratichePassaporto\ChkEscludiPassaporto.cshtml" />
     <Content Include="Views\TitoliViaggio\TitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />

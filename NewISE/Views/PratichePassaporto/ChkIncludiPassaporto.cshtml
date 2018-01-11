@@ -9,6 +9,6 @@
 else
 {
 
-    @Html.CheckBoxFor(model => model.includiPassaporto, new { @onclick = "ConfermaEscludiPassaporto(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
+    @Html.CheckBoxFor(model => model.includiPassaporto, new { @onclick = "ConfermaIncludiEscludiPassaporto(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
 
 }

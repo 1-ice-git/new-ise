@@ -56,47 +56,7 @@ namespace NewISE.Controllers
             return PartialView(efm);
         }
 
-        public JsonResult ConfermaIncludiPassaporto(decimal id, EnumParentela parentela)
-        {
-            string errore = string.Empty;
-            bool chk = false;
-
-
-            try
-            {
-                switch (parentela)
-                {
-                    case EnumParentela.Coniuge:
-                        using (dtConiuge dtc = new dtConiuge())
-                        {
-                            dtc.SetEscludiPassaporto(id, ref chk);
-                        }
-                        break;
-                    case EnumParentela.Figlio:
-                        break;
-                    case EnumParentela.Richiedente:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
-                }
-            }
-            catch (Exception ex)
-            {
-
-                errore = ex.Message;
-            }
-
-            return
-                Json(
-                    new
-                    {
-                        chk = chk,
-                        err = errore
-                    });
-
-        }
-
-        public JsonResult ConfermaEscludiPassaporto(decimal id, EnumParentela parentela)
+        public JsonResult ConfermaIncludiEscludiPassaporto(decimal id, EnumParentela parentela)
         {
             string errore = string.Empty;
             bool chk = false;
@@ -106,26 +66,27 @@ namespace NewISE.Controllers
                 switch (parentela)
                 {
                     case EnumParentela.Coniuge:
-                        using (dtConiuge dtc = new dtConiuge())
+                        using (dtConiugePassaporto dtcp = new dtConiugePassaporto())
                         {
-                            dtc.SetEscludiPassaporto(id, ref chk);
+                            dtcp.SetIncludiEscludiPassaporto(id, ref chk);
                         }
                         break;
                     case EnumParentela.Figlio:
-                        using (dtFigli dtf = new dtFigli())
+                        using (dtFigliPassaporto dtfp = new dtFigliPassaporto())
                         {
-                            dtf.SetEscludiPassaporto(id, ref chk);
+                            dtfp.SetIncludiEscludiPassaporto(id, ref chk);
                         }
                         break;
                     case EnumParentela.Richiedente:
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                        using (dtPassaportoRichiedente dtpr = new dtPassaportoRichiedente())
                         {
-                            dtpp.SetEscludiPassaportoRichiedente(id, ref chk);
+                            dtpr.SetIncludiEscludiPassaporto(id, ref chk);
                         }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("parentela");
                 }
+
             }
             catch (Exception ex)
             {
@@ -215,29 +176,6 @@ namespace NewISE.Controllers
             }
 
             return PartialView(gcip);
-        }
-
-        public ActionResult ChkEscludiPassaporto(decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
-        {
-            //GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
-
-
-            //try
-            //{
-            //    using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
-            //    {
-            //        gcep = dtap.GetGestioneEcludiPassaporto(idFamiliarePassaporto, parentela, esisteDoc, escludiPassaporto);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            //}
-
-
-            return PartialView();
-
         }
 
 

@@ -179,65 +179,6 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-
-        public void SetEscludiPassaporto(decimal idFiglio, ref bool chk)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var f = db.FIGLI.Find(idFiglio);
-                if (f != null && f.IDFIGLI > 0)
-                {
-                    //f.ESCLUDIPASSAPORTO = true;
-                    int i = db.SaveChanges();
-
-                    if (i <= 0)
-                    {
-                        throw new Exception("Non è stato possibile modificare lo stato di escludi passaporto.");
-                    }
-                    else
-                    {
-                        //chk = f.ESCLUDIPASSAPORTO;
-                        decimal idTrasferimento =
-                            db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
-
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            "Esclusione del figlio dalla richiesta del passaporto/visto.", "FIGLI", db,
-                            idTrasferimento, f.IDFIGLI);
-                    }
-                }
-            }
-        }
-
-
-        public void SetEscludiTitoloViaggio(decimal idFiglio, ref bool chk)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var f = db.FIGLI.Find(idFiglio);
-                if (f != null && f.IDFIGLI > 0)
-                {
-                    //f.ESCLUDITITOLOVIAGGIO = f.ESCLUDITITOLOVIAGGIO == false ? true : false;
-                    int i = db.SaveChanges();
-
-                    if (i <= 0)
-                    {
-                        throw new Exception("Non è stato possibile modificare lo stato di escludi titolo viaggio.");
-                    }
-                    else
-                    {
-                        //chk = f.ESCLUDITITOLOVIAGGIO;
-                        decimal idTrasferimento =
-                            db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDTRASFERIMENTO;
-
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
-                            "Esclusione del figlio dalla richiesta del titolo di viaggio.", "FIGLI", db,
-                            idTrasferimento, f.IDFIGLI);
-                    }
-                }
-            }
-        }
-
-
         public void SetFiglio(ref FigliModel fm, ModelDBISE db)
         {
             FIGLI f = new FIGLI()
