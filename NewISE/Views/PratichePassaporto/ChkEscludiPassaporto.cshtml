@@ -1,15 +1,14 @@
-﻿@model NewISE.Models.ViewModel.GestioneChkEscludiPassaportoModel
+﻿@model NewISE.Models.ViewModel.GestioneChkincludiPassaportoModel
 
-@if (Model.esisteDoc || Model.disabilitaChk)
-{
+    @if (Model.esisteDoc || Model.disabilitaChk)
+    {
 
-    @Html.CheckBoxFor(model => model.escludiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
+        @Html.CheckBoxFor(model => model.escludiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
 
-}
-else
-{
+    }
+    else
+    {
 
-    @Html.CheckBoxFor(model => model.escludiPassaporto, new { @onclick = "ConfermaEscludiPassaporto(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
+        @Html.CheckBoxFor(model => model.escludiPassaporto, new { @onclick = "ConfermaEscludiPassaporto(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
 
-}
-
+    }

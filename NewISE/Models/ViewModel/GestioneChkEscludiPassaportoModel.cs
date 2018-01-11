@@ -6,12 +6,12 @@ using NewISE.Models.DBModel;
 
 namespace NewISE.Models.ViewModel
 {
-    public class GestioneChkEscludiPassaportoModel
+    public class GestioneChkincludiPassaportoModel
     {
         public decimal idFamiliare { get; set; }
         public EnumParentela parentela { get; set; }
         public bool esisteDoc { get; set; }
-        public bool escludiPassaporto { get; set; }
+        public bool includiPassaporto { get; set; }
         public bool disabilitaChk { get; set; }
     }
 }

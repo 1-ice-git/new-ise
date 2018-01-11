@@ -16,74 +16,116 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public GestioneChkEscludiPassaportoModel GetGestioneEcludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        public GestioneChkincludiPassaportoModel GetGestioneInludiPassaporto(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool includiPassaporto)
         {
-            GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
+            GestioneChkincludiPassaportoModel gcip = new GestioneChkincludiPassaportoModel();
             bool dchk = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
-
-                PASSAPORTI p = new PASSAPORTI();
+                ATTIVAZIONIPASSAPORTI ap = new ATTIVAZIONIPASSAPORTI();
 
                 try
                 {
-                    switch (parentela)
+
+                    ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                    if (ap?.IDATTIVAZIONIPASSAPORTI <= 0)
                     {
-                        case EnumParentela.Coniuge:
-                            //p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
-                            break;
-                        case EnumParentela.Figlio:
-                            //p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
-                            break;
-                        case EnumParentela.Richiedente:
-                            p = db.PASSAPORTI.Find(idFamiliare);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("parentela");
+                        throw new Exception("Ciclo di attivazione non presente.");
                     }
 
-                    if (p != null && p.IDPASSAPORTI > 0)
+                    if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true)
                     {
-                        var lap =
-                            p.ATTIVAZIONIPASSAPORTI.Where(
-                                a => (a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == true) || a.ANNULLATO == false)
-                                .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
-
-                        if (lap?.Any() ?? false)
-                        {
-                            var ap = lap.First();
-
-                            if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true)
-                            {
-                                dchk = true;
-                            }
-
-                            gcep = new GestioneChkEscludiPassaportoModel()
-                            {
-                                idFamiliare = idFamiliare,
-                                parentela = parentela,
-                                esisteDoc = esisteDoc,
-                                escludiPassaporto = escludiPassaporto,
-                                disabilitaChk = dchk,
-                            };
-
-                        }
-
+                        dchk = true;
                     }
 
+                    gcip = new GestioneChkincludiPassaportoModel()
+                    {
+                        idFamiliare = idFamiliarePassaporto,
+                        parentela = parentela,
+                        esisteDoc = esisteDoc,
+                        includiPassaporto = includiPassaporto,
+                        disabilitaChk = dchk,
+                    };
+
+                    return gcip;
                 }
                 catch (Exception ex)
                 {
-
                     throw ex;
                 }
             }
-
-            return gcep;
-
-
         }
+
+        //public GestioneChkEscludiPassaportoModel GetGestioneEcludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        //{
+        //    GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
+        //    bool dchk = false;
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+
+        //        PASSAPORTI p = new PASSAPORTI();
+
+        //        try
+        //        {
+        //            switch (parentela)
+        //            {
+        //                case EnumParentela.Coniuge:
+        //                    //p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
+        //                    break;
+        //                case EnumParentela.Figlio:
+        //                    //p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
+        //                    break;
+        //                case EnumParentela.Richiedente:
+        //                    p = db.PASSAPORTI.Find(idFamiliare);
+        //                    break;
+        //                default:
+        //                    throw new ArgumentOutOfRangeException("parentela");
+        //            }
+
+        //            if (p != null && p.IDPASSAPORTI > 0)
+        //            {
+        //                var lap =
+        //                    p.ATTIVAZIONIPASSAPORTI.Where(
+        //                        a => (a.NOTIFICARICHIESTA == true && a.PRATICACONCLUSA == true) || a.ANNULLATO == false)
+        //                        .OrderBy(a => a.IDATTIVAZIONIPASSAPORTI);
+
+        //                if (lap?.Any() ?? false)
+        //                {
+        //                    var ap = lap.First();
+
+        //                    if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true)
+        //                    {
+        //                        dchk = true;
+        //                    }
+
+        //                    gcep = new GestioneChkEscludiPassaportoModel()
+        //                    {
+        //                        idFamiliare = idFamiliare,
+        //                        parentela = parentela,
+        //                        esisteDoc = esisteDoc,
+        //                        escludiPassaporto = escludiPassaporto,
+        //                        disabilitaChk = dchk,
+        //                    };
+
+        //                }
+
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            throw ex;
+        //        }
+        //    }
+
+        //    return gcep;
+
+
+        //}
 
 
 

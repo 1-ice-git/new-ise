@@ -44,16 +44,56 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult ColonnaElencoDoc(decimal idFamiliarePassaporto, EnumParentela parentela)
+        public ActionResult ColonnaElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela)
         {
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
 
             using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
             {
-                efm = dtpp.GetDatiForColElencoDoc(idFamiliarePassaporto, parentela);
+                efm = dtpp.GetDatiForColElencoDoc(idAttivazionePassaporto, idFamiliarePassaporto, parentela);
             }
 
             return PartialView(efm);
+        }
+
+        public JsonResult ConfermaIncludiPassaporto(decimal id, EnumParentela parentela)
+        {
+            string errore = string.Empty;
+            bool chk = false;
+
+
+            try
+            {
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        using (dtConiuge dtc = new dtConiuge())
+                        {
+                            dtc.SetEscludiPassaporto(id, ref chk);
+                        }
+                        break;
+                    case EnumParentela.Figlio:
+                        break;
+                    case EnumParentela.Richiedente:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("parentela");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        chk = chk,
+                        err = errore
+                    });
+
         }
 
         public JsonResult ConfermaEscludiPassaporto(decimal id, EnumParentela parentela)
@@ -158,26 +198,45 @@ namespace NewISE.Controllers
                     });
         }
 
-        public ActionResult ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        public ActionResult ChkIncludiPassaporto(decimal idAttivitaPassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool includiPassaporto)
         {
-            GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
-
+            GestioneChkincludiPassaportoModel gcip = new GestioneChkincludiPassaportoModel();
 
             try
             {
                 using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
                 {
-                    gcep = dtap.GetGestioneEcludiPassaporto(idFamiliare, parentela, esisteDoc, escludiPassaporto);
+                    gcip = dtap.GetGestioneInludiPassaporto(idAttivitaPassaporto, idFamiliarePassaporto, parentela, esisteDoc, includiPassaporto);
                 }
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            return PartialView(gcip);
+        }
 
-            return PartialView(gcep);
+        public ActionResult ChkEscludiPassaporto(decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        {
+            //GestioneChkEscludiPassaportoModel gcep = new GestioneChkEscludiPassaportoModel();
+
+
+            //try
+            //{
+            //    using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+            //    {
+            //        gcep = dtap.GetGestioneEcludiPassaporto(idFamiliarePassaporto, parentela, esisteDoc, escludiPassaporto);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+
+            //    return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            //}
+
+
+            return PartialView();
 
         }
 

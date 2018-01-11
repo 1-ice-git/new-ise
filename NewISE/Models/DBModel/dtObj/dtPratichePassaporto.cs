@@ -1112,21 +1112,28 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="idFamiliare">Per il coniuge è l'idConiuge, per il figlio è l'idFiglio, per il richiedente è l'id trasferimento o passaporto per via del riferimento uno ad uno.</param>
         /// <param name="parentela"></param>
         /// <returns></returns>
-        public ElencoFamiliariPassaportoModel GetDatiForColElencoDoc(decimal idFamiliare, EnumParentela parentela)
+        public ElencoFamiliariPassaportoModel GetDatiForColElencoDoc(decimal idAttivazionePassaporto, decimal idFamiliarePassaporto, EnumParentela parentela)
         {
             ElencoFamiliariPassaportoModel efm = new ElencoFamiliariPassaportoModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
+
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
                 switch (parentela)
                 {
                     case EnumParentela.Coniuge:
-                        var cp = db.CONIUGEPASSAPORTO.Find(idFamiliare);
+                        var lcp =
+                            ap.CONIUGEPASSAPORTO.Where(
+                                a => a.ANNULLATO == false && a.IDCONIUGEPASSAPORTO == idFamiliarePassaporto);
 
-                        if (cp != null && cp.IDCONIUGEPASSAPORTO > 0)
+
+                        if (lcp?.Any() ?? false)
                         {
-                            var ap = cp.ATTIVAZIONIPASSAPORTI;
+                            var cp = lcp.First();
                             var c = cp.CONIUGE;
+
                             var ad =
                                 c.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
@@ -1157,16 +1164,20 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         break;
                     case EnumParentela.Figlio:
-                        var fp = db.FIGLIPASSAPORTO.Find(idFamiliare);
+                        var lfp =
+                            ap.FIGLIPASSAPORTO.Where(
+                                a => a.ANNULLATO == false && a.IDFIGLIPASSAPORTO == idAttivazionePassaporto);
 
-                        if (fp != null && fp.IDFIGLIPASSAPORTO > 0)
+                        if (lfp?.Any() ?? false)
                         {
-                            var ap = fp.ATTIVAZIONIPASSAPORTI;
+                            var fp = lfp.First();
                             var f = fp.FIGLI;
+
                             var ad =
                                 f.ALTRIDATIFAM.Where(a => a.ANNULLATO == false)
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
+
                             HasDoc hasDoc = new HasDoc()
                             {
                                 esisteDoc = f.DOCUMENTI.Where(
@@ -1193,11 +1204,13 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         break;
                     case EnumParentela.Richiedente:
-                        var pr = db.PASSAPORTORICHIEDENTE.Find(idFamiliare);
+                        var lpr =
+                            ap.PASSAPORTORICHIEDENTE.Where(
+                                a => a.ANNULLATO == false && a.IDPASSAPORTORICHIEDENTE == idAttivazionePassaporto);
 
-                        if (pr?.IDPASSAPORTORICHIEDENTE > 0)
+                        if (lpr?.Any() ?? false)
                         {
-                            var ap = pr.ATTIVAZIONIPASSAPORTI;
+                            var pr = lpr.First();
                             var tr = ap.PASSAPORTI.TRASFERIMENTO;
                             var dip = tr.DIPENDENTI;
                             HasDoc hasDoc = new HasDoc()

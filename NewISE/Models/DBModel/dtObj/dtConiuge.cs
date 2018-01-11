@@ -353,6 +353,24 @@ namespace NewISE.Models.DBModel.dtObj
             return lcm;
         }
 
+        public void SetIncludiPassaporto(decimal idConiugePassaporto, ref bool chk)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
+
+                if (cp?.IDCONIUGEPASSAPORTO <= 0)
+                {
+                    throw new Exception("Riga per il coniuge passaporto non presente.");
+                }
+
+                cp.INCLUDIPASSAPORTO = true;
+
+
+
+            }
+        }
+
         public void SetEscludiPassaporto(decimal idConiuge, ref bool chk)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -540,12 +558,12 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                     bool modificabile = false;
-                    
+
                     if (amfl?.Any() ?? false)
                     {
                         foreach (var e in amfl)
                         {
-                        //var e = amfl.First();
+                            //var e = amfl.First();
 
                             lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
                             if (lc?.Any() ?? false)
