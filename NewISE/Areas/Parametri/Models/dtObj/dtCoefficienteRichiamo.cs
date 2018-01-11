@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Tools;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -15,7 +17,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        
+        public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo && a.IDRIDUZIONI == ibm.idRiduzioni).First().ANNULLATO == true ? true : false;
+            }
+        }
 
         public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo()
         {
@@ -32,7 +40,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita =e.DATAFINEVALIDITA,// e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -65,7 +73,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita =e.DATAFINEVALIDITA,// e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -96,7 +104,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -133,7 +141,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -173,12 +181,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+                              //  IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                 COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO =DateTime.Now,
+                                IDRIDUZIONI=ibm.idRiduzioni,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -186,12 +195,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new COEFFICIENTEINDRICHIAMO()
                             {
-                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+                                //IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                 COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
                                 DATAAGGIORNAMENTO = DateTime.Now,
+                                IDRIDUZIONI = ibm.idRiduzioni,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -200,12 +210,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new COEFFICIENTEINDRICHIAMO()
                         {
-                            IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+                            // IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),// Convert.ToDateTime("31/12/9999"),
                             COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                             COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
                             DATAAGGIORNAMENTO = DateTime.Now,
+                            IDRIDUZIONI = ibm.idRiduzioni,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -231,7 +242,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+                                       // IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
                                         COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
@@ -247,23 +258,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
+                                       // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
                                         COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
                                         DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDRIDUZIONI = ibm.idRiduzioni,
                                         ANNULLATO = false
                                     };
 
                                     var ibOld2 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
+                                       // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
                                         COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
                                         DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         ANNULLATO = false
                                     };
 
@@ -283,12 +296,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
+                                      //  IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
                                         COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
                                         DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         ANNULLATO = false
                                     };
 
@@ -305,12 +319,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEINDRICHIAMO()
                                     {
-                                        IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
+                                       // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
                                         DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
                                         COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
                                         DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         ANNULLATO = false
                                     };
 
@@ -397,7 +412,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
             COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
 
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -452,7 +466,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         }
 
-
-
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
     }
 }

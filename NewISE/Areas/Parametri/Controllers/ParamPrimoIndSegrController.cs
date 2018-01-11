@@ -14,53 +14,44 @@ namespace NewISE.Areas.Parametri.Controllers
         // GET: Parametri/ParamPrimoIndSegr/PrimoSegretario
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PrimoSegretario(bool escludiAnnullati, decimal idIndPrimoSegr = 0)
+        public ActionResult PrimoSegretario(bool escludiAnnullati)//, decimal idLivello = 0)
         {
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
             var r = new List<SelectListItem>();
             List<IndennitaPrimoSegretModel> llm = new List<IndennitaPrimoSegretModel>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                {
-                    llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
+                //using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                //{
+                //    llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
 
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
+                //    if (llm != null && llm.Count > 0)
+                //    {
+                //        r = (from t in llm
+                //             select new SelectListItem()
+                //             {
+                //                 Text = t.indennita.ToString(),
+                //                 Value = t.idIndPrimoSegr.ToString()
+                //             }).ToList();
 
-                                 Text = t.indennita.ToString(),
-                                 Value = t.idIndPrimoSegr.ToString()
-                             }).ToList();
+                //        if (idLivello == 0)
+                //        {
+                //            r.First().Selected = true;
+                //            idLivello = Convert.ToDecimal(r.First().Value);
+                //        }
+                //        else
+                //        {
+                //            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                //        }
+                //    }
 
-                        if (idIndPrimoSegr == 0)
-                        {
-                            r.First().Selected = true;
-                            idIndPrimoSegr = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            r.Where(a => a.Value == idIndPrimoSegr.ToString()).First().Selected = true;
-                        }
-                    }
-
-                    ViewBag.PrimoSegretarioList = r;
-                }
+                //    ViewBag.PrimoSegretarioList = r;
+                //}
 
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListIndennitaPrimoSegretario(idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaPrimoSegretario(idIndPrimoSegr).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -77,6 +68,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaPrimoSegretarioLivello(decimal idIndPrimoSegr, bool escludiAnnullati)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
             var r = new List<SelectListItem>();
             List<IndennitaPrimoSegretModel> llm = new List<IndennitaPrimoSegretModel>();
@@ -94,25 +86,14 @@ namespace NewISE.Areas.Parametri.Controllers
                              {
                                  Text = t.indennita.ToString(),
                                  Value = t.idIndPrimoSegr.ToString()
-
                              }).ToList();
                         r.Where(a => a.Value == idIndPrimoSegr.ToString()).First().Selected = true;
                     }
-
                     ViewBag.PrimoSegretarioList = r;
                 }
-
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                   libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -120,39 +101,37 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView("PrimoSegretario", libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovaIndennitaPrimoSegretario(decimal idIndPrimoSegr, bool escludiAnnullati)
+        public ActionResult NuovaIndennitaPrimoSegretario(bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                {
-                    var lm = dtl.getIndennitaPrimoSegretario(idIndPrimoSegr);
-                    ViewBag.idIndPrimoSegr = lm;
-                }
-                ViewBag.escludiAnnullati = escludiAnnullati;
-                return PartialView();
+                //using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                //{
+                //    var lm = dtl.getIndennitaPrimoSegretario(idIndPrimoSegr);
+                //    ViewBag.idIndPrimoSegr = lm;
+                //}
+                //ViewBag.escludiAnnullati = escludiAnnullati;
+                return PartialView("NuovaIndennitaPrimoSegretario");
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
         [HttpPost]
         [Authorize(Roles = "1, 2")]
         public ActionResult InserisciIndennitaPrimoSegretario(IndennitaPrimoSegretModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
             try
             {
                 if (ModelState.IsValid)
@@ -161,16 +140,20 @@ namespace NewISE.Areas.Parametri.Controllers
                     {
                         dtib.SetIndennitaPrimoSegretario(ibm);
                     }
-
-                    return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = ibm.idIndPrimoSegr });
+                    using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                    {
+                        libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("PrimoSegretario",libm);
+                    //return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = ibm.idIndPrimoSegr });
                 }
                 else
                 {
-                    using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                    {
-                        var lm = dtl.getIndennitaPrimoSegretario(ibm.idIndPrimoSegr);
-                        ViewBag.idIndPrimoSegr = lm;
-                    }
+                    //using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
+                    //{
+                    //    var lm = dtl.getIndennitaPrimoSegretario(ibm.idIndPrimoSegr);
+                    //    ViewBag.idIndPrimoSegr = lm;
+                    //}
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaPrimoSegretario", ibm);
                 }
@@ -180,28 +163,26 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
         [HttpPost]
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaIndennitaPrimoSegretario(bool escludiAnnullati, decimal idIndPrimoSegr)
         {
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
             try
             {
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
-                    dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);
+                    dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);                
+                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-
-                return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = idIndPrimoSegr });
+                return PartialView("PrimoSegretario", libm);
+                //return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = idIndPrimoSegr });
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
     }
 }

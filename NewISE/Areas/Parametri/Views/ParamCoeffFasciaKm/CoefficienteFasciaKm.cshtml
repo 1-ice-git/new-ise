@@ -3,7 +3,6 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
 }
 
 <p>
@@ -26,12 +25,12 @@
 <table id="tbCoeffFasciaKm" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.idCfKm)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.idDefKm)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -40,10 +39,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.coefficienteKm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataAggiornamento)
-            </th>
+            </th>           
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -54,29 +50,26 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idCfKm)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idDefKm)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
-                </td>
+                @*<td>
+        @Html.DisplayFor(modelItem => item.idCfKm)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.idDefKm)
+    </td>*@
+    <td>
+        @Html.DisplayFor(modelItem => item.dataInizioValidita)
+    </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.coefficienteKm)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
-                </td>
+                </td>               
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                    @*@using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                     {
                         if (dtib.EsistonoMovimentiPrima(item))
                         {
@@ -86,15 +79,30 @@
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                    }*@
+                    @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                    {
+                        if (dtib.CoefficienteFasciaKmAnnullato(item))
+                        {
+                               <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            //if (dtib.EsistonoMovimentiPrima(item))
+                            //{
+                                <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            //}
+                        }
                     }
-
-
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<div id="dialog-confirm" title="Elimina aliquota contributiva?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del coefficiente KM?</p>
+</div>
 
 <script type="text/javascript">
     $('.display').DataTable({
@@ -139,16 +147,23 @@
         rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
 
         var idDefKm = parseInt($("#idDefKm").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idDefKm);
+
+        if (isNaN(idDefKm)) {
+            //$("#divPViewParametri").empty();
+            //return false;
+            idDefKm=$("#hiTipoContributo").val();
+        }
 
         if (isNaN(idDefKm)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $.ajax({
             type: "POST",
@@ -166,9 +181,7 @@
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#divPViewParametri").empty();
                 $("#divPViewParametri").html(result);
-
                 //RicercaDocumenti();
-
             },
             complete: function () {
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
@@ -185,11 +198,10 @@
     }
 
     function NuovoCoeffFasciakm() {
-        debugger;
-
+     //  debugger;
         var rotta = "/Parametri/ParamCoeffFasciaKm/NuovoCoefficienteFasciaKm";
         var idDefKm = parseInt($("#idDefKm").select2('val'));
-        var chk = false;
+        $("#hiTipoContributo").val(idDefKm);
 
         if (isNaN(idDefKm)) {
             //$("#divPViewParametri").empty();
@@ -200,6 +212,10 @@
         @*if ('@escludiAnnullati' == 'true') {
             chk = false;
         }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $.ajax({
             type: "POST",
@@ -236,20 +252,20 @@
     }
 
     function EliminaCoeffFasciaKm(id) {
-        //debugger;
+     //   debugger;
         var rotta = "/Parametri/ParamCoeffFasciaKm/EliminaCoeffFasciaKm";
 
         var idDefKm = parseInt($("#idDefKm").select2('val'));
-        var chk = true;
 
         if (isNaN(idDefKm)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -262,7 +278,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idDefKm: idDefKm },
+                            data: { escludiAnnullati: chk,idCfKm:id, idDefKm: idDefKm },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

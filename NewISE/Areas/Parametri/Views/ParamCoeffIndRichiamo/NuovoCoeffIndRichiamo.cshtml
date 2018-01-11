@@ -14,10 +14,10 @@
     string CoeffIndRichiamo = lm.idRiduzioni.ToString();
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idRiduzioni = lm.idRiduzioni;
-    
+    var errori = ViewData.ModelState;
 }
 
-@using (Ajax.BeginForm("InserisciCoeffIndRichiamo", "ParamCoeffIndRichiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciCoeffIndRichiamo", "ParamCoeffIndRichiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formCoeffIndRichiamo" }))
 {
     @Html.AntiForgeryToken()
 
@@ -31,7 +31,7 @@
         </div>
         @*@Html.HiddenFor(model => model.idCoefIndRichiamo)*@
         @Html.HiddenFor(model => model.idRiduzioni)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -39,7 +39,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo</label>
+                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo.ToString()</label>
                 </div>
             </div>
         </div>
@@ -76,15 +76,7 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.dataAggiornamento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataAggiornamento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataAggiornamento, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        
+               
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -100,7 +92,54 @@
     </div>
 </div>
 
+<div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-warning text-warning">
+                <p id="msgModalWarning" class="text-warning">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+
+     @foreach(var e in errori)
+    {
+        if(e.Value.Errors.Count>0)
+        {
+            @:DialogModalError('True');
+            break;
+        }
+    }
+
+    $('#formCoeffIndRichiamo').submit(function () {
+        //  debugger;
+        var form = $(this);
+        if (!form.valid()) {
+            DialogModalError('True');
+        }
+    });
+
+    function DialogModalError(err) {
+        //debugger;
+        if (err == 'True') {
+            $('#myModalErrorModel').modal('toggle');
+        }
+    }
+
+
     Globalize.culture("it-IT");
 
     $("#valore").autoNumeric('init',
@@ -151,6 +190,11 @@
     $('#dataFineValidita').datepicker({
         inline: true,
     });
+
+    $('#dataAggiornamento').datepicker({
+        inline: true,
+    });
+
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Areas.Parametri.Models.dtObj;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +13,20 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idIndPrimoSegr { get; set; }
+
+        //[Required(ErrorMessage = "La data di inizio validità è richiesta.")]
+        //[Display(Name = "Data ini. validità")]
+        //[DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        //[DisplayFormat(DataFormatString = "{0:d}")]
+        //public DateTime dataInizioValidita { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data ini. validità")]
+        [Display(Name = "Data inizio validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtIndPrimoSegr), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
+
         [Display(Name = "Data fine validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
@@ -34,7 +44,5 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-        
-        
-}
+    }
 }
