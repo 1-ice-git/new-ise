@@ -19,18 +19,19 @@ namespace NewISE.EF
         {
             this.DOCUMENTI1 = new HashSet<DOCUMENTI>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
-            this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.CONIUGETITOLIVIAGGIO = new HashSet<CONIUGETITOLIVIAGGIO>();
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
             this.FIGLI = new HashSet<FIGLI>();
             this.FIGLITITOLIVIAGGIO = new HashSet<FIGLITITOLIVIAGGIO>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
-            this.TITOLIVIAGGIORICHIEDENTE = new HashSet<TITOLIVIAGGIORICHIEDENTE>();
             this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
+            this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
+            this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
+            this.TITOLIVIAGGIORICHIEDENTE = new HashSet<TITOLIVIAGGIORICHIEDENTE>();
         }
     
         public decimal IDDOCUMENTO { get; set; }
@@ -49,8 +50,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
@@ -63,8 +62,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
@@ -72,5 +69,11 @@ namespace NewISE.EF
         public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
     }
 }

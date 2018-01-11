@@ -150,15 +150,9 @@
         <AssociationConnector Association="DBISEPRO.C_PC" />
         <AssociationConnector Association="DBISEPRO.F_IPS" />
         <AssociationConnector Association="DBISEPRO.PMF_F" />
-        <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Width="1.5" PointX="11" PointY="67.75" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGETITOLIVIAGGIO" Width="1.5" PointX="33.75" PointY="60.875" />
         <EntityTypeShape EntityType="DBISEPRO.FIGLITITOLIVIAGGIO" Width="1.5" PointX="48" PointY="59.625" />
         <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIO" Width="1.5" PointX="8.75" PointY="68.375" />
-        <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Width="1.5" PointX="45.75" PointY="62.875" />
-        <AssociationConnector Association="DBISEPRO.R_ATV_CTV" />
-        <AssociationConnector Association="DBISEPRO.R_ATV_FTV" />
-        <AssociationConnector Association="DBISEPRO.R_ATV_TVR" />
-        <AssociationConnector Association="DBISEPRO.R_TV_ATV" />
         <AssociationConnector Association="DBISEPRO.R_C_CTV" />
         <AssociationConnector Association="DBISEPRO.R_TV_CTV" />
         <AssociationConnector Association="DBISEPRO.R_F_FTV" />
@@ -168,16 +162,12 @@
         <AssociationConnector Association="DBISEPRO.R_D_D" />
         <AssociationConnector Association="DBISEPRO.R_TD_D" />
         <AssociationConnector Association="DBISEPRO.ATTMAGFAM_DOC" />
-        <AssociationConnector Association="DBISEPRO.ATV_DOC" />
         <AssociationConnector Association="DBISEPRO.CONIUGE_DOC" />
         <AssociationConnector Association="DBISEPRO.CTV_DOC" />
         <AssociationConnector Association="DBISEPRO.DOCUMENTO_NORMACALCOLO" />
         <AssociationConnector Association="DBISEPRO.FIGLI_DOC" />
         <AssociationConnector Association="DBISEPRO.FTV_DOC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
-        <AssociationConnector Association="DBISEPRO.TVR_DOC" />
-        <EntityTypeShape EntityType="DBISEPRO.RINUNCIARICHIESTATITOLIVIAGGIO" Width="1.5" PointX="13.25" PointY="68.375" />
-        <AssociationConnector Association="DBISEPRO.R_ATV_RRTV" />
         <EntityTypeShape EntityType="DBISEPRO.CONIUGEPASSAPORTO" Width="1.5" PointX="33.75" PointY="54.625" />
         <AssociationConnector Association="DBISEPRO.R_C_CP" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIPASSAPORTI" Width="1.5" PointX="11" PointY="53.75" />
@@ -240,6 +230,22 @@
         <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
         <AssociationConnector Association="DBISEPRO.MAB_MA" />
         <AssociationConnector Association="DBISEPRO.MAB_PMAB" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONETITOLIVIAGGIO" Width="1.5" PointX="11" PointY="67.5" />
+        <AssociationConnector Association="DBISEPRO.R_ATV_ATV" />
+        <AssociationConnector Association="DBISEPRO.R_ATV_CTV" />
+        <AssociationConnector Association="DBISEPRO.R_ATV_FTV" />
+        <AssociationConnector Association="DBISEPRO.R_TV_ATV" />
+        <AssociationConnector Association="DBISEPRO.ATV_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Width="1.5" PointX="11" PointY="71.875" />
+        <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Width="1.5" PointX="39.25" PointY="62.25" />
+        <EntityTypeShape EntityType="DBISEPRO.VIAGGICONGEDO" Width="1.5" PointX="8.75" PointY="72.75" />
+        <AssociationConnector Association="DBISEPRO.R_ATV_TVR" />
+        <AssociationConnector Association="DBISEPRO.R_AVC_AVC" />
+        <AssociationConnector Association="DBISEPRO.R_VC_AVC" />
+        <AssociationConnector Association="DBISEPRO.R_TV_TVR" />
+        <AssociationConnector Association="DBISEPRO.R_T_VC" />
+        <AssociationConnector Association="DBISEPRO.AVC_D" />
+        <AssociationConnector Association="DBISEPRO.TVR_DOC" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

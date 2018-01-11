@@ -12,24 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class TITOLIVIAGGIORICHIEDENTE
+    public partial class VIAGGICONGEDO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TITOLIVIAGGIORICHIEDENTE()
+        public VIAGGICONGEDO()
         {
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
         }
     
-        public decimal IDTITOLIVIAGGIORICHIEDENTE { get; set; }
-        public decimal IDTITOLOVIAGGIO { get; set; }
-        public decimal IDATTIVAZIONETITOLIVIAGGIO { get; set; }
-        public bool RICHIEDITITOLOVIAGGIO { get; set; }
-        public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public decimal IDVIAGGICONGEDO { get; set; }
     
-        public virtual ATTIVAZIONETITOLIVIAGGIO ATTIVAZIONETITOLIVIAGGIO { get; set; }
-        public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual ICollection<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

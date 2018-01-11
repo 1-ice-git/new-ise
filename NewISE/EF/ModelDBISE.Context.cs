@@ -90,13 +90,10 @@ namespace NewISE.EF
         public virtual DbSet<FIGLIPASSAPORTO> FIGLIPASSAPORTO { get; set; }
         public virtual DbSet<CONIUGE> CONIUGE { get; set; }
         public virtual DbSet<FIGLI> FIGLI { get; set; }
-        public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
         public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         public virtual DbSet<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
         public virtual DbSet<TITOLIVIAGGIO> TITOLIVIAGGIO { get; set; }
-        public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual DbSet<RINUNCIARICHIESTATITOLIVIAGGIO> RINUNCIARICHIESTATITOLIVIAGGIO { get; set; }
         public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<ATTIVAZIONIPASSAPORTI> ATTIVAZIONIPASSAPORTI { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
@@ -117,5 +114,9 @@ namespace NewISE.EF
         public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        public virtual DbSet<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
+        public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
+        public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
     }
 }
