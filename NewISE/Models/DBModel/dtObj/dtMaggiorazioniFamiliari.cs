@@ -1395,8 +1395,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                         {
-                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idTitoloViaggio = tvm.idTitoloViaggio;
+                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
                         }
 
                     }
@@ -1487,8 +1487,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                         {
-                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            cm.idTitoloViaggio = tvm.idTitoloViaggio;
+                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            //cm.idTitoloViaggio = tvm.idTitoloViaggio;
                         }
 
                     }

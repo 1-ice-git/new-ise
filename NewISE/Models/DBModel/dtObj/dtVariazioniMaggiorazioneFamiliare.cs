@@ -57,7 +57,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //legge l'ultima attivazione valida
                         var last_amf = mf.ATTIVAZIONIMAGFAM.Where(a => (a.ANNULLATO == false || (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true))).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
 
-                        if (last_amf!=null || last_amf.IDATTIVAZIONEMAGFAM>0)
+                        if (last_amf != null || last_amf.IDATTIVAZIONEMAGFAM > 0)
                         {
                             //elenca le attivazioni aperte
                             var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
@@ -73,28 +73,28 @@ namespace NewISE.Models.DBModel.dtObj
                                             mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
                                                 .OrderByDescending(a => a.IDRINUNCIAMAGFAM)
                                                 .First();
-    
+
                                         rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
                                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                                         Attivazione = amf.ATTIVAZIONEMAGFAM;
-    
+
                                         var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
                                         if (ld?.Any() ?? false)
                                         {
                                             docFormulario = true;
                                         }
-    
+
                                         if (mf.CONIUGE != null)
                                         {
                                             var lc = mf.CONIUGE.ToList();
                                             if (lc?.Any() ?? false)
                                             {
                                                 datiConiuge = true;
-    
+
                                                 foreach (var c in lc)
                                                 {
                                                     var nadc = c.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-    
+
                                                     if (nadc > 0)
                                                     {
                                                         datiParzialiConiuge = false;
@@ -108,7 +108,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 foreach (var c in lc)
                                                 {
                                                     var ndocc = c.DOCUMENTI.Count;
-    
+
                                                     if (ndocc > 0)
                                                     {
                                                         siDocConiuge = true;
@@ -125,19 +125,19 @@ namespace NewISE.Models.DBModel.dtObj
                                                 datiConiuge = false;
                                             }
                                         }
-    
+
                                         if (mf.FIGLI != null)
                                         {
                                             var lf = mf.FIGLI.ToList();
-    
+
                                             if (lf?.Any() ?? false)
                                             {
                                                 datiFigli = true;
-    
+
                                                 foreach (var f in lf)
                                                 {
                                                     var nadf = f.ALTRIDATIFAM.Count(a => a.ANNULLATO == false);
-    
+
                                                     if (nadf > 0)
                                                     {
                                                         datiParzialiFigli = false;
@@ -148,7 +148,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                         break;
                                                     }
                                                 }
-    
+
                                                 foreach (var f in lf)
                                                 {
                                                     var ndocf = f.DOCUMENTI.Count;
@@ -278,11 +278,11 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             if (
                                 (
-                                    (datiConiuge && siDocConiuge && datiParzialiConiuge == false) || (datiFigli && siDocFigli && datiParzialiFigli == false) 
+                                    (datiConiuge && siDocConiuge && datiParzialiConiuge == false) || (datiFigli && siDocFigli && datiParzialiFigli == false)
                                 ) ||
                                 (
-                                    (!datiConiuge && !siDocConiuge && datiParzialiConiuge ) || (!datiFigli && !siDocFigli && datiParzialiFigli) && docFormulario
-                                ) 
+                                    (!datiConiuge && !siDocConiuge && datiParzialiConiuge) || (!datiFigli && !siDocFigli && datiParzialiFigli) && docFormulario
+                                )
                                )
                             {
                                 inLavorazione = true;
@@ -327,7 +327,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (amf != null && amf.IDATTIVAZIONEMAGFAM > 0)
                     {
-                        var rmf =mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
+                        var rmf = mf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.ANNULLATO == false)
                                     .OrderByDescending(a => a.IDRINUNCIAMAGFAM).First();
 
                         rinunciaMagFam = rmf.RINUNCIAMAGGIORAZIONI;
@@ -348,7 +348,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiConiuge = true;
                             }
 
-                            var nadc = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDCONIUGE>0);
+                            var nadc = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDCONIUGE > 0);
                             if (nadc > 0)
                             {
                                 datiParzialiConiuge = false;
@@ -358,7 +358,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiParzialiConiuge = true;
                             }
 
-                            var ndocc = amf.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Documento_Identita);
+                            var ndocc = amf.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                             if (ndocc > 0)
                             {
                                 siDocConiuge = true;
@@ -379,7 +379,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 datiFigli = true;
                             }
-                            var nadf = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDFIGLI>0);
+                            var nadf = amf.ALTRIDATIFAM.Count(a => a.ANNULLATO == false && a.IDFIGLI > 0);
                             if (nadf > 0)
                             {
                                 datiParzialiFigli = false;
@@ -389,7 +389,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 datiParzialiFigli = true;
                             }
 
-                            var ndocf = amf.DOCUMENTI.Count(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita); 
+                            var ndocf = amf.DOCUMENTI.Count(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                             if (ndocf > 0)
                             {
                                 siDocFigli = true;
@@ -737,7 +737,7 @@ namespace NewISE.Models.DBModel.dtObj
                 };
 
                 db.CONIUGE.Add(c);
-               
+
                 if (db.SaveChanges() <= 0)
                 {
                     throw new Exception("Non è stato possibile inserire il coniuge.");
@@ -1099,7 +1099,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (amf.ATTIVAZIONEMAGFAM)
                         {
                             //crea una nuova attivazione
-                            var newamf=this.CreaAttivazione(fm.idMaggiorazioniFamiliari);
+                            var newamf = this.CreaAttivazione(fm.idMaggiorazioniFamiliari);
 
                             fm.idFigli = f.IDFIGLI;
                             int idx = db.SaveChanges();
@@ -1202,7 +1202,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     // aggiunge il formulario
                     var att = db.ATTIVAZIONIMAGFAM.Find(newamf.IDATTIVAZIONEMAGFAM);
-                    if (att.IDATTIVAZIONEMAGFAM>0)
+                    if (att.IDATTIVAZIONEMAGFAM > 0)
                     {
                         d.NOMEDOCUMENTO = dm.nomeDocumento;
                         d.ESTENSIONE = dm.estensione;
@@ -1304,10 +1304,10 @@ namespace NewISE.Models.DBModel.dtObj
                                 idAltriDatiFam = adff.IDALTRIDATIFAM,
                                 idFigli = adff.IDFIGLI,
                                 nazionalita = adff.NAZIONALITA,
-                                dataNascita=adff.DATANASCITA,
-                                comuneNascita=adff.COMUNENASCITA,
-                                capNascita=adff.CAPNASCITA,
-                                provinciaNascita=adff.PROVINCIANASCITA,
+                                dataNascita = adff.DATANASCITA,
+                                comuneNascita = adff.COMUNENASCITA,
+                                capNascita = adff.CAPNASCITA,
+                                provinciaNascita = adff.PROVINCIANASCITA,
                                 indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                                 capResidenza = adff.CAPRESIDENZA,
                                 comuneResidenza = adff.COMUNERESIDENZA,
@@ -1350,7 +1350,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var attmf = this.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
 
                         // se non esiste attivazione aperta la creo altrimenti la uso
-                        if (attmf==null || attmf.IDATTIVAZIONEMAGFAM == 0)
+                        if (attmf == null || attmf.IDATTIVAZIONEMAGFAM == 0)
                         {
                             var new_amf = this.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
                             attmf_aperta = new_amf;
@@ -2268,7 +2268,7 @@ namespace NewISE.Models.DBModel.dtObj
                                      tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
                                      dataInserimento = d.DATAINSERIMENTO,
                                      file = f,
-                                     Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && d.ATTIVAZIONIMAGFAM.First().RICHIESTAATTIVAZIONE==false) ? true : false
+                                     Modificabile = (d.MODIFICATO == false && d.FK_IDDOCUMENTO == null && d.ATTIVAZIONIMAGFAM.First().RICHIESTAATTIVAZIONE == false) ? true : false
                                  });
                 }
             }
@@ -2295,8 +2295,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                         {
-                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            cm.idTitoloViaggio = tvm.idTitoloViaggio;
+                            //    var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            //    cm.idTitoloViaggio = tvm.idTitoloViaggio;
                         }
                     }
 
@@ -2310,7 +2310,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         cm.dataAggiornamento = DateTime.Now;
 
-                        decimal new_idconiuge= dtvmf.SetConiuge(ref cm, db,cm.idAttivazioneMagFam);
+                        decimal new_idconiuge = dtvmf.SetConiuge(ref cm, db, cm.idAttivazioneMagFam);
 
                         using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
                         {
@@ -2364,8 +2364,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                         using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                         {
-                            var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idTitoloViaggio = tvm.idTitoloViaggio;
+                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
+                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
                         }
                     }
 
@@ -2386,13 +2386,13 @@ namespace NewISE.Models.DBModel.dtObj
                             DateTime dtIni = fm.dataInizio.Value;
                             DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
 
-                            IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni,dtFin,db);
+                            IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
 
                             if (lpmfm?.Any() ?? false)
                             {
                                 foreach (var pmfm in lpmfm)
                                 {
-                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli,db);
+                                    dtpmf.AssociaPercentualeMaggiorazioneFigli(new_idfiglio, pmfm.idPercMagFigli, db);
                                 }
                             }
                             else
@@ -2555,7 +2555,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             this.SituazioneMagFamVariazione(idMaggiorazioneFamiliare, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario,out inLavorazione);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out inLavorazione);
 
             try
             {

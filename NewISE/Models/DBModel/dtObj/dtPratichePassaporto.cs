@@ -75,35 +75,35 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public GestioneChkEscludiPassaportoModel ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
-        {
-            GestioneChkEscludiPassaportoModel gep = new GestioneChkEscludiPassaportoModel();
-            PASSAPORTI p = new PASSAPORTI();
+        //public GestioneChkEscludiPassaportoModel ChkEscludiPassaporto(decimal idFamiliare, EnumParentela parentela, bool esisteDoc, bool escludiPassaporto)
+        //{
+        //    GestioneChkEscludiPassaportoModel gep = new GestioneChkEscludiPassaportoModel();
+        //    PASSAPORTI p = new PASSAPORTI();
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                db.Database.BeginTransaction();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        db.Database.BeginTransaction();
 
-                switch (parentela)
-                {
-                    case EnumParentela.Coniuge:
-                        //p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
-                        break;
-                    case EnumParentela.Figlio:
-                        //p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
-                        break;
-                    case EnumParentela.Richiedente:
-                        p = db.PASSAPORTI.Find(idFamiliare);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
-                }
-            }
+        //        switch (parentela)
+        //        {
+        //            case EnumParentela.Coniuge:
+        //                //p = db.CONIUGE.Find(idFamiliare).PASSAPORTI;
+        //                break;
+        //            case EnumParentela.Figlio:
+        //                //p = db.FIGLI.Find(idFamiliare).PASSAPORTI;
+        //                break;
+        //            case EnumParentela.Richiedente:
+        //                p = db.PASSAPORTI.Find(idFamiliare);
+        //                break;
+        //            default:
+        //                throw new ArgumentOutOfRangeException("parentela");
+        //        }
+        //    }
 
 
 
-            return gep;
-        }
+        //    return gep;
+        //}
 
 
 

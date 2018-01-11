@@ -659,12 +659,12 @@ namespace NewISE.Controllers
                     case EnumChiamante.Titoli_Viaggio:
                         using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                         {
-                            TitoloViaggioModel tvm;
+                            TitoloViaggioModel tvm = new TitoloViaggioModel();
 
                             switch (parentela)
                             {
                                 case EnumParentela.Coniuge:
-                                    tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+                                    //tvm = dttv.GetTitoloViaggioByIdConiuge(id);
                                     idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
@@ -683,7 +683,7 @@ namespace NewISE.Controllers
                                     }
                                     break;
                                 case EnumParentela.Figlio:
-                                    tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+                                    //tvm = dttv.GetTitoloViaggioByIdFiglio(id);
                                     idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
@@ -702,7 +702,7 @@ namespace NewISE.Controllers
                                     }
                                     break;
                                 case EnumParentela.Richiedente:
-                                    tvm = dttv.GetTitoloViaggioByID(id);
+                                    //tvm = dttv.GetTitoloViaggioByID(id);
                                     idTrasferimento = tvm.idTrasferimento;
                                     if (tvm != null && tvm.HasValue())
                                     {
