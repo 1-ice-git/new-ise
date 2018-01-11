@@ -10,13 +10,13 @@
 @{
 
     IndennitaPrimoSegretModel lm = (IndennitaPrimoSegretModel)ViewBag.idIndPrimoSegr;
-    decimal descrizioneprimosegr = lm.idIndPrimoSegr;
+   // decimal descrizioneprimosegr = lm.idIndPrimoSegr;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idIndPrimoSegr = lm.idIndPrimoSegr;
+   // decimal idIndPrimoSegr = lm.idIndPrimoSegr;
 
 }
 
-@using (Ajax.BeginForm("InserisciIndennitaPrimoSegretario", "ParamPrimoIndSegr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciIndennitaPrimoSegretario", "ParamPrimoIndSegr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formPrimoIndSegretario" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,10 +28,10 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idIndPrimoSegr)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+        @*@Html.HiddenFor(model => model.idIndPrimoSegr)*@
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Indennità primo Segretario </label>
             </div>
@@ -40,7 +40,7 @@
                     <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneprimosegr</label>
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -126,24 +126,29 @@
     });
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
-        
-        var idIndPrimoSegr = parseFloat('@idIndPrimoSegr');
-        var chk = true;
+      //  debugger;
+      //  rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
+        rotta = "/Parametri/ParamPrimoIndSegr/PrimoSegretario";
+      //  var idIndPrimoSegr = parseFloat('idIndPrimoSegr');
 
-        if (isNaN(idIndPrimoSegr)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
+        //if (isNaN(idIndPrimoSegr)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+        @*var chk = true;
         if ('@escludiAnnullati' == 'true') {
             chk = false;
+        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            // data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            data: {escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

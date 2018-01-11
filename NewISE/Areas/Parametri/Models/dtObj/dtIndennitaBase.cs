@@ -523,7 +523,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
                 }
             }
-            return Convert.ToDateTime("01/07/2015");// DateTime.Now;
+            return Utility.GetData_Inizio_Base();
         }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {

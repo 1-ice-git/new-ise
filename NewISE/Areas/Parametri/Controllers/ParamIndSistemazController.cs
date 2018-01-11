@@ -17,6 +17,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaSistemazione(bool escludiAnnullati, decimal idTipoTrasferimento = 0)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
             var r = new List<SelectListItem>();
             List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
@@ -52,15 +53,15 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParIndSist dtib = new dtParIndSist())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
+                    //if (escludiAnnullati)
+                    //{
+                    //    escludiAnnullati = false;
                         libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //}
+                    //else
+                    //{
+                    //libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
                 }
             }
             catch (Exception ex)

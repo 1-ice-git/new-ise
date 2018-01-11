@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -58,7 +59,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni)
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -71,8 +71,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
                                 idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -81,11 +81,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     idRegola = e.RIDUZIONI.IDREGOLA,
                                     idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
-
                                 }
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)
@@ -93,7 +91,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
+        public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo && a.IDRIDUZIONI == ibm.idRiduzioni).First().ANNULLATO == true ? true : false;
+            }
+        }
         public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
@@ -110,8 +114,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
                                 idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita =  e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -141,16 +145,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == escludiAnnullati).ToList();
+                    List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
+                    if (escludiAnnullati == true)
+                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDRIDUZIONI == idRiduzioni).ToList();
+
 
                     libm = (from e in lib
                             select new CoefficienteRichiamoModel()
                             {
-                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 idRiduzioni = e.IDRIDUZIONI.Value,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -171,7 +180,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
+       
         /// <summary>
         /// 
         /// </summary>
@@ -458,8 +467,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", idCoeffIndRichiamo);
                         }
-
-
                         db.Database.CurrentTransaction.Commit();
                     }
                 }
@@ -468,9 +475,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-
             }
-
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
         }
 
     }

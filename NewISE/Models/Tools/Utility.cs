@@ -19,7 +19,7 @@ namespace NewISE.Models.Tools
     {
 
         private const string DataFineSistema = "31/12/9999";
-
+        private const string Data_Inizio_Base = "01/07/2015";
 
         public static bool Amministratore()
         {
@@ -266,6 +266,10 @@ namespace NewISE.Models.Tools
             return Convert.ToDateTime("01/" + DateTime.Now.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + DateTime.Now.Year.ToString());
         }
 
+        public static DateTime GetData_Inizio_Base()
+        {
+            return Convert.ToDateTime(Data_Inizio_Base);
+        }
         public static DateTime GetDtFineMeseCorrente()
         {
             string giorno = "01";

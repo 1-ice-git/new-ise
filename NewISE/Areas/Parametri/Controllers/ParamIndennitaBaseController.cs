@@ -110,16 +110,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
 
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                {
-                    //if (escludiAnnullati==true)
-                    //{
-                    //   // escludiAnnullati = false;
-                    //    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
-                    //else
-                    //{
-                    //    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
+                {                    
                     libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }

@@ -3,7 +3,6 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
 }
 
 <p>
@@ -11,14 +10,14 @@
 </p>
 
 <p>
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.Label("lblIndPrimoSegr0", "Seleziona Indennità Primo Segretario", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("idIndPrimoSegr", ViewBag.PrimoSegretarioList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndPrimoSegr();", @onClick = "PrelevaPVIndPrimoSegr();" })
             </div>
         </div>
-    </div>
+    </div>*@
 </p>
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
@@ -31,10 +30,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.indennita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataAggiornamento)
-            </th>
+            </th>           
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -53,27 +49,25 @@
                 </td>
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.indennita)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
-                </td>
+                </td>               
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
                     @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaIndennitaPrimoSegretario(@item.idIndPrimoSegr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                    if (dtib.IndPrimoSegretarioAnnullato(item))
+                    {
+                        <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            //if (dtib.EsistonoMovimentiPrima(item))
+                            //{
+                            <a href="#" onclick="EliminaIndPrimoSegretario(@item.idIndPrimoSegr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            //}
                         }
                     }
-
-
                 </td>
             </tr>
         }
@@ -121,10 +115,12 @@
     $("#btnInsNuovaIndPrimoSegr").button();
 
     function PrelevaPVIndPrimoSegr() {
-        //debugger;
+      //  debugger;
         rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
 
         var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+        $("#hiTipoContributo").val(idIndPrimoSegr);
+
         var chk = true;
 
         if (isNaN(idIndPrimoSegr)) {
@@ -174,15 +170,15 @@
         //debugger;
 
         var rotta = "/Parametri/ParamPrimoIndSegr/NuovaIndennitaPrimoSegretario";
-        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+       // var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+       
+
+        //if (isNaN(idIndPrimoSegr)) {
+        //    //$("#divPViewParametri").empty();
+        //    AlertDialog("Selezionare una indennita per procedere.");
+        //    return false;
+        //}
         var chk = false;
-
-        if (isNaN(idIndPrimoSegr)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare una indennita per procedere.");
-            return false;
-        }
-
         if ('@escludiAnnullati' == 'true') {
             chk = false;
         }
@@ -190,7 +186,8 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            //data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            data: { escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -226,12 +223,13 @@
         var rotta = "/Parametri/ParamPrimoIndSegr/EliminaIndennitaPrimoSegretario";
 
         var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+
         var chk = true;
 
-        if (isNaN(idIndPrimoSegr)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
+        //if (isNaN(idIndPrimoSegr)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         @*if ('@escludiAnnullati' == 'true') {
             chk = false;
@@ -248,7 +246,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idIndPrimoSegr: idIndPrimoSegr, idIndPrimoSegr: id },
+                            data: { escludiAnnullati: chk, idIndPrimoSegr: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

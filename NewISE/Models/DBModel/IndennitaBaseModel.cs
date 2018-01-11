@@ -26,7 +26,7 @@ namespace NewISE.Models.DBModel
         [CustomValidation(typeof(dtIndennitaBase), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
         
-        [Display(Name = "Data fin. validità")]
+        [Display(Name = "Data fine validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }

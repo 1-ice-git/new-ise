@@ -1,5 +1,6 @@
 ﻿using NewISE.Areas.Parametri.Models;
 using NewISE.Areas.Parametri.Models.dtObj;
+using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
@@ -16,18 +17,17 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoefficientiSede(bool escludiAnnullati, decimal idUfficio = 0)
+        public ActionResult CoefficientiSede(bool escludiAnnullati, decimal idLivello = 0)
         {
             List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
             var r = new List<SelectListItem>();
             List<UfficiModel> llm = new List<UfficiModel>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtUffici dtl = new dtUffici())
                 {
                     llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
@@ -37,31 +37,26 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idUfficio.ToString()
                              }).ToList();
 
-                        if (idUfficio == 0)
+                        if (idLivello == 0)
                         {
                             r.First().Selected = true;
-                            idUfficio = Convert.ToDecimal(r.First().Value);
+                            idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.LivelliList = r;
                 }
 
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListCoefficientiSede(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListCoefficientiSede(idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //if (escludiAnnullati)
+                    //{
+                    //    escludiAnnullati = false;
+                        libm = dtib.getListCoefficientiSede(idLivello, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    
                 }
             }
             catch (Exception ex)
@@ -104,15 +99,15 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
+                    //if (escludiAnnullati)
+                    //{
+                    //    escludiAnnullati = false;
                         libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //}
+                    //else
+                    //{
+                    //    libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
                 }
             }
             catch (Exception ex)
@@ -128,8 +123,8 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult NuovoCoefficienteSede(decimal idUfficio, bool escludiAnnullati)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
-
             try
             {
                 using (dtUffici dtl = new dtUffici())
@@ -151,17 +146,36 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult InserisciCoefficientiSede(CoefficientiSedeModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
-
-            try
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            try 
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                     {
                         dtib.SetCoefficientiSede(ibm);
+                                         
+                        libm = dtib.getListCoefficientiSede(ibm.idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
+                    using (dtUffici dtl = new dtUffici())
+                    {
+                        var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
-                    return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
+                        if (llm != null && llm.Count > 0)
+                        {
+                            r = (from t in llm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.descUfficio,
+                                     Value = t.idUfficio.ToString()
+                                 }).ToList();
+                            r.Where(a => a.Value == ibm.idUfficio.ToString()).First().Selected = true;
+                        }
+                        ViewBag.LivelliList = r;
+                    }
+                    return PartialView("CoefficientiSede", libm);
+                    //return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
                 }
                 else
                 {
@@ -179,28 +193,48 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+        private void AggiornaLivelliList(decimal idUfficio)
+        {
+            var r = new List<SelectListItem>();
+            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
+            using (dtUffici dtl = new dtUffici())
+            {
+                var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.descUfficio,
+                             Value = t.idUfficio.ToString()
+                         }).ToList();
+                    r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                }
+                ViewBag.LivelliList = r;
+            }
+        }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoefficienteSede(bool escludiAnnullati, decimal idUfficio, decimal idCoefficientiSede)
+        public ActionResult EliminaCoefficienteSede(bool escludiAnnullati, decimal idUfficio, decimal idCoefficienteSede)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<CoefficientiSedeModel> libm = new List<CoefficientiSedeModel>();
             try
             {
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
-                    dtib.DelCoefficientiSede(idCoefficientiSede);
+                    dtib.DelCoefficientiSede(idCoefficienteSede);
+                    libm = dtib.getListCoefficientiSede(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-
-                return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
+                AggiornaLivelliList(idUfficio);
+                return PartialView("CoefficientiSede", libm);
+                //return RedirectToAction("CoefficientiSede", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
-
     }
 }

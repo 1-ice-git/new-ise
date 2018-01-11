@@ -23,9 +23,9 @@
     <thead>
 
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Ufficio.descUfficio)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -34,10 +34,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.valore)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataAggiornamento)
-            </th>
+            </th>            
             <th>
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -48,9 +45,9 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(model => item.Ufficio.descUfficio)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -59,26 +56,25 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.valore)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
-                </td>
+                </td>                
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
                     @using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                        if (dtib.CoefficientiSedeAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                        {
+                            //if (dtib.EsistonoMovimentiPrima(item))
+                            //{
+                                <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            //}
+                        }
                     }
-
                 </td>
             </tr>
         }
@@ -131,15 +127,16 @@
         rotta = "/Parametri/CoefficientiSede/CoefficientiSedeLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idUfficio);
+
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -182,7 +179,7 @@
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = false;
+
 
         if (isNaN(idUfficio)) {
             //$("#divPViewParametri").empty();
@@ -190,8 +187,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -229,19 +227,20 @@
     }
 
     function EliminaCoefficientiSede(id) {
-        //debugger;
+    //    debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $('#dialog-confirm').dialog({

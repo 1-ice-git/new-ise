@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Models.DBModel
 {
@@ -20,6 +21,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtCoeffFasciaKm), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fin. validità")]
@@ -30,17 +32,16 @@ namespace NewISE.Models.DBModel
         public decimal coefficienteKm { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
+        //[DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
         
-        [Required(ErrorMessage = "Il campo annullato è richiesto.")]
+        //[Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
         [DefaultValue(false)]
         public bool annullato { get; set; } = false;
-
         public DefFasciaKmModel km { get; set; }
-        
     }
 }

@@ -14,7 +14,7 @@
     decimal idUfficio = lm.idUfficio;
 }
 
-@using (Ajax.BeginForm("InserisciCoefficientiSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciCoefficientiSede", "CoefficientiSede", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formCoefficienteSede" }))
 {
     @Html.AntiForgeryToken()
 
@@ -27,7 +27,7 @@
         </div>
     </div>
     @Html.HiddenFor(model => model.idUfficio)
-    <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+    <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
     <div class="form-group">
         <div class="col-xs-2 text-right">
@@ -35,7 +35,7 @@
         </div>
         <div class="col-xs-10">
             <div class="panel panel-default">
-                <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@descrizioneUfficio</label>
+                <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@descrizioneUfficio.ToString()</label>
             </div>
         </div>
     </div>
@@ -129,15 +129,20 @@
 
 
         var idUfficio = parseFloat('@idUfficio');
-        var chk = true;
+       
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
+        @*if ('@escludiAnnullati' == 'true') {
             chk = false;
+        }*@
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({

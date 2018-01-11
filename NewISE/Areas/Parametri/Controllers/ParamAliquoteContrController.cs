@@ -193,7 +193,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
                     using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
-                        if ((bool)escludiAnnullati)
+                        if (escludiAnnullati)
                         {
                             escludiAnnullati = false;
                             libm = dtib.getListAliquoteContributive(ibm.idTipoContributo, escludiAnnullati).OrderBy(a => a.idAliqContr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
