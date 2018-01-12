@@ -153,7 +153,7 @@
 
             $("#dialog").dialog("open");
 
-            rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+            rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
 
             var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").datepicker().val()
@@ -252,6 +252,55 @@
                 url: rotta,
                 data: {
                     //codicequalifica: codicequalifica,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+
+        function RptSpeseDiverse() {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+            var chk = true;
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
                     V_DATA: data,
                     V_DATA1: data1
                 },

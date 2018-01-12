@@ -211,19 +211,16 @@
 
                 $("#dialog").dialog("open");
 
-                //rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+
+                rotta = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente";
 
                 var data = $("#datepicker").datepicker().val()
-                var data1 = $("#datepicker1").datepicker().val()
-
+                var matricola = matricola
 
                 $.ajax({
                     type: "POST",
                     url: rotta,
-                    data: {
-                        V_DATA: data,
-                        V_DATA1: data1
-                    },
+                    data: { matricola: matricola },
                     dataType: 'html',
                     beforeSend: function () {
                         //debugger;

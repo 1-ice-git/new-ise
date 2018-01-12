@@ -19,7 +19,7 @@
         </div>
     </div>
   </div>
-    
+    <br />
 
      <div class="form-group">
          
@@ -31,7 +31,7 @@
              <a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>
          </div>
     </div>
-
+<br /><br />
     <table id="tbDipEsteroLivello" class="display" cellspacing="0">
         <thead>
             <tr>
@@ -165,6 +165,8 @@
                 $("#dialog").dialog("open");
 
                 rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
+
+
                 var codicequalifica = $("#COD_QUALIFICA").select2('val');
                 var data = $("#datepicker").datepicker().val()
                 var data1 = $("#datepicker1").datepicker().val()
@@ -319,20 +321,7 @@
             var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").val();
 
-            var chk = true;
-
-            //$("#codicedipendente").val = idMatricola;
-
-            //if (isNaN(codicequalifica)) {
-            //    $("#divPViewParametri").empty();
-            //    return false;
-            //}
-
-            //if (isNaN(null)) {
-            //    alert("null is not a number");
-            //} else {
-            //    alert("i think null is a number");
-            //}
+            
 
             $.ajax({
                 type: "POST",

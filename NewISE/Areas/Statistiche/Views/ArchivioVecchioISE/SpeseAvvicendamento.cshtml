@@ -27,7 +27,8 @@
 
 <div class="form-group">
     <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa il Consuntivo Spese di Avvicendamento </a>
+        @*<a href="#" target="_blank" onclick="invia()">Stampa il Consuntivo Spese di Avvicendamento </a>*@
+        <a href="#" id="opener">Stampa Spese Diverse </a>
     </div>
     <div class="col-md-3">
         <a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>
@@ -157,7 +158,7 @@
 
             $("#dialog").dialog("open");
 
-            rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+            rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseAvvicendamento";
 
             var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").datepicker().val()
@@ -265,6 +266,53 @@
                 url: rotta,
                 data: {
                     //codicequalifica: codicequalifica,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        function RptSpeseAvvicendamento() {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseAvvicendamento";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
                     V_DATA: data,
                     V_DATA1: data1
                 },
