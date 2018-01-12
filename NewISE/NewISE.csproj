@@ -3035,6 +3035,7 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\AltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\PratichePassaporto\ChkIncludiPassaporto.cshtml" />
+    <Content Include="Views\Documenti\ElencoDocumentiPassaporto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

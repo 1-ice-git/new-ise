@@ -35,7 +35,7 @@ namespace NewISE.Models.DBModel.dtObj
                     pmfm = new PercentualeMagFigliModel()
                     {
                         idPercMagFigli = pmf.IDPERCMAGFIGLI,
-                        idTipologiaFiglio = (TipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
+                        idTipologiaFiglio = (EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
                         dataInizioValidita = pmf.DATAINIZIOVALIDITA,
                         dataFineValidita = pmf.DATAFINEVALIDITA,
                         percentualeFigli = pmf.PERCENTUALEFIGLI,
@@ -65,7 +65,7 @@ namespace NewISE.Models.DBModel.dtObj
                 pmfm = new PercentualeMagFigliModel()
                 {
                     idPercMagFigli = pmf.IDPERCMAGFIGLI,
-                    idTipologiaFiglio = (TipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
+                    idTipologiaFiglio = (EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO,
                     dataInizioValidita = pmf.DATAINIZIOVALIDITA,
                     dataFineValidita = pmf.DATAFINEVALIDITA,
                     percentualeFigli = pmf.PERCENTUALEFIGLI,
@@ -84,7 +84,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="dtFine">data fine ricerca</param>
         /// <param name="db">db ise</param>
         /// <returns>Lista di PercentualeMagFigliModel</returns>
-        public IList<PercentualeMagFigliModel> GetPercentualeMaggiorazioneFigli(TipologiaFiglio idTipologiaFiglio, DateTime dtInizio, DateTime dtFine, ModelDBISE db)
+        public IList<PercentualeMagFigliModel> GetPercentualeMaggiorazioneFigli(EnumTipologiaFiglio idTipologiaFiglio, DateTime dtInizio, DateTime dtFine, ModelDBISE db)
         {
             List<PercentualeMagFigliModel> lpmfm = new List<PercentualeMagFigliModel>();
 
@@ -102,7 +102,7 @@ namespace NewISE.Models.DBModel.dtObj
                          select new PercentualeMagFigliModel()
                          {
                              idPercMagFigli = e.IDPERCMAGFIGLI,
-                             idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                             idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                              dataInizioValidita = e.DATAINIZIOVALIDITA,
                              dataFineValidita = e.DATAFINEVALIDITA,
                              percentualeFigli = e.PERCENTUALEFIGLI,

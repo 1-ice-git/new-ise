@@ -105,7 +105,7 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        @*@Html.Action("ChkEscludiPassaporto", "PratichePassaporto", new { idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc, escludiPassaporto = item.richiedi })*@
+                        @Html.Action("ChkIncludiPassaporto", "PratichePassaporto", new { idAttivitaPassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc.esisteDoc, includiPassaporto = item.richiedi })
                     </td>
 
                 </tr>
@@ -277,12 +277,13 @@
 
     }
 
-    function ColElencoDoc(idFamiliare, parentela) {
+    function ColElencoDoc(idAttivazioniPassaporto, idFamiliare, parentela) {
+        //debugger;
         var rotta = "/PratichePassaporto/ColonnaElencoDoc";
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idFamiliare: idFamiliare, parentela: parentela },
+            data: { idAttivazionePassaporto: idAttivazioniPassaporto, idFamiliarePassaporto: idFamiliare, parentela: parentela },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -314,14 +315,9 @@
 
 
     function ConfermaIncludiEscludiPassaporto(chkEscludi, id, parentela) {
-        debugger;
-        //var boolEscludi = chkEscludi.checked;
-        //var idFam = parseInt(id);
-        //var parentela = parseInt($("#hParentela").val());
-        //var idChk = $("#hidChk").val();
-        //var chkEscludi = $("#" + idChk);
+        //debugger;
 
-        var rotta = "/PratichePassaporto/ConfermaEscludiPassaporto";
+        var rotta = "/PratichePassaporto/ConfermaIncludiEscludiPassaporto";
 
         $.ajax({
             type: "POST",
@@ -339,8 +335,8 @@
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 if (result.err == "") {
                     chkEscludi.checked = result.chk;
-                    ColElencoDoc(id, parentela);
-                    GestionePulsantiNotificaAndConcludiPassaporto();
+                    ColElencoDoc(result.idAttivazioniPassaporto, id, parentela);
+                    //GestionePulsantiNotificaAndConcludiPassaporto();
 
                 } else {
                     chkEscludi.checked = !chkEscludi.checked;
@@ -363,19 +359,17 @@
     }
 
 
-    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
-        //debugger;
-        var rotta = "/Documenti/ElencoDocumenti";
+    function ElencoDocumenti(idFamiliarePassaporto, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+        debugger;
+        var rotta = "/Documenti/ElencoDocumentiPassaporto";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                id: id,
+                idFamiliarePassaporto: id,
                 tipoDoc: tipoDoc,
-                parentela: idParentela,
-                chiamante: chiamante,
-                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                parentela: idParentela
             },
             dataType: 'html',
             async: false,
@@ -388,11 +382,10 @@
             },
             success: function (result) {
                 //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
+
                 $("#divPassaporto").empty();
                 $("#divPassaporto").html(result);
-                GestionePulsantiNotificaAndConcludiPassaporto();
+                //GestionePulsantiNotificaAndConcludiPassaporto();
             },
             complete: function () {
 

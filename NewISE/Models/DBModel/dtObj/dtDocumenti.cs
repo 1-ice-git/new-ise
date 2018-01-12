@@ -96,6 +96,40 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
+
+        public IList<DocumentiModel> GetDocumentiIdentitaFiglioPassaporto(decimal idFiglioPassaporto)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var fp = db.FIGLIPASSAPORTO.Find(idFiglioPassaporto);
+                var f = fp.FIGLI;
+                var ld =
+                    f.DOCUMENTI.Where(
+                        a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
+                        .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let file = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = file
+                                 });
+                }
+            }
+
+            return ldm;
+        }
+
+
         public IList<DocumentiModel> GetDocumentiIdentitaConiugePassaporto(decimal idConiugePassaporto)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
@@ -104,8 +138,10 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
                 var c = cp.CONIUGE;
-                var ld = c.DOCUMENTI.Where(a => (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
-                                                 a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+                var ld =
+                    c.DOCUMENTI.Where(
+                        a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
+                        .OrderByDescending(a => a.DATAINSERIMENTO);
 
                 if (ld?.Any() ?? false)
                 {

@@ -20,10 +20,6 @@ namespace NewISE.Controllers
 {
     public class DocumentiController : Controller
     {
-
-
-
-
         public ActionResult LeggiDocumento(decimal id)
         {
             byte[] Blob;
@@ -523,23 +519,28 @@ namespace NewISE.Controllers
         public ActionResult ElencoDocumentiPassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipoDoc, EnumParentela parentela)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
-
+            string NomePartialView = "ElencoDocumentiPassaporto";
             try
             {
-                switch (parentela)
+                using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    case EnumParentela.Coniuge:
-                        using (dtDocumenti dtd = new dtDocumenti())
-                        {
+                    switch (parentela)
+                    {
+                        case EnumParentela.Coniuge:
+
                             ldm = dtd.GetDocumentiIdentitaConiugePassaporto(idFamiliarePassaporto).ToList();
-                        }
-                        break;
-                    case EnumParentela.Figlio:
-                        break;
-                    case EnumParentela.Richiedente:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
+                            return PartialView(ldm);
+
+                        case EnumParentela.Figlio:
+                            ldm = dtd.GetDocumentiIdentitaFiglioPassaporto(idFamiliarePassaporto).ToList();
+                            return PartialView(ldm);
+
+                        case EnumParentela.Richiedente:
+
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("parentela");
+                    }
                 }
             }
             catch (Exception ex)

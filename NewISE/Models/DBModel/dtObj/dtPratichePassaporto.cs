@@ -1130,7 +1130,6 @@ namespace NewISE.Models.DBModel.dtObj
                             ap.CONIUGEPASSAPORTO.Where(
                                 a => a.ANNULLATO == false && a.IDCONIUGEPASSAPORTO == idFamiliarePassaporto);
 
-
                         if (lcp?.Any() ?? false)
                         {
                             var cp = lcp.First();
@@ -1141,12 +1140,26 @@ namespace NewISE.Models.DBModel.dtObj
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 
+
+                            bool EsisteDoc = false;
+
+                            var lDoc = c.DOCUMENTI.Where(
+                                a =>
+                                    (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+
+                            if (lDoc?.Any() ?? false)
+                            {
+                                EsisteDoc = true;
+                            }
+                            else
+                            {
+                                EsisteDoc = false;
+                            }
+
                             HasDoc hasDoc = new HasDoc()
                             {
-                                esisteDoc = c.DOCUMENTI.Where(
-                                    a =>
-                                        (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                esisteDoc = EsisteDoc,
                                 tipoDoc = EnumTipoDoc.Documento_Identita,
                             };
 
@@ -1180,12 +1193,25 @@ namespace NewISE.Models.DBModel.dtObj
                                     .OrderByDescending(a => a.IDALTRIDATIFAM)
                                     .First();
 
+                            bool EsisteDoc = false;
+
+                            var lDoc = f.DOCUMENTI.Where(
+                                a =>
+                                    (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+
+                            if (lDoc?.Any() ?? false)
+                            {
+                                EsisteDoc = true;
+                            }
+                            else
+                            {
+                                EsisteDoc = false;
+                            }
+
                             HasDoc hasDoc = new HasDoc()
                             {
-                                esisteDoc = f.DOCUMENTI.Where(
-                                    a =>
-                                        (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                esisteDoc = EsisteDoc,
                                 tipoDoc = EnumTipoDoc.Documento_Identita,
                             };
 
@@ -1215,12 +1241,26 @@ namespace NewISE.Models.DBModel.dtObj
                             var pr = lpr.First();
                             var tr = ap.PASSAPORTI.TRASFERIMENTO;
                             var dip = tr.DIPENDENTI;
+
+                            bool EsisteDoc = false;
+
+                            var lDoc = pr.DOCUMENTI.Where(
+                                a =>
+                                    (a.MODIFICATO == false || a.FK_IDDOCUMENTO.HasValue == false) &&
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
+
+                            if (lDoc?.Any() ?? false)
+                            {
+                                EsisteDoc = true;
+                            }
+                            else
+                            {
+                                EsisteDoc = false;
+                            }
+
                             HasDoc hasDoc = new HasDoc()
                             {
-                                esisteDoc = pr.DOCUMENTI.Where(
-                                    a =>
-                                        (a.MODIFICATO == false || !a.FK_IDDOCUMENTO.HasValue) &&
-                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)?.Any() ?? false,
+                                esisteDoc = EsisteDoc,
                                 tipoDoc = EnumTipoDoc.Documento_Identita,
                             };
 

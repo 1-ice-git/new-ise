@@ -331,6 +331,55 @@ namespace NewISE.Models.DBModel.dtObj
             return tm;
         }
 
+
+
+
+        public TrasferimentoModel GetTrasferimentoByIdFiglio(decimal idFiglio)
+        {
+            TrasferimentoModel tm = new TrasferimentoModel();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.FIGLI.Find(idFiglio).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (t?.IDTRASFERIMENTO > 0)
+                    {
+                        tm = new TrasferimentoModel()
+                        {
+                            idTrasferimento = t.IDTRASFERIMENTO,
+                            idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                            idUfficio = t.IDUFFICIO,
+                            idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                            idDipendente = t.IDDIPENDENTE,
+                            idTipoCoan = t.IDTIPOCOAN,
+                            dataPartenza = t.DATAPARTENZA,
+                            dataRientro = t.DATARIENTRO,
+                            coan = t.COAN,
+                            protocolloLettera = t.PROTOCOLLOLETTERA,
+                            dataLettera = t.DATALETTERA,
+                            notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                            dataAggiornamento = t.DATAAGGIORNAMENTO
+
+                        };
+                    }
+                    else
+                    {
+                        throw new Exception("Non è stato possibile intercettare il trasferimento con l'id figlio: (" + idFiglio + ")");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return tm;
+        }
+
+
         public TrasferimentoModel GetTrasferimentoByIdConiuge(decimal idConiuge)
         {
             TrasferimentoModel tm = new TrasferimentoModel();

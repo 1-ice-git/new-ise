@@ -7,12 +7,11 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum TipologiaFiglio
+    public enum EnumTipologiaFiglio
     {
         Residente = 1,
-        Studente = 2
-
-
+        StudenteResidente = 2,
+        StudenteNonResidente = 3
     }
     public class PercentualeMagFigliModel
     {
@@ -20,7 +19,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idPercMagFigli { get; set; }
         [Required(ErrorMessage = "La tipologia figlio è richiesta.")]
-        public TipologiaFiglio idTipologiaFiglio { get; set; }
+        public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]

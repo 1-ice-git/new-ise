@@ -8,12 +8,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipologiaFiglio
-    {
-        Residente = 1,
-        StudenteResidente = 2,
-        StudenteNonResidente = 3
-    }
+
 
     public class FigliModel
     {

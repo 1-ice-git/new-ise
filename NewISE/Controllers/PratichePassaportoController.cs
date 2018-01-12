@@ -60,7 +60,7 @@ namespace NewISE.Controllers
         {
             string errore = string.Empty;
             bool chk = false;
-
+            decimal idAttivazioniPassaporto = 0;
             try
             {
                 switch (parentela)
@@ -68,19 +68,19 @@ namespace NewISE.Controllers
                     case EnumParentela.Coniuge:
                         using (dtConiugePassaporto dtcp = new dtConiugePassaporto())
                         {
-                            dtcp.SetIncludiEscludiPassaporto(id, ref chk);
+                            dtcp.SetIncludiEscludiPassaporto(id, ref chk, ref idAttivazioniPassaporto);
                         }
                         break;
                     case EnumParentela.Figlio:
                         using (dtFigliPassaporto dtfp = new dtFigliPassaporto())
                         {
-                            dtfp.SetIncludiEscludiPassaporto(id, ref chk);
+                            dtfp.SetIncludiEscludiPassaporto(id, ref chk, ref idAttivazioniPassaporto);
                         }
                         break;
                     case EnumParentela.Richiedente:
                         using (dtPassaportoRichiedente dtpr = new dtPassaportoRichiedente())
                         {
-                            dtpr.SetIncludiEscludiPassaporto(id, ref chk);
+                            dtpr.SetIncludiEscludiPassaporto(id, ref chk, ref idAttivazioniPassaporto);
                         }
                         break;
                     default:
@@ -99,6 +99,7 @@ namespace NewISE.Controllers
                     new
                     {
                         chk = chk,
+                        idAttivazioniPassaporto = idAttivazioniPassaporto,
                         err = errore
                     });
 
@@ -158,6 +159,7 @@ namespace NewISE.Controllers
                         praticaConclusa = praticaConclusa
                     });
         }
+
 
         public ActionResult ChkIncludiPassaporto(decimal idAttivitaPassaporto, decimal idFamiliarePassaporto, EnumParentela parentela, bool esisteDoc, bool includiPassaporto)
         {

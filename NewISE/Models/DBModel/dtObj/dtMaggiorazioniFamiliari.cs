@@ -877,7 +877,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     DateTime dtFin = fNew.DATAFINEVALIDITA;
 
                                                     List<PercentualeMagFigliModel> lpmfm =
-                                                        dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fNew.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db).ToList();
+                                                        dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fNew.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db).ToList();
 
                                                     if (lpmfm?.Any() ?? false)
                                                     {
@@ -1416,7 +1416,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
 
                             List<PercentualeMagFigliModel> lpmfm =
-                                dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni,
+                                dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni,
                                     dtFin, db).ToList();
 
                             if (lpmfm?.Any() ?? false)
