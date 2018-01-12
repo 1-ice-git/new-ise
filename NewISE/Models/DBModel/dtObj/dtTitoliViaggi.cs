@@ -379,6 +379,363 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public decimal GetIdAltriDatiFamiliari(decimal idTrasferimento, decimal idFamiliare, EnumParentela parentela)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                decimal idAltridatiFamiliari = 0;
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        var c = t.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDCONIUGE == idFamiliare).First();
+                        var adfc = c.ALTRIDATIFAM.First();
+                        idAltridatiFamiliari = adfc.IDALTRIDATIFAM;
+                        break;
+
+                    case EnumParentela.Figlio:
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return idAltridatiFamiliari;
+            }
+        }
+
+
+        public List<ElencoTitoliViaggioModel> ElencoTitoliViaggioByIdTrasf(decimal idTrasferimento)
+        {
+            List<ElencoTitoliViaggioModel> letvm = new List<ElencoTitoliViaggioModel>();
+
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var latv = t.TITOLIVIAGGIO.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.ATTIVAZIONERICHIESTA == false)
+                        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+                if (latv?.Any() ?? false)
+                {
+                    var atv = latv.First();
+
+                    AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
+                    {
+                        idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                        idTrasferimento = atv.IDTRASFERIMENTO,
+                        notificaRichiesta = atv.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+                        AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+                        dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+                        dataAggiornamento = atv.DATAAGGIORNAMENTO,
+                        Annullato = atv.ANNULLATO
+                    };
+                }
+                else
+                {
+                    //se non esiste una attivazione di titolo di viaggio (la prima volta non esiste)
+                    //ne creo una 
+                    //e creo una atitolo di viaggio richiedente (esiste sempre)
+                    //e un titolo di viaggio per ogni familiare della maggiorazione familiare richiesta
+                    //che sia residente (coniugetitoliviaggio, figlititoliviaggio) 
+                    ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO()
+                    {
+                        IDTRASFERIMENTO = idTrasferimento,
+                        NOTIFICARICHIESTA = false,
+                        DATANOTIFICARICHIESTA = null,
+                        ATTIVAZIONERICHIESTA = false,
+                        DATAATTIVAZIONERICHIESTA = null,
+                        DATAAGGIORNAMENTO = DateTime.Now,
+                        ANNULLATO = false
+                    };
+                    db.ATTIVAZIONETITOLIVIAGGIO.Add(atv);
+
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore nella fase di creazione dell'attivazione titolo di viaggio.");
+                    }
+
+                    AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
+                    {
+                        idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                        idTrasferimento = atv.IDTRASFERIMENTO,
+                        notificaRichiesta = atv.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+                        AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+                        dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+                        dataAggiornamento = atv.DATAAGGIORNAMENTO,
+                        Annullato = atv.ANNULLATO
+                    };
+                    //leggo le informazioni del dipendente
+                    var d = t.DIPENDENTI;
+
+                    //creo titoloviaggiorichiedente
+                    TITOLIVIAGGIORICHIEDENTE tvr = new TITOLIVIAGGIORICHIEDENTE()
+                    {
+                        IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                        IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                        RICHIEDITITOLOVIAGGIO = false,
+                        DATAAGGIORNAMENTO = DateTime.Now,
+                        ANNULLATO = false
+                    };
+                    db.TITOLIVIAGGIORICHIEDENTE.Add(tvr);
+                    if (db.SaveChanges() <= 0)
+                    {
+                        throw new Exception("Errore nella fase di creazione del titolo di viaggio del richiedente.");
+                    }
+
+                    //titolo viaggio richiedente
+                    ElencoTitoliViaggioModel etvrm = new ElencoTitoliViaggioModel()
+                    {
+                        idFamiliare = d.IDDIPENDENTE,
+                        Nominativo = d.NOME + " " + d.COGNOME,
+                        CodiceFiscale = "",
+                        dataInizio = t.DATAPARTENZA,
+                        dataFine = t.DATARIENTRO,
+                        parentela = EnumParentela.Richiedente,
+                        idAltriDati = 0,
+                        RichiediTitoloViaggio = tvr.RICHIEDITITOLOVIAGGIO,
+                        idAttivazioneTitoloViaggio = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+                        idTitoloViaggio = tvr.IDTITOLOVIAGGIO
+                    };
+                    letvm.Add(etvrm);
+
+                    //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
+                    var lc = t.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+                    if (lc?.Any() ?? false)
+                    {
+                        foreach (var c in lc)
+                        {
+                            //creo titolo viaggio coniuge
+                            CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
+                            {
+                                IDCONIUGE = c.IDCONIUGE,
+                                IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                                IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+                                RICHIEDITITOLOVIAGGIO = false,
+                                DATAAGGIORNAMENTO = DateTime.Now,
+                                ANNULLATO = false
+                            };
+                            db.CONIUGETITOLIVIAGGIO.Add(ctv);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
+                            }
+                            //titolo viaggio coniuge
+                            ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+                            {
+                                idFamiliare = c.IDCONIUGE,
+                                Nominativo = c.NOME + " " + c.COGNOME,
+                                CodiceFiscale = c.CODICEFISCALE,
+                                dataInizio = t.DATAPARTENZA,
+                                dataFine = t.DATARIENTRO,
+                                parentela = EnumParentela.Coniuge,
+                                idAltriDati = this.GetIdAltriDatiFamiliari(idTrasferimento, c.IDCONIUGE, EnumParentela.Coniuge),
+                                RichiediTitoloViaggio = ctv.RICHIEDITITOLOVIAGGIO,
+                                idAttivazioneTitoloViaggio = ctv.IDATTIVAZIONETITOLIVIAGGIO,
+                                idTitoloViaggio = ctv.IDTITOLOVIAGGIO
+                            };
+                            letvm.Add(etvcm);
+
+                        }
+                    }
+
+                    //cerco eventuali figli residenti e ne creo il titolo di viaggio
+                    var lf = t.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+                    if (lf?.Any() ?? false)
+                    {
+                        foreach (var f in lf)
+                        {
+                            //creo titolo viaggio figlio
+                            FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
+                            {
+                                IDFIGLI = f.IDFIGLI,
+                                IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                                IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+                                RICHIEDITITOLOVIAGGIO = false,
+                                DATAAGGIORNAMENTO = DateTime.Now,
+                                ANNULLATO = false
+                            };
+                            db.FIGLITITOLIVIAGGIO.Add(ftv);
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            return letvm;
+        }
+
+        //public bool chkTitoliViaggio(decimal idTrasferimento)
+        //{
+        //    bool chk = false;
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var t = db.TRASFERIMENTO.Find(idTrasferimento);
+        //        var latv = t.TITOLIVIAGGIO.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.ATTIVAZIONERICHIESTA == false)
+        //                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+        //        if (latv?.Any() ?? false)
+        //        {
+        //            var atv = latv.First();
+
+        //            AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
+        //            {
+        //                idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                idTrasferimento = atv.IDTRASFERIMENTO,
+        //                notificaRichiesta = atv.NOTIFICARICHIESTA,
+        //                dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+        //                AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+        //                dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+        //                dataAggiornamento = atv.DATAAGGIORNAMENTO,
+        //                Annullato = atv.ANNULLATO
+        //            };
+        //        }
+        //        else
+        //        {
+        //            //se non esiste una attivazione di titolo di viaggio (la prima volta non esiste)
+        //            //ne creo una 
+        //            //e creo una atitolo di viaggio richiedente (esiste sempre)
+        //            //e un titolo di viaggio per ogni familiare della maggiorazione familiare richiesta
+        //            //che sia residente (coniugetitoliviaggio, figlititoliviaggio) 
+        //            ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO()
+        //            {
+        //                IDTRASFERIMENTO = idTrasferimento,
+        //                NOTIFICARICHIESTA = false,
+        //                DATANOTIFICARICHIESTA = null,
+        //                ATTIVAZIONERICHIESTA = false,
+        //                DATAATTIVAZIONERICHIESTA = null,
+        //                DATAAGGIORNAMENTO = DateTime.Now,
+        //                ANNULLATO = false
+        //            };
+        //            db.ATTIVAZIONETITOLIVIAGGIO.Add(atv);
+
+        //            if (db.SaveChanges() <= 0)
+        //            {
+        //                throw new Exception("Errore nella fase di creazione dell'attivazione titolo di viaggio.");
+        //            }
+
+        //            AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
+        //            {
+        //                idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                idTrasferimento = atv.IDTRASFERIMENTO,
+        //                notificaRichiesta = atv.NOTIFICARICHIESTA,
+        //                dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+        //                AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+        //                dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+        //                dataAggiornamento = atv.DATAAGGIORNAMENTO,
+        //                Annullato = atv.ANNULLATO
+        //            };
+        //            //leggo le informazioni del dipendente
+        //            var d = t.DIPENDENTI;
+
+        //            //creo titoloviaggiorichiedente
+        //            TITOLIVIAGGIORICHIEDENTE tvr = new TITOLIVIAGGIORICHIEDENTE()
+        //            {
+        //                IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+        //                IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                RICHIEDITITOLOVIAGGIO = false,
+        //                DATAAGGIORNAMENTO = DateTime.Now,
+        //                ANNULLATO = false
+        //            };
+        //            db.TITOLIVIAGGIORICHIEDENTE.Add(tvr);
+        //            if (db.SaveChanges() <= 0)
+        //            {
+        //                throw new Exception("Errore nella fase di creazione del titolo di viaggio del richiedente.");
+        //            }
+
+        //            //titolo viaggio richiedente
+        //            ElencoTitoliViaggioModel etvrm = new ElencoTitoliViaggioModel()
+        //            {
+        //                idFamiliare = d.IDDIPENDENTE,
+        //                Nominativo = d.NOME + " " + d.COGNOME,
+        //                CodiceFiscale = "",
+        //                dataInizio = t.DATAPARTENZA,
+        //                dataFine = t.DATARIENTRO,
+        //                parentela = EnumParentela.Richiedente,
+        //                idAltriDati = 0,
+        //                RichiediTitoloViaggio = tvr.RICHIEDITITOLOVIAGGIO,
+        //                idAttivazioneTitoloViaggio = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+        //                idTitoloViaggio = tvr.IDTITOLOVIAGGIO
+        //            };
+        //            letvm.Add(etvrm);
+
+        //            //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
+        //            var lc = t.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+        //            if (lc?.Any() ?? false)
+        //            {
+        //                foreach (var c in lc)
+        //                {
+        //                    //creo titolo viaggio coniuge
+        //                    CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
+        //                    {
+        //                        IDCONIUGE = c.IDCONIUGE,
+        //                        IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+        //                        IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+        //                        RICHIEDITITOLOVIAGGIO = false,
+        //                        DATAAGGIORNAMENTO = DateTime.Now,
+        //                        ANNULLATO = false
+        //                    };
+        //                    db.CONIUGETITOLIVIAGGIO.Add(ctv);
+        //                    if (db.SaveChanges() <= 0)
+        //                    {
+        //                        throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
+        //                    }
+        //                    //titolo viaggio coniuge
+        //                    ElencoTitoliViaggioModel etvcm = new ElencoTitoliViaggioModel()
+        //                    {
+        //                        idFamiliare = c.IDCONIUGE,
+        //                        Nominativo = c.NOME + " " + c.COGNOME,
+        //                        CodiceFiscale = c.CODICEFISCALE,
+        //                        dataInizio = t.DATAPARTENZA,
+        //                        dataFine = t.DATARIENTRO,
+        //                        parentela = EnumParentela.Coniuge,
+        //                        idAltriDati = this.GetIdAltriDatiFamiliari(idTrasferimento, c.IDCONIUGE, EnumParentela.Coniuge),
+        //                        RichiediTitoloViaggio = ctv.RICHIEDITITOLOVIAGGIO,
+        //                        idAttivazioneTitoloViaggio = ctv.IDATTIVAZIONETITOLIVIAGGIO,
+        //                        idTitoloViaggio = ctv.IDTITOLOVIAGGIO
+        //                    };
+        //                    letvm.Add(etvcm);
+
+        //                }
+        //            }
+
+        //            //cerco eventuali figli residenti e ne creo il titolo di viaggio
+        //            var lf = t.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+        //            if (lf?.Any() ?? false)
+        //            {
+        //                foreach (var f in lf)
+        //                {
+        //                    //creo titolo viaggio figlio
+        //                    FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
+        //                    {
+        //                        IDFIGLI = f.IDFIGLI,
+        //                        IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+        //                        IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
+        //                        RICHIEDITITOLOVIAGGIO = false,
+        //                        DATAAGGIORNAMENTO = DateTime.Now,
+        //                        ANNULLATO = false
+        //                    };
+        //                    db.FIGLITITOLIVIAGGIO.Add(ftv);
+        //                    if (db.SaveChanges() <= 0)
+        //                    {
+        //                        throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
+        //                    }
+        //                }
+        //            }
+
+        //        }
+        //    }
+
+        //    return letvm;
+        //}
+
 
     }
 }

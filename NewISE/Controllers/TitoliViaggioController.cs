@@ -13,22 +13,19 @@ namespace NewISE.Controllers
     public class TitoliViaggioController : Controller
     {
 
+
         [HttpPost]
         public ActionResult TitoliViaggio(decimal idTrasferimento)
         {
-
-
             using (dtTitoliViaggi dttv = new dtTitoliViaggi())
             {
-
+                //bool chk_TV = dttv.chkTitoliViaggio(idTrasferimento);
+                //var atvm = dttv.ElencoTitoliViaggioByIdTrasf(idTrasferimento);
+                //ViewData.Add("idTitoloViaggio", atvm.idAttivazioneTitoliViaggio);
             }
-
             ViewData.Add("idTrasferimento", idTrasferimento);
             return PartialView();
         }
-
-
-
-
+        
     }
 }

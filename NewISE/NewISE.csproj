@@ -2769,6 +2769,7 @@
     <Compile Include="Models\Config\s_admin\sUtenteNormale.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
+    <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
@@ -2929,6 +2930,7 @@
     <Compile Include="Models\ViewModel\GestioneChkEscludiPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
+    <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
