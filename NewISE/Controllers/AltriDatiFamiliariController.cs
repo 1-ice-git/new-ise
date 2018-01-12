@@ -324,17 +324,12 @@ namespace NewISE.Controllers
                     {
                         switch (pc.idTipologiaConiuge)
                         {
-                            case TipologiaConiuge.Residente:
+                            case EnumTipologiaConiuge.Residente:
                                 adf.residente = true;
                                 adf.ulterioreMagConiuge = false;
                                 break;
 
-                            case TipologiaConiuge.NonResidente:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidenteCarico:
+                            case EnumTipologiaConiuge.NonResidente_A_Carico:
                                 adf.residente = false;
                                 adf.ulterioreMagConiuge = true;
                                 break;
@@ -356,11 +351,10 @@ namespace NewISE.Controllers
             {
                 using (dtConiuge dtc = new dtConiuge())
                 {
-                    if (adf.idConiuge.HasValue)
-                    {
-                        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                        adf.Coniuge = cm;
-                    }
+
+                    var cm = dtc.GetConiugebyID(adf.idConiuge);
+                    adf.Coniuge = cm;
+
                 }
 
                 return PartialView(adf);
@@ -386,72 +380,32 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult AltriDatiFamiliariConiugePassaporti(decimal idConiuge)
+        public ActionResult AltriDatiFamiliariConiugePassaporti(decimal idAltriDati)
         {
             AltriDatiFamConiugeModel adf = new AltriDatiFamConiugeModel();
-            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
             TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    //adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge);
+                    adf = dtadf.GetAltriDatiFamiliariConiuge(idAltriDati);
                 }
-                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    mcm = dtmc.GetMaggiorazioniFamiliaribyConiuge(idConiuge);
+                    tm = dtt.GetTrasferimentoByIdConiuge(adf.idConiuge);
                 }
 
-
-                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                {
-                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
-
-                    if (pc != null && pc.HasValue())
-                    {
-                        switch (pc.idTipologiaConiuge)
-                        {
-                            case TipologiaConiuge.Residente:
-                                adf.residente = true;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidente:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidenteCarico:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = true;
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            using (dtTrasferimento dtt = new dtTrasferimento())
-            {
-                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
-            }
+
 
             ViewData.Add("idTrasferimento", tm.idTrasferimento);
-
-            using (dtConiuge dtc = new dtConiuge())
-            {
-                if (adf.idConiuge.HasValue)
-                {
-                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                    adf.Coniuge = cm;
-                }
-            }
 
 
             return PartialView(adf);
@@ -486,17 +440,12 @@ namespace NewISE.Controllers
                     {
                         switch (pc.idTipologiaConiuge)
                         {
-                            case TipologiaConiuge.Residente:
+                            case EnumTipologiaConiuge.Residente:
                                 adf.residente = true;
                                 adf.ulterioreMagConiuge = false;
                                 break;
 
-                            case TipologiaConiuge.NonResidente:
-                                adf.residente = false;
-                                adf.ulterioreMagConiuge = false;
-                                break;
-
-                            case TipologiaConiuge.NonResidenteCarico:
+                            case EnumTipologiaConiuge.NonResidente_A_Carico:
                                 adf.residente = false;
                                 adf.ulterioreMagConiuge = true;
                                 break;
@@ -521,11 +470,10 @@ namespace NewISE.Controllers
 
             using (dtConiuge dtc = new dtConiuge())
             {
-                if (adf.idConiuge.HasValue)
-                {
-                    var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-                    adf.Coniuge = cm;
-                }
+
+                var cm = dtc.GetConiugebyID(adf.idConiuge);
+                adf.Coniuge = cm;
+
             }
 
 
@@ -702,23 +650,18 @@ namespace NewISE.Controllers
                         {
                             PercentualeMagConiugeModel pc = new PercentualeMagConiugeModel();
 
-                            pc = dtpc.GetPercMagConiugeNow(adfm.idConiuge.Value, DateTime.Now.Date);
+                            pc = dtpc.GetPercMagConiugeNow(adfm.idConiuge, DateTime.Now.Date);
 
                             if (pc != null && pc.HasValue())
                             {
                                 switch (pc.idTipologiaConiuge)
                                 {
-                                    case TipologiaConiuge.Residente:
+                                    case EnumTipologiaConiuge.Residente:
                                         adfm.residente = true;
                                         adfm.ulterioreMagConiuge = false;
                                         break;
 
-                                    case TipologiaConiuge.NonResidente:
-                                        adfm.residente = false;
-                                        adfm.ulterioreMagConiuge = false;
-                                        break;
-
-                                    case TipologiaConiuge.NonResidenteCarico:
+                                    case EnumTipologiaConiuge.NonResidente_A_Carico:
                                         adfm.residente = false;
                                         adfm.ulterioreMagConiuge = true;
                                         break;

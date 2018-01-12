@@ -223,7 +223,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lc =
                                 mf.CONIUGE.Where(
                                     a =>
-                                        (a.MODIFICATO == false || !a.FK_IDCONIUGE.HasValue) &&
+                                        (a.MODIFICATO == false || a.FK_IDCONIUGE.HasValue == false) &&
                                         a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);
 
@@ -295,6 +295,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
 
                                         };
+
+                                        lConiuge.Add(coniuge);
                                     }
 
                                 }
@@ -312,7 +314,7 @@ namespace NewISE.Models.DBModel.dtObj
                             var lf =
                                 mf.FIGLI.Where(
                                     a =>
-                                        (a.MODIFICATO == false || !a.FK_IDFIGLI.HasValue) &&
+                                        (a.MODIFICATO == false || a.FK_IDFIGLI.HasValue == false) &&
                                         (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||
                                          a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente))
                                     .OrderBy(a => a.DATAINIZIOVALIDITA);

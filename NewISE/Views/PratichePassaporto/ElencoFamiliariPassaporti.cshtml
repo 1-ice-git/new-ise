@@ -21,7 +21,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.parentela)
                 </th>
-                <th>
+                <th style="width: 20px;">
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
 
@@ -36,22 +36,22 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td style="text-align: left;">
                         @Html.DisplayFor(modelItem => item.nominativo)
                     </td>
-                    <td>
+                    <td style="text-align: left;">
                         @Html.DisplayFor(modelItem => item.codiceFiscale)
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @if (item.dataFine != Convert.ToDateTime("31/12/9999"))
                         {
                             @Html.DisplayFor(modelItem => item.dataFine)
                         }
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         @switch (item.parentela)
                         {
                             case EnumParentela.Coniuge:
@@ -364,7 +364,7 @@
 
 
     function ElencoDocumenti(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
-        debugger;
+        //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
@@ -407,14 +407,14 @@
 
     }
 
-    function AltriDatiFamiliariConiuge(idConiuge) {
+    function AltriDatiFamiliariConiuge(idAltriDati) {
         //debugger;
         var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariConiugePassaporti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idConiuge: idConiuge },
+            data: { idAltriDati: idAltriDati },
             dataType: 'html',
             async: false,
             beforeSend: function () {

@@ -37,7 +37,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato=e.ANNULLATO,
+                                annullato = e.ANNULLATO,
                                 Ufficio = new UfficiModel()
                                 {
                                     idUfficio = e.UFFICI.IDUFFICIO,
@@ -135,19 +135,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                   List<COEFFICIENTESEDE> lib = new List<COEFFICIENTESEDE>();
+                    List<COEFFICIENTESEDE> lib = new List<COEFFICIENTESEDE>();
                     if (escludiAnnullati == true)
                         lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == false).ToList();
                     else
                         lib = db.COEFFICIENTESEDE.Where(a => a.IDUFFICIO == idUfficio).ToList();
-                    
+
                     libm = (from e in lib
                             select new CoefficientiSedeModel()
                             {
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita =e.DATAFINEVALIDITA ,//e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -218,7 +218,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA =ibm.dataFineValidita.Value,// Utility.DataFineStop(),
+                            DATAFINEVALIDITA = Utility.DataFineStop(),
                             VALORECOEFFICIENTE = ibm.valore,
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,//rnamento,
                             ANNULLATO = ibm.annullato

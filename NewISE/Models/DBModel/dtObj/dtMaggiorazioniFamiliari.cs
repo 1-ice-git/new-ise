@@ -1475,24 +1475,6 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
 
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
-
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            cm.idPassaporti = p.idPassaporto;
-                        }
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //cm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
-
-                    }
-
 
                     if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
                     {

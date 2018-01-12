@@ -33,7 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -70,7 +70,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -107,7 +107,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
@@ -144,7 +144,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                                idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,

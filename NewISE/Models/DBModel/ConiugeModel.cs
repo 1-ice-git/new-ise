@@ -9,11 +9,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipologiaConiuge
-    {
-        Residente = 1,
-        NonResidente_A_Carico = 2
-    }
+
     public class ConiugeModel
     {
         [Key]
@@ -25,12 +21,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
         [Display(Name = "Tipologia coniuge")]
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
-        [Required(ErrorMessage = "Il passaporto è richiesto.")]
-        [Display(Name = "Passaporto")]
-        public decimal idPassaporti { get; set; }
-        [Required(ErrorMessage = "Il titolo di viaggio è richiesto.")]
-        [Display(Name = "Titolo di viaggio")]
-        public decimal idTitoloViaggio { get; set; }
+
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]

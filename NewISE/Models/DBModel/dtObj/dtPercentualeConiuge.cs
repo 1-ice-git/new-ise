@@ -38,7 +38,7 @@ namespace NewISE.Models.DBModel.dtObj
                     pmcm = new PercentualeMagConiugeModel()
                     {
                         idPercentualeConiuge = pmc.IDPERCMAGCONIUGE,
-                        idTipologiaConiuge = (TipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
+                        idTipologiaConiuge = (EnumTipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
                         dataInizioValidita = pmc.DATAINIZIOVALIDITA,
                         dataFineValidita = pmc.DATAFINEVALIDITA,
                         percentualeConiuge = pmc.PERCENTUALECONIUGE,
@@ -70,7 +70,7 @@ namespace NewISE.Models.DBModel.dtObj
                 pmcm = new PercentualeMagConiugeModel()
                 {
                     idPercentualeConiuge = pmc.IDPERCMAGCONIUGE,
-                    idTipologiaConiuge = (TipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
+                    idTipologiaConiuge = (EnumTipologiaConiuge)pmc.IDTIPOLOGIACONIUGE,
                     dataInizioValidita = pmc.DATAINIZIOVALIDITA,
                     dataFineValidita = pmc.DATAFINEVALIDITA,
                     percentualeConiuge = pmc.PERCENTUALECONIUGE,
@@ -110,7 +110,7 @@ namespace NewISE.Models.DBModel.dtObj
                          select new PercentualeMagConiugeModel()
                          {
                              idPercentualeConiuge = e.IDPERCMAGCONIUGE,
-                             idTipologiaConiuge = (TipologiaConiuge)e.IDTIPOLOGIACONIUGE,
+                             idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                              dataInizioValidita = e.DATAINIZIOVALIDITA,
                              dataFineValidita = e.DATAFINEVALIDITA,
                              percentualeConiuge = e.PERCENTUALECONIUGE,

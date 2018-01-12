@@ -126,26 +126,81 @@ namespace NewISE.Models.DBModel.dtObj
         public AltriDatiFamConiugeModel GetAltriDatiFamiliariConiuge(decimal idAltriDatiFam)
         {
             AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
+            DateTime dt = DateTime.Now;
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var adf = db.ALTRIDATIFAM.Find(idAltriDatiFam);
+
                     if (adf != null && adf.IDALTRIDATIFAM > 0)
                     {
+
+                        var c = adf.CONIUGE;
+
+                        if (c?.IDCONIUGE > 0)
+                        {
+
+
+                            var lpmc =
+                                c.PERCENTUALEMAGCONIUGE.Where(
+                                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
+                            if (lpmc?.Any() ?? false)
+                            {
+                                var pmc = lpmc.First();
+                                switch ((EnumTipologiaConiuge)pmc.IDTIPOLOGIACONIUGE)
+                                {
+                                    case EnumTipologiaConiuge.Residente:
+                                        adfm.residente = true;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
+                                    case EnumTipologiaConiuge.NonResidente_A_Carico:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = true;
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Nessuna percentuale maggiorazione coniuge rilevata alla data odierna.");
+                            }
+
+
+                        }
+                        else
+                        {
+                            throw new Exception("Errore nella ricerca del coniuge.");
+                        }
+
 
                         adfm = new AltriDatiFamConiugeModel()
                         {
                             idAltriDatiFam = adf.IDALTRIDATIFAM,
-                            idConiuge = adf.IDCONIUGE,
+                            idConiuge = adf.IDCONIUGE.Value,
                             nazionalita = adf.NAZIONALITA,
                             indirizzoResidenza = adf.INDIRIZZORESIDENZA,
                             capResidenza = adf.CAPRESIDENZA,
                             comuneResidenza = adf.COMUNERESIDENZA,
                             provinciaResidenza = adf.PROVINCIARESIDENZA,
                             dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                            annullato = adf.ANNULLATO
+                            annullato = adf.ANNULLATO,
+                            Coniuge = new ConiugeModel()
+                            {
+                                idConiuge = c.IDCONIUGE,
+                                idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                nome = c.NOME,
+                                cognome = c.COGNOME,
+                                codiceFiscale = c.CODICEFISCALE,
+                                dataInizio = c.DATAINIZIOVALIDITA,
+                                dataFine = c.DATAFINEVALIDITA,
+                                dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                Modificato = c.MODIFICATO,
+                                FK_idConiuge = c.FK_IDCONIUGE
+                            }
                         };
                     }
                 }
@@ -377,7 +432,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm = new AltriDatiFamConiugeModel()
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                idConiuge = adf.IDCONIUGE,
+                                idConiuge = adf.IDCONIUGE.Value,
                                 nazionalita = adf.NAZIONALITA,
                                 indirizzoResidenza = adf.INDIRIZZORESIDENZA,
                                 capResidenza = adf.CAPRESIDENZA,

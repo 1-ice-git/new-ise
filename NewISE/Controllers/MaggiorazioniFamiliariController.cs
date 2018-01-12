@@ -418,7 +418,6 @@ namespace NewISE.Controllers
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idConiuge,
                                         idAttivazioneMagFam = e.idAttivazioneMagFam,
-                                        idPassaporti = e.idPassaporti,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,

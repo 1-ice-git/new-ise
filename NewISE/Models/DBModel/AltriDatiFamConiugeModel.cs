@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal idAltriDatiFam { get; set; }
 
         [Display(Name = "Coniuge")]
-        public decimal? idConiuge { get; set; }
+        public decimal idConiuge { get; set; }
 
         [Required(ErrorMessage = "La nazionalità è richiesta.")]
         [StringLength(60, ErrorMessage = "Per la nazionalità sono richiesti un massimo di 30 caratteri.")]
@@ -42,9 +42,6 @@ namespace NewISE.Models.DBModel
         public bool residente { get; set; }
 
         [DefaultValue(false)]
-        [Display(Name = "Studente")]
-        public bool studente { get; set; }
-        [DefaultValue(false)]
         [Display(Name = "Ult. Magg. Coniuge")]
         public bool ulterioreMagConiuge { get; set; }
 
@@ -60,8 +57,6 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public bool annullato { get; set; }
 
-        [ScaffoldColumn(false)]
-        public FigliModel Figli { get; set; }
 
         [ScaffoldColumn(false)]
         public ConiugeModel Coniuge { get; set; }

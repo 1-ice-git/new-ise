@@ -24,12 +24,13 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Cod. Fisc.")]
         public string codiceFiscale { get; set; }
         [Display(Name = "Dt. Ini.")]
+        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime dataInizio { get; set; }
         [Display(Name = "Dt. fin.")]
         public DateTime? dataFine { get; set; }
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }
-        [Display(Name = "Altri dati Fam.")]
+        [Display(Name = "A. d. Fam.")]
         public decimal idAltriDati { get; set; }
         [Display(Name = "Richiedi")]
         [DefaultValue(false)]

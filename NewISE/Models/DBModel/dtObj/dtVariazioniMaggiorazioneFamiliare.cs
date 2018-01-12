@@ -481,8 +481,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
                                     idTipologiaConiuge = cm.idTipologiaConiuge,
-                                    idPassaporti = cm.idPassaporti,
-                                    idTitoloViaggio = cm.idTitoloViaggio,
                                     nome = cm.nome,
                                     cognome = cm.cognome,
                                     codiceFiscale = cm.codiceFiscale,
@@ -628,8 +626,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idMaggiorazioniFamiliari = cm.idMaggiorazioniFamiliari,
                                 idTipologiaConiuge = cm.idTipologiaConiuge,
-                                idPassaporti = cm.idPassaporti,
-                                idTitoloViaggio = cm.idTitoloViaggio,
                                 nome = cm.nome,
                                 cognome = cm.cognome,
                                 codiceFiscale = cm.codiceFiscale,
@@ -1237,7 +1233,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public AltriDatiFamConiugeModel GetAltriDatiFamiliariConiuge(decimal idConiuge, decimal idMaggiorazioniFamiliari)
+        public AltriDatiFamConiugeModel GetAltriDatiFamiliariConiuge(decimal idConiuge)
         {
             AltriDatiFamConiugeModel adfm = new AltriDatiFamConiugeModel();
             List<AltriDatiFamConiugeModel> ladfcm = new List<AltriDatiFamConiugeModel>();
@@ -1260,7 +1256,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm = new AltriDatiFamConiugeModel()
                             {
                                 idAltriDatiFam = adfc.IDALTRIDATIFAM,
-                                idConiuge = adfc.IDCONIUGE,
+                                idConiuge = adfc.IDCONIUGE.Value,
                                 nazionalita = adfc.NAZIONALITA,
                                 indirizzoResidenza = adfc.INDIRIZZORESIDENZA,
                                 capResidenza = adfc.CAPRESIDENZA,
@@ -2287,17 +2283,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var tm = dtt.GetTrasferimentoByIdAttMagFam(cm.idAttivazioneMagFam);
 
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            cm.idPassaporti = p.idPassaporto;
-                        }
 
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //    var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //    cm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
                     }
 
                     if (cm.idMaggiorazioniFamiliari == 0 && cm.idAttivazioneMagFam > 0)
