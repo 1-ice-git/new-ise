@@ -18,7 +18,7 @@
         </div>
 
     </div>
-
+    <hr />
 </div>
 
 
@@ -44,7 +44,9 @@
             $("#idStampa").select2({
                 placeholder: "Seleziona la Tabella per la Stampa",
                 allowClear: true,
-                language: "it"
+                language: "it",
+                width: '550'
+
             });
 
         });
@@ -69,6 +71,7 @@
                 case 3:// Operazioni effettuate nel periodo
                     //rotta = "/Statistiche/AltreStatistiche/ReportEmployee";
                     //rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
+                    rotta = "";
                     break;
                 case 4:// Presenze dei livelli in servizio all'estero
                     rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";

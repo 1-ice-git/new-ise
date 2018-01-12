@@ -1538,6 +1538,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 //return View("ViewName", model);
                 return PartialView("OpIndennitaEstera", model);
+                // return PartialView("PartialViewOpIndennitaEstera", model);
             }
         }
 
@@ -1672,7 +1673,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("OpContributoAbitazione", model);
             }
         }
-
        
         // Report Operazioni Effettuate - Contributo Abitazione
         public ActionResult RptOpContributoAbitazione(string V_DATA = "", string V_DATA1 = "")

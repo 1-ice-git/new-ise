@@ -19,22 +19,26 @@
 
         <div class="select2-container select2-container--classic">
             @*@Html.DropDownList("Stampe", ViewData["Stampe"] as List<SelectListItem>, new { @class = "form-control select2 select2-select" })*@
+            @*@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })*@
 
-            @Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })
+            @Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select" })
         </div>
 
     </div>
+    <br />
+</div>
     <br />
     <div class="form-group">
         <div class="col-md-3">
             @*<a href="#" target="_blank" onclick="invia()">Stampa la Storia del Dipendente </a>*@ 
             <a href="#" id="opener">Stampa Storia del Dipendente </a>
         </div>
+
+        <div class="col-md-3">
+            <a href="#" onclick="PrelevaGigius()">Visualizza Storia del Dipendente </a>
+        </div>
     </div>
-
-    <hr />
-</div>
-
+ <br /><br />
     <table id="tbStoriaDipendente" class="display" cellspacing="0">
         <thead>
             <tr>
@@ -214,13 +218,19 @@
 
                 rotta = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente";
 
+                //var codicesede = $("#codicesede").select2('val');
+                //var data = $("#datepicker").datepicker().val()
+
                 var data = $("#datepicker").datepicker().val()
-                var matricola = matricola
+                var matricola = parseInt($("#MATRICOLA").select2('val'));
 
                 $.ajax({
                     type: "POST",
                     url: rotta,
-                    data: { matricola: matricola },
+                    data: {
+                        matricola: matricola,
+                        V_DATA: data,
+                    },
                     dataType: 'html',
                     beforeSend: function () {
                         //debugger;
@@ -259,14 +269,13 @@
             //debugger;
             rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
 
-            //var idMatricola = parseInt($("#lstCategory").select2('val'));
-            var chk = true;
-            //$("#codicedipendente").val = idMatricola;
+            var matricola = parseInt($("#MATRICOLA").select2('val'));
+            
 
-            if (isNaN(matricola)) {
-                $("#divPViewParametri").empty();
-                return false;
-            }
+            //if (isNaN(matricola)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
 
             $.ajax({
                 type: "POST",
