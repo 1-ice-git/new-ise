@@ -1542,6 +1542,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             }
         }
 
+
         // Report Operazioni Effettuate - Indennità di Sede Estera
         public ActionResult RptOpIndennitaEstera(string V_DATA = "", string V_DATA1 = "")
         {
