@@ -424,7 +424,7 @@ namespace NewISE.Models.DBModel.dtObj
                     AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
                     {
                         idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        idTrasferimento = atv.IDTRASFERIMENTO,
+                        idTrasferimento = atv.IDTITOLOVIAGGIO,
                         notificaRichiesta = atv.NOTIFICARICHIESTA,
                         dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
                         AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
@@ -442,7 +442,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //che sia residente (coniugetitoliviaggio, figlititoliviaggio) 
                     ATTIVAZIONETITOLIVIAGGIO atv = new ATTIVAZIONETITOLIVIAGGIO()
                     {
-                        IDTRASFERIMENTO = idTrasferimento,
+                        IDTITOLOVIAGGIO = idTrasferimento,
                         NOTIFICARICHIESTA = false,
                         DATANOTIFICARICHIESTA = null,
                         ATTIVAZIONERICHIESTA = false,
@@ -460,7 +460,7 @@ namespace NewISE.Models.DBModel.dtObj
                     AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel()
                     {
                         idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
-                        idTrasferimento = atv.IDTRASFERIMENTO,
+                        idTrasferimento = atv.IDTITOLOVIAGGIO,
                         notificaRichiesta = atv.NOTIFICARICHIESTA,
                         dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
                         AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
@@ -474,7 +474,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //creo titoloviaggiorichiedente
                     TITOLIVIAGGIORICHIEDENTE tvr = new TITOLIVIAGGIORICHIEDENTE()
                     {
-                        IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                        IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
                         IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
                         RICHIEDITITOLOVIAGGIO = false,
                         DATAAGGIORNAMENTO = DateTime.Now,
@@ -512,7 +512,7 @@ namespace NewISE.Models.DBModel.dtObj
                             CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
                             {
                                 IDCONIUGE = c.IDCONIUGE,
-                                IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
                                 IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
                                 RICHIEDITITOLOVIAGGIO = false,
                                 DATAAGGIORNAMENTO = DateTime.Now,
@@ -552,7 +552,7 @@ namespace NewISE.Models.DBModel.dtObj
                             FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
                             {
                                 IDFIGLI = f.IDFIGLI,
-                                IDTITOLOVIAGGIO = atv.IDTRASFERIMENTO,
+                                IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
                                 IDATTIVAZIONETITOLIVIAGGIO = tvr.IDATTIVAZIONETITOLIVIAGGIO,
                                 RICHIEDITITOLOVIAGGIO = false,
                                 DATAAGGIORNAMENTO = DateTime.Now,
