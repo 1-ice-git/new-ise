@@ -68,7 +68,7 @@
                     break;
                 case 3:// Operazioni effettuate nel periodo
                     //rotta = "/Statistiche/AltreStatistiche/ReportEmployee";
-                    rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
+                    //rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
                     break;
                 case 4:// Presenze dei livelli in servizio all'estero
                     rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
@@ -82,13 +82,30 @@
                 case 7:// Storia del dipendente
                     rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
                     break;
+                case 8:// Operazioni effettuate - Indennità di Sede Estera
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
+                    break;
+                case 9:// Operazioni Effettuate - Contributo Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpContributoAbitazione";
+                    break;
+                case 10:// Operazioni Effettuate - Uso Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpUsoAbitazione";
+                    break;
+                case 11:// Operazioni Effettuate - Canone Anticipato
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpCanoneAnticipato";
+                    break;
+                case 12:// Operazioni Effettuate - Spese Diverse
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpSpeseDiverse";
+                    break;
+                case 13:// Operazioni Effettuate - Maggiorazione Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpMaggiorazioneAbitazione";
+                    break;
                 default:
             }
 
             $.ajax({
                 type: "POST",
                 url: rotta,
-                //data: { escludiAnnullati: chk },
                 data: {},
                 dataType: 'html',
                 beforeSend: function () {

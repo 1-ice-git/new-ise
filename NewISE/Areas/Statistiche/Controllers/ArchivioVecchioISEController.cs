@@ -31,12 +31,18 @@ namespace NewISE.Areas.Statistiche.Controllers
                 t.Add(new SelectListItem() { Text = "Consuntivo dei Costi", Value = "0" });
                 t.Add(new SelectListItem() { Text = "Consuntivo dei Costi per Codice Co.An.", Value = "1" });
                 t.Add(new SelectListItem() { Text = "Dislocazione dei dipendenti all'estero", Value = "2" });
-                t.Add(new SelectListItem() { Text = "Operazioni effettuate nel periodo", Value = "3" });
+                //t.Add(new SelectListItem() { Text = "Operazioni effettuate nel periodo", Value = "3" });
                 t.Add(new SelectListItem() { Text = "Presenze dei livelli in servizio all'estero", Value = "4" });
                 t.Add(new SelectListItem() { Text = "Spese diverse", Value = "5" });
                 t.Add(new SelectListItem() { Text = "Spese di avvicendamento", Value = "6" });
                 t.Add(new SelectListItem() { Text = "Storia del dipendente", Value = "7" });
-                //t.Add(new SelectListItem() { Text = "Operazioni effettuate- Indennità di Sede Estera", Value = "10" });
+                t.Add(new SelectListItem() { Text = "Operazioni effettuate - Indennità di Sede Estera", Value = "8" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Contributo Abitazione", Value = "9" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Uso Abitazione", Value = "10" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Canone Anticipato", Value = "11" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Spese Diverse", Value = "12" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Maggiorazione Abitazione", Value = "13" });
+                
 
                 ViewBag.VecchioIse = t;
                 return PartialView();
