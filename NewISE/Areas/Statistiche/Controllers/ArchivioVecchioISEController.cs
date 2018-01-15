@@ -1196,20 +1196,46 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-                String Sql = "Select MATRICOLA, ";
-                Sql += "NOMINATIVO, ";
-                Sql += "SEDE, ";
-                Sql += "VALUTA, ";
-                Sql += "DESCRIZIONE, ";
-                Sql += "IMPORTO, ";
-                Sql += "TIPOIMPORTO, ";
-                Sql += "QUALIFICA, ";
-                Sql += "CODSEDE ";
-                Sql += "From ISE_STP_CONSUNTIVOCOSTI ";
-                Sql += "Order By SEDE, NOMINATIVO, DESCRIZIONE ";
+                //String Sql = "Select MATRICOLA, ";
+                //Sql += "NOMINATIVO, ";
+                //Sql += "SEDE, ";
+                //Sql += "VALUTA, ";
+                //Sql += "DESCRIZIONE, ";
+                //Sql += "IMPORTO, ";
+                //Sql += "TIPOIMPORTO, ";
+                //Sql += "QUALIFICA, ";
+                //Sql += "CODSEDE ";
+                //Sql += "From ISE_STP_CONSUNTIVOCOSTI ";
+                //Sql += "Order By SEDE, NOMINATIVO, DESCRIZIONE ";
+
+
+                //OracleConnection cnn = new OracleConnection(cn);
+                OracleCommand cmd1 = new OracleCommand();
+                cmd1.Connection = cn;
+                cmd1.CommandText = "ISE_Consuntivo_Costi.CONSUNTIVO_COSTI_MAIN";
+                cmd1.CommandType = System.Data.CommandType.StoredProcedure;
+
+                ////add any parameters the stored procedure might require
+                //scCommand.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = txtName.Text;
+
+                cmd1.Parameters.Add("@P_DATA_INI", OracleDbType.Varchar2, 50).Value = V_DATA;
+                cmd1.Parameters.Add("@P_DATA_FIN", OracleDbType.Varchar2, 50).Value = V_DATA1;
+                cmd1.Parameters.Add("@P_USER", OracleDbType.Varchar2, 50).Value = "fantomas";
+
+                //cmd1.Parameters.Add("@V_UTENTE", "fantomas");
+                //cmd1.Parameters.Add("@V_DATA", "15/09/2017");
+                //cmd1.Parameters.Add("@V_UFFICIO", "BUDAPEST");
+
+                cn.Open();
+                cmd1.ExecuteNonQuery();
+
+
+                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
+                String Sql = "select * from ISE_STP_CONSUNTIVOCOSTI2";
+
 
                 OracleCommand cmd = new OracleCommand(Sql, cn);
-                cn.Open();
+                //cn.Open();
                 OracleDataReader rdr = cmd.ExecuteReader();
                 List<Stp_Consuntivo_dei_costi> model = new List<Stp_Consuntivo_dei_costi>();
                 while (rdr.Read())
@@ -1225,7 +1251,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.tipoImporto = rdr["TIPOIMPORTO"].ToString();
                     details.qualifica = rdr["QUALIFICA"].ToString();
                     details.codsede = rdr["CODSEDE"].ToString();
-                    
+                    details.utente = rdr["UTENTE"].ToString();
                     model.Add(details);
                 }
                 //return View("ViewName", model);
