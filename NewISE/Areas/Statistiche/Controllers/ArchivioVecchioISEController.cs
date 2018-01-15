@@ -1330,59 +1330,55 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             // Chiamare Sub Stampa_Consuntivo_Costi_x_Coan 
 
-            //using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
-            //{
+            using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
+            {
 
-            //    String Sql = "SELECT C.MATRICOLA, ";
-            //    Sql += "C.NOMINATIVO, ";
-            //    Sql += "C.SEDE, ";
-            //    Sql += "C.VALUTA , ";
-            //    Sql += "C.DESCRIZIONE, ";
-            //    Sql += "SUM(C.IMPORTO) IMPORTO, ";
-            //    Sql += "C.TIPOIMPORTO, ";
-            //    Sql += "C.QUALIFICA, ";
-            //    Sql += "C.CODSEDE, ";
-            //    Sql += "DECODE(C.COAN, 'S', 'Serv. Ist.', C.COAN) COAN ";
-            //    Sql += "FROM ISE_STP_CONSUNTIVOCOSTICOAN C ";
-            //    Sql += "WHERE 1 = 1 ";
-            //    Sql += "AND C.COAN = 'S' ";
-            //    Sql += "GROUP BY C.MATRICOLA, ";
-            //    Sql += "C.NOMINATIVO, ";
-            //    Sql += "C.SEDE, ";
-            //    Sql += "C.VALUTA, ";
-            //    Sql += "C.DESCRIZIONE, ";
-            //    Sql += "C.TIPOIMPORTO, ";
-            //    Sql += "C.QUALIFICA, ";
-            //    Sql += "C.CODSEDE, ";
-            //    Sql += "C.COAN ";
-            //    Sql += "ORDER BY COAN, NOMINATIVO, SEDE, DESCRIZIONE ";
+                String Sql = "SELECT C.MATRICOLA, ";
+                Sql += "C.NOMINATIVO, ";
+                Sql += "C.SEDE, ";
+                Sql += "C.VALUTA , ";
+                Sql += "C.DESCRIZIONE, ";
+                Sql += "SUM(C.IMPORTO) IMPORTO, ";
+                Sql += "C.TIPOIMPORTO, ";
+                Sql += "C.QUALIFICA, ";
+                Sql += "C.CODSEDE, ";
+                Sql += "DECODE(C.COAN, 'S', 'Serv. Ist.', C.COAN) COAN ";
+                Sql += "FROM ISE_STP_CONSUNTIVOCOSTICOAN C ";
+                Sql += "WHERE 1 = 1 ";
+                Sql += "AND C.COAN = 'S' ";
+                Sql += "GROUP BY C.MATRICOLA, ";
+                Sql += "C.NOMINATIVO, ";
+                Sql += "C.SEDE, ";
+                Sql += "C.VALUTA, ";
+                Sql += "C.DESCRIZIONE, ";
+                Sql += "C.TIPOIMPORTO, ";
+                Sql += "C.QUALIFICA, ";
+                Sql += "C.CODSEDE, ";
+                Sql += "C.COAN ";
+                Sql += "ORDER BY COAN, NOMINATIVO, SEDE, DESCRIZIONE ";
 
-            //    OracleCommand cmd = new OracleCommand(Sql, cn);
-            //    cn.Open();
-            //    OracleDataReader rdr = cmd.ExecuteReader();
-            //    List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
-            //    while (rdr.Read())
-            //    {
-            //        var details = new Stp_Consuntivo_dei_costi_per_codice_Coan();
+                OracleCommand cmd = new OracleCommand(Sql, cn);
+                cn.Open();
+                OracleDataReader rdr = cmd.ExecuteReader();
+                //List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
+                while (rdr.Read())
+                {
+                    var details = new Stp_Consuntivo_dei_costi_per_codice_Coan();
 
-            //        details.matricola = rdr["MATRICOLA"].ToString();
-            //        details.nominativo = rdr["NOMINATIVO"].ToString();
-            //        details.ufficio = rdr["SEDE"].ToString();
-            //        details.valuta = rdr["VALUTA"].ToString();
-            //        details.descrizione = rdr["DESCRIZIONE"].ToString();
-            //        details.tipoimporto = rdr["TIPOIMPORTO"].ToString();
-            //        details.livello = rdr["QUALIFICA"].ToString();
-            //        details.codsede = rdr["CODSEDE"].ToString();
-            //        details.euro = rdr["IMPORTO"].ToString();
-            //        details.coan= rdr["COAN"].ToString();
-            //        model.Add(details);
-            //    }
-            //    //return View("ViewName", model);
-            //    return PartialView("ConsuntivoCostiCoAn", model);
-            //}
-
-            return PartialView("ConsuntivoCostiCoAn", model);
-
+                    details.matricola = rdr["MATRICOLA"].ToString();
+                    details.nominativo = rdr["NOMINATIVO"].ToString();
+                    details.livello = rdr["QUALIFICA"].ToString();
+                    details.ufficio = rdr["SEDE"].ToString();
+                    details.descrizione = rdr["DESCRIZIONE"].ToString();
+                    details.valuta = rdr["VALUTA"].ToString();
+                    details.importo = rdr["IMPORTO"].ToString();
+                    
+                    model.Add(details);
+                }
+            
+                return PartialView("ConsuntivoCostiCoAn", model);
+            }
+            
         }
 
         // Report Consuntivo Costi CoAn
@@ -1541,7 +1537,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                 // return PartialView("PartialViewOpIndennitaEstera", model);
             }
         }
-
 
         // Report Operazioni Effettuate - Indennità di Sede Estera
         public ActionResult RptOpIndennitaEstera(string V_DATA = "", string V_DATA1 = "")

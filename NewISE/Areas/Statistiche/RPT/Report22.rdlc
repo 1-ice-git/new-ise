@@ -919,38 +919,6 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox26">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>="Periodo di riferimento dal, " &amp; Today()</Value>
-                <Style />
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>2.58396cm</Top>
-        <Left>0.63182cm</Left>
-        <Height>0.6cm</Height>
-        <Width>6.08461cm</Width>
-        <ZIndex>3</ZIndex>
-        <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
-="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
     </ReportItems>
     <Height>4.0625in</Height>
     <Style />
@@ -967,9 +935,9 @@
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.254cm</Top>
-          <Left>0.57489cm</Left>
+          <Left>0.63182cm</Left>
           <Height>2.05811cm</Height>
-          <Width>29.39018cm</Width>
+          <Width>28.75646cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>

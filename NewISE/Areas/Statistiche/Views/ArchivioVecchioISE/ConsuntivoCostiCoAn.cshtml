@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Consuntivo_dei_costi_per_codice_Coan>
 
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Indennità Estera"></div>
+
+@*<button id="opener">xx</button>*@
+
 <div class="form-horizontal">
     <div class="form-group">
         <hr />
@@ -21,16 +27,31 @@
 
     </div>
     <br />
-    <div class="form-group">
+    @*<div class="form-group">
         <div class="col-md-3">
             <a href="#" target="_blank" onclick="invia()">Stampa Consuntivo dei Costi per codice Co.An. </a>
         </div>
-    </div>
+    </div>*@
 
     <hr />
 </div>
 
-<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+
+<div class="form-group">
+    <div class="col-md-3">
+       
+        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="PrelevaCoan()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
+
+    </div>
+
+</div>
+<br /><br />
+
+
+<table id="tb_Consuntivo_Costi_Coan" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -52,17 +73,9 @@
                 @Html.DisplayNameFor(model => model.valuta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.euro)
+                @Html.DisplayNameFor(model => model.importo)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tipoimporto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.codsede)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.coan)
-            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -88,16 +101,7 @@
                     @Html.DisplayFor(modelItem => item.valuta)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.euro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipoimporto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.codsede)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.coan)
+                    @Html.DisplayFor(modelItem => item.importo)
                 </td>
             </tr>
         }
@@ -105,7 +109,7 @@
 </table>
 
 <script type="text/javascript">
-    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+    $('#tb_Consuntivo_Costi_Coan').DataTable({
             "order": [],
             "scrollY": 220,
             "scrollX": true,
@@ -163,6 +167,75 @@
         });
     });
 
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCostiCoAn";
+
+            var codcoan = $("#COAN").select2('val');
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+
         function invia() {
             //debugger
             //var matricola = parseInt($("#MATRICOLA").select2('val'));
@@ -172,24 +245,13 @@
         };
 
         function PrelevaCoan(codicecoan) {
-            debugger;
+            //debugger;
 
             rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCostiCoAn";
-
+            
             //var codicequalifica = parseInt($("#COD_QUALIFICA").select2('val'));
             var chk = true;
             //$("#codicedipendente").val = idMatricola;
-
-            //if (isNaN(codicequalifica)) {
-            //    $("#divPViewParametri").empty();
-            //    return false;
-            //}
-
-            //if (isNaN(null)) {
-            //    alert("null is not a number");
-            //} else {
-            //    alert("i think null is a number");
-            //}
 
             $.ajax({
                 type: "POST",
@@ -227,7 +289,7 @@
         }
 
         $("#COAN").select2({
-            placeholder: "Seleziona il Gigius ",
+            placeholder: "Seleziona la tipoligia di Codice Co.An.",
             allowClear: true,
             language: "it",
             width: '350'
