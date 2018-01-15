@@ -23,6 +23,42 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public void SituazionePassaporto(decimal idAttivazionePassaporto, out bool NotificaRichiesta, out bool AttivazioneRichiesta, out bool AnnullaRichiesta)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                if (ap.NOTIFICARICHIESTA)
+                {
+                    NotificaRichiesta = true;
+                }
+                else
+                {
+                    NotificaRichiesta = false;
+                }
+
+                if (ap.PRATICACONCLUSA)
+                {
+                    AttivazioneRichiesta = true;
+                }
+                else
+                {
+                    AttivazioneRichiesta = false;
+                }
+
+                if (ap.ANNULLATO)
+                {
+                    AnnullaRichiesta = true;
+                }
+                else
+                {
+                    AnnullaRichiesta = false;
+                }
+
+            }
+        }
+
         public PassaportoRichiedenteModel GetPassaportoRichiedenteByID(decimal id)
         {
             PassaportoRichiedenteModel prm = new PassaportoRichiedenteModel();

@@ -95,6 +95,36 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public IList<DocumentiModel> GetDocumentiIdentitaRichiedentePassaporto(decimal idPassaportoRichiedente)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var rp = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
+
+                var ld = rp.DOCUMENTI.Where(
+                    a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
+                    .OrderByDescending(a => a.DATAINSERIMENTO);
+
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let file = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = file
+                                 });
+                }
+            }
+
+            return ldm;
+        }
 
 
         public IList<DocumentiModel> GetDocumentiIdentitaFiglioPassaporto(decimal idFiglioPassaporto)
@@ -235,6 +265,54 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public IList<DocumentiModel> GetDocumentiByIdFamiliarePassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipodoc, EnumParentela parentela = EnumParentela.Richiedente)
+        {
+            List<DocumentiModel> ldm = new List<DocumentiModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<DOCUMENTI> ld = new List<DOCUMENTI>();
+
+
+                switch (parentela)
+                {
+                    case EnumParentela.Coniuge:
+                        var cp = db.CONIUGEPASSAPORTO.Find(idFamiliarePassaporto);
+                        var c = cp.CONIUGE;
+                        ld = c.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == Convert.ToDecimal(tipodoc)).ToList();
+                        break;
+                    case EnumParentela.Figlio:
+                        var fp = db.FIGLIPASSAPORTO.Find(idFamiliarePassaporto);
+                        var f = fp.FIGLI;
+                        ld = f.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == Convert.ToDecimal(tipodoc)).ToList();
+                        break;
+                    case EnumParentela.Richiedente:
+                        var rp = db.PASSAPORTORICHIEDENTE.Find(idFamiliarePassaporto);
+                        ld = rp.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == Convert.ToDecimal(tipodoc)).ToList();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("parentela");
+                }
+
+                if (ld?.Any() ?? false)
+                {
+                    ldm.AddRange(from d in ld
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = f
+                                 });
+                }
+
+            }
+
+            return ldm;
+        }
 
 
         /// <summary>
@@ -847,11 +925,11 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public void AddDocumentoPassaportoFromRichiedente(ref DocumentiModel dm, decimal idPassaporto, ModelDBISE db)
+        public void AddDocumentoPassaportoFromRichiedente(ref DocumentiModel dm, decimal idPassaportoRichiedente, ModelDBISE db)
         {
-            var p = db.PASSAPORTI.Find(idPassaporto);
+            var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
 
-            if (p != null && p.IDPASSAPORTI > 0)
+            if (pr?.IDPASSAPORTORICHIEDENTE > 0)
             {
                 MemoryStream ms = new MemoryStream();
                 DOCUMENTI d = new DOCUMENTI();
@@ -863,11 +941,11 @@ namespace NewISE.Models.DBModel.dtObj
                 d.DATAINSERIMENTO = dm.dataInserimento;
                 d.FILEDOCUMENTO = ms.ToArray();
 
-                //p.DOCUMENTI.Add(d);
+                pr.DOCUMENTI.Add(d);
 
                 if (db.SaveChanges() > 0)
                 {
-                    var t = p.TRASFERIMENTO;
+                    var t = pr.PASSAPORTI.TRASFERIMENTO;
                     dm.idDocumenti = d.IDDOCUMENTO;
                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (" + dm.tipoDocumento.ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, dm.idDocumenti);
                 }
@@ -906,6 +984,42 @@ namespace NewISE.Models.DBModel.dtObj
             //}
         }
 
+
+        public void DeleteDocumentoPassaporto(decimal idDocumento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var d = db.DOCUMENTI.Find(idDocumento);
+                var lpr = d.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false);
+
+                if (lpr?.Any() ?? false)
+                {
+                    var pr = lpr.First();
+
+                    var t = pr.PASSAPORTI.TRASFERIMENTO;
+
+                    db.DOCUMENTI.Remove(d);
+
+                    int i = db.SaveChanges();
+
+                    if (i <= 0)
+                    {
+                        throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + ((EnumTipoDoc)d.IDTIPODOCUMENTO).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
+                    }
+                }
+                else
+                {
+                    throw new Exception(string.Format("Non è stato possibile effettuare l'eliminazione del documento ({0}).", d.NOMEDOCUMENTO + d.ESTENSIONE));
+                }
+
+
+
+            }
+        }
 
         public void DeleteDocumento(decimal idDocumento, EnumChiamante chiamante)
         {

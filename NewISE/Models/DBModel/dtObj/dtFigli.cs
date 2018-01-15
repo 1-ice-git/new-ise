@@ -215,14 +215,14 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
 
-                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
-                {
-                    AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+                //using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
+                //{
+                //    AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
 
-                    apm = dtap.GetAttivazionePassaportiDaLavorare(fm.idMaggiorazioniFamiliari, db);
-                    dtap.AssociaFiglio(apm.idAttivazioniPassaporti, fm.idFigli, db);
+                //    apm = dtap.GetAttivazionePassaportiDaLavorare(fm.idMaggiorazioniFamiliari, db);
+                //    dtap.AssociaFiglio(apm.idAttivazioniPassaporti, fm.idFigli, db);
 
-                }
+                //}
 
             }
             else

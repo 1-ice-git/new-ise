@@ -24,9 +24,10 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Cod. Fisc.")]
         public string codiceFiscale { get; set; }
         [Display(Name = "Dt. Ini.")]
-        [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataInizio { get; set; }
         [Display(Name = "Dt. fin.")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataFine { get; set; }
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }

@@ -2,6 +2,8 @@
 @using NewISE.Models.ViewModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel>
 
+
+
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
     <table cellspacing="0" id="tabElencoFamiliariPass">
         <thead>
@@ -74,14 +76,14 @@
                             case EnumParentela.Coniuge:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idAltriDati); ">
-                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
                             case EnumParentela.Figlio:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariFiglio(@item.idAltriDati); ">
-                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
@@ -359,15 +361,15 @@
     }
 
 
-    function ElencoDocumenti(idFamiliarePassaporto, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
-        debugger;
+    function ElencoDocumenti(idFamiliarePassaporto, tipoDoc, idParentela) {
+        //debugger;
         var rotta = "/Documenti/ElencoDocumentiPassaporto";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                idFamiliarePassaporto: id,
+                idFamiliarePassaporto: idFamiliarePassaporto,
                 tipoDoc: tipoDoc,
                 parentela: idParentela
             },

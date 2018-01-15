@@ -32,10 +32,11 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data Att.")]
         public DateTime? dataPraticaConclusa { get; set; }
 
-        //[Required(ErrorMessage = "Il campo Escludi passaporto è richiesto.")]
-        //[Display(Name = "Escludi P.")]
-        //[DefaultValue(false)]
-        //public bool escludiPassaporto { get; set; }
+        [Required(ErrorMessage = "Il campo data variazione è richiesto.")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        [Display(Name = "Data Var.")]
+        public DateTime? dataVariazione { get; set; }
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
