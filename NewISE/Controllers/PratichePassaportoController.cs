@@ -114,7 +114,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    //gppm = dtpp.GestionePulsantiPassaportoByIdTrasf(idTrasferimento);
+                    gppm = dtpp.GestionePulsantiAttivazionePassaporto(idTrasferimento);
                 }
             }
             catch (Exception ex)

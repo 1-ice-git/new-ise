@@ -5,13 +5,16 @@
 <div class="row">
     <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
         <div id="divPassaporto" style="padding-top: 5px;">
-
+            @Html.Action("ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento })
         </div>
     </div>
 </div>
 
 <div id="divPusantiNotificaAndConcludiPassaporto">
-    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "PratichePassaporto", new { idTrasferimento = idTrasferimento })
+    @Html.Action("GestPulsantiNotificaAndPraticaConclusa", "PratichePassaporto", new
+{
+    idTrasferimento = idTrasferimento
+})
 </div>
 @*<div class="row">
         <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
@@ -29,7 +32,7 @@
 
 <script type="text/javascript">
 
-    ElencoFamiliariPassoporto();
+    //ElencoFamiliariPassoporto();
 
     function ElencoFamiliariPassoporto() {
         //debugger;
@@ -128,7 +131,7 @@
                 //debugger;
                 if (result.err == "") {
                     GestionePulsantiNotificaAndConcludiPassaporto();
-                    GestioneChkEscludiPassaporto();
+                    //GestioneChkEscludiPassaporto();
                     GestioneAttivitaTrasferimento();
                     InfoElaborazioneAjax(result.msg);
 

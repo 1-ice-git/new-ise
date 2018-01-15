@@ -781,38 +781,7 @@ namespace NewISE.Controllers
                     case EnumChiamante.Trasferimento:
                         idTrasferimento = id;
                         break;
-                    case EnumChiamante.Passaporti:
 
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdConiuge(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            case EnumParentela.Figlio:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdFiglio(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            case EnumParentela.Richiedente:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    PassaportoRichiedenteModel ppm = dtpp.GetPassaportoRichiedenteByID(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("chiamante");
                 }
 
 
