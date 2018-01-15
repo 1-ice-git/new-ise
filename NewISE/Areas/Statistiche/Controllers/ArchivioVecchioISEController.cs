@@ -1284,7 +1284,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Consuntivo Costi CoAn
-        public ActionResult ConsuntivoCostiCoAn(string codicecoan ="")
+        public ActionResult ConsuntivoCostiCoAn(string codicecoan ="", string V_DATA = "", string V_DATA1 = "")
         {
 
             ViewBag.ListaCodiceCoan = new List<SelectListItem>();
@@ -1382,7 +1382,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Report Consuntivo Costi CoAn
-        public ActionResult RptConsuntivoCostiCoAn()
+        public ActionResult RptConsuntivoCostiCoAn(string codicecoan = "", string V_DATA = "", string V_DATA1 = "")
         {
             DataSet10 ds10 = new DataSet10();
             try

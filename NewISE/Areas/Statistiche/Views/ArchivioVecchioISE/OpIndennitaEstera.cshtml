@@ -16,7 +16,6 @@
         <div class="col-md-2">
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
-       
 
     </div>
     <br />
@@ -176,6 +175,7 @@
             },
             close: function (event, ui) {
                 $('.container').removeClass("NoOverflow");
+              
             },
          height: windowHeight, width: windowWidth 
 
@@ -186,6 +186,7 @@
             $('.container').addClass("NoOverflow");
 
             $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
                 rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
 
