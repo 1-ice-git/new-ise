@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,6 +8,8 @@ namespace NewISE.Models.ViewModel
 {
     public class GestPulsantiAttConclModel
     {
+        [Key]
+        public decimal idAttivazionePassaporto { get; set; }
 
         public bool notificaRichiesta { get; set; }
         public bool praticaConclusa { get; set; }

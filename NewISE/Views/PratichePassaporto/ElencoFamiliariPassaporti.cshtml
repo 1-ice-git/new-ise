@@ -172,52 +172,52 @@
         //]
     });
 
-    function GestioneChkEscludiPassaporto() {
-        var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
-        var idPassaporto = parseInt('0');
+    //function GestioneChkEscludiPassaporto() {
+    //    var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
+    //    var idPassaporto = parseInt('0');
 
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idPassaporto: idPassaporto },
-            dataType: 'json',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$('#ModalPensione').modal('show');
-                //Blocca();
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST", //Le info testuali saranno passate in POST
+    //        data: { idPassaporto: idPassaporto },
+    //        dataType: 'json',
+    //        async: false,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            //VerificaAutenticazione();
+    //            //$('#ModalPensione').modal('show');
+    //            //Blocca();
 
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    if (result.praticaConclusa == true || result.notificaRichiesta == true) {
-                        DisabilitaCheckBox();
-                    }
-                    else {
-                        AbilitaCheckBox();
-                    }
-                }
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            if (result.err == "") {
+    //                if (result.praticaConclusa == true || result.notificaRichiesta == true) {
+    //                    DisabilitaCheckBox();
+    //                }
+    //                else {
+    //                    AbilitaCheckBox();
+    //                }
+    //            }
 
-            },
-            complete: function () {
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
 
-    }
+    //}
 
     function DisabilitaCheckBox() {
         //debugger;
         var row = $("#tabElencoFamiliariPass tr");
-        var objChk = row.find("#escludiPassaporto");
+        var objChk = row.find("#includiPassaporto");
 
         try {
             for (var i = 0; i < objChk.length; i++) {
@@ -338,7 +338,7 @@
                 if (result.err == "") {
                     chkEscludi.checked = result.chk;
                     ColElencoDoc(result.idAttivazioniPassaporto, id, parentela);
-                    //GestionePulsantiNotificaAndConcludiPassaporto();
+                    GestionePulsantiNotificaAndConcludiPassaporto();
 
                 } else {
                     chkEscludi.checked = !chkEscludi.checked;

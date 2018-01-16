@@ -10,6 +10,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Interfacce;
 using NewISE.Interfacce.Modelli;
+using NewISE.Models.Enumeratori;
 using Newtonsoft.Json.Schema;
 using NewISE.Models.Tools;
 using RestSharp.Extensions;
@@ -22,6 +23,576 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
+
+
+        #region Email
+        public void EmailCompletaRichiestaPassaporto(decimal idAttivazionePassaporto, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                if (ap?.IDATTIVAZIONIPASSAPORTI > 0)
+                {
+                    TRASFERIMENTO tr = ap.PASSAPORTI.TRASFERIMENTO;
+                    DIPENDENTI dip = tr.DIPENDENTI;
+                    UFFICI uff = tr.UFFICI;
+
+                    using (GestioneEmail gmail = new GestioneEmail())
+                    {
+                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                        {
+                            cc = new Destinatario()
+                            {
+                                Nominativo = am.nominativo,
+                                EmailDestinatario = am.eMail
+                            };
+
+                            to = new Destinatario()
+                            {
+                                Nominativo = dip.NOME + " " + dip.COGNOME,
+                                EmailDestinatario = dip.EMAIL,
+                            };
+
+                            msgMail.mittente = mittente;
+                            msgMail.cc.Add(cc);
+                            msgMail.destinatario.Add(to);
+
+                            msgMail.oggetto =
+                                Resources.msgEmail.OggettoRichiestaPratichePassaportoConcluse;
+                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaportoConcluse, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
+                            gmail.sendMail(msgMail);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void EmailAnnullaRichiestaPassaporto(decimal idAttivazionePassaporto, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+            //List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                if (ap?.IDATTIVAZIONIPASSAPORTI > 0)
+                {
+                    TRASFERIMENTO tr = ap.PASSAPORTI.TRASFERIMENTO;
+                    DIPENDENTI dip = tr.DIPENDENTI;
+                    UFFICI uff = tr.UFFICI;
+
+
+                    using (GestioneEmail gmail = new GestioneEmail())
+                    {
+                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                        {
+                            cc = new Destinatario()
+                            {
+                                Nominativo = am.nominativo,
+                                EmailDestinatario = am.eMail
+                            };
+
+                            to = new Destinatario()
+                            {
+                                Nominativo = dip.NOME + " " + dip.COGNOME,
+                                EmailDestinatario = dip.EMAIL,
+                            };
+
+                            msgMail.mittente = mittente;
+                            msgMail.cc.Add(cc);
+                            msgMail.destinatario.Add(to);
+
+                            msgMail.oggetto =
+                                Resources.msgEmail.OggettoAnnullaRichiestaPassaporto;
+                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullaRichiestaPassaporto, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
+                            gmail.sendMail(msgMail);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void EmailNotificaRichiestaPassaporto(decimal idAttivazionePassaporto, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                if (ap?.IDATTIVAZIONIPASSAPORTI > 0)
+                {
+                    TRASFERIMENTO tr = ap.PASSAPORTI.TRASFERIMENTO;
+                    DIPENDENTI dip = tr.DIPENDENTI;
+                    UFFICI uff = tr.UFFICI;
+
+                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            {
+                                cc = new Destinatario()
+                                {
+                                    Nominativo = am.nominativo,
+                                    EmailDestinatario = am.eMail
+                                };
+
+                                msgMail.mittente = mittente;
+                                msgMail.cc.Add(cc);
+
+                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+
+                                foreach (var uam in luam)
+                                {
+                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                    {
+                                        to = new Destinatario()
+                                        {
+                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                            EmailDestinatario = amministratore.EMAIL
+                                        };
+
+                                        msgMail.destinatario.Add(to);
+                                    }
+
+                                }
+
+                                msgMail.oggetto =
+                                    Resources.msgEmail.OggettoRichiestaPratichePassaporto;
+                                msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaporto, dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")", uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());
+                                gmail.sendMail(msgMail);
+
+                            }
+                        }
+                    }
+
+
+
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
+        }
+        #endregion
+
+
+        #region Ciclo di attivazione
+
+        public void ConfermaRichiestaPassaporto(decimal idAttivazionePassaporto)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+                    if (ap?.IDATTIVAZIONIPASSAPORTI > 0)
+                    {
+                        if (ap.NOTIFICARICHIESTA == true)
+                        {
+                            ap.PRATICACONCLUSA = true;
+                            ap.DATAPRATICACONCLUSA = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore: Impossibile completare l'approvazione delle pratiche del passaporto.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Completamento delle pratiche del passaporto.", "ATTIVAZIONIPASSAPORTI", db,
+                                    ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, ap.IDATTIVAZIONIPASSAPORTI);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.ModificaInCompletatoCalendarioEvento(ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestePratichePassaporto, db);
+                                }
+
+                                this.EmailCompletaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
+
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+
+        }
+
+        public void AnnullaRichiestaPassaporto(decimal idAttivazionePassaporto)
+        {
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var apOld = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                    if (apOld?.IDATTIVAZIONIPASSAPORTI > 0)
+                    {
+                        if (apOld.NOTIFICARICHIESTA == true && apOld.PRATICACONCLUSA == false && apOld.ANNULLATO == false)
+                        {
+                            apOld.ANNULLATO = true;
+                            apOld.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore - Impossibile annullare la notifica della richiesta per il passaporto.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Annullamento della riga per il ciclo di attivazione del passaporto",
+                                    "ATTIVAZIONIPASSAPORTI", db, apOld.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                    apOld.IDATTIVAZIONIPASSAPORTI);
+
+                                ATTIVAZIONIPASSAPORTI apNew = new ATTIVAZIONIPASSAPORTI()
+                                {
+                                    IDPASSAPORTI = apOld.IDPASSAPORTI,
+                                    NOTIFICARICHIESTA = false,
+                                    PRATICACONCLUSA = false,
+                                    DATAVARIAZIONE = DateTime.Now,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO = false
+                                };
+
+                                db.ATTIVAZIONIPASSAPORTI.Add(apNew);
+
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception("Errore - Impossibile creare il nuovo ciclo di approvazione per il passaporto.");
+                                }
+                                else
+                                {
+
+                                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                        "Inserimento di una nuova riga per il ciclo di attivazione relativo al passaporto.",
+                                        "ATTIVAZIONIPASSAPORTI", db, apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                        apNew.IDATTIVAZIONIPASSAPORTI);
+
+                                    #region Richiedente
+
+                                    var lprOld =
+                                        apOld.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false)
+                                            .OrderByDescending(a => a.IDPASSAPORTORICHIEDENTE);
+
+                                    if (lprOld?.Any() ?? false)
+                                    {
+                                        var prOld = lprOld.First();
+
+                                        PASSAPORTORICHIEDENTE prNew = new PASSAPORTORICHIEDENTE()
+                                        {
+                                            IDPASSAPORTI = prOld.IDPASSAPORTI,
+                                            IDATTIVAZIONIPASSAPORTI = apNew.IDATTIVAZIONIPASSAPORTI,
+                                            INCLUDIPASSAPORTO = prOld.INCLUDIPASSAPORTO,
+                                            DATAAGGIORNAMENTO = prOld.DATAAGGIORNAMENTO,
+                                            ANNULLATO = prOld.ANNULLATO
+                                        };
+
+                                        apNew.PASSAPORTORICHIEDENTE.Add(prNew);
+
+                                        int k = db.SaveChanges();
+
+                                        if (k <= 0)
+                                        {
+                                            throw new Exception("Errore - Impossibile inserire i dati del richiedente per il nuovo ciclo di attivazione creato dall'annulla richiesta.");
+                                        }
+                                        else
+                                        {
+
+                                            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                                "Inserimento di una nuova riga per il richiedente relativo al passaporto.",
+                                                "PASSAPORTORICHIEDENTE", db,
+                                                prNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                prNew.IDPASSAPORTORICHIEDENTE);
+
+                                            var ldocOld =
+                                            prOld.DOCUMENTI.Where(
+                                                a =>
+                                                    a.MODIFICATO == false &&
+                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita)
+                                                .OrderBy(a => a.DATAINSERIMENTO);
+
+                                            if (ldocOld?.Any() ?? false)
+                                            {
+                                                foreach (var docOld in ldocOld)
+                                                {
+                                                    DOCUMENTI docNew = new DOCUMENTI()
+                                                    {
+                                                        IDTIPODOCUMENTO = docOld.IDTIPODOCUMENTO,
+                                                        NOMEDOCUMENTO = docOld.NOMEDOCUMENTO,
+                                                        ESTENSIONE = docOld.ESTENSIONE,
+                                                        FILEDOCUMENTO = docOld.FILEDOCUMENTO,
+                                                        DATAINSERIMENTO = docOld.DATAINSERIMENTO,
+                                                        MODIFICATO = docOld.MODIFICATO,
+                                                        FK_IDDOCUMENTO = docOld.FK_IDDOCUMENTO
+                                                    };
+
+                                                    prNew.DOCUMENTI.Add(docNew);
+
+                                                    int y = db.SaveChanges();
+
+                                                    if (y <= 0)
+                                                    {
+                                                        throw new Exception("Errore - Impossibile asscoire il documento per il richiedente. (" + docNew.NOMEDOCUMENTO + ")");
+                                                    }
+                                                    else
+                                                    {
+                                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                                            "Inserimento di una nuova riga per il documento del richiedente relativo al passaporto.",
+                                                            "DOCUMENTI", db,
+                                                            prNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                            docNew.IDDOCUMENTO);
+                                                    }
+                                                }
+
+
+                                            }
+                                        }
+
+                                    }
+                                    #endregion
+
+                                    #region Coniuge
+
+                                    var lcpOld =
+                                        apOld.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false)
+                                            .OrderBy(a => a.IDCONIUGEPASSAPORTO);
+                                    if (lcpOld?.Any() ?? false)
+                                    {
+                                        foreach (var cpOld in lcpOld)
+                                        {
+                                            CONIUGEPASSAPORTO cpNew = new CONIUGEPASSAPORTO()
+                                            {
+                                                IDCONIUGE = cpOld.IDCONIUGE,
+                                                IDPASSAPORTI = cpOld.IDPASSAPORTI,
+                                                IDATTIVAZIONIPASSAPORTI = apNew.IDATTIVAZIONIPASSAPORTI,
+                                                INCLUDIPASSAPORTO = cpOld.INCLUDIPASSAPORTO,
+                                                DATAAGGIORNAMENTO = cpOld.DATAAGGIORNAMENTO,
+                                                ANNULLATO = cpOld.ANNULLATO
+                                            };
+
+                                            apNew.CONIUGEPASSAPORTO.Add(cpNew);
+
+                                            int x = db.SaveChanges();
+
+                                            if (x <= 0)
+                                            {
+                                                throw new Exception("Errore - Impossibile inserire il coniuge per il passaporto da annullamento richiesta. (" + cpNew.CONIUGE.NOME + " " + cpNew.CONIUGE.COGNOME + ")");
+                                            }
+                                            else
+                                            {
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                                                "Inserimento di una nuova riga per il coniuge passaporto relativo al passaporto.",
+                                                                "CONIUGEPASSAPORTO", db,
+                                                                apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                cpNew.IDCONIUGEPASSAPORTO);
+                                            }
+                                        }
+
+
+                                    }
+
+                                    #endregion
+
+                                    var lfpOld =
+                                        apOld.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false)
+                                            .OrderBy(a => a.IDFIGLIPASSAPORTO);
+
+                                    if (lfpOld?.Any() ?? false)
+                                    {
+                                        foreach (var fpOld in lfpOld)
+                                        {
+                                            FIGLIPASSAPORTO fpNew = new FIGLIPASSAPORTO()
+                                            {
+                                                IDFIGLI = fpOld.IDFIGLI,
+                                                IDPASSAPORTI = fpOld.IDPASSAPORTI,
+                                                IDATTIVAZIONIPASSAPORTI = apNew.IDATTIVAZIONIPASSAPORTI,
+                                                INCLUDIPASSAPORTO = fpOld.INCLUDIPASSAPORTO,
+                                                DATAAGGIORNAMENTO = fpOld.DATAAGGIORNAMENTO,
+                                                ANNULLATO = fpOld.ANNULLATO
+                                            };
+
+                                            apNew.FIGLIPASSAPORTO.Add(fpNew);
+
+                                            int z = db.SaveChanges();
+
+                                            if (z <= 0)
+                                            {
+                                                throw new Exception("Errore - Impossibile inserire i figli per il passaporto da annullamento richiesta.");
+                                            }
+                                            else
+                                            {
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                                                "Inserimento di una nuova riga per il figlio del richiedente relativo al passaporto.",
+                                                                "FIGLIPASSAPORTO", db,
+                                                                apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                                                fpNew.IDFIGLIPASSAPORTO);
+                                            }
+                                        }
+
+
+                                    }
+
+                                }
+
+                                this.EmailAnnullaRichiestaPassaporto(apNew.IDATTIVAZIONIPASSAPORTI, db);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.AnnullaMessaggioEvento(apNew.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestePratichePassaporto, db);
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public void NotificaRichiestaPassaporto(decimal idAttivazionePassaporto)
+        {
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                    if (ap?.IDATTIVAZIONIPASSAPORTI > 0)
+                    {
+                        if (ap.NOTIFICARICHIESTA == false)
+                        {
+                            ap.NOTIFICARICHIESTA = true;
+                            ap.DATANOTIFICARICHIESTA = DateTime.Now;
+                            ap.DATAVARIAZIONE = DateTime.Now;
+                            ap.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore: Impossibile notificare la richiesta per i passaporti.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Notifica della richiesta per i passaporti.", "ATTIVAZIONIPASSAPORTI", db,
+                                    ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, ap.IDATTIVAZIONIPASSAPORTI);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    CalendarioEventiModel cem = new CalendarioEventiModel()
+                                    {
+                                        idFunzioneEventi = EnumFunzioniEventi.RichiestePratichePassaporto,
+                                        idTrasferimento = ap.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO,
+                                        DataInizioEvento = DateTime.Now.Date,
+                                        DataScadenza = DateTime.Now.AddDays(Convert.ToInt16(Resources.ScadenzaFunzioniEventi.RichiestaPratichePassaporto)).Date,
+
+                                    };
+
+                                    dtce.InsertCalendarioEvento(ref cem, db);
+                                }
+
+
+                                this.EmailNotificaRichiestaPassaporto(ap.IDATTIVAZIONIPASSAPORTI, db);
+
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Errore nella fase di intercettazione del ciclo di attivazione.");
+                    }
+
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+
+
+
+            }
+        }
+        #endregion
+
 
         public void SituazionePassaporto(decimal idAttivazionePassaporto, out bool NotificaRichiesta, out bool AttivazioneRichiesta, out bool AnnullaRichiesta)
         {
@@ -1133,25 +1704,26 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ap = lap.First();
 
+                    gp.idAttivazionePassaporto = ap.IDATTIVAZIONIPASSAPORTI;
                     gp.notificaRichiesta = ap.NOTIFICARICHIESTA;
                     gp.praticaConclusa = ap.PRATICACONCLUSA;
                     gp.annullata = ap.ANNULLATO;
 
-                    var lpr = ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO && a.INCLUDIPASSAPORTO == true);
+                    var lpr = ap.PASSAPORTORICHIEDENTE.Where(a => a.ANNULLATO == false && a.INCLUDIPASSAPORTO == true);
 
                     if (lpr?.Any() ?? false)
                     {
                         gp.richiedenteIncluso = true;
                     }
 
-                    var lcp = ap.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false);
+                    var lcp = ap.CONIUGEPASSAPORTO.Where(a => a.ANNULLATO == false && a.INCLUDIPASSAPORTO == true);
 
                     if (lcp?.Any() ?? false)
                     {
                         gp.coniugeIncluso = true;
                     }
 
-                    var lfp = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false);
+                    var lfp = ap.FIGLIPASSAPORTO.Where(a => a.ANNULLATO == false && a.INCLUDIPASSAPORTO == true);
 
                     if (lfp?.Any() ?? false)
                     {

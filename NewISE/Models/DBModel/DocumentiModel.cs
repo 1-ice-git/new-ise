@@ -42,10 +42,6 @@ namespace NewISE.Models.DBModel
     }
 
 
-
-
-
-
     public class DocumentiModel
     {
         [Key]

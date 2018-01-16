@@ -75,7 +75,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
         {
-            
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 decimal funzEv = (decimal)fe;
@@ -135,6 +135,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
             decimal funzEv = (decimal)fe;
+
             var lce =
                 db.CALENDARIOEVENTI.Where(
                     a =>
@@ -285,9 +286,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 }).ToList();
                     }
 
-                    tmpAll.AddRange(tmp);
-                    tmpAll.AddRange(tmp1);
                     tmpAll.AddRange(tmp2);
+                    tmpAll.AddRange(tmp1);
+                    tmpAll.AddRange(tmp);
                 }
 
 
@@ -338,7 +339,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 bool admin = Utility.Amministratore(out am);
                 using (ModelDBISE db = new ModelDBISE())
-                {                    
+                {
                     if (admin)
                     {
                         var la = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false).ToList();
@@ -434,7 +435,7 @@ namespace NewISE.Models.DBModel.dtObj
                         CalendarViewModel completati = new CalendarViewModel();
                         var lc = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == true &&
                         a.DATAINIZIOEVENTO.Month == meseCorrente &&
-                        a.DATAINIZIOEVENTO.Year == annoCorrente 
+                        a.DATAINIZIOEVENTO.Year == annoCorrente
                         && a.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE == am.idDipendente).ToList();
                         var numeroCompletati = lc.Count;
                         if (numeroCompletati != 0)
@@ -536,14 +537,14 @@ namespace NewISE.Models.DBModel.dtObj
                                        }).ToList();
                                 break;
                             case "SCADUTI":
-                             //           var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
-                             //inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
+                                //           var ls = db.CALENDARIOEVENTI.Where(a => a.ANNULLATO == false && a.COMPLETATO == false &&
+                                //inizio.Date > a.DATASCADENZA && inizio <= DateTime.Now).ToList();
                                 tmp = (from e in db.CALENDARIOEVENTI
                                        where e.COMPLETATO == false &&
                                              e.ANNULLATO == false &&
                                              // e.DATASCADENZA < DateTime.Now
                                              inizio.Date > e.DATASCADENZA && inizio <= DateTime.Now
-                                        orderby e.DATASCADENZA descending
+                                       orderby e.DATASCADENZA descending
                                        select new ElencoElementiHome()
                                        {
                                            IdFunzioneEvento = e.IDFUNZIONIEVENTI,
@@ -630,7 +631,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                     }
                 }
-            
+
                 return tmp;
             }
             catch (Exception eex)

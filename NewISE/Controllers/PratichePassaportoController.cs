@@ -182,7 +182,7 @@ namespace NewISE.Controllers
         }
 
 
-        public JsonResult NotificaRichiesta(decimal idTrasferimento)
+        public JsonResult NotificaRichiesta(decimal idAttivazionePassaporto)
         {
             string errore = "";
             string msg = string.Empty;
@@ -191,7 +191,7 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    //dtpp.SetNotificaRichiesta(idTrasferimento);
+                    dtpp.NotificaRichiestaPassaporto(idAttivazionePassaporto);
                     msg = "Notifica effettuata con successo";
                 }
             }
@@ -203,7 +203,7 @@ namespace NewISE.Controllers
             return Json(new { err = errore, msg = msg });
         }
 
-        public JsonResult ConcludiPraticaPassaporto(decimal idTrasferimento)
+        public JsonResult AnnullaRichiesta(decimal idAttivazionePassaporto)
         {
             string errore = "";
             string msg = string.Empty;
@@ -212,13 +212,12 @@ namespace NewISE.Controllers
             {
                 using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
-                    //dtpp.SetConcludiPassaporto(idTrasferimento);
-                    msg = "Pratica conclusa con successo";
+                    dtpp.AnnullaRichiestaPassaporto(idAttivazionePassaporto);
+                    msg = "Annullamento effettuato con successo";
                 }
             }
             catch (Exception ex)
             {
-
                 errore = ex.Message;
             }
 
@@ -226,71 +225,26 @@ namespace NewISE.Controllers
 
         }
 
-        //public JsonResult NominativoEscludiPassaporto(decimal id, EnumParentela parentela, bool boolChk)
-        //{
-        //    string errore = string.Empty;
-        //    string msg = string.Empty;
-        //    string nominativo = string.Empty;
+        public JsonResult ConfermaRichiesta(decimal idAttivazionePassaporto)
+        {
+            string errore = "";
+            string msg = string.Empty;
 
-        //    try
-        //    {
+            try
+            {
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    dtpp.ConfermaRichiestaPassaporto(idAttivazionePassaporto);
+                    msg = "Pratica passaporto conclusa con successo";
+                }
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
 
-        //        if (boolChk)
-        //        {
-        //            msg = "Procedere con l'esclusione per {0} dalla richiesta di passaporto/visto?";
-        //        }
-        //        else
-        //        {
-        //            msg = "Procedere con l'inclusione per {0} per la richiesta di passaporto/visto?";
-        //        }
+            return Json(new { err = errore, msg = msg });
+        }
 
-
-        //        switch (parentela)
-        //        {
-        //            case EnumParentela.Coniuge:
-        //                using (dtConiuge dtc = new dtConiuge())
-        //                {
-        //                    var c = dtc.GetConiugebyID(id);
-        //                    nominativo = c.nominativo;
-        //                }
-        //                break;
-        //            case EnumParentela.Figlio:
-        //                using (dtFigli dtf = new dtFigli())
-        //                {
-        //                    var f = dtf.GetFigliobyID(id);
-        //                    nominativo = f.nominativo;
-        //                }
-        //                break;
-        //            case EnumParentela.Richiedente:
-        //                using (dtDipendenti dtd = new dtDipendenti())
-        //                {
-        //                    var d = dtd.GetDipendenteByIDTrasf(id);
-        //                    nominativo = d.Nominativo;
-        //                }
-        //                break;
-        //            default:
-        //                throw new ArgumentOutOfRangeException("parentela");
-        //        }
-
-        //        msg = string.Format(msg, nominativo);
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        errore = ex.Message;
-        //    }
-
-        //    return
-        //        Json(
-        //            new
-        //            {
-        //                msg = msg,
-        //                err = errore
-        //            });
-
-
-
-        //}
     }
 }

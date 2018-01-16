@@ -16,19 +16,6 @@
     idTrasferimento = idTrasferimento
 })
 </div>
-@*<div class="row">
-        <div class="col-xs-5 col-xs-offset-7" style="margin-top: 10px; margin-bottom: 10px;">
-            <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaPassaporti" onclick="ModelNotificaRichiesta();">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Notifica richiesta
-            </button>
-
-            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti" onclick="">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Pratica conclusa
-            </button>
-        </div>
-    </div>*@
 
 <script type="text/javascript">
 
@@ -110,16 +97,55 @@
 
     }
 
-    function NotificaRichiestaPassaporto() {
-        debugger;
-
-        var rotta = "/PratichePassaporto/NotificaRichiesta";
-        var idTrasferimento = parseInt('@idTrasferimento');
+    function AnnullaRichiestaPassaporto(idAttivazionePassaporto) {
+        //debugger;
+        var rotta = "/PratichePassaporto/AnnullaRichiesta";
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+
+                    //DisabilitaCheckBox();
+                    InfoElaborazioneAjax(result.msg);
+                    ElencoFamiliariPassoporto();
+                    GestionePulsantiNotificaAndConcludiPassaporto();
+                    GestioneAttivitaTrasferimento();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function NotificaRichiestaPassaporto(idAttivazionePassaporto) {
+        //debugger;
+
+        var rotta = "/PratichePassaporto/NotificaRichiesta";
+        //var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -131,8 +157,8 @@
                 //debugger;
                 if (result.err == "") {
                     GestionePulsantiNotificaAndConcludiPassaporto();
-                    //GestioneChkEscludiPassaporto();
                     GestioneAttivitaTrasferimento();
+                    DisabilitaCheckBox();
                     InfoElaborazioneAjax(result.msg);
 
                 } else {
@@ -153,14 +179,14 @@
 
 
 
-    function ConcludiRichiestaPassaporto() {
-        var rotta = "/PratichePassaporto/ConcludiPraticaPassaporto";
-        var idTrasferimento = parseInt('@idTrasferimento');
+    function ConcludiRichiestaPassaporto(idAttivazionePassaporto) {
+        var rotta = "/PratichePassaporto/ConfermaRichiesta";
+
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasferimento: idTrasferimento },
+            data: { idAttivazionePassaporto: idAttivazionePassaporto },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -171,10 +197,10 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    GestionePulsantiNotificaAndConcludiPassaporto();
-                    GestioneChkEscludiPassaporto();
-                    GestioneAttivitaTrasferimento();
                     InfoElaborazioneAjax(result.msg);
+                    ElencoFamiliariPassoporto();
+                    GestionePulsantiNotificaAndConcludiPassaporto();
+                    GestioneAttivitaTrasferimento();
 
                 } else {
                     ErroreElaborazioneAjax(result.err);

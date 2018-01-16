@@ -120,6 +120,12 @@
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
+  <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
+    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, sono state annullate.&lt;/p&gt;
+&lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
+  </data>
   <data name="MessaggioAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate.</value>
   </data>
@@ -133,10 +139,10 @@
     <value>Si notifica che la pratica per la richiesta dei titoli di viaggio per {0} sono concluse.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaporto" xml:space="preserve">
-    <value>Notifica della richiesta per il passaporto/visto per {0}.</value>
+    <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l'ufficio {1} dal {2}.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Si notifica che la pratica per la richiesta dei passaporto per {0} sono concluse.</value>
+    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} sono concluse.</value>
   </data>
   <data name="MessaggioRichiestaTitoloViaggio" xml:space="preserve">
     <value>Si notifica la richiesta per i biglietti di viaggio per {0}</value>
@@ -146,6 +152,9 @@
   </data>
   <data name="OggettoAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta per le Maggiorazioni Familiari</value>
+  </data>
+  <data name="OggettoAnnullaRichiestaPassaporto" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta per le pratiche del passaporto.</value>
   </data>
   <data name="OggettoAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
     <value>Attivazione delle maggiorazioni familiari</value>
