@@ -16,17 +16,23 @@
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
     </div>
-    <br />
-    <div class="form-group">
-        <div class="col-md-3">
-            <a href="#" target="_blank" onclick="invia()">Stampa Consuntivo dei Costi  </a>
-        </div>
-    </div>
-
-    <hr />
+   
 </div>
 
-<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+<div class="form-group">
+    <div class="col-md-3">
+        <a href="#" id="opener">Stampa Consuntivo dei Costi  </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="ConsuntivoCosti()">Visualizza il Consuntivo dei Costi</a>
+
+    </div>
+
+</div>
+<br /><br />
+
+
+<table id="tb_Consuntivo_Costi" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -96,7 +102,7 @@
 </table>
 
 <script type="text/javascript">
-    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
+    $('#tb_Consuntivo_Costi').DataTable({
             "order": [],
             "scrollY": 220,
             "scrollX": true,
@@ -154,6 +160,117 @@
         });
     });
 
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
+
+            
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1,
+                    V_UTENTE: 'fantomas',
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function ConsuntivoCosti() {
+        //debugger;
+
+        rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCosti";
+
+        
+        var data = $("#datepicker").val();
+        var data1 = $("#datepicker1").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1,
+                V_UTENTE: 'fantomas',
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPViewParametri").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
 
         function invia() {
             //debugger
