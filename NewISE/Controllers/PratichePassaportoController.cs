@@ -7,6 +7,7 @@ using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 
 namespace NewISE.Controllers
@@ -116,6 +117,8 @@ namespace NewISE.Controllers
                 {
                     gppm = dtpp.GestionePulsantiAttivazionePassaporto(idTrasferimento);
                 }
+
+
             }
             catch (Exception ex)
             {

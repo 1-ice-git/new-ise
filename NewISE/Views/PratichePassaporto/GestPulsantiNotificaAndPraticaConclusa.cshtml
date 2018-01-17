@@ -1,6 +1,9 @@
-﻿@model NewISE.Models.ViewModel.GestPulsantiAttConclModel
+﻿@using NewISE.Models.Tools
+@model NewISE.Models.ViewModel.GestPulsantiAttConclModel
 
-
+@{
+    bool admin = Utility.Amministratore();
+}
 
 <div class="row">
     <div class="col-xs-7 col-xs-offset-5" style="margin-top: 10px; margin-bottom: 10px;">
@@ -23,16 +26,19 @@
                         Notifica richiesta
                     </button>
                 }
+                if (admin)
+                {
+                    <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Pratica conclusa
+                    </button>
 
-                <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti">
-                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    Pratica conclusa
-                </button>
+                    <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                }
 
-                <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto">
-                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    Annulla richiesta
-                </button>
 
             }
             else
@@ -41,16 +47,19 @@
                     <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                     Notifica richiesta
                 </button>
+                if (admin)
+                {
+                    <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ConcludiRichiestaPassaporto(@Model.idAttivazionePassaporto);">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Pratica conclusa
+                    </button>
 
-                <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ConcludiRichiestaPassaporto(@Model.idAttivazionePassaporto);">
-                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    Pratica conclusa
-                </button>
+                    <button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="AnnullaRichiestaPassaporto(@Model.idAttivazionePassaporto);">
+                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                        Annulla richiesta
+                    </button>
+                }
 
-                <button class="btn btn-default btn-sm " id="btAnnullaRichiestaPassaporto" onclick="AnnullaRichiestaPassaporto(@Model.idAttivazionePassaporto);">
-                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    Annulla richiesta
-                </button>
 
 
             }
@@ -64,15 +73,19 @@
                 Notifica richiesta
             </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Pratica conclusa
-            </button>
+            if (admin)
+            {
+                <button class="btn btn-default btn-sm disabled" disabled id="btPraticaConclusaPassaporti">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Pratica conclusa
+                </button>
 
-            <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto">
-                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                Annulla richiesta
-            </button>
+                <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaRichiestaPassaporto">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            }
+
         }
 
 

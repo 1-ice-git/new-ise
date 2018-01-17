@@ -20,7 +20,7 @@
       "nome": "Giancarlo",
       "cognome": "Albano",
       "email": "jean.ravelomanantsoa@valueson.it"
-    
+
     },
     {
       "username": "2519",
@@ -34,6 +34,13 @@
       "password": "ise",
       "nome": "Luigi",
       "cognome": "Vignanelli",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "3188",
+      "password": "ise",
+      "nome": "Danila",
+      "cognome": "Alfano",
       "email": "mauro.arduini@ritspa.it"
     },
 
