@@ -1385,11 +1385,21 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
             }
-
             return ldm;
-
         }
 
+
+        public string GetDescrizioneTipoDocumentoByIdTipoDocumento(decimal idTipoDocumento)
+        {
+            string DescTipoDoc = "";
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                DescTipoDoc = db.TIPODOCUMENTI.Find(idTipoDocumento).DESCRIZIONE;
+            }
+
+            return DescTipoDoc;
+        }
 
 
     }

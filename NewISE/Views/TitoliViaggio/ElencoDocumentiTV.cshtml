@@ -1,0 +1,184 @@
+﻿@{
+    string DescrizioneTV = Convert.ToString(ViewData["DescrizioneTV"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+}
+
+@Html.Hidden("hiNuovoDocumento")
+
+<p style="margin-top: 10px">
+    <h4>Elenco titoli viaggio (@DescrizioneTV)</h4>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTV();">
+                    <table>
+                        <tr>
+                            <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
+                            <td style="padding-left:10px">Aggiungi @DescrizioneTV</td>
+                        </tr>
+                    </table>
+                </button>
+            </div>
+        </div>
+        <div id="divCombo" class="col-xs-7">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                @Html.Label("Data Attivazione", htmlAttributes: new { @class = "control-label" })
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazioneTV", @class = "form-control select2 select2-select", @onchange = "FiltraElencoDocumentiTV();" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12" style="padding-right: 35px;" >
+            <div id="divTabElencoDocumentiTV">
+                @Html.Action("TabDocumentiTVInseriti", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio, idTipoDocumento = idTipoDocumento })
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="ModalNuovoDocumentoTV" tabindex="-1" role="dialog" aria-labelledby="ModalNuovoDocumentoTVLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title alert alert-info text-info" id="NuovoDocumentoTVLabel">Nuovo documento @DescrizioneTV</h3>
+                </div>
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <div id="divViewNuovoDocumentoTV">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<p style="padding-left: 15px;">
+    @Ajax.ActionLink("Torna indietro", "ElencoTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElencoTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
+
+<script type="text/javascript">
+    $('#hiNuovoDocumento').val(@idTipoDocumento);
+
+    function NuovoDocumentoTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/NuovoDocumentoTV";
+        var idTitoliViaggio= @idTitoliViaggio;
+        var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio, idTipoDocumento:idTipoDocumento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+                $('#ModalNuovoDocumentoTV').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#divViewNuovoDocumentoTV").empty();
+                $("#divViewNuovoDocumentoTV").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function TabElencoDocumentiTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/TabDocumentiTVInseriti";
+        var idTitoliViaggio = @idTitoliViaggio;
+        var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio,idTipoDocumento:idTipoDocumento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divTabElencoDocumentiTV").empty();
+                $("#divTabElencoDocumentiTV").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function FiltraElencoDocumentiTV() {
+        //debugger;
+        var idAttivazioneTV = $("#idAttivazioneTV").val();
+        var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+
+        if (idAttivazioneTV != "" && idAttivazioneTV != undefined) {
+
+            var rotta = "/TitoliViaggio/FiltraDocumentiTV";
+            var idTitoliViaggio = @idTitoliViaggio;
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idTitoliViaggio: idTitoliViaggio, idAttivazioneTV: idAttivazioneTV,idTipoDocumento:idTipoDocumento},
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divTabElencoDocumentiTV").empty();
+                    $("#divTabElencoDocumentiTV").html(result);
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+        else
+        {
+            TabElencoDocumentiTV();
+        }
+    }
+
+
+    $("#ModalNuovoDocumentoTV").on("hidden.bs.modal", function () {
+        //debugger;
+        TabElencoDocumentiTV();
+        ElencoUploadDocumentiTV();
+    });
+
+
+</script>
+

@@ -34,14 +34,14 @@
 </div>
 
 <script type="text/javascript">
-    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante) {
+    function ElencoDocumenti(id, tipoDocumento, idParentela, chiamante) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumenti";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { id: id, tipoDoc: tipoDoc, parentela: idParentela, chiamante: chiamante },
+            data: { id: id, tipoDocumento: tipoDocumento, parentela: idParentela, chiamante: chiamante },
             dataType: 'html',
             async: false,
             beforeSend: function () {

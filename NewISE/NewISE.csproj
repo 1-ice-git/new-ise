@@ -2987,7 +2987,7 @@
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
     <Content Include="Views\TitoliViaggio\RimborsoSuccessivo.cshtml" />
     <Content Include="Views\TitoliViaggio\GestioneFormularioTitoliViaggio.cshtml" />
-    <Content Include="Views\TitoliViaggio\NuovoFormularioTV.cshtml" />
+    <Content Include="Views\TitoliViaggio\NuovoDocumentoTV.cshtml" />
     <Content Include="Views\TitoliViaggio\UploadTitoliViaggio.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
@@ -3039,6 +3039,12 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ModificaAltriDatiFamiliariFiglio.cshtml" />
     <Content Include="Views\PratichePassaporto\ChkIncludiPassaporto.cshtml" />
     <Content Include="Views\Documenti\ElencoDocumentiPassaporto.cshtml" />
+    <Content Include="Views\TitoliViaggio\ElencoTitoliViaggio.cshtml" />
+    <Content Include="Views\TitoliViaggio\AltriDatiFamiliariConiuge.cshtml" />
+    <Content Include="Views\TitoliViaggio\AltriDatiFamiliariFiglio.cshtml" />
+    <Content Include="Views\TitoliViaggio\ElencoDocumentiTV.cshtml" />
+    <Content Include="Views\TitoliViaggio\TabDocumentiTVInseriti.cshtml" />
+    <Content Include="Views\TitoliViaggio\ElencoUploadTitoliViaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
