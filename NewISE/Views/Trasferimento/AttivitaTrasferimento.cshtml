@@ -298,4 +298,16 @@
         }
     }
 
+    function EnableDisableLinkAnticipi(abilitato) {
+        //debugger;
+        if (abilitato == true) {
+            $("#linkPratichePassaporto").removeAttr("disabled");
+            $("#linkPratichePassaporto").removeClass("disableLink");
+        } else {
+            //disableLink
+            $("#linkPratichePassaporto").attr("disabled", "disabled");
+            $("#linkPratichePassaporto").addClass("disableLink");
+        }
+    }
+
 </script>
