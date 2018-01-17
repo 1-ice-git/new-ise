@@ -1202,7 +1202,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     cn.Open();
                     cmd1.ExecuteNonQuery();
 
-                    String Sql = "SELECT * FROM ISE_STP_CONSUNTIVOCOSTI2 ;";
+                    String Sql = "SELECT * FROM ISE_STP_CONSUNTIVOCOSTI2";
 
                     OracleCommand cmd = new OracleCommand(Sql, cn);
                     OracleDataReader rdr = cmd.ExecuteReader();

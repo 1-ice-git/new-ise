@@ -6,28 +6,28 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.70174cm</Width>
+              <Width>2.96964cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -565,7 +565,7 @@
         <Top>5.81766cm</Top>
         <Left>0.88129cm</Left>
         <Height>1.2cm</Height>
-        <Width>21.61396cm</Width>
+        <Width>23.75708cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -604,7 +604,7 @@
         <Top>0.14111cm</Top>
         <Left>0.88129cm</Left>
         <Height>1.8288cm</Height>
-        <Width>21.61396cm</Width>
+        <Width>23.75708cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -632,7 +632,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>3.0999cm</Top>
-        <Left>18.43885cm</Left>
+        <Left>20.58198cm</Left>
         <Height>0.6cm</Height>
         <Width>4.0564cm</Width>
         <ZIndex>2</ZIndex>
@@ -652,7 +652,7 @@
     <Height>3.59375in</Height>
     <Style />
   </Body>
-  <Width>9.12352in</Width>
+  <Width>9.9881in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -666,7 +666,7 @@
           <Top>0.24094cm</Top>
           <Left>0.88129cm</Left>
           <Height>2.05811cm</Height>
-          <Width>21.61396cm</Width>
+          <Width>23.75708cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -717,7 +717,7 @@
           <Top>1.04938cm</Top>
           <Left>0.88129cm</Left>
           <Height>0.6cm</Height>
-          <Width>21.61396cm</Width>
+          <Width>23.75708cm</Width>
           <Style>
             <Border>
               <Style>None</Style>

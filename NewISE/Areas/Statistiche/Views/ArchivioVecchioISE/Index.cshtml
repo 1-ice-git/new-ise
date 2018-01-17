@@ -12,7 +12,7 @@
         @Html.Label("lblStampa", "Modalità estrazione", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic" id="test">
-                @Html.DropDownList("idStampa", ViewBag.VecchioIse as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();", @onclick = "prelevaPartiaViewStatistiche();" })
+                @Html.DropDownList("idStampa", ViewBag.VecchioIse as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();" })
             </div>
             @Html.ValidationMessage("idStampa", "", new { @class = "text-danger" })
         </div>
@@ -53,9 +53,12 @@
 
         function prelevaPartiaViewStatistiche() {
             //debugger;
-            var rotta = "";
+
+            //var rotta = "/Trasferimento/NotificaTrasferimento";
+            var rotta = "/ArchivioVecchioIse/Index";
 
             var tabParam = parseInt($("#idStampa").select2('val'));
+            //var tabParam = $("#idStampa").select2('val');
 
 
             switch (tabParam) {
@@ -107,8 +110,8 @@
             }
 
             $.ajax({
-                type: "POST",
                 url: rotta,
+                type: "POST",
                 data: {},
                 dataType: 'html',
                 beforeSend: function () {
