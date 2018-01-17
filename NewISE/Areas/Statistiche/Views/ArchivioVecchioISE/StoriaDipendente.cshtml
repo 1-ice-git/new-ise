@@ -4,7 +4,6 @@
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 <div id="dialog" title="Storia del Dipendente"></div>
-
 @*<button id="opener">xx</button>*@
 
 <div class="form-horizontal">
@@ -35,7 +34,7 @@
         </div>
 
         <div class="col-md-3">
-            <a href="#" onclick="PrelevaGigius()">Visualizza Storia del Dipendente </a>
+            <a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>
         </div>
     </div>
  <br /><br />
@@ -265,7 +264,7 @@
         };
        
 
-        function PrelevaGigius(matricola) {
+        function StoriaDipendente(matricola) {
             //debugger;
             rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
 

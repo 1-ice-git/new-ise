@@ -24,10 +24,10 @@
               <Width>2.5cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.79104cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>5.72792cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -171,7 +171,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Decorrenza</Value>
+                              <Value>Decorrenza</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -203,7 +203,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Lettera </Value>
+                              <Value>Lettera </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -235,7 +235,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Operazione</Value>
+                              <Value>Operazione</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -565,7 +565,7 @@
         <Top>5.23558cm</Top>
         <Left>1.15943cm</Left>
         <Height>1.2cm</Height>
-        <Width>20cm</Width>
+        <Width>23.51896cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -588,7 +588,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>3.21896cm</Top>
-        <Left>17.10303cm</Left>
+        <Left>20.33095cm</Left>
         <Height>0.6cm</Height>
         <Width>4.0564cm</Width>
         <ZIndex>1</ZIndex>
@@ -636,7 +636,7 @@
         <Top>0.17639cm</Top>
         <Left>1.15943cm</Left>
         <Height>1.82273cm</Height>
-        <Width>20cm</Width>
+        <Width>23.22792cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -652,7 +652,7 @@
     <Height>3.05208in</Height>
     <Style />
   </Body>
-  <Width>8.80085in</Width>
+  <Width>9.99877in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -666,7 +666,7 @@
           <Top>0.24094cm</Top>
           <Left>1.15943cm</Left>
           <Height>2.05811cm</Height>
-          <Width>20cm</Width>
+          <Width>23.22792cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -717,7 +717,7 @@
           <Top>1.65792cm</Top>
           <Left>1.15943cm</Left>
           <Height>0.6cm</Height>
-          <Width>20cm</Width>
+          <Width>23.51896cm</Width>
           <Style>
             <Border>
               <Style>None</Style>

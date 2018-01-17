@@ -6,37 +6,37 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.80396cm</Width>
+              <Width>2.44797cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.84584cm</Width>
+              <Width>2.48985cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.18792cm</Width>
+              <Width>2.83193cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.46625cm</Width>
+              <Width>1.11026cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.14401cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -180,7 +180,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Decorrenza</Value>
+                              <Value>Decorrenza</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -212,7 +212,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Lettera</Value>
+                              <Value>Lettera</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -244,7 +244,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Operazione</Value>
+                              <Value>Operazione</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -410,7 +410,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!NOMINATIVO.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -440,7 +442,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CON_MATRICOLA.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -470,7 +474,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!SED_DESCRIZIONE.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -500,7 +506,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!VAL_DESCRIZIONE.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -530,7 +538,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatDateTime(Fields!CON_DT_DECORRENZA.Value, DateFormat.ShortDate)</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -560,7 +570,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatDateTime(Fields!CON_DT_LETTERA.Value, DateFormat.ShortDate)</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -590,7 +602,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=FormatDateTime(Fields!CON_DT_OPERAZIONE.Value, DateFormat.ShortDate)</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -620,7 +634,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CON_CONTRIBUTO_VALUTA.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -650,7 +666,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CON_CANONE.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -680,7 +698,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CON_PERCENTUALE.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -710,7 +730,9 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!CON_CONTRIBUTO_LIRE.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -763,7 +785,7 @@
         <Top>5.15619cm</Top>
         <Left>0.57891cm</Left>
         <Height>1.2cm</Height>
-        <Width>27.80397cm</Width>
+        <Width>23.88813cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -809,7 +831,7 @@
         <Top>0.17639cm</Top>
         <Left>0.57891cm</Left>
         <Height>1.76403cm</Height>
-        <Width>27.40708cm</Width>
+        <Width>23.88813cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -837,7 +859,7 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>3.11313cm</Top>
-        <Left>24.93501cm</Left>
+        <Left>21.41606cm</Left>
         <Height>0.6cm</Height>
         <Width>3.05098cm</Width>
         <ZIndex>2</ZIndex>
@@ -857,7 +879,7 @@
     <Height>3.41667in</Height>
     <Style />
   </Body>
-  <Width>11.38852in</Width>
+  <Width>9.99269in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -871,7 +893,7 @@
           <Top>0.3055cm</Top>
           <Left>0.57891cm</Left>
           <Height>2.05811cm</Height>
-          <Width>27.40708cm</Width>
+          <Width>23.88813cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -922,7 +944,7 @@
           <Top>0.75833cm</Top>
           <Left>0.57891cm</Left>
           <Height>0.6cm</Height>
-          <Width>27.40708cm</Width>
+          <Width>23.88813cm</Width>
           <Style>
             <Border>
               <Style>None</Style>

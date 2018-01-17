@@ -6,31 +6,31 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.49155cm</Width>
+              <Width>2.15053cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.49155cm</Width>
+              <Width>2.15053cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.49155cm</Width>
+              <Width>2.15053cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.26426cm</Width>
+              <Width>2.65324cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.49155cm</Width>
+              <Width>2.15053cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.88843cm</Width>
+              <Width>2.54741cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.57634cm</Width>
+              <Width>3.23532cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.49155cm</Width>
+              <Width>2.49449cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.61716cm</Width>
+              <Width>3.93219cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -142,7 +142,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt. Decorrenza </Value>
+                              <Value>Decorrenza </Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -174,7 +174,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Lettera</Value>
+                              <Value>Lettera</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -206,7 +206,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Dt Operazione</Value>
+                              <Value>Operazione</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -302,7 +302,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Imp. Previd.  </Value>
+                              <Value>Imp. Previdenziale</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -631,7 +631,7 @@
         <Top>4.94454cm</Top>
         <Left>0.25387cm</Left>
         <Height>1.2cm</Height>
-        <Width>27.80394cm</Width>
+        <Width>23.46479cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -674,10 +674,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox25</rd:DefaultName>
-        <Top>0.17639cm</Top>
+        <Top>0.14111cm</Top>
         <Left>0.25387cm</Left>
         <Height>1.49958cm</Height>
-        <Width>27.80396cm</Width>
+        <Width>23.46479cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -705,9 +705,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
         <Top>2.38552cm</Top>
-        <Left>24.60997cm</Left>
+        <Left>20.87934cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.44786cm</Width>
+        <Width>2.83932cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
@@ -725,7 +725,7 @@
     <Height>3.26042in</Height>
     <Style />
   </Body>
-  <Width>11.25472in</Width>
+  <Width>9.9943in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -739,7 +739,7 @@
           <Top>0.24094cm</Top>
           <Left>0.25387cm</Left>
           <Height>2.05811cm</Height>
-          <Width>27.80396cm</Width>
+          <Width>23.46479cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -790,7 +790,7 @@
           <Top>0.97cm</Top>
           <Left>0.25387cm</Left>
           <Height>0.6cm</Height>
-          <Width>27.40708cm</Width>
+          <Width>23.46479cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
