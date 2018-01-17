@@ -2449,6 +2449,7 @@
     </Compile>
     <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
+    <Compile Include="Controllers\AnticipiController.cs" />
     <Compile Include="Controllers\CalendariEventiController.cs" />
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
@@ -2768,15 +2769,18 @@
     </Compile>
     <Compile Include="Models\Config\s_admin\sUtenteNormale.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
+    <Compile Include="Models\DBModel\AnticipiModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
+    <Compile Include="Models\DBModel\AttivitaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPassaportoRichiedente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
+    <Compile Include="Models\DBModel\TipologiaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\TipologiaSospensioneModel.cs" />
     <Compile Include="Models\DBModel\SospensioneModel.cs" />
     <Compile Include="Models\DBModel\CalendarioEventiModel.cs" />
@@ -3057,6 +3061,7 @@
     <Folder Include="Lib\locale\" />
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
+    <Folder Include="Views\Anticipi\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

@@ -856,7 +856,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (tm != null && tm.idTrasferimento > 0)
                     {
-                        dit.statoTrasferimento = (EnumStatoTraferimento)tm.idStatoTrasferimento;
+                        dit.statoTrasferimento = tm.idStatoTrasferimento;
                         dit.UfficioDestinazione = tm.Ufficio;
                         dit.Decorrenza = tm.dataPartenza;
                         if (tm.dataRientro.HasValue)

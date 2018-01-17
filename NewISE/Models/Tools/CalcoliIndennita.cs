@@ -52,6 +52,127 @@ namespace NewISE.Models.Tools
             GC.SuppressFinalize(this);
         }
 
+        public CalcoliIndennita(decimal idTrasferimento, DateTime? dataCalcoloIndennita = null)
+        {
+            DateTime? dt;
+            RUOLODIPENDENTE ruoloDipendente = new RUOLODIPENDENTE();
+            RUOLOUFFICIO ruoloUfficio = new RUOLOUFFICIO();
+            RIDUZIONI riduzioniIndennitaBase = new RIDUZIONI();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    if (dataCalcoloIndennita.HasValue)
+                    {
+                        dt = dataCalcoloIndennita;
+                    }
+                    else
+                    {
+                        dt = DateTime.Now;
+                    }
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                    if (t.DATARIENTRO.HasValue)
+                    {
+                        if (trasferimento.DATARIENTRO.Value < dt.Value)
+                        {
+                            dtDatiParametri = trasferimento.DATARIENTRO.Value;
+                        }
+                        else
+                        {
+                            if (trasferimento.DATAPARTENZA > dt.Value)
+                            {
+                                dtDatiParametri = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtDatiParametri = dt.Value;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (trasferimento.DATAPARTENZA > dt.Value)
+                        {
+                            dtDatiParametri = trasferimento.DATAPARTENZA;
+                        }
+                        else
+                        {
+                            dtDatiParametri = dt.Value;
+                        }
+                    }
+
+
+                    var indennita = trasferimento.INDENNITA;
+                    var lrd =
+                        indennita.RUOLODIPENDENTE.Where(
+                            a =>
+                                a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA &&
+                                dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA);
+
+                    if (lrd?.Any() ?? false)
+                    {
+                        ruoloDipendente = lrd.First();
+                        ruoloUfficio = ruoloDipendente.RUOLOUFFICIO;
+
+                        #region Indennita di base estera
+
+                        var lib =
+                            indennita.INDENNITABASE.Where(
+                                a =>
+                                    a.ANNULLATO == false &&
+                                    dtDatiParametri >= a.DATAINIZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA)
+                                .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+
+                        if (lib?.Any() ?? false)
+                        {
+                            var indennitaBase = lib.First();
+
+                            if (indennitaBase.IDRIDUZIONI.HasValue)
+                            {
+                                //riduzioniIndennitaBase = indennitaBase.RIDUZIONI
+                            }
+                            else
+                            {
+
+                            }
+
+
+                        }
+
+
+                        if (ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Dirigente || ruoloUfficio.IDRUOLO == (decimal)EnumRuoloUfficio.Responsabile)
+                        {
+
+
+                        }
+                        #endregion
+
+
+
+
+
+                    }
+
+
+
+
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+            }
+
+
+
+        }
+
         public CalcoliIndennita(string matricola, DateTime? dataCalcoloIndennita = null)
         {
             DateTime? dt;
