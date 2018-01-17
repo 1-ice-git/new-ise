@@ -1,0 +1,255 @@
+﻿@using NewISE.Models.ViewModel
+@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
+@{
+    string DescrizioneTV = Convert.ToString(ViewData["DescrizioneTV"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+}
+
+<table class="table" id="tabElencoDocumentiTVInseriti">
+    <thead>
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.progressivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nomeDocumento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.estensione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInserimento)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+
+                @if (item.Modificabile)
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+
+
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare @DescrizioneTV." /></a>
+                </td>
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaDocumentoTV(@item.idDocumenti)" id="linkEliminaFormulario">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizioneTV" />
+                        </a>
+                    }
+                    else
+                    {
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="modal fade" id="ModalEliminaDocumentoTV" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaDocumentoTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoTVLabel">Elimina titolo di viaggio</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <input type="hidden" id="hIdDocTV" />
+                <p><label>Eliminare il documento selezionato?</label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaDocumentoTV();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("hIdDocumentoTV")
+
+<script type="text/javascript">
+    $("#tabElencoDocumentiTVInseriti").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 4,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "order": [[0,"desc"],[3, "desc"]]
+    });
+
+    function EliminaDocumentoTV(idDoc) {
+        $("#hIdDocumentoTV").val(idDoc);
+        $("#ModalEliminaDocumentoTV").modal("show");
+    }
+
+    function ConfermaEliminaDocumentoTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/EliminaDocumentoTV";
+        var idDocumento = parseInt($("#hIdDocumentoTV").val());
+        $("#ModalEliminaDocumentoTV").modal("hide");
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDocumento }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                    InfoElaborazioneAjax(result.msg);
+                    //PulsantiNotificaAttivaMagFam();
+                }
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function ElencoUploadDocumentiTV() {
+        //debugger;
+        var idTitoliViaggio=@idTitoliViaggio;
+        var rotta = "/TitoliViaggio/ElencoUploadTitoliViaggio";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabUploadTitoliViaggio").empty();
+                $("#tabUploadTitoliViaggio").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    $("#ModalEliminaDocumentoTV").on("hidden.bs.modal", function () {
+        //debugger;
+        TabElencoDocumentiTV();
+        ElencoUploadDocumentiTV();
+    });
+</script>
+

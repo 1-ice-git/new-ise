@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         public decimal idAttivazioneTitoliViaggio { get; set; }
 
         [Required(ErrorMessage = "Il trasferimento è richiesto.")]
-        public decimal idTrasferimento { get; set; }
+        public decimal idTitoloViaggio { get; set; }
 
         [Required()]
         [DefaultValue(false)]

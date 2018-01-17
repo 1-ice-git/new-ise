@@ -1,0 +1,89 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+}
+
+
+<tr>
+    <td style="font-weight:normal; padding-bottom: 10px;padding-right: 10px;">
+        Upload Carta d'imbarco:
+    </td>
+    <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
+        @if (nDocCartaImbarco > 0)
+        {
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idTitoliViaggio);" id="linkElencoDocTV">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco carte d'imbarco" />
+            </a>
+        }
+        else
+        {
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco), @idTitoliViaggio);" id="linkElencoDocTV">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco carte d'imbarco" />
+            </a>
+        }
+    </td>
+</tr>
+<tr>
+    <td style="font-weight:normal; padding-bottom: 10px; padding-right: 10px;">
+        Upload Titoli di viaggio:
+    </td>
+    <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
+        @if (nDocTitoliViaggio > 0)
+        {
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idTitoliViaggio);" id="linkElencoDocTV">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco titoli di viaggio" />
+            </a>
+        }
+        else
+        {
+            <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio), @idTitoliViaggio);" id="linkElencoDocTV">
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco titoli di viaggio" />
+            </a>
+        }
+    </td>
+</tr>
+
+
+<script type="text/javascript">
+    function ElencoDocumentiTV(idTipoDocumento, idTitoliViaggio) {
+        //debugger;
+        var rotta = "/TitoliViaggio/ElencoDocumentiTV";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTipoDocumento: idTipoDocumento, idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divElencoTitoliViaggio").empty();
+                $("#divElencoTitoliViaggio").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+</script>
+
