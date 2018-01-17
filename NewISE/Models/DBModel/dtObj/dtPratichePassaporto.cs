@@ -196,6 +196,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 }
 
+                                var destUggs = System.Configuration.ConfigurationManager.AppSettings["EmailUfficioGestioneGiuridicaEsviluppo"];
+                                msgMail.destinatario.Add(new Destinatario() { Nominativo = "Ufficio Gestione Giuridica e Sviluppo", EmailDestinatario = destUggs });
+
+
                                 msgMail.oggetto =
                                     Resources.msgEmail.OggettoRichiestaPratichePassaporto;
                                 msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioRichiestaPratichePassaporto, dip.COGNOME + " " + dip.NOME + " (" + dip.MATRICOLA + ")", uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", tr.DATAPARTENZA.ToLongDateString());

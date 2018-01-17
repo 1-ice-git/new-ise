@@ -21,12 +21,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
         [Display(Name = "Tipologia figlio")]
         public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
-        [Display(Name = "Passaporto")]
-        [Required(ErrorMessage = "Il passaporto è richiesto.")]
-        public decimal idPassaporti { get; set; }
-        [Display(Name = "Titolo Viaggio")]
-        [Required(ErrorMessage = "Il titolo di viaggio è richiesto.")]
-        public decimal idTitoloViaggio { get; set; }
+
         [Required(ErrorMessage = "Il nome è richiesto.")]
         [Display(Name = "Nome")]
         [StringLength(30, ErrorMessage = "Per il nome sono richiesti un massimo di 30 caratteri.")]

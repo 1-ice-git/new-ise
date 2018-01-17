@@ -860,8 +860,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
                                     idTipologiaFiglio = fm.idTipologiaFiglio,
-                                    idPassaporti = fm.idPassaporti,
-                                    idTitoloViaggio = fm.idTitoloViaggio,
                                     nome = fm.nome,
                                     cognome = fm.cognome,
                                     codiceFiscale = fm.codiceFiscale,
@@ -985,8 +983,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
                                 idTipologiaFiglio = fm.idTipologiaFiglio,
-                                idPassaporti = fm.idPassaporti,
-                                idTitoloViaggio = fm.idTitoloViaggio,
                                 nome = fm.nome,
                                 cognome = fm.cognome,
                                 codiceFiscale = fm.codiceFiscale,
@@ -2338,22 +2334,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
-
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idPassaporti = p.idPassaporto;
-                        }
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
-                    }
 
                     if (fm.idMaggiorazioniFamiliari == 0 && fm.idAttivazioneMagFam > 0)
                     {

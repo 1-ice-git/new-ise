@@ -235,7 +235,6 @@ namespace NewISE.Controllers
                                     {
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idFigli,
-                                        idPassaporti = e.idPassaporti,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,

@@ -1382,32 +1382,9 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
 
-
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var tm = dtt.GetTrasferimentoByIDMagFam(fm.idMaggiorazioniFamiliari);
-
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idPassaporti = p.idPassaporto;
-                        }
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
-
-                    }
-
-
-
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;
-
-
 
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -1454,7 +1431,6 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
                     }
-
 
                     db.Database.CurrentTransaction.Commit();
                 }
