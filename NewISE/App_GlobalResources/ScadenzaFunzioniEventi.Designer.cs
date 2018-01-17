@@ -68,5 +68,14 @@ namespace Resources {
                 return ResourceManager.GetString("RichiestaMaggiorazioniFamiliari", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 15.
+        /// </summary>
+        internal static string RichiestaPratichePassaporto {
+            get {
+                return ResourceManager.GetString("RichiestaPratichePassaporto", resourceCulture);
+            }
+        }
     }
 }

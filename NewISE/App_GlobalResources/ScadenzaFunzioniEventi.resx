@@ -120,4 +120,7 @@
   <data name="RichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="RichiestaPratichePassaporto" xml:space="preserve">
+    <value>15</value>
+  </data>
 </root>

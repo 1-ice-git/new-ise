@@ -83,7 +83,9 @@ namespace NewISE.Models.DBModel.dtObj
                         dataNotificaRichiesta = ap.DATANOTIFICARICHIESTA,
                         praticaConclusa = ap.PRATICACONCLUSA,
                         dataPraticaConclusa = ap.DATAPRATICACONCLUSA,
-
+                        dataVariazione = ap.DATAVARIAZIONE,
+                        dataAggiornamento = ap.DATAAGGIORNAMENTO,
+                        annullato = ap.ANNULLATO
                     };
                 }
             }
@@ -93,22 +95,16 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-
-        public AttivazionePassaportiModel GetAttivazionePassaportiDaLavorare(decimal idPassaporto, ModelDBISE db)
+        public AttivazionePassaportiModel GetAttivazionePassaportiByIdRichiedente(decimal idPassaportoRichiedente)
         {
             AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
-
-            var p = db.PASSAPORTI.Find(idPassaporto);
-
-            if (p != null && p.IDPASSAPORTI > 0)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                var lap =
-                    p.ATTIVAZIONIPASSAPORTI.Where(
-                        a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.PRATICACONCLUSA == false);
+                var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
 
-                if (lap?.Any() ?? false)
+                if (pr?.IDPASSAPORTORICHIEDENTE > 0)
                 {
-                    var ap = lap.First();
+                    var ap = pr.ATTIVAZIONIPASSAPORTI;
                     apm = new AttivazionePassaportiModel()
                     {
                         idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI,
@@ -117,6 +113,9 @@ namespace NewISE.Models.DBModel.dtObj
                         dataNotificaRichiesta = ap.DATANOTIFICARICHIESTA,
                         praticaConclusa = ap.PRATICACONCLUSA,
                         dataPraticaConclusa = ap.DATAPRATICACONCLUSA,
+                        dataVariazione = ap.DATAVARIAZIONE,
+                        dataAggiornamento = ap.DATAAGGIORNAMENTO,
+                        annullato = ap.ANNULLATO
 
                     };
                 }
@@ -124,34 +123,75 @@ namespace NewISE.Models.DBModel.dtObj
 
 
             return apm;
-
         }
 
-        //public void AssociaRichiedente(decimal idAttivazionePassaporto, decimal idPassaportoRichiedente, ModelDBISE db)
-        //{
-        //    try
-        //    {
-        //        var ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
-        //        var item = db.Entry<ATTIVAZIONIPASSAPORTI>(ap);
-        //        item.State = EntityState.Modified;
-        //        item.Collection(a => a.PASSAPORTORICHIEDENTE).Load();
-        //        var pr = db.PASSAPORTORICHIEDENTE.Find(idPassaportoRichiedente);
-        //        ap.PASSAPORTORICHIEDENTE.Add(pr);
 
-        //        int i = db.SaveChanges();
+        public AttivazionePassaportiModel GetAttivazionePassaportiByIdConiugePassaporto(decimal idConiugePassaporto)
+        {
+            AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var cp = db.CONIUGEPASSAPORTO.Find(idConiugePassaporto);
+
+                if (cp?.IDCONIUGEPASSAPORTO > 0)
+                {
+                    var ap = cp.ATTIVAZIONIPASSAPORTI;
+                    apm = new AttivazionePassaportiModel()
+                    {
+                        idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI,
+                        idPassaporti = ap.IDPASSAPORTI,
+                        notificaRichiesta = ap.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = ap.DATANOTIFICARICHIESTA,
+                        praticaConclusa = ap.PRATICACONCLUSA,
+                        dataPraticaConclusa = ap.DATAPRATICACONCLUSA,
+                        dataVariazione = ap.DATAVARIAZIONE,
+                        dataAggiornamento = ap.DATAAGGIORNAMENTO,
+                        annullato = ap.ANNULLATO
+
+                    };
+                }
+            }
 
 
-        //        if (i <= 0)
-        //        {
-        //            throw new Exception("Impossibile associare il richiedente per l'attivazione del passaporto.");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
 
-        //        throw ex;
-        //    }
-        //}
+            return apm;
+        }
+
+
+
+        public AttivazionePassaportiModel GetAttivazionePassaportiByIdFiglioPassaporto(decimal idFiglioPassaporto)
+        {
+            AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var f = db.FIGLIPASSAPORTO.Find(idFiglioPassaporto);
+
+                if (f?.IDFIGLIPASSAPORTO > 0)
+                {
+                    var ap = f.ATTIVAZIONIPASSAPORTI;
+                    apm = new AttivazionePassaportiModel()
+                    {
+                        idAttivazioniPassaporti = ap.IDATTIVAZIONIPASSAPORTI,
+                        idPassaporti = ap.IDPASSAPORTI,
+                        notificaRichiesta = ap.NOTIFICARICHIESTA,
+                        dataNotificaRichiesta = ap.DATANOTIFICARICHIESTA,
+                        praticaConclusa = ap.PRATICACONCLUSA,
+                        dataPraticaConclusa = ap.DATAPRATICACONCLUSA,
+                        dataVariazione = ap.DATAVARIAZIONE,
+                        dataAggiornamento = ap.DATAAGGIORNAMENTO,
+                        annullato = ap.ANNULLATO
+
+                    };
+                }
+            }
+
+
+            return apm;
+        }
+
+
 
         public void AssociaConiuge(decimal idAttivazionePassaporto, decimal idConiuge, ModelDBISE db)
         {

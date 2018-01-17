@@ -4,29 +4,28 @@
 
 @if (Model.HasDoc.esisteDoc)
 {
-    if (Model.richiedi)
-    {
-        <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) ) ">
-            <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
-        </a>
-    }
+
+    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) ) ">
+        <img class="SfondoBordoImg" height="17px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+    </a>
+
 
 }
 else
 {
-    if (Model.richiedi)
-    {
-        <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) ) ">
-            <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="30" title="Documenti" />
-        </a>
-    }
+
+    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) ) ">
+        <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" height="17" title="Documenti" />
+    </a>
+
 
 }
 
 
+
 <script type="text/javascript">
     function ElencoDocumentiPassaporto(idFamiliarePassaporto, tipoDoc, idParentela) {
-        debugger;
+        //debugger;
         var rotta = "/Documenti/ElencoDocumentiPassaporto";
 
         $.ajax({

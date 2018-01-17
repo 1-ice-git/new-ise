@@ -20,10 +20,6 @@ namespace NewISE.Controllers
 {
     public class DocumentiController : Controller
     {
-
-
-
-
         public ActionResult LeggiDocumento(decimal id)
         {
             byte[] Blob;
@@ -298,8 +294,7 @@ namespace NewISE.Controllers
         public ActionResult NuovoDocumento(EnumTipoDoc tipoDoc, decimal id, EnumParentela parentela, EnumChiamante Chiamante, decimal idAttivazioneMagFam = 0)
         {
             string titoloPagina = string.Empty;
-            //decimal idMaggiorazioniFamiliari = 0;
-            //decimal idAttivazioneMagFam = 0;
+
 
             switch (tipoDoc)
             {
@@ -523,29 +518,80 @@ namespace NewISE.Controllers
         public ActionResult ElencoDocumentiPassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipoDoc, EnumParentela parentela)
         {
             List<DocumentiModel> ldm = new List<DocumentiModel>();
+            AttivazionePassaportiModel apm = new AttivazionePassaportiModel();
+            bool solaLettura = false;
+            decimal idTrasferimento = 0;
 
             try
             {
-                switch (parentela)
+                using (dtAttivazionePassaporto dtap = new dtAttivazionePassaporto())
                 {
-                    case EnumParentela.Coniuge:
-                        using (dtDocumenti dtd = new dtDocumenti())
+
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        switch (parentela)
                         {
-                            ldm = dtd.GetDocumentiIdentitaConiugePassaporto(idFamiliarePassaporto).ToList();
+                            case EnumParentela.Coniuge:
+
+                                ldm = dtd.GetDocumentiIdentitaConiugePassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdConiugePassaporto(idFamiliarePassaporto);
+                                break;
+
+                            case EnumParentela.Figlio:
+                                ldm = dtd.GetDocumentiIdentitaFiglioPassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdFiglioPassaporto(idFamiliarePassaporto);
+                                break;
+
+                            case EnumParentela.Richiedente:
+                                ldm = dtd.GetDocumentiIdentitaRichiedentePassaporto(idFamiliarePassaporto).ToList();
+                                apm = dtap.GetAttivazionePassaportiByIdRichiedente(idFamiliarePassaporto);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException("parentela");
                         }
-                        break;
-                    case EnumParentela.Figlio:
-                        break;
-                    case EnumParentela.Richiedente:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("parentela");
+                    }
+
                 }
+
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    bool notificaRichiesta = false;
+                    bool attivazioneRichiesta = false;
+                    bool annullaRichiesta = false;
+
+                    dtpp.SituazionePassaporto(apm.idAttivazioniPassaporti, out notificaRichiesta, out attivazioneRichiesta, out annullaRichiesta);
+
+                    if (notificaRichiesta == true || attivazioneRichiesta == true)
+                    {
+                        solaLettura = true;
+                    }
+                    else
+                    {
+                        solaLettura = false;
+                    }
+
+                }
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdAttPassaporto(apm.idAttivazioniPassaporti);
+                    idTrasferimento = t.idTrasferimento;
+                }
+
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+
+
+            ViewData.Add("solaLettura", solaLettura);
+            ViewData.Add("idFamiliarePassaporto", idFamiliarePassaporto);
+            ViewData.Add("tipoDoc", (decimal)tipoDoc);
+            ViewData.Add("idAttivazionePassaporto", apm.idAttivazioniPassaporti);
+            ViewData.Add("parentela", (decimal)parentela);
+            ViewData.Add("chiamante", (decimal)EnumChiamante.Passaporti);
+            ViewData.Add("idTrasferimento", idTrasferimento);
 
             return PartialView(ldm);
 
@@ -735,38 +781,7 @@ namespace NewISE.Controllers
                     case EnumChiamante.Trasferimento:
                         idTrasferimento = id;
                         break;
-                    case EnumChiamante.Passaporti:
 
-                        switch (parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdConiuge(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            case EnumParentela.Figlio:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    var ppm = dtpp.GetPassaportoByIdFiglio(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            case EnumParentela.Richiedente:
-                                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                                {
-                                    PassaportoRichiedenteModel ppm = dtpp.GetPassaportoRichiedenteByID(id);
-                                    idTrasferimento = ppm.idPassaporto;
-                                }
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException("parentela");
-                        }
-
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("chiamante");
                 }
 
 
@@ -786,6 +801,27 @@ namespace NewISE.Controllers
             ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
 
             return PartialView(ldm);
+        }
+
+        [HttpPost]
+        public JsonResult NumeroDocumentiSalvatiPassaporto(decimal idFamiliarePassaporto, EnumTipoDoc tipoDoc, EnumParentela parentela)
+        {
+            int nDoc = 0;
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    nDoc = dtd.GetDocumentiByIdFamiliarePassaporto(idFamiliarePassaporto, tipoDoc, parentela).Count;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { errore = ex.Message, nDoc = 0 });
+            }
+
+            return Json(new { errore = "", nDoc = nDoc });
         }
 
         [HttpPost]
@@ -829,6 +865,26 @@ namespace NewISE.Controllers
             return Json(new { errore = "", msg = "Eliminazione effettuata con successo." });
         }
 
+
+        [HttpPost]
+        public JsonResult EliminaDocumentoPassaporto(decimal idDocumento)
+        {
+
+            try
+            {
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    dtd.DeleteDocumentoPassaporto(idDocumento);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { errore = ex.Message, msg = "" });
+            }
+
+            return Json(new { errore = "", msg = "Eliminazione effettuata con successo." });
+        }
 
     }
 }

@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
         [Key]
         public decimal idAltriDatiFam { get; set; }
         [Display(Name = "Figli")]
-        public decimal? idFigli { get; set; }
+        public decimal idFigli { get; set; }
 
         [Required(ErrorMessage = "La data di nascita è richiesta.")]
         [Display(Name = "Data di nascita")]

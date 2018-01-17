@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using Microsoft.Ajax.Utilities;
 
@@ -41,10 +42,6 @@ namespace NewISE.Models.DBModel
     }
 
 
-
-
-
-
     public class DocumentiModel
     {
         [Key]
@@ -66,6 +63,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data d'inserimento è richiesta.")]
         [DataType(DataType.DateTime)]
         [Display(Name = "Data Ins.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataInserimento { get; set; }
 
 

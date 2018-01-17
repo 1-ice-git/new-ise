@@ -70,6 +70,18 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, sono state annullate.&lt;/p&gt;
+        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
+        ///&lt;hr /&gt;
+        ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaPassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaPassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
@@ -106,7 +118,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per {0}..
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio {1} dal {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
             get {
@@ -115,7 +127,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per {0} sono concluse..
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} sono concluse..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaportoConcluse {
             get {
@@ -147,6 +159,15 @@ namespace Resources {
         internal static string OggettoAnnullaRichiestaMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("OggettoAnnullaRichiestaMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta per le pratiche del passaporto..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaPassaporto {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaPassaporto", resourceCulture);
             }
         }
         

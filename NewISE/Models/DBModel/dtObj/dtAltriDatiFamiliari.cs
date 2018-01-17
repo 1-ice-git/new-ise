@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var f = db.FIGLI.Find(adm.idFigli);
                     if (f != null && f.IDFIGLI > 0)
                     {
-                        TipologiaFiglio idTipologiaFiglio = (TipologiaFiglio)f.IDTIPOLOGIAFIGLIO;
+                        EnumTipologiaFiglio idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO;
 
                         if (adm.dataNascita.HasValue)
                         {
@@ -43,7 +44,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             switch (idTipologiaFiglio)
                             {
-                                case TipologiaFiglio.Residente:
+                                case EnumTipologiaFiglio.Residente:
                                     if (eta > 18)
                                     {
                                         vr = new ValidationResult(string.Format("Impossibile inserire il figlio residente ({0}) con età superiore a 18 anni.", f.COGNOME + " " + f.NOME));
@@ -53,10 +54,20 @@ namespace NewISE.Models.DBModel.dtObj
                                         vr = ValidationResult.Success;
                                     }
                                     break;
-                                case TipologiaFiglio.Studente:
+                                case EnumTipologiaFiglio.StudenteResidente:
                                     if (eta > 26)
                                     {
-                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio studente ({0}) con età superiore a 26 anni.", f.COGNOME + " " + f.NOME));
+                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio studente residente ({0}) con età superiore a 26 anni.", f.COGNOME + " " + f.NOME));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                    break;
+                                case EnumTipologiaFiglio.StudenteNonResidente:
+                                    if (eta > 26)
+                                    {
+                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio studente non residente ({0}) con età superiore a 26 anni.", f.COGNOME + " " + f.NOME));
                                     }
                                     else
                                     {
@@ -86,31 +97,91 @@ namespace NewISE.Models.DBModel.dtObj
         public AltriDatiFamFiglioModel GetAltriDatiFamiliariFiglio(decimal idAltriDatiFam)
         {
             AltriDatiFamFiglioModel adfm = new AltriDatiFamFiglioModel();
+            DateTime dt = DateTime.Now;
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var adf = db.ALTRIDATIFAM.Find(idAltriDatiFam);
-                    if (adf != null && adf.IDALTRIDATIFAM > 0)
+
+                    if (adf?.IDALTRIDATIFAM > 0)
                     {
 
-                        adfm = new AltriDatiFamFiglioModel()
+                        var f = adf.FIGLI;
+
+                        if (f?.IDFIGLI > 0)
                         {
-                            idAltriDatiFam = adf.IDALTRIDATIFAM,
-                            idFigli = adf.IDFIGLI,
-                            dataNascita = adf.DATANASCITA,
-                            capNascita = adf.CAPNASCITA,
-                            comuneNascita = adf.COMUNENASCITA,
-                            provinciaNascita = adf.PROVINCIANASCITA,
-                            nazionalita = adf.NAZIONALITA,
-                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
-                            capResidenza = adf.CAPRESIDENZA,
-                            comuneResidenza = adf.COMUNERESIDENZA,
-                            provinciaResidenza = adf.PROVINCIARESIDENZA,
-                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                            annullato = adf.ANNULLATO
-                        };
+                            adfm = new AltriDatiFamFiglioModel()
+                            {
+                                idAltriDatiFam = adf.IDALTRIDATIFAM,
+                                idFigli = adf.IDFIGLI.Value,
+                                dataNascita = adf.DATANASCITA,
+                                capNascita = adf.CAPNASCITA,
+                                comuneNascita = adf.COMUNENASCITA,
+                                provinciaNascita = adf.PROVINCIANASCITA,
+                                nazionalita = adf.NAZIONALITA,
+                                indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                                capResidenza = adf.CAPRESIDENZA,
+                                comuneResidenza = adf.COMUNERESIDENZA,
+                                provinciaResidenza = adf.PROVINCIARESIDENZA,
+                                dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                                annullato = adf.ANNULLATO,
+                                Figli = new FigliModel()
+                                {
+                                    idFigli = f.IDFIGLI,
+                                    idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
+                                    idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
+                                    nome = f.NOME,
+                                    cognome = f.COGNOME,
+                                    codiceFiscale = f.CODICEFISCALE,
+                                    dataInizio = f.DATAINIZIOVALIDITA,
+                                    dataFine = f.DATAFINEVALIDITA,
+                                    dataAggiornamento = f.DATAAGGIORNAMENTO,
+                                    Modificato = f.MODIFICATO,
+                                    FK_IdFigli = f.FK_IDFIGLI
+                                }
+                            };
+
+                            var lpmf =
+                                f.PERCENTUALEMAGFIGLI.Where(
+                                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
+
+                            if (lpmf?.Any() ?? false)
+                            {
+                                var pmf = lpmf.First();
+
+                                switch ((EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO)
+                                {
+                                    case EnumTipologiaFiglio.Residente:
+                                        adfm.residente = true;
+                                        adfm.studente = false;
+                                        break;
+                                    case EnumTipologiaFiglio.StudenteResidente:
+                                        adfm.residente = true;
+                                        adfm.studente = true;
+                                        break;
+                                    case EnumTipologiaFiglio.StudenteNonResidente:
+                                        adfm.residente = false;
+                                        adfm.studente = true;
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Nessuna percentuale maggiorazione figli rilevata alla data odierna.");
+                            }
+
+                        }
+                        else
+                        {
+                            throw new Exception("Errore nella ricerca del figlio.");
+                        }
+
+
+
                     }
                 }
 
@@ -134,13 +205,38 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var adf = db.ALTRIDATIFAM.Find(idAltriDatiFam);
 
-                    if (adf != null && adf.IDALTRIDATIFAM > 0)
+                    if (adf?.IDALTRIDATIFAM > 0)
                     {
-
                         var c = adf.CONIUGE;
 
                         if (c?.IDCONIUGE > 0)
                         {
+                            adfm = new AltriDatiFamConiugeModel()
+                            {
+                                idAltriDatiFam = adf.IDALTRIDATIFAM,
+                                idConiuge = adf.IDCONIUGE.Value,
+                                nazionalita = adf.NAZIONALITA,
+                                indirizzoResidenza = adf.INDIRIZZORESIDENZA,
+                                capResidenza = adf.CAPRESIDENZA,
+                                comuneResidenza = adf.COMUNERESIDENZA,
+                                provinciaResidenza = adf.PROVINCIARESIDENZA,
+                                dataAggiornamento = adf.DATAAGGIORNAMENTO,
+                                annullato = adf.ANNULLATO,
+                                Coniuge = new ConiugeModel()
+                                {
+                                    idConiuge = c.IDCONIUGE,
+                                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                    nome = c.NOME,
+                                    cognome = c.COGNOME,
+                                    codiceFiscale = c.CODICEFISCALE,
+                                    dataInizio = c.DATAINIZIOVALIDITA,
+                                    dataFine = c.DATAFINEVALIDITA,
+                                    dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                    Modificato = c.MODIFICATO,
+                                    FK_idConiuge = c.FK_IDCONIUGE
+                                }
+                            };
 
 
                             var lpmc =
@@ -176,32 +272,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
 
 
-                        adfm = new AltriDatiFamConiugeModel()
-                        {
-                            idAltriDatiFam = adf.IDALTRIDATIFAM,
-                            idConiuge = adf.IDCONIUGE.Value,
-                            nazionalita = adf.NAZIONALITA,
-                            indirizzoResidenza = adf.INDIRIZZORESIDENZA,
-                            capResidenza = adf.CAPRESIDENZA,
-                            comuneResidenza = adf.COMUNERESIDENZA,
-                            provinciaResidenza = adf.PROVINCIARESIDENZA,
-                            dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                            annullato = adf.ANNULLATO,
-                            Coniuge = new ConiugeModel()
-                            {
-                                idConiuge = c.IDCONIUGE,
-                                idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                                nome = c.NOME,
-                                cognome = c.COGNOME,
-                                codiceFiscale = c.CODICEFISCALE,
-                                dataInizio = c.DATAINIZIOVALIDITA,
-                                dataFine = c.DATAFINEVALIDITA,
-                                dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                Modificato = c.MODIFICATO,
-                                FK_idConiuge = c.FK_IDCONIUGE
-                            }
-                        };
+
                     }
                 }
 
@@ -242,7 +313,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm = new AltriDatiFamFiglioModel()
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
-                                idFigli = adf.IDFIGLI,
+                                idFigli = adf.IDFIGLI.Value,
                                 dataNascita = adf.DATANASCITA,
                                 capNascita = adf.CAPNASCITA,
                                 comuneNascita = adf.COMUNENASCITA,

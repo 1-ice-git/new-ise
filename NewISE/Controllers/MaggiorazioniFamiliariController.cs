@@ -357,7 +357,6 @@ namespace NewISE.Controllers
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idFigli,
                                         idAttivazioneMagFam = e.idAttivazioneMagFam,
-                                        idPassaporti = e.idPassaporti,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,
@@ -592,6 +591,14 @@ namespace NewISE.Controllers
                             lTipologiaFiglio = r;
                         }
 
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            TrasferimentoModel tm = new TrasferimentoModel();
+
+                            tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
+
+                            ViewData.Add("Trasferimento", tm);
+                        }
 
                         ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
                         ViewData.Add("idAttivazioneMagFam", fm.idAttivazioneMagFam);

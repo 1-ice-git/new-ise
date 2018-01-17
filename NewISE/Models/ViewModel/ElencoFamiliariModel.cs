@@ -13,16 +13,14 @@ namespace NewISE.Models.ViewModel
         public decimal idMaggiorazioniFamiliari { get; set; }
         public decimal idAttivazioneMagFam { get; set; }
         public decimal idFamiliare { get; set; }///ID del figlio o del coniuge
-        public decimal? idPassaporti { get; set; }
-        public decimal? idTitoloViaggio { get; set; }
         public string Nominativo { get; set; }
         [Display(Name = "Cod. Fisc.")]
         public string CodiceFiscale { get; set; }
         [Display(Name = "Data Ini.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}", NullDisplayText = "")]
         public DateTime? dataInizio { get; set; }
         [Display(Name = "Data Fin.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd-MM-yyyy}", NullDisplayText = "")]
+        [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:dd/MM/yyyy}", NullDisplayText = "")]
         public DateTime? dataFine { get; set; }
         [Display(Name = "Parentela")]
         public EnumParentela parentela { get; set; }

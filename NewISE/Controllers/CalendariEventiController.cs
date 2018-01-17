@@ -33,7 +33,7 @@ namespace NewISE.Models
         }
         public ActionResult GetCalendarioEvento(DateTime? DataInizio)
         {
-             DateTime? myDate;
+            DateTime? myDate;
             if (DataInizio.HasValue)
                 myDate = DataInizio;
             else myDate = null;
@@ -41,11 +41,7 @@ namespace NewISE.Models
             //obj.DataInizioEvento = (DateTime)myDate;
             return PartialView(obj);
         }
-        //public string Init()
-        //{
-        //    bool rslt = Utils.InitialiseDiary();
-        //    return rslt.ToString();
-        //}
+
         //[HttpPost]
         public JsonResult GetDiaryEvents(DateTime start, DateTime end)
         {
@@ -55,32 +51,16 @@ namespace NewISE.Models
                 using (dtCalendarioEventi dtcal = new dtCalendarioEventi())
                 {
                     for (DateTime i = start; i < end; i = i.AddDays(1))
-                    {                    
+                    {
                         tmp.AddRange(dtcal.GetConteggioStatiAttivita(i));
                     }
                 }
-                
+
             }
-            catch 
+            catch
             {
                 return null;
             }
-            //CalendarViewModel cvm = new CalendarViewModel()
-            //{
-            //    id = 1,
-            //    title = "Prova 1",
-            //    start = Convert.ToDateTime("2017-11-04"),               
-            //};
-            //            CalendarViewModel cvm2 = new CalendarViewModel()
-            //{
-            //    id = 2,
-            //    title = "Prova 2",
-            //    start = Convert.ToDateTime("12/11/2017"),            
-            //};
-            //lcvm.Add(cvm);
-            //lcvm.Add(cvm2);    
-            
-
 
 
             var eventList = from e in tmp
@@ -92,20 +72,19 @@ namespace NewISE.Models
                                 end = e.end,
                                 color = e.color,
                                 someKey = 1,
-                               // allDay = false
-                            };                            
+                                // allDay = false
+                            };
             var rows = eventList.ToArray();
 
-           
+
 
             return Json(rows, JsonRequestBehavior.AllowGet);
-            // var j = Json(rows, JsonRequestBehavior.AllowGet);
-           // return j;         
+
         }
-        
-        public ActionResult GetDetailsCalendarEvents(DateTime DataInizio,string stato)
+
+        public ActionResult GetDetailsCalendarEvents(DateTime DataInizio, string stato)
         {
-            
+
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             try
             {

@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public void SetIncludiEscludiPassaporto(decimal idPassaportoRichiedente, ref bool chk)
+        public void SetIncludiEscludiPassaporto(decimal idPassaportoRichiedente, ref bool chk, ref decimal idAttivazioniPassaporto)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -22,6 +22,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (pr?.IDPASSAPORTORICHIEDENTE > 0)
                 {
+                    idAttivazioniPassaporto = pr.ATTIVAZIONIPASSAPORTI.IDATTIVAZIONIPASSAPORTI;
+
                     if (pr.INCLUDIPASSAPORTO)
                     {
                         pr.INCLUDIPASSAPORTO = false;

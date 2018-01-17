@@ -877,7 +877,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     DateTime dtFin = fNew.DATAFINEVALIDITA;
 
                                                     List<PercentualeMagFigliModel> lpmfm =
-                                                        dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fNew.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db).ToList();
+                                                        dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fNew.IDTIPOLOGIAFIGLIO, dtIni, dtFin, db).ToList();
 
                                                     if (lpmfm?.Any() ?? false)
                                                     {
@@ -1382,32 +1382,9 @@ namespace NewISE.Models.DBModel.dtObj
                 try
                 {
 
-
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var tm = dtt.GetTrasferimentoByIDMagFam(fm.idMaggiorazioniFamiliari);
-
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idPassaporti = p.idPassaporto;
-                        }
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
-
-                    }
-
-
-
                     using (dtFigli dtf = new dtFigli())
                     {
                         fm.dataAggiornamento = DateTime.Now;
-
-
 
                         dtf.SetFiglio(ref fm, db);
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
@@ -1416,7 +1393,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
 
                             List<PercentualeMagFigliModel> lpmfm =
-                                dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni,
+                                dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni,
                                     dtFin, db).ToList();
 
                             if (lpmfm?.Any() ?? false)
@@ -1454,7 +1431,6 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                         }
                     }
-
 
                     db.Database.CurrentTransaction.Commit();
                 }

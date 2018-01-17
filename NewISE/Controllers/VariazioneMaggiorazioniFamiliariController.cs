@@ -235,7 +235,6 @@ namespace NewISE.Controllers
                                     {
                                         idMaggiorazioniFamiliari = e.idMaggiorazioniFamiliari,
                                         idFamiliare = e.idFigli,
-                                        idPassaporti = e.idPassaporti,
                                         Nominativo = e.cognome + " " + e.nome,
                                         CodiceFiscale = e.codiceFiscale,
                                         dataInizio = e.dataInizio,
@@ -809,14 +808,18 @@ namespace NewISE.Controllers
                     {
                         switch (pf.idTipologiaFiglio)
                         {
-                            case TipologiaFiglio.Residente:
+                            case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
                                 adf.studente = false;
                                 break;
 
-                            case TipologiaFiglio.Studente:
+                            case EnumTipologiaFiglio.StudenteResidente:
                                 adf.studente = true;
                                 adf.residente = true;
+                                break;
+                            case EnumTipologiaFiglio.StudenteNonResidente:
+                                adf.studente = true;
+                                adf.residente = false;
                                 break;
 
                             default:
@@ -834,11 +837,10 @@ namespace NewISE.Controllers
             {
                 using (dtFigli dtf = new dtFigli())
                 {
-                    if (adf.idFigli.HasValue)
-                    {
-                        var fm = dtf.GetFigliobyID(adf.idFigli.Value);
-                        adf.Figli = fm;
-                    }
+
+                    var fm = dtf.GetFigliobyID(adf.idFigli);
+                    adf.Figli = fm;
+
                 }
                 return PartialView(adf);
             }
@@ -944,20 +946,24 @@ namespace NewISE.Controllers
                         {
                             PercentualeMagFigliModel pf = new PercentualeMagFigliModel();
 
-                            pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli.Value, DateTime.Now.Date);
+                            pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli, DateTime.Now.Date);
 
                             if (pf != null && pf.HasValue())
                             {
                                 switch (pf.idTipologiaFiglio)
                                 {
-                                    case TipologiaFiglio.Residente:
+                                    case EnumTipologiaFiglio.Residente:
                                         adfm.residente = true;
                                         adfm.studente = false;
                                         break;
 
-                                    case TipologiaFiglio.Studente:
+                                    case EnumTipologiaFiglio.StudenteResidente:
                                         adfm.studente = true;
                                         adfm.residente = true;
+                                        break;
+                                    case EnumTipologiaFiglio.StudenteNonResidente:
+                                        adfm.studente = true;
+                                        adfm.residente = false;
                                         break;
 
                                     default:

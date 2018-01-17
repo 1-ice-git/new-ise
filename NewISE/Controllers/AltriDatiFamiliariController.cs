@@ -63,13 +63,17 @@ namespace NewISE.Controllers
                     {
                         switch (pf.idTipologiaFiglio)
                         {
-                            case TipologiaFiglio.Residente:
+                            case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
                                 adf.studente = false;
                                 break;
-                            case TipologiaFiglio.Studente:
+                            case EnumTipologiaFiglio.StudenteResidente:
                                 adf.studente = true;
                                 adf.residente = true;
+                                break;
+                            case EnumTipologiaFiglio.StudenteNonResidente:
+                                adf.studente = true;
+                                adf.residente = false;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -88,11 +92,10 @@ namespace NewISE.Controllers
             {
                 using (dtFigli dtf = new dtFigli())
                 {
-                    if (adf.idFigli.HasValue)
-                    {
-                        var fm = dtf.GetFigliobyID(adf.idFigli.Value);
-                        adf.Figli = fm;
-                    }
+
+                    var fm = dtf.GetFigliobyID(adf.idFigli);
+                    adf.Figli = fm;
+
                 }
 
                 return PartialView(adf);
@@ -124,74 +127,31 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult AltriDatiFamiliariFiglioPassaporto(decimal idFiglio)
+        public ActionResult AltriDatiFamiliariFiglioPassaporto(decimal idAltriDati)
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
-            MaggiorazioniFamiliariModel mcm = new MaggiorazioniFamiliariModel();
+
             TrasferimentoModel tm = new TrasferimentoModel();
 
             try
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    //adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio);
-                }
-                using (dtMaggiorazioniFamiliari dtmc = new dtMaggiorazioniFamiliari())
-                {
-                    mcm = dtmc.GetMaggiorazioniFamiliaribyFiglio(idFiglio);
+                    adf = dtadf.GetAltriDatiFamiliariFiglio(idAltriDati);
                 }
 
-                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                using (dtTrasferimento dtt = new dtTrasferimento())
                 {
-                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                    if (pf != null && pf.HasValue())
-                    {
-                        switch (pf.idTipologiaFiglio)
-                        {
-                            case TipologiaFiglio.Residente:
-                                adf.residente = true;
-                                adf.studente = false;
-                                break;
-                            case TipologiaFiglio.Studente:
-                                adf.studente = true;
-                                adf.residente = true;
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
+                    tm = dtt.GetTrasferimentoByIdFiglio(adf.idFigli);
                 }
+
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            using (dtTrasferimento dtt = new dtTrasferimento())
-            {
-                tm = dtt.GetTrasferimentoByIDMagFam(mcm.idMaggiorazioniFamiliari);
-            }
-
             ViewData.Add("idTrasferimento", tm.idTrasferimento);
-
-
-            using (dtFigli dtf = new dtFigli())
-            {
-                if (adf.idFigli.HasValue)
-                {
-                    var fm = dtf.GetFigliobyID(adf.idFigli.Value);
-                    adf.Figli = fm;
-                }
-            }
-
-            //using (dtConiuge dtc = new dtConiuge())
-            //{
-            //    if (adf.idConiuge.HasValue)
-            //    {
-            //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-            //        adf.Coniuge = cm;
-            //    }
-            //}
 
             return PartialView(adf);
         }
@@ -222,13 +182,17 @@ namespace NewISE.Controllers
                     {
                         switch (pf.idTipologiaFiglio)
                         {
-                            case TipologiaFiglio.Residente:
+                            case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
                                 adf.studente = false;
                                 break;
-                            case TipologiaFiglio.Studente:
+                            case EnumTipologiaFiglio.StudenteResidente:
                                 adf.studente = true;
                                 adf.residente = true;
+                                break;
+                            case EnumTipologiaFiglio.StudenteNonResidente:
+                                adf.studente = true;
+                                adf.residente = false;
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
@@ -251,21 +215,12 @@ namespace NewISE.Controllers
 
             using (dtFigli dtf = new dtFigli())
             {
-                if (adf.idFigli.HasValue)
-                {
-                    var fm = dtf.GetFigliobyID(adf.idFigli.Value);
-                    adf.Figli = fm;
-                }
+
+                var fm = dtf.GetFigliobyID(adf.idFigli);
+                adf.Figli = fm;
+
             }
 
-            //using (dtConiuge dtc = new dtConiuge())
-            //{
-            //    if (adf.idConiuge.HasValue)
-            //    {
-            //        var cm = dtc.GetConiugebyID(adf.idConiuge.Value);
-            //        adf.Coniuge = cm;
-            //    }
-            //}
 
             return PartialView(adf);
         }
@@ -513,7 +468,7 @@ namespace NewISE.Controllers
                     ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
                     using (dtFigli dtf = new dtFigli())
                     {
-                        string nominativo = dtf.GetFigliobyID(adf.idFigli.Value).nominativo.ToUpper();
+                        string nominativo = dtf.GetFigliobyID(adf.idFigli).nominativo.ToUpper();
                         ViewData.Add("nominativo", nominativo);
                     }
 
@@ -585,19 +540,23 @@ namespace NewISE.Controllers
                         using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                         {
                             PercentualeMagFigliModel pf = new PercentualeMagFigliModel();
-                            pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli.Value, DateTime.Now.Date);
+                            pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli, DateTime.Now.Date);
 
                             if (pf?.HasValue() ?? false)
                             {
                                 switch (pf.idTipologiaFiglio)
                                 {
-                                    case TipologiaFiglio.Residente:
+                                    case EnumTipologiaFiglio.Residente:
                                         adfm.residente = true;
                                         adfm.studente = false;
                                         break;
-                                    case TipologiaFiglio.Studente:
+                                    case EnumTipologiaFiglio.StudenteResidente:
                                         adfm.studente = true;
                                         adfm.residente = true;
+                                        break;
+                                    case EnumTipologiaFiglio.StudenteNonResidente:
+                                        adfm.studente = true;
+                                        adfm.residente = false;
                                         break;
                                     default:
                                         throw new ArgumentOutOfRangeException();

@@ -32,7 +32,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
-                                idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
@@ -69,7 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
-                                idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
@@ -106,7 +106,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
-                                idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,
@@ -143,7 +143,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idPercMagFigli = e.IDPERCMAGFIGLI,
-                                idTipologiaFiglio = (TipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)e.IDTIPOLOGIAFIGLIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagFigliModel().dataFineValidita,
                                 percentualeFigli = e.PERCENTUALEFIGLI,

@@ -10,7 +10,7 @@ namespace NewISE.Models.DBModel
     public enum EnumFunzioniEventi
     {
         RichiestaMaggiorazioniFamiliari = 1,
-        Funzione2 = 2,
+        RichiestePratichePassaporto = 2,
         Funzione3 = 3,
         Funzione4 = 21,
         Funzione5 = 22,

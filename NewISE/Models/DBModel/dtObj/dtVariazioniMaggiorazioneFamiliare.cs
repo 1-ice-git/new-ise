@@ -860,8 +860,6 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
                                     idTipologiaFiglio = fm.idTipologiaFiglio,
-                                    idPassaporti = fm.idPassaporti,
-                                    idTitoloViaggio = fm.idTitoloViaggio,
                                     nome = fm.nome,
                                     cognome = fm.cognome,
                                     codiceFiscale = fm.codiceFiscale,
@@ -914,7 +912,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
 
                                         List<PercentualeMagFigliModel> lpmfm =
-                                            dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
+                                            dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
 
                                         if (lpmfm?.Any() ?? false)
                                         {
@@ -950,7 +948,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                                     {
 
-                                        List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
+                                        List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
 
                                         if (lpmfm?.Any() ?? false)
                                         {
@@ -985,8 +983,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idMaggiorazioniFamiliari = fm.idMaggiorazioniFamiliari,
                                 idTipologiaFiglio = fm.idTipologiaFiglio,
-                                idPassaporti = fm.idPassaporti,
-                                idTitoloViaggio = fm.idTitoloViaggio,
                                 nome = fm.nome,
                                 cognome = fm.cognome,
                                 codiceFiscale = fm.codiceFiscale,
@@ -1036,7 +1032,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
                                 {
 
-                                    List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
+                                    List<PercentualeMagFigliModel> lpmfm = dtpf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db).ToList();
 
                                     if (lpmfm?.Any() ?? false)
                                     {
@@ -1298,7 +1294,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adffm = new AltriDatiFamFiglioModel()
                             {
                                 idAltriDatiFam = adff.IDALTRIDATIFAM,
-                                idFigli = adff.IDFIGLI,
+                                idFigli = adff.IDFIGLI.Value,
                                 nazionalita = adff.NAZIONALITA,
                                 dataNascita = adff.DATANASCITA,
                                 comuneNascita = adff.COMUNENASCITA,
@@ -2338,22 +2334,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                 try
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
-                    {
-                        var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
-
-                        using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
-                        {
-                            var p = dtpp.GetPassaportoInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            fm.idPassaporti = p.idPassaporto;
-                        }
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            //var tvm = dttv.GetTitoloViaggioInLavorazioneByIdTrasf(tm.idTrasferimento);
-                            //fm.idTitoloViaggio = tvm.idTitoloViaggio;
-                        }
-                    }
 
                     if (fm.idMaggiorazioniFamiliari == 0 && fm.idAttivazioneMagFam > 0)
                     {
@@ -2372,7 +2352,7 @@ namespace NewISE.Models.DBModel.dtObj
                             DateTime dtIni = fm.dataInizio.Value;
                             DateTime dtFin = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop();
 
-                            IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((TipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
+                            IList<PercentualeMagFigliModel> lpmfm = dtpmf.GetPercentualeMaggiorazioneFigli((EnumTipologiaFiglio)fm.idTipologiaFiglio, dtIni, dtFin, db);
 
                             if (lpmfm?.Any() ?? false)
                             {

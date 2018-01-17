@@ -2,6 +2,8 @@
 @using NewISE.Models.ViewModel
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel>
 
+
+
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
     <table cellspacing="0" id="tabElencoFamiliariPass">
         <thead>
@@ -74,14 +76,14 @@
                             case EnumParentela.Coniuge:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariConiuge(@item.idAltriDati); ">
-                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
                             case EnumParentela.Figlio:
                                 <td style="text-align: center;">
                                     <a href="#" id="linkAltriDatiFam" onclick=" AltriDatiFamiliariFiglio(@item.idAltriDati); ">
-                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="30" />
+                                        <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
                                     </a>
                                 </td>
                                 break;
@@ -105,7 +107,7 @@
                         </div>
                     </td>
                     <td style="text-align: center;">
-                        @*@Html.Action("ChkEscludiPassaporto", "PratichePassaporto", new { idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc, escludiPassaporto = item.richiedi })*@
+                        @Html.Action("ChkIncludiPassaporto", "PratichePassaporto", new { idAttivitaPassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc.esisteDoc, includiPassaporto = item.richiedi })
                     </td>
 
                 </tr>
@@ -170,52 +172,52 @@
         //]
     });
 
-    function GestioneChkEscludiPassaporto() {
-        var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
-        var idPassaporto = parseInt('0');
+    //function GestioneChkEscludiPassaporto() {
+    //    var rotta = "/PratichePassaporto/LeggiStatusPratichePassaporto";
+    //    var idPassaporto = parseInt('0');
 
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idPassaporto: idPassaporto },
-            dataType: 'json',
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$('#ModalPensione').modal('show');
-                //Blocca();
+    //    $.ajax({
+    //        url: rotta,
+    //        type: "POST", //Le info testuali saranno passate in POST
+    //        data: { idPassaporto: idPassaporto },
+    //        dataType: 'json',
+    //        async: false,
+    //        beforeSend: function () {
+    //            //debugger;
+    //            //VerificaAutenticazione();
+    //            //$('#ModalPensione').modal('show');
+    //            //Blocca();
 
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    if (result.praticaConclusa == true || result.notificaRichiesta == true) {
-                        DisabilitaCheckBox();
-                    }
-                    else {
-                        AbilitaCheckBox();
-                    }
-                }
+    //        },
+    //        success: function (result) {
+    //            //debugger;
+    //            if (result.err == "") {
+    //                if (result.praticaConclusa == true || result.notificaRichiesta == true) {
+    //                    DisabilitaCheckBox();
+    //                }
+    //                else {
+    //                    AbilitaCheckBox();
+    //                }
+    //            }
 
-            },
-            complete: function () {
+    //        },
+    //        complete: function () {
 
-            },
-            error: function (error) {
-                //debugger;
-                //Sblocca();
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
+    //        },
+    //        error: function (error) {
+    //            //debugger;
+    //            //Sblocca();
+    //            var msg = error.responseText;
+    //            ErroreElaborazioneAjax(msg);
+    //        }
+    //    });
 
-    }
+    //}
 
     function DisabilitaCheckBox() {
         //debugger;
         var row = $("#tabElencoFamiliariPass tr");
-        var objChk = row.find("#escludiPassaporto");
+        var objChk = row.find("#includiPassaporto");
 
         try {
             for (var i = 0; i < objChk.length; i++) {
@@ -277,12 +279,13 @@
 
     }
 
-    function ColElencoDoc(idFamiliare, parentela) {
+    function ColElencoDoc(idAttivazioniPassaporto, idFamiliare, parentela) {
+        //debugger;
         var rotta = "/PratichePassaporto/ColonnaElencoDoc";
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idFamiliare: idFamiliare, parentela: parentela },
+            data: { idAttivazionePassaporto: idAttivazioniPassaporto, idFamiliarePassaporto: idFamiliare, parentela: parentela },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -314,14 +317,9 @@
 
 
     function ConfermaIncludiEscludiPassaporto(chkEscludi, id, parentela) {
-        debugger;
-        //var boolEscludi = chkEscludi.checked;
-        //var idFam = parseInt(id);
-        //var parentela = parseInt($("#hParentela").val());
-        //var idChk = $("#hidChk").val();
-        //var chkEscludi = $("#" + idChk);
+        //debugger;
 
-        var rotta = "/PratichePassaporto/ConfermaEscludiPassaporto";
+        var rotta = "/PratichePassaporto/ConfermaIncludiEscludiPassaporto";
 
         $.ajax({
             type: "POST",
@@ -339,7 +337,7 @@
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 if (result.err == "") {
                     chkEscludi.checked = result.chk;
-                    ColElencoDoc(id, parentela);
+                    ColElencoDoc(result.idAttivazioniPassaporto, id, parentela);
                     GestionePulsantiNotificaAndConcludiPassaporto();
 
                 } else {
@@ -363,19 +361,17 @@
     }
 
 
-    function ElencoDocumenti(id, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
+    function ElencoDocumenti(idFamiliarePassaporto, tipoDoc, idParentela) {
         //debugger;
-        var rotta = "/Documenti/ElencoDocumenti";
+        var rotta = "/Documenti/ElencoDocumentiPassaporto";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                id: id,
+                idFamiliarePassaporto: idFamiliarePassaporto,
                 tipoDoc: tipoDoc,
-                parentela: idParentela,
-                chiamante: chiamante,
-                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                parentela: idParentela
             },
             dataType: 'html',
             async: false,
@@ -388,11 +384,10 @@
             },
             success: function (result) {
                 //debugger;
-                //$("#viewPensione").empty();
-                //$("#viewPensione").html(result);
+
                 $("#divPassaporto").empty();
                 $("#divPassaporto").html(result);
-                GestionePulsantiNotificaAndConcludiPassaporto();
+                //GestionePulsantiNotificaAndConcludiPassaporto();
             },
             complete: function () {
 
