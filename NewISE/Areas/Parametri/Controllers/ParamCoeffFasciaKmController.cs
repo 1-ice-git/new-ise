@@ -40,28 +40,26 @@ namespace NewISE.Areas.Parametri.Controllers
                         {
                             r.First().Selected = true;
                             idLivello = Convert.ToDecimal(r.First().Value);
-                        }
+                        }                        
                         else
                         {
-                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                                var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                                if (temp.Count == 0)
+                                {
+                                    r.First().Selected = true;
+                                    idLivello = Convert.ToDecimal(r.First().Value);
+                                }
+                                else
+                                    r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            }
                         }
                     }
-
                     ViewBag.CoeffFasciaKm = r;
-                }
                 
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
-                    //if (escludiAnnullati)
-                    //{
-                       // escludiAnnullati = false;
-                        libm = dtib.getListCoeffFasciaKm(idLivello, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    //else
-                    //{
-                    //    libm = dtib.getListCoeffFasciaKm(idLivello).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
-                //}
+                     libm = dtib.getListCoeffFasciaKm(idLivello, escludiAnnullati).OrderBy(a => a.idDefKm).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+               }
             }
             catch (Exception ex)
             {

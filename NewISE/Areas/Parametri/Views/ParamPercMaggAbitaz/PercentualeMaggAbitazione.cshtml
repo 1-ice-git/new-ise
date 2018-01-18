@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.PercMaggAbitazModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
 }
 
 <p>
-    <a id="btnInsNuovaPercMaggAbitaz" href="#" onclick="NuovaPercentualeMaggAbitaz();">Inserisci Percentuale Maggiorazione Abitazione</a>
+    <a id="btnInsNuovaPercMaggAbitaz" href="#" onclick="NuovaPercentualeMaggAbitaz() ">Inserisci Percentuale Maggiorazione Abitazione</a>
 </p>
 
 <p>
@@ -33,9 +32,9 @@
 <table id="tbPercMaggAbitaz" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Livello.DescLivello)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -61,15 +60,22 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Livello.DescLivello)
-                </td>
+                </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.percentuale)
                 </td>
@@ -77,22 +83,34 @@
                     @Html.DisplayFor(modelItem => item.percentualeResponsabile)
                 </td>
                 <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                </td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
                     @using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
+                        @*if (dtib.EsistonoMovimentiPrima(item))
                         {
                             <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }*@
+                    if (dtib.PercMaggAbitazioneAnnullato(item))
+                    {
+                        <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                    }
+                    else
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                            <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
                         }
                     }
-
-
                 </td>
             </tr>
         }
@@ -148,12 +166,14 @@
     $("#btnInsNuovaPercMaggAbitaz").button();
 
     function PrelevaPVPercMaggAbitaz() {
-        //debugger;
-        rotta = "/Parametri/ParamPercMaggAbitaz/MaggiorazioneAbitazioneLivello";
+     //   debugger;
+        rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
+        $("#hiTipoContributo").val(idLivello);
+
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+        $("#hiIdUfficio").val(idUfficio);
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
@@ -165,9 +185,10 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $.ajax({
             type: "POST",
@@ -194,7 +215,7 @@
                 //                $("#Centro").getNiceScroll().resize();
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
+                debugger;
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
@@ -209,7 +230,7 @@
         var rotta = "/Parametri/ParamPercMaggAbitaz/NuovaPercentualeMaggiorazioneAbitazione";
         var idLivello = parseInt($("#idLivello").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = false;
+
 
         if (isNaN(idLivello)) {
             //$("#divPViewParametri").empty();
@@ -223,9 +244,10 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $.ajax({
             type: "POST",
@@ -266,16 +288,17 @@
         var rotta = "/Parametri/ParamPercMaggAbitaz/EliminaMaggiorazioneAbitazione";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -330,4 +353,5 @@
         });
 
     }
+    
 </script>

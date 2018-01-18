@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.CoeffFasciaKmModel>
+﻿@using NewISE.Models.Tools;
+@model IEnumerable<NewISE.Models.DBModel.CoeffFasciaKmModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -25,12 +26,7 @@
 <table id="tbCoeffFasciaKm" class="display" cellspacing="0">
     <thead>
         <tr>
-            @*<th>
-                @Html.DisplayNameFor(model => model.idCfKm)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idDefKm)
-            </th>*@
+           
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -50,18 +46,19 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td>
-        @Html.DisplayFor(modelItem => item.idCfKm)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.idDefKm)
-    </td>*@
-    <td>
-        @Html.DisplayFor(modelItem => item.dataInizioValidita)
-    </td>
-                <td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.dataInizioValidita)
+            </td>
+               @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
+               }
+               else
+               {
+                <td></td>
+               }
                 <td>
                     @Html.DisplayFor(modelItem => item.coefficienteKm)
                 </td>               
@@ -88,10 +85,10 @@
                         }
                         else
                         {
-                            //if (dtib.EsistonoMovimentiPrima(item))
-                            //{
+                            if (dtib.EsistonoMovimentiPrima(item))
+                            {
                                 <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                            //}
+                            }
                         }
                     }
                 </td>

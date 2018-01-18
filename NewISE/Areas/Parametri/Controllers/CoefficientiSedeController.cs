@@ -44,7 +44,14 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                         else
                         {
-                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
                     ViewBag.LivelliList = r;
@@ -99,15 +106,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
-                    //if (escludiAnnullati)
-                    //{
-                    //    escludiAnnullati = false;
-                        libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
-                    //else
-                    //{
-                    //    libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
+                    libm = dtib.getListCoefficientiSede(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)

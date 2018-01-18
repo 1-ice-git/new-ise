@@ -34,7 +34,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idCoefficientiSede = e.IDCOEFFICIENTESEDE,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new CoefficientiSedeModel().dataFineValidita,
                                 valore = e.VALORECOEFFICIENTE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -205,7 +205,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,//Utility.DataFineStop(),
+                                DATAFINEVALIDITA = Utility.DataFineStop(),
                                 VALORECOEFFICIENTE = ibm.valore,
                                 DATAAGGIORNAMENTO = DateTime.Now,// ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
@@ -360,7 +360,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio).Count() > 0 ? true : false;
+                return db.COEFFICIENTESEDE.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDUFFICIO == ibm.idUfficio && a.ANNULLATO==false).Count() > 0 ? true : false;
             }
         }
 

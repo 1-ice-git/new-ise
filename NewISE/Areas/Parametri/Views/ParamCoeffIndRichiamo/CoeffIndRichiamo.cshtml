@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.CoefficienteRichiamoModel>
+﻿@using NewISE.Models.Tools;
+@model IEnumerable<NewISE.Models.DBModel.CoefficienteRichiamoModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -49,9 +50,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
                 </td>
@@ -70,10 +78,10 @@
                         }
                         else
                         {
-                            //if (dtib.EsistonoMovimentiPrima(item))
-                            //{
+                            if (dtib.EsistonoMovimentiPrima(item))
+                            {
                                   <a href="#" onclick="EliminaCoeffIndRichiamo(@item.idCoefIndRichiamo);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                            //}
+                            }
                         }
                     }
                 </td>

@@ -3,6 +3,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -470,6 +471,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-
+        public bool IndennitaSistemazioneAnnullato(IndennitaSistemazioneModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.INDENNITASISTEMAZIONE.Where(a => a.IDINDSIST == ibm.idIndSist && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).First().ANNULLATO == true ? true : false;
+            }
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as IndennitaSistemazioneModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
     }
 }

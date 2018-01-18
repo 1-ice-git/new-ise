@@ -200,7 +200,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new COEFFICIENTEFKM()
                             {
-                                IDCFKM = ibm.idCfKm,
+                                //IDCFKM = ibm.idCfKm,
                                 IDDEFKM = ibm.idDefKm,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -213,7 +213,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             ibNew = new COEFFICIENTEFKM()
                             {
-                                IDCFKM = ibm.idCfKm,
+                                //IDCFKM = ibm.idCfKm,
                                 IDDEFKM = ibm.idDefKm,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
@@ -228,10 +228,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         ibNew = new COEFFICIENTEFKM()
                         {
-                            IDCFKM = ibm.idCfKm,
+                         //   IDCFKM = ibm.idCfKm,
                             IDDEFKM = ibm.idDefKm,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = ibm.dataFineValidita.Value,
+                            DATAFINEVALIDITA = ibm.dataFineValidita==null?Convert.ToDateTime(Utility.DataFineStop()):ibm.dataFineValidita.Value,
                             COEFFICIENTEKM = ibm.coefficienteKm,
                             DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
@@ -260,7 +260,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new COEFFICIENTEFKM()
                                     {
                                         
-                                        IDCFKM = item.IDCFKM,
+                                        //IDCFKM = item.IDCFKM,
                                         IDDEFKM =item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
@@ -276,7 +276,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDCFKM = item.IDCFKM,
+                                        //IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
@@ -287,7 +287,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                     var ibOld2 = new COEFFICIENTEFKM()
                                     {
-                                        IDCFKM = item.IDCFKM,
+                                        //IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
@@ -312,7 +312,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDCFKM = item.IDCFKM,
+                                        //IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
@@ -333,7 +333,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new COEFFICIENTEFKM()
                                     {
-                                        IDCFKM = item.IDCFKM,
+                                        //IDCFKM = item.IDCFKM,
                                         IDDEFKM = item.IDDEFKM,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,

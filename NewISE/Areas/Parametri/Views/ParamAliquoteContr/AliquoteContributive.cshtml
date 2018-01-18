@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.AliquoteContributiveModel>
+﻿@using NewISE.Models.Tools;
+@model IEnumerable<NewISE.Models.DBModel.AliquoteContributiveModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
@@ -60,9 +61,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.aliquota)
                 </td>                
@@ -207,10 +215,7 @@
             //return false;
             idTipoContributo = $("#hiTipoContributo").val();
         }
-        @*var chk = false;
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
+        
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
@@ -265,11 +270,7 @@
         //    idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
 
         
-        @*var chk = true;
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
-
+       
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;

@@ -3,16 +3,14 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
 }
-
 <p>
     <a id="btnInsNuovaIndSist" href="#" onclick="NuovaIndennitaSistemazione();">Inserisci Indennita Sistemazione </a>
 </p>
 
 <p>
     <div class="form-group">
-        @Html.Label("lblTipoTrasferimento0", "Seleziona Indennità", new { @class = "control-label" })
+        @Html.Label("lblTipoTrasferimento0", "Seleziona Tipo Trasferimento", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("idTipoTrasferimento", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndSist();", @onClick = "PrelevaPVIndSist();" })
@@ -69,17 +67,26 @@
                 <td style="text-align:center;">
                     @using (dtIndSist dtib = new dtIndSist())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
+                        @*if (dtib.EsistonoMovimentiPrima(item))
                         {
                             <a href="#" onclick="EliminaIndSist(@item.idIndSist );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }*@
+                    if (dtib.IndennitaSistemazioneAnnullato(item))
+                    {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                    }
+                    else
+                    {
+                        if (dtib.EsistonoMovimentiPrima(item))
+                        {
+                                <a href="#" onclick="EliminaIndSist(@item.idIndSist );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
                         }
                     }
-
-
                 </td>
             </tr>
         }
@@ -131,15 +138,17 @@
         rotta = "/Parametri/ParamIndSistemaz/IndennitaSistemazioneLivello";
 
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idTipoTrasferimento);
+
 
         if (isNaN(idTipoTrasferimento)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -177,20 +186,18 @@
     }
 
     function NuovaIndennitaSistemazione() {
-        debugger;
-
+    //    debugger;
         var rotta = "/Parametri/ParamIndSistemaz/NuovaIndennitaSistemazione";
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
-        var chk = false;
-
+    
         if (isNaN(idTipoTrasferimento)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un indennita per procedere.");
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -232,15 +239,16 @@
         var rotta = "/Parametri/ParamIndSistemaz/EliminaIndennitaSistemazione";
 
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idTipoTrasferimento)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $('#dialog-confirm').dialog({

@@ -1,11 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.PercentualeMagConiugeModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
 }
-
 <p>
     <a id="btnInsNuovaMaggConiuge" href="#" onclick="NuovaMaggiorazioneConiuge();">Inserisci Percentuale Maggiorazione Coniuge</a>
 </p>
@@ -49,9 +47,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.percentualeConiuge)
                 </td>
@@ -73,8 +78,6 @@
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                     }
-
-
                 </td>
             </tr>
         }
@@ -126,16 +129,18 @@
         rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
 
         var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idTipologiaConiuge);
+
 
         if (isNaN(idTipologiaConiuge)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+      var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $.ajax({
             type: "POST",
@@ -176,7 +181,7 @@
 
         var rotta = "/Parametri/ParamMaggConiuge/NuovaPercMaggiorazioneConiuge";
         var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
-        var chk = false;
+
 
         if (isNaN(idTipologiaConiuge)) {
             //$("#divPViewParametri").empty();
@@ -184,9 +189,10 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
 
         $.ajax({
             type: "POST",
@@ -227,17 +233,16 @@
         var rotta = "/Parametri/ParamMaggConiuge/EliminaMaggiorazioneConiuge";
 
         var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idTipologiaConiuge)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
-
+        var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
         $('#dialog-confirm').dialog({
             autoOpen: true,
             width: 400,

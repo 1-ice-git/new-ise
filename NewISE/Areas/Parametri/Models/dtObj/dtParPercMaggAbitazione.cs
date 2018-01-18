@@ -4,6 +4,7 @@ using NewISE.Models.dtObj.objB;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,10 +16,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
-
-
-        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
+         public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
 
@@ -35,7 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -72,7 +70,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -109,7 +107,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -130,23 +128,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello, bool escludiAnnullati = false)
+        public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio,bool escludiAnnullati = false)
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.ANNULLATO == escludiAnnullati).ToList();
+                    List<PERCENTUALEMAB> lib = new List<PERCENTUALEMAB>();
+                    if(escludiAnnullati==true)
+                        lib= db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO==idUfficio && a.ANNULLATO == false).ToList();
+                    else
+                        lib= db.PERCENTUALEMAB.Where(a => a.IDLIVELLO == idLivello && a.IDUFFICIO==idUfficio).ToList();
 
                     libm = (from e in lib
                             select new PercMaggAbitazModel()
                             {
                                 idPercMabAbitaz = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
+                                idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -158,7 +160,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 }
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)
@@ -192,11 +193,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ibNew = new PERCENTUALEMAB()
                             {
                                 IDLIVELLO = ibm.idLivello,
+                                IDUFFICIO=ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALE = ibm.percentuale,
                                 PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -205,11 +207,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ibNew = new PERCENTUALEMAB()
                             {
                                 IDLIVELLO = ibm.idLivello,
+                                IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Utility.DataFineStop(),
                                 PERCENTUALE = ibm.percentuale,
                                 PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -219,11 +222,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         ibNew = new PERCENTUALEMAB()
                         {
                             IDLIVELLO = ibm.idLivello,
+                            IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Utility.DataFineStop(),
                             PERCENTUALE = ibm.percentuale,
                             PERCENTUALERESPONSABILE = ibm.percentualeResponsabile,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -250,11 +254,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new PERCENTUALEMAB()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
                                         PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -266,22 +271,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new PERCENTUALEMAB()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
                                         PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
                                     var ibOld2 = new PERCENTUALEMAB()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -302,11 +309,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new PERCENTUALEMAB()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -324,11 +332,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new PERCENTUALEMAB()
                                     {
                                         IDLIVELLO = item.IDLIVELLO,
+                                        IDUFFICIO = ibm.idUfficio,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
                                         PERCENTUALERESPONSABILE = item.PERCENTUALERESPONSABILE,
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -402,8 +411,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-
-
         public bool EsistonoMovimentiPrimaUguale(PercMaggAbitazModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -458,8 +465,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEMAB", idPercMabAbitaz);
                         }
-
-
                         db.Database.CurrentTransaction.Commit();
                     }
                 }
@@ -471,6 +476,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             }
 
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as PercMaggAbitazModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
         }
     }
 }

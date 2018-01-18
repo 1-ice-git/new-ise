@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.MaggiorazioniAnnualiModel>
-
-
+@using NewISE.Models.Tools;
 @using NewISE.Areas.Parametri.Models.dtObj;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+  
 }
 
 <p>
@@ -25,9 +25,9 @@
     <thead>
 
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.DescrizioneUfficio.descUfficio)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -50,15 +50,22 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td>
                     @Html.DisplayFor(model => item.DescrizioneUfficio.descUfficio)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.annualita)
                 </td>
@@ -69,15 +76,26 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtMaggAnnuali dtib = new dtMaggAnnuali())
+                    @using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
+                        @*if (dtib.EsistonoMovimentiPrima(item))
                         {
                             <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }*@
+                        if (dtib.MaggiorazioniAnnualiAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (dtib.EsistonoMovimentiPrima(item))
+                            {
+                                <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
                         }
                     }
 
@@ -92,6 +110,12 @@
 </div>
 
 <script type="text/javascript">
+
+     
+
+
+
+
     $('.display').DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
@@ -130,18 +154,20 @@
 
     function PrelevaPVMaggAnnuale() {
         //debugger;
-        rotta = "/Parametri/ParamMaggAnnuali/MaggiorazioniAnnuali";
+        rotta = "/Parametri/ParamMaggAnnuali/MaggiorazioneAnnualeLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idUfficio);
+
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+         var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -183,7 +209,7 @@
 
         var rotta = "/Parametri/ParamMaggAnnuali/NuovaMaggiorazioneAnnuale";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = false;
+
 
         if (isNaN(idUfficio)) {
             //$("#divPViewParametri").empty();
@@ -191,8 +217,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+          var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -234,15 +261,16 @@
         var rotta = "/Parametri/ParamMaggAnnuali/EliminaMaggiorazioneAnnuale";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+          var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $('#dialog-confirm').dialog({
@@ -256,7 +284,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idUfficio: idUfficio, idPercDisagio: id },
+                            data: { escludiAnnullati: chk, idUfficio: idUfficio, idMaggAnnuale: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

@@ -138,9 +138,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
+                    //   var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == escludiAnnullati).ToList();
 
-                    
+                    List<ALIQUOTECONTRIBUTIVE> lib = new List<ALIQUOTECONTRIBUTIVE>();
+                        if(escludiAnnullati==true)
+                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
 
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
@@ -149,7 +153,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idAliqContr = e.IDALIQCONTR,
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,

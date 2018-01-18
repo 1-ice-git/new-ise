@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -34,7 +35,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -62,7 +63,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).ToList();
+                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new MaggiorazioniAnnualiModel()
@@ -70,8 +71,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
-                                annualita = e.ANNUALITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                annualita =e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 DescrizioneUfficio = new UfficiModel()
@@ -98,7 +99,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    List<MAGGIORAZIONIANNUALI> lib = new List<MAGGIORAZIONIANNUALI>();
+                    if(escludiAnnullati==true)
+                        db.MAGGIORAZIONIANNUALI.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+                    else
+                        db.MAGGIORAZIONIANNUALI.ToList().OrderBy(b => b.DATAINIZIOVALIDITA);
 
                     libm = (from e in lib
                             select new MaggiorazioniAnnualiModel()
@@ -106,7 +111,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -134,7 +139,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == escludiAnnullati).ToList();
+                    List<MAGGIORAZIONIANNUALI> lib = new List<MAGGIORAZIONIANNUALI>();
+                    if(escludiAnnullati==true)
+                        lib=db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio && a.ANNULLATO == false).OrderBy(b=>b.DATAINIZIOVALIDITA).ToList();
+                    else
+                        lib=db.MAGGIORAZIONIANNUALI.Where(a => a.IDUFFICIO == idUfficio).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new MaggiorazioniAnnualiModel()
@@ -142,7 +151,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -190,8 +199,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ANNUALITA = ibm.annualita,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                ANNUALITA = Convert.ToBoolean(ibm.annualita),
+                                DATAAGGIORNAMENTO =DateTime.Now, //ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -202,8 +211,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Utility.DataFineStop(),
-                                ANNUALITA = ibm.annualita,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                                ANNUALITA = Convert.ToBoolean(ibm.annualita),
+                                DATAAGGIORNAMENTO =DateTime.Now, //ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -215,8 +224,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Utility.DataFineStop(),
-                            ANNUALITA = ibm.annualita,
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+                            ANNUALITA = Convert.ToBoolean(ibm.annualita),
+                            DATAAGGIORNAMENTO = DateTime.Now,// ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -458,6 +467,33 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-
+        public bool MaggiorazioniAnnualiAnnullato(MaggiorazioniAnnualiModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.MAGGIORAZIONIANNUALI.Where(a => a.IDMAGANNUALI == ibm.idMagAnnuali && a.IDUFFICIO == ibm.idUfficio).First().ANNULLATO == true ? true : false;
+            }
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as MaggiorazioniAnnualiModel;
+            if (fm != null)
+            {
+                if (fm.dataFineValidita < fm.dataInizioValidita)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
     }
 }
