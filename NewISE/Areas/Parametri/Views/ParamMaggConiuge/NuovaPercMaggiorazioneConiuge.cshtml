@@ -16,7 +16,7 @@
 
 }
 
-@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new { idTipologiaConiuge = idTipologiaConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -142,16 +142,17 @@
         rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
 
         var idTipologiaConiuge = parseFloat('@idTipologiaConiuge');
-        var chk = true;
-
+        
         if (isNaN(idTipologiaConiuge)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
+
 
         $.ajax({
             type: "POST",
