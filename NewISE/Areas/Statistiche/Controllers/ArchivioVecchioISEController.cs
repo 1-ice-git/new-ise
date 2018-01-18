@@ -585,6 +585,10 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptStoriaDipendente.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet6", ds6.Tables[0]));
+                
+                ReportParameter parameterValues = new ReportParameter("fromDate", "test");
+                
+                reportViewer.LocalReport.SetParameters(new ReportParameter[] { parameterValues } );
 
                 ViewBag.ReportViewer = reportViewer;
             }
