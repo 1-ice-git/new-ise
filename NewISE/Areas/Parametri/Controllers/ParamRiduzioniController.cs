@@ -55,11 +55,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListRiduzioni(idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        //libm = dtib.getListRiduzioni(idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListRiduzioni(idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        //libm = dtib.getListRiduzioni(idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }
@@ -106,11 +106,11 @@ namespace NewISE.Areas.Parametri.Controllers
                     if (escludiAnnullati)
                     {
                         escludiAnnullati = false;
-                        libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        //libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     else
                     {
-                        libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        //libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                 }
             }

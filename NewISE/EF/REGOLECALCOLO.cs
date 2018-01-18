@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public REGOLECALCOLO()
         {
-            this.RIDUZIONI = new HashSet<RIDUZIONI>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
         public decimal IDREGOLA { get; set; }
@@ -32,6 +32,6 @@ namespace NewISE.EF
         public virtual NORMACALCOLO NORMACALCOLO { get; set; }
         public virtual TIPOREGOLACALCOLO TIPOREGOLACALCOLO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

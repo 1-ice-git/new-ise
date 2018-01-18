@@ -31,7 +31,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
+
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -43,12 +43,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     idLivello = e.LIVELLI.IDLIVELLO,
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
-                                Riduzioni = new RiduzioniModel()
-                                {
-                                    idRegola = e.RIDUZIONI.IDREGOLA,
-                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
-                                    
-                                }
+
 
                             }).ToList();
                 }
@@ -76,7 +71,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
+
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -88,12 +83,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     idLivello = e.LIVELLI.IDLIVELLO,
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
-                                Riduzioni = new RiduzioniModel()
-                                {
-                                    idRegola = e.RIDUZIONI.IDREGOLA,
-                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
 
-                                }
                             }).ToList();
                 }
 
@@ -120,7 +110,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -132,12 +121,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     idLivello = e.LIVELLI.IDLIVELLO,
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
-                                Riduzioni = new RiduzioniModel()
-                                {
-                                    idRegola = e.RIDUZIONI.IDREGOLA,
-                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
 
-                                }
                             }).ToList();
                 }
 
@@ -164,7 +148,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndennitaBase = e.IDINDENNITABASE,
                                 idLivello = e.IDLIVELLO,
-                                idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new IndennitaBaseModel().dataFineValidita,
                                 valore = e.VALORE,
@@ -176,12 +159,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     idLivello = e.LIVELLI.IDLIVELLO,
                                     DescLivello = e.LIVELLI.LIVELLO
                                 },
-                                Riduzioni = new RiduzioniModel()
-                                {
-                                    idRegola = e.RIDUZIONI.IDREGOLA,
-                                    idRiduzioni = e.RIDUZIONI.IDRIDUZIONI
-
-                                }
                             }).ToList();
                 }
 
@@ -219,7 +196,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDINDENNITABASE = ibm.idIndennitaBase,
                                 IDLIVELLO = ibm.idLivello,
-                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 VALORE = ibm.valore,
@@ -234,7 +210,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDINDENNITABASE = ibm.idIndennitaBase,
                                 IDLIVELLO = ibm.idLivello,
-                                IDRIDUZIONI = ibm.idRiduzioni,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 VALORE = ibm.valore,
@@ -250,7 +225,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             IDINDENNITABASE = ibm.idIndennitaBase,
                             IDLIVELLO = ibm.idLivello,
-                            IDRIDUZIONI = ibm.idRiduzioni,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             VALORE = ibm.valore,
@@ -281,9 +255,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new INDENNITABASE()
                                     {
-                                        IDINDENNITABASE =item.IDINDENNITABASE,
+                                        IDINDENNITABASE = item.IDINDENNITABASE,
                                         IDLIVELLO = item.IDLIVELLO,
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         VALORE = item.VALORE,
@@ -293,15 +266,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     };
 
                                     libNew.Add(ibOld1);
-                                    
+
                                 }
-                                else if(item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
                                 {
                                     var ibOld1 = new INDENNITABASE()
                                     {
                                         IDINDENNITABASE = item.IDINDENNITABASE,
                                         IDLIVELLO = item.IDLIVELLO,
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         VALORE = item.VALORE,
@@ -314,18 +286,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDINDENNITABASE = item.IDINDENNITABASE,
                                         IDLIVELLO = item.IDLIVELLO,
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+ 1),
+                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORE = item.VALORE,
                                         VALORERESP = item.VALORERESP,
                                         DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
                                         ANNULLATO = false
                                     };
-                                    
+
                                     libNew.Add(ibOld1);
                                     libNew.Add(ibOld2);
-                                    
+
                                 }
 
                             }
@@ -341,7 +312,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDINDENNITABASE = item.IDINDENNITABASE,
                                         IDLIVELLO = item.IDLIVELLO,
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORE = item.VALORE,
@@ -365,7 +335,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         IDINDENNITABASE = item.IDINDENNITABASE,
                                         IDLIVELLO = item.IDLIVELLO,
-                                        IDRIDUZIONI = item.IDRIDUZIONI,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         VALORE = item.VALORE,
@@ -379,7 +348,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             }
                         }
 
-                        libNew.Add(ibNew); 
+                        libNew.Add(ibNew);
                         libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                         db.INDENNITABASE.AddRange(libNew);
@@ -387,15 +356,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     else
                     {
                         db.INDENNITABASE.Add(ibNew);
-                        
+
                     }
                     db.SaveChanges();
 
-                    using (objLogAttivita log=new objLogAttivita())
+                    using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di base.", "INDENNITABASE", ibNew.IDINDENNITABASE);
                     }
-                    
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -443,7 +412,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
+
         public bool EsistonoMovimentiPrimaUguale(IndennitaBaseModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -454,7 +423,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
         public void DelIndennitaDiBase(decimal idIndbase)
         {
-            INDENNITABASE precedenteIB = new INDENNITABASE();            
+            INDENNITABASE precedenteIB = new INDENNITABASE();
             INDENNITABASE delIB = new INDENNITABASE();
 
 
@@ -482,7 +451,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 IDINDENNITABASE = precedenteIB.IDINDENNITABASE,
                                 IDLIVELLO = precedenteIB.IDLIVELLO,
-                                IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 VALORE = precedenteIB.VALORE,
@@ -509,7 +477,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
-               
+
             }
 
         }
@@ -517,7 +485,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                var TuttiNonAnnullati = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO== idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                var TuttiNonAnnullati = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                 if (TuttiNonAnnullati.Count > 0)
                 {
                     return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
@@ -529,7 +497,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             ValidationResult vr = ValidationResult.Success;
             var fm = context.ObjectInstance as IndennitaBaseModel;
-            
+
             if (fm != null)
             {
                 DateTime d = DataInizioMinimaNonAnnullataIndennitaBase(fm.idLivello);
@@ -549,5 +517,5 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             return vr;
         }
     }
-    
+
 }

@@ -30,17 +30,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idRiduzioni = e.IDRIDUZIONI,
-                                idRegola = e.IDREGOLA,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
-                                //FormulaRegolaCalcolo = new RegoleCalcoloModel()
-                                //{
-                                //    idRegola = e.REGOLECALCOLO.IDREGOLA,
-                                //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
-                                //}
                             }).ToList();
                 }
 
@@ -52,42 +46,42 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<RiduzioniModel> getListRiduzioni(decimal idRegola)
-        {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+        //public IList<RiduzioniModel> getListRiduzioni(decimal idRegola)
+        //{
+        //    List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.RIDUZIONI.Where(a => a.IDREGOLA == idRegola).ToList();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.RIDUZIONI.Where(a => a.IDREGOLA == idRegola).ToList();
 
-                    libm = (from e in lib
-                            select new RiduzioniModel()
-                            {
+        //            libm = (from e in lib
+        //                    select new RiduzioniModel()
+        //                    {
 
-                                idRiduzioni = e.IDRIDUZIONI,
-                                idRegola = e.IDREGOLA,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO
-                                //FormulaRegolaCalcolo = new RegoleCalcoloModel()
-                                //{
-                                //    idRegola = e.REGOLECALCOLO.IDREGOLA,
-                                //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
-                                //}
-                            }).ToList();
-                }
+        //                        idRiduzioni = e.IDRIDUZIONI,
+        //                        idRegola = e.IDREGOLA,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+        //                        percentuale = e.PERCENTUALE,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO
+        //                        //FormulaRegolaCalcolo = new RegoleCalcoloModel()
+        //                        //{
+        //                        //    idRegola = e.REGOLECALCOLO.IDREGOLA,
+        //                        //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
+        //                        //}
+        //                    }).ToList();
+        //        }
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         public IList<RiduzioniModel> getListRiduzioni(bool escludiAnnullati = false)
         {
@@ -104,17 +98,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 idRiduzioni = e.IDRIDUZIONI,
-                                idRegola = e.IDREGOLA,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                //FormulaRegolaCalcolo = new RegoleCalcoloModel()
-                                //{
-                                //    idRegola = e.REGOLECALCOLO.IDREGOLA,
-                                //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
-                                //}
                             }).ToList();
                 }
 
@@ -126,42 +114,42 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public IList<RiduzioniModel> getListRiduzioni(decimal idRegola, bool escludiAnnullati = false)
-        {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+        //public IList<RiduzioniModel> getListRiduzioni(decimal idRegola, bool escludiAnnullati = false)
+        //{
+        //    List<RiduzioniModel> libm = new List<RiduzioniModel>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.RIDUZIONI.Where(a => a.IDREGOLA == idRegola && a.ANNULLATO == escludiAnnullati).ToList();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.RIDUZIONI.Where(a => a.IDREGOLA == idRegola && a.ANNULLATO == escludiAnnullati).ToList();
 
-                    libm = (from e in lib
-                            select new RiduzioniModel()
-                            {
+        //            libm = (from e in lib
+        //                    select new RiduzioniModel()
+        //                    {
 
-                                idRiduzioni = e.IDRIDUZIONI,
-                                idRegola = e.IDREGOLA,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
-                                percentuale = e.PERCENTUALE,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                                //FormulaRegolaCalcolo = new RegoleCalcoloModel()
-                                //{
-                                //    idRegola = e.REGOLECALCOLO.IDREGOLA,
-                                //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
-                                //}
-                            }).ToList();
-                }
+        //                        idRiduzioni = e.IDRIDUZIONI,
+        //                        idRegola = e.IDREGOLA,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+        //                        percentuale = e.PERCENTUALE,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO,
+        //                        //FormulaRegolaCalcolo = new RegoleCalcoloModel()
+        //                        //{
+        //                        //    idRegola = e.REGOLECALCOLO.IDREGOLA,
+        //                        //    FormulaRegolaCalcolo = e.REGOLECALCOLO.FORMULAREGOLACALCOLO
+        //                        //}
+        //                    }).ToList();
+        //        }
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         /// <summary>
         /// 
@@ -189,7 +177,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 IDRIDUZIONI = ibm.idRiduzioni,
-                                IDREGOLA = ibm.idRegola,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 PERCENTUALE = ibm.percentuale,
@@ -203,7 +190,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
 
                                 IDRIDUZIONI = ibm.idRiduzioni,
-                                IDREGOLA = ibm.idRegola,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                                 PERCENTUALE = ibm.percentuale,
@@ -218,7 +204,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
 
                             IDRIDUZIONI = ibm.idRiduzioni,
-                            IDREGOLA = ibm.idRegola,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                             DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
                             PERCENTUALE = ibm.percentuale,
@@ -229,7 +214,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     db.Database.BeginTransaction();
 
-                    var recordInteressati = db.RIDUZIONI.Where(a => a.ANNULLATO == false && a.IDREGOLA == ibNew.IDREGOLA)
+                    var recordInteressati = db.RIDUZIONI.Where(a => a.ANNULLATO == false)
                                                             .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
                                                             .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
                                                             .ToList();
@@ -251,7 +236,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld1 = new RIDUZIONI()
                                     {
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        IDREGOLA = item.IDREGOLA,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
@@ -266,9 +250,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        IDREGOLA = item.IDREGOLA,
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         PERCENTUALE = item.PERCENTUALE,
@@ -279,7 +262,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     var ibOld2 = new RIDUZIONI()
                                     {
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        IDREGOLA = item.IDREGOLA,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -303,9 +285,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        IDREGOLA = item.IDREGOLA,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -326,9 +307,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     var ibOld1 = new RIDUZIONI()
                                     {
-                                        
+
                                         IDRIDUZIONI = item.IDRIDUZIONI,
-                                        IDREGOLA = item.IDREGOLA,
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         PERCENTUALE = item.PERCENTUALE,
@@ -372,7 +352,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita && a.IDREGOLA == ibm.idRegola).Count() > 0 ? true : false;
+                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
 
@@ -382,7 +362,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value && a.IDREGOLA == ibm.idRegola).Count() > 0 ? true : false;
+                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -397,7 +377,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 if (ibm.dataFineValidita.HasValue)
                 {
-                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value && a.IDREGOLA == ibm.idRegola).Count() > 0 ? true : false;
+                    return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value).Count() > 0 ? true : false;
                 }
                 else
                 {
@@ -412,7 +392,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita && a.IDREGOLA == ibm.idRegola).Count() > 0 ? true : false;
+                return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
 
@@ -444,9 +424,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             var ibOld1 = new RIDUZIONI()
                             {
-                                
+
                                 IDRIDUZIONI = precedenteIB.IDRIDUZIONI,
-                                IDREGOLA = precedenteIB.IDREGOLA,
                                 DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                                 DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                                 PERCENTUALE = precedenteIB.PERCENTUALE,

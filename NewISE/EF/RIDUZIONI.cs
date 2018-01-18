@@ -20,7 +20,6 @@ namespace NewISE.EF
             this.COEFFICIENTEINDRICHIAMO = new HashSet<COEFFICIENTEINDRICHIAMO>();
             this.INDENNITABASE = new HashSet<INDENNITABASE>();
             this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
-            this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
         }
     
         public decimal IDRIDUZIONI { get; set; }
@@ -36,7 +35,5 @@ namespace NewISE.EF
         public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace NewISE.EF
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
+            this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -67,5 +68,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
         public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
     }
 }

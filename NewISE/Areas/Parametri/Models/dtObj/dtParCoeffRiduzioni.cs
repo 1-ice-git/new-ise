@@ -9,7 +9,7 @@ using System.Web;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
-    public class dtParCoeffRiduzioni :IDisposable
+    public class dtParCoeffRiduzioni : IDisposable
     {
 
         public void Dispose()
@@ -31,13 +31,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                            select new RiduzioniModel()
                            {
                                idRiduzioni = e.IDRIDUZIONI,
-                               idRegola =e.IDREGOLA,
                                dataInizioValidita = e.DATAINIZIOVALIDITA,
                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                                //dataFineValidita = e.DATAFINEVALIDITA,
-                               percentuale =e.PERCENTUALE,
-                               dataAggiornamento =e.DATAAGGIORNAMENTO,
-                               annullato =e.ANNULLATO
+                               percentuale = e.PERCENTUALE,
+                               dataAggiornamento = e.DATAAGGIORNAMENTO,
+                               annullato = e.ANNULLATO
                            }).ToList();
                 }
 
@@ -62,7 +61,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new RiduzioniModel()
                     {
                         idRiduzioni = liv.IDRIDUZIONI,
-                        idRegola = liv.IDREGOLA,
                         dataInizioValidita = liv.DATAINIZIOVALIDITA,
                         dataFineValidita = liv.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? liv.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
                         //dataFineValidita = e.DATAFINEVALIDITA,

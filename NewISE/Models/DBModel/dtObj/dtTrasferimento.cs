@@ -878,7 +878,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare)
                         {
-                            using (CalcoliIndennita ci = new CalcoliIndennita(tm.Dipendente.matricola.ToString()))
+                            using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
                                 dit.indennitaBase = ci.indennitaBaseRiduzione;
                                 dit.indennitaServizio = ci.indennitaServizio;
@@ -934,7 +934,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare)
                         {
-                            using (CalcoliIndennita ci = new CalcoliIndennita(tm.Dipendente.matricola.ToString()))
+                            using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
                                 dit.indennitaBase = ci.indennitaBaseRiduzione;
                                 dit.indennitaServizio = ci.indennitaServizio;
