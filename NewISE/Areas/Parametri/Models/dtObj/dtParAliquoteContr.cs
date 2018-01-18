@@ -33,7 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
@@ -69,7 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                                 idAliqContr = e.IDALIQCONTR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
                                 aliquota = e.ALIQUOTA,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()

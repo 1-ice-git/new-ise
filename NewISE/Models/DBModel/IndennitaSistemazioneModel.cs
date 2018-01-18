@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj.objB;
+using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Models.DBModel
 {
@@ -21,6 +23,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtIndSist), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fine validità")]

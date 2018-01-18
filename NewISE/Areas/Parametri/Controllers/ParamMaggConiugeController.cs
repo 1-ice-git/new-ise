@@ -15,12 +15,12 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PercMaggiorazioneConiuge(bool escludiAnnullati, decimal idTipologiaConiuge = 0)
+        public ActionResult PercMaggiorazioneConiuge(bool escludiAnnullati, decimal idLivello = 0)
         {
             List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
             var r = new List<SelectListItem>();
             List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
@@ -36,39 +36,35 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idTipologiaConiuge.ToString()
                              }).ToList();
 
-                        if (idTipologiaConiuge == 0)
+                        if (idLivello == 0)
                         {
                             r.First().Selected = true;
-                            idTipologiaConiuge = Convert.ToDecimal(r.First().Value);
+                            idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idTipologiaConiuge.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.LivelliList = r;
                 }
 
                 using (dtMaggConiuge dtib = new dtMaggConiuge())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListPercMagConiuge(idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListPercMagConiuge(idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                   libm = dtib.getListPercMagConiuge(idLivello, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-            ViewBag.escludiAnnullati = escludiAnnullati;
 
             return PartialView(libm);
         }
@@ -103,15 +99,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtMaggConiuge dtib = new dtMaggConiuge())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListPercMagConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListPercMagConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                   libm = dtib.getListPercMagConiuge(llm.Where(a => a.idTipologiaConiuge == idTipologiaConiuge).First().idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -128,7 +116,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaPercMaggiorazioneConiuge(decimal idTipologiaConiuge, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
@@ -136,7 +124,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetTipologiaConiuge(idTipologiaConiuge);
                     ViewBag.Coniuge = lm;
                 }
-                ViewBag.escludiAnnullati = escludiAnnullati;
+               
                 return PartialView();
             }
             catch (Exception ex)
@@ -150,7 +138,10 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
+            List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 if (ModelState.IsValid)
@@ -159,17 +150,37 @@ namespace NewISE.Areas.Parametri.Controllers
                     {
                         dtib.SetPercMagConiuge(ibm);
                     }
+                    using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
+                    {
+                        llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
 
-                    return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
+                        if (llm != null && llm.Count > 0)
+                        {
+                            r = (from t in llm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.tipologiaConiuge,
+                                     Value = t.idTipologiaConiuge.ToString()
+                                 }).ToList();
+                            r.Where(a => a.Value == ibm.idTipologiaConiuge.ToString()).First().Selected = true;
+                        }
+
+                        ViewBag.LivelliList = r;
+                    }
+                    using (dtMaggConiuge dtib = new dtMaggConiuge())
+                    {
+                        libm = dtib.getListPercMagConiuge(Convert.ToDecimal(ibm.idTipologiaConiuge), escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("PercMaggiorazioneConiuge",libm);
+                   // return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
                 }
                 else
                 {
                     using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
                     {
                         var lm = dtl.GetTipologiaConiuge((decimal)ibm.idTipologiaConiuge);
-                        ViewBag.Livello = lm;
+                        ViewBag.Coniuge = lm;
                     }
-                    ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaPercMaggiorazioneConiuge", ibm);
                 }
             }

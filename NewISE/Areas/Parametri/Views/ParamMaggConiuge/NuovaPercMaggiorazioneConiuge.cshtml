@@ -29,7 +29,7 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idTipologiaConiuge)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -37,7 +37,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaConiuge</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaConiuge.ToString()</label>
                 </div>
             </div>
         </div>
@@ -129,9 +129,13 @@
 
     $('#dataInizioValidita').datepicker({
         inline: true,
+        changeMonth: true,
+        changeYear: true,
     });
     $('#dataFineValidita').datepicker({
         inline: true,
+        changeMonth: true,
+        changeYear: true,
     });
 
     function TornaElencoIb() {

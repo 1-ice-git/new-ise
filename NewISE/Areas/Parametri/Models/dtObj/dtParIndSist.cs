@@ -30,24 +30,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new IndennitaSistemazioneModel()
                             {
-
                                 idIndSist = e.IDINDSIST,
                                 idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICIENTE,
                                 dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
                                 TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
-
                                     idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                     descTipoTrasf = e.TIPOTRASFERIMENTO.ToString()
-
                                 }
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)
@@ -59,7 +55,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione(decimal idTipoTrasferimento)
         {
             List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -73,7 +68,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndSist = e.IDINDSIST,
                                 idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICIENTE,
                                 dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
@@ -110,7 +105,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndSist = e.IDINDSIST,
                                 idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICIENTE,
                                 dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
@@ -133,12 +128,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione(decimal idTipoTrasferimento, bool escludiAnnullati = false)
         {
             List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento && a.ANNULLATO == escludiAnnullati).ToList();
+                    List<INDENNITASISTEMAZIONE> lib = new List<INDENNITASISTEMAZIONE>();
+                    if (escludiAnnullati == true)
+                        lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento && a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).ToList();
 
                     libm = (from e in lib
                             select new IndennitaSistemazioneModel()
@@ -146,9 +144,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndSist = e.IDINDSIST,
                                 idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICIENTE,
-                                dataAggiornamento = System.DateTime.Now,
+                                dataAggiornamento = DateTime.Now,
                                 annullato = e.ANNULLATO,
                                 TipoTrasferimento = new TipoTrasferimentoModel()
                                 {
@@ -208,9 +206,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDINDSIST = ibm.idIndSist,
                                 IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Utility.DataFineStop(),
+                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                                 COEFFICIENTE = ibm.coefficiente,
-                                DATAAGGIORNAMENTO = System.DateTime.Now,
+                                DATAAGGIORNAMENTO = DateTime.Now,
                                 ANNULLATO = ibm.annullato
                             };
                         }
@@ -223,9 +221,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDINDSIST = ibm.idIndSist,
                             IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Utility.DataFineStop(),
+                            DATAFINEVALIDITA = ibm.dataFineValidita.Value,
                             COEFFICIENTE = ibm.coefficiente,
-                            DATAAGGIORNAMENTO = System.DateTime.Now,
+                            DATAAGGIORNAMENTO = DateTime.Now,
                             ANNULLATO = ibm.annullato
                         };
                     }
@@ -257,7 +255,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -272,7 +270,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
                                         DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
                                         COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -282,7 +280,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -306,7 +304,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 
@@ -327,7 +325,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
                                         DATAFINEVALIDITA = item.DATAFINEVALIDITA,
                                         COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = System.DateTime.Now,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
                                         ANNULLATO = false
                                     };
 

@@ -15,13 +15,11 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult IndennitaSistemazione(bool escludiAnnullati, decimal idTipoTrasferimento = 0)
+        public ActionResult IndennitaSistemazione(bool escludiAnnullati, decimal idLivello = 0)
         {
-            ViewBag.escludiAnnullati = escludiAnnullati;
-            List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
+            ViewBag.escludiAnnullati = escludiAnnullati;           
             var r = new List<SelectListItem>();
             List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
-
             try
             {
                 using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
@@ -37,47 +35,38 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Value = t.idTipoTrasferimento.ToString()
                              }).ToList();
 
-                        if (idTipoTrasferimento == 0)
+                        if (idLivello == 0)
                         {
                             r.First().Selected = true;
-                            idTipoTrasferimento = Convert.ToDecimal(r.First().Value);
+                            idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
                         {
-                            r.Where(a => a.Value == idTipoTrasferimento.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();   
+                            if(temp.Count!=0)                         
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.LivelliList = r;
                 }
-
+                List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
                 using (dtParIndSist dtib = new dtParIndSist())
-                {
-                    //if (escludiAnnullati)
-                    //{
-                    //    escludiAnnullati = false;
-                        libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
-                    //else
-                    //{
-                    //libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
+                {                   
+                     libm = dtib.getListIndennitaSistemazione(idLivello, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
+                return PartialView(libm);
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
-            return PartialView(libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
         public ActionResult IndennitaSistemazioneLivello(decimal idTipoTrasferimento, bool escludiAnnullati)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
             var r = new List<SelectListItem>();
             List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
@@ -87,7 +76,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
                 {
                     llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
-
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
@@ -98,21 +86,11 @@ namespace NewISE.Areas.Parametri.Controllers
                              }).ToList();
                         r.Where(a => a.Value == idTipoTrasferimento.ToString()).First().Selected = true;
                     }
-
                     ViewBag.LivelliList = r;
                 }
-
                 using (dtParIndSist dtib = new dtParIndSist())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListIndennitaSistemazione(llm.Where(a => a.idTipoTrasferimento == idTipoTrasferimento).First().idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListIndennitaSistemazione(llm.Where(a => a.idTipoTrasferimento == idTipoTrasferimento).First().idTipoTrasferimento).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    libm = dtib.getListIndennitaSistemazione(llm.Where(a => a.idTipoTrasferimento == idTipoTrasferimento).First().idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -120,7 +98,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView("IndennitaSistemazione", libm);
         }
 
@@ -129,7 +106,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovaIndennitaSistemazione(decimal idTipoTrasferimento, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
@@ -145,24 +122,43 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaSistemazione(IndennitaSistemazioneModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciIndennitaSistemazione(IndennitaSistemazioneModel ibm, bool escludiAnnullati)
         {
-            var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParIndSist dtib = new dtParIndSist())
                     {
-
                         dtib.SetIndennitaSistemazione(ibm);
                     }
-
-                    return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = ibm.idTipoTrasferimento });
+                    using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
+                    {
+                        List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
+                        var r = new List<SelectListItem>();
+                        llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
+                        if (llm != null && llm.Count > 0)
+                        {
+                            r = (from t in llm
+                                 select new SelectListItem()
+                                 {
+                                     Text = t.descTipoTrasf,
+                                     Value = t.idTipoTrasferimento.ToString()
+                                 }).ToList();
+                            r.Where(a => a.Value == ibm.idTipoTrasferimento.ToString()).First().Selected = true;
+                        }
+                        ViewBag.LivelliList = r;
+                    }
+                    List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
+                    using (dtParIndSist dtib = new dtParIndSist())
+                    {
+                        libm = dtib.getListIndennitaSistemazione(ibm.idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("IndennitaSistemazione",libm);
+                    //   return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = ibm.idTipoTrasferimento });
                 }
                 else
                 {
@@ -185,23 +181,42 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaIndennitaSistemazione(bool escludiAnnullati, decimal idTipoTrasferimento, decimal idIndSist)
         {
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtParIndSist dtib = new dtParIndSist())
                 {
                     dtib.DelIndennitaSistemazione(idIndSist);
                 }
-
-                return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = idTipoTrasferimento });
+                using (dtParTipoTrasferimento dtl = new dtParTipoTrasferimento())
+                {
+                    var r = new List<SelectListItem>();
+                    List<TipoTrasferimentoModel> llm = new List<TipoTrasferimentoModel>();
+                    llm = dtl.GetTrasferimenti().OrderBy(a => a.descTipoTrasf).ToList();
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.descTipoTrasf,
+                                 Value = t.idTipoTrasferimento.ToString()
+                             }).ToList();
+                        r.Where(a => a.Value == idTipoTrasferimento.ToString()).First().Selected = true;
+                    }
+                    ViewBag.LivelliList = r;
+                }
+                List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
+                using (dtParIndSist dtib = new dtParIndSist())
+                {
+                    libm = dtib.getListIndennitaSistemazione(idTipoTrasferimento, escludiAnnullati).OrderBy(a => a.idTipoTrasferimento).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
+                return PartialView("IndennitaSistemazione", libm);
+                // return RedirectToAction("IndennitaSistemazione", new { escludiAnnullati = escludiAnnullati, idTipoTrasferimento = idTipoTrasferimento });
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
     }
 }

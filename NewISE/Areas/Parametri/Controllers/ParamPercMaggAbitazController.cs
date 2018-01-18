@@ -13,7 +13,6 @@ namespace NewISE.Areas.Parametri.Controllers
     public class ParamPercMaggAbitazController : Controller
     {
         // GET: Parametri/ParamPercMaggAbitaz/PercentualeMaggAbitazione
-
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercentualeMaggAbitazione(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
@@ -22,13 +21,12 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtLivelli dtl = new dtLivelli())
                 {
                     llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
-
                     if (llm != null && llm.Count > 0)
                     {
                         r = (from t in llm
@@ -45,13 +43,19 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                         else
                         {
-                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.LivelliList = r;
                 }
-
+                r = new List<SelectListItem>();
                 using (dtUffici dtl1 = new dtUffici())
                 {
                     llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
@@ -72,33 +76,28 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                         else
                         {
-                            r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idUfficio = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
                         }
                     }
-
                     ViewBag.UfficiList = r;
                 }
 
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneAbitazione(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListMaggiorazioneAbitazione(idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                   libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView(libm);
         }
 
@@ -110,7 +109,7 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtLivelli dtl = new dtLivelli())
@@ -151,22 +150,14 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneAbitazione(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListMaggiorazioneAbitazione(llm.Where(a => a.idLivello == idLivello).First().idLivello).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            ViewBag.escludiAnnullati = escludiAnnullati;
+           
 
             return PartialView("PercentualeMaggAbitazione", libm);
         }
@@ -175,9 +166,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult NuovaPercentualeMaggiorazioneAbitazione(decimal idLivello, decimal idUfficio, bool escludiAnnullati)
         {
-            var r = new List<SelectListItem>();
-
-
+            var r = new List<SelectListItem>();            
             try
             {
                 using (dtLivelli dtl = new dtLivelli())
@@ -207,20 +196,23 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
-                    {
-
-
-
+                    {                        
                         dtib.SetMaggiorazioneAbitazione(ibm);
                     }
-
-                    return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
+                    AggiornaListaPerCombo(ibm.idLivello, ibm.idUfficio);
+                    using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
+                    {
+                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio ,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("PercentualeMaggAbitazione",libm);
+                  //  return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
                 }
                 else
                 {
@@ -229,7 +221,10 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
                     }
-                    ViewBag.escludiAnnullati = escludiAnnullati;
+                    using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
+                    {
+                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
                     return PartialView("NuovaPercentualeMaggAbitazione", ibm);
                 }
             }
@@ -241,25 +236,98 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaMaggiorazioneAbitazione(bool escludiAnnullati, decimal idLivello, decimal idPercMabAbitaz)
+        public ActionResult EliminaMaggiorazioneAbitazione(bool escludiAnnullati, decimal idLivello, decimal idPercMabAbitaz,decimal idUfficio)
         {
-
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
             {
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
                     dtib.DelMaggiorazioneAbitazione(idPercMabAbitaz);
                 }
-
-                return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = idLivello });
+                AggiornaListaPerCombo(idLivello, idUfficio);
+                using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
+                {
+                    libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
+                return PartialView("PercentualeMaggAbitazione", libm);
+                //return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = idLivello });
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
+        void AggiornaListaPerCombo(decimal idLivello, decimal idUfficio )
+        {           
+            var r = new List<SelectListItem>();
+            List<LivelloModel> llm = new List<LivelloModel>();
+            List<UfficiModel> llm1 = new List<UfficiModel>();
+           
+                using (dtLivelli dtl = new dtLivelli())
+                {
+                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.DescLivello,
+                                 Value = t.idLivello.ToString()
+                             }).ToList();
+
+                        if (idLivello == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                        }
+                    }
+                    ViewBag.LivelliList = r;
+                }
+                r = new List<SelectListItem>();
+                using (dtUffici dtl1 = new dtUffici())
+                {
+                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
+
+                    if (llm1 != null && llm1.Count > 0)
+                    {
+                        r = (from t in llm1
+                             select new SelectListItem()
+                             {
+                                 Text = t.descUfficio,
+                                 Value = t.idUfficio.ToString()
+                             }).ToList();
+
+                        if (idUfficio == 0)
+                        {
+                            r.First().Selected = true;
+                            idUfficio = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idUfficio = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
+                        }
+                    }
+                    ViewBag.UfficiList = r;
+                }
+            }
     }
 }

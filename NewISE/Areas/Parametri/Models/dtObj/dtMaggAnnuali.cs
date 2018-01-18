@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models.DBModel;
 using NewISE.Models.dtObj.objB;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -68,7 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -104,7 +105,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -140,7 +141,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idMagAnnuali = e.IDMAGANNUALI,
                                 idUfficio = e.IDUFFICIO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new MaggiorazioniAnnualiModel().dataFineValidita,
                                 annualita = e.ANNUALITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -188,7 +189,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                 DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                ANNUALITA = ibm.annualita,
+                                ANNUALITA = Convert.ToBoolean(ibm.annualita),
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
@@ -200,8 +201,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 IDMAGANNUALI = ibm.idMagAnnuali,
                                 IDUFFICIO = ibm.idUfficio,
                                 DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                ANNUALITA = ibm.annualita,
+                                DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                ANNUALITA = Convert.ToBoolean(ibm.annualita),
                                 DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                                 ANNULLATO = ibm.annullato
                             };
@@ -214,8 +215,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             IDMAGANNUALI = ibm.idMagAnnuali,
                             IDUFFICIO = ibm.idUfficio,
                             DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            ANNUALITA = ibm.annualita,
+                            DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                            ANNUALITA = Convert.ToBoolean(ibm.annualita),
                             DATAAGGIORNAMENTO = ibm.dataAggiornamento,
                             ANNULLATO = ibm.annullato
                         };

@@ -42,7 +42,14 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                         else
                         {
-                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
 
@@ -55,16 +62,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 //}
                
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                {
-                    //if (escludiAnnullati==true)
-                    //{
-                    //  //  escludiAnnullati = false;
-                    //    libm = dtib.getListIndennitaBase(idLivello, false).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
-                    //else
-                    //{
-                    //    libm = dtib.getListIndennitaBase(idLivello,true).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
+                {                   
                     libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }

@@ -13,10 +13,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-        }
-
-
-
+        }        
         public IList<PercMaggAbitazModel> getListMaggiorazioneAbitazione()
         {
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
@@ -34,7 +31,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 //idPercMab = e.IDPERCMAB,
                                 idLivello = e.IDLIVELLO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new PercMaggAbitazModel().dataFineValidita,
                                 percentuale = e.PERCENTUALE,
                                 percentualeResponsabile = e.PERCENTUALERESPONSABILE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -503,6 +500,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             }
 
+        }
+        
+        public bool PercMaggAbitazioneAnnullato(PercMaggAbitazModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.PERCENTUALEMAB.Where(a => a.IDPERCMAB == ibm.idPercMabAbitaz).First().ANNULLATO == true ? true : false;
+            }
         }
     }
 }

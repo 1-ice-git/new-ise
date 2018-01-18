@@ -17,13 +17,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo && a.IDRIDUZIONI == ibm.idRiduzioni).First().ANNULLATO == true ? true : false;
-            }
-        }
+       
 
         public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo()
         {
@@ -465,7 +459,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
-
+        public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo && a.IDRIDUZIONI == ibm.idRiduzioni).First().ANNULLATO == true ? true : false;
+            }
+        }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;

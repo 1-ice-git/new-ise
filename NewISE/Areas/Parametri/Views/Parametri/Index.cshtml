@@ -7,6 +7,7 @@
 
 <link href="~/Areas/Parametri/Contenuti/CSS/Parametri.css" rel="stylesheet" />
 @Html.Hidden("hiTipoContributo")
+@Html.Hidden("hiIdUfficio")
 
 <div class="form-horizontal" id="divRiga1">
 
@@ -74,7 +75,10 @@
                 $("#divPViewParametri").empty();
                 return false;
             }
+
             idLivello = parseInt($("#hiTipoContributo").val());
+            var idUfficio = $("#hiIdUfficio").val();
+
             switch (tabParam) {
                 //case 0:// Indennita di base
                 //    rotta = "/Parametri/ParamIndennitaBase/IndennitaBase";
@@ -171,8 +175,8 @@
            
                 $.ajax({
                     type: "POST",
-                    url: rotta,
-                    data: { escludiAnnullati: chk, idLivello: idLivello },
+                    url: rotta,                   
+                    data: { escludiAnnullati: chk, idLivello: idLivello, idUfficio: idUfficio },
                     dataType: 'html',
                     beforeSend: function () {
                         //debugger;

@@ -42,14 +42,22 @@ namespace NewISE.Areas.Parametri.Controllers
                         }
                         else
                         {
-                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+
+                            }                           
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
                     ViewBag.CoeffIndRichiamo = r;
                 }
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
-                    libm = dtib.getListCoeffIndRichiamo(idLivello, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListCoeffIndRichiamo(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.idRiduzioni).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
