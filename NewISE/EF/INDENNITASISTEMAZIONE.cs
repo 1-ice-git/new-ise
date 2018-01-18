@@ -18,6 +18,7 @@ namespace NewISE.EF
         public INDENNITASISTEMAZIONE()
         {
             this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
+            this.RIDUZIONI = new HashSet<RIDUZIONI>();
         }
     
         public decimal IDINDSIST { get; set; }
@@ -27,11 +28,11 @@ namespace NewISE.EF
         public decimal COEFFICIENTE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public Nullable<decimal> IDRIDUZIONI { get; set; }
     
-        public virtual RIDUZIONI RIDUZIONI { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
     }
 }

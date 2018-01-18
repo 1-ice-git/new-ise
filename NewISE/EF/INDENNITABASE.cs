@@ -18,11 +18,11 @@ namespace NewISE.EF
         public INDENNITABASE()
         {
             this.INDENNITA = new HashSet<INDENNITA>();
+            this.RIDUZIONI = new HashSet<RIDUZIONI>();
         }
     
         public decimal IDINDENNITABASE { get; set; }
         public decimal IDLIVELLO { get; set; }
-        public Nullable<decimal> IDRIDUZIONI { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal VALORE { get; set; }
@@ -31,8 +31,9 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual LIVELLI LIVELLI { get; set; }
-        public virtual RIDUZIONI RIDUZIONI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
     }
 }

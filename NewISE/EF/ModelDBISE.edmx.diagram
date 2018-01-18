@@ -10,16 +10,13 @@
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITACRUD" Width="1.5" PointX="6" PointY="37.125" />
         <EntityTypeShape EntityType="DBISEPRO.CDCGEPE" Width="1.5" PointX="3" PointY="50.125" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEFKM" Width="1.5" PointX="1.5" PointY="57.625" />
-        <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="24.75" PointY="80.125" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTESEDE" Width="1.5" PointX="9" PointY="64.25" />
         <EntityTypeShape EntityType="DBISEPRO.CONTABILITA" Width="1.5" PointX="16.5" PointY="47.875" />
         <EntityTypeShape EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" Width="1.5" PointX="1.5" PointY="61.125" />
         <EntityTypeShape EntityType="DBISEPRO.DIPENDENTI" Width="1.5" PointX="0.75" PointY="45.375" />
         <EntityTypeShape EntityType="DBISEPRO.FUNZIONIEVENTI" Width="2.875" PointX="9" PointY="35.625" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITA" Width="1.5" PointX="11.25" PointY="50.25" />
-        <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="16.5" PointY="56" />
         <EntityTypeShape EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" Width="1.5" PointX="26.5" PointY="59.25" />
-        <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="24.75" PointY="76.625" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLI" Width="1.5" PointX="0.75" PointY="40" />
         <EntityTypeShape EntityType="DBISEPRO.LIVELLIDIPENDENTI" Width="1.5" PointX="3" PointY="46.125" />
         <EntityTypeShape EntityType="DBISEPRO.LOGATTIVITA" Width="1.5" PointX="8.25" PointY="45" />
@@ -30,8 +27,6 @@
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAB" Width="1.5" PointX="13.5" PointY="50" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGCONIUGE" Width="1.5" PointX="15.75" PointY="59.875" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEMAGFIGLI" Width="1.5" PointX="26.5" PointY="55.875" />
-        <EntityTypeShape EntityType="DBISEPRO.REGOLECALCOLO" Width="1.5" PointX="20.25" PointY="76.625" />
-        <EntityTypeShape EntityType="DBISEPRO.RIDUZIONI" Width="1.5" PointX="22.5" PointY="76.625" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLOACCESSO" Width="1.5" PointX="0.75" PointY="42.75" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLODIPENDENTE" Width="1.5" PointX="16.5" PointY="52.5" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLOUFFICIO" Width="1.5" PointX="14.25" PointY="43" />
@@ -63,27 +58,19 @@
         <AssociationConnector Association="DBISEPRO.R_AC_LA" />
         <AssociationConnector Association="DBISEPRO.R_DIP_CDCG" />
         <AssociationConnector Association="DBISEPRO.R_DFK_CFK" />
-        <AssociationConnector Association="DBISEPRO.R_R_CR" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" />
         <AssociationConnector Association="DBISEPRO.R_C_AQ" />
         <AssociationConnector Association="DBISEPRO.R_T_C" />
         <AssociationConnector Association="DBISEPRO.R_D_UA" />
         <AssociationConnector Association="DBISEPRO.R_DIP_LIVDIP" />
-        <AssociationConnector Association="DBISEPRO.R_L_I" />
-        <AssociationConnector Association="DBISEPRO.R_RIDUZIONI_INDBASE" />
-        <AssociationConnector Association="DBISEPRO.R_R_IS" />
-        <AssociationConnector Association="DBISEPRO.R_TT_IS" />
         <AssociationConnector Association="DBISEPRO.R_L_PMAB" />
         <AssociationConnector Association="DBISEPRO.R_LIV_LIVDIP" />
         <AssociationConnector Association="DBISEPRO.R_UL_LA" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" />
-        <AssociationConnector Association="DBISEPRO.R_NC_RC" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.R_U_PMAB" />
         <AssociationConnector Association="DBISEPRO.R_TC_PMC" />
         <AssociationConnector Association="DBISEPRO.R_TF_MF" />
-        <AssociationConnector Association="DBISEPRO.R_REGOLECALCOLO_RIDUZIONI" />
-        <AssociationConnector Association="DBISEPRO.R_TRC_RC" />
         <AssociationConnector Association="DBISEPRO.R_RU_UA" />
         <AssociationConnector Association="DBISEPRO.R_RU_RD" />
         <AssociationConnector Association="DBISEPRO.R_TS_S" />
@@ -99,7 +86,6 @@
         <AssociationConnector Association="DBISEPRO.R_VALUTE_VALUFF" />
         <AssociationConnector Association="DBISEPRO.FASCIACHILOMETRICA" />
         <AssociationConnector Association="DBISEPRO.IND_COEFFICENTESEDE" />
-        <AssociationConnector Association="DBISEPRO.INDENNITA_INDENNITABASE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_RUOLODIPENDENTE" />
@@ -185,10 +171,8 @@
         <EntityTypeShape EntityType="DBISEPRO.RICHIAMO" Width="1.5" PointX="32" PointY="64.375" />
         <AssociationConnector Association="DBISEPRO.R_T_R" />
         <AssociationConnector Association="DBISEPRO.RICHIAMO_ALIQCONTR" />
-        <AssociationConnector Association="DBISEPRO.RICHIAMO_COEFFRICH" />
         <EntityTypeShape EntityType="DBISEPRO.PRIMASITEMAZIONE" Width="1.5" PointX="29" PointY="60.875" />
         <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
-        <AssociationConnector Association="DBISEPRO.IS_PS" />
         <AssociationConnector Association="DBISEPRO.PS_AC" />
         <EntityTypeShape EntityType="DBISEPRO.ANTICIPOSALDOTE" Width="1.5" PointX="12.75" PointY="33.875" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITATEPARTENZA" Width="1.5" PointX="15" PointY="38.875" />
@@ -246,6 +230,22 @@
         <AssociationConnector Association="DBISEPRO.R_ATV_TVR" />
         <AssociationConnector Association="DBISEPRO.R_TV_ATV" />
         <AssociationConnector Association="DBISEPRO.ATV_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEINDRICHIAMO" Width="1.5" PointX="20.25" PointY="64.125" />
+        <EntityTypeShape EntityType="DBISEPRO.INDENNITABASE" Width="1.5" PointX="17.5" PointY="40" />
+        <EntityTypeShape EntityType="DBISEPRO.INDENNITASISTEMAZIONE" Width="1.5" PointX="20.25" PointY="60.75" />
+        <AssociationConnector Association="DBISEPRO.R_L_I" />
+        <AssociationConnector Association="DBISEPRO.R_TT_IS" />
+        <AssociationConnector Association="DBISEPRO.INDENNITA_INDENNITABASE" />
+        <AssociationConnector Association="DBISEPRO.IS_PS" />
+        <AssociationConnector Association="DBISEPRO.RICHIAMO_COEFFRICH" />
+        <EntityTypeShape EntityType="DBISEPRO.REGOLECALCOLO" Width="1.5" PointX="20.25" PointY="75.125" />
+        <EntityTypeShape EntityType="DBISEPRO.RIDUZIONI" Width="1.5" PointX="22.5" PointY="60.625" />
+        <AssociationConnector Association="DBISEPRO.R_NC_RC" />
+        <AssociationConnector Association="DBISEPRO.R_TRC_RC" />
+        <AssociationConnector Association="DBISEPRO.CIR_R" />
+        <AssociationConnector Association="DBISEPRO.IB_R" />
+        <AssociationConnector Association="DBISEPRO.IS_R" />
+        <AssociationConnector Association="DBISEPRO.RC_R" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
