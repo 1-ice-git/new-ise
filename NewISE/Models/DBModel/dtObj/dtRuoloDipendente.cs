@@ -151,7 +151,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var i = t.INDENNITA;
 
-                var lrd = i.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dt >= a.DATAINZIOVALIDITA && dt <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
+                var lrd =
+                    i.RUOLODIPENDENTE.Where(
+                        a => a.ANNULLATO == false && dt >= a.DATAINZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINZIOVALIDITA)
+                        .ToList();
 
                 if (lrd != null && lrd.Count > 0)
                 {

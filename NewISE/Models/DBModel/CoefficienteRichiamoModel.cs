@@ -14,7 +14,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idCoefIndRichiamo { get; set; }
 
-        public decimal idRiduzioni { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
@@ -38,7 +37,7 @@ namespace NewISE.Models.DBModel
         //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
         public decimal coefficienteIndBase { get; set; }
 
-       // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Data Aggiornamento")]
@@ -50,6 +49,6 @@ namespace NewISE.Models.DBModel
 
         public UfficiModel Ufficio { get; set; }
 
-        public RiduzioniModel Riduzioni { get; set; }
+        public IList<RiduzioniModel> lRiduzioni { get; set; }
     }
 }

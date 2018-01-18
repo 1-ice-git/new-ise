@@ -75,7 +75,8 @@
         </tr>
         <tr>
             <th>
-                Richiesta Anticipi
+
+                @Ajax.ActionLink("Richiesta Anticipi", "TitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkAnticipoPrimaSistemazione" })
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -214,9 +215,11 @@
                         if (attivazioneMF == true) {
                             $("#chkMagFamiliariSR").each(function () { this.checked = true; });
                             EnableDisableLinkPassaporto(true);
+                            EnableDisableLinkAnticipi(true);
                         } else {
                             $("#chkMagFamiliariSR").each(function () { this.checked = false; });
                             EnableDisableLinkPassaporto(false);
+                            EnableDisableLinkAnticipi(false);
                         }
                     } else {
                         $("#chkMagFamiliariR").each(function () { this.checked = false; });
@@ -301,12 +304,12 @@
     function EnableDisableLinkAnticipi(abilitato) {
         //debugger;
         if (abilitato == true) {
-            $("#linkPratichePassaporto").removeAttr("disabled");
-            $("#linkPratichePassaporto").removeClass("disableLink");
+            $("#linkAnticipoPrimaSistemazione").removeAttr("disabled");
+            $("#linkAnticipoPrimaSistemazione").removeClass("disableLink");
         } else {
             //disableLink
-            $("#linkPratichePassaporto").attr("disabled", "disabled");
-            $("#linkPratichePassaporto").addClass("disableLink");
+            $("#linkAnticipoPrimaSistemazione").attr("disabled", "disabled");
+            $("#linkAnticipoPrimaSistemazione").addClass("disableLink");
         }
     }
 

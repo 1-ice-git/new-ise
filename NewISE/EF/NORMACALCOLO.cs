@@ -17,16 +17,16 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NORMACALCOLO()
         {
-            this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
+            this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
         }
     
         public decimal IDNORMACALCOLO { get; set; }
         public string RIFERIMENTONORMATIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
     }
 }

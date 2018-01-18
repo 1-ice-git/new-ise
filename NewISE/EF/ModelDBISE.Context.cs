@@ -30,16 +30,13 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
-        public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
         public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
-        public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
-        public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
@@ -50,8 +47,6 @@ namespace NewISE.EF
         public virtual DbSet<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
-        public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
-        public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
@@ -118,5 +113,10 @@ namespace NewISE.EF
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
+        public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
+        public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
+        public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
+        public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
     }
 }

@@ -23,7 +23,6 @@ namespace NewISE.EF
         }
     
         public decimal IDRIDUZIONI { get; set; }
-        public decimal IDREGOLA { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALE { get; set; }
@@ -36,6 +35,5 @@ namespace NewISE.EF
         public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        public virtual REGOLECALCOLO REGOLECALCOLO { get; set; }
     }
 }

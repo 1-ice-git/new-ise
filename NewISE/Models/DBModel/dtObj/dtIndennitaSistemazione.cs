@@ -50,7 +50,6 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         idIndSist = indSist.IDINDSIST,
                         idTipoTrasferimento = indSist.IDTIPOTRASFERIMENTO,
-                        idRiduzioni = indSist.IDRIDUZIONI,
                         dataInizioValidita = indSist.DATAINIZIOVALIDITA,
                         dataFineValidita = indSist.DATAFINEVALIDITA,
                         coefficiente = indSist.COEFFICIENTE,
