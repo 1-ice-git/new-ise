@@ -474,19 +474,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+        public static DateTime DataInizioMinimaNonAnnullata(decimal idLivello)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
             var fm = context.ObjectInstance as PercentualeMagConiugeModel;
             if (fm != null)
             {
-                if (fm.dataFineValidita < fm.dataInizioValidita)
+                DateTime d = DataInizioMinimaNonAnnullata(fm.id_TipologiaConiuge);
+                if (fm.dataInizioValidita < d)
                 {
-                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità maggiore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));
                 }
                 else
                 {
-                    vr = ValidationResult.Success;
+                    if (fm.dataFineValidita < fm.dataInizioValidita)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità maggiore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
                 }
             }
             else

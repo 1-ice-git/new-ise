@@ -62,7 +62,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                    var lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
@@ -133,7 +133,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<AliquoteContributiveModel> getListAliquoteContributive(decimal idTipoContributo, bool escludiAnnullati = false)
         {
             List<AliquoteContributiveModel> libm = new List<AliquoteContributiveModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -142,9 +141,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     List<ALIQUOTECONTRIBUTIVE> lib = new List<ALIQUOTECONTRIBUTIVE>();
                         if(escludiAnnullati==true)
-                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == false).ToList();
+                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo && a.ANNULLATO == false).OrderBy(a=>a.DATAINIZIOVALIDITA).ToList();
                     else
-                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).ToList();
+                        lib = db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDTIPOCONTRIBUTO == idTipoContributo).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
@@ -487,15 +486,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
+        public static DateTime DataInizioMinimaNonAnnullataIndennitaBase(decimal idLivello)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDTIPOCONTRIBUTO == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
             var fm = context.ObjectInstance as AliquoteContributiveModel;
+
             if (fm != null)
             {
-                if (fm.dataFineValidita < fm.dataInizioValidita)
+                DateTime d = DataInizioMinimaNonAnnullataIndennitaBase(fm.idTipoContributo);
+                if (fm.dataInizioValidita < d)
                 {
-                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));
                 }
                 else
                 {
@@ -508,6 +521,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return vr;
         }
-        
+
     }
 }

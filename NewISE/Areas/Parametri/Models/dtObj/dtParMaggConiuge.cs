@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -476,6 +477,47 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp = libm.First().IDPERCMAGCONIUGE;
             }
             return tmp;
-        }        
+        }
+        public static DateTime DataInizioMinimaNonAnnullata(decimal idLivello)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false && a.IDTIPOLOGIACONIUGE == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as PercentualeMagConiugeModel;
+            if (fm != null)
+            {
+                DateTime d = DataInizioMinimaNonAnnullata(fm.id_TipologiaConiuge);
+                if (fm.dataInizioValidita < d)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));
+                }
+                else
+                {
+                    if (fm.dataFineValidita < fm.dataInizioValidita)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità maggiore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
     }
 }
