@@ -1284,6 +1284,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report12.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet9", ds9.Tables[0]));
 
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {    
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
                 ViewBag.ReportViewer = reportViewer;
             }
             catch (Exception)
@@ -1443,6 +1452,17 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report13.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet10", ds10.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {
+                        new ReportParameter ("xcodicecoan",codicecoan),
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
 
                 ViewBag.ReportViewer = reportViewer;
             }
