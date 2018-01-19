@@ -174,8 +174,15 @@ namespace NewISE.Models.Tools
                                 {
                                     valRidIB = riduzioniIB.PERCENTUALE;
                                 }
+                                if (valRidIB > 0)
+                                {
+                                    indennitaBaseRiduzione = valIB * valRidIB / 100;
+                                }
+                                else
+                                {
+                                    indennitaBaseRiduzione = valIB;
+                                }
 
-                                indennitaBaseRiduzione = valIB * valRidIB / 100;
                             }
 
                         }
