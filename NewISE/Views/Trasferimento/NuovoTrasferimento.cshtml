@@ -17,8 +17,7 @@
 
 <div class="form-horizontal">
 
-    @*@Html.HiddenFor(model => model.idTrasferimento)*@
-    @*@Html.HiddenFor(model => model.idStatoTrasferimento)*@
+
     @using (@Ajax.BeginForm("InserisciTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNewTrasf" }))
     {
         @Html.AntiForgeryToken()

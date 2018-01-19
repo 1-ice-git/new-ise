@@ -65,26 +65,26 @@
 
 
 
-        <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
-                    </div>
-                    <div class="modal-body alert alert-warning text-warning">
-                        <p id="msgModalWarning" class="text-warning">
-                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
-                    </div>
+    <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+                </div>
+                <div class="modal-body alert alert-warning text-warning">
+                    <p id="msgModalWarning" class="text-warning">
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
+    </div>
 
 }
 
@@ -100,71 +100,73 @@
 
 <script type="text/javascript">
 
-        
 
-        //PulsantiNotificaAttivaMagFam();
+
+    //PulsantiNotificaAttivaMagFam();
 
         @foreach (var e in errori)
         {
             if (e.Value.Errors.Count > 0)
             {
                 @:DialogModalError('True');
-                break;
+                    break;
             }
 
         }
 
-        //$("#tipoSospensione").prop('selectedIndex', 1).change();
+    //$("#tipoSospensione").prop('selectedIndex', 1).change();
 
-        $('#DataInizioSospensione').datepicker({
-            //showButtonPanel: true,
-            showAnim: "slide",
-            //inline: true,
-            //changeMonth: true,
-            //changeYear: true,
-            //yearRange: '2000',
-            //dateFormat: 'dd/mm/yy',
-            //defaultDate: '01/01/2000'
-        });
+    $('#DataInizioSospensione').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        //inline: true,
+        changeMonth: true,
+        changeYear: true,
+        //yearRange: '2000',
+        //dateFormat: 'dd/mm/yy',
+        //defaultDate: '01/01/2000'
+    });
 
-        $('#DataFineSospensione').datepicker({
-            //showButtonPanel: true,
-            inline: true,
-            showAnim: "slide",
-         //   dateFormat: 'dd/mm/yy',
-            //defaultDate: '31/12/2020'
-        });
+    $('#DataFineSospensione').datepicker({
+        //showButtonPanel: true,
+        inline: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+        //   dateFormat: 'dd/mm/yy',
+        //defaultDate: '31/12/2020'
+    });
 
-        //function inserisci() {
-        //    //debugger;
-        //    $("#formNewTrasf").submit();
-        //}
+    //function inserisci() {
+    //    //debugger;
+    //    $("#formNewTrasf").submit();
+    //}
 
 
-        $('#formNewSospensione').submit(function () {
-            //debugger;
-            var form = $(this);
-            if (!form.valid()) {
-                DialogModalError('True');
-            }
-
-        });
-
-        function DialogModalError(err) {
-            //debugger;
-
-            if (err == 'True') {
-                $('#myModalErrorModel').modal('toggle');
-            }
+    $('#formNewSospensione').submit(function () {
+        //debugger;
+        var form = $(this);
+        if (!form.valid()) {
+            DialogModalError('True');
         }
 
-        $("#tipoSospensione").select2({
-           // placeholder: "Seleziona il tipo Sospensione",
-            allowClear: true,
-            language: "it",
-            width: '280',
-            disabled: 'disabled'
-        });
+    });
+
+    function DialogModalError(err) {
+        //debugger;
+
+        if (err == 'True') {
+            $('#myModalErrorModel').modal('toggle');
+        }
+    }
+
+    $("#tipoSospensione").select2({
+        // placeholder: "Seleziona il tipo Sospensione",
+        allowClear: true,
+        language: "it",
+        width: '280',
+        disabled: 'disabled'
+    });
 
 </script>
 
