@@ -2569,6 +2569,9 @@
     <Compile Include="EF\FIGLITITOLIVIAGGIO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\FUNZIONERIDUZIONE.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FUNZIONIEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

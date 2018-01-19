@@ -581,6 +581,13 @@
           <Property Name="IDFIGLITITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="FUNZIONERIDUZIONE">
+          <Key>
+            <PropertyRef Name="IDFUNZIONERIDUZIONE" />
+          </Key>
+          <Property Name="IDFUNZIONERIDUZIONE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCFUNZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="FUNZIONIEVENTI">
           <Key>
             <PropertyRef Name="IDFUNZIONIEVENTI" />
@@ -992,6 +999,7 @@
           <Property Name="PERCENTUALE" Type="number" Precision="11" Scale="8" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="IDFUNZIONERIDUZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="RINUNCIAMAGGIORAZIONIFAMILIARI">
           <Key>
@@ -2434,6 +2442,20 @@
             </Principal>
             <Dependent Role="CALENDARIOEVENTI">
               <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FR_R">
+          <End Role="FUNZIONERIDUZIONE" Type="Self.FUNZIONERIDUZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RIDUZIONI" Type="Self.RIDUZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONERIDUZIONE">
+              <PropertyRef Name="IDFUNZIONERIDUZIONE" />
+            </Principal>
+            <Dependent Role="RIDUZIONI">
+              <PropertyRef Name="IDFUNZIONERIDUZIONE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4114,6 +4136,7 @@
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IB_R" EntityType="Self.IB_R" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISEPRO" store:Type="Tables" />
@@ -4505,6 +4528,10 @@
           <AssociationSet Name="R_FE_CE" Association="Self.R_FE_CE">
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_FR_R" Association="Self.R_FR_R">
+            <End Role="FUNZIONERIDUZIONE" EntitySet="FUNZIONERIDUZIONE" />
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
           </AssociationSet>
           <AssociationSet Name="R_FTV_FTVD" Association="Self.R_FTV_FTVD">
             <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
@@ -5635,19 +5662,6 @@
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
           </AssociationSet>
-          <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
-          <AssociationSet Name="CIR_R" Association="DBISEPRO.CIR_R">
-            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
-            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
-          </AssociationSet>
-          <AssociationSet Name="IB_R" Association="DBISEPRO.IB_R">
-            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
-            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
-          </AssociationSet>
-          <AssociationSet Name="IS_R" Association="DBISEPRO.IS_R">
-            <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
-            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
-          </AssociationSet>
           <EntitySet Name="REGOLECALCOLO" EntityType="DBISEPRO.REGOLECALCOLO" />
           <AssociationSet Name="R_NC_RC" Association="DBISEPRO.R_NC_RC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
@@ -5660,6 +5674,24 @@
           <AssociationSet Name="T_RC" Association="DBISEPRO.T_RC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <EntitySet Name="FUNZIONERIDUZIONE" EntityType="DBISEPRO.FUNZIONERIDUZIONE" />
+          <EntitySet Name="RIDUZIONI" EntityType="DBISEPRO.RIDUZIONI" />
+          <AssociationSet Name="R_FR_R" Association="DBISEPRO.R_FR_R">
+            <End Role="FUNZIONERIDUZIONE" EntitySet="FUNZIONERIDUZIONE" />
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+          </AssociationSet>
+          <AssociationSet Name="CIR_R" Association="DBISEPRO.CIR_R">
+            <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+          </AssociationSet>
+          <AssociationSet Name="IB_R" Association="DBISEPRO.IB_R">
+            <End Role="INDENNITABASE" EntitySet="INDENNITABASE" />
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
+          </AssociationSet>
+          <AssociationSet Name="IS_R" Association="DBISEPRO.IS_R">
+            <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
+            <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -8498,32 +8530,6 @@
           <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
           <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
         </Association>
-        <EntityType Name="RIDUZIONI">
-          <Key>
-            <PropertyRef Name="IDRIDUZIONI" />
-          </Key>
-          <Property Name="IDRIDUZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.CIR_R" FromRole="RIDUZIONI" ToRole="COEFFICIENTEINDRICHIAMO" />
-          <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.IB_R" FromRole="RIDUZIONI" ToRole="INDENNITABASE" />
-          <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_R" FromRole="RIDUZIONI" ToRole="INDENNITASISTEMAZIONE" />
-        </EntityType>
-        <Association Name="CIR_R">
-          <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
-          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
-        </Association>
-        <Association Name="IB_R">
-          <End Type="DBISEPRO.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
-          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
-        </Association>
-        <Association Name="IS_R">
-          <End Type="DBISEPRO.INDENNITASISTEMAZIONE" Role="INDENNITASISTEMAZIONE" Multiplicity="*" />
-          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
-        </Association>
         <EntityType Name="REGOLECALCOLO">
           <Key>
             <PropertyRef Name="IDREGOLA" />
@@ -8571,6 +8577,56 @@
         <Association Name="T_RC">
           <End Type="DBISEPRO.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="*" />
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FUNZIONERIDUZIONE">
+          <Key>
+            <PropertyRef Name="IDFUNZIONERIDUZIONE" />
+          </Key>
+          <Property Name="IDFUNZIONERIDUZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCFUNZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RIDUZIONI" Relationship="DBISEPRO.R_FR_R" FromRole="FUNZIONERIDUZIONE" ToRole="RIDUZIONI" />
+        </EntityType>
+        <EntityType Name="RIDUZIONI">
+          <Key>
+            <PropertyRef Name="IDRIDUZIONI" />
+          </Key>
+          <Property Name="IDRIDUZIONI" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="IDFUNZIONERIDUZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="FUNZIONERIDUZIONE" Relationship="DBISEPRO.R_FR_R" FromRole="RIDUZIONI" ToRole="FUNZIONERIDUZIONE" />
+          <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.CIR_R" FromRole="RIDUZIONI" ToRole="COEFFICIENTEINDRICHIAMO" />
+          <NavigationProperty Name="INDENNITABASE" Relationship="DBISEPRO.IB_R" FromRole="RIDUZIONI" ToRole="INDENNITABASE" />
+          <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_R" FromRole="RIDUZIONI" ToRole="INDENNITASISTEMAZIONE" />
+        </EntityType>
+        <Association Name="R_FR_R">
+          <End Type="DBISEPRO.FUNZIONERIDUZIONE" Role="FUNZIONERIDUZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONERIDUZIONE">
+              <PropertyRef Name="IDFUNZIONERIDUZIONE" />
+            </Principal>
+            <Dependent Role="RIDUZIONI">
+              <PropertyRef Name="IDFUNZIONERIDUZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CIR_R">
+          <End Type="DBISEPRO.COEFFICIENTEINDRICHIAMO" Role="COEFFICIENTEINDRICHIAMO" Multiplicity="*" />
+          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
+        </Association>
+        <Association Name="IB_R">
+          <End Type="DBISEPRO.INDENNITABASE" Role="INDENNITABASE" Multiplicity="*" />
+          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
+        </Association>
+        <Association Name="IS_R">
+          <End Type="DBISEPRO.INDENNITASISTEMAZIONE" Role="INDENNITASISTEMAZIONE" Multiplicity="*" />
+          <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -9963,9 +10019,40 @@
               <ScalarProperty Name="IDCOEFINDRICHIAMO" ColumnName="IDCOEFINDRICHIAMO" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="REGOLECALCOLO">
+            <EntityTypeMapping TypeName="DBISEPRO.REGOLECALCOLO">
+              <MappingFragment StoreEntitySet="REGOLECALCOLO">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="FORMULAREGOLACALCOLO" ColumnName="FORMULAREGOLACALCOLO" />
+                <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
+                <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
+                <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="T_RC" TypeName="DBISEPRO.T_RC" StoreEntitySet="T_RC">
+            <EndProperty Name="TRASFERIMENTO">
+              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="REGOLECALCOLO">
+              <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="FUNZIONERIDUZIONE">
+            <EntityTypeMapping TypeName="DBISEPRO.FUNZIONERIDUZIONE">
+              <MappingFragment StoreEntitySet="FUNZIONERIDUZIONE">
+                <ScalarProperty Name="DESCFUNZIONE" ColumnName="DESCFUNZIONE" />
+                <ScalarProperty Name="IDFUNZIONERIDUZIONE" ColumnName="IDFUNZIONERIDUZIONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RIDUZIONI">
             <EntityTypeMapping TypeName="DBISEPRO.RIDUZIONI">
               <MappingFragment StoreEntitySet="RIDUZIONI">
+                <ScalarProperty Name="IDFUNZIONERIDUZIONE" ColumnName="IDFUNZIONERIDUZIONE" />
                 <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
                 <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
                 <ScalarProperty Name="PERCENTUALE" ColumnName="PERCENTUALE" />
@@ -9997,28 +10084,6 @@
             </EndProperty>
             <EndProperty Name="INDENNITASISTEMAZIONE">
               <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="REGOLECALCOLO">
-            <EntityTypeMapping TypeName="DBISEPRO.REGOLECALCOLO">
-              <MappingFragment StoreEntitySet="REGOLECALCOLO">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="FORMULAREGOLACALCOLO" ColumnName="FORMULAREGOLACALCOLO" />
-                <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
-                <ScalarProperty Name="IDTIPOREGOLACALCOLO" ColumnName="IDTIPOREGOLACALCOLO" />
-                <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="T_RC" TypeName="DBISEPRO.T_RC" StoreEntitySet="T_RC">
-            <EndProperty Name="TRASFERIMENTO">
-              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-            </EndProperty>
-            <EndProperty Name="REGOLECALCOLO">
-              <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>

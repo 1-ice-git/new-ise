@@ -116,7 +116,8 @@ namespace NewISE.EF
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<INDENNITABASE> INDENNITABASE { get; set; }
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
+        public virtual DbSet<FUNZIONERIDUZIONE> FUNZIONERIDUZIONE { get; set; }
+        public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
     }
 }
