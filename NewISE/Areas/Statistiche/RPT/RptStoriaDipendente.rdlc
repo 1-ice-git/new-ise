@@ -958,7 +958,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>3.94793cm</Top>
+        <Top>3.92147cm</Top>
         <Left>0.48188cm</Left>
         <Height>0.6cm</Height>
         <Width>2.5cm</Width>
@@ -990,7 +990,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>3.94793cm</Top>
+        <Top>3.92147cm</Top>
         <Left>3.01716cm</Left>
         <Height>0.6cm</Height>
         <Width>4.79514cm</Width>
@@ -1000,7 +1000,6 @@
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -1024,7 +1023,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>5.04182cm</Top>
+        <Top>5.01536cm</Top>
         <Left>0.48188cm</Left>
         <Height>0.6cm</Height>
         <Width>2.4806cm</Width>
@@ -1056,7 +1055,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox9</rd:DefaultName>
-        <Top>5.04182cm</Top>
+        <Top>5.01536cm</Top>
         <Left>2.96248cm</Left>
         <Height>0.6cm</Height>
         <Width>4.84982cm</Width>
@@ -1065,7 +1064,6 @@
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -1142,7 +1140,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>3.94793cm</Top>
+        <Top>3.92147cm</Top>
         <Left>20.2471cm</Left>
         <Height>0.6cm</Height>
         <Width>4.0564cm</Width>
@@ -1174,7 +1172,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox21</rd:DefaultName>
-        <Top>2.67475cm</Top>
+        <Top>2.64829cm</Top>
         <Left>0.53656cm</Left>
         <Height>0.6cm</Height>
         <Width>7.24752cm</Width>
@@ -1194,7 +1192,7 @@
     <Height>3.9781in</Height>
     <Style />
   </Body>
-  <Width>10.1705in</Width>
+  <Width>9.9205in</Width>
   <Page>
     <PageHeader>
       <Height>2.61374cm</Height>
@@ -1223,7 +1221,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>4.24761cm</Height>
+      <Height>3.32157cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

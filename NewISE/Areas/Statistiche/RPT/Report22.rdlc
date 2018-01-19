@@ -927,10 +927,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>2.58396cm</Top>
-        <Left>20.0662cm</Left>
+        <Top>2.36171cm</Top>
+        <Left>21.33305cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.52562cm</Width>
+        <Width>4.19527cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
@@ -961,7 +961,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>2.48391cm</Top>
+        <Top>2.45745cm</Top>
         <Left>0.63182cm</Left>
         <Height>0.6cm</Height>
         <Width>3.85132cm</Width>
@@ -992,10 +992,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>2.48391cm</Top>
+        <Top>2.45745cm</Top>
         <Left>4.5537cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.53382cm</Width>
+        <Width>3.83368cm</Width>
         <ZIndex>4</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
@@ -1023,10 +1023,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>2.48391cm</Top>
-        <Left>8.08751cm</Left>
+        <Top>2.45745cm</Top>
+        <Left>8.46675cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.34861cm</Width>
+        <Width>3.81604cm</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>

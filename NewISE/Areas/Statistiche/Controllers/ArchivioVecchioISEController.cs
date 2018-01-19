@@ -1613,10 +1613,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet7", ds7.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
-               {
-                    new ReportParameter ("fromDate",V_DATA),
-                    new ReportParameter ("toDate",V_DATA1)
-               };
+                   {
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
 
                 reportViewer.LocalReport.SetParameters(parameterValues);
                 reportViewer.LocalReport.Refresh();
