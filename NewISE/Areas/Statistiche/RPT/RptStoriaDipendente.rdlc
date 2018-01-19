@@ -60,7 +60,6 @@
                             <TextRun>
                               <Value>LIVELLO</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -94,7 +93,6 @@
                             <TextRun>
                               <Value>TIPO MOVIMENTO</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -128,7 +126,6 @@
                             <TextRun>
                               <Value>DATA DECORRENZA</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -162,7 +159,6 @@
                             <TextRun>
                               <Value>DATA LETTERA</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -196,7 +192,6 @@
                             <TextRun>
                               <Value>COEF SEDE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -230,7 +225,6 @@
                             <TextRun>
                               <Value>COEF SEDE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -264,7 +258,6 @@
                             <TextRun>
                               <Value>PERC SPETTANTE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -298,7 +291,6 @@
                             <TextRun>
                               <Value>PERC CONIUGE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -332,7 +324,6 @@
                             <TextRun>
                               <Value>PENSIONE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -366,7 +357,6 @@
                             <TextRun>
                               <Value>PENSIONE</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -400,7 +390,6 @@
                             <TextRun>
                               <Value>N FIGLI</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -434,7 +423,6 @@
                             <TextRun>
                               <Value>DESCR</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -468,7 +456,6 @@
                             <TextRun>
                               <Value>INDENNITA</Value>
                               <Style>
-                                <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -950,7 +937,7 @@
         <Width>23.82162cm</Width>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
         </Style>
       </Tablix>
@@ -1179,7 +1166,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!fromDate.Value</Value>
+                <Value>="Data di riferimento " &amp; Parameters!fromDate.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1190,8 +1177,9 @@
         <Top>2.67475cm</Top>
         <Left>0.53656cm</Left>
         <Height>0.6cm</Height>
-        <Width>7.27574cm</Width>
+        <Width>7.24752cm</Width>
         <ZIndex>7</ZIndex>
+        <ToolTip>Data di riferimento</ToolTip>
         <Style>
           <Border>
             <Style>None</Style>

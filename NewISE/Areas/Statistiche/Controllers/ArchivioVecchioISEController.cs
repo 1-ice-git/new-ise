@@ -349,7 +349,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
         //}
   
-        public ActionResult RptStoriaDipendente(string matricola)
+        public ActionResult RptStoriaDipendente(string matricola = "", string V_DATA="")
         {
             DataSet6 ds6 = new DataSet6();
             try
@@ -585,10 +585,20 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptStoriaDipendente.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet6", ds6.Tables[0]));
-                
-                ReportParameter parameterValues = new ReportParameter("fromDate", "test");
-                
-                reportViewer.LocalReport.SetParameters(new ReportParameter[] { parameterValues } );
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    //new ReportParameter ("fromDate","Test"),
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate","Test2")
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
+                //ReportParameter parameterValues = new ReportParameter("fromDate", "test");
+                //reportViewer.LocalReport.SetParameters(new ReportParameter[] { parameterValues } );
+
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1602,6 +1612,16 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report22.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet7", ds7.Tables[0]));
 
+                ReportParameter[] parameterValues = new ReportParameter[]
+               {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+               };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
+
                 ViewBag.ReportViewer = reportViewer;
             }
             catch (Exception)
@@ -1724,6 +1744,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report23.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet8", ds8.Tables[0]));
 
+                ReportParameter[] parameterValues = new ReportParameter[]
+               {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+               };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
                 ViewBag.ReportViewer = reportViewer;
             }
             catch (Exception)
@@ -1844,6 +1873,15 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report24.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", ds1.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+               {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+               };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1969,6 +2007,15 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report30.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet14", ds14.Tables[0]));
 
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
                 ViewBag.ReportViewer = reportViewer;
             }
             catch (Exception ex)
@@ -2081,6 +2128,15 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report32.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet17", ds17.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2209,6 +2265,15 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report26.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet3", ds3.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2382,6 +2447,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 //String Sql = "Select distinct CODQUALIFICA, QUALIFICA, NOMINATIVO, MATRICOLA, SEDE, DT_TRASFERIMENTO, DT_RIENTRO, DT_DECORRENZA From ISE_STP_LIVELLIESTERI Order By QUALIFICA, NOMINATIVO";
 
+                #region MyRegion
                 String Sql = "Select Distinct IES_COD_QUALIFICA, ";
                 Sql += "IBS_DESCRIZIONE, ";
                 Sql += "IES_MATRICOLA, ";
@@ -2424,7 +2490,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "IES_PROG_TRASFERIMENTO Desc, ";
                 Sql += "IES_DT_DECORRENZA Desc, ";
                 Sql += "IES_PROG_MOVIMENTO Desc ";
-                
+                #endregion
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
@@ -2525,7 +2591,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
 
                 OracleConnection conx = new OracleConnection(connectionString);
-                #region MyRegion
+
 
                 //String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
                 //Sql += "ANADIPE.AND_LIVELLO LIVELLO, ";
@@ -2538,8 +2604,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //Sql += "And SPD_COD_SEDE = SED_COD_SEDE ";
                 //Sql += "And (SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY')  ";
                 //Sql += "And SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY'))  ";
-                #endregion
 
+                #region MyRegion
                 String Sql = "SELECT DISTINCT ANADIPE.AND_MATRICOLA AS MATRICOLA, ";
                 Sql += "ANADIPE.AND_COGNOME || ' ' || ANADIPE.AND_NOME  AS NOMINATIVO, ";
                 Sql += "ANADIPE.AND_LIVELLO AS LIVELLO, ";
@@ -2557,13 +2623,22 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND SPD_COD_SEDE = SED_COD_SEDE ";
                 Sql += "AND(SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY') ";
                 Sql += "AND SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY')) ";
-
+                #endregion
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 adp.Fill(ds18, ds18.V_ISE_STP_SPESE_DIVERSE.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report33.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet18", ds18.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2673,6 +2748,15 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report31.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet12", ds12.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
