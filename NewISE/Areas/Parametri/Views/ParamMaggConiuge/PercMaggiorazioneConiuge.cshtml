@@ -3,6 +3,7 @@
 @using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 <p>
     <a id="btnInsNuovaMaggConiuge" href="#" onclick="NuovaMaggiorazioneConiuge();">Inserisci Percentuale Maggiorazione Coniuge</a>
@@ -40,6 +41,7 @@
         </tr>
     </thead>
     <tbody>
+        
         @foreach (var item in Model)
         {
             <tr>
@@ -69,13 +71,28 @@
                 <td style="text-align:center;">
                     @using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
+                        @*if (dtib.EsistonoMovimentiPrima(item))
                         {
                             <a href="#" onclick="EliminaIndbase(@item.idPercentualeConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                         }
                         else
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }*@
+                        if (dtib.PercMaggiorazioneConiugeAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {                        
+                            if (item.idPercentualeConiuge == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                               <a href="#" onclick="EliminaMaggiorazioneConiuge(@item.idPercentualeConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }                           
                         }
                     }
                 </td>
@@ -229,8 +246,8 @@
     }
 
     function EliminaMaggiorazioneConiuge(id) {
-        //debugger;
-        var rotta = "/Parametri/ParamMaggConiuge/EliminaMaggiorazioneConiuge";
+       // debugger;
+        var rotta = "/Parametri/ParamMaggConiuge/EliminaPercMaggiorazioneConiuge";
 
         var idTipologiaConiuge = parseInt($("#idTipologiaConiuge").select2('val'));
 

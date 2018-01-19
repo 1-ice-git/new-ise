@@ -77,7 +77,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtAliquoteContr dtib = new dtAliquoteContr())
                 {
-                    libm = dtib.getListAliquoteContributive(idLivello, escludiAnnullati).OrderBy(a => a.idAliqContr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListAliquoteContributive(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -298,10 +298,6 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
-
-
     }
 }

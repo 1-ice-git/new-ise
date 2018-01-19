@@ -455,10 +455,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
 
             }
-
         }
-
-
-
+        //public decimal Get_Id_PercentualMagConiugePrimoNonAnnullato(decimal idTipologiaConiuge)
+        //{
+        //    decimal tmp = 0;
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<ALIQUOTECONTRIBUTIVE> libm = new List<ALIQUOTECONTRIBUTIVE>();
+        //        libm = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false
+        //        && a.IDTIPOCONTRIBUTO == idTipologiaConiuge).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+        //        if (libm.Count != 0)
+        //            //tmp = libm.First().IDPERCMAGCONIUGE;
+        //    }
+        //    return tmp;
+        //}
     }
 }

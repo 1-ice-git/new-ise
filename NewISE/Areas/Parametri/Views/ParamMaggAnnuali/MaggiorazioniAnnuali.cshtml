@@ -95,6 +95,10 @@
                             if (dtib.EsistonoMovimentiPrima(item))
                             {
                                 <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
                         }
                     }

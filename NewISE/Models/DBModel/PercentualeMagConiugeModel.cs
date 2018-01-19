@@ -27,7 +27,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
-        [CustomValidation(typeof(dtMaggConiuge), "VerificaDataInizio")]
+        [CustomValidation(typeof(dtParMaggConiuge), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fin. validità")]
@@ -53,13 +53,13 @@ namespace NewISE.Models.DBModel
 
         public TipologiaConiugeModel Coniuge { get; set; }
 
-
+        
         public bool HasValue()
         {
             return idPercentualeConiuge > 0 ? true : false;
         }
 
-
+        public decimal id_TipologiaConiuge { get; set; }
 
     }
 }
