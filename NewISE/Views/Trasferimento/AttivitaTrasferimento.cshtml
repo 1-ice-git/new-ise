@@ -76,7 +76,7 @@
         <tr>
             <th>
 
-                @Ajax.ActionLink("Richiesta Anticipi", "TitoliViaggio", "TitoliViaggio", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkAnticipoPrimaSistemazione" })
+                @Ajax.ActionLink("Richiesta Anticipi", "Anticipi", "Anticipi", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkAnticipoPrimaSistemazione" })
             </th>
             <td>
                 <div class="material-switch pull-right">

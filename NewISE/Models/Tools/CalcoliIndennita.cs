@@ -266,6 +266,26 @@ namespace NewISE.Models.Tools
                                                                    100;
                                         }
 
+                                        var lpensioni =
+                                            coniuge.PENSIONE.Where(
+                                                a =>
+                                                    a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIO &&
+                                                    dtDatiParametri <= a.DATAFINE).OrderByDescending(a => a.DATAINIZIO);
+                                        if (lpensioni?.Any() ?? false)
+                                        {
+                                            var pens = lpensioni.First();
+
+                                            if (pens.IMPORTOPENSIONE >= maggiorazioneConiuge)
+                                            {
+                                                maggiorazioneConiuge = 0;
+                                            }
+                                            else
+                                            {
+                                                maggiorazioneConiuge = maggiorazioneConiuge - pens.IMPORTOPENSIONE;
+                                            }
+
+                                        }
+
 
                                     }
 
@@ -347,20 +367,28 @@ namespace NewISE.Models.Tools
                                 {
                                     var indSist = lis.First();
 
-                                    indennitaSistemazioneLorda = indSist.COEFFICIENTE * 12 * indennitaPersonaleTeorica;
+                                    //switch ((EnumTipoTrasferimento)trasferimento.IDTIPOTRASFERIMENTO)
+                                    //{
+                                    //    case EnumTipoTrasferimento.SedeEstero:
+
+                                    //        break;
+                                    //    case EnumTipoTrasferimento.EsteroEstero:
+                                    //        break;
+                                    //    case EnumTipoTrasferimento.EsteroEsteroStessaRegiona:
+                                    //        break;
+                                    //    default:
+                                    //        throw new ArgumentOutOfRangeException();
+                                    //}
+
+
+                                    indennitaSistemazioneLorda = indSist.COEFFICIENTE * indennitaPersonaleTeorica;
                                 }
 
 
                                 #endregion
                             }
 
-
-
-
                         }
-
-
-
 
                     }
 

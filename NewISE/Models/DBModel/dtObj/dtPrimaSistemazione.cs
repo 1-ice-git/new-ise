@@ -46,12 +46,14 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     using (dtIndennitaSistemazione dtis = new dtIndennitaSistemazione())
                     {
-                        IndennitaSistemazioneModel ism = dtis.GetIndennitaSistemazione(psm.idPrimaSistemazione,
-                            (EnumTipoTrasferimento)trm.idTipoTrasferimento, trm.dataPartenza, db);
-
                         this.SetPrimaSistemazione(psm, db);
 
-                        this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                        var lism = dtis.GetListIndennitaSistemazione((EnumTipoTrasferimento)trm.idTipoTrasferimento, trm.dataPartenza, db);
+
+                        foreach (var ism in lism)
+                        {
+                            this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                        }
 
                     }
                 }

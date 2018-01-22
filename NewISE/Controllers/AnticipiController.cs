@@ -9,8 +9,10 @@ namespace NewISE.Controllers
     public class AnticipiController : Controller
     {
         // GET: Anticipi
-        public ActionResult Anticipi()
+        public ActionResult Anticipi(decimal idTrasferimento)
         {
+            ViewData.Add("idTrasferimento", idTrasferimento);
+
             return PartialView();
         }
     }

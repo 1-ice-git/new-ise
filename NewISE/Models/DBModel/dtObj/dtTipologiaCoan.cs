@@ -52,5 +52,24 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public TipologiaCoanModel GetTipologiaCoanByID(decimal idTipoCoan, ModelDBISE db)
+        {
+            TipologiaCoanModel tcm = new TipologiaCoanModel();
+
+            var tc = db.TIPOLOGIACOAN.Find(idTipoCoan);
+            if (tc != null && tc.IDTIPOCOAN > 0)
+            {
+                tcm = new TipologiaCoanModel()
+                {
+                    idTipoCoan = tc.IDTIPOCOAN,
+                    descrizione = tc.DESCRIZIONE
+                };
+            }
+
+            return tcm;
+        }
+
+
+
     }
 }

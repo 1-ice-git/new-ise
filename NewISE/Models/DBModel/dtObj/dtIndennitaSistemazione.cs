@@ -19,6 +19,44 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+
+
+        public IList<IndennitaSistemazioneModel> GetListIndennitaSistemazione(EnumTipoTrasferimento tipoTrasf, DateTime dt, ModelDBISE db)
+        {
+            List<IndennitaSistemazioneModel> lism = new List<IndennitaSistemazioneModel>();
+
+
+            var lis =
+                db.INDENNITASISTEMAZIONE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= dt.Date && a.DATAFINEVALIDITA >= dt.Date &&
+                        a.IDTIPOTRASFERIMENTO == (decimal)tipoTrasf)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            if (lis?.Any() ?? false)
+            {
+                foreach (var indSist in lis)
+                {
+                    var ism = new IndennitaSistemazioneModel()
+                    {
+                        idIndSist = indSist.IDINDSIST,
+                        idTipoTrasferimento = indSist.IDTIPOTRASFERIMENTO,
+                        dataInizioValidita = indSist.DATAINIZIOVALIDITA,
+                        dataFineValidita = indSist.DATAFINEVALIDITA,
+                        coefficiente = indSist.COEFFICIENTE,
+                        dataAggiornamento = indSist.DATAAGGIORNAMENTO,
+                        annullato = indSist.ANNULLATO
+                    };
+
+                    lism.Add(ism);
+                }
+            }
+
+            return lism;
+
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -27,7 +65,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="dt"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public IndennitaSistemazioneModel GetIndennitaSistemazione(Decimal idPrimaSistemazione, EnumTipoTrasferimento tipoTrasf, DateTime dt, ModelDBISE db)
+        public IndennitaSistemazioneModel GetIndennitaSistemazioneAssociata(Decimal idPrimaSistemazione, EnumTipoTrasferimento tipoTrasf, DateTime dt, ModelDBISE db)
         {
 
             IndennitaSistemazioneModel ism = new IndennitaSistemazioneModel();
