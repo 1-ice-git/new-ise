@@ -3,100 +3,100 @@
 
 <div id="dialog" title="Spese Diverse"></div>
 
-@*<button id="opener">xx</button>*@
-<div class="form-horizontal">
+    @*<button id="opener">xx</button>*@
+    <div class="form-horizontal">
+        <div class="form-group">
+            <hr />
+
+            <div class="col-md-2">
+                @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            </div>
+
+            <div class="col-md-2">
+                @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            </div>
+
+        </div>
+        <br />
+    </div>
+
     <div class="form-group">
-        <hr />
-
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        <div class="col-md-3">
+            @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
+            <a href="#" id="opener">Stampa Spese Diverse </a>
+        </div>
+        <div class="col-md-3">
+            <a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>
         </div>
 
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
-
     </div>
-    <br />
-</div>
+    <br /><br />
 
-<div class="form-group">
-    <div class="col-md-3">
-        @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
-        <a href="#" id="opener">Stampa Spese Diverse </a>
-    </div>
-    <div class="col-md-3">
-        <a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>
-    </div>
-    
-</div>
-<br /><br />
-
-<table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MATRICOLA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NOMINATIVO)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LIVELLO)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CODICE_SEDE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DESCRIZIONE_SEDE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DATA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VOCE_DI_SPESA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IMPORTO_VALUTA)
-            </th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-            {
+    <table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MATRICOLA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NOMINATIVO)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LIVELLO)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CODICE_SEDE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DESCRIZIONE_SEDE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DATA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VOCE_DI_SPESA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IMPORTO_VALUTA)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                <th>
+                    @Html.DisplayNameFor(model => model.MATRICOLA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NOMINATIVO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LIVELLO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CODICE_SEDE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DESCRIZIONE_SEDE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DATA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VOCE_DI_SPESA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IMPORTO_VALUTA)
+                </th>
 
-<script type="text/javascript">
-    $('#tb_Stp_Spese_Diverse').DataTable({
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MATRICOLA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LIVELLO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CODICE_SEDE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DESCRIZIONE_SEDE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DATA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VOCE_DI_SPESA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IMPORTO_VALUTA)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('#tb_Stp_Spese_Diverse').DataTable({
             "order": [],
             "scrollY": 220,
             "scrollX": true,
@@ -126,73 +126,75 @@
             }
         });
 
-    var windowWidth = $(window).width();
-    var windowHeight = $(window).height();
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
 
-    $(function () {
-        $("#dialog").dialog({
-            autoOpen: false,
-            show: {
-                //effect: "blind",
-                //duration: 1000
-            },
-            hide: {
-                //effect: "explode",
-                //duration: 1000
-            },
-            close: function (event, ui) {
-                $('.container').removeClass("NoOverflow");
-            },
-            height: windowHeight, width: windowWidth
-
-
-        });
-
-        $("#opener").on("click", function () {
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
-            rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
-
-            var data = $("#datepicker").datepicker().val()
-            var data1 = $("#datepicker1").datepicker().val()
-
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: {
-                    V_DATA: data,
-                    V_DATA1: data1
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    //effect: "blind",
+                    //duration: 1000
                 },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#dialog").empty();
-
+                hide: {
+                    //effect: "explode",
+                    //duration: 1000
                 },
-                success: function (result) {
-                    //debugger;
-                    $("#dialog").html(result);
-
-
+                close: function (event, ui) {
+                    $('.container').removeClass("NoOverflow");
                 },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
+                height: windowHeight, width: windowWidth
+
 
             });
 
+            $("#opener").on("click", function () {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                rotta = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse";
+
+                var data = $("#datepicker").datepicker().val()
+                var data1 = $("#datepicker1").datepicker().val()
+
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        V_DATA: data,
+                        V_DATA1: data1
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").empty();
+
+                        $("#dialog").html(result);
+
+
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+            });
         });
-    });
 
 
         function invia() {
@@ -336,7 +338,7 @@
 
         }
 
-</script>
+    </script>
 
 
 

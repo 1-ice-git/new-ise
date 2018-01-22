@@ -596,10 +596,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                 reportViewer.LocalReport.SetParameters(parameterValues);
                 reportViewer.LocalReport.Refresh();
 
-                //ReportParameter parameterValues = new ReportParameter("fromDate", "test");
-                //reportViewer.LocalReport.SetParameters(new ReportParameter[] { parameterValues } );
-
-
                 ViewBag.ReportViewer = reportViewer;
             }
             catch (Exception ex)
@@ -1157,22 +1153,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleConnection conx = new OracleConnection(connectionString);
 
-                //String Sql = "SELECT DISTINCT SEDE, ";
-                //        Sql += "VALUTA, ";
-                //        Sql += "MATRICOLA, ";
-                //        Sql += "NOMINATIVO, ";
-                //        Sql += "DT_TRASFERIMENTO, ";
-                //        Sql += "QUALIFICA, ";
-                //        Sql += "CONIUGE, ";
-                //        Sql += "FIGLI, ";
-                //        Sql += "ISEP, ";
-                //        Sql += "CONTRIBUTO, ";
-                //        Sql += "USO, ";
-                //        Sql += "ISEP + CONTRIBUTO + USO TOTALE ";
-                //        Sql += "FROM ISE_STP_ELENCOTRASFERIMENTI ";
-                //        Sql += "ORDER BY SEDE, ";
-                //        Sql += "NOMINATIVO ";
-
                 String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
@@ -1181,6 +1161,14 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report19.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {   
+                    new ReportParameter ("fromDate",V_DATA)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2516,13 +2504,17 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
 
-                //ReportParameter[] parameters = new ReportParameter[2];
-                //parameters[0] = new ReportParameter("datepicker", V_DATA);
-                //parameters[1] = new ReportParameter("datepicker1", V_DATA1);
-                //reportViewer.LocalReport.SetParameters(parameters);
-
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report20.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
