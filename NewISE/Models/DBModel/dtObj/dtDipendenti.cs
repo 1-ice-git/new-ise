@@ -245,6 +245,7 @@ namespace NewISE.Models.DBModel.dtObj
             return dm;
         }
 
+
         public DipendentiModel GetDipendenteByMatricola(string matricola)
         {
             DipendentiModel dm = new DipendentiModel();

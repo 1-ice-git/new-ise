@@ -32,9 +32,11 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+
         public TipoTrasferimentoModel GetTipoTrasferimentoByID(decimal idTipoTrasferimento)
         {
             TipoTrasferimentoModel ttm = new TipoTrasferimentoModel();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 var tt = db.TIPOTRASFERIMENTO.Find(idTipoTrasferimento);
@@ -50,8 +52,31 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     throw new Exception("Il tipo di trasferimento non è presente sul database.");
                 }
-
             }
+
+            return ttm;
+        }
+
+
+        public TipoTrasferimentoModel GetTipoTrasferimentoByID(decimal idTipoTrasferimento, ModelDBISE db)
+        {
+            TipoTrasferimentoModel ttm = new TipoTrasferimentoModel();
+
+            var tt = db.TIPOTRASFERIMENTO.Find(idTipoTrasferimento);
+            if (tt != null && tt.IDTIPOTRASFERIMENTO > 0)
+            {
+                ttm = new TipoTrasferimentoModel()
+                {
+                    idTipoTrasferimento = tt.IDTIPOTRASFERIMENTO,
+                    descTipoTrasf = tt.TIPOTRASFERIMENTO1
+                };
+            }
+            else
+            {
+                throw new Exception("Il tipo di trasferimento non è presente sul database.");
+            }
+
+
 
             return ttm;
         }

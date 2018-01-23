@@ -24,7 +24,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var ll = db.UFFICI.ToList();
 
-                    
+
                     llm = (from e in ll
                            select new UfficiModel()
                            {
@@ -33,7 +33,7 @@ namespace NewISE.Models.DBModel.dtObj
                                descUfficio = e.DESCRIZIONEUFFICIO,
                                pagatoValutaUfficio = e.PAGATOVALUTAUFFICIO,
                                idValuta = e.IDVALUTA
-                               
+
                            }).ToList();
                 }
 
@@ -66,7 +66,7 @@ namespace NewISE.Models.DBModel.dtObj
                         };
                     }
 
-                    
+
                 }
 
                 return lm;
@@ -83,10 +83,10 @@ namespace NewISE.Models.DBModel.dtObj
 
             try
             {
-                
+
                 var liv = db.UFFICI.Find(idUfficio);
 
-                if (liv!= null && liv.IDUFFICIO > 0)
+                if (liv != null && liv.IDUFFICIO > 0)
                 {
                     lm = new UfficiModel()
                     {
@@ -94,7 +94,7 @@ namespace NewISE.Models.DBModel.dtObj
                         codiceUfficio = liv.CODICEUFFICIO,
                         descUfficio = liv.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = liv.PAGATOVALUTAUFFICIO,
-                        idValuta = liv.IDVALUTA                        
+                        idValuta = liv.IDVALUTA
                     };
 
                 }

@@ -1427,31 +1427,29 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (dtStatoTrasferimento dtst = new dtStatoTrasferimento())
                 {
-                    trm.StatoTrasferimento = dtst.GetStatoTrasferimentoByID(trm.idStatoTrasferimento);
+                    trm.StatoTrasferimento = dtst.GetStatoTrasferimentoByID(trm.idStatoTrasferimento, db);
                 }
 
                 using (dtTipoTrasferimento dttt = new dtTipoTrasferimento())
                 {
-                    trm.TipoTrasferimento = dttt.GetTipoTrasferimentoByID(trm.idTipoTrasferimento);
+                    trm.TipoTrasferimento = dttt.GetTipoTrasferimentoByID(trm.idTipoTrasferimento, db);
                 }
 
                 using (dtUffici dtu = new dtUffici())
                 {
-                    trm.Ufficio = dtu.GetUffici(trm.idUfficio);
+                    trm.Ufficio = dtu.GetUffici(trm.idUfficio, db);
                 }
 
                 using (dtDipendenti dtd = new dtDipendenti())
                 {
-                    trm.Dipendente = dtd.GetDipendenteByID(trm.idDipendente);
+                    trm.Dipendente = dtd.GetDipendenteByID(trm.idDipendente, db);
                 }
 
                 using (dtTipologiaCoan dttc = new dtTipologiaCoan())
                 {
-                    trm.TipoCoan = dttc.GetTipologiaCoanByID(trm.idTipoCoan);
+                    trm.TipoCoan = dttc.GetTipologiaCoanByID(trm.idTipoCoan, db);
                 }
             }
-
-
 
             return trm;
 

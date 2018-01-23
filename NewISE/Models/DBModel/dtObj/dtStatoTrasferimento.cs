@@ -52,7 +52,6 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
         public StatoTrasferimentoModel GetStatoTrasferimentoByID(EnumStatoTraferimento idStatoTrasferimento)
         {
             StatoTrasferimentoModel stm = new StatoTrasferimentoModel();
@@ -72,8 +71,31 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     throw new Exception("Lo stato di trasferimento non risulta registrato su database.");
                 }
-
             }
+
+            return stm;
+        }
+
+        public StatoTrasferimentoModel GetStatoTrasferimentoByID(EnumStatoTraferimento idStatoTrasferimento, ModelDBISE db)
+        {
+            StatoTrasferimentoModel stm = new StatoTrasferimentoModel();
+
+
+            var st = db.STATOTRASFERIMENTO.Find((decimal)idStatoTrasferimento);
+            if (st != null && st.IDSTATOTRASFERIMENTO > 0)
+            {
+                stm = new StatoTrasferimentoModel()
+                {
+                    idStatoTrasferimento = st.IDSTATOTRASFERIMENTO,
+                    descrizioneStatoTrasferimento = st.DESCRIZIONE
+                };
+            }
+            else
+            {
+                throw new Exception("Lo stato di trasferimento non risulta registrato su database.");
+            }
+
+
 
             return stm;
         }

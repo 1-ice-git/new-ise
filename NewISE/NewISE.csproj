@@ -3052,6 +3052,7 @@
     <Content Include="Views\TitoliViaggio\ElencoDocumentiTV.cshtml" />
     <Content Include="Views\TitoliViaggio\TabDocumentiTVInseriti.cshtml" />
     <Content Include="Views\TitoliViaggio\ElencoUploadTitoliViaggio.cshtml" />
+    <Content Include="Views\Anticipi\Anticipi.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
