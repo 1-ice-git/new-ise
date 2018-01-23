@@ -117,13 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>10</value>
+  <data name="AttivazioniTitoloViaggioAbilitate_Sfondo" xml:space="preserve">
+    <value>#98fb98</value>
+    <comment>Palegreen</comment>
   </data>
-  <data name="RichiestaPratichePassaporto" xml:space="preserve">
-    <value>15</value>
+  <data name="AttivazioniTitoloViaggioAbilitate_Testo" xml:space="preserve">
+    <value>#000000</value>
+    <comment>Black</comment>
   </data>
-  <data name="RichiestaTitoliViaggio" xml:space="preserve">
-    <value>10</value>
+  <data name="AttivazioniTitoloViaggioDisabilitate_SfondoDispari" xml:space="preserve">
+    <value>#ffffff</value>
+    <comment>Bianco</comment>
+  </data>
+  <data name="AttivazioniTitoloViaggioDisabilitate_SfondoPari" xml:space="preserve">
+    <value>#e6e6fa</value>
+    <comment>Lavender</comment>
+  </data>
+  <data name="AttivazioniTitoloViaggioDisabilitate_Testo" xml:space="preserve">
+    <value>#808080</value>
+    <comment>Gray</comment>
   </data>
 </root>

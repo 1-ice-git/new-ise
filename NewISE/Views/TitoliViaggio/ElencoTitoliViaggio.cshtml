@@ -4,13 +4,14 @@
 @{
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
+    bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
 }
 
 
 <p style="margin-top: 10px">
 <h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
 
-<div style="padding-right: 20px; padding-top: 10px;">
+<div style="padding-top: 10px;">
     <table id="tabElencoTitoliViaggio" class="table-striped" cellspacing="0">
         <thead>
             <tr>
@@ -98,13 +99,27 @@
                         </td>
                     }
                     <td style="text-align: center;">
-                        @if(item.RichiediTitoloViaggio)
+                        @if(richiestaEseguita)
                         {
-                            <input type="checkbox" checked="checked" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                            if (item.RichiediTitoloViaggio)
+                            {
+                                <input type="checkbox" disabled checked="checked">
+                            }
+                            else
+                            {
+                                <input type="checkbox" disabled>
+                            }
                         }
                         else
                         {
-                            <input type="checkbox" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                            if (item.RichiediTitoloViaggio)
+                            {
+                                <input type="checkbox" checked="checked" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                            }
+                            else
+                            {
+                                <input type="checkbox" onclick="AggiornaStatoRichiediTitoloViaggio(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                            }
                         }
                     </td>
 
@@ -114,7 +129,13 @@
     </table>
 </div>
 
-
+<div class="row">
+    <div class="col-xs-5" style="margin-top:10px">
+        <table id="tabUploadTitoliViaggio">
+            @Html.Action("ElencoUploadTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio })
+        </table>
+    </div>
+</div>
 
 
 <script type="text/javascript">
@@ -153,7 +174,7 @@
     });
 
 
-    //PulsantiNotificaAttivaMagFam();
+    //GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
 
     function AggiornaStatoRichiediTitoloViaggio(idParentela, idFamiliare) {
         //debugger;
@@ -175,13 +196,12 @@
             success: function (result) {
                 //debugger;
                 if (result.errore === "") {
-                    //PulsantiNotificaAttivaMagFam();
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
                 Sblocca();
             },
             error: function (error) {
@@ -207,18 +227,17 @@
             async: false,
             beforeSend: function () {
                 //debugger;
-                //VerificaAutenticazione();
-                //Blocca();
+                VerificaAutenticazione();
+                Blocca();
 
             },
             success: function (result) {
                 //debugger;
-                $("#divElencoTitoliViaggio").empty();
-                $("#divElencoTitoliViaggio").html(result);
+                $("#divTitoliViaggio").empty();
+                $("#divTitoliViaggio").html(result);
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
-                //Sblocca();
+                Sblocca();
             },
             error: function (error) {
                 //debugger;
@@ -243,18 +262,17 @@
             async: false,
             beforeSend: function () {
                 //debugger;
-                //VerificaAutenticazione();
-                //Blocca();
+                VerificaAutenticazione();
+                Blocca();
 
             },
             success: function (result) {
                 //debugger;
-                $("#tabElencoTitoliViaggio").empty();
-                $("#tabElencoTitoliViaggio").html(result);
+                $("#divTitoliViaggio").empty();
+                $("#divTitoliViaggio").html(result);
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
-                //Sblocca();
+                Sblocca();
             },
             error: function (error) {
                 //debugger;
@@ -265,48 +283,6 @@
         });
 
     }
-
-
-    //function ElencoDocumentiFamiliare(idFamiliare, tipoDoc, idParentela, chiamante, idMaggiorazioniFamiliari) {
-    //    //debugger;
-    //    var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoDocumenti";
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST", //Le info testuali saranno passate in POST
-    //        data: {
-    //            idFamiliare: idFamiliare,
-    //            tipoDoc: tipoDoc,
-    //            parentela: idParentela,
-    //            chiamante: chiamante,
-    //            idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
-    //        },
-    //        dataType: 'html',
-    //        async: false,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            Blocca();
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            $("#tabFamiliari").empty();
-    //            $("#tabFamiliari").html(result);
-
-    //        },
-    //        complete: function () {
-    //            PulsantiNotificaAttivaMagFam();
-    //            Sblocca();
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-
-    //}
 
 </script>
 

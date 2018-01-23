@@ -11,7 +11,7 @@ namespace NewISE.Models.DBModel
     {
         RichiestaMaggiorazioniFamiliari = 1,
         RichiestePratichePassaporto = 2,
-        Funzione3 = 3,
+        RichiestaTitoliViaggio = 3,
         Funzione4 = 21,
         Funzione5 = 22,
         Funzione6 = 23,
