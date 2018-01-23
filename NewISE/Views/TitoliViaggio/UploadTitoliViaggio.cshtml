@@ -13,11 +13,10 @@
         <label>Upload titoli carta d'imbarco</label>
     </div>
     <div class="col-xs-1">
-        @*<img id="imgCartaImbarco" width="30px" src="~/Immagini/paperclip-icon_34384.png" onclick=" ElencoDocumenti(@tvm.idTitoloViaggio, @EnumTipoDoc.Carta_Imbarco, @EnumParentela.Richiedente, @EnumChiamante.Titoli_Viaggio) "/>*@
         @if (Model?.Any() ?? false)
         {
             <a href="#" onclick="ElencoDocumenti(@tvm.idTitoloViaggio, @Convert.ToDecimal(EnumTipoDoc.Carta_Imbarco), @Convert.ToDecimal(EnumParentela.Richiedente), @Convert.ToDecimal(EnumChiamante.Titoli_Viaggio))">
-                <img class="SfondoBordoImg" width="30px" height="30px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+                <img class="SfondoBordoImg" width="30" height="30" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
             </a>
         }
         else

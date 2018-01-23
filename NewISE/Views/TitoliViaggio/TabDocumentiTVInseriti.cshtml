@@ -194,7 +194,8 @@
                 }
                 else {
                     InfoElaborazioneAjax(result.msg);
-                    //PulsantiNotificaAttivaMagFam();
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+                    ElencoDocumentiTV(@idTipoDocumento, @idTitoliViaggio);
                 }
             },
             complete: function () {
@@ -220,7 +221,7 @@
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
-                //VerificaAutenticazione();
+                VerificaAutenticazione();
                 //$("#DialogNewDoc").dialog("destroy");
                 //$("#divEffettoLoadAutNoDoc").show("slow");
             },
@@ -229,6 +230,8 @@
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#tabUploadTitoliViaggio").empty();
                 $("#tabUploadTitoliViaggio").html(result);
+                GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+
 
                 //RicercaDocumenti();
 

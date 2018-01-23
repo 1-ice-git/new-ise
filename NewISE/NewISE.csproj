@@ -2254,6 +2254,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScadenzaFunzioniEventi.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\TitoliViaggioColori.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TitoliViaggioColori.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\VariazioneMagFamColori.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2989,13 +2994,9 @@
     <Content Include="Views\TitoliViaggio\TitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariFiglioTitoliViaggio.cshtml" />
     <Content Include="Views\AltriDatiFamiliari\AltriDatiFamiliariConiugeTitoliViaggio.cshtml" />
-    <Content Include="Views\TitoliViaggio\GestPulsantiNotificaAndPraticaConclusa.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\FormularioMF.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\NuovoFormularioMF.cshtml" />
-    <Content Include="Views\TitoliViaggio\RimborsoSuccessivo.cshtml" />
-    <Content Include="Views\TitoliViaggio\GestioneFormularioTitoliViaggio.cshtml" />
     <Content Include="Views\TitoliViaggio\NuovoDocumentoTV.cshtml" />
-    <Content Include="Views\TitoliViaggio\UploadTitoliViaggio.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormulario.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoFormulariInseriti.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
@@ -3095,6 +3096,10 @@
     <Content Include="App_GlobalResources\VariazioneMagFamColori.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>VariazioneMagFamColori.designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TitoliViaggioColori.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>TitoliViaggioColori.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report1.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report10.rdlc" />

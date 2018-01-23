@@ -2,6 +2,7 @@
     string DescrizioneTV = Convert.ToString(ViewData["DescrizioneTV"]);
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    bool richiestaNotificata = Convert.ToBoolean(ViewData["richiestaNotificata"]);
 }
 
 @Html.Hidden("hiNuovoDocumento")
@@ -12,14 +13,28 @@
     <div class="row">
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px;">
-                <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTV();">
-                    <table>
-                        <tr>
-                            <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
-                            <td style="padding-left:10px">Aggiungi @DescrizioneTV</td>
-                        </tr>
-                    </table>
-                </button>
+                @if(richiestaNotificata == false)
+                {
+                    <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTV();">
+                        <table>
+                            <tr>
+                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
+                                <td style="padding-left:10px">Aggiungi @DescrizioneTV</td>
+                            </tr>
+                        </table>
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-default btn-sm" disabled>
+                        <table>
+                            <tr>
+                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
+                                <td style="padding-left:10px">Aggiungi @DescrizioneTV</td>
+                            </tr>
+                        </table>
+                    </button>
+                }
             </div>
         </div>
         <div id="divCombo" class="col-xs-7">
@@ -32,7 +47,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12" style="padding-right: 35px;" >
+        <div class="col-xs-12">
             <div id="divTabElencoDocumentiTV">
                 @Html.Action("TabDocumentiTVInseriti", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio, idTipoDocumento = idTipoDocumento })
             </div>
@@ -59,7 +74,7 @@
     </div>
 
 <p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divElencoTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    @Ajax.ActionLink("Torna indietro", "ElencoTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
 <script type="text/javascript">
@@ -81,7 +96,7 @@
                 //debugger;
                 VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
-                //Blocca();
+                Blocca();
                 $('#ModalNuovoDocumentoTV').modal('show');
             },
             success: function (result) {
@@ -91,7 +106,7 @@
             },
             error: function (error) {
                 //debugger;
-                //Sblocca();
+                Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
@@ -150,7 +165,7 @@
                 beforeSend: function () {
                     //debugger;
                     VerificaAutenticazione();
-                    //Blocca();
+                    Blocca();
                 },
                 success: function (result) {
                     //debugger;
@@ -160,7 +175,7 @@
                 },
                 error: function (error) {
                     //debugger;
-                    //Sblocca();
+                    Sblocca();
                     var msg = error.responseText;
                     ErroreElaborazioneAjax(msg);
                 }
@@ -177,6 +192,7 @@
         //debugger;
         TabElencoDocumentiTV();
         ElencoUploadDocumentiTV();
+        ElencoDocumentiTV(@idTipoDocumento, @idTitoliViaggio);
     });
 
 

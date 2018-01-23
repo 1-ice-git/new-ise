@@ -22,14 +22,14 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Web.Application.StronglyTypedResourceProxyBuilder", "14.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ScadenzaFunzioniEventi {
+    internal class TitoliViaggioColori {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ScadenzaFunzioniEventi() {
+        internal TitoliViaggioColori() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.ScadenzaFunzioniEventi", global::System.Reflection.Assembly.Load("App_GlobalResources"));
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.TitoliViaggioColori", global::System.Reflection.Assembly.Load("App_GlobalResources"));
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,47 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 10.
+        ///   Looks up a localized string similar to #98fb98.
         /// </summary>
-        internal static string RichiestaMaggiorazioniFamiliari {
+        internal static string AttivazioniTitoloViaggioAbilitate_Sfondo {
             get {
-                return ResourceManager.GetString("RichiestaMaggiorazioniFamiliari", resourceCulture);
+                return ResourceManager.GetString("AttivazioniTitoloViaggioAbilitate_Sfondo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 15.
+        ///   Looks up a localized string similar to #000000.
         /// </summary>
-        internal static string RichiestaPratichePassaporto {
+        internal static string AttivazioniTitoloViaggioAbilitate_Testo {
             get {
-                return ResourceManager.GetString("RichiestaPratichePassaporto", resourceCulture);
+                return ResourceManager.GetString("AttivazioniTitoloViaggioAbilitate_Testo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 10.
+        ///   Looks up a localized string similar to #ffffff.
         /// </summary>
-        internal static string RichiestaTitoliViaggio {
+        internal static string AttivazioniTitoloViaggioDisabilitate_SfondoDispari {
             get {
-                return ResourceManager.GetString("RichiestaTitoliViaggio", resourceCulture);
+                return ResourceManager.GetString("AttivazioniTitoloViaggioDisabilitate_SfondoDispari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #e6e6fa.
+        /// </summary>
+        internal static string AttivazioniTitoloViaggioDisabilitate_SfondoPari {
+            get {
+                return ResourceManager.GetString("AttivazioniTitoloViaggioDisabilitate_SfondoPari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #808080.
+        /// </summary>
+        internal static string AttivazioniTitoloViaggioDisabilitate_Testo {
+            get {
+                return ResourceManager.GetString("AttivazioniTitoloViaggioDisabilitate_Testo", resourceCulture);
             }
         }
     }

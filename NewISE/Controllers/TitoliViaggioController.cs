@@ -50,7 +50,7 @@ namespace NewISE.Controllers
 
                     adfcm = dttv.GetAltriDatiFamiliariConiuge(idTitoliViaggio, idConiuge);
 
-                    decimal idAttivazioneTitoliViaggio = dttv.GetAttivazioneTitoliViaggio(idTitoliViaggio);
+                    decimal idAttivazioneTitoliViaggio = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
 
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
@@ -118,7 +118,7 @@ namespace NewISE.Controllers
 
                     adffm = dttv.GetAltriDatiFamiliariFiglio(idTitoliViaggio, idFiglio);
 
-                    decimal idAttivazioneTitoliViaggio = dttv.GetAttivazioneTitoliViaggio(idTitoliViaggio);
+                    decimal idAttivazioneTitoliViaggio = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
 
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
@@ -189,9 +189,33 @@ namespace NewISE.Controllers
         {
             using (dtTitoliViaggi dttv = new dtTitoliViaggi())
             {
+                bool notificaEseguita = false;
+                bool richiediNotifica = false;
+                bool richiediAttivazione = false;
+                bool richiediConiuge = false;
+                bool richiediRichiedente = false;
+                bool richiediFigli = false;
+                bool DocTitoliViaggio = false;
+                bool DocCartaImbarco = false;
+                bool inLavorazione = false;
+
                 var nDocCartaImbarco = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Carta_Imbarco);
                 var nDocTitoliViaggio = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Titolo_Viaggio);
 
+                //var atv_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio);
+
+                dttv.SituazioneTitoliViaggio(idTitoliViaggio,
+                               out richiediNotifica, out richiediAttivazione,
+                               out richiediConiuge, out richiediRichiedente,
+                               out richiediFigli, out DocTitoliViaggio,
+                               out DocCartaImbarco, out inLavorazione);
+
+                if (richiediAttivazione)
+                {
+                    notificaEseguita = true;
+                }
+
+                ViewData.Add("notificaEseguita", notificaEseguita);
                 ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                 ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
                 ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
@@ -208,14 +232,20 @@ namespace NewISE.Controllers
             {
                 List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
 
-                decimal idAttivazioneTitoliViaggio = dttv.GetAttivazioneTitoliViaggio(idTitoliViaggio);
+                var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
+
+                decimal idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO;
 
                 if (idAttivazioneTitoliViaggio > 0)
                 {
-                    ltvm = dttv.ElencoTitoliViaggio(idAttivazioneTitoliViaggio);
-                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                    ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
+                    ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
                 }
+
+                bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
+
+                ViewData.Add("richiestaEseguita", richiestaEseguita);
+                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
 
                 return PartialView(ltvm);
             }
@@ -230,9 +260,7 @@ namespace NewISE.Controllers
                 DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
             }
 
-
-            bool notificaRichiesta = false;
-            bool attivazioneRichiesta = false;
+            bool richiestaNotificata = false;
 
             List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
             List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
@@ -240,22 +268,28 @@ namespace NewISE.Controllers
             {
                 using (dtTitoliViaggi dtvmf = new dtTitoliViaggi())
                 {
-                    latvm = dtvmf.GetListAttivazioniTitoliViaggio(idTitoliViaggio).ToList();
+                    latvm = dtvmf.GetListAttivazioniTitoliViaggio(idTitoliViaggio).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
 
+                    //var i = latvm.Count();
                     var i = 1;
 
                     foreach (var atv in latvm)
                     {
-                        dtvmf.SituazioneAttivazioniTitoliViaggio(atv.idAttivazioneTitoliViaggio, out notificaRichiesta, out attivazioneRichiesta);
+                        if(dtvmf.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
+                        {
+                            richiestaNotificata = true;
+                        }
 
-                        if (notificaRichiesta == false)
+                        bool inLavorazione = dtvmf.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
+
+                        if (inLavorazione)
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString() + " (In Lavorazione)", Value = atv.idAttivazioneTitoliViaggio.ToString() });
-                        }
-                        if (attivazioneRichiesta)
+                        }else
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString(), Value = atv.idAttivazioneTitoliViaggio.ToString() });
                         }
+                        //i--;
                         i++;
                     }
 
@@ -265,6 +299,7 @@ namespace NewISE.Controllers
                     ViewData.Add("DescrizioneTV", DescrizioneTV);
                     ViewData.Add("idTipoDocumento", idTipoDocumento);
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                    ViewData.Add("richiestaNotificata", richiestaNotificata);
                 }
 
                 return PartialView();
@@ -512,7 +547,140 @@ namespace NewISE.Controllers
             ViewData.Add("idTitoliViaggio", idTitoliViaggio);
 
             return PartialView("TabDocumentiTVInseriti", ldm);
+        }
 
+        public JsonResult GestionePulsantiNotificaAttivaAnnulla(decimal idTitoliViaggio)
+        {
+
+            bool amministratore = false;
+            string errore = "";
+            bool richiediAttivazione = false;
+            bool richiediAnnulla = false;
+            bool richiediNotifica = false;
+            bool richiediRichiedente = false;
+            bool richiediConiuge = false;
+            bool richiediFigli = false;
+            bool DocTitoliViaggio = false;
+            bool DocCartaImbarco = false;
+            bool inLavorazione = false;
+           
+
+            try
+            {
+                amministratore = Utility.Amministratore();
+
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+
+                    //var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
+
+                    dttv.SituazioneTitoliViaggio(idTitoliViaggio,
+                               out richiediNotifica, out richiediAttivazione,
+                               out richiediConiuge, out richiediRichiedente,
+                               out richiediFigli, out DocTitoliViaggio,
+                               out DocCartaImbarco, out inLavorazione);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        admin = amministratore,
+                        richiediAttivazione = richiediAttivazione,
+                        richiediNotifica = richiediNotifica,
+                        richiediAnnulla=richiediAnnulla,
+                        inLavorazione = inLavorazione,
+                        err = errore
+                    });
+
+        }
+
+
+        public JsonResult ConfermaNotificaRichiestaTV(decimal idTitoliViaggio)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    decimal idAttivazione = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
+
+                    dttv.NotificaRichiestaTV(idAttivazione);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaAnnullaRichiestaTV(decimal idTitoliViaggio)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    decimal idAttivazione_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
+
+                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaAttivaRichiestaTV(decimal idTitoliViaggio)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    decimal idAttivazione = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
+
+                    dttv.AttivaRichiestaTV(idAttivazione);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
         }
 
 

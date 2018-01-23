@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaInizialeTitoloViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaInizialeTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
@@ -82,11 +91,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaSuccessivaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaSuccessivaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivaRichiestaInizialeTitoliViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioAttivaRichiestaInizialeTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che l&apos;ulteriore documentazione relativa ai titoli di viaggio richiesti è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivaRichiestaSuccessivaTitoliViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioAttivaRichiestaSuccessivaTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("MessaggioAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica la richiesta dei titoli di viaggio per {0}.
+        /// </summary>
+        internal static string MessaggioNotificaRichiestaInizialeTitoliViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaRichiestaInizialeTitoliViaggio", resourceCulture);
             }
         }
         
@@ -100,20 +145,20 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica la richiesta di invio di ulteriore documentazione relativa ai titoli di viaggio per {0}.
+        /// </summary>
+        internal static string MessaggioNotificaRichiestaSuccessivaTitoliViaggio {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaRichiestaSuccessivaTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica del trasferimento per la sede di {0}..
         /// </summary>
         internal static string MessaggioNotificaTrasferimento {
             get {
                 return ResourceManager.GetString("MessaggioNotificaTrasferimento", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei titoli di viaggio per {0} sono concluse..
-        /// </summary>
-        internal static string MessaggioPraticaConclusaTitoloViaggio {
-            get {
-                return ResourceManager.GetString("MessaggioPraticaConclusaTitoloViaggio", resourceCulture);
             }
         }
         
@@ -136,20 +181,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica la richiesta per i biglietti di viaggio per {0}.
-        /// </summary>
-        internal static string MessaggioRichiestaTitoloViaggio {
-            get {
-                return ResourceManager.GetString("MessaggioRichiestaTitoloViaggio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}..
         /// </summary>
         internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
             get {
                 return ResourceManager.GetString("MessaggioRimborsoSuccessivoTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta dei titoli di viaggio..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaInizialeTitioliViaggio {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitioliViaggio", resourceCulture);
             }
         }
         
@@ -172,11 +217,47 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di ulteriori titoli di viaggio..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaSuccessivaTitioliViaggio {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaSuccessivaTitioliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione dei titoli di viaggio.
+        /// </summary>
+        internal static string OggettoAttivaRichiestaInizialeTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoAttivaRichiestaInizialeTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione ulteriori titoli di viaggio.
+        /// </summary>
+        internal static string OggettoAttivaRichiestaSuccessivaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoAttivaRichiestaSuccessivaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attivazione delle maggiorazioni familiari.
         /// </summary>
         internal static string OggettoAttivazioneMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("OggettoAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per i titoli di viaggio.
+        /// </summary>
+        internal static string OggettoNotificaRichiestaInizialeTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoNotificaRichiestaInizialeTitoloViaggio", resourceCulture);
             }
         }
         
@@ -190,20 +271,20 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta di invio di ulteriore documentazione per i titoli di viaggio.
+        /// </summary>
+        internal static string OggettoNotificaRichiestaSuccessivaTitoloViaggio {
+            get {
+                return ResourceManager.GetString("OggettoNotificaRichiestaSuccessivaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica del trasferimento.
         /// </summary>
         internal static string OggettoNotificaTrasferimento {
             get {
                 return ResourceManager.GetString("OggettoNotificaTrasferimento", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notifica della chiusura della pratica per i titoli di viaggio.
-        /// </summary>
-        internal static string OggettoPraticaConclusaTitoloViaggio {
-            get {
-                return ResourceManager.GetString("OggettoPraticaConclusaTitoloViaggio", resourceCulture);
             }
         }
         
@@ -222,15 +303,6 @@ namespace Resources {
         internal static string OggettoRichiestaPratichePassaportoConcluse {
             get {
                 return ResourceManager.GetString("OggettoRichiestaPratichePassaportoConcluse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per il titolo di viaggio.
-        /// </summary>
-        internal static string OggettoRichiestaTitoloViaggio {
-            get {
-                return ResourceManager.GetString("OggettoRichiestaTitoloViaggio", resourceCulture);
             }
         }
         

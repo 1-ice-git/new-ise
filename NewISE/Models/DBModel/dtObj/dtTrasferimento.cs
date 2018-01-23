@@ -235,13 +235,26 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region Titoli di viaggio
+                var tv = t.TITOLIVIAGGIO;
+                if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                {
+                    var latv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO);
 
-                //var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
-                //if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                //{
-                //    richiesteTV = tv.NOTIFICARICHIESTA;
-                //    concluseTV = tv.PRATICACONCLUSA;
-                //}
+                    if (latv?.Any() ?? false)
+                    {
+                        var atv = latv.First();
+
+                        //var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
+                        //if (tv != null && tv.IDTITOLOVIAGGIO > 0)
+                        //{
+                        richiesteTV = atv.NOTIFICARICHIESTA;
+                        concluseTV = atv.ATTIVAZIONERICHIESTA;
+                    }
+                    else
+                    {
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
+                    }
+                }
 
                 #endregion
             }
