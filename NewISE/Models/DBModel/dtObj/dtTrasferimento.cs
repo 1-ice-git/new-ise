@@ -250,10 +250,10 @@ namespace NewISE.Models.DBModel.dtObj
                         richiesteTV = atv.NOTIFICARICHIESTA;
                         concluseTV = atv.ATTIVAZIONERICHIESTA;
                     }
-                    else
-                    {
-                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
-                    }
+                    //else
+                    //{
+                    //    throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
+                    //}
                 }
 
                 #endregion
