@@ -98,7 +98,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
-                   libm = dtib.getListCoeffIndRichiamo(idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                 //  libm = dtib.getListCoeffIndRichiamo(idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)

@@ -19,6 +19,7 @@
 
 @using (Ajax.BeginForm("InserisciAliquoteContributive", "ParamAliquoteContr", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" },new { id = "formAliqContr" }))
 {
+
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
@@ -32,26 +33,34 @@
 
         @Html.HiddenFor(model => model.idTipoContributo)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto"  />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Aliquota Contributiva </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione.ToString()</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
+            </div>
         </div>
-
+        
         @*<div class="form-group">
             @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -178,6 +187,15 @@
         changeMonth: true,
         changeYear: true,
     });
+    
+    function AggiornaTutto()
+    {
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamAliquoteContr/AliquoteContributiveLivello";
@@ -197,6 +215,11 @@
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }
+
+        //var chktutto = false;
+        //if ($("#aggiornaTutto").is(":checked")) {
+        //    chktutto = true;
+        //}
         $.ajax({
             type: "POST",
             url: rotta,

@@ -10,6 +10,8 @@
     decimal idAliqContr = ViewData["idTipoContributo"] == null ? 0 : (decimal)ViewData["idTipoContributo"];
     decimal idTipoContributo = ViewData["idTipoContributo"] == null ? 0 : (decimal)ViewData["idTipoContributo"];
 
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
+
     if (TempData["Aliquote"] != null)
     {
         ViewBag.Aliquote= (IEnumerable<SelectListItem>)TempData["Aliquote"];
@@ -97,12 +99,17 @@
                         }
                         else
                         {
-                            if (dtib.EsistonoMovimentiPrima(item))
+                            if (item.idAliqContr == idMinimoNonAnnullato)
                             {
-                                <a href="#" onclick="EliminaAliquota(@item.idAliqContr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaAliquota(@item.idAliqContr);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
+                    
                 </td>
             </tr>
         }

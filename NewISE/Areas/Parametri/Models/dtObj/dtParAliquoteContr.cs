@@ -398,6 +398,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
+
         // public void DelAliquoteContributive(decimal idTipoAliqContr)
         public void DelAliquoteContributive(decimal idAliqContr)
         {
@@ -456,18 +457,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             }
         }
-        //public decimal Get_Id_PercentualMagConiugePrimoNonAnnullato(decimal idTipologiaConiuge)
-        //{
-        //    decimal tmp = 0;
-        //    using (ModelDBISE db = new ModelDBISE())
-        //    {
-        //        List<ALIQUOTECONTRIBUTIVE> libm = new List<ALIQUOTECONTRIBUTIVE>();
-        //        libm = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false
-        //        && a.IDTIPOCONTRIBUTO == idTipologiaConiuge).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
-        //        if (libm.Count != 0)
-        //            //tmp = libm.First().IDPERCMAGCONIUGE;
-        //    }
-        //    return tmp;
-        //}
+        public decimal Get_Id_AliquoteContributivePrimoNonAnnullato(decimal idTipologiaConiuge)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<ALIQUOTECONTRIBUTIVE> libm = new List<ALIQUOTECONTRIBUTIVE>();
+                libm = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOCONTRIBUTO == idTipologiaConiuge).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDALIQCONTR;
+            }
+            return tmp;
+        }
+        public bool AliquoteContributiveAnnullato(AliquoteContributiveModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == ibm.idAliqContr && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).First().ANNULLATO == true ? true : false;
+            }
+        }
     }
 }
