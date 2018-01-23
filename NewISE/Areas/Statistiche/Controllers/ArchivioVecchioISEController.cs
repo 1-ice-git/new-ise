@@ -2635,10 +2635,19 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND SPD_COD_SEDE = SED_COD_SEDE ";
                 Sql += "AND(SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY') ";
                 Sql += "AND SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY')) ";
+                Sql += "ORDER BY NOMINATIVO";
                 #endregion
-                OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
+                //string sql = "";
+                //sql += "SELECT * FROM TABLE WHERE NAME='JOHN SMITH'";
+                //OdbcDataAdapter adptr = new OdbcDataAdapter(sql, _connection);
+                //DataSet ds = new DataSet();
+                //adptr.Fill(ds);
+                //return ds;
+
+                OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
                 adp.Fill(ds18, ds18.V_ISE_STP_SPESE_DIVERSE.TableName);
+                
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report33.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet18", ds18.Tables[0]));
