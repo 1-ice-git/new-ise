@@ -3070,7 +3070,6 @@
     <Folder Include="Lib\locale\" />
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
-    <Folder Include="Views\Anticipi\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
