@@ -4,29 +4,6 @@
     box-sizing: border-box;
 }
 
-::-webkit-input-placeholder { /* WebKit browsers */
-    color: #EEEEEE;
-}
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: #EEEEEE;
-}
-
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: #EEEEEE;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: #EEEEEE;
-}
-
-html {
-    /*height: 99%;
-    width: 99% !important;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: auto;*/
-}
 
 body {
     background-color: whitesmoke;
@@ -102,25 +79,28 @@ footer {
 }
 
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: lightgray;
-    font-weight: bold;
-}
 
-::-moz-placeholder { /* Firefox 19+ */
-    color: lightgray;
-    font-weight: bold;
-}
 
-:-ms-input-placeholder { /* IE 10+ */
+.form-control::-webkit-input-placeholder {
     color: lightgray;
-    font-weight: bold;
 }
-
-:-moz-placeholder { /* Firefox 18- */
+/* WebKit, Blink, Edge */
+.form-control:-moz-placeholder {
     color: lightgray;
-    font-weight: bold;
 }
+/* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder {
+    color: lightgray;
+}
+/* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder {
+    color: lightgray;
+}
+/* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder {
+    color: lightgray;
+}
+/* Microsoft Edge */
 
 .DivSfondoBordo {
     box-shadow: 10px 10px 5px #808080;

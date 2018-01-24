@@ -83,8 +83,6 @@ namespace NewISE.Controllers
 
                         rMatricola.Insert(0, new SelectListItem() { Text = "", Value = "" });
 
-
-
                         rNominativo.Insert(0, new SelectListItem() { Text = "", Value = "" });
 
                         if (matricola == string.Empty)

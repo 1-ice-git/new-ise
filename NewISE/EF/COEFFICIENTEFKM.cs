@@ -17,7 +17,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COEFFICIENTEFKM()
         {
-            this.UFFICI = new HashSet<UFFICI>();
             this.TEPARTENZA = new HashSet<TEPARTENZA>();
             this.TERIENTRO = new HashSet<TERIENTRO>();
         }
@@ -31,8 +30,6 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual DEFFASCIACHILOMETRICA DEFFASCIACHILOMETRICA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UFFICI> UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEPARTENZA> TEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -16,7 +16,7 @@
         </div>
     </div>
 </div>
-   
+
 <div class="row">
     <div class="col-xs-7" style="margin-top: 10px; margin-bottom: 10px">
         <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTV" onclick="ModalNotificaRichiesta();">
@@ -256,43 +256,43 @@
 
 
     function ConfermaNotificaRichiestaTV() {
-    //debugger;
-    var rotta = "/TitoliViaggio/ConfermaNotificaRichiestaTV";
-    var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        //debugger;
+        var rotta = "/TitoliViaggio/ConfermaNotificaRichiestaTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
 
-    $.ajax({
-        type: "POST",
-        url: rotta,
-        data: { idTitoliViaggio: idTitoliViaggio },
-        dataType: 'json',
-        beforeSend: function () {
-            //debugger;
-            VerificaAutenticazione();
-            //$("#DialogNewDoc").dialog("destroy");
-            //$("#divEffettoLoadAutNoDoc").show("slow");
-        },
-        success: function (result) {
-            //debugger;
-            if (result.err == "") {
-                ElencoTitoliViaggio();
-                GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
-                InfoElaborazioneAjax(result.msg);
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElencoTitoliViaggio();
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+                    InfoElaborazioneAjax(result.msg);
 
 
-            } else {
-                ErroreElaborazioneAjax(result.err);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
             }
-        },
-        complete: function () {
 
-        },
-        error: function (jqXHR, textStatus, errorThrow) {
-            //debugger;
-            var msg = errorThrow.err;
-            ErroreElaborazioneAjax(msg);
-        }
-
-    });
+        });
     }
 
     function ConfermaAnnullaRichiestaTV() {
@@ -330,7 +330,7 @@
     }
 
     function ConfermaAttivaRichiestaTV() {
-        debugger;
+        //debugger;
         var rotta = "/TitoliViaggio/ConfermaAttivaRichiestaTV";
         var idTitoliViaggio = parseInt('@idTitoliViaggio');
 

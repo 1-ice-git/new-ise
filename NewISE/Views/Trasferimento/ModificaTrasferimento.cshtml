@@ -269,7 +269,7 @@
     @if (ricaricaTrasferimenti)
     {
          @:ElencoTrasferimento();
-            }
+                                        }
 
 
 
@@ -278,7 +278,15 @@
 
 
     function LetturaParametriGestioneTrasferimento() {
-        var idTrasferimento = parseInt($('#idTrasferimento').val());
+
+        //debugger;
+
+        var idTrasferimento = parseInt($('#hidTrasferimento').val());
+
+        if (isNaN(idTrasferimento)) {
+            return;
+        }
+
         var rotta = "/Trasferimento/LetturaParametriGestioneTrasferimento";
 
         $.ajax({
@@ -322,7 +330,7 @@
                 Sblocca();
             },
             error: function (error) {
-                //debugger;
+                debugger;
                 Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);

@@ -33,8 +33,8 @@
     <thead>
         <tr>
             @*<th>
-                @Html.DisplayNameFor(model => model.Livello.DescLivello)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.Livello.DescLivello)
+                </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -61,8 +61,8 @@
         {
             <tr>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                    </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -92,13 +92,13 @@
                     @using (dtPercMaggAbitazione dtib = new dtPercMaggAbitazione())
                     {
                         @*if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }*@
+                            {
+                                <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }*@
                     if (dtib.PercMaggAbitazioneAnnullato(item))
                     {
                         <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
@@ -166,7 +166,7 @@
     $("#btnInsNuovaPercMaggAbitaz").button();
 
     function PrelevaPVPercMaggAbitaz() {
-     //   debugger;
+        //   debugger;
         rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
@@ -186,9 +186,9 @@
         }
 
         var chk = false;
-            if ($("#escludiAnnullati").is(":checked")) {
-                chk = true;
-            }
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $.ajax({
             type: "POST",
@@ -215,7 +215,7 @@
                 //                $("#Centro").getNiceScroll().resize();
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                debugger;
+                //debugger;
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
@@ -245,9 +245,9 @@
         }
 
         var chk = false;
-            if ($("#escludiAnnullati").is(":checked")) {
-                chk = true;
-            }
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $.ajax({
             type: "POST",
@@ -296,9 +296,9 @@
         }
 
         var chk = false;
-            if ($("#escludiAnnullati").is(":checked")) {
-                chk = true;
-            }
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -353,5 +353,5 @@
         });
 
     }
-    
+
 </script>

@@ -1163,7 +1163,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
-                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                        var ld = amf.DOCUMENTI.Where(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
                         if (ld?.Any() ?? false)
                         {
                             docFormulario = true;
@@ -1192,7 +1192,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 foreach (var c in lc)
                                 {
-                                    var ndocc = c.DOCUMENTI.Count;
+                                    var ndocc = c.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
 
                                     if (ndocc > 0)
                                     {
@@ -1236,7 +1236,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 foreach (var f in lf)
                                 {
-                                    var ndocf = f.DOCUMENTI.Count;
+                                    var ndocf = f.DOCUMENTI.Count(a => a.MODIFICATO == false && a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita);
                                     if (ndocf > 0)
                                     {
                                         siDocFigli = true;

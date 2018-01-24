@@ -98,6 +98,7 @@
 
         var idTrasferimento = $("#hidTrasferimento").val();
         var matricola = $('#hMatricola').val();
+
         rotta = "/Trasferimento/NuovoTrasferimento";
 
         $.ajax({
@@ -384,12 +385,15 @@
             GestioneAbilitazioneMenu(idTrasferimento);
         }
         else {
+            //debugger;
+
             SvuotaTab();
 
             //$("#lkNuovoTrasferimento").attr("disabled", "disabled");
             //$("#mnNuovoTrasferimento").addClass("disabled");
 
             $("#lkGestioneTrasferimento").attr("disabled", "disabled");
+            $("#mnGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
 
             $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
@@ -464,9 +468,9 @@
         //    $("#lkRichiamo").removeAttr("onClick");
         //}
 
-        $("#lkSospensione").removeAttr("disabled");
-        $("#mnSospensione").removeClass("disabled");
-        $('#lkSospensione').attr('onClick', 'Sospensione();');
+        //$("#lkSospensione").removeAttr("disabled");
+        //$("#mnSospensione").removeClass("disabled");
+        //$('#lkSospensione').attr('onClick', 'Sospensione();');
 
         $("#lkRichiamo").removeAttr("disabled");
         $("#mnRichiamo").removeClass("disabled");

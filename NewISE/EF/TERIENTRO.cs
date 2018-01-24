@@ -18,8 +18,8 @@ namespace NewISE.EF
         public TERIENTRO()
         {
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
-            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
             this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
         }
     
         public decimal IDTERIENTRO { get; set; }
@@ -28,8 +28,8 @@ namespace NewISE.EF
         public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
     }
 }
