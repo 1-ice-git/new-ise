@@ -60,7 +60,7 @@ namespace NewISE.Models.DBModel.dtObj
                         if (last_amf != null || last_amf.IDATTIVAZIONEMAGFAM > 0)
                         {
                             //elenca le attivazioni aperte
-                            var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                            var lamf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == false && a.RICHIESTAATTIVAZIONE == false).OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
                             //se ci sono esegue i controlli
                             if (lamf?.Any() ?? false)
@@ -78,7 +78,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                                         Attivazione = amf.ATTIVAZIONEMAGFAM;
 
-                                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
                                         if (ld?.Any() ?? false)
                                         {
                                             docFormulario = true;
@@ -182,7 +182,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 Attivazione = last_amf.ATTIVAZIONEMAGFAM;
 
                                 //comunque esegue i controlli sui dati dell'attivazione
-                                var ld = last_amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                                var ld = last_amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
                                 if (ld?.Any() ?? false)
                                 {
                                     docFormulario = true;
@@ -334,7 +334,7 @@ namespace NewISE.Models.DBModel.dtObj
                         richiestaAttivazione = amf.RICHIESTAATTIVAZIONE;
                         Attivazione = amf.ATTIVAZIONEMAGFAM;
 
-                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari);
+                        var ld = amf.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Maggiorazioni_Familiari).ToList();
                         if (ld?.Any() ?? false)
                         {
                             docFormulario = true;
@@ -1229,7 +1229,7 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             //crea una nuova attivazione
-                            var newamf = this.CreaAttivazione(idMaggiorazioniFamiliari);
+                            var newamf = this.CreaAttivazione(idMaggiorazioniFamiliari,db);
 
                             f.MODIFICATO = true;
 
@@ -1443,15 +1443,15 @@ namespace NewISE.Models.DBModel.dtObj
                         if (amf.ATTIVAZIONEMAGFAM)
                         {
                             //crea una nuova attivazione
-                            var newamf = this.CreaAttivazione(fm.idMaggiorazioniFamiliari);
+                            var newamf = this.CreaAttivazione(fm.idMaggiorazioniFamiliari,db);
 
                             fm.idFigli = f.IDFIGLI;
-                            int idx = db.SaveChanges();
+                            //int idx = db.SaveChanges();
 
-                            if (idx <= 0)
-                            {
-                                throw new Exception("Impossibile inserire un nuovo figlio.");
-                            }
+                            //if (idx <= 0)
+                            //{
+                            //    throw new Exception("Impossibile inserire un nuovo figlio.");
+                            //}
                             idAtt = newamf.IDATTIVAZIONEMAGFAM;
 
                         }
@@ -1521,7 +1521,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var lamf =
                     mf.ATTIVAZIONIMAGFAM.Where(
                         a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false)
-                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM);
+                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
                 if (lamf?.Any() ?? false)
                 {
                     var amf = lamf.First();
@@ -1542,7 +1542,7 @@ namespace NewISE.Models.DBModel.dtObj
                 else
                 {
                     // se non trova attivazioni in corso ne crea una nuova
-                    var newamf = this.CreaAttivazione(idMaggiorazioniFamiliari);
+                    var newamf = this.CreaAttivazione(idMaggiorazioniFamiliari,db);
 
                     // aggiunge il formulario
                     var att = db.ATTIVAZIONIMAGFAM.Find(newamf.IDATTIVAZIONEMAGFAM);
@@ -1594,7 +1594,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //var att = c.ATTIVAZIONIMAGFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDATTIVAZIONEMAGFAM).First(); ;
                     if (c?.IDCONIUGE > 0)
                     {
-                        var ladfc = c.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM);
+                        var ladfc = c.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
 
 
                         if (ladfc?.Any() ?? false)
@@ -1637,7 +1637,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var f = db.FIGLI.Find(idFiglio);
                     if (f?.IDFIGLI > 0)
                     {
-                        var ladff = f.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM);
+                        var ladff = f.ALTRIDATIFAM.Where(x => x.ANNULLATO == false).OrderByDescending(x => x.IDALTRIDATIFAM).ToList();
 
                         if (ladff?.Any() ?? false)
                         {
@@ -1696,7 +1696,7 @@ namespace NewISE.Models.DBModel.dtObj
                         // se non esiste attivazione aperta la creo altrimenti la uso
                         if (attmf == null || attmf.IDATTIVAZIONEMAGFAM == 0)
                         {
-                            var new_amf = this.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+                            var new_amf = this.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI,db);
                             attmf_aperta = new_amf;
                         }
                         else
@@ -1790,7 +1790,7 @@ namespace NewISE.Models.DBModel.dtObj
                         // se non esiste attivazione aperta la creo altrimenti la uso
                         if (attmf == null || attmf.IDATTIVAZIONEMAGFAM == 0)
                         {
-                            var new_amf = this.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+                            var new_amf = this.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI,db);
                             attmf_aperta = new_amf;
 
                         }
@@ -2454,29 +2454,26 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-        public ATTIVAZIONIMAGFAM CreaAttivazione(decimal idMaggiorazioniFamiliari)
+        public ATTIVAZIONIMAGFAM CreaAttivazione(decimal idMaggiorazioniFamiliari, ModelDBISE db)
         {
-            using (var db = new ModelDBISE())
+            ATTIVAZIONIMAGFAM new_amf = new ATTIVAZIONIMAGFAM()
             {
-                ATTIVAZIONIMAGFAM new_amf = new ATTIVAZIONIMAGFAM()
-                {
-                    IDMAGGIORAZIONIFAMILIARI = idMaggiorazioniFamiliari,
-                    RICHIESTAATTIVAZIONE = false,
-                    DATARICHIESTAATTIVAZIONE = null,
-                    ATTIVAZIONEMAGFAM = false,
-                    DATAATTIVAZIONEMAGFAM = null,
-                    ANNULLATO = false,
-                    DATAVARIAZIONE = DateTime.Now,
-                    DATAAGGIORNAMENTO = DateTime.Now,
-                };
-                db.ATTIVAZIONIMAGFAM.Add(new_amf);
+                IDMAGGIORAZIONIFAMILIARI = idMaggiorazioniFamiliari,
+                RICHIESTAATTIVAZIONE = false,
+                DATARICHIESTAATTIVAZIONE = null,
+                ATTIVAZIONEMAGFAM = false,
+                DATAATTIVAZIONEMAGFAM = null,
+                ANNULLATO = false,
+                DATAVARIAZIONE = DateTime.Now,
+                DATAAGGIORNAMENTO = DateTime.Now,
+            };
+            db.ATTIVAZIONIMAGFAM.Add(new_amf);
 
-                if (db.SaveChanges() <= 0)
-                {
-                    throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione."));
-                }
-                return new_amf;
+            if (db.SaveChanges() <= 0)
+            {
+                throw new Exception(string.Format("Non è stato possibile creare una nuova attivazione."));
             }
+            return new_amf;
         }
 
         public IList<VariazioneConiugeModel> GetListaAttivazioniConiugeByIdMagFam(decimal idMaggiorazioniFamiliari)

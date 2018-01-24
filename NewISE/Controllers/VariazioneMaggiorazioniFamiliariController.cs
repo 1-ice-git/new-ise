@@ -1131,51 +1131,52 @@ namespace NewISE.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtPensione dtp = new dtPensione())
+                    using (ModelDBISE db = new ModelDBISE())
                     {
-                        using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
-                        {
-                            try
+                        using (dtPensione dtp = new dtPensione())
+                        {   
+                            using (dtVariazioniMaggiorazioneFamiliare dtamf = new dtVariazioniMaggiorazioneFamiliare())
                             {
-                                dtp.VerificaDataInizioPensione(idConiuge, pcm.dataInizioValidita);
-                            }
-                            catch (Exception ex)
-                            {
-                                ModelState.AddModelError("", ex.Message);
-                                return PartialView("NuovoImportoPensione", pcm);
-                            }
-                            pcm.dataAggiornamento = DateTime.Now;
-                            pcm.annullato = false;
-                            if (!pcm.dataFineValidita.HasValue)
-                            {
-                                pcm.dataFineValidita = Utility.DataFineStop();
-                            }
+                                try
+                                {
+                                    dtp.VerificaDataInizioPensione(idConiuge, pcm.dataInizioValidita);
+                                }
+                                catch (Exception ex)
+                                {
+                                    ModelState.AddModelError("", ex.Message);
+                                    return PartialView("NuovoImportoPensione", pcm);
+                                }
+                                pcm.dataAggiornamento = DateTime.Now;
+                                pcm.annullato = false;
+                                if (!pcm.dataFineValidita.HasValue)
+                                {
+                                    pcm.dataFineValidita = Utility.DataFineStop();
+                                }
 
-                            ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
+                                ATTIVAZIONIMAGFAM attmf_aperta = new ATTIVAZIONIMAGFAM();
 
-                            var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
+                                var attmf_rif = dtamf.GetAttivazioneById(idConiuge, EnumTipoTabella.Coniuge);
 
-                            var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
+                                var attmf = dtamf.GetAttivazioneAperta(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
 
-                            // se non esiste attivazione aperta la creo altrimenti la uso
-                            if (attmf.IDATTIVAZIONEMAGFAM == 0)
-                            {
-                                ATTIVAZIONIMAGFAM new_amf = dtamf.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI);
-                                attmf_aperta = new_amf;
-                            }
-                            else
-                            {
-                                attmf_aperta = attmf;
-                            }
+                                // se non esiste attivazione aperta la creo altrimenti la uso
+                                if (attmf.IDATTIVAZIONEMAGFAM == 0)
+                                {
+                                    ATTIVAZIONIMAGFAM new_amf = dtamf.CreaAttivazione(attmf_rif.IDMAGGIORAZIONIFAMILIARI, db);
+                                    attmf_aperta = new_amf;
+                                }
+                                else
+                                {
+                                    attmf_aperta = attmf;
+                                }
 
-                            decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
+                                decimal idTrasf = attmf_aperta.IDMAGGIORAZIONIFAMILIARI;
 
-                            using (var db = new ModelDBISE())
-                            {
                                 dtp.SetNuovoImportoPensione(pcm, idConiuge, attmf_aperta.IDATTIVAZIONEMAGFAM, db);
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento nuovo importo pensione coniuge (" + idConiuge + ")", "PENSIONI", db, idTrasf, pcm.idPensioneConiuge);
                             }
                         }
+
                     }
                 }
                 else
@@ -1736,7 +1737,7 @@ namespace NewISE.Controllers
                                                         if (last_att.RICHIESTAATTIVAZIONE)
                                                         {
                                                             var idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareDocumento(idDoc);
-                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari);
+                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari,db);
 
                                                             dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -1764,7 +1765,7 @@ namespace NewISE.Controllers
                                                         if (last_att.RICHIESTAATTIVAZIONE)
                                                         {
                                                             var idMaggiorazioniFamiliari = dtvmf.GetMaggiorazioneFamiliareDocumento(idDoc);
-                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari);
+                                                            var newamf = dtvmf.CreaAttivazione(idMaggiorazioniFamiliari,db);
 
                                                             dtvmf.AssociaDocumentoAttivazione(newamf.IDATTIVAZIONEMAGFAM, dm.idDocumenti, db);
                                                         }
@@ -1868,7 +1869,7 @@ namespace NewISE.Controllers
                                                             if (last_att.RICHIESTAATTIVAZIONE)
                                                             {
                                                                 //att.ANNULLATO = true;
-                                                                var newamf = dtvmf.CreaAttivazione(idMF);
+                                                                var newamf = dtvmf.CreaAttivazione(idMF,db);
 
                                                                 if (newamf.IDATTIVAZIONEMAGFAM > 0)
                                                                 {
@@ -1901,7 +1902,7 @@ namespace NewISE.Controllers
                                                             if (last_att.RICHIESTAATTIVAZIONE)
                                                             {
                                                                 //att.ANNULLATO = true;
-                                                                var newamf = dtvmf.CreaAttivazione(idMF);
+                                                                var newamf = dtvmf.CreaAttivazione(idMF,db);
 
                                                                 if (newamf.IDATTIVAZIONEMAGFAM > 0)
                                                                 {
