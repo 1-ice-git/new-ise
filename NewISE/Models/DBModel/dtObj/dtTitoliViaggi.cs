@@ -443,7 +443,11 @@ namespace NewISE.Models.DBModel.dtObj
                         idFigli = (decimal)adff.IDFIGLI,
                         indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                         nazionalita = adff.NAZIONALITA,
-                        provinciaResidenza = adff.PROVINCIARESIDENZA
+                        provinciaResidenza = adff.PROVINCIARESIDENZA,
+                        capNascita=adff.CAPNASCITA,
+                        comuneNascita=adff.COMUNENASCITA,
+                        dataNascita=adff.DATANASCITA,
+                        provinciaNascita=adff.PROVINCIANASCITA
                     };
 
                 }
@@ -661,15 +665,83 @@ namespace NewISE.Models.DBModel.dtObj
                 if (tv != null && tv.IDTITOLOVIAGGIO > 0)
                 {
 
-                    //var latv = tv.ATTIVAZIONETITOLIVIAGGIO
-                    //        .Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA == false && a.ATTIVAZIONERICHIESTA == false)
-                    //        .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
                     var latv = tv.ATTIVAZIONETITOLIVIAGGIO
                             .Where(a => a.ANNULLATO == false)
                             .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
                     if (latv?.Any() ?? false)
                     {
                         atv = latv.First();
+
+
+                        //verifico se su ConiugeTitoloViaggio esistono i record relativi ai coniugi residenti
+                        //(se non esistono li creo)
+                        var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+                        if(lctv.Count()==0)
+                        {
+                            var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
+                            if (lc?.Any() ?? false)
+                            {
+                                foreach (var c in lc)
+                                {
+                                    //creo titolo viaggio coniuge
+                                    CONIUGETITOLIVIAGGIO ctv = new CONIUGETITOLIVIAGGIO()
+                                    {
+                                        IDCONIUGE = c.IDCONIUGE,
+                                        IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
+                                        IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                                        RICHIEDITITOLOVIAGGIO = false,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+                                    db.CONIUGETITOLIVIAGGIO.Add(ctv);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore nella fase di creazione del titolo di viaggio del coniuge " + c.NOME.ToString() + " " + c.COGNOME.ToString());
+                                    }
+                                    else
+                                    {
+                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                            "Inserimento titolo viaggio coniuge.", "CONIUGETITOLOVIAGGIO", db, idTitoliViaggio,
+                                            ctv.IDCONIUGETITOLIVIAGGIO);
+                                    }
+                                }
+                            }
+                        }
+
+                        var lftv = tv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+                        if (lftv.Count() == 0)
+                        {
+                            //cerco eventuali figli residenti e ne creo il titolo di viaggio
+                            var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) && a.MODIFICATO==false).ToList();
+                            if (lf?.Any() ?? false)
+                            {
+                                foreach (var f in lf)
+                                {
+                                    //creo titolo viaggio figlio
+                                    FIGLITITOLIVIAGGIO ftv = new FIGLITITOLIVIAGGIO()
+                                    {
+                                        IDFIGLI = f.IDFIGLI,
+                                        IDTITOLOVIAGGIO = atv.IDTITOLOVIAGGIO,
+                                        IDATTIVAZIONETITOLIVIAGGIO = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                                        RICHIEDITITOLOVIAGGIO = false,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        ANNULLATO = false
+                                    };
+                                    db.FIGLITITOLIVIAGGIO.Add(ftv);
+                                    if (db.SaveChanges() <= 0)
+                                    {
+                                        throw new Exception("Errore nella fase di creazione del titolo di viaggio del figlio " + f.NOME.ToString() + " " + f.COGNOME.ToString());
+                                    }
+                                    else
+                                    {
+                                        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
+                                            "Inserimento titolo viaggio figli.", "FIGLITITOLIVIAGGIO", db, idTitoliViaggio,
+                                            ftv.IDFIGLITITOLIVIAGGIO);
+                                    }
+                                }
+
+                            }
+                        }
                     }
                     else
                     {
@@ -1414,7 +1486,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         //richiesta figli
                         var ltvf = last_atv.FIGLITITOLIVIAGGIO.Where(a => a.RICHIEDITITOLOVIAGGIO == true).ToList();
-                        if (ltvc?.Any() ?? false)
+                        if (ltvf?.Any() ?? false)
                         {
                             if (conta_attivazioni == 1)
                             {
@@ -1611,7 +1683,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         //db.TITOLIVIAGGIORICHIEDENTE.Add(tvr_New);
                                         atv_New.TITOLIVIAGGIORICHIEDENTE.Add(tvr_New);
-
+                                        tvr_Old.ANNULLATO = true;
                                         int k = db.SaveChanges();
 
                                         if (k <= 0)
@@ -1655,6 +1727,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             //db.CONIUGETITOLIVIAGGIO.Add(ctv_New);
 
                                             atv_New.CONIUGETITOLIVIAGGIO.Add(ctv_New);
+                                            ctv_Old.ANNULLATO = true;
 
                                             int x = db.SaveChanges();
     
@@ -1700,6 +1773,7 @@ namespace NewISE.Models.DBModel.dtObj
     
                                             //db.FIGLITITOLIVIAGGIO.Add(ftv_New);
                                             atv_New.FIGLITITOLIVIAGGIO.Add(ftv_New);
+                                            ftv_Old.ANNULLATO = true;
 
                                             int z = db.SaveChanges();
     

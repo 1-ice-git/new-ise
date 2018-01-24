@@ -1678,8 +1678,8 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
                         amf.RICHIESTAATTIVAZIONE = true;
-                        amf.DATARICHIESTAATTIVAZIONE = DateTime.Now.Date;
-                        amf.DATAAGGIORNAMENTO = DateTime.Now.Date;
+                        amf.DATARICHIESTAATTIVAZIONE = DateTime.Now;
+                        amf.DATAAGGIORNAMENTO = DateTime.Now;
 
                         var i = db.SaveChanges();
                         if (i <= 0)
