@@ -4,22 +4,22 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
     <a id="btnInsNuovoCoeffIndRichiamo" href="#" onclick="NuovoCoeffIndRichiamo();">Inserisci nuovo Coeff. Ind. Richiamo</a>
-
 </p>
 
 <p>
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.Label("lblCoeffIndRichiamo", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
                 @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffIndRichiamo();" })
             </div>
         </div>
-    </div>
+    </div>*@
 </p>
 
 <table id="tbCoeffIndRichiamo" class="display" cellspacing="0">
@@ -70,17 +70,21 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">                    
-                    @using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
+                    @using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
                     {
                         if (dtib.CoeffIndRichiamoAnnullato(item))
                         {
-                              <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                            if (dtib.EsistonoMovimentiPrima(item))
+                            if (item.idCoefIndRichiamo == idMinimoNonAnnullato)
                             {
-                                  <a href="#" onclick="EliminaCoeffIndRichiamo(@item.idCoefIndRichiamo);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaCoeffIndRichiamo(@item.idCoefIndRichiamo);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
@@ -184,20 +188,20 @@
 
 
     function NuovoCoeffIndRichiamo() {
-        //debugger;
-
+       
         var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndRichiamo";
         var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
-        var chk = false;
-
+       
         if (isNaN(idRiduzioni)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un coeff. per procedere.");
-            return false;
+            ////$("#divPViewParametri").empty();
+            //AlertDialog("Selezionare un coeff. per procedere.");
+            //return false;
+            idRiduzioni = 0;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -229,27 +233,22 @@
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
-
         });
-
     }
 
     function EliminaCoeffIndRichiamo(id) {
         //debugger;
         var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaCoeffIndRichiamo";
 
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
+        //var idRiduzioni =  parseInt($("#idRiduzioni").select2('val'));
+        var idRiduzioni = 0;
+
+        //if (isNaN(idRiduzioni)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+
        
-
-        if (isNaN(idRiduzioni)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
-
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;

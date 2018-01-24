@@ -18,20 +18,22 @@ namespace NewISE.Models.DBModel
         public decimal idDefKm { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data ini. validità")]
+        [Display(Name = "Data inizio validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
-        [CustomValidation(typeof(dtCoeffFasciaKm), "VerificaDataInizio")]
+        [CustomValidation(typeof(dtParCoefficienteKm), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
-        [Display(Name = "Data fin. validità")]
+        [Display(Name = "Data fine validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
 
+        [Required(ErrorMessage = "Il valore per il coefficiente è richiesto")]
+        [Display(Name = "Coefficiente Km")]
         public decimal coefficienteKm { get; set; }
 
-        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
+        //[Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         //[DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         [DisplayFormat(DataFormatString = "{0:d}")]

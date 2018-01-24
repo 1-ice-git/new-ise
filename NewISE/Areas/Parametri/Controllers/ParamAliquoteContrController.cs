@@ -124,7 +124,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtAliquoteContr dtib = new dtAliquoteContr())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_AliquoteContributivePrimoNonAnnullato(idTipoContributo);
-                    libm = dtib.getListAliquoteContributive(llm.Where(a => a.idTipoAliqContr == idTipoContributo).First().idTipoAliqContr, escludiAnnullati).OrderBy(a => a.idTipoContributo).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListAliquoteContributive(idTipoContributo, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -229,8 +229,7 @@ namespace NewISE.Areas.Parametri.Controllers
             try
             {
                 using (dtAliquoteContr dtib = new dtAliquoteContr())
-                {
-                    //dtib.DelAliquoteContributive(idTipoAliqContr);
+                {                 
                     dtib.DelAliquoteContributive(idAliqContr);//corretto da confermare                    
                 }
                 var r = new List<SelectListItem>();

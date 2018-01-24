@@ -14,7 +14,7 @@
     string CoeffFasciaKm = lm.km;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idDefKm = lm.idDefKm;
-
+    var errori = ViewData.ModelState;
 }
 
 @using (Ajax.BeginForm("InserisciCoeffFasciaKm", "ParamCoeffFasciaKm", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovoCoeffFasciaKm" }))
@@ -31,6 +31,7 @@
         </div>
         @Html.HiddenFor(model => model.idDefKm)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
 
         <div class="form-group">
             <div class="col-xs-2 text-right">
@@ -44,21 +45,21 @@
         </div>
                 
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
             </div>
         </div>
-
+              
         <div class="form-group ">
             @Html.LabelFor(model => model.coefficienteKm, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -66,14 +67,6 @@
                 @Html.ValidationMessageFor(model => model.coefficienteKm, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.dataAggiornamento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataAggiornamento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataAggiornamento, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -90,6 +83,34 @@
 </div>
 
 <script type="text/javascript">
+
+     @foreach(var e in errori)
+    {
+        if(e.Value.Errors.Count>0)
+        {
+            @:DialogModalError('True');
+            break;
+        }
+    }
+
+    //$('#formAliqContr').submit(function () {
+    //  //  debugger;
+    //    var form = $(this);
+    //    if (!form.valid()) {
+    //        DialogModalError('True');
+    //    }
+    //});
+
+    function DialogModalError(err) {
+        //debugger;
+        if (err == 'True') {
+            $('#myModalErrorModel').modal('toggle');
+        }
+    }
+
+
+
+
     Globalize.culture("it-IT");
 
     $("#valore").autoNumeric('init',
@@ -151,20 +172,32 @@
         changeYear: true,
     });
 
+    function AggiornaTutto() {
+        
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
+   
+
     function TornaElencoIb() {
         rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
 
         var idDefKm = parseFloat('@idDefKm');
-        var chk = true;
+       
 
         if (isNaN(idDefKm)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
+
 
         $.ajax({
             type: "POST",
@@ -197,5 +230,6 @@
             }
 
         });
+       
     }
 </script>

@@ -32,8 +32,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                //dataFineValidita = e.DATAFINEVALIDITA,
+                               // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
@@ -88,27 +88,28 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
+                    if (escludiAnnullati == true)
+                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+                    else
+                        lib = db.COEFFICIENTEINDRICHIAMO.ToList();
 
                     libm = (from e in lib
                             select new CoefficienteRichiamoModel()
                             {
-                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                // dataFineValidita =  e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
                                 coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                             }).ToList();
-                }
-
+            }
                 return libm;
             }
             catch (Exception ex)
@@ -466,6 +467,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 vr = new ValidationResult("La data di inizio validità è richiesta.");
             }
             return vr;
+        }
+        
+        public decimal Get_Id_CoeffIndRichiamoPrimoNonAnnullato()
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDCOEFINDRICHIAMO;
+            }
+            return tmp;
         }
 
     }

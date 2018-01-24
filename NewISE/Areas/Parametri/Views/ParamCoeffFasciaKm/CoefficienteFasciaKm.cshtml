@@ -4,6 +4,7 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -46,12 +47,12 @@
         @foreach (var item in Model)
         {
             <tr>
-            <td>
+            <td style="text-align:center;">
                  @Html.DisplayFor(modelItem => item.dataInizioValidita)
             </td>
                @if (item.dataFineValidita != Utility.DataFineStop())
                 {
-                <td class="text-center">
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataFineValidita)
                 </td>
                }
@@ -65,27 +66,20 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
-                <td style="text-align:center;">
-                    @*@using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
-                    {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                    }*@
+                <td style="text-align:center;">                    
                     @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                     {
                         if (dtib.CoefficienteFasciaKmAnnullato(item))
                         {
-                               <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                            if (dtib.EsistonoMovimentiPrima(item))
+                            if (item.idCfKm == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
                             {
                                 <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
@@ -103,6 +97,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
