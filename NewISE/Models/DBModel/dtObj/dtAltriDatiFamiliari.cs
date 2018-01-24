@@ -528,7 +528,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         /// <exception cref="Exception"></exception>
-        public void EditAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adfm)
+        public void EditAltriDatiFamiliariConiuge(AltriDatiFamConiugeModel adfm, decimal idAttivazioneMagFam)
         {
             const string vConiugeFiglio = "Coniuge";
 
@@ -578,6 +578,14 @@ namespace NewISE.Models.DBModel.dtObj
                             if (db.SaveChanges() > 0)
                             {
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
+
+                                using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                {
+                                    dtamf.AssociaAltriDatiFamiliari(idAttivazioneMagFam, adfNew.IDALTRIDATIFAM, db);
+                                }
+
+                                //idAdfConiugeNew = adfNew.IDALTRIDATIFAM;
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                             else
@@ -611,7 +619,7 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         /// <exception cref="Exception"></exception>
-        public void EditAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adfm)
+        public void EditAltriDatiFamiliariFiglio(AltriDatiFamFiglioModel adfm, decimal idAttivazioneMagFam)
         {
             const string vConiugeFiglio = "Figlio";
 
@@ -662,6 +670,14 @@ namespace NewISE.Models.DBModel.dtObj
                                 if (db.SaveChanges() > 0)
                                 {
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di altri dati familiari (" + vConiugeFiglio + ")", "ALTRIDATIFAM", db, idTrasf, adfNew.IDALTRIDATIFAM);
+
+                                    using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
+                                    {
+                                        dtamf.AssociaAltriDatiFamiliari(idAttivazioneMagFam, adfNew.IDALTRIDATIFAM, db);
+                                    }
+
+                                    //idAdfFiglioNew = adf.IDALTRIDATIFAM;
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 else

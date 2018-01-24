@@ -665,16 +665,19 @@ namespace NewISE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ConfermaModificaAdfConiuge(AltriDatiFamConiugeModel adfm, decimal idAttivazioneMagFam)
         {
+            //decimal idAdfConiugeNew = 0;
+
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
                 adfm.annullato = false;
 
+
                 if (ModelState.IsValid)
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        dtadf.EditAltriDatiFamiliariConiuge(adfm);
+                        dtadf.EditAltriDatiFamiliariConiuge(adfm, idAttivazioneMagFam);
                     }
                 }
                 else
@@ -716,8 +719,10 @@ namespace NewISE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfermaModificaAdfFiglio(AltriDatiFamFiglioModel adfm)
+        public ActionResult ConfermaModificaAdfFiglio(AltriDatiFamFiglioModel adfm, decimal idAttivazioneMagFam)
         {
+            //decimal idAdfFiglioNew = 0;
+
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
@@ -727,14 +732,12 @@ namespace NewISE.Controllers
                 {
                     using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                     {
-                        dtadf.EditAltriDatiFamiliariFiglio(adfm);
+                        dtadf.EditAltriDatiFamiliariFiglio(adfm, idAttivazioneMagFam);
                     }
                 }
                 else
                 {
-
                     return PartialView("ModificaAltriDatiFamiliariFiglio", adfm);
-
                 }
             }
             catch (Exception ex)
@@ -742,7 +745,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adfm.idFigli });
+            return RedirectToAction("AltriDatiFamiliariFiglio", new { idFiglio = adfm.idFigli, idAttivazioneMagFam = idAttivazioneMagFam });
 
         }
 

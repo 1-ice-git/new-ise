@@ -23,6 +23,10 @@
 </div>
 
 <script type="text/javascript">
+    //debugger;
+
+    $("#hidTrasferimento").val("0");
+
     $("#ElencolistaTrasferimento").select2({
         placeholder: "Seleziona il trasferimento",
         allowClear: true,
@@ -32,6 +36,7 @@
     });
 
     $("#ElencolistaTrasferimento").change(function () {
+        //debugger;
 
         $("#hidTrasferimento").val($('#ElencolistaTrasferimento').val());
         $("#hMenuInLavorazione").val("mnNuovoTrasferimento");

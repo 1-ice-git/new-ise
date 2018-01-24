@@ -22,8 +22,10 @@ namespace NewISE.EF
     
         public decimal IDDEFKM { get; set; }
         public string KM { get; set; }
+        public decimal IDUFFICIO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
     }
 }

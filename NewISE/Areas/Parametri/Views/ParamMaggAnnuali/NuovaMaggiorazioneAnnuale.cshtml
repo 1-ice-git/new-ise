@@ -61,11 +61,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.annualita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-               
+
                 @*@Html.DropDownListFor(model => model.annualita, new[] { new SelectListItem { Text = "SI", Value = "1" }, new SelectListItem { Text = "NO", Value = "0" } }, new { @class = "form-control" })*@
 
 
-                 @Html.DropDownListFor(m=>m.annualita, new SelectList(
+                @Html.DropDownListFor(m => m.annualita, new SelectList(
                   new List<Object>{
                        new { value = false , text = "NO"  },
                        new { value = true , text = "SI" }
@@ -73,8 +73,8 @@
                   "value",
                   "text",
                    1), new { @class = "form-control" })
-               
-              
+
+
             </div>
         </div>
 
@@ -116,33 +116,6 @@
 </div>
 
 <script type="text/javascript">
-
-   @*@foreach(var e in errori)
-     {
-         if (e.Value.Errors.Count>0)
-         {
-            @:DialogModalError('True');
-            break;
-        }
-    }
-  
-    $('#formMaggiorazioneAnnuale').submit(function () {
-        debugger;
-        var form = $(this);
-        if (!form.valid()) {
-            DialogModalError('True');
-        }
-    });
-
-    function DialogModalError(err) {
-        debugger;
-        if (err == 'True') {
-            $('#myModalErrorModel').modal('toggle');
-        }
-    }*@
-
-
-
 
     Globalize.culture("it-IT");
 

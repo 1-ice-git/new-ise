@@ -1363,7 +1363,7 @@ namespace NewISE.Controllers
                     TrasferimentoModel trm = dtt.GetSoloTrasferimentoById(idTrasferimento);
                     if (trm != null && trm.HasValue())
                     {
-                        if ((EnumStatoTraferimento)trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || (EnumStatoTraferimento)trm.idStatoTrasferimento==EnumStatoTraferimento.Terminato)
+                        if (trm.idStatoTrasferimento == EnumStatoTraferimento.Attivo || trm.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {

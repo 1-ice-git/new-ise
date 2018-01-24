@@ -52,7 +52,6 @@ namespace NewISE.EF
         public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
-        public virtual UFFICI UFFICI { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
@@ -70,5 +69,6 @@ namespace NewISE.EF
         public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
     }
 }

@@ -69,11 +69,12 @@
 
 
 
-
     $("#Nominativo").change(function () {
         //debugger;
         //$("#hidTrasferimento").val("");
+        $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
         FiltraDipendente();
+
     });
 
     function ElencoTrasferimento() {
@@ -93,11 +94,8 @@
             },
             success: function (result) {
                 //debugger;
-
                 $("#divElencoTrasferimento").empty();
                 $("#divElencoTrasferimento").html(result);
-
-
             },
             complete: function () {
                 //GestioneMenu();

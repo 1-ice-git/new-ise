@@ -29,10 +29,8 @@ namespace NewISE.EF
         public virtual DbSet<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
         public virtual DbSet<ATTIVITACRUD> ATTIVITACRUD { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
-        public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
-        public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
@@ -68,7 +66,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOTRASFERIMENTO> TIPOTRASFERIMENTO { get; set; }
         public virtual DbSet<TIPOTRASPORTO> TIPOTRASPORTO { get; set; }
         public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
-        public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
@@ -119,5 +116,8 @@ namespace NewISE.EF
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<FUNZIONERIDUZIONE> FUNZIONERIDUZIONE { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
+        public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
+        public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
+        public virtual DbSet<UFFICI> UFFICI { get; set; }
     }
 }

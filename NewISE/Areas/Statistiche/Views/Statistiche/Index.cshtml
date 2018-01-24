@@ -12,7 +12,7 @@
 
 <div style="margin: 15px"></div>
 <div class="row">
-  
+
     <div class="col-xs-3">
         <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <br /><br />
@@ -55,7 +55,7 @@
             data: { idUtenteAutorizzato: 0 },
             dataType: 'html',
             beforeSend: function () {
-                
+
             },
             success: function (result) {
                 //debugger;
@@ -63,10 +63,10 @@
                 $("#divPartialView").html(result);
             },
             complete: function () {
-                
+
             },
             error: function (jqXHR, textStatus, errorThrow) {
-                debugger;
+                //debugger;
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
@@ -134,7 +134,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { },
+            data: {},
             dataType: 'html',
             beforeSend: function () {
 

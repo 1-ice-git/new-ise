@@ -451,6 +451,7 @@
           </Key>
           <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KM" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="DIPENDENTI">
           <Key>
@@ -516,14 +517,6 @@
           </Key>
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FASCIACHILOMETRICA">
-          <Key>
-            <PropertyRef Name="IDUFFICIO" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -1966,20 +1959,6 @@
             </Principal>
             <Dependent Role="CMAB_TFR">
               <PropertyRef Name="IDCANONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_COEFFFKM_FKM">
-          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="FASCIACHILOMETRICA" Type="Self.FASCIACHILOMETRICA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDCFKM" />
-            </Principal>
-            <Dependent Role="FASCIACHILOMETRICA">
-              <PropertyRef Name="IDCFKM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3885,16 +3864,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_U_FC">
+        <Association Name="R_U_DFK">
           <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="FASCIACHILOMETRICA" Type="Self.FASCIACHILOMETRICA" Multiplicity="*" />
+          <End Role="DEFFASCIACHILOMETRICA" Type="Self.DEFFASCIACHILOMETRICA" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UFFICI">
               <PropertyRef Name="IDUFFICIO" />
             </Principal>
-            <Dependent Role="FASCIACHILOMETRICA">
+            <Dependent Role="DEFFASCIACHILOMETRICA">
               <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
@@ -4130,7 +4109,6 @@
           <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="FASCIACHILOMETRICA" EntityType="Self.FASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
@@ -4392,10 +4370,6 @@
           <AssociationSet Name="R_CMAB_CMABTFR" Association="Self.R_CMAB_CMABTFR">
             <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
             <End Role="CMAB_TFR" EntitySet="CMAB_TFR" />
-          </AssociationSet>
-          <AssociationSet Name="R_COEFFFKM_FKM" Association="Self.R_COEFFFKM_FKM">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_CR_RCR" Association="Self.R_CR_RCR">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
@@ -4941,9 +4915,9 @@
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
             <End Role="TVR_DOC" EntitySet="TVR_DOC" />
           </AssociationSet>
-          <AssociationSet Name="R_U_FC" Association="Self.R_U_FC">
+          <AssociationSet Name="R_U_DFK" Association="Self.R_U_DFK">
             <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="FASCIACHILOMETRICA" EntitySet="FASCIACHILOMETRICA" />
+            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_U_PMAB" Association="Self.R_U_PMAB">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -5007,10 +4981,8 @@
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISEPRO.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ATTIVITACRUD" EntityType="DBISEPRO.ATTIVITACRUD" />
           <EntitySet Name="CDCGEPE" EntityType="DBISEPRO.CDCGEPE" />
-          <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISEPRO.COEFFICIENTEFKM" />
           <EntitySet Name="COEFFICIENTESEDE" EntityType="DBISEPRO.COEFFICIENTESEDE" />
           <EntitySet Name="CONTABILITA" EntityType="DBISEPRO.CONTABILITA" />
-          <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" />
           <EntitySet Name="DIPENDENTI" EntityType="DBISEPRO.DIPENDENTI" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="DBISEPRO.FUNZIONIEVENTI" />
           <EntitySet Name="INDENNITA" EntityType="DBISEPRO.INDENNITA" />
@@ -5046,7 +5018,6 @@
           <EntitySet Name="TIPOTRASFERIMENTO" EntityType="DBISEPRO.TIPOTRASFERIMENTO" />
           <EntitySet Name="TIPOTRASPORTO" EntityType="DBISEPRO.TIPOTRASPORTO" />
           <EntitySet Name="TIPOVOCE" EntityType="DBISEPRO.TIPOVOCE" />
-          <EntitySet Name="UFFICI" EntityType="DBISEPRO.UFFICI" />
           <EntitySet Name="UTENTIAUTORIZZATI" EntityType="DBISEPRO.UTENTIAUTORIZZATI" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="DBISEPRO.VALUTAUFFICIO" />
           <EntitySet Name="VALUTE" EntityType="DBISEPRO.VALUTE" />
@@ -5066,14 +5037,6 @@
           <AssociationSet Name="R_DIP_CDCG" Association="DBISEPRO.R_DIP_CDCG">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="CDCGEPE" EntitySet="CDCGEPE" />
-          </AssociationSet>
-          <AssociationSet Name="R_DFK_CFK" Association="DBISEPRO.R_DFK_CFK">
-            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-          </AssociationSet>
-          <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
           </AssociationSet>
           <AssociationSet Name="R_C_AQ" Association="DBISEPRO.R_C_AQ">
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
@@ -5102,18 +5065,6 @@
           <AssociationSet Name="R_UL_LA" Association="DBISEPRO.R_UL_LA">
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="DBISEPRO.R_UFFICI_MAGANNUALI">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
-          </AssociationSet>
-          <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="DBISEPRO.R_UFFICI_PERCDISAGIO">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
-          </AssociationSet>
-          <AssociationSet Name="R_U_PMAB" Association="DBISEPRO.R_U_PMAB">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
           </AssociationSet>
           <AssociationSet Name="R_TC_PMC" Association="DBISEPRO.R_TC_PMC">
             <End Role="TIPOLOGIACONIUGE" EntitySet="TIPOLOGIACONIUGE" />
@@ -5163,21 +5114,9 @@
             <End Role="TIPOVOCE" EntitySet="TIPOVOCE" />
             <End Role="VOCI" EntitySet="VOCI" />
           </AssociationSet>
-          <AssociationSet Name="R_UFF_VALUFF" Association="DBISEPRO.R_UFF_VALUFF">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
-          </AssociationSet>
-          <AssociationSet Name="R_V_U" Association="DBISEPRO.R_V_U">
-            <End Role="VALUTE" EntitySet="VALUTE" />
-            <End Role="UFFICI" EntitySet="UFFICI" />
-          </AssociationSet>
           <AssociationSet Name="R_VALUTE_VALUFF" Association="DBISEPRO.R_VALUTE_VALUFF">
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
-          </AssociationSet>
-          <AssociationSet Name="FASCIACHILOMETRICA" Association="DBISEPRO.FASCIACHILOMETRICA">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="UFFICI" EntitySet="UFFICI" />
           </AssociationSet>
           <AssociationSet Name="IND_COEFFICENTESEDE" Association="DBISEPRO.IND_COEFFICENTESEDE">
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
@@ -5230,10 +5169,6 @@
           </AssociationSet>
           <AssociationSet Name="R_TT_T" Association="DBISEPRO.R_TT_T">
             <End Role="TIPOTRASFERIMENTO" EntitySet="TIPOTRASFERIMENTO" />
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-          </AssociationSet>
-          <AssociationSet Name="R_U_T" Association="DBISEPRO.R_U_T">
-            <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="DBISEPRO.MAGGIORAZIONIFAMILIARI" />
@@ -5512,17 +5447,9 @@
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
           </AssociationSet>
-          <AssociationSet Name="TEP_FK" Association="DBISEPRO.TEP_FK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-          </AssociationSet>
           <AssociationSet Name="TEP_PATE" Association="DBISEPRO.TEP_PATE">
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-          </AssociationSet>
-          <AssociationSet Name="TER_FK" Association="DBISEPRO.TER_FK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
           </AssociationSet>
           <AssociationSet Name="TER_PATE" Association="DBISEPRO.TER_PATE">
             <End Role="PERCENTUALEANTICIPOTE" EntitySet="PERCENTUALEANTICIPOTE" />
@@ -5693,6 +5620,53 @@
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
           </AssociationSet>
+          <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISEPRO.COEFFICIENTEFKM" />
+          <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" />
+          <EntitySet Name="UFFICI" EntityType="DBISEPRO.UFFICI" />
+          <AssociationSet Name="R_DFK_CFK" Association="DBISEPRO.R_DFK_CFK">
+            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
+          </AssociationSet>
+          <AssociationSet Name="R_U_DFK" Association="DBISEPRO.R_U_DFK">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
+          </AssociationSet>
+          <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="DBISEPRO.R_UFFICI_MAGANNUALI">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
+          </AssociationSet>
+          <AssociationSet Name="R_UFFICI_PERCDISAGIO" Association="DBISEPRO.R_UFFICI_PERCDISAGIO">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="PERCENTUALEDISAGIO" EntitySet="PERCENTUALEDISAGIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_U_PMAB" Association="DBISEPRO.R_U_PMAB">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_U_T" Association="DBISEPRO.R_U_T">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="R_UFF_VALUFF" Association="DBISEPRO.R_UFF_VALUFF">
+            <End Role="UFFICI" EntitySet="UFFICI" />
+            <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
+          </AssociationSet>
+          <AssociationSet Name="R_V_U" Association="DBISEPRO.R_V_U">
+            <End Role="VALUTE" EntitySet="VALUTE" />
+            <End Role="UFFICI" EntitySet="UFFICI" />
+          </AssociationSet>
+          <AssociationSet Name="TEP_FK" Association="DBISEPRO.TEP_FK">
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
+            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
+          </AssociationSet>
+          <AssociationSet Name="TER_FK" Association="DBISEPRO.TER_FK">
+            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
+            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -5737,22 +5711,6 @@
           <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_CDCG" FromRole="CDCGEPE" ToRole="DIPENDENTI" />
         </EntityType>
-        <EntityType Name="COEFFICIENTEFKM">
-          <Key>
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISEPRO.R_DFK_CFK" FromRole="COEFFICIENTEFKM" ToRole="DEFFASCIACHILOMETRICA" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.FASCIACHILOMETRICA" FromRole="COEFFICIENTEFKM" ToRole="UFFICI" />
-          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_FK" FromRole="COEFFICIENTEFKM" ToRole="TEPARTENZA" />
-          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_FK" FromRole="COEFFICIENTEFKM" ToRole="TERIENTRO" />
-        </EntityType>
         <EntityType Name="COEFFICIENTESEDE">
           <Key>
             <PropertyRef Name="IDCOEFFICIENTESEDE" />
@@ -5764,8 +5722,8 @@
           <Property Name="VALORECOEFFICIENTE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="UFFICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.IND_COEFFICENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="INDENNITA" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" FromRole="COEFFICIENTESEDE" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="CONTABILITA">
           <Key>
@@ -5785,14 +5743,6 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="OA" Relationship="DBISEPRO.R_C_AQ" FromRole="CONTABILITA" ToRole="OA" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_C" FromRole="CONTABILITA" ToRole="TEORICI" />
-        </EntityType>
-        <EntityType Name="DEFFASCIACHILOMETRICA">
-          <Key>
-            <PropertyRef Name="IDDEFKM" />
-          </Key>
-          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="DEFFASCIACHILOMETRICA" ToRole="COEFFICIENTEFKM" />
         </EntityType>
         <EntityType Name="DIPENDENTI">
           <Key>
@@ -5905,8 +5855,8 @@
           <Property Name="ANNUALITA" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_MAGANNUALI" FromRole="MAGGIORAZIONIANNUALI" ToRole="UFFICI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_MA" FromRole="MAGGIORAZIONIANNUALI" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_MAGANNUALI" FromRole="MAGGIORAZIONIANNUALI" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="NORMACALCOLO">
           <Key>
@@ -5949,8 +5899,8 @@
           <Property Name="PERCENTUALE" Type="Decimal" Nullable="false" Precision="11" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="INDENNITA" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFFICI_PERCDISAGIO" FromRole="PERCENTUALEDISAGIO" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
@@ -5966,8 +5916,8 @@
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISEPRO.R_L_PMAB" FromRole="PERCENTUALEMAB" ToRole="LIVELLI" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_PMAB" FromRole="PERCENTUALEMAB" ToRole="UFFICI" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.MAB_PMAB" FromRole="PERCENTUALEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_PMAB" FromRole="PERCENTUALEMAB" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="PERCENTUALEMAGCONIUGE">
           <Key>
@@ -6211,24 +6161,6 @@
           <NavigationProperty Name="TIPOELABORAZIONE" Relationship="DBISEPRO.R_TE_TV" FromRole="TIPOVOCE" ToRole="TIPOELABORAZIONE" />
           <NavigationProperty Name="VOCI" Relationship="DBISEPRO.R_TV_V" FromRole="TIPOVOCE" ToRole="VOCI" />
         </EntityType>
-        <EntityType Name="UFFICI">
-          <Key>
-            <PropertyRef Name="IDUFFICIO" />
-          </Key>
-          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="CODICEUFFICIO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" FromRole="UFFICI" ToRole="COEFFICIENTESEDE" />
-          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.R_UFFICI_MAGANNUALI" FromRole="UFFICI" ToRole="MAGGIORAZIONIANNUALI" />
-          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
-          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.R_U_PMAB" FromRole="UFFICI" ToRole="PERCENTUALEMAB" />
-          <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISEPRO.R_UFF_VALUFF" FromRole="UFFICI" ToRole="VALUTAUFFICIO" />
-          <NavigationProperty Name="VALUTE" Relationship="DBISEPRO.R_V_U" FromRole="UFFICI" ToRole="VALUTE" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.FASCIACHILOMETRICA" FromRole="UFFICI" ToRole="COEFFICIENTEFKM" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_U_T" FromRole="UFFICI" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="UTENTIAUTORIZZATI">
           <Key>
             <PropertyRef Name="IDUTENTEAUTORIZZATO" />
@@ -6253,8 +6185,8 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFF_VALUFF" FromRole="VALUTAUFFICIO" ToRole="UFFICI" />
           <NavigationProperty Name="VALUTE" Relationship="DBISEPRO.R_VALUTE_VALUFF" FromRole="VALUTAUFFICIO" ToRole="VALUTE" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_UFF_VALUFF" FromRole="VALUTAUFFICIO" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="VALUTE">
           <Key>
@@ -6264,8 +6196,8 @@
           <Property Name="DESCRIZIONEVALUTA" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="VALUTAUFFICIALE" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="TFR" Relationship="DBISEPRO.R_VALUTE_TFR" FromRole="VALUTE" ToRole="TFR" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_V_U" FromRole="VALUTE" ToRole="UFFICI" />
           <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISEPRO.R_VALUTE_VALUFF" FromRole="VALUTE" ToRole="VALUTAUFFICIO" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_V_U" FromRole="VALUTE" ToRole="UFFICI" />
         </EntityType>
         <EntityType Name="VOCI">
           <Key>
@@ -6333,34 +6265,6 @@
             </Principal>
             <Dependent Role="CDCGEPE">
               <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_DFK_CFK">
-          <End Type="DBISEPRO.DEFFASCIACHILOMETRICA" Role="DEFFASCIACHILOMETRICA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DEFFASCIACHILOMETRICA">
-              <PropertyRef Name="IDDEFKM" />
-            </Principal>
-            <Dependent Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDDEFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_UFFICI_COEFFICIENTESEDE">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="COEFFICIENTESEDE">
-              <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6459,48 +6363,6 @@
             </Principal>
             <Dependent Role="LOGATTIVITA">
               <PropertyRef Name="IDUTENTELOGGATO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_UFFICI_MAGANNUALI">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONIANNUALI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_UFFICI_PERCDISAGIO">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="PERCENTUALEDISAGIO">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_U_PMAB">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="PERCENTUALEMAB">
-              <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6670,34 +6532,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_UFF_VALUFF">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.VALUTAUFFICIO" Role="VALUTAUFFICIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="VALUTAUFFICIO">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_V_U">
-          <End Type="DBISEPRO.VALUTE" Role="VALUTE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="VALUTE">
-              <PropertyRef Name="IDVALUTA" />
-            </Principal>
-            <Dependent Role="UFFICI">
-              <PropertyRef Name="IDVALUTA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_VALUTE_VALUFF">
           <End Type="DBISEPRO.VALUTE" Role="VALUTE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6711,10 +6545,6 @@
               <PropertyRef Name="IDVALUTA" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="FASCIACHILOMETRICA">
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="*" />
         </Association>
         <Association Name="IND_COEFFICENTESEDE">
           <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
@@ -6761,7 +6591,6 @@
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
           <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISEPRO.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
           <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
           <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
@@ -6774,6 +6603,7 @@
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_T_AMAB" FromRole="TRASFERIMENTO" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="VIAGGICONGEDO" Relationship="DBISEPRO.R_T_VC" FromRole="TRASFERIMENTO" ToRole="VIAGGICONGEDO" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.T_RC" FromRole="TRASFERIMENTO" ToRole="REGOLECALCOLO" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
         </EntityType>
         <Association Name="R_DIP_TRASF">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
@@ -6884,20 +6714,6 @@
             </Principal>
             <Dependent Role="TRASFERIMENTO">
               <PropertyRef Name="IDTIPOTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_U_T">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7857,8 +7673,8 @@
           <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.R_TEP_ATEP" FromRole="TEPARTENZA" ToRole="ATTIVITATEPARTENZA" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TEP" FromRole="TEPARTENZA" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TEP_FK" FromRole="TEPARTENZA" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TEP_PATE" FromRole="TEPARTENZA" ToRole="PERCENTUALEANTICIPOTE" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TEP_FK" FromRole="TEPARTENZA" ToRole="COEFFICIENTEFKM" />
         </EntityType>
         <EntityType Name="TERIENTRO">
           <Key>
@@ -7867,8 +7683,8 @@
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.R_TER_ATER" FromRole="TERIENTRO" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TER_FK" FromRole="TERIENTRO" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TER_PATE" FromRole="TERIENTRO" ToRole="PERCENTUALEANTICIPOTE" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TER_FK" FromRole="TERIENTRO" ToRole="COEFFICIENTEFKM" />
         </EntityType>
         <EntityType Name="TIPOANTICIPOTRASPORTOEFFETTI">
           <Key>
@@ -7984,17 +7800,9 @@
           <End Type="DBISEPRO.ATTIVITATERIENTRO" Role="ATTIVITATERIENTRO" Multiplicity="*" />
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
         </Association>
-        <Association Name="TEP_FK">
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
-        </Association>
         <Association Name="TEP_PATE">
           <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
           <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
-        </Association>
-        <Association Name="TER_FK">
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="*" />
         </Association>
         <Association Name="TER_PATE">
           <End Type="DBISEPRO.PERCENTUALEANTICIPOTE" Role="PERCENTUALEANTICIPOTE" Multiplicity="*" />
@@ -8628,6 +8436,183 @@
           <End Type="DBISEPRO.INDENNITASISTEMAZIONE" Role="INDENNITASISTEMAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
         </Association>
+        <EntityType Name="COEFFICIENTEFKM">
+          <Key>
+            <PropertyRef Name="IDCFKM" />
+          </Key>
+          <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISEPRO.R_DFK_CFK" FromRole="COEFFICIENTEFKM" ToRole="DEFFASCIACHILOMETRICA" />
+          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_FK" FromRole="COEFFICIENTEFKM" ToRole="TEPARTENZA" />
+          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_FK" FromRole="COEFFICIENTEFKM" ToRole="TERIENTRO" />
+        </EntityType>
+        <EntityType Name="DEFFASCIACHILOMETRICA">
+          <Key>
+            <PropertyRef Name="IDDEFKM" />
+          </Key>
+          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="DEFFASCIACHILOMETRICA" ToRole="COEFFICIENTEFKM" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_DFK" FromRole="DEFFASCIACHILOMETRICA" ToRole="UFFICI" />
+        </EntityType>
+        <EntityType Name="UFFICI">
+          <Key>
+            <PropertyRef Name="IDUFFICIO" />
+          </Key>
+          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDVALUTA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CODICEUFFICIO" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" FromRole="UFFICI" ToRole="COEFFICIENTESEDE" />
+          <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISEPRO.R_U_DFK" FromRole="UFFICI" ToRole="DEFFASCIACHILOMETRICA" />
+          <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.R_UFFICI_MAGANNUALI" FromRole="UFFICI" ToRole="MAGGIORAZIONIANNUALI" />
+          <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
+          <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.R_U_PMAB" FromRole="UFFICI" ToRole="PERCENTUALEMAB" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_U_T" FromRole="UFFICI" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="VALUTAUFFICIO" Relationship="DBISEPRO.R_UFF_VALUFF" FromRole="UFFICI" ToRole="VALUTAUFFICIO" />
+          <NavigationProperty Name="VALUTE" Relationship="DBISEPRO.R_V_U" FromRole="UFFICI" ToRole="VALUTE" />
+        </EntityType>
+        <Association Name="R_DFK_CFK">
+          <End Type="DBISEPRO.DEFFASCIACHILOMETRICA" Role="DEFFASCIACHILOMETRICA" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEFFASCIACHILOMETRICA">
+              <PropertyRef Name="IDDEFKM" />
+            </Principal>
+            <Dependent Role="COEFFICIENTEFKM">
+              <PropertyRef Name="IDDEFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_UFFICI_COEFFICIENTESEDE">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.COEFFICIENTESEDE" Role="COEFFICIENTESEDE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="COEFFICIENTESEDE">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_U_DFK">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.DEFFASCIACHILOMETRICA" Role="DEFFASCIACHILOMETRICA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="DEFFASCIACHILOMETRICA">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_UFFICI_MAGANNUALI">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONIANNUALI" Role="MAGGIORAZIONIANNUALI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONIANNUALI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_UFFICI_PERCDISAGIO">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PERCENTUALEDISAGIO" Role="PERCENTUALEDISAGIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="PERCENTUALEDISAGIO">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_U_PMAB">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="PERCENTUALEMAB">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_U_T">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_UFF_VALUFF">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.VALUTAUFFICIO" Role="VALUTAUFFICIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="VALUTAUFFICIO">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_V_U">
+          <End Type="DBISEPRO.VALUTE" Role="VALUTE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VALUTE">
+              <PropertyRef Name="IDVALUTA" />
+            </Principal>
+            <Dependent Role="UFFICI">
+              <PropertyRef Name="IDVALUTA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TEP_FK">
+          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
+          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
+        </Association>
+        <Association Name="TER_FK">
+          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
+          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="*" />
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8675,19 +8660,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="COEFFICIENTEFKM">
-            <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTEFKM">
-              <MappingFragment StoreEntitySet="COEFFICIENTEFKM">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="COEFFICIENTEKM" ColumnName="COEFFICIENTEKM" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
-                <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="COEFFICIENTESEDE">
             <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTESEDE">
               <MappingFragment StoreEntitySet="COEFFICIENTESEDE">
@@ -8716,14 +8688,6 @@
                 <ScalarProperty Name="ANNOELABORAZIONE" ColumnName="ANNOELABORAZIONE" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
                 <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DEFFASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="DBISEPRO.DEFFASCIACHILOMETRICA">
-              <MappingFragment StoreEntitySet="DEFFASCIACHILOMETRICA">
-                <ScalarProperty Name="KM" ColumnName="KM" />
-                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9111,17 +9075,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UFFICI">
-            <EntityTypeMapping TypeName="DBISEPRO.UFFICI">
-              <MappingFragment StoreEntitySet="UFFICI">
-                <ScalarProperty Name="PAGATOVALUTAUFFICIO" ColumnName="PAGATOVALUTAUFFICIO" />
-                <ScalarProperty Name="DESCRIZIONEUFFICIO" ColumnName="DESCRIZIONEUFFICIO" />
-                <ScalarProperty Name="CODICEUFFICIO" ColumnName="CODICEUFFICIO" />
-                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
-                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UTENTIAUTORIZZATI">
             <EntityTypeMapping TypeName="DBISEPRO.UTENTIAUTORIZZATI">
               <MappingFragment StoreEntitySet="UTENTIAUTORIZZATI">
@@ -9164,14 +9117,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FASCIACHILOMETRICA" TypeName="DBISEPRO.FASCIACHILOMETRICA" StoreEntitySet="FASCIACHILOMETRICA">
-            <EndProperty Name="UFFICI">
-              <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTEFKM">
-              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="IND_COEFFICENTESEDE" TypeName="DBISEPRO.IND_COEFFICENTESEDE" StoreEntitySet="IND_COEFFICENTESEDE">
             <EndProperty Name="INDENNITA">
               <ScalarProperty Name="IDTRASFINDENNITA" ColumnName="IDTRASFINDENNITA" />
@@ -9728,28 +9673,12 @@
               <ScalarProperty Name="IDATERIENTRO" ColumnName="IDATERIENTRO" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="TEP_FK" TypeName="DBISEPRO.TEP_FK" StoreEntitySet="TEP_FK">
-            <EndProperty Name="TEPARTENZA">
-              <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTEFKM">
-              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="TEP_PATE" TypeName="DBISEPRO.TEP_PATE" StoreEntitySet="TEP_PATE">
             <EndProperty Name="TEPARTENZA">
               <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
             </EndProperty>
             <EndProperty Name="PERCENTUALEANTICIPOTE">
               <ScalarProperty Name="IDPERCANTICIPOTM" ColumnName="IDPERCANTICIPOTM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TER_FK" TypeName="DBISEPRO.TER_FK" StoreEntitySet="TER_FK">
-            <EndProperty Name="TERIENTRO">
-              <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTEFKM">
-              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="TER_PATE" TypeName="DBISEPRO.TER_PATE" StoreEntitySet="TER_PATE">
@@ -10084,6 +10013,55 @@
             </EndProperty>
             <EndProperty Name="INDENNITASISTEMAZIONE">
               <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="COEFFICIENTEFKM">
+            <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTEFKM">
+              <MappingFragment StoreEntitySet="COEFFICIENTEFKM">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="COEFFICIENTEKM" ColumnName="COEFFICIENTEKM" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
+                <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DEFFASCIACHILOMETRICA">
+            <EntityTypeMapping TypeName="DBISEPRO.DEFFASCIACHILOMETRICA">
+              <MappingFragment StoreEntitySet="DEFFASCIACHILOMETRICA">
+                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
+                <ScalarProperty Name="KM" ColumnName="KM" />
+                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UFFICI">
+            <EntityTypeMapping TypeName="DBISEPRO.UFFICI">
+              <MappingFragment StoreEntitySet="UFFICI">
+                <ScalarProperty Name="PAGATOVALUTAUFFICIO" ColumnName="PAGATOVALUTAUFFICIO" />
+                <ScalarProperty Name="DESCRIZIONEUFFICIO" ColumnName="DESCRIZIONEUFFICIO" />
+                <ScalarProperty Name="CODICEUFFICIO" ColumnName="CODICEUFFICIO" />
+                <ScalarProperty Name="IDVALUTA" ColumnName="IDVALUTA" />
+                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TEP_FK" TypeName="DBISEPRO.TEP_FK" StoreEntitySet="TEP_FK">
+            <EndProperty Name="TEPARTENZA">
+              <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
+            </EndProperty>
+            <EndProperty Name="COEFFICIENTEFKM">
+              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TER_FK" TypeName="DBISEPRO.TER_FK" StoreEntitySet="TER_FK">
+            <EndProperty Name="TERIENTRO">
+              <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
+            </EndProperty>
+            <EndProperty Name="COEFFICIENTEFKM">
+              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
             </EndProperty>
           </AssociationSetMapping>
           </EntityContainerMapping>

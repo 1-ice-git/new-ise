@@ -21,7 +21,7 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual UFFICI UFFICI { get; set; }
         public virtual VALUTE VALUTE { get; set; }
+        public virtual UFFICI UFFICI { get; set; }
     }
 }

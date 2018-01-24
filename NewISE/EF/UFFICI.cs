@@ -18,12 +18,12 @@ namespace NewISE.EF
         public UFFICI()
         {
             this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
+            this.DEFFASCIACHILOMETRICA = new HashSet<DEFFASCIACHILOMETRICA>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
-            this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
-            this.COEFFICIENTEFKM = new HashSet<COEFFICIENTEFKM>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
+            this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
         }
     
         public decimal IDUFFICIO { get; set; }
@@ -35,17 +35,17 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEMAB> PERCENTUALEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual VALUTE VALUTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }
