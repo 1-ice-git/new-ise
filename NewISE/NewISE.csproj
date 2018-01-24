@@ -2464,6 +2464,7 @@
     <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\RichiamoController.cs" />
     <Compile Include="Controllers\SospensioneController.cs" />
+    <Compile Include="Controllers\TrasportoEffettiController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
@@ -2893,7 +2894,8 @@
     <Compile Include="Models\DBModel\TipoRegolaCalcoloModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
-    <Compile Include="Models\DBModel\TrasportoEffettiModel.cs" />
+    <Compile Include="Models\DBModel\TrasportoEffettiRientroModel.cs" />
+    <Compile Include="Models\DBModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\Utils.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
@@ -3054,6 +3056,7 @@
     <Content Include="Views\TitoliViaggio\TabDocumentiTVInseriti.cshtml" />
     <Content Include="Views\TitoliViaggio\ElencoUploadTitoliViaggio.cshtml" />
     <Content Include="Views\Anticipi\Anticipi.cshtml" />
+    <Content Include="Views\TrasportoEffetti\TrasportoEffetti.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,19 +12,6 @@
         Upload Carta d'imbarco:
     </td>
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-    @*@if (notificaEseguita)
-    {
-        if (nDocCartaImbarco > 0)
-        {
-            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" />
-        }
-        else
-        {
-            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"/>
-        }
-    }
-    else
-    {*@
         @if (nDocCartaImbarco > 0)
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idTitoliViaggio);" id="linkElencoDocTV">
@@ -37,9 +24,6 @@
                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco carte d'imbarco" />
             </a>
         }
-  @*  }*@
-
-
     </td>
 </tr>
 <tr>
@@ -47,19 +31,6 @@
         Upload Titoli di viaggio:
     </td>
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
-    @*@if (notificaEseguita)
-    {
-        if (nDocTitoliViaggio > 0)
-        {
-            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" />
-        }
-        else
-        {
-            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" />
-        }
-    }
-    else
-    {*@
         @if (nDocTitoliViaggio > 0)
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idTitoliViaggio);" id="linkElencoDocTV">
@@ -72,7 +43,6 @@
                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco titoli di viaggio" />
             </a>
         }
-@*    }*@
     </td>
 </tr>
 
