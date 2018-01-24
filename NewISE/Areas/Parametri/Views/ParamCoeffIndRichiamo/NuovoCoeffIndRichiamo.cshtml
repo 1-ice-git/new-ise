@@ -10,11 +10,11 @@
 
 @{
 
-    RiduzioniModel lm = (RiduzioniModel)ViewBag.CoeffIndRichiamo;
-    string CoeffIndRichiamo = lm.idRiduzioni.ToString();
-    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idRiduzioni = lm.idRiduzioni;
+    //RiduzioniModel lm = (RiduzioniModel)ViewBag.CoeffIndRichiamo;
+    //string CoeffIndRichiamo = lm.idRiduzioni.ToString();
+    //decimal idRiduzioni = lm.idRiduzioni;
     var errori = ViewData.ModelState;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
 }
 
 @using (Ajax.BeginForm("InserisciCoeffIndRichiamo", "ParamCoeffIndRichiamo", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formCoeffIndRichiamo" }))
@@ -30,10 +30,10 @@
             </div>
         </div>
         @*@Html.HiddenFor(model => model.idCoefIndRichiamo)*@
-        @Html.HiddenFor(model => model.idRiduzioni)
+        
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-
-        <div class="form-group">
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
+        @*<div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Km </label>
             </div>
@@ -42,23 +42,31 @@
                     <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@CoeffIndRichiamo.ToString()</label>
                 </div>
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.coefficienteRichiamo, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -115,29 +123,29 @@
 
 <script type="text/javascript">
 
-     @foreach(var e in errori)
+     @*@foreach(var e in errori)
     {
         if(e.Value.Errors.Count>0)
         {
             @:DialogModalError('True');
             break;
         }
-    }
+    }*@
 
-    $('#formCoeffIndRichiamo').submit(function () {
-        //  debugger;
-        var form = $(this);
-        if (!form.valid()) {
-            DialogModalError('True');
-        }
-    });
+    //$('#formCoeffIndRichiamo').submit(function () {
+    // //   debugger;
+    //    var form = $(this);
+    //    if (!form.valid()) {
+    //        DialogModalError('True');
+    //    }
+    //});
 
-    function DialogModalError(err) {
-        //debugger;
-        if (err == 'True') {
-            $('#myModalErrorModel').modal('toggle');
-        }
-    }
+    //function DialogModalError(err) {
+    //    //debugger;
+    //    if (err == 'True') {
+    //        $('#myModalErrorModel').modal('toggle');
+    //    }
+    //}
 
 
     Globalize.culture("it-IT");
@@ -201,20 +209,26 @@
         changeYear: true,
     });
 
+    function AggiornaTutto() {
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
 
     function TornaElencoIb() {
-        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
+      //  rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
+        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamo";
 
-        var idRiduzioni = parseFloat('@idRiduzioni');
-        var chk = true;
-
-        if (isNaN(idRiduzioni)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var idRiduzioni = 0;// @*parseFloat('@idRiduzioni');*@
+        //if (isNaN(idRiduzioni)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({

@@ -80,17 +80,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @*@using (dtAliquoteContr dtib = new dtAliquoteContr())
-                    {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaAliquota(@item.idAliqContr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                    }*@
+                   
                     @using (dtAliquoteContr dtib = new dtAliquoteContr())
                     {
                         if (dtib.AliquoteContributiveAnnullato(item))
@@ -121,6 +111,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -276,8 +267,6 @@
         //if (idTipoContributo==0)
         //    idTipoContributo = parseInt($("#idTipoContributo").select2('val'));
 
-        
-       
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
