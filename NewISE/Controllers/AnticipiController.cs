@@ -36,7 +36,7 @@ namespace NewISE.Controllers
         public ActionResult PrimaSistemazionePrevista(decimal idPrimaSistemazione)
         {
 
-
+            return null;
 
 
             //CalcoliIndennita ci=new CalcoliIndennita();
