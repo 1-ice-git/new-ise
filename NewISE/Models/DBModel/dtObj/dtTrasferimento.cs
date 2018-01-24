@@ -171,7 +171,8 @@ namespace NewISE.Models.DBModel.dtObj
         public void GestioneAttivitaTrasferimento(decimal idTrasferimento,
                                                       out bool richiestaMF, out bool attivazioneMF,
                                                       out bool richiestaPP, out bool conclusePP,
-                                                      out bool richiesteTV, out bool concluseTV)
+                                                      out bool richiesteTV, out bool concluseTV,
+                                                      out bool richiestaTE, out bool attivazioneTE)
         {
             richiestaMF = false;
             attivazioneMF = false;
@@ -181,6 +182,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             richiesteTV = false;
             concluseTV = false;
+
+            richiestaTE = false;
+            attivazioneTE = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -199,15 +203,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                         richiestaMF = amf.RICHIESTAATTIVAZIONE;
                         attivazioneMF = amf.ATTIVAZIONEMAGFAM;
-
                     }
                     else
                     {
                         throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIMAGFAM non trovato.");
                     }
-
-
-
                 }
                 #endregion
 
@@ -229,8 +229,6 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONIPASSAPORTI non trovato.");
                     }
-
-
                 }
                 #endregion
 
@@ -244,16 +242,34 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var atv = latv.First();
 
-                        //var tv = t.TITOLIVIAGGIO.OrderBy(a => a.IDTITOLOVIAGGIO).First();
-                        //if (tv != null && tv.IDTITOLOVIAGGIO > 0)
-                        //{
                         richiesteTV = atv.NOTIFICARICHIESTA;
                         concluseTV = atv.ATTIVAZIONERICHIESTA;
                     }
-                    //else
-                    //{
-                    //    throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
-                    //}
+                    else
+                    {
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
+                    }
+                }
+
+                #endregion
+
+                #region Trasporto effetti partenza
+                var tep = t.TEPARTENZA;
+                if (tep != null && tep.IDTEPARTENZA > 0)
+                {
+                    var latep = tep.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATEPARTENZA).ToList();
+
+                    if (latep?.Any() ?? false)
+                    {
+                        var atep = latep.First();
+
+                        richiestaTE = atep.RICHIESTATRASPORTOEFFETTI;
+                        attivazioneTE = atep.ATTIVAZIONETRASPORTOEFFETTI;
+                    }
+                    else
+                    {
+                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVITATEPARTENZA non trovato.");
+                    }
                 }
 
                 #endregion

@@ -702,82 +702,82 @@ namespace NewISE.Controllers
 
                         }
                         break;
-                    case EnumChiamante.Titoli_Viaggio:
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            TitoloViaggioModel tvm = new TitoloViaggioModel();
+                    //case EnumChiamante.Titoli_Viaggio:
+                    //    using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                    //    {
+                    //        TitoloViaggioModel tvm = new TitoloViaggioModel();
 
-                            switch (parentela)
-                            {
-                                case EnumParentela.Coniuge:
-                                    //tvm = dttv.GetTitoloViaggioByIdConiuge(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
+                    //        switch (parentela)
+                    //        {
+                    //            case EnumParentela.Coniuge:
+                    //                //tvm = dttv.GetTitoloViaggioByIdConiuge(id);
+                    //                idTrasferimento = tvm.idTrasferimento;
+                    //                if (tvm != null && tvm.HasValue())
+                    //                {
+                    //                    bool notificaRichiesta = tvm.notificaRichiesta;
+                    //                    bool praticaConclusa = tvm.praticaConclusa;
 
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
+                    //                    if (notificaRichiesta == true && praticaConclusa == true)
+                    //                    {
+                    //                        solaLettura = true;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        solaLettura = false;
+                    //                    }
 
-                                    }
-                                    break;
-                                case EnumParentela.Figlio:
-                                    //tvm = dttv.GetTitoloViaggioByIdFiglio(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
+                    //                }
+                    //                break;
+                    //            case EnumParentela.Figlio:
+                    //                //tvm = dttv.GetTitoloViaggioByIdFiglio(id);
+                    //                idTrasferimento = tvm.idTrasferimento;
+                    //                if (tvm != null && tvm.HasValue())
+                    //                {
+                    //                    bool notificaRichiesta = tvm.notificaRichiesta;
+                    //                    bool praticaConclusa = tvm.praticaConclusa;
 
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
+                    //                    if (notificaRichiesta == true && praticaConclusa == true)
+                    //                    {
+                    //                        solaLettura = true;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        solaLettura = false;
+                    //                    }
 
-                                    }
-                                    break;
-                                case EnumParentela.Richiedente:
-                                    //tvm = dttv.GetTitoloViaggioByID(id);
-                                    idTrasferimento = tvm.idTrasferimento;
-                                    if (tvm != null && tvm.HasValue())
-                                    {
-                                        bool notificaRichiesta = tvm.notificaRichiesta;
-                                        bool praticaConclusa = tvm.praticaConclusa;
+                    //                }
+                    //                break;
+                    //            case EnumParentela.Richiedente:
+                    //                //tvm = dttv.GetTitoloViaggioByID(id);
+                    //                idTrasferimento = tvm.idTrasferimento;
+                    //                if (tvm != null && tvm.HasValue())
+                    //                {
+                    //                    bool notificaRichiesta = tvm.notificaRichiesta;
+                    //                    bool praticaConclusa = tvm.praticaConclusa;
 
-                                        if (notificaRichiesta == true && praticaConclusa == true)
-                                        {
-                                            solaLettura = true;
-                                        }
-                                        else
-                                        {
-                                            solaLettura = false;
-                                        }
+                    //                    if (notificaRichiesta == true && praticaConclusa == true)
+                    //                    {
+                    //                        solaLettura = true;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        solaLettura = false;
+                    //                    }
 
-                                    }
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException("parentela");
-                            }
-                        }
-                        break;
-                    case EnumChiamante.Trasporto_Effetti:
-                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
-                        {
-                            var tem = dtte.GetTrasportoEffettiByID(id);
-                            idTrasferimento = tem.idTrasferimento;
-                        }
-                        break;
+                    //                }
+                    //                break;
+                    //            default:
+                    //                throw new ArgumentOutOfRangeException("parentela");
+                    //        }
+                    //    }
+                    //    break;
+                    //case EnumChiamante.Trasporto_Effetti:
+                    //    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                    //    {
+                    //        var tem = dtte.GetTrasportoEffettiByID(id);
+                    //        idTrasferimento = tem.idTrasferimento;
+                    //    }
+                    //    break;
                     case EnumChiamante.Trasferimento:
                         idTrasferimento = id;
                         break;

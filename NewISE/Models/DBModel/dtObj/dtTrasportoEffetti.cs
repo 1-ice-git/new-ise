@@ -13,30 +13,48 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public TrasportoEffettiModel GetTrasportoEffettiByID(decimal idTrasportoEffetti)
+        public TrasportoEffettiPartenzaModel GetTrasportoEffettiPartenzaByID(decimal idTrasportoEffettiPartenza)
         {
-            TrasportoEffettiModel tem = new TrasportoEffettiModel();
+            TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                //var te = db.TRASPORTOEFFETTI.Find(idTrasportoEffetti);
+                var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
 
-                //if (te != null && te.IDTRASPORTOEFFETTI > 0)
-                //{
-                //    tem = new TrasportoEffettiModel()
-                //    {
-                //        idTrasportoEffetti = te.IDTRASPORTOEFFETTI,
-                //        idTipoTrasporto = te.IDTIPOTRASPORTO,
-                //        idTrasferimento = te.IDTRASFERIMENTO,
-                //        dataAggiornamento = te.DATAAGGIORNAMENTO,
-                //        annullato = te.ANNULLATO,
-                //    };
-                //}
+                if (tep != null && tep.IDTEPARTENZA > 0)
+                {
+                    tepm = new TrasportoEffettiPartenzaModel()
+                    {
+                        idTrasportoEffettiPartenza = tep.IDTEPARTENZA
+                    };
+                }
 
             }
 
-            return tem;
+            return tepm;
         }
+
+        public TrasportoEffettiRientroModel GetTrasportoEffettiRientroByID(decimal idTrasportoEffettiRientro)
+        {
+            TrasportoEffettiRientroModel term = new TrasportoEffettiRientroModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ter = db.TERIENTRO.Find(idTrasportoEffettiRientro);
+
+                if (ter != null && ter.IDTERIENTRO > 0)
+                {
+                    term = new TrasportoEffettiRientroModel()
+                    {
+                        idTrasportoEffettiRientro = ter.IDTERIENTRO
+                    };
+                }
+
+            }
+
+            return term;
+        }
+
 
 
     }

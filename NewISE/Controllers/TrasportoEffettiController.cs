@@ -16,8 +16,39 @@ using NewISE.Models.ViewModel;
 
 namespace NewISE.Controllers
 {
-    public class TitoliViaggioController : Controller
+    public class TrasportoEffettiController : Controller
     {
+        [HttpPost]
+        public ActionResult TrasportoEffetti(decimal idTrasferimento)
+        {
+            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+            {
+                var idTEPartenza = dtte.GetTrasportoEffettiPartenzaByID(idTrasferimento);
+                var idTERientro = dtte.GetTrasportoEffettiRientroByID(idTrasferimento);
+
+                ViewData.Add("idTEPartenza", idTEPartenza);
+                ViewData.Add("idTERientro", idTERientro);
+                ViewData.Add("idTrasferimento", idTrasferimento);
+
+                return PartialView();
+            }
+        }
+
+
+
+        //[HttpPost]
+        //public ActionResult TrasportoEffettiPartenza(decimal idTraportoEffettiPartenza)
+        //{
+        //}
+
+
+
+
+
+
+
+
+        //----------------DA CANCELLARE --------------------------------------------
 
         public JsonResult AggiornaStatoRichiediTitoloViaggio(decimal idParentela, decimal idAttivazioneTitoliViaggio, decimal idFamiliare)
         {
@@ -170,19 +201,6 @@ namespace NewISE.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult TitoliViaggio(decimal idTrasferimento)
-        {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-            {
-                var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
-
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("idTrasferimento", idTrasferimento);
-
-                return PartialView();
-            }
-        }
 
         [HttpPost]
         public ActionResult ElencoUploadTitoliViaggio(decimal idTitoliViaggio)
@@ -571,6 +589,8 @@ namespace NewISE.Controllers
 
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
+
+                    //var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
 
                     dttv.SituazioneTitoliViaggio(idTitoliViaggio,
                                out richiediNotifica, out richiediAttivazione,

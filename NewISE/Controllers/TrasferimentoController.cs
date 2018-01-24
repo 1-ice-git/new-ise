@@ -114,13 +114,15 @@ namespace NewISE.Controllers
             bool conclusePP = false;
             bool richiesteTV = false;
             bool concluseTV = false;
+            bool richiestaTE = false;
+            bool attivazioneTE = false;
 
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
-                        out richiestaPP, out conclusePP, out richiesteTV, out concluseTV);
+                        out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE);
                 }
 
             }
@@ -140,6 +142,8 @@ namespace NewISE.Controllers
                         conclusePP = conclusePP,
                         richiesteTV = richiesteTV,
                         concluseTV = concluseTV,
+                        richiestaTE = richiestaTE,
+                        attivazioneTE = attivazioneTE
                     });
 
         }

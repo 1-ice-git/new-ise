@@ -93,7 +93,7 @@
         </tr>
         <tr>
             <th>
-                Richiesta Trasporto Effetti
+                @Ajax.ActionLink("Richiesta Trasporto Effetti", "TrasportoEffetti", "TrasportoEffetti", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkTrasportoEffetti" })
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -208,6 +208,8 @@
                     var conclusePP = result.conclusePP;
                     var richiesteTV = result.richiesteTV;
                     var concluseTV = result.concluseTV;
+                    var richiesteTE = result.richiestaTE;
+                    var attivazioneTE = result.attivazioneTE;
 
 
                     if (richiestaMF == true) {
@@ -254,6 +256,19 @@
                     } else {
                         $("#chkTitoliViaggioR").each(function () { this.checked = false; });
                         $("#chkTitoliViaggioSR").each(function () { this.checked = false; });
+                    }
+
+                    //chkTrasportoEffettiR
+                    if (richiestaTE == true) {
+                        $("#chkTrasportoEffettiR").each(function () { this.checked = true; });
+                        if (attivazioneTE == true) {
+                            $("#chkTrasportoEffettiSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkTrasportoEffettiSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkTrasportoEffettiR").each(function () { this.checked = false; });
+                        $("#chkTrasportoEffettiSR").each(function () { this.checked = false; });
                     }
 
                     AggiornaInfoTrasferimento();

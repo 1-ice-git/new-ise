@@ -623,18 +623,6 @@ namespace NewISE.Models.DBModel.dtObj
                         var ld = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)tipoDocumento).ToList();
 
                         nDoc = nDoc + ld.Count();
-                        //switch (tipoDocumento)
-                        //{
-                        //    case EnumTipoDoc.Titolo_Viaggio:
-                        //        nDoc = nDoc + atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio).Count();
-                        //        break;
-                        //    case EnumTipoDoc.Carta_Imbarco:
-                        //        nDoc = nDoc + atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco).Count();
-                        //        break;
-
-                        //    default:
-                        //        break;
-                        //}
                     }
                 }
                 return nDoc;
