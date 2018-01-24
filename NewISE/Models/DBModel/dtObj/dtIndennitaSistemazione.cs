@@ -19,6 +19,14 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public decimal ImportoPrimaSistemazione(decimal idPrimaSistemazione)
+        {
+            decimal importo = 0;
+
+
+            return importo;
+
+        }
 
 
         public IList<IndennitaSistemazioneModel> GetListIndennitaSistemazione(EnumTipoTrasferimento tipoTrasf, DateTime dt, ModelDBISE db)
