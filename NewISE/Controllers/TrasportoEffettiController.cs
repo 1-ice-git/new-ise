@@ -23,11 +23,7 @@ namespace NewISE.Controllers
         {
             using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
             {
-                var idTEPartenza = dtte.GetTrasportoEffettiPartenzaByID(idTrasferimento);
-                var idTERientro = dtte.GetTrasportoEffettiRientroByID(idTrasferimento);
-
-                ViewData.Add("idTEPartenza", idTEPartenza);
-                ViewData.Add("idTERientro", idTERientro);
+                ViewData.Add("idTrasportoEffettiPartenza", idTrasferimento);
                 ViewData.Add("idTrasferimento", idTrasferimento);
 
                 return PartialView();
@@ -36,10 +32,40 @@ namespace NewISE.Controllers
 
 
 
-        //[HttpPost]
-        //public ActionResult TrasportoEffettiPartenza(decimal idTraportoEffettiPartenza)
-        //{
-        //}
+        [HttpPost]
+        public ActionResult TrasportoEffettiPartenza(decimal idTrasportoEffettiPartenza)
+        {
+            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            {
+                bool richiestaTE = false;
+                bool attivazioneTE = false;
+                bool DocContributo = false;
+                bool DocAttestazione = false;
+                bool inLavorazione = false;
+
+                var nDocRichiesta = dttv.GetNumDocumenti(idTrasportoEffettiPartenza, EnumTipoDoc.Contributo_Fisso_Omnicomprensivo);
+                var nDocAttestazione = dttv.GetNumDocumenti(idTrasportoEffettiPartenza, EnumTipoDoc.Attestazione_Trasloco);
+
+                //dttv.SituazioneTitoliViaggio(idTitoliViaggio,
+                //               out richiediNotifica, out richiediAttivazione,
+                //               out richiediConiuge, out richiediRichiedente,
+                //               out richiediFigli, out DocTitoliViaggio,
+                //               out DocCartaImbarco, out inLavorazione);
+
+                //if (richiediAttivazione)
+                //{
+                //    notificaEseguita = true;
+                //}
+
+                //ViewData.Add("notificaEseguita", notificaEseguita);
+                //ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                //ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
+                //ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+
+                return PartialView();
+            }
+
+        }
 
 
 
