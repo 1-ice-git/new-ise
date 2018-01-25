@@ -204,6 +204,43 @@ namespace NewISE.Models.DBModel.dtObj
             return ibm;
         }
 
+        public IList<IndennitaBaseModel> GetIndennitaBaseByRangeDate(decimal idLivello, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+            var l = db.LIVELLI.Find(idLivello);
+
+            var lib =
+                l.INDENNITABASE.Where(
+                    a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                    .ToList();
+            if (lib?.Any() ?? false)
+            {
+                libm = (from ib in lib
+                        select new IndennitaBaseModel()
+                        {
+                            idIndennitaBase = ib.IDINDENNITABASE,
+                            idLivello = ib.IDLIVELLO,
+                            dataInizioValidita = ib.DATAINIZIOVALIDITA,
+                            dataFineValidita =
+                                ib.DATAFINEVALIDITA != Utility.DataFineStop() ? ib.DATAFINEVALIDITA : new DateTime?(),
+                            valore = ib.VALORE,
+                            valoreResponsabile = ib.VALORERESP,
+                            dataAggiornamento = ib.DATAAGGIORNAMENTO,
+                            annullato = ib.ANNULLATO,
+                            Livello = new LivelloModel()
+                            {
+                                idLivello = ib.LIVELLI.IDLIVELLO,
+                                DescLivello = ib.LIVELLI.LIVELLO
+                            }
+                        }).ToList();
+            }
+
+            return libm;
+        }
+
+
         public IndennitaBaseModel GetIndennitaBaseValida(decimal idLivello, DateTime dt, ModelDBISE db)
         {
             IndennitaBaseModel ibm = new IndennitaBaseModel();

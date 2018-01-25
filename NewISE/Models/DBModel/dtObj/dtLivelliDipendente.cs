@@ -75,6 +75,47 @@ namespace NewISE.Models.dtObj
 
             return ldm;
         }
+        /// <summary>
+        /// Preleva i dipendenti per il range di date passate.
+        /// </summary>
+        /// <param name="idDipendente"></param>
+        /// <param name="dtIni"></param>
+        /// <param name="dtFin"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public IList<LivelloDipendenteModel> GetLivelliDipendentiByRangeDate(decimal idDipendente, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
+
+            var d = db.DIPENDENTI.Find(idDipendente);
+
+            var lld =
+                d.LIVELLIDIPENDENTI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+            lldm = (from e in lld
+                    select new LivelloDipendenteModel()
+                    {
+                        idLivDipendente = e.IDLIVDIPENDENTE,
+                        idDipendente = e.IDDIPENDENTE,
+                        idLivello = e.IDLIVELLO,
+                        dataInizioValdita = e.DATAINIZIOVALIDITA,
+                        dataFineValidita = e.DATAFINEVALIDITA,
+                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+                        annullato = e.ANNULLATO,
+                        Livello = new LivelloModel()
+                        {
+                            idLivello = e.LIVELLI.IDLIVELLO,
+                            DescLivello = e.LIVELLI.LIVELLO
+                        }
+                    }).ToList();
+
+
+            return lldm;
+
+        }
 
         public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data, ModelDBISE db)
         {

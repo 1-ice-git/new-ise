@@ -813,7 +813,7 @@ namespace NewISE.Controllers
                                     using (dtIndennita dti = new dtIndennita())
                                     {
                                         IndennitaModel im = new IndennitaModel();
-                                        LivelloDipendenteModel ldm = new LivelloDipendenteModel();
+                                        List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
 
                                         im.idTrasfIndennita = trm.idTrasferimento;
 
@@ -821,14 +821,75 @@ namespace NewISE.Controllers
 
                                         dti.SetIndennita(im, db);
 
-                                        //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova indennità.", "Indennita", db, trm.idTrasferimento, im.idTrasfIndennita);
+                                        DateTime dataRientro = trm.dataRientro.HasValue == true
+                                            ? trm.dataRientro.Value
+                                            : Utility.DataFineStop();
 
                                         using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                         {
-                                            ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
-                                            if (ldm.HasValue())
+                                            lldm = dtld.GetLivelliDipendentiByRangeDate(trm.idDipendente, trm.dataPartenza, dataRientro, db).ToList();
+                                            if (lldm?.Any() ?? false)
                                             {
-                                                dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+                                                foreach (var ldm in lldm)
+                                                {
+                                                    dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+
+                                                    using (dtIndennitaBase dtib = new dtIndennitaBase())
+                                                    {
+                                                        List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+                                                        DateTime dataInizio = Utility.GetData_Inizio_Base();
+                                                        DateTime dataFine = Utility.DataFineStop();
+
+                                                        if (trm.dataPartenza > ldm.dataInizioValdita)
+                                                        {
+                                                            dataInizio = trm.dataPartenza;
+                                                        }
+                                                        else
+                                                        {
+                                                            dataInizio = trm.dataPartenza;
+                                                        }
+
+                                                        if (trm.dataRientro.HasValue)
+                                                        {
+                                                            if (trm.dataRientro > ldm.dataFineValidita)
+                                                            {
+                                                                dataFine = ldm.dataFineValidita.HasValue == true
+                                                                    ? ldm.dataFineValidita.Value
+                                                                    : Utility.DataFineStop();
+                                                            }
+                                                            else
+                                                            {
+                                                                dataFine = trm.dataRientro.Value;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            dataFine = ldm.dataFineValidita.HasValue == true
+                                                                ? ldm.dataFineValidita.Value
+                                                                : Utility.DataFineStop();
+                                                        }
+
+                                                        libm = dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
+
+                                                        if (libm?.Any() ?? false)
+                                                        {
+                                                            foreach (var ibm in libm)
+                                                            {
+                                                                dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
+                                                            }
+
+
+                                                        }
+                                                        else
+                                                        {
+                                                            throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                                        }
+                                                    }
+
+
+
+                                                }
                                             }
                                             else
                                             {
@@ -836,19 +897,7 @@ namespace NewISE.Controllers
                                             }
                                         }
 
-                                        using (dtIndennitaBase dtib = new dtIndennitaBase())
-                                        {
-                                            IndennitaBaseModel ibm = new IndennitaBaseModel();
-                                            ibm = dtib.GetIndennitaBaseValida(ldm.idLivello, trm.dataPartenza, db);
-                                            if (ibm.HasValue())
-                                            {
-                                                dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
-                                            }
-                                            else
-                                            {
-                                                throw new Exception("Non risulta l'indennità base per il livello interessato.");
-                                            }
-                                        }
+
 
                                         using (dtTFR dttfr = new dtTFR())
                                         {
