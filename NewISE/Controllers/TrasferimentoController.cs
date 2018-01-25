@@ -802,6 +802,11 @@ namespace NewISE.Controllers
                                         dttv.PreSetTitoloViaggio(trm.idTrasferimento, db);
                                     }
 
+                                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                                    {
+                                        dtte.PreSetTrasportoEffetti(trm.idTrasferimento, db);
+                                    }
+
                                     using (dtIndennita dti = new dtIndennita())
                                     {
                                         IndennitaModel im = new IndennitaModel();
@@ -907,6 +912,9 @@ namespace NewISE.Controllers
                                                 dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
                                             }
                                         }
+
+
+
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
