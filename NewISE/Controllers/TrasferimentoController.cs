@@ -793,7 +793,6 @@ namespace NewISE.Controllers
                                     using (dtMaggiorazioniFamiliari dtmf = new dtMaggiorazioniFamiliari())
                                     {
                                         dtmf.PreSetMaggiorazioniFamiliari(trm.idTrasferimento, db);
-
                                     }
 
                                     using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
@@ -804,6 +803,11 @@ namespace NewISE.Controllers
                                     using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                                     {
                                         dttv.PreSetTitoloViaggio(trm.idTrasferimento, db);
+                                    }
+
+                                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                                    {
+                                        dtte.PreSetTrasportoEffetti(trm.idTrasferimento, db);
                                     }
 
                                     using (dtIndennita dti = new dtIndennita())

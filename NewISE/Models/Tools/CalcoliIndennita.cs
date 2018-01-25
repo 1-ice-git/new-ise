@@ -386,8 +386,17 @@ namespace NewISE.Models.Tools
 
 
                                 #endregion
+
+
                             }
 
+                            #region Contributo Omnicomprensivo
+
+                            if (indennitaSistemazioneLorda > 0)
+                            {
+
+                            }
+                            #endregion
                         }
 
                     }
