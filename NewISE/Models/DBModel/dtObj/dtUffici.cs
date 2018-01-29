@@ -32,7 +32,6 @@ namespace NewISE.Models.DBModel.dtObj
                                codiceUfficio = e.CODICEUFFICIO,
                                descUfficio = e.DESCRIZIONEUFFICIO,
                                pagatoValutaUfficio = e.PAGATOVALUTAUFFICIO,
-                               idValuta = e.IDVALUTA
 
                            }).ToList();
                 }
@@ -62,7 +61,6 @@ namespace NewISE.Models.DBModel.dtObj
                             codiceUfficio = liv.CODICEUFFICIO,
                             descUfficio = liv.DESCRIZIONEUFFICIO,
                             pagatoValutaUfficio = liv.PAGATOVALUTAUFFICIO,
-                            idValuta = liv.IDVALUTA
                         };
                     }
 
@@ -94,7 +92,6 @@ namespace NewISE.Models.DBModel.dtObj
                         codiceUfficio = liv.CODICEUFFICIO,
                         descUfficio = liv.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = liv.PAGATOVALUTAUFFICIO,
-                        idValuta = liv.IDVALUTA
                     };
 
                 }

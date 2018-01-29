@@ -97,15 +97,10 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = pd.UFFICI.IDUFFICIO,
-                        idValuta = pd.UFFICI.IDVALUTA,
                         codiceUfficio = pd.UFFICI.CODICEUFFICIO,
                         descUfficio = pd.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = pd.UFFICI.PAGATOVALUTAUFFICIO,
-                        ValutaUfficio = new ValuteModel()
-                        {
-                            idValuta = pd.UFFICI.VALUTE.IDVALUTA,
-                            descrizioneValuta = pd.UFFICI.VALUTE.DESCRIZIONEVALUTA
-                        }
+
                     }
                 };
             }
@@ -135,6 +130,43 @@ namespace NewISE.Models.DBModel.dtObj
 
             return pdm;
         }
+
+        public IList<PercentualeDisagioModel> GetPercentualeDisagioIndennitaByRange(decimal idUfficio, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<PercentualeDisagioModel> lPercentualeDisagio = new List<PercentualeDisagioModel>();
+
+            var u = db.UFFICI.Find(idUfficio);
+
+            var lpd =
+                u.PERCENTUALEDISAGIO.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+            if (lpd?.Any() ?? false)
+            {
+                foreach (var pd in lpd)
+                {
+                    var pdm = new PercentualeDisagioModel()
+                    {
+                        idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
+                        idUfficio = pd.IDUFFICIO,
+                        dataInizioValidita = pd.DATAINIZIOVALIDITA,
+                        dataFineValidita =
+                            pd.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : pd.DATAFINEVALIDITA,
+                        percentuale = pd.PERCENTUALE,
+                        dataAggiornamento = pd.DATAAGGIORNAMENTO,
+                        annullato = pd.ANNULLATO
+                    };
+
+                    lPercentualeDisagio.Add(pdm);
+                }
+            }
+
+
+            return lPercentualeDisagio;
+
+        }
+
 
 
         public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, ModelDBISE db)

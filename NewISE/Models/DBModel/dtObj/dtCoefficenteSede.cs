@@ -102,7 +102,6 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = cs.UFFICI.IDUFFICIO,
-                        idValuta = cs.UFFICI.IDVALUTA,
                         codiceUfficio = cs.UFFICI.CODICEUFFICIO,
                         descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
@@ -133,7 +132,6 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = cs.UFFICI.IDUFFICIO,
-                        idValuta = cs.UFFICI.IDVALUTA,
                         codiceUfficio = cs.UFFICI.CODICEUFFICIO,
                         descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
@@ -143,6 +141,41 @@ namespace NewISE.Models.DBModel.dtObj
 
             return csm;
         }
+
+        public IList<CoefficientiSedeModel> GetCoefficenteSedeIndennitaByRangeDate(decimal idUfficio, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<CoefficientiSedeModel> lcsm = new List<CoefficientiSedeModel>();
+
+            var u = db.UFFICI.Find(idUfficio);
+
+            var lcs =
+                u.COEFFICIENTESEDE.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+            if (lcs?.Any() ?? false)
+            {
+                foreach (var cs in lcs)
+                {
+                    var csm = new CoefficientiSedeModel()
+                    {
+                        idCoefficientiSede = cs.IDCOEFFICIENTESEDE,
+                        idUfficio = cs.IDUFFICIO,
+                        dataInizioValidita = cs.DATAINIZIOVALIDITA,
+                        dataFineValidita =
+                            cs.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : cs.DATAFINEVALIDITA,
+                        valore = cs.VALORECOEFFICIENTE,
+                        dataAggiornamento = cs.DATAAGGIORNAMENTO,
+                        annullato = cs.ANNULLATO
+                    };
+
+                    lcsm.Add(csm);
+                }
+            }
+
+            return lcsm;
+        }
+
 
         public CoefficientiSedeModel GetCoefficenteSedeValido(decimal idUfficio, DateTime dt, ModelDBISE db)
         {

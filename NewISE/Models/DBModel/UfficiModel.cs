@@ -11,8 +11,7 @@ namespace NewISE.Models.DBModel
     {
         [Key]
         public decimal idUfficio { get; set; }
-        [Required(ErrorMessage = "La valuta è richiesta.")]
-        public decimal idValuta { get; set; }
+
         [Required(ErrorMessage = "Il codice ufficio è richiesto.")]
         [StringLength(30, ErrorMessage = "Per il codice ufficio sono ammessi massimo 4 caratteri.")]
         [Display(Name = "CodiceUfficio")]
@@ -26,7 +25,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Pag. val. uff.")]
         public bool pagatoValutaUfficio { get; set; }
 
-        public ValuteModel ValutaUfficio { get; set; }
+        public IList<ValuteModel> lValutaUfficio { get; set; }
 
 
     }

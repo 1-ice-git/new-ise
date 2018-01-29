@@ -14,6 +14,7 @@ namespace NewISE.EF
     
     public partial class VALUTAUFFICIO
     {
+        public decimal IDVALUTAUFFICIO { get; set; }
         public decimal IDVALUTA { get; set; }
         public decimal IDUFFICIO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
@@ -21,7 +22,7 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        public virtual VALUTE VALUTE { get; set; }
         public virtual UFFICI UFFICI { get; set; }
+        public virtual VALUTE VALUTE { get; set; }
     }
 }

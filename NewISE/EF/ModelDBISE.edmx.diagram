@@ -47,8 +47,6 @@
         <EntityTypeShape EntityType="DBISEPRO.TIPOTRASPORTO" Width="1.5" PointX="16.75" PointY="68.25" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOVOCE" Width="1.5" PointX="9.75" PointY="27.625" />
         <EntityTypeShape EntityType="DBISEPRO.UTENTIAUTORIZZATI" Width="1.5" PointX="3" PointY="42.375" />
-        <EntityTypeShape EntityType="DBISEPRO.VALUTAUFFICIO" Width="1.5" PointX="6" PointY="55.875" />
-        <EntityTypeShape EntityType="DBISEPRO.VALUTE" Width="1.5" PointX="1.5" PointY="54.875" />
         <EntityTypeShape EntityType="DBISEPRO.VOCI" Width="1.5" PointX="12" PointY="28.5" />
         <AssociationConnector Association="DBISEPRO.R_UL_C" />
         <AssociationConnector Association="DBISEPRO.R_TC_AC" />
@@ -69,11 +67,9 @@
         <AssociationConnector Association="DBISEPRO.R_T_S" />
         <AssociationConnector Association="DBISEPRO.R_TM_T" />
         <AssociationConnector Association="DBISEPRO.R_V_T" />
-        <AssociationConnector Association="DBISEPRO.R_VALUTE_TFR" />
         <AssociationConnector Association="DBISEPRO.R_TE_TV" />
         <AssociationConnector Association="DBISEPRO.R_TL_V" />
         <AssociationConnector Association="DBISEPRO.R_TV_V" />
-        <AssociationConnector Association="DBISEPRO.R_VALUTE_VALUFF" />
         <AssociationConnector Association="DBISEPRO.IND_COEFFICENTESEDE" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" />
         <AssociationConnector Association="DBISEPRO.INDENNITA_PERCDISAGIO" />
@@ -165,7 +161,7 @@
         <EntityTypeShape EntityType="DBISEPRO.ANTICIPOSALDOTE" Width="1.5" PointX="12.75" PointY="33.875" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITATEPARTENZA" Width="1.5" PointX="15" PointY="38.875" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVITATERIENTRO" Width="1.5" PointX="18" PointY="59.875" />
-        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" Width="1.5" PointX="8.5" PointY="24" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEANTICIPOTE" Width="1.5" PointX="9.375" PointY="23.875" />
         <EntityTypeShape EntityType="DBISEPRO.TEPARTENZA" Width="1.5" PointX="10.75" PointY="43.375" />
         <EntityTypeShape EntityType="DBISEPRO.TERIENTRO" Width="1.5" PointX="12.75" PointY="58.375" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOANTICIPOTRASPORTOEFFETTI" Width="1.5" PointX="6.25" PointY="24.625" />
@@ -236,18 +232,21 @@
         <AssociationConnector Association="DBISEPRO.IS_R" />
         <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEFKM" Width="1.5" PointX="8.25" PointY="59.5" />
         <EntityTypeShape EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" Width="1.5" PointX="6" PointY="60" />
-        <EntityTypeShape EntityType="DBISEPRO.UFFICI" Width="1.5" PointX="3.75" PointY="59.25" />
         <AssociationConnector Association="DBISEPRO.R_DFK_CFK" />
+        <AssociationConnector Association="DBISEPRO.TEP_FK" />
+        <AssociationConnector Association="DBISEPRO.TER_FK" />
+        <EntityTypeShape EntityType="DBISEPRO.UFFICI" Width="1.5" PointX="4" PointY="55.125" />
+        <EntityTypeShape EntityType="DBISEPRO.VALUTAUFFICIO" Width="1.5" PointX="6.25" PointY="30.375" />
+        <EntityTypeShape EntityType="DBISEPRO.VALUTE" Width="1.5" PointX="0.75" PointY="1.25" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" />
         <AssociationConnector Association="DBISEPRO.R_U_DFK" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.R_U_PMAB" />
+        <AssociationConnector Association="DBISEPRO.R_VALUTE_TFR" />
         <AssociationConnector Association="DBISEPRO.R_U_T" />
         <AssociationConnector Association="DBISEPRO.R_UFF_VALUFF" />
-        <AssociationConnector Association="DBISEPRO.R_V_U" />
-        <AssociationConnector Association="DBISEPRO.TEP_FK" />
-        <AssociationConnector Association="DBISEPRO.TER_FK" />
+        <AssociationConnector Association="DBISEPRO.R_VALUTE_VALUFF" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

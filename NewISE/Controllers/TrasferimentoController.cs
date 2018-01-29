@@ -769,6 +769,12 @@ namespace NewISE.Controllers
 
                                     dttr.SetTrasferimento(ref trm, db);
 
+                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    {
+                                        trm.Dipendente = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento, db);
+                                    }
+
+
                                     if (idTrasferimentoOld > 0)
                                     {
 
@@ -827,12 +833,15 @@ namespace NewISE.Controllers
 
                                         using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                         {
-                                            lldm = dtld.GetLivelliDipendentiByRangeDate(trm.idDipendente, trm.dataPartenza, dataRientro, db).ToList();
+                                            lldm =
+                                                dtld.GetLivelliDipendentiByRangeDate(trm.idDipendente, trm.dataPartenza,
+                                                    dataRientro, db).ToList();
                                             if (lldm?.Any() ?? false)
                                             {
                                                 foreach (var ldm in lldm)
                                                 {
-                                                    dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+                                                    dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento,
+                                                        ldm.idLivDipendente, db);
 
                                                     using (dtIndennitaBase dtib = new dtIndennitaBase())
                                                     {
@@ -870,7 +879,9 @@ namespace NewISE.Controllers
                                                                 : Utility.DataFineStop();
                                                         }
 
-                                                        libm = dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
+                                                        libm =
+                                                            dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
+                                                                dataFine, db).ToList();
 
                                                         if (libm?.Any() ?? false)
                                                         {
@@ -887,8 +898,6 @@ namespace NewISE.Controllers
                                                         }
                                                     }
 
-
-
                                                 }
                                             }
                                             else
@@ -901,68 +910,96 @@ namespace NewISE.Controllers
 
                                         using (dtTFR dttfr = new dtTFR())
                                         {
-                                            TFRModel tfrm = dttfr.GetTFRValido(trm.idUfficio, trm.dataPartenza, db);
-                                            if (tfrm.HasValue())
+                                            List<TFRModel> ltfrm =
+                                                dttfr.GetTfrIndennitaByRangeDate(trm.idUfficio, trm.dataPartenza,
+                                                    dataRientro, db).ToList();
+
+                                            if (ltfrm?.Any() ?? false)
                                             {
-                                                dttfr.AssociaTFR_Indennita(trm.idTrasferimento, tfrm.idTFR, db);
+                                                foreach (var tfrm in ltfrm)
+                                                {
+                                                    dttfr.AssociaTFR_Indennita(trm.idTrasferimento, tfrm.idTFR, db);
+                                                }
                                             }
                                             else
                                             {
                                                 throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
                                             }
+
+
                                         }
 
                                         using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
                                         {
-                                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioValida(trm.idUfficio, trm.dataPartenza, db);
+                                            List<PercentualeDisagioModel> lpdm =
+                                                dtpd.GetPercentualeDisagioIndennitaByRange(trm.idUfficio,
+                                                    trm.dataPartenza, dataRientro, db).ToList();
 
-                                            if (pdm.HasValue())
+
+                                            if (lpdm?.Any() ?? false)
                                             {
-                                                dtpd.AssociaPercentualeDisagio_Indennita(trm.idTrasferimento, pdm.idPercentualeDisagio, db);
+                                                foreach (var pdm in lpdm)
+                                                {
+                                                    dtpd.AssociaPercentualeDisagio_Indennita(trm.idTrasferimento, pdm.idPercentualeDisagio, db);
+                                                }
                                             }
                                             else
                                             {
                                                 throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
                                             }
+
+
                                         }
 
                                         using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                                         {
-                                            CoefficientiSedeModel cs = dtcs.GetCoefficenteSedeValido(trm.idUfficio, trm.dataPartenza, db);
-                                            if (cs.HasValue())
+                                            List<CoefficientiSedeModel> lcsm =
+                                                dtcs.GetCoefficenteSedeIndennitaByRangeDate(trm.idUfficio,
+                                                    trm.dataPartenza, dataRientro, db).ToList();
+
+                                            if (lcsm?.Any() ?? false)
                                             {
-                                                dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, cs.idCoefficientiSede, db);
+                                                foreach (var csm in lcsm)
+                                                {
+                                                    dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, csm.idCoefficientiSede, db);
+                                                }
                                             }
                                             else
                                             {
                                                 throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
                                             }
+
                                         }
 
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
-                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idRuoloUfficio, trm.dataPartenza, db);
+                                            //RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idRuoloUfficio, trm.dataPartenza, dataRientro, db).ToList();
 
-                                            if (rdm.hasValue())
-                                            {
-                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
-                                            }
-                                            else
-                                            {
-                                                rdm = new RuoloDipendenteModel()
-                                                {
-                                                    idRuolo = trm.idRuoloUfficio,
-                                                    dataInizioValidita = trm.dataPartenza,
-                                                    dataFineValidita = Utility.DataFineStop(),
-                                                    dataAggiornamento = DateTime.Now,
-                                                    annullato = false
-                                                };
+                                            //if (lrdm?.Any() ?? false)
+                                            //{
+                                            //    foreach (var rdm in lrdm)
+                                            //    {
+                                            //        dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
+                                            //    }
+                                            //}
+                                            //else
+                                            //{
+                                            //    var rdm = new RuoloDipendenteModel()
+                                            //    {
+                                            //        idRuolo = trm.idRuoloUfficio,
+                                            //        dataInizioValidita = trm.dataPartenza,
+                                            //        dataFineValidita = Utility.DataFineStop(),
+                                            //        dataAggiornamento = DateTime.Now,
+                                            //        annullato = false
+                                            //    };
 
-                                                dtrd.SetRuoloDipendente(ref rdm, db);
-                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+                                            //    dtrd.SetRuoloDipendente(ref rdm, db);
 
-                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
-                                            }
+                                            //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+
+                                            //    dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
+                                            //}
+
                                         }
                                     }
 

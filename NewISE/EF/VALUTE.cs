@@ -19,7 +19,6 @@ namespace NewISE.EF
         {
             this.TFR = new HashSet<TFR>();
             this.VALUTAUFFICIO = new HashSet<VALUTAUFFICIO>();
-            this.UFFICI = new HashSet<UFFICI>();
         }
     
         public decimal IDVALUTA { get; set; }
@@ -30,7 +29,5 @@ namespace NewISE.EF
         public virtual ICollection<TFR> TFR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UFFICI> UFFICI { get; set; }
     }
 }

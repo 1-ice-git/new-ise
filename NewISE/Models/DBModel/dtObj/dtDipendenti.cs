@@ -107,6 +107,47 @@ namespace NewISE.Models.DBModel.dtObj
 
         #endregion Custom validations
 
+        /// <summary>
+        /// preleva il dipendente in base all'id trasferimento passato.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public DipendentiModel GetDipendenteByIDTrasf(decimal idTrasf, ModelDBISE db)
+        {
+            DipendentiModel dm = new DipendentiModel();
+
+            TRASFERIMENTO t = db.TRASFERIMENTO.Find(idTrasf);
+
+            var d = db.DIPENDENTI.Find(t.IDDIPENDENTE);
+
+            dm = new DipendentiModel()
+            {
+                idDipendente = d.IDDIPENDENTE,
+                matricola = d.MATRICOLA,
+                nome = d.NOME,
+                cognome = d.COGNOME,
+                dataAssunzione = d.DATAASSUNZIONE,
+                dataCessazione = d.DATACESSAZIONE,
+                indirizzo = d.INDIRIZZO,
+                cap = d.CAP,
+                citta = d.CITTA,
+                provincia = d.PROVINCIA,
+                email = d.EMAIL,
+                telefono = d.TELEFONO,
+                fax = d.FAX,
+                abilitato = d.ABILITATO,
+                dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                cdcGepe = new CDCGepeModel()
+                {
+                    iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                    codiceCDC = d.CDCGEPE.CODICECDC,
+                    descCDC = d.CDCGEPE.DESCCDC,
+                    dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                }
+            };
+
+            return dm;
+        }
 
         /// <summary>
         /// preleva il dipendente in base all'id trasferimento passato.

@@ -27,7 +27,6 @@ namespace NewISE.EF
         }
     
         public decimal IDUFFICIO { get; set; }
-        public decimal IDVALUTA { get; set; }
         public string CODICEUFFICIO { get; set; }
         public string DESCRIZIONEUFFICIO { get; set; }
         public bool PAGATOVALUTAUFFICIO { get; set; }
@@ -46,6 +45,5 @@ namespace NewISE.EF
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
-        public virtual VALUTE VALUTE { get; set; }
     }
 }

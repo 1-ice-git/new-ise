@@ -87,12 +87,11 @@ namespace NewISE.Models.dtObj
         {
             List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
 
-            var d = db.DIPENDENTI.Find(idDipendente);
-
             var lld =
-                d.LIVELLIDIPENDENTI.Where(
+                db.LIVELLIDIPENDENTI.Where(
                     a =>
-                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
+                        a.ANNULLATO == false && a.IDDIPENDENTE == idDipendente && a.DATAFINEVALIDITA >= dtIni &&
+                        a.DATAINIZIOVALIDITA <= dtFin)
                     .OrderBy(a => a.DATAINIZIOVALIDITA);
 
             lldm = (from e in lld

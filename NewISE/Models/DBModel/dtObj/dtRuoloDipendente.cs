@@ -104,6 +104,45 @@ namespace NewISE.Models.DBModel.dtObj
             return rdm;
 
         }
+
+        public IList<RuoloDipendenteModel> GetRuoliDipendenteIndennitaByRangeDate(decimal idRuolo, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<RuoloDipendenteModel> lrdm = new List<RuoloDipendenteModel>();
+
+            var r = db.RUOLOUFFICIO.Find(idRuolo);
+
+            var lrd =
+                r.RUOLODIPENDENTE.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINZIOVALIDITA);
+
+            if (lrd?.Any() ?? false)
+            {
+                foreach (var rd in lrd)
+                {
+                    var rdm = new RuoloDipendenteModel()
+                    {
+                        idRuoloDipendente = rd.IDRUOLODIPENDENTE,
+                        idRuolo = rd.IDRUOLO,
+                        dataInizioValidita = rd.DATAINZIOVALIDITA,
+                        dataFineValidita = rd.DATAFINEVALIDITA,
+                        dataAggiornamento = rd.DATAAGGIORNAMENTO,
+                        annullato = rd.ANNULLATO,
+                        RuoloUfficio = new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = rd.RUOLOUFFICIO.IDRUOLO,
+                            DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
+                        }
+                    };
+
+                    lrdm.Add(rdm);
+                }
+            }
+
+            return lrdm;
+
+        }
+
         public RuoloDipendenteModel GetRuoloDipendente(decimal idRuolo, DateTime dataIni, ModelDBISE db)
         {
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();

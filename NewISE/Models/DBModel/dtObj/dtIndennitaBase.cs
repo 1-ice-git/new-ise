@@ -208,13 +208,14 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
 
-            var l = db.LIVELLI.Find(idLivello);
-
             var lib =
-                l.INDENNITABASE.Where(
-                    a => a.ANNULLATO == false && a.DATAINIZIOVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                db.INDENNITABASE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDLIVELLO == idLivello && a.DATAFINEVALIDITA >= dtIni &&
+                        a.DATAINIZIOVALIDITA <= dtFin)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                     .ToList();
+
             if (lib?.Any() ?? false)
             {
                 libm = (from ib in lib
