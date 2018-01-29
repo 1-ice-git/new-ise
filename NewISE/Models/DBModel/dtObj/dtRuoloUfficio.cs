@@ -42,7 +42,13 @@ namespace NewISE.Models.DBModel.dtObj
                         dtDatiParametri = tr.DATAPARTENZA > dataInizioMEseCorrente ? tr.DATAPARTENZA : dataAttuale;
                     }
 
-                    var lru = tr.INDENNITA.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA && dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
+                    var lru =
+                        tr.RUOLODIPENDENTE.Where(
+                            a =>
+                                a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA &&
+                                dtDatiParametri <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINZIOVALIDITA)
+                            .ToList();
 
                     if (lru != null && lru.Count > 0)
                     {

@@ -24,7 +24,6 @@ namespace NewISE.EF
             this.NORMACALCOLO = new HashSet<NORMACALCOLO>();
             this.FIGLI = new HashSet<FIGLI>();
             this.FIGLITITOLIVIAGGIO = new HashSet<FIGLITITOLIVIAGGIO>();
-            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
             this.PASSAPORTORICHIEDENTE = new HashSet<PASSAPORTORICHIEDENTE>();
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
@@ -32,6 +31,7 @@ namespace NewISE.EF
             this.ATTIVAZIONIVIAGGICONGEDO = new HashSet<ATTIVAZIONIVIAGGICONGEDO>();
             this.TITOLIVIAGGIORICHIEDENTE = new HashSet<TITOLIVIAGGIORICHIEDENTE>();
             this.ATTIVAZIONETITOLIVIAGGIO = new HashSet<ATTIVAZIONETITOLIVIAGGIO>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
         public decimal IDDOCUMENTO { get; set; }
@@ -60,8 +60,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PASSAPORTORICHIEDENTE> PASSAPORTORICHIEDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
@@ -75,5 +73,7 @@ namespace NewISE.EF
         public virtual ICollection<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

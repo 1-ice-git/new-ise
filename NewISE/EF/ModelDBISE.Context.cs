@@ -46,7 +46,6 @@ namespace NewISE.EF
         public virtual DbSet<PERCENTUALEMAGCONIUGE> PERCENTUALEMAGCONIUGE { get; set; }
         public virtual DbSet<PERCENTUALEMAGFIGLI> PERCENTUALEMAGFIGLI { get; set; }
         public virtual DbSet<RUOLOACCESSO> RUOLOACCESSO { get; set; }
-        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<RUOLOUFFICIO> RUOLOUFFICIO { get; set; }
         public virtual DbSet<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual DbSet<STATOTRASFERIMENTO> STATOTRASFERIMENTO { get; set; }
@@ -68,7 +67,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOVOCE> TIPOVOCE { get; set; }
         public virtual DbSet<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
-        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         public virtual DbSet<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
@@ -119,5 +117,7 @@ namespace NewISE.EF
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
+        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

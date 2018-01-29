@@ -20,7 +20,6 @@ namespace NewISE.EF
             this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.PERCENTUALEDISAGIO = new HashSet<PERCENTUALEDISAGIO>();
-            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.TFR = new HashSet<TFR>();
             this.INDENNITABASE = new HashSet<INDENNITABASE>();
         }
@@ -35,11 +34,9 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEDISAGIO> PERCENTUALEDISAGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITABASE> INDENNITABASE { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

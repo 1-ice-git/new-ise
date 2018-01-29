@@ -659,15 +659,9 @@ namespace NewISE.Controllers
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
 
-                                            dtrd.RimuoviAssociaRuoloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
 
-                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idRuoloUfficio, trm.dataPartenza, db);
-
-                                            if (rdm.hasValue())
-                                            {
-                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
-                                            }
-                                            else
+                                            if (rdm == null || rdm.hasValue() == false)
                                             {
                                                 rdm = new RuoloDipendenteModel()
                                                 {
@@ -678,11 +672,20 @@ namespace NewISE.Controllers
                                                     annullato = false
                                                 };
 
-                                                dtrd.SetRuoloDipendente(ref rdm, db);
-                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+                                                var rdnOld =
+                                                    dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento,
+                                                        trm.dataPartenza, db);
 
-                                                dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
+
+
+                                                dtrd.SetRuoloDipendente(ref rdm, db);
+
+
+
+
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
                                             }
+
                                         }
                                     }
 
@@ -973,32 +976,30 @@ namespace NewISE.Controllers
 
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
-                                            //RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idRuoloUfficio, trm.dataPartenza, dataRientro, db).ToList();
+                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
 
-                                            //if (lrdm?.Any() ?? false)
-                                            //{
-                                            //    foreach (var rdm in lrdm)
-                                            //    {
-                                            //        dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
-                                            //    }
-                                            //}
-                                            //else
-                                            //{
-                                            //    var rdm = new RuoloDipendenteModel()
-                                            //    {
-                                            //        idRuolo = trm.idRuoloUfficio,
-                                            //        dataInizioValidita = trm.dataPartenza,
-                                            //        dataFineValidita = Utility.DataFineStop(),
-                                            //        dataAggiornamento = DateTime.Now,
-                                            //        annullato = false
-                                            //    };
+                                            if (rdm == null || rdm.hasValue() == false)
+                                            {
+                                                rdm = new RuoloDipendenteModel()
+                                                {
+                                                    idRuolo = trm.idRuoloUfficio,
+                                                    idTrasferimento = trm.idTrasferimento,
+                                                    dataInizioValidita = trm.dataPartenza,
+                                                    dataFineValidita = Utility.DataFineStop(),
+                                                    dataAggiornamento = DateTime.Now,
+                                                    annullato = false
+                                                };
 
-                                            //    dtrd.SetRuoloDipendente(ref rdm, db);
+                                                dtrd.SetRuoloDipendente(ref rdm, db);
 
-                                            //    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
 
-                                            //    dtrd.AssociaRuoloDipendente_Indennita(trm.idTrasferimento, rdm.idRuoloDipendente, db);
-                                            //}
+
+                                            }
+                                            else
+                                            {
+
+                                            }
 
                                         }
                                     }

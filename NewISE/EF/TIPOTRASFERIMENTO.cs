@@ -17,16 +17,16 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TIPOTRASFERIMENTO()
         {
-            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
             this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
+            this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
         }
     
         public decimal IDTIPOTRASFERIMENTO { get; set; }
         public string TIPOTRASFERIMENTO1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }

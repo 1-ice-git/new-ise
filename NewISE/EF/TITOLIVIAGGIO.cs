@@ -29,10 +29,10 @@ namespace NewISE.EF
         public virtual ICollection<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FIGLITITOLIVIAGGIO> FIGLITITOLIVIAGGIO { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONETITOLIVIAGGIO> ATTIVAZIONETITOLIVIAGGIO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

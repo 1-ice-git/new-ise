@@ -14,21 +14,15 @@ namespace NewISE.EF
     
     public partial class RUOLODIPENDENTE
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RUOLODIPENDENTE()
-        {
-            this.INDENNITA = new HashSet<INDENNITA>();
-        }
-    
         public decimal IDRUOLODIPENDENTE { get; set; }
         public decimal IDRUOLO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public System.DateTime DATAINZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual RUOLOUFFICIO RUOLOUFFICIO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

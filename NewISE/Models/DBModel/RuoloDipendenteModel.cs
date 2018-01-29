@@ -13,7 +13,8 @@ namespace NewISE.Models.DBModel
         public decimal idRuoloDipendente { get; set; }
         [Required(ErrorMessage = "Il ruolo è richiesto")]
         public decimal idRuolo { get; set; }
-        
+        [Required(ErrorMessage = "Il trasferimento è richiesto")]
+        public decimal idTrasferimento { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
@@ -50,6 +51,6 @@ namespace NewISE.Models.DBModel
 
         }
 
-        
+
     }
 }

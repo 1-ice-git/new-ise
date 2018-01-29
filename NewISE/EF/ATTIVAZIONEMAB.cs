@@ -39,8 +39,8 @@ namespace NewISE.EF
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }
