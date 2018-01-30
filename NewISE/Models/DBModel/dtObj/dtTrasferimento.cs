@@ -245,10 +245,10 @@ namespace NewISE.Models.DBModel.dtObj
                         richiesteTV = atv.NOTIFICARICHIESTA;
                         concluseTV = atv.ATTIVAZIONERICHIESTA;
                     }
-                    else
-                    {
-                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
-                    }
+                    //else
+                    //{
+                    //    throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVAZIONITITOLIVIAGGIO non trovato.");
+                    //}
                 }
 
                 #endregion
@@ -266,10 +266,10 @@ namespace NewISE.Models.DBModel.dtObj
                         richiestaTE = atep.RICHIESTATRASPORTOEFFETTI;
                         attivazioneTE = atep.ATTIVAZIONETRASPORTOEFFETTI;
                     }
-                    else
-                    {
-                        throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVITATEPARTENZA non trovato.");
-                    }
+                    //else
+                    //{
+                    //    throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVITATEPARTENZA non trovato.");
+                    //}
                 }
 
                 #endregion
