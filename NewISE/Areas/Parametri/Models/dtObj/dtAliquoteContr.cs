@@ -148,7 +148,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new AliquoteContributiveModel()
                             {
-                                
                                 idAliqContr = e.IDALIQCONTR,
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
@@ -164,7 +163,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)

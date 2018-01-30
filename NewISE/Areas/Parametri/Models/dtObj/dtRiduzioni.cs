@@ -28,13 +28,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO
+                                annullato = e.ANNULLATO,
+                                idFunzioneRiduzione=e.IDFUNZIONERIDUZIONE
                             }).ToList();
                 }
 
@@ -86,26 +86,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<RiduzioniModel> getListRiduzioni(bool escludiAnnullati = false)
         {
             List<RiduzioniModel> libm = new List<RiduzioniModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lib = db.RIDUZIONI.Where(a => a.ANNULLATO == escludiAnnullati).ToList();
+                    List<RIDUZIONI> lib = new List<RIDUZIONI>();
+
+                    if(escludiAnnullati==true)
+                       lib= db.RIDUZIONI.Where(a => a.ANNULLATO == false).ToList();
+                    else
+                       lib= db.RIDUZIONI.ToList();
 
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
-
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new RiduzioniModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA ,
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
+                                idFunzioneRiduzione = e.IDFUNZIONERIDUZIONE
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)

@@ -212,31 +212,31 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();
             try
             {
-                using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
+                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     dtib.DelCoefficienteRichiamo(idCoeffIndRichiamo);
                 }
 
-                using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                {
-                    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
+                //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
+                //{
+                //    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
 
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.percentuale.ToString(),
-                                 Value = t.idRiduzioni.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
-                    }
-                    ViewBag.CoeffIndRichiamo = r;
-                }
+                //    if (llm != null && llm.Count > 0)
+                //    {
+                //        r = (from t in llm
+                //             select new SelectListItem()
+                //             {
+                //                 Text = t.percentuale.ToString(),
+                //                 Value = t.idRiduzioni.ToString()
+                //             }).ToList();
+                //        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
+                //    }
+                //    ViewBag.CoeffIndRichiamo = r;
+                //}
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
-                    libm = dtib.getListCoeffIndRichiamo(idRiduzioni, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("CoeffIndRichiamo", libm);
                 // return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = idRiduzioni });
@@ -259,26 +259,11 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
+                    using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                     {
                         dtib.SetCoefficienteRichiamo(ibm, aggiornaTutto);
                     }
-                    //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                    //{
-                    //    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
-
-                    //    if (llm != null && llm.Count > 0)
-                    //    {
-                    //        r = (from t in llm
-                    //             select new SelectListItem()
-                    //             {
-                    //                 Text = t.percentuale.ToString(),
-                    //                 Value = t.idRiduzioni.ToString()
-                    //             }).ToList();
-                    //        r.Where(a => a.Value == ibm.idRiduzioni.ToString()).First().Selected = true;
-                    //    }
-                    //    ViewBag.CoeffIndRichiamo = r;
-                    //}
+                    
                     using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                     {
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();

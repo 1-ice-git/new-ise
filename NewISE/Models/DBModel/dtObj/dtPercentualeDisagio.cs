@@ -97,7 +97,7 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = pd.UFFICI.IDUFFICIO,
-                        idValuta = pd.UFFICI.IDVALUTA,
+                      //  idValuta = pd.UFFICI.IDVALUTA,
                         codiceUfficio = pd.UFFICI.CODICEUFFICIO,
                         descUfficio = pd.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = pd.UFFICI.PAGATOVALUTAUFFICIO,

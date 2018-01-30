@@ -40,6 +40,11 @@ namespace NewISE.Models.DBModel
 
         public RegoleCalcoloModel FormulaRegolaCalcolo { get; set; }
 
+        [Required(ErrorMessage = "La Funzione Riduzione è richiesta.")]
+        [Display(Name = "Funzione Riduzione")]
+        [DataType(DataType.Text)]
+        public decimal idFunzioneRiduzione { get; set; }
+
 
     }
 }

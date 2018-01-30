@@ -102,7 +102,7 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = cs.UFFICI.IDUFFICIO,
-                        idValuta = cs.UFFICI.IDVALUTA,
+                       // idValuta = cs.UFFICI.IDVALUTA,
                         codiceUfficio = cs.UFFICI.CODICEUFFICIO,
                         descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
@@ -133,7 +133,7 @@ namespace NewISE.Models.DBModel.dtObj
                     Ufficio = new UfficiModel()
                     {
                         idUfficio = cs.UFFICI.IDUFFICIO,
-                        idValuta = cs.UFFICI.IDVALUTA,
+                       // idValuta = cs.UFFICI.IDVALUTA,
                         codiceUfficio = cs.UFFICI.CODICEUFFICIO,
                         descUfficio = cs.UFFICI.DESCRIZIONEUFFICIO,
                         pagatoValutaUfficio = cs.UFFICI.PAGATOVALUTAUFFICIO
