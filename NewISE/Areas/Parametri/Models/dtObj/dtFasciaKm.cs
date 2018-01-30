@@ -24,14 +24,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ll = db.DEFFASCIACHILOMETRICA.ToList();
+                    //var ll = db.DEFFASCIACHILOMETRICA.ToList();
 
-                    llm = (from e in ll
-                           select new DefFasciaKmModel()
-                           {
-                               idDefKm = e.IDDEFKM,
-                               km=e.KM
-                           }).ToList();
+                    //llm = (from e in ll
+                    //       select new DefFasciaKmModel()
+                    //       {
+                    //           idDefKm = e.IDDEFKM,
+                    //           km=e.KM
+                    //       }).ToList();
                 }
 
                 return llm;
@@ -42,7 +42,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        
+
 
 
 

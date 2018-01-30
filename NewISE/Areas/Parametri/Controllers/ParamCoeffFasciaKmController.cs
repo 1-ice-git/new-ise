@@ -40,27 +40,27 @@ namespace NewISE.Areas.Parametri.Controllers
                         {
                             r.First().Selected = true;
                             idLivello = Convert.ToDecimal(r.First().Value);
-                        }                        
+                        }
                         else
                         {
-                                var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                                if (temp.Count == 0)
-                                {
-                                    r.First().Selected = true;
-                                    idLivello = Convert.ToDecimal(r.First().Value);
-                                }
-                                else
-                                    r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
                             }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                         }
                     }
-                    ViewBag.CoeffFasciaKm = r;
-                
+                }
+                ViewBag.CoeffFasciaKm = r;
+
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idLivello);
-                    libm = dtib.getListCoeffFasciaKm(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-               }
+                    //ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idLivello);
+                    //libm = dtib.getListCoeffFasciaKm(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
                 {
-                    
+
                     llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
 
                     if (llm != null && llm.Count > 0)
@@ -103,8 +103,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idDefKm);
-                    libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idDefKm);
+                    //libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
 
                 }
             }
@@ -122,7 +122,7 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuovoCoefficienteFasciaKm(decimal idDefKm, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-            
+
             CoeffFasciaKmModel ibm = new CoeffFasciaKmModel();
 
             try
@@ -155,7 +155,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                     {
-                        dtib.SetCoeffFasciaKm(ibm, aggiornaTutto);
+                        //dtib.SetCoeffFasciaKm(ibm, aggiornaTutto);
                     }
                     using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
                     {
@@ -177,10 +177,10 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                     {
-                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(ibm.idDefKm);
-                        libm = dtib.getListCoeffFasciaKm(ibm.idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        //    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(ibm.idDefKm);
+                        //    libm = dtib.getListCoeffFasciaKm(ibm.idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    return PartialView("CoefficienteFasciaKm",libm);
+                    return PartialView("CoefficienteFasciaKm", libm);
                     //return RedirectToAction("CoefficienteFasciaKm", new { escludiAnnullati = escludiAnnullati, idDefKm = ibm.idDefKm });
                 }
                 else
@@ -208,38 +208,38 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                 {
-                    dtib.DelCoeffFasciaKm(idCfKm);
+                    //dtib.DelCoeffFasciaKm(idCfKm);
                 }
                 List<CoeffFasciaKmModel> libm = new List<CoeffFasciaKmModel>();
                 var r = new List<SelectListItem>();
                 List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
 
-                
-                    using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+
+                using (dtParDefFasciaKm dtl = new dtParDefFasciaKm())
+                {
+
+                    llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
+
+                    if (llm != null && llm.Count > 0)
                     {
-
-                        llm = dtl.GetFasciaKm().OrderBy(a => a.km).ToList();
-
-                        if (llm != null && llm.Count > 0)
-                        {
-                            r = (from t in llm
-                                 select new SelectListItem()
-                                 {
-                                     Text = t.km,
-                                     Value = t.idDefKm.ToString()
-                                 }).ToList();
-                            r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
-                        }
-
-                        ViewBag.CoeffFasciaKm = r;
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.km,
+                                 Value = t.idDefKm.ToString()
+                             }).ToList();
+                        r.Where(a => a.Value == idDefKm.ToString()).First().Selected = true;
                     }
 
-                    using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
-                    {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idDefKm);
-                    libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                
+                    ViewBag.CoeffFasciaKm = r;
+                }
+
+                using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                {
+                    //ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficienteFasciaKmNonAnnullato(idDefKm);
+                    //libm = dtib.getListCoeffFasciaKm(idDefKm, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
+
                 ViewBag.escludiAnnullati = escludiAnnullati;
 
                 return PartialView("CoefficienteFasciaKm", libm);

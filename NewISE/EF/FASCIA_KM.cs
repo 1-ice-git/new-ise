@@ -12,27 +12,26 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASITEMAZIONE
+    public partial class FASCIA_KM
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRIMASITEMAZIONE()
+        public FASCIA_KM()
         {
-            this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
-            this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
-            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
+            this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
             this.PRIMASIST_FASCIAKM = new HashSet<PRIMASIST_FASCIAKM>();
+            this.RICHIAMO_FKM = new HashSet<RICHIAMO_FKM>();
         }
     
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public decimal IDFKM { get; set; }
+        public decimal IDGRUPPOFKM { get; set; }
+        public string KM { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ALIQUOTECONTRIBUTIVE> ALIQUOTECONTRIBUTIVE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRIMASIST_FASCIAKM> PRIMASIST_FASCIAKM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
+        public virtual GRUPPO_FKM GRUPPO_FKM { get; set; }
     }
 }

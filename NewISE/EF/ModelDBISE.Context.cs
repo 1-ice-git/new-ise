@@ -112,12 +112,15 @@ namespace NewISE.EF
         public virtual DbSet<REGOLECALCOLO> REGOLECALCOLO { get; set; }
         public virtual DbSet<FUNZIONERIDUZIONE> FUNZIONERIDUZIONE { get; set; }
         public virtual DbSet<RIDUZIONI> RIDUZIONI { get; set; }
-        public virtual DbSet<COEFFICIENTEFKM> COEFFICIENTEFKM { get; set; }
-        public virtual DbSet<DEFFASCIACHILOMETRICA> DEFFASCIACHILOMETRICA { get; set; }
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
+        public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
+        public virtual DbSet<GRUPPO_FKM> GRUPPO_FKM { get; set; }
+        public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
+        public virtual DbSet<PRIMASIST_FASCIAKM> PRIMASIST_FASCIAKM { get; set; }
+        public virtual DbSet<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
     }
 }

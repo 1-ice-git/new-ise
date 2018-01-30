@@ -336,18 +336,6 @@
           <Property Name="IDCANONE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTFR" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="COEFFICIENTEFKM">
-          <Key>
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
-          <Property Name="COEFFICIENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
-          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="COEFFICIENTEINDRICHIAMO">
           <Key>
             <PropertyRef Name="IDCOEFINDRICHIAMO" />
@@ -445,14 +433,6 @@
           <Property Name="IDCONIUGETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="DEFFASCIACHILOMETRICA">
-          <Key>
-            <PropertyRef Name="IDDEFKM" />
-          </Key>
-          <Property Name="IDDEFKM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="KM" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="IDUFFICIO" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="DIPENDENTI">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
@@ -517,6 +497,14 @@
           </Key>
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDINDPRIMOSEGR" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FASCIA_KM">
+          <Key>
+            <PropertyRef Name="IDFKM" />
+          </Key>
+          <Property Name="IDFKM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDGRUPPOFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="KM" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="FIGLI">
           <Key>
@@ -588,6 +576,17 @@
           <Property Name="IDFUNZIONIEVENTI" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NOMEFUNZIONE" Type="varchar2" MaxLength="60" Nullable="false" />
           <Property Name="MESSAGGIOEVENTO" Type="varchar2" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GRUPPO_FKM">
+          <Key>
+            <PropertyRef Name="IDGRUPPOFK" />
+          </Key>
+          <Property Name="IDGRUPPOFK" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LEGGEFASCIAKM" Type="varchar2" MaxLength="200" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="IB_R">
           <Key>
@@ -875,6 +874,18 @@
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="PERCENTUALEFKM">
+          <Key>
+            <PropertyRef Name="IDPFKM" />
+          </Key>
+          <Property Name="IDPFKM" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
+          <Property Name="COEFFICIENTEKM" Type="number" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="PERCENTUALEMAB">
           <Key>
             <PropertyRef Name="IDPERCMAB" />
@@ -921,18 +932,22 @@
           <Property Name="IDPERCMAGFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDFIGLI" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="PRIMASIST_FASCIAKM">
+          <Key>
+            <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            <PropertyRef Name="IDKM" />
+          </Key>
+          <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAANNULLATO" Type="date" />
+        </EntityType>
         <EntityType Name="PRIMASITEMAZIONE">
           <Key>
             <PropertyRef Name="IDPRIMASISTEMAZIONE" />
           </Key>
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="PROVADATE">
-          <Property Name="DATAINI" Type="date" />
-          <Property Name="DATAFIN" Type="date" />
-        </EntityType>-->
         <EntityType Name="PS_AC">
           <Key>
             <PropertyRef Name="IDALIQCONTR" />
@@ -979,6 +994,16 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           </Key>
           <Property Name="IDCOEFINDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RICHIAMO_FKM">
+          <Key>
+            <PropertyRef Name="IDRICHIAMO" />
+            <PropertyRef Name="IDFKM" />
+          </Key>
+          <Property Name="IDRICHIAMO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="DATAANNULLATO" Type="date" />
         </EntityType>
         <EntityType Name="RIDUZIONI">
           <Key>
@@ -1089,14 +1114,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <Property Name="DATAOPERAZIONE" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
-        <EntityType Name="TEP_FK">
-          <Key>
-            <PropertyRef Name="IDTEPARTENZA" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
         <EntityType Name="TEP_PATE">
           <Key>
             <PropertyRef Name="IDTEPARTENZA" />
@@ -1110,14 +1127,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <PropertyRef Name="IDTEPARTENZA" />
           </Key>
           <Property Name="IDTEPARTENZA" Type="number" Precision="38" Scale="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TER_FK">
-          <Key>
-            <PropertyRef Name="IDTERIENTRO" />
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDTERIENTRO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDCFKM" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="TER_PATE">
           <Key>
@@ -1904,34 +1913,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_CFK_TEPFK">
-          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDCFKM" />
-            </Principal>
-            <Dependent Role="TEP_FK">
-              <PropertyRef Name="IDCFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_CFK_TERFK">
-          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDCFKM" />
-            </Principal>
-            <Dependent Role="TER_FK">
-              <PropertyRef Name="IDCFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_CIR_CIRR">
           <End Role="COEFFICIENTEINDRICHIAMO" Type="Self.COEFFICIENTEINDRICHIAMO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2227,16 +2208,16 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           </ReferentialConstraint>
         </Association>
         <Association Name="R_DFK_CFK">
-          <End Role="DEFFASCIACHILOMETRICA" Type="Self.DEFFASCIACHILOMETRICA" Multiplicity="1">
+          <End Role="FASCIA_KM" Type="Self.FASCIA_KM" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="COEFFICIENTEFKM" Type="Self.COEFFICIENTEFKM" Multiplicity="*" />
+          <End Role="PERCENTUALEFKM" Type="Self.PERCENTUALEFKM" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="DEFFASCIACHILOMETRICA">
-              <PropertyRef Name="IDDEFKM" />
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
             </Principal>
-            <Dependent Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDDEFKM" />
+            <Dependent Role="PERCENTUALEFKM">
+              <PropertyRef Name="IDFKM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2422,6 +2403,34 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_FKM_PSFKM">
+          <End Role="FASCIA_KM" Type="Self.FASCIA_KM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRIMASIST_FASCIAKM" Type="Self.PRIMASIST_FASCIAKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
+            </Principal>
+            <Dependent Role="PRIMASIST_FASCIAKM">
+              <PropertyRef Name="IDKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FKM_RFKM">
+          <End Role="FASCIA_KM" Type="Self.FASCIA_KM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_FKM" Type="Self.RICHIAMO_FKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
+            </Principal>
+            <Dependent Role="RICHIAMO_FKM">
+              <PropertyRef Name="IDFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_FR_R">
           <End Role="FUNZIONERIDUZIONE" Type="Self.FUNZIONERIDUZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2447,6 +2456,20 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Principal>
             <Dependent Role="FTV_DOC">
               <PropertyRef Name="IDFIGLITITOLIVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_GFKM_F_KM">
+          <End Role="GRUPPO_FKM" Type="Self.GRUPPO_FKM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FASCIA_KM" Type="Self.FASCIA_KM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPPO_FKM">
+              <PropertyRef Name="IDGRUPPOFK" />
+            </Principal>
+            <Dependent Role="FASCIA_KM">
+              <PropertyRef Name="IDGRUPPOFKM" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3024,6 +3047,20 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_PS_PSFKM">
+          <End Role="PRIMASITEMAZIONE" Type="Self.PRIMASITEMAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRIMASIST_FASCIAKM" Type="Self.PRIMASIST_FASCIAKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIMASITEMAZIONE">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Principal>
+            <Dependent Role="PRIMASIST_FASCIAKM">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_R_CIRR">
           <End Role="RIDUZIONI" Type="Self.RIDUZIONI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3090,6 +3127,20 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
               <PropertyRef Name="IDRICHIAMO" />
             </Principal>
             <Dependent Role="RICHIAMO_COEFFRICH">
+              <PropertyRef Name="IDRICHIAMO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_R_RFKM">
+          <End Role="RICHIAMO" Type="Self.RICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RICHIAMO_FKM" Type="Self.RICHIAMO_FKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RICHIAMO">
+              <PropertyRef Name="IDRICHIAMO" />
+            </Principal>
+            <Dependent Role="RICHIAMO_FKM">
               <PropertyRef Name="IDRICHIAMO" />
             </Dependent>
           </ReferentialConstraint>
@@ -3512,20 +3563,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_TEP_TEPFK">
-          <End Role="TEPARTENZA" Type="Self.TEPARTENZA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TEP_FK" Type="Self.TEP_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TEPARTENZA">
-              <PropertyRef Name="IDTEPARTENZA" />
-            </Principal>
-            <Dependent Role="TEP_FK">
-              <PropertyRef Name="IDTEPARTENZA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_TEP_TEPPATE">
           <End Role="TEPARTENZA" Type="Self.TEPARTENZA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -3550,20 +3587,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
               <PropertyRef Name="IDTERIENTRO" />
             </Principal>
             <Dependent Role="ATTIVITATERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TER_TERFK">
-          <End Role="TERIENTRO" Type="Self.TERIENTRO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="TER_FK" Type="Self.TER_FK" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Principal>
-            <Dependent Role="TER_FK">
               <PropertyRef Name="IDTERIENTRO" />
             </Dependent>
           </ReferentialConstraint>
@@ -3848,20 +3871,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_U_DFK">
-          <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="DEFFASCIACHILOMETRICA" Type="Self.DEFFASCIACHILOMETRICA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="DEFFASCIACHILOMETRICA">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_U_PMAB">
           <End Role="UFFICI" Type="Self.UFFICI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4063,7 +4072,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CIR_R" EntityType="Self.CIR_R" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CMAB_TFR" EntityType="Self.CMAB_TFR" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="COEFFICIENTEFKM" EntityType="Self.COEFFICIENTEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="COEFFICIENTESEDE" EntityType="Self.COEFFICIENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONIUGE" EntityType="Self.CONIUGE" Schema="ISEPRO" store:Type="Tables" />
@@ -4072,13 +4080,13 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="CTV_DOC" EntityType="Self.CTV_DOC" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="Self.DEFFASCIACHILOMETRICA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOC_ATEP" EntityType="Self.DOC_ATEP" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOC_ATER" EntityType="Self.DOC_ATER" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
@@ -4086,6 +4094,7 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IB_R" EntityType="Self.IB_R" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISEPRO" store:Type="Tables" />
@@ -4115,16 +4124,19 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="Self.PERCENTUALEANTICIPOTE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEFKM" EntityType="Self.PERCENTUALEFKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="Self.PERCENTUALEMAGFIGLI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PMF_F" EntityType="Self.PMF_F" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="PRIMASIST_FASCIAKM" EntityType="Self.PRIMASIST_FASCIAKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PS_AC" EntityType="Self.PS_AC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_ALIQCONTR" EntityType="Self.RICHIAMO_ALIQCONTR" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="RICHIAMO_FKM" EntityType="Self.RICHIAMO_FKM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISEPRO" store:Type="Tables" />
@@ -4135,10 +4147,8 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <EntitySet Name="STIPENDI" EntityType="Self.STIPENDI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="T_RC" EntityType="Self.T_RC" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="TEP_FK" EntityType="Self.TEP_FK" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TEP_PATE" EntityType="Self.TEP_PATE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TEPARTENZA" EntityType="Self.TEPARTENZA" Schema="ISEPRO" store:Type="Tables" />
-          <EntitySet Name="TER_FK" EntityType="Self.TER_FK" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TER_PATE" EntityType="Self.TER_PATE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TERIENTRO" EntityType="Self.TERIENTRO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISEPRO" store:Type="Tables" />
@@ -4324,14 +4334,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="CONIUGE" EntitySet="CONIUGE" />
             <End Role="CONIUGETITOLIVIAGGIO" EntitySet="CONIUGETITOLIVIAGGIO" />
           </AssociationSet>
-          <AssociationSet Name="R_CFK_TEPFK" Association="Self.R_CFK_TEPFK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
-          <AssociationSet Name="R_CFK_TERFK" Association="Self.R_CFK_TERFK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
-          </AssociationSet>
           <AssociationSet Name="R_CIR_CIRR" Association="Self.R_CIR_CIRR">
             <End Role="COEFFICIENTEINDRICHIAMO" EntitySet="COEFFICIENTEINDRICHIAMO" />
             <End Role="CIR_R" EntitySet="CIR_R" />
@@ -4417,8 +4419,8 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
           </AssociationSet>
           <AssociationSet Name="R_DFK_CFK" Association="Self.R_DFK_CFK">
-            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
           </AssociationSet>
           <AssociationSet Name="R_DIP_CDCG" Association="Self.R_DIP_CDCG">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -4472,6 +4474,14 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
+          <AssociationSet Name="R_FKM_PSFKM" Association="Self.R_FKM_PSFKM">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="PRIMASIST_FASCIAKM" EntitySet="PRIMASIST_FASCIAKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_FKM_RFKM" Association="Self.R_FKM_RFKM">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
+          </AssociationSet>
           <AssociationSet Name="R_FR_R" Association="Self.R_FR_R">
             <End Role="FUNZIONERIDUZIONE" EntitySet="FUNZIONERIDUZIONE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
@@ -4479,6 +4489,10 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <AssociationSet Name="R_FTV_FTVD" Association="Self.R_FTV_FTVD">
             <End Role="FIGLITITOLIVIAGGIO" EntitySet="FIGLITITOLIVIAGGIO" />
             <End Role="FTV_DOC" EntitySet="FTV_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_GFKM_F_KM" Association="Self.R_GFKM_F_KM">
+            <End Role="GRUPPO_FKM" EntitySet="GRUPPO_FKM" />
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
           </AssociationSet>
           <AssociationSet Name="R_I_ICS" Association="Self.R_I_ICS">
             <End Role="INDENNITA" EntitySet="INDENNITA" />
@@ -4644,6 +4658,10 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="PS_AC" EntitySet="PS_AC" />
           </AssociationSet>
+          <AssociationSet Name="R_PS_PSFKM" Association="Self.R_PS_PSFKM">
+            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+            <End Role="PRIMASIST_FASCIAKM" EntitySet="PRIMASIST_FASCIAKM" />
+          </AssociationSet>
           <AssociationSet Name="R_R_CIRR" Association="Self.R_R_CIRR">
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
             <End Role="CIR_R" EntitySet="CIR_R" />
@@ -4663,6 +4681,10 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <AssociationSet Name="R_R_RCR" Association="Self.R_R_RCR">
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
             <End Role="RICHIAMO_COEFFRICH" EntitySet="RICHIAMO_COEFFRICH" />
+          </AssociationSet>
+          <AssociationSet Name="R_R_RFKM" Association="Self.R_R_RFKM">
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
           </AssociationSet>
           <AssociationSet Name="R_RC_TRC" Association="Self.R_RC_TRC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
@@ -4784,10 +4806,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="ATTIVITATEPARTENZA" EntitySet="ATTIVITATEPARTENZA" />
           </AssociationSet>
-          <AssociationSet Name="R_TEP_TEPFK" Association="Self.R_TEP_TEPFK">
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
           <AssociationSet Name="R_TEP_TEPPATE" Association="Self.R_TEP_TEPPATE">
             <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
             <End Role="TEP_PATE" EntitySet="TEP_PATE" />
@@ -4795,10 +4813,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <AssociationSet Name="R_TER_ATER" Association="Self.R_TER_ATER">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
             <End Role="ATTIVITATERIENTRO" EntitySet="ATTIVITATERIENTRO" />
-          </AssociationSet>
-          <AssociationSet Name="R_TER_TERFK" Association="Self.R_TER_TERFK">
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
           </AssociationSet>
           <AssociationSet Name="R_TER_TERPATE" Association="Self.R_TER_TERPATE">
             <End Role="TERIENTRO" EntitySet="TERIENTRO" />
@@ -4879,10 +4893,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <AssociationSet Name="R_TVR_TVRD" Association="Self.R_TVR_TVRD">
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
             <End Role="TVR_DOC" EntitySet="TVR_DOC" />
-          </AssociationSet>
-          <AssociationSet Name="R_U_DFK" Association="Self.R_U_DFK">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_U_PMAB" Association="Self.R_U_PMAB">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -5481,30 +5491,12 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
             <End Role="INDENNITASISTEMAZIONE" EntitySet="INDENNITASISTEMAZIONE" />
             <End Role="RIDUZIONI" EntitySet="RIDUZIONI" />
           </AssociationSet>
-          <EntitySet Name="COEFFICIENTEFKM" EntityType="DBISEPRO.COEFFICIENTEFKM" />
-          <EntitySet Name="DEFFASCIACHILOMETRICA" EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" />
-          <AssociationSet Name="R_DFK_CFK" Association="DBISEPRO.R_DFK_CFK">
-            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-          </AssociationSet>
-          <AssociationSet Name="TEP_FK" Association="DBISEPRO.TEP_FK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-          </AssociationSet>
-          <AssociationSet Name="TER_FK" Association="DBISEPRO.TER_FK">
-            <End Role="COEFFICIENTEFKM" EntitySet="COEFFICIENTEFKM" />
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
-          </AssociationSet>
           <EntitySet Name="UFFICI" EntityType="DBISEPRO.UFFICI" />
           <EntitySet Name="VALUTAUFFICIO" EntityType="DBISEPRO.VALUTAUFFICIO" />
           <EntitySet Name="VALUTE" EntityType="DBISEPRO.VALUTE" />
           <AssociationSet Name="R_UFFICI_COEFFICIENTESEDE" Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE">
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="COEFFICIENTESEDE" EntitySet="COEFFICIENTESEDE" />
-          </AssociationSet>
-          <AssociationSet Name="R_U_DFK" Association="DBISEPRO.R_U_DFK">
-            <End Role="UFFICI" EntitySet="UFFICI" />
-            <End Role="DEFFASCIACHILOMETRICA" EntitySet="DEFFASCIACHILOMETRICA" />
           </AssociationSet>
           <AssociationSet Name="R_UFFICI_MAGANNUALI" Association="DBISEPRO.R_UFFICI_MAGANNUALI">
             <End Role="UFFICI" EntitySet="UFFICI" />
@@ -5623,6 +5615,35 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <EntitySet Name="FASCIA_KM" EntityType="DBISEPRO.FASCIA_KM" />
+          <EntitySet Name="GRUPPO_FKM" EntityType="DBISEPRO.GRUPPO_FKM" />
+          <EntitySet Name="PERCENTUALEFKM" EntityType="DBISEPRO.PERCENTUALEFKM" />
+          <EntitySet Name="PRIMASIST_FASCIAKM" EntityType="DBISEPRO.PRIMASIST_FASCIAKM" />
+          <EntitySet Name="RICHIAMO_FKM" EntityType="DBISEPRO.RICHIAMO_FKM" />
+          <AssociationSet Name="R_DFK_CFK1" Association="DBISEPRO.R_DFK_CFK1">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_FKM_PSFKM" Association="DBISEPRO.R_FKM_PSFKM">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="PRIMASIST_FASCIAKM" EntitySet="PRIMASIST_FASCIAKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_FKM_RFKM" Association="DBISEPRO.R_FKM_RFKM">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_GFKM_F_KM" Association="DBISEPRO.R_GFKM_F_KM">
+            <End Role="GRUPPO_FKM" EntitySet="GRUPPO_FKM" />
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+          </AssociationSet>
+          <AssociationSet Name="R_PS_PSFKM" Association="DBISEPRO.R_PS_PSFKM">
+            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+            <End Role="PRIMASIST_FASCIAKM" EntitySet="PRIMASIST_FASCIAKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_R_RFKM" Association="DBISEPRO.R_R_RFKM">
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -7222,6 +7243,7 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.RICHIAMO_ALIQCONTR" FromRole="RICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.RICHIAMO_COEFFRICH" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="RICHIAMO_FKM" Relationship="DBISEPRO.R_R_RFKM" FromRole="RICHIAMO" ToRole="RICHIAMO_FKM" />
         </EntityType>
         <Association Name="RICHIAMO_ALIQCONTR">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -7236,6 +7258,7 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.R_PS_AA" FromRole="PRIMASITEMAZIONE" ToRole="ATTIVITAANTICIPI" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_PS" FromRole="PRIMASITEMAZIONE" ToRole="INDENNITASISTEMAZIONE" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="PRIMASITEMAZIONE" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="PRIMASIST_FASCIAKM" Relationship="DBISEPRO.R_PS_PSFKM" FromRole="PRIMASITEMAZIONE" ToRole="PRIMASIST_FASCIAKM" />
         </EntityType>
         <Association Name="PS_AC">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -7306,7 +7329,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.R_TEP_ATEP" FromRole="TEPARTENZA" ToRole="ATTIVITATEPARTENZA" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TEP_PATE" FromRole="TEPARTENZA" ToRole="PERCENTUALEANTICIPOTE" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TEP_FK" FromRole="TEPARTENZA" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TEP" FromRole="TEPARTENZA" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="TERIENTRO">
@@ -7316,7 +7338,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.R_TER_ATER" FromRole="TERIENTRO" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TER_PATE" FromRole="TERIENTRO" ToRole="PERCENTUALEANTICIPOTE" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.TER_FK" FromRole="TERIENTRO" ToRole="COEFFICIENTEFKM" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="TIPOANTICIPOTRASPORTOEFFETTI">
@@ -8009,53 +8030,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <End Type="DBISEPRO.INDENNITASISTEMAZIONE" Role="INDENNITASISTEMAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.RIDUZIONI" Role="RIDUZIONI" Multiplicity="*" />
         </Association>
-        <EntityType Name="COEFFICIENTEFKM">
-          <Key>
-            <PropertyRef Name="IDCFKM" />
-          </Key>
-          <Property Name="IDCFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISEPRO.R_DFK_CFK" FromRole="COEFFICIENTEFKM" ToRole="DEFFASCIACHILOMETRICA" />
-          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.TEP_FK" FromRole="COEFFICIENTEFKM" ToRole="TEPARTENZA" />
-          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.TER_FK" FromRole="COEFFICIENTEFKM" ToRole="TERIENTRO" />
-        </EntityType>
-        <EntityType Name="DEFFASCIACHILOMETRICA">
-          <Key>
-            <PropertyRef Name="IDDEFKM" />
-          </Key>
-          <Property Name="IDDEFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <NavigationProperty Name="COEFFICIENTEFKM" Relationship="DBISEPRO.R_DFK_CFK" FromRole="DEFFASCIACHILOMETRICA" ToRole="COEFFICIENTEFKM" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_DFK" FromRole="DEFFASCIACHILOMETRICA" ToRole="UFFICI" />
-        </EntityType>
-        <Association Name="R_DFK_CFK">
-          <End Type="DBISEPRO.DEFFASCIACHILOMETRICA" Role="DEFFASCIACHILOMETRICA" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DEFFASCIACHILOMETRICA">
-              <PropertyRef Name="IDDEFKM" />
-            </Principal>
-            <Dependent Role="COEFFICIENTEFKM">
-              <PropertyRef Name="IDDEFKM" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="TEP_FK">
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="*" />
-        </Association>
-        <Association Name="TER_FK">
-          <End Type="DBISEPRO.COEFFICIENTEFKM" Role="COEFFICIENTEFKM" Multiplicity="*" />
-          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="*" />
-        </Association>
         <EntityType Name="UFFICI">
           <Key>
             <PropertyRef Name="IDUFFICIO" />
@@ -8065,7 +8039,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
           <Property Name="DESCRIZIONEUFFICIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PAGATOVALUTAUFFICIO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="COEFFICIENTESEDE" Relationship="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" FromRole="UFFICI" ToRole="COEFFICIENTESEDE" />
-          <NavigationProperty Name="DEFFASCIACHILOMETRICA" Relationship="DBISEPRO.R_U_DFK" FromRole="UFFICI" ToRole="DEFFASCIACHILOMETRICA" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.R_UFFICI_MAGANNUALI" FromRole="UFFICI" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEDISAGIO" Relationship="DBISEPRO.R_UFFICI_PERCDISAGIO" FromRole="UFFICI" ToRole="PERCENTUALEDISAGIO" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.R_U_PMAB" FromRole="UFFICI" ToRole="PERCENTUALEMAB" />
@@ -8106,20 +8079,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
               <PropertyRef Name="IDUFFICIO" />
             </Principal>
             <Dependent Role="COEFFICIENTESEDE">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_U_DFK">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.DEFFASCIACHILOMETRICA" Role="DEFFASCIACHILOMETRICA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="DEFFASCIACHILOMETRICA">
               <PropertyRef Name="IDUFFICIO" />
             </Dependent>
           </ReferentialConstraint>
@@ -8563,6 +8522,151 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
         <Association Name="TRASF_DOC">
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FASCIA_KM">
+          <Key>
+            <PropertyRef Name="IDFKM" />
+          </Key>
+          <Property Name="IDFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDGRUPPOFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="KM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.R_DFK_CFK1" FromRole="FASCIA_KM" ToRole="PERCENTUALEFKM" />
+          <NavigationProperty Name="PRIMASIST_FASCIAKM" Relationship="DBISEPRO.R_FKM_PSFKM" FromRole="FASCIA_KM" ToRole="PRIMASIST_FASCIAKM" />
+          <NavigationProperty Name="RICHIAMO_FKM" Relationship="DBISEPRO.R_FKM_RFKM" FromRole="FASCIA_KM" ToRole="RICHIAMO_FKM" />
+          <NavigationProperty Name="GRUPPO_FKM" Relationship="DBISEPRO.R_GFKM_F_KM" FromRole="FASCIA_KM" ToRole="GRUPPO_FKM" />
+        </EntityType>
+        <EntityType Name="GRUPPO_FKM">
+          <Key>
+            <PropertyRef Name="IDGRUPPOFK" />
+          </Key>
+          <Property Name="IDGRUPPOFK" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LEGGEFASCIAKM" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_GFKM_F_KM" FromRole="GRUPPO_FKM" ToRole="FASCIA_KM" />
+        </EntityType>
+        <EntityType Name="PERCENTUALEFKM">
+          <Key>
+            <PropertyRef Name="IDPFKM" />
+          </Key>
+          <Property Name="IDPFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="COEFFICIENTEKM" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_DFK_CFK1" FromRole="PERCENTUALEFKM" ToRole="FASCIA_KM" />
+        </EntityType>
+        <EntityType Name="PRIMASIST_FASCIAKM">
+          <Key>
+            <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            <PropertyRef Name="IDKM" />
+          </Key>
+          <Property Name="IDPRIMASISTEMAZIONE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAANNULLATO" Type="DateTime" />
+          <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_FKM_PSFKM" FromRole="PRIMASIST_FASCIAKM" ToRole="FASCIA_KM" />
+          <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_PS_PSFKM" FromRole="PRIMASIST_FASCIAKM" ToRole="PRIMASITEMAZIONE" />
+        </EntityType>
+        <EntityType Name="RICHIAMO_FKM">
+          <Key>
+            <PropertyRef Name="IDRICHIAMO" />
+            <PropertyRef Name="IDFKM" />
+          </Key>
+          <Property Name="IDRICHIAMO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDFKM" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAANNULLATO" Type="DateTime" />
+          <NavigationProperty Name="FASCIA_KM" Relationship="DBISEPRO.R_FKM_RFKM" FromRole="RICHIAMO_FKM" ToRole="FASCIA_KM" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_R_RFKM" FromRole="RICHIAMO_FKM" ToRole="RICHIAMO" />
+        </EntityType>
+        <Association Name="R_DFK_CFK1">
+          <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
+            </Principal>
+            <Dependent Role="PERCENTUALEFKM">
+              <PropertyRef Name="IDFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FKM_PSFKM">
+          <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PRIMASIST_FASCIAKM" Role="PRIMASIST_FASCIAKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
+            </Principal>
+            <Dependent Role="PRIMASIST_FASCIAKM">
+              <PropertyRef Name="IDKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FKM_RFKM">
+          <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RICHIAMO_FKM" Role="RICHIAMO_FKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FASCIA_KM">
+              <PropertyRef Name="IDFKM" />
+            </Principal>
+            <Dependent Role="RICHIAMO_FKM">
+              <PropertyRef Name="IDFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_GFKM_F_KM">
+          <End Type="DBISEPRO.GRUPPO_FKM" Role="GRUPPO_FKM" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.FASCIA_KM" Role="FASCIA_KM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GRUPPO_FKM">
+              <PropertyRef Name="IDGRUPPOFK" />
+            </Principal>
+            <Dependent Role="FASCIA_KM">
+              <PropertyRef Name="IDGRUPPOFKM" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_PS_PSFKM">
+          <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PRIMASIST_FASCIAKM" Role="PRIMASIST_FASCIAKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIMASITEMAZIONE">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Principal>
+            <Dependent Role="PRIMASIST_FASCIAKM">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_R_RFKM">
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RICHIAMO_FKM" Role="RICHIAMO_FKM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RICHIAMO">
+              <PropertyRef Name="IDRICHIAMO" />
+            </Principal>
+            <Dependent Role="RICHIAMO_FKM">
+              <PropertyRef Name="IDRICHIAMO" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -9890,44 +9994,6 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
               <ScalarProperty Name="IDINDSIST" ColumnName="IDINDSIST" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="COEFFICIENTEFKM">
-            <EntityTypeMapping TypeName="DBISEPRO.COEFFICIENTEFKM">
-              <MappingFragment StoreEntitySet="COEFFICIENTEFKM">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="COEFFICIENTEKM" ColumnName="COEFFICIENTEKM" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
-                <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DEFFASCIACHILOMETRICA">
-            <EntityTypeMapping TypeName="DBISEPRO.DEFFASCIACHILOMETRICA">
-              <MappingFragment StoreEntitySet="DEFFASCIACHILOMETRICA">
-                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-                <ScalarProperty Name="KM" ColumnName="KM" />
-                <ScalarProperty Name="IDDEFKM" ColumnName="IDDEFKM" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="TEP_FK" TypeName="DBISEPRO.TEP_FK" StoreEntitySet="TEP_FK">
-            <EndProperty Name="TEPARTENZA">
-              <ScalarProperty Name="IDTEPARTENZA" ColumnName="IDTEPARTENZA" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTEFKM">
-              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TER_FK" TypeName="DBISEPRO.TER_FK" StoreEntitySet="TER_FK">
-            <EndProperty Name="TERIENTRO">
-              <ScalarProperty Name="IDTERIENTRO" ColumnName="IDTERIENTRO" />
-            </EndProperty>
-            <EndProperty Name="COEFFICIENTEFKM">
-              <ScalarProperty Name="IDCFKM" ColumnName="IDCFKM" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="UFFICI">
             <EntityTypeMapping TypeName="DBISEPRO.UFFICI">
               <MappingFragment StoreEntitySet="UFFICI">
@@ -10008,6 +10074,60 @@ warning 6013: The table/view 'ISEPRO.PROVADATE' does not have a primary key defi
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="FASCIA_KM">
+            <EntityTypeMapping TypeName="DBISEPRO.FASCIA_KM">
+              <MappingFragment StoreEntitySet="FASCIA_KM">
+                <ScalarProperty Name="KM" ColumnName="KM" />
+                <ScalarProperty Name="IDGRUPPOFKM" ColumnName="IDGRUPPOFKM" />
+                <ScalarProperty Name="IDFKM" ColumnName="IDFKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GRUPPO_FKM">
+            <EntityTypeMapping TypeName="DBISEPRO.GRUPPO_FKM">
+              <MappingFragment StoreEntitySet="GRUPPO_FKM">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="LEGGEFASCIAKM" ColumnName="LEGGEFASCIAKM" />
+                <ScalarProperty Name="IDGRUPPOFK" ColumnName="IDGRUPPOFK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERCENTUALEFKM">
+            <EntityTypeMapping TypeName="DBISEPRO.PERCENTUALEFKM">
+              <MappingFragment StoreEntitySet="PERCENTUALEFKM">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="COEFFICIENTEKM" ColumnName="COEFFICIENTEKM" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDFKM" ColumnName="IDFKM" />
+                <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRIMASIST_FASCIAKM">
+            <EntityTypeMapping TypeName="DBISEPRO.PRIMASIST_FASCIAKM">
+              <MappingFragment StoreEntitySet="PRIMASIST_FASCIAKM">
+                <ScalarProperty Name="DATAANNULLATO" ColumnName="DATAANNULLATO" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="IDKM" ColumnName="IDKM" />
+                <ScalarProperty Name="IDPRIMASISTEMAZIONE" ColumnName="IDPRIMASISTEMAZIONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RICHIAMO_FKM">
+            <EntityTypeMapping TypeName="DBISEPRO.RICHIAMO_FKM">
+              <MappingFragment StoreEntitySet="RICHIAMO_FKM">
+                <ScalarProperty Name="DATAANNULLATO" ColumnName="DATAANNULLATO" />
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="IDFKM" ColumnName="IDFKM" />
+                <ScalarProperty Name="IDRICHIAMO" ColumnName="IDRICHIAMO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

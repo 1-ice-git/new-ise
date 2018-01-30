@@ -23,14 +23,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var ll = db.DEFFASCIACHILOMETRICA.ToList();
+                    //var ll = db.DEFFASCIACHILOMETRICA.ToList();
 
-                    llm = (from e in ll
-                           select new DefFasciaKmModel()
-                           {
-                               idDefKm = e.IDDEFKM,
-                               km = e.KM
-                           }).ToList();
+                    //llm = (from e in ll
+                    //       select new DefFasciaKmModel()
+                    //       {
+                    //           idDefKm = e.IDDEFKM,
+                    //           km = e.KM
+                    //       }).ToList();
                 }
 
                 return llm;
@@ -49,14 +49,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var liv = db.DEFFASCIACHILOMETRICA.Find(idDefKm);
+                    //var liv = db.DEFFASCIACHILOMETRICA.Find(idDefKm);
 
-                    lm = new DefFasciaKmModel()
-                    {
-                        idDefKm = liv.IDDEFKM,
-                        km = liv.KM
+                    //lm = new DefFasciaKmModel()
+                    //{
+                    //    idDefKm = liv.IDDEFKM,
+                    //    km = liv.KM
 
-                    };
+                    //};
                 }
 
                 return lm;
@@ -66,6 +66,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-        
+
     }
 }

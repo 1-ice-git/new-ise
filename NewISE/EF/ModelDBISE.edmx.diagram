@@ -206,16 +206,10 @@
         <AssociationConnector Association="DBISEPRO.CIR_R" />
         <AssociationConnector Association="DBISEPRO.IB_R" />
         <AssociationConnector Association="DBISEPRO.IS_R" />
-        <EntityTypeShape EntityType="DBISEPRO.COEFFICIENTEFKM" Width="1.5" PointX="8.25" PointY="59.5" />
-        <EntityTypeShape EntityType="DBISEPRO.DEFFASCIACHILOMETRICA" Width="1.5" PointX="6" PointY="60" />
-        <AssociationConnector Association="DBISEPRO.R_DFK_CFK" />
-        <AssociationConnector Association="DBISEPRO.TEP_FK" />
-        <AssociationConnector Association="DBISEPRO.TER_FK" />
         <EntityTypeShape EntityType="DBISEPRO.UFFICI" Width="1.5" PointX="4" PointY="55.125" />
         <EntityTypeShape EntityType="DBISEPRO.VALUTAUFFICIO" Width="1.5" PointX="6.25" PointY="30.375" />
         <EntityTypeShape EntityType="DBISEPRO.VALUTE" Width="1.5" PointX="0.75" PointY="1.25" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_COEFFICIENTESEDE" />
-        <AssociationConnector Association="DBISEPRO.R_U_DFK" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_MAGANNUALI" />
         <AssociationConnector Association="DBISEPRO.R_UFFICI_PERCDISAGIO" />
         <AssociationConnector Association="DBISEPRO.R_U_PMAB" />
@@ -247,6 +241,17 @@
         <AssociationConnector Association="DBISEPRO.R_U_T" />
         <AssociationConnector Association="DBISEPRO.T_RC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.FASCIA_KM" Width="1.5" PointX="5.625" PointY="4" />
+        <EntityTypeShape EntityType="DBISEPRO.GRUPPO_FKM" Width="1.5" PointX="3.375" PointY="4" />
+        <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEFKM" Width="1.5" PointX="7.875" PointY="3.875" />
+        <EntityTypeShape EntityType="DBISEPRO.PRIMASIST_FASCIAKM" Width="1.5" PointX="31.25" PointY="32.375" />
+        <EntityTypeShape EntityType="DBISEPRO.RICHIAMO_FKM" Width="1.5" PointX="34.25" PointY="34.375" />
+        <AssociationConnector Association="DBISEPRO.R_DFK_CFK1" />
+        <AssociationConnector Association="DBISEPRO.R_FKM_PSFKM" />
+        <AssociationConnector Association="DBISEPRO.R_FKM_RFKM" />
+        <AssociationConnector Association="DBISEPRO.R_GFKM_F_KM" />
+        <AssociationConnector Association="DBISEPRO.R_PS_PSFKM" />
+        <AssociationConnector Association="DBISEPRO.R_R_RFKM" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
