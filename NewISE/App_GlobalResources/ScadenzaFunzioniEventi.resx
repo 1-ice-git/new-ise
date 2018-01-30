@@ -126,4 +126,10 @@
   <data name="RichiestaTitoliViaggio" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="RichiestaTrasportoEffettiPartenza" xml:space="preserve">
+    <value>90</value>
+  </data>
+  <data name="RichiestaTrasportoEffettiRientro" xml:space="preserve">
+    <value>90</value>
+  </data>
 </root>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MessaggioAnnullaRichiestaInizialeTitoloViaggio" xml:space="preserve">
-    <value>Si notifica che la richiesta dei titoli di viaggio è stata annullata. . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l'amministratore per maggiori dettagli.</value>
@@ -130,7 +130,13 @@
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
   </data>
   <data name="MessaggioAnnullaRichiestaSuccessivaTitoloViaggio" xml:space="preserve">
-    <value>Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. . Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="MessaggioAnnullaRichiestaTrasportoEffettiPartenza" xml:space="preserve">
+    <value>Si notifica che la richiesta di rimborso per trasporto effetti in partenza è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
+  <data name="MessaggioAnnullaRichiestaTrasportoEffettiRientro" xml:space="preserve">
+    <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAttivaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata confermata.</value>
@@ -140,6 +146,12 @@
   </data>
   <data name="MessaggioAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate.</value>
+  </data>
+  <data name="MessaggioAttivazioneTrasportoEffettiPartenza" xml:space="preserve">
+    <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di partenza è stata accettata.</value>
+  </data>
+  <data name="MessaggioAttivazioneTrasportoEffettiRientro" xml:space="preserve">
+    <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata.</value>
   </data>
   <data name="MessaggioNotificaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica la richiesta dei titoli di viaggio per {0}</value>
@@ -152,6 +164,12 @@
   </data>
   <data name="MessaggioNotificaTrasferimento" xml:space="preserve">
     <value>Notifica del trasferimento per la sede di {0}.</value>
+  </data>
+  <data name="MessaggioNotificaTrasportoEffettiPartenza" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di partenza.</value>
+  </data>
+  <data name="MessaggioNotificaTrasportoEffettiRientro" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di rientro.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaporto" xml:space="preserve">
     <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l'ufficio {1} dal {2}.</value>
@@ -166,7 +184,7 @@
     <value>Notifica dell'annullamento della richiesta dei titoli di viaggio.</value>
   </data>
   <data name="OggettoAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Notifica dell'annullamento della richiesta per le Maggiorazioni Familiari</value>
+    <value>Notifica dell'annullamento della richiesta per le Maggiorazioni Familiari.</value>
   </data>
   <data name="OggettoAnnullaRichiestaPassaporto" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta per le pratiche del passaporto.</value>
@@ -174,34 +192,52 @@
   <data name="OggettoAnnullaRichiestaSuccessivaTitioliViaggio" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta di ulteriori titoli di viaggio.</value>
   </data>
+  <data name="OggettoAnnullaRichiestaTrasportoPartenza" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di rimborso per il trasporto effetti (partenza).</value>
+  </data>
+  <data name="OggettoAnnullaRichiestaTrasportoRientro" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di rimborso per il trasporto effetti (rientro).</value>
+  </data>
   <data name="OggettoAttivaRichiestaInizialeTitoloViaggio" xml:space="preserve">
-    <value>Attivazione dei titoli di viaggio</value>
+    <value>Attivazione dei titoli di viaggio.</value>
   </data>
   <data name="OggettoAttivaRichiestaSuccessivaTitoloViaggio" xml:space="preserve">
-    <value>Attivazione ulteriori titoli di viaggio</value>
+    <value>Attivazione ulteriori titoli di viaggio.</value>
   </data>
   <data name="OggettoAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Attivazione delle maggiorazioni familiari</value>
+    <value>Attivazione delle maggiorazioni familiari.</value>
+  </data>
+  <data name="OggettoAttivazioneTrasportoEffettiPartenza" xml:space="preserve">
+    <value>Attivazione rimborso trasporto effetti (partenza).</value>
+  </data>
+  <data name="OggettoAttivazioneTrasportoEffettiRientro" xml:space="preserve">
+    <value>Attivazione rimborso trasporto effetti (rientro).</value>
   </data>
   <data name="OggettoNotificaRichiestaInizialeTitoloViaggio" xml:space="preserve">
-    <value>Notifica della richiesta per i titoli di viaggio</value>
+    <value>Notifica della richiesta per i titoli di viaggio.</value>
   </data>
   <data name="OggettoNotificaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Notifica della richiesta per le Maggiorazioni Familiari</value>
+    <value>Notifica della richiesta per le Maggiorazioni Familiari.</value>
   </data>
   <data name="OggettoNotificaRichiestaSuccessivaTitoloViaggio" xml:space="preserve">
-    <value>Notifica della richiesta di invio di ulteriore documentazione per i titoli di viaggio</value>
+    <value>Notifica della richiesta di invio di ulteriore documentazione per i titoli di viaggio.</value>
   </data>
   <data name="OggettoNotificaTrasferimento" xml:space="preserve">
-    <value>Notifica del trasferimento</value>
+    <value>Notifica del trasferimento.</value>
+  </data>
+  <data name="OggettoNotificaTrasportoEffettiPartenza" xml:space="preserve">
+    <value>Notifica richiesta rimborso trasporto effetti (partenza).</value>
+  </data>
+  <data name="OggettoNotificaTrasportoEffettiRientro" xml:space="preserve">
+    <value>Notifica richiesta rimborso trasporto effetti (rientro).</value>
   </data>
   <data name="OggettoRichiestaPratichePassaporto" xml:space="preserve">
-    <value>Notifica della richiesta per le pratiche passaporto/visti</value>
+    <value>Notifica della richiesta per le pratiche passaporto/visti.</value>
   </data>
   <data name="OggettoRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Notifica della chiusura della pratica per la richiesta dei passaporto/visti</value>
+    <value>Notifica della chiusura della pratica per la richiesta dei passaporto/visti.</value>
   </data>
   <data name="OggettoRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
-    <value>Notifica richiesta rimborso successivo titoli di viaggio</value>
+    <value>Notifica richiesta rimborso successivo titoli di viaggio.</value>
   </data>
 </root>

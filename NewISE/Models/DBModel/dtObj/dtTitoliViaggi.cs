@@ -1648,7 +1648,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                         "Inserimento di una nuova riga per il ciclo di attivazione relativo ai titoli di viaggio.",
                                         "ATTIVAZIONITITOLIVIAGGIO", db, atv_New.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
-                                        atv_New.IDTITOLOVIAGGIO);
+                                        atv_New.IDATTIVAZIONETITOLIVIAGGIO);
 
                                     #region Richiedente
 
@@ -1818,10 +1818,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             }
                                             else
                                             {
-                                                //this.AssociaDocumentoTitoloViaggio(atv_New.IDATTIVAZIONETITOLIVIAGGIO, doc_New.IDDOCUMENTO, db);
-
                                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
-                                                    "Inserimento di una nuova riga per il documento del richiedente relativo al passaporto.",
+                                                    "Inserimento di una nuova riga per il documento relativo al trasporto effetti in partenza.",
                                                     "DOCUMENTI", db,
                                                     atv_New.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO,
                                                     doc_New.IDDOCUMENTO);

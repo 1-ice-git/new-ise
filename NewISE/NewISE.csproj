@@ -2062,13 +2062,6 @@
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\StoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\Statistiche\Index.cshtml" />
     <Content Include="FormulariMaster\Formulario_titoli_viaggio.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 1.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 3.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 4.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 5.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 6.pdf" />
-    <Content Include="FormulariMaster\FormularioMF\formulario 7.pdf" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpCanoneAnticipato.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\RptOpContributoAbitazione.cshtml" />
@@ -2087,6 +2080,20 @@
     <Content Include="DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="FormulariMaster\FormularioMF\formulario 1.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 2.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 3.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 4.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 5.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 6.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\formulario 7.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\ProvvScolastiche\formulario 1.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\ProvvScolastiche\formulario 2.pdf" />
+    <Content Include="FormulariMaster\FormularioMF\ProvvScolastiche\formulario 3.pdf" />
+    <Content Include="FormulariMaster\FormularioTE\modulo 1.pdf" />
+    <Content Include="FormulariMaster\FormularioTE\modulo 2.pdf" />
+    <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
+    <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <Content Include="Scripts\ckeditor\plugins\cavacnote\README" />
     <Content Include="Scripts\ckeditor\plugins\scayt\CHANGELOG.md" />
@@ -2778,6 +2785,7 @@
     </Compile>
     <Compile Include="Models\Config\s_admin\sUtenteNormale.cs" />
     <Compile Include="Models\DBModel\AltriDatiFamFiglioModel.cs" />
+    <Compile Include="Models\DBModel\AnticipoSaldoTEModel.cs" />
     <Compile Include="Models\DBModel\AnticipiModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
     <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
@@ -2894,8 +2902,8 @@
     <Compile Include="Models\DBModel\TipoRegolaCalcoloModel.cs" />
     <Compile Include="Models\DBModel\TipoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\TrasferimentoModel.cs" />
-    <Compile Include="Models\DBModel\TrasportoEffettiRientroModel.cs" />
-    <Compile Include="Models\DBModel\TrasportoEffettiPartenzaModel.cs" />
+    <Compile Include="Models\DBModel\TERientroModel.cs" />
+    <Compile Include="Models\DBModel\TEPartenzaModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\Utils.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
@@ -2946,6 +2954,7 @@
     <Compile Include="Models\ViewModel\GestPulsantiAttConclModel.cs" />
     <Compile Include="Models\ViewModel\GestPulsantiAttConclRvModel.cs" />
     <Compile Include="Models\ViewModel\ElencoTitoliViaggioModel.cs" />
+    <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneFigliModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
@@ -3057,6 +3066,12 @@
     <Content Include="Views\TitoliViaggio\ElencoUploadTitoliViaggio.cshtml" />
     <Content Include="Views\Anticipi\Anticipi.cshtml" />
     <Content Include="Views\TrasportoEffetti\TrasportoEffetti.cshtml" />
+    <Content Include="Views\TrasportoEffetti\TrasportoEffettiPartenza.cshtml" />
+    <Content Include="Views\TrasportoEffetti\ElencoDocumentiTEPartenza.cshtml" />
+    <Content Include="Views\TrasportoEffetti\TabDocumentiTEPartenzaInseriti.cshtml" />
+    <Content Include="Views\TrasportoEffetti\NuovoDocumentoTEPartenza.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
+    <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormularioPS.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
