@@ -2,8 +2,9 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 
 @{
-   // bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -68,7 +69,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
+                    @*@using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
                         if (dtib.IndennitaBaseAnnullato(item))
                         {
@@ -79,6 +80,24 @@
                             if (dtib.EsistonoMovimentiPrima(item))
                             {
                                <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
+                    }*@
+                    @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
+                    {
+                        if (dtib.IndennitaBaseAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idIndennitaBase == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
@@ -134,10 +153,11 @@
     $("#btnInsNuovaInd").button();
 
     function PrelevaPVIndBase() {
-       //debugger;
+      // debugger;
         rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
         var idLivello = parseInt($("#idLivello").select2('val'));
         
+        $("#hiTipoContributo").val(idLivello);
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();

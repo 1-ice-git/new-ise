@@ -513,5 +513,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).First().ANNULLATO == true ? true : false;
             }
         }
+        
+        public decimal Get_Id_IndPrimoSegretarioNonAnnullato()
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITAPRIMOSEGRETARIO> libm = new List<INDENNITAPRIMOSEGRETARIO>();
+                libm = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDINDPRIMOSEGR;
+            }
+            return tmp;
+        }
     }
 }

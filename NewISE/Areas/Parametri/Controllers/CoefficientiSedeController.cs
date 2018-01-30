@@ -59,11 +59,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
                 {
-                    //if (escludiAnnullati)
-                    //{
-                    //    escludiAnnullati = false;
-                        libm = dtib.getListCoefficientiSede(idLivello, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    
+                    libm = dtib.getListCoefficientiSede(idLivello, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)

@@ -51,6 +51,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
                     libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
@@ -93,7 +94,8 @@ namespace NewISE.Areas.Parametri.Controllers
                 }
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
-                   libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
+                    libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -142,6 +144,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
                         libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("PrimoSegretario",libm);

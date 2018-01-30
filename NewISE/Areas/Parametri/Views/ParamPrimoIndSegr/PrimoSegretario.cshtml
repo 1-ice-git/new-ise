@@ -3,6 +3,7 @@
 
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -54,7 +55,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                    @*@using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
                     if (dtib.IndPrimoSegretarioAnnullato(item))
                     {
@@ -66,6 +67,24 @@
                             //{
                             <a href="#" onclick="EliminaIndPrimoSegretario(@item.idIndPrimoSegr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             //}
+                        }
+                    }*@
+                    @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
+                    {
+                        if (dtib.IndPrimoSegretarioAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idIndPrimoSegr == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaIndPrimoSegretario(@item.idIndPrimoSegr);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
                         }
                     }
                 </td>

@@ -3,6 +3,7 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -72,18 +73,22 @@
                 </td>
                 <td style="text-align:center;">
                     @using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
-                    {
+                    {                       
                         if (dtib.CoefficientiSedeAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                            if (dtib.EsistonoMovimentiPrima(item))
-                            {
-                                <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                            }
+                        if (item.idCoefficientiSede == idMinimoNonAnnullato)
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                            {
+                            <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                    }
                     }
                 </td>
             </tr>

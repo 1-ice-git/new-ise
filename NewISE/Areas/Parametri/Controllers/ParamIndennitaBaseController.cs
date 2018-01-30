@@ -62,7 +62,8 @@ namespace NewISE.Areas.Parametri.Controllers
                 //}
                
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                {                   
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
                     libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
@@ -91,7 +92,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtParLivelli dtl = new dtParLivelli())
                 {
-                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
+                    llm = dtl.GetLivelli().OrderBy(a => a.idLivello==idLivello).ToList();
 
                     if (llm != null && llm.Count > 0)
                     {
@@ -101,14 +102,30 @@ namespace NewISE.Areas.Parametri.Controllers
                                  Text = t.DescLivello,
                                  Value = t.idLivello.ToString()
                              }).ToList();
-                         r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                    }
 
+                        if (idLivello == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                        }
+                    }
                     ViewBag.LivelliList = r;
                 }
 
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                {                    
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
                     libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
@@ -127,7 +144,6 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             var r = new List<SelectListItem>();
             //IndennitaBaseModel ibm = new IndennitaBaseModel();
-
             try
             {
                 using (dtParLivelli dtl = new dtParLivelli())
@@ -146,7 +162,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
 
@@ -181,7 +197,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         //}
 
 
-                        dtib.SetIndennitaDiBase(ibm);
+                        dtib.SetIndennitaDiBase(ibm,aggiornaTutto);
                     }
 
                     return RedirectToAction("IndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });

@@ -16,8 +16,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
-
+        
         public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -25,12 +24,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).First().ANNULLATO == true ? true : false;
             }
         }
-
-
+        
         public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo()
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -49,7 +46,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annullato = e.ANNULLATO
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)
@@ -61,7 +57,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo(decimal idCoefIndRichiamo)
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -90,11 +85,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-
         public IList<CoefficienteRichiamoModel> getListCoefficienteRichiamo(bool escludiAnnullati = false)
         {
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
@@ -150,7 +143,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 annullato = e.ANNULLATO
                             }).ToList();
                 }
-
                 return libm;
             }
             catch (Exception ex)
@@ -163,196 +155,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetCoefficienteRichiamo__00(CoefficienteRichiamoModel ibm)
-        {
-            List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
-
-            COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
-
-            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
-
-            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
-
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                try
-                {
-                    if (ibm.dataFineValidita.HasValue)
-                    {
-                        if (EsistonoMovimentiSuccessiviUguale(ibm))
-                        {
-                            ibNew = new COEFFICIENTEINDRICHIAMO()
-                            {
-                                //  IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                        else
-                        {
-                            ibNew = new COEFFICIENTEINDRICHIAMO()
-                            {
-                                //IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                    }
-                    else
-                    {
-                        ibNew = new COEFFICIENTEINDRICHIAMO()
-                        {
-                            // IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
-                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Utility.DataFineStop(),// Convert.ToDateTime("31/12/9999"),
-                            COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                            COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                            DATAAGGIORNAMENTO = DateTime.Now,
-                            ANNULLATO = ibm.annullato
-                        };
-                    }
-
-                    db.Database.BeginTransaction();
-
-                    var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == ibNew.IDCOEFINDRICHIAMO)
-                                                            .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
-                                                            .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                                            .ToList();
-
-                    recordInteressati.ForEach(a => a.ANNULLATO = true);
-                    //db.SaveChanges();
-
-                    if (recordInteressati.Count > 0)
-                    {
-                        foreach (var item in recordInteressati)
-                        {
-                            if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        // IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(-1),
-                                        COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                        COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
-                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    var ibOld2 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(+1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
-                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                    libNew.Add(ibOld2);
-
-                                }
-                            }
-                            else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        //  IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
-                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                            else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        // IDCOEFINDRICHIAMO = item.IDCOEFINDRICHIAMO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTEINDBASE = item.COEFFICIENTEINDBASE,
-                                        COEFFICIENTERICHIAMO = item.COEFFICIENTERICHIAMO,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                        }
-
-                        libNew.Add(ibNew);
-                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                        db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
-                    }
-                    else
-                    {
-                        db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
-
-                    }
-                    db.SaveChanges();
-
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro coefficiente di indennita di richiamo.", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
-                    }
-
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
-            }
-        }
+       
 
         public void SetCoefficienteRichiamo(CoefficienteRichiamoModel ibm, bool aggiornaTutto)
         {
@@ -479,6 +282,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
                         if (giafatta == false)
                         {
+                          
                             lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita);
                             if (lista.Count != 0)
                             {
@@ -704,20 +508,45 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
+        public static DateTime DataInizioMinimaNonAnnullataCoeffIndRichiamo()
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
+        public static List<RiduzioniModel> dataInizioValiditaAccettataPerRiduzione(DateTime d)
+        {
+            List<RiduzioniModel> tmp = new List<RiduzioniModel>();
+            using (dtRiduzioni dtRid = new dtRiduzioni())
+            {
+              tmp = dtRid.getListRiduzioni().Where(a=>a.annullato==false).ToList().Where(b=> d>=b.dataInizioValidita && d<= b.dataFineValidita).OrderBy(a=>a.dataInizioValidita).ThenBy(b=>b.dataFineValidita).ToList();
+            }
+            return tmp;
+        }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
             var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+
             if (fm != null)
             {
-                if (fm.dataFineValidita < fm.dataInizioValidita)
+                DateTime d = DataInizioMinimaNonAnnullataCoeffIndRichiamo();
+                if (fm.dataInizioValidita < d)
                 {
-                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", fm.dataFineValidita.Value.ToShortDateString()));
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));
                 }
                 else
                 {
-                    vr = ValidationResult.Success;
+                    //if(dataInizioValiditaAccettataPerRiduzione(fm.dataInizioValidita).Count!=0)
+                        vr = ValidationResult.Success;
+                    //else
+                    //    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità non registrata in un intervallo nella Riduzione {0}.",""));
                 }
             }
             else
@@ -750,7 +579,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return tmp;
         }
-        public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione)
+        public  List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione)
         {
             List<string> tmp = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
