@@ -111,10 +111,10 @@ namespace NewISE.Models.Tools
                         }
                     }
 
-
                     var indennita = trasferimento.INDENNITA;
+
                     var lrd =
-                        indennita.RUOLODIPENDENTE.Where(
+                        trasferimento.RUOLODIPENDENTE.Where(
                             a =>
                                 a.ANNULLATO == false && dtDatiParametri >= a.DATAINZIOVALIDITA &&
                                 dtDatiParametri <= a.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINZIOVALIDITA);

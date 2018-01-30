@@ -685,6 +685,10 @@ namespace NewISE.Controllers
 
                                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
                                             }
+                                            else
+                                            {
+                                                dtrd.SetNuovoRuoloDipendente(ref rdm, db);
+                                            }
 
                                         }
                                     }
@@ -992,13 +996,10 @@ namespace NewISE.Controllers
 
                                                 dtrd.SetRuoloDipendente(ref rdm, db);
 
-                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
-
-
                                             }
                                             else
                                             {
-
+                                                dtrd.SetNuovoRuoloDipendente(ref rdm, db);
                                             }
 
                                         }

@@ -190,13 +190,25 @@ namespace NewISE.Models.DBModel.dtObj
         {
             decimal idTrasferimento = rdm.idTrasferimento;
             DateTime dtIni = rdm.dataInizioValidita;
-            //DateTime dtFin = rdm.dataFineValidita;
+            DateTime dtFin = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Utility.DataFineStop();
 
-            var lrd = db.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento);
+            var lrd =
+                db.RUOLODIPENDENTE.Where(
+                    a =>
+                        a.ANNULLATO == false && a.IDTRASFERIMENTO == idTrasferimento && a.DATAFINEVALIDITA >= dtIni &&
+                        a.DATAINZIOVALIDITA <= dtFin).OrderBy(a => a.DATAINZIOVALIDITA);
 
             if (lrd?.Any() ?? false)
             {
+                foreach (var rd in lrd)
+                {
+                    rd.ANNULLATO = true;
+                    rd.DATAAGGIORNAMENTO = DateTime.Now;
 
+                    db.SaveChanges();
+                }
+
+                this.SetRuoloDipendente(ref rdm, db);
             }
         }
 
@@ -225,6 +237,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
 
+            Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, rdm.idTrasferimento, rdm.idRuoloDipendente);
 
         }
 
@@ -235,7 +248,7 @@ namespace NewISE.Models.DBModel.dtObj
             if (rd != null && rd.IDRUOLODIPENDENTE > 0)
             {
                 rd.IDRUOLO = rdm.idRuolo;
-                rd.IDTRASFERIMENTO = rdm.idTrasferimento,
+                rd.IDTRASFERIMENTO = rdm.idTrasferimento;
                 rd.DATAINZIOVALIDITA = rdm.dataInizioValidita;
                 rd.DATAFINEVALIDITA = rdm.dataFineValidita.HasValue == true ? rdm.dataFineValidita.Value : Utility.DataFineStop();
                 rd.DATAAGGIORNAMENTO = rdm.dataAggiornamento;
