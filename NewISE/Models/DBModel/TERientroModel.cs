@@ -7,10 +7,10 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class TrasportoEffettiPartenzaModel
+    public class TERientroModel
     {
         [Key]
-        public decimal idTrasportoEffettiPartenza { get; set; }
+        public decimal idTERientro { get; set; }
 
         public TrasferimentoModel Trasferimento { get; set; }
 

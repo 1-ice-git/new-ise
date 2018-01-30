@@ -1,0 +1,144 @@
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.ViewModel.TrasportoEffettiPartenzaModel
+
+@{
+    bool richiestaTE = Convert.ToBoolean(ViewData["richiestaTE"]);
+    bool attivazioneTE = Convert.ToBoolean(ViewData["attivazioneTE"]);
+    bool DocContributo = Convert.ToBoolean(ViewData["DocContributo"]);
+    bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
+    decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
+    decimal indennita = Convert.ToDecimal(ViewData["indennita"]);
+    decimal perc_km = Convert.ToDecimal(ViewData["perc_km"]);
+    decimal contributoLordo = Convert.ToDecimal(ViewData["contributoLordo"]);
+}
+
+
+<table>
+    <tr>
+        <td style="padding-top:10px">
+            <table>
+                <tr>
+                    <td class="col-xs-3 text-right" >
+                        <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
+                    </td>
+                    <td class="col-xs-2">
+                        <input class="form-control" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3 text-right">
+                        <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
+                    </td>
+                    <td class="col-xs-2">
+                        <input class="form-control" value="@Html.DisplayFor(model => model.percKM)" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3 text-right"">
+                        <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+                    </td>
+                    <td class="col-xs-2">
+                        <input class="form-control" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td >
+            <table>
+                <tr>
+                    <td>
+                        <label for="modulo1" class="control-label">
+                            Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
+                        </label>
+                    </td>
+                    <td  style="padding-left:10px;padding-bottom:10px">
+                        @if (DocContributo)
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="modulo2" class="control-label">
+                            Modulo 2 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
+                        </label>
+                    </td>
+                    <td style="padding-left:10px;padding-bottom:10px">
+                        @if (DocAttestazione)
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
+                            </a>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        function ElencoDocumentiTE(idTipoDocumento) {
+            //debugger;
+            var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+            var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { 
+                    idTipoDocumento: idTipoDocumento, 
+                    idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divTrasportoEffettiPartenza").empty();
+                    $("#divTrasportoEffettiPartenza").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+
+            });
+
+        }
+
+    </script>
+
+

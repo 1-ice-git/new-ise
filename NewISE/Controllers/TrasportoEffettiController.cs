@@ -35,316 +35,100 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult TrasportoEffettiPartenza(decimal idTrasportoEffettiPartenza)
         {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
             {
                 bool richiestaTE = false;
                 bool attivazioneTE = false;
                 bool DocContributo = false;
                 bool DocAttestazione = false;
-                bool inLavorazione = false;
+                decimal NumAttivazioni = 0;
 
-                var nDocRichiesta = dttv.GetNumDocumenti(idTrasportoEffettiPartenza, EnumTipoDoc.Contributo_Fisso_Omnicomprensivo);
-                var nDocAttestazione = dttv.GetNumDocumenti(idTrasportoEffettiPartenza, EnumTipoDoc.Attestazione_Trasloco);
+                TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
-                //dttv.SituazioneTitoliViaggio(idTitoliViaggio,
-                //               out richiediNotifica, out richiediAttivazione,
-                //               out richiediConiuge, out richiediRichiedente,
-                //               out richiediFigli, out DocTitoliViaggio,
-                //               out DocCartaImbarco, out inLavorazione);
+                dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
+                               out richiestaTE, out attivazioneTE,
+                               out DocContributo, out DocAttestazione, out NumAttivazioni);
 
-                //if (richiediAttivazione)
-                //{
-                //    notificaEseguita = true;
-                //}
+                tepm.indennitaPrimaSistemazione = 0;
+                tepm.percKM = 0;
+                tepm.contributoLordo = 0;
 
-                //ViewData.Add("notificaEseguita", notificaEseguita);
-                //ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                //ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
-                //ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+                ViewData.Add("richiestaTE", richiestaTE);
+                ViewData.Add("attivazioneTE", attivazioneTE);
+                ViewData.Add("DocContributo", DocContributo);
+                ViewData.Add("DocAttestazione", DocAttestazione);
+                ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
 
-                return PartialView();
+                return PartialView(tepm);
             }
 
         }
 
-
-
-
-
-
-
-
-        //----------------DA CANCELLARE --------------------------------------------
-
-        public JsonResult AggiornaStatoRichiediTitoloViaggio(decimal idParentela, decimal idAttivazioneTitoliViaggio, decimal idFamiliare)
+        public JsonResult ConfermaNotificaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza)
         {
+            string errore = "";
+
             try
             {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
-                    dttv.Aggiorna_RichiediTitoloViaggio(idParentela, idAttivazioneTitoliViaggio, idFamiliare);
+                    decimal idAttivitaTEPartenza = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
+
+                    dtte.NotificaRichiestaTEPartenza(idAttivitaTEPartenza);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { errore = ex.Message, msg = "" });
+
+                errore = ex.Message;
             }
-            return Json(new { errore = "", msg = "Aggiornamento eseguito correttamwente." });
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
         }
 
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult AltriDatiFamiliariConiuge(decimal idTitoliViaggio, decimal idConiuge)
+        public ActionResult ElencoDocumentiTEPartenza(decimal idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
-            AltriDatiFamConiugeModel adfcm = new AltriDatiFamConiugeModel();
-            TitoloViaggioModel tvm = new TitoloViaggioModel();
-            List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
-
             try
             {
+                string DescrizioneTE = "";
+                bool richiestaTEPartenza = false;
+                bool attivazioneTEPartenza = false;
+                decimal NumAttivazioniTEPartenza = 0;
 
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                using (dtDocumenti dtd = new dtDocumenti())
                 {
-
-                    adfcm = dttv.GetAltriDatiFamiliariConiuge(idTitoliViaggio, idConiuge);
-
-                    decimal idAttivazioneTitoliViaggio = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
-
-                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                    ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-
-                    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+    
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                {
+                    var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+                    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI == false)
                     {
-                        PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
-
-                        if (pc != null && pc.HasValue())
-                        {
-                            switch (pc.idTipologiaConiuge)
-                            {
-                                case EnumTipologiaConiuge.Residente:
-                                    adfcm.residente = true;
-                                    adfcm.ulterioreMagConiuge = false;
-                                    break;
-
-                                case EnumTipologiaConiuge.NonResidente_A_Carico:
-                                    adfcm.residente = false;
-                                    adfcm.ulterioreMagConiuge = true;
-                                    break;
-
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                        }
+                        richiestaTEPartenza = true;
+                    }
+                    if (atep.RICHIESTATRASPORTOEFFETTI && atep.ATTIVAZIONETRASPORTOEFFETTI)
+                    {
+                        attivazioneTEPartenza = true;
+                        richiestaTEPartenza = true;
                     }
 
+                    NumAttivazioniTEPartenza = dtte.GetNumAttivazioniTEPartenza(idTrasportoEffettiPartenza);
                 }
 
-                if (adfcm != null && adfcm.HasValue())
-                {
-                    using (dtConiuge dtc = new dtConiuge())
-                    {
 
-                        var cm = dtc.GetConiugebyID(idConiuge);
-                        adfcm.Coniuge = cm;
+                ViewData.Add("DescrizioneTE", DescrizioneTE);
+                ViewData.Add("idTipoDocumento", idTipoDocumento);
+                ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                ViewData.Add("richiestaTEPartenza", richiestaTEPartenza);
+                ViewData.Add("attivazioneTEPartenza", attivazioneTEPartenza);
+                ViewData.Add("NumAttivazioniTEPartenza", NumAttivazioniTEPartenza);
 
-                    }
-
-                }
-
-                return PartialView(adfcm);
-
-            }
-
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-
-        }
-
-        public ActionResult AltriDatiFamiliariFiglio(decimal idTitoliViaggio, decimal idFiglio)
-        {
-            AltriDatiFamFiglioModel adffm = new AltriDatiFamFiglioModel();
-            TitoloViaggioModel tvm = new TitoloViaggioModel();
-            List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
-
-            try
-            {
-
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                {
-
-                    adffm = dttv.GetAltriDatiFamiliariFiglio(idTitoliViaggio, idFiglio);
-
-                    decimal idAttivazioneTitoliViaggio = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
-
-                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                    ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-
-                    using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
-                    {
-                        PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                        if (pf != null && pf.HasValue())
-                        {
-                            switch (pf.idTipologiaFiglio)
-                            {
-                                case EnumTipologiaFiglio.Residente:
-                                    adffm.residente = true;
-                                    adffm.studente = false;
-                                    break;
-                                case EnumTipologiaFiglio.StudenteResidente:
-                                    adffm.studente = true;
-                                    adffm.residente = true;
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                        }
-                    }
-
-                }
-
-                if (adffm != null && adffm.HasValue())
-                {
-                    using (dtFigli dtc = new dtFigli())
-                    {
-
-                        var fm = dtc.GetFigliobyID(idFiglio);
-                        adffm.Figli = fm;
-
-                    }
-
-                }
-
-                return PartialView(adffm);
-
-            }
-
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-
-        }
-
-
-
-        [HttpPost]
-        public ActionResult ElencoUploadTitoliViaggio(decimal idTitoliViaggio)
-        {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-            {
-                bool notificaEseguita = false;
-                bool richiediNotifica = false;
-                bool richiediAttivazione = false;
-                bool richiediConiuge = false;
-                bool richiediRichiedente = false;
-                bool richiediFigli = false;
-                bool DocTitoliViaggio = false;
-                bool DocCartaImbarco = false;
-                bool inLavorazione = false;
-
-                var nDocCartaImbarco = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Carta_Imbarco);
-                var nDocTitoliViaggio = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Titolo_Viaggio);
-
-                //var atv_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio);
-
-                dttv.SituazioneTitoliViaggio(idTitoliViaggio,
-                               out richiediNotifica, out richiediAttivazione,
-                               out richiediConiuge, out richiediRichiedente,
-                               out richiediFigli, out DocTitoliViaggio,
-                               out DocCartaImbarco, out inLavorazione);
-
-                if (richiediAttivazione)
-                {
-                    notificaEseguita = true;
-                }
-
-                ViewData.Add("notificaEseguita", notificaEseguita);
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
-                ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
-
-                return PartialView();
-            }
-        }
-
-
-        [HttpPost]
-        public ActionResult ElencoTitoliViaggio(decimal idTitoliViaggio)
-        {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-            {
-                List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
-
-                var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
-
-                decimal idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO;
-
-                if (idAttivazioneTitoliViaggio > 0)
-                {
-                    ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
-                }
-
-                bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
-
-                ViewData.Add("richiestaEseguita", richiestaEseguita);
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-
-                return PartialView(ltvm);
-            }
-        }
-
-        public ActionResult ElencoDocumentiTV(decimal idTipoDocumento, decimal idTitoliViaggio)
-        {
-            string DescrizioneTV = "";
-
-            using (dtDocumenti dtd = new dtDocumenti())
-            {
-                DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
-            }
-
-            bool richiestaNotificata = false;
-
-            List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
-            List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
-            try
-            {
-                using (dtTitoliViaggi dtvmf = new dtTitoliViaggi())
-                {
-                    latvm = dtvmf.GetListAttivazioniTitoliViaggio(idTitoliViaggio).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
-
-                    //var i = latvm.Count();
-                    var i = 1;
-
-                    foreach (var atv in latvm)
-                    {
-                        if(dtvmf.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
-                        {
-                            richiestaNotificata = true;
-                        }
-
-                        bool inLavorazione = dtvmf.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
-
-                        if (inLavorazione)
-                        {
-                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString() + " (In Lavorazione)", Value = atv.idAttivazioneTitoliViaggio.ToString() });
-                        }else
-                        {
-                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString(), Value = atv.idAttivazioneTitoliViaggio.ToString() });
-                        }
-                        //i--;
-                        i++;
-                    }
-
-                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(TUTTE)", Value = "" });
-                    ViewData.Add("lDataAttivazione", lDataAttivazione);
-
-                    ViewData.Add("DescrizioneTV", DescrizioneTV);
-                    ViewData.Add("idTipoDocumento", idTipoDocumento);
-                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                    ViewData.Add("richiestaNotificata", richiestaNotificata);
-                }
 
                 return PartialView();
             }
@@ -354,26 +138,24 @@ namespace NewISE.Controllers
             }
         }
 
-
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        public ActionResult TabDocumentiTVInseriti(decimal idTitoliViaggio, decimal idTipoDocumento)
+        public ActionResult TabDocumentiTEPartenzaInseriti(decimal idTrasportoEffettiPartenza, decimal idTipoDocumento)
         {
             List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
 
-            string DescrizioneTV = "";
+            string DescrizioneTE = "";
 
             try
             {
 
-                using (dtTitoliViaggi dtd = new dtTitoliViaggi())
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
-                    ldm = dtd.GetDocumentiTV(idTitoliViaggio, idTipoDocumento);
+                    ldm = dtte.GetDocumentiTEPartenza(idTrasportoEffettiPartenza, idTipoDocumento);
                 }
 
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                    DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
 
             }
@@ -381,43 +163,143 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            ViewData.Add("DescrizioneTV", DescrizioneTV);
+            ViewData.Add("DescrizioneTE", DescrizioneTE);
             ViewData.Add("idTipoDocumento", idTipoDocumento);
-            ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+            ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
 
             return PartialView(ldm);
         }
 
+        public JsonResult GestionePulsantiNotificaAttivaAnnullaTEPartenza(decimal idTrasportoEffettiPartenza)
+        {
 
-        public ActionResult NuovoDocumentoTV(EnumTipoDoc idTipoDocumento, decimal idTitoliViaggio)
+            bool amministratore = false;
+            string errore = "";
+            bool richiestaTE = false;
+            bool attivazioneTE = false;
+            bool DocContributo = false;
+            bool DocAttestazione = false;
+            decimal NumAttivazioni = 0;
+
+
+            try
+            {
+                amministratore = Utility.Amministratore();
+
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                {
+
+                    dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
+                                            out richiestaTE, 
+                                            out attivazioneTE,
+                                            out DocContributo, 
+                                            out DocAttestazione,
+                                            out NumAttivazioni);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        admin = amministratore,
+                        richiestaTE = richiestaTE,
+                        attivazioneTE = attivazioneTE,
+                        DocContributo = DocContributo,
+                        DocAttestazione = DocAttestazione,
+                        NumAttivazioni=NumAttivazioni,
+                        err = errore
+                    });
+
+        }
+
+        public ActionResult NuovoDocumentoTEPartenza(EnumTipoDoc idTipoDocumento, decimal idTrasportoEffettiPartenza)
         {
             string titoloPagina = string.Empty;
 
-            using (dtTitoliViaggi dtmf = new dtTitoliViaggi())
+            using (dtDocumenti dtd = new dtDocumenti())
             {
-                switch (idTipoDocumento)
-                {
-                    case EnumTipoDoc.Carta_Imbarco:
-                        titoloPagina = "Carta d'imbarco";
-                        break;
-
-                    case EnumTipoDoc.Titolo_Viaggio:
-                        titoloPagina = "Titolo di viaggio";
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException("idTipoDocumento");
-                }
+                titoloPagina = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento((decimal)idTipoDocumento);
             }
 
             ViewData.Add("titoloPagina", titoloPagina);
             ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
-            ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+            ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
 
             return PartialView();
         }
 
-        public static void PreSetDocumentoTV(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
+
+        public ActionResult SalvaDocumentoTEPartenza(decimal idTipoDocumento, decimal idTrasportoEffettiPartenza)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+
+                    foreach (string item in Request.Files)
+                    {
+
+                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
+
+                        using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                        {
+                            using (dtDocumenti dtd = new dtDocumenti())
+                            {
+                                DocumentiModel dm = new DocumentiModel();
+                                bool esisteFile = false;
+                                bool gestisceEstensioni = false;
+                                bool dimensioneConsentita = false;
+                                string dimensioneMaxConsentita = string.Empty;
+
+                                PreSetDocumentoTEPartenza(file, out dm, out esisteFile, out gestisceEstensioni,
+                                    out dimensioneConsentita, out dimensioneMaxConsentita, idTipoDocumento);
+
+                                if (esisteFile)
+                                {
+                                    if (gestisceEstensioni == false)
+                                    {
+                                        throw new Exception(
+                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                                    }
+
+                                    if (dimensioneConsentita)
+                                    {
+                                        dtte.SetDocumentoTEPartenza(ref dm, idTrasportoEffettiPartenza, db, idTipoDocumento);
+
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(
+                                            "Il documento selezionato supera la dimensione massima consentita (" +
+                                            dimensioneMaxConsentita + " Mb).");
+                                    }
+                                }
+                                else
+                                {
+                                    throw new Exception("Il documento è obbligatorio.");
+                                }
+                            }
+                        }
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { error = ex.Message });
+                };
+            }
+        }
+
+        public static void PreSetDocumentoTEPartenza(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
         {
             dm = new DocumentiModel();
             gestisceEstensioni = false;
@@ -472,73 +354,7 @@ namespace NewISE.Controllers
             }
         }
 
-
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SalvaDocumentoTV(decimal idTipoDocumento, decimal idTitoliViaggio)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                try
-                {
-                    db.Database.BeginTransaction();
-
-                    foreach (string item in Request.Files)
-                    {
-
-                        HttpPostedFileBase file = Request.Files[item] as HttpPostedFileBase;
-
-                        using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                        {
-                            using (dtDocumenti dtd = new dtDocumenti())
-                            {
-                                DocumentiModel dm = new DocumentiModel();
-                                bool esisteFile = false;
-                                bool gestisceEstensioni = false;
-                                bool dimensioneConsentita = false;
-                                string dimensioneMaxConsentita = string.Empty;
-
-                                PreSetDocumentoTV(file, out dm, out esisteFile, out gestisceEstensioni,
-                                    out dimensioneConsentita, out dimensioneMaxConsentita, idTipoDocumento);
-
-                                if (esisteFile)
-                                {
-                                    if (gestisceEstensioni == false)
-                                    {
-                                        throw new Exception(
-                                        "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
-                                    }
-
-                                    if (dimensioneConsentita)
-                                    {
-                                        dttv.SetDocumentoTV(ref dm, idTitoliViaggio, db, idTipoDocumento);
-
-                                    }
-                                    else
-                                    {
-                                        throw new Exception(
-                                            "Il documento selezionato supera la dimensione massima consentita (" +
-                                            dimensioneMaxConsentita + " Mb).");
-                                    }
-                                }
-                                else
-                                {
-                                    throw new Exception("Il documento è obbligatorio.");
-                                }
-                            }
-                        }
-                    }
-                    db.Database.CurrentTransaction.Commit();
-                    return Json(new { });
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    return Json(new { error = ex.Message });
-                };
-            }
-        }
-
-        public JsonResult EliminaDocumentoTV(decimal idDocumento)
+        public JsonResult EliminaDocumentoTEPartenza(decimal idDocumento)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -546,12 +362,12 @@ namespace NewISE.Controllers
 
                 try
                 {
-                    using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                     {
-                        dttv.DeleteDocumentoTV(idDocumento);
+                        dtte.DeleteDocumentoTE(idDocumento);
                     }
                     db.Database.CurrentTransaction.Commit();
-                    return Json(new { msg = "Il titolo di viaggio è stato eliminato." });
+                    return Json(new { msg = "Il documento relativo al trasporto effetti (partenza) è stato eliminato." });
                 }
                 catch (Exception ex)
                 {
@@ -560,103 +376,17 @@ namespace NewISE.Controllers
                 }
             }
         }
-
-        public ActionResult FiltraDocumentiTV(decimal idTitoliViaggio, decimal idAttivazioneTV, decimal idTipoDocumento)
-        {
-
-            List<VariazioneDocumentiModel> ldm = new List<VariazioneDocumentiModel>();
-
-            string DescrizioneTV = "";
-
-            try
-            {
-
-                using (dtTitoliViaggi dtd = new dtTitoliViaggi())
-                {
-                    ldm = dtd.GetDocumentiTVbyIdAttivazioneTV(idTitoliViaggio, idAttivazioneTV, idTipoDocumento);
-                }
-
-                using (dtDocumenti dtd = new dtDocumenti())
-                {
-                    DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-            ViewData.Add("DescrizioneTV", DescrizioneTV);
-            ViewData.Add("idTipoDocumento", idTipoDocumento);
-            ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-
-            return PartialView("TabDocumentiTVInseriti", ldm);
-        }
-
-        public JsonResult GestionePulsantiNotificaAttivaAnnulla(decimal idTitoliViaggio)
-        {
-
-            bool amministratore = false;
-            string errore = "";
-            bool richiediAttivazione = false;
-            bool richiediAnnulla = false;
-            bool richiediNotifica = false;
-            bool richiediRichiedente = false;
-            bool richiediConiuge = false;
-            bool richiediFigli = false;
-            bool DocTitoliViaggio = false;
-            bool DocCartaImbarco = false;
-            bool inLavorazione = false;
-           
-
-            try
-            {
-                amministratore = Utility.Amministratore();
-
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                {
-
-                    //var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
-
-                    dttv.SituazioneTitoliViaggio(idTitoliViaggio,
-                               out richiediNotifica, out richiediAttivazione,
-                               out richiediConiuge, out richiediRichiedente,
-                               out richiediFigli, out DocTitoliViaggio,
-                               out DocCartaImbarco, out inLavorazione);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                errore = ex.Message;
-            }
-
-            return
-                Json(
-                    new
-                    {
-                        admin = amministratore,
-                        richiediAttivazione = richiediAttivazione,
-                        richiediNotifica = richiediNotifica,
-                        richiediAnnulla=richiediAnnulla,
-                        inLavorazione = inLavorazione,
-                        err = errore
-                    });
-
-        }
-
-
-        public JsonResult ConfermaNotificaRichiestaTV(decimal idTitoliViaggio)
+        public JsonResult ConfermaAnnullaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza)
         {
             string errore = "";
 
             try
             {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
-                    decimal idAttivazione = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
+                    decimal idAttivazione_notificata = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
 
-                    dttv.NotificaRichiestaTV(idAttivazione);
+                    dtte.AnnullaRichiestaTrasportoEffetti(idAttivazione_notificata);
                 }
             }
             catch (Exception ex)
@@ -673,44 +403,17 @@ namespace NewISE.Controllers
                     });
         }
 
-        public JsonResult ConfermaAnnullaRichiestaTV(decimal idTitoliViaggio)
+        public JsonResult ConfermaAttivaRichiestaTEPartenza(decimal idTrasportoEffettiPartenza)
         {
             string errore = "";
 
             try
             {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
-                    decimal idAttivazione_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
+                    decimal idAttivazione = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza).IDATEPARTENZA;
 
-                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                errore = ex.Message;
-            }
-
-            return
-                Json(
-                    new
-                    {
-                        err = errore
-                    });
-        }
-
-        public JsonResult ConfermaAttivaRichiestaTV(decimal idTitoliViaggio)
-        {
-            string errore = "";
-
-            try
-            {
-                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
-                {
-                    decimal idAttivazione = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
-
-                    dttv.AttivaRichiestaTV(idAttivazione);
+                    dtte.AttivaRichiestaTEPartenza(idAttivazione);
                 }
             }
             catch (Exception ex)

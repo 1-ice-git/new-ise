@@ -19,7 +19,7 @@
 
 <div class="row">
     <div class="col-xs-7" style="margin-top: 10px; margin-bottom: 10px">
-        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTV" onclick="ModalNotificaRichiesta();">
+        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTE" onclick="ModalNotificaRichiestaTE();">
             <table>
                 <tr>
                     <td>
@@ -31,7 +31,7 @@
                 </tr>
             </table>
         </button>
-        <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaTV" onclick="ModalAttivaRichiesta();">
+        <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaTE" onclick="ModalAttivaRichiestaTE();">
             <table>
                 <tr>
                     <td>
@@ -43,7 +43,7 @@
                 </tr>
             </table>
         </button>
-        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaTV" onclick="ModalAnnullaRichiesta();">
+        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaTE" onclick="ModalAnnullaRichiestaTE();">
             <table>
                 <tr>
                     <td>
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="ModalNotificaRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaTVLabel" aria-hidden="true">
+<div class="modal fade" id="ModalNotificaRichiestaTE" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaTELabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -68,19 +68,19 @@
                 <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewNotificaRichiestaTV">
+                <p id="viewNotificaRichiestaTE">
                     <label>Procedere con la notifica della richiesta?</label>
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaNotificaRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaTV();">Procedi</button>
+                <button id="btConfermaNotificaRichiestaTE" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaTE();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="ModalAttivaRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaTVLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAttivaRichiestaTE" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaTELabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,19 +90,19 @@
                 <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewAttivaRichiestaTV">
+                <p id="viewAttivaRichiestaTE">
                     <label>Procedere con l'attivazione della richiesta?</label>
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAttivazioneRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaTV();">Procedi</button>
+                <button id="btConfermaAttivazioneRichiestaTE" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaTE();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="ModalAnnullaRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaTVLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAnnullaRichiestaTE" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaTELabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -112,12 +112,12 @@
                 <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewAnnullaRichiestaTV">
+                <p id="viewAnnullaRichiestaTE">
                     <label>Procedere con l'annullamento della richiesta?</label>
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAnnullaRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaTV();">Procedi</button>
+                <button id="btConfermaAnnullaRichiestaTE" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaTE();">Procedi</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -125,17 +125,17 @@
 </div>
 
 <script type="text/javascript">
-    GestionePulsantiNotificaAttivaAnnullaTrsaportoEffettiPartenza();
+    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
 
-    function GestionePulsantiNotificaAttivaAnnullaTitoliViaggio() {
+    function GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza() {
         //debugger;
-        var rotta = "/TitoliViaggio/GestionePulsantiNotificaAttivaAnnulla";
-        var idTitoliViaggio = parseInt('@idTrasportoEffettiPartenza ');
+        var rotta = "/TrasportoEffetti/GestionePulsantiNotificaAttivaAnnullaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTitoliViaggio: idTitoliViaggio },
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -145,50 +145,49 @@
                 //debugger;
                 if (result.err == "") {
                     var admin = result.admin;
-                    var richiediNotifica = result.richiediNotifica;
-                    var richiediAnnulla = result.richiediAnnulla;
-                    var richiediAttivazione = result.richiediAttivazione;
-                    var inLavorazione = result.inLavorazione;
+                    var richiestaTE = result.richiestaTE;
+                    var attivazioneTE = result.attivazioneTE;
+                    var DocContributo = result.DocContributo;
+                    var DocAttestazione = result.DocAttestazione;
+                    var NumAttivazioni=result.NumAttivazioni;
 
-                    $("#btNotificaRichiestaTV").attr("disabled", "disabled");
-                    $("#btNotificaRichiestaTV").addClass("disabled");
+                    $("#btNotificaRichiestaTE").attr("disabled", "disabled");
+                    $("#btNotificaRichiestaTE").addClass("disabled");
 
-                    $("#btAttivaRichiestaTV").attr("disabled", "disabled");
-                    $("#btAttivaRichiestaTV").addClass("disabled");
+                    $("#btNotificaRichiestaTE").removeAttr("hidden");
+                    $("#btNotificaRichiestaTE").removeClass("hidden");
 
-                    $("#btAnnullaRichiestaTV").attr("disabled", "disabled");
-                    $("#btAnnullaRichiestaTV").addClass("disabled");
 
                     //se amministratore vedo i pulsanti altrimenti solo notifica
                     if (admin) {
-                        $("#btNotificaRichiestaTV").removeAttr("hidden");
-                        $("#btNotificaRichiestaTV").removeClass("hidden");
+                        $("#btAttivaRichiestaTE").removeAttr("hidden");
+                        $("#btAttivaRichiestaTE").removeClass("hidden");
 
-                        $("#btAttivaRichiestaTV").removeAttr("hidden");
-                        $("#btAttivaRichiestaTV").removeClass("hidden");
+                        $("#btAnnullaRichiestaTE").removeAttr("hidden");
+                        $("#btAnnullaRichiestaTE").removeClass("hidden");
 
-                        $("#btAnnullaRichiestaTV").removeAttr("hidden");
-                        $("#btAnnullaRichiestaTV").removeClass("hidden");
-                    } else {
-                        $("#btNotificaRichiestaTV").removeAttr("hidden");
-                        $("#btNotificaRichiestaTV").removeClass("hidden");
+                        $("#btAttivaRichiestaTE").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaTE").addClass("disabled");
+
+                        $("#btAnnullaRichiestaTE").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaTE").addClass("disabled");
                     }
 
-                    //Se risulta in lavorazione abilito la il pulsante notifica
-                    if (inLavorazione && richiediNotifica) {
-                        $("#btNotificaRichiestaTV").removeAttr("disabled");
-                        $("#btNotificaRichiestaTV").removeClass("disabled");
+                    //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
+                    if (
+                        (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
+                        (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
+                        ) 
+                    {
+                        $("#btNotificaRichiestaTE").removeAttr("disabled");
+                        $("#btNotificaRichiestaTE").removeClass("disabled");
                     } else {
-                        if (richiediAttivazione) {
-                            $("#btAttivaRichiestaTV").removeAttr("disabled");
-                            $("#btAttivaRichiestaTV").removeClass("disabled");
-                            $("#btAnnullaRichiestaTV").removeAttr("disabled");
-                            $("#btAnnullaRichiestaTV").removeClass("disabled");
-                        } else {
-                            if (richiediNotifica) {
-                                $("#btNotificaRichiestaTV").removeAttr("disabled");
-                                $("#btNotificaRichiestaTV").removeClass("disabled");
-
+                        if (admin) {
+                            if (richiestaTE && attivazioneTE==false) {
+                                $("#btAttivaRichiestaTE").removeAttr("disabled");
+                                $("#btAttivaRichiestaTE").removeClass("disabled");
+                                $("#btAnnullaRichiestaTE").removeAttr("disabled");
+                                $("#btAnnullaRichiestaTE").removeClass("disabled");
                             }
                         }
                     }
@@ -208,16 +207,142 @@
         });
     }
 
-
-    function ElencoTitoliViaggio() {
+    function ModalNotificaRichiestaTE() {
         //debugger;
-        var rotta = "/TitoliViaggio/ElencoTitoliViaggio";
-        var idTitoliViaggio = @idTrasportoEffettiPartenza ;
+        $('#ModalNotificaRichiestaTE').modal().show();
+    }
+
+    function ModalAnnullaRichiestaTE() {
+        //debugger;
+        $('#ModalAnnullaRichiestaTE').modal().show();
+    }
+
+    function ModalAttivaRichiestaTE() {
+        //debugger;
+        $('#ModalAttivaRichiestaTE').modal().show();
+    }
+
+
+    function ConfermaNotificaRichiestaTE() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaNotificaRichiestaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaTE() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaTE() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/ConfermaAttivaRichiestaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    TrasportoEffettiPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    //aggiungere funzione che esegue TrasportoEffettiPartenza
+    function TrasportoEffettiPartenza() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/TrasportoEffettiPartenza";
+        var idTrasportoEffettiPartenza = @idTrasportoEffettiPartenza;
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTitoliViaggio: idTitoliViaggio},
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza},
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -227,8 +352,8 @@
             },
             success: function (result) {
                 //debugger;
-                $("#divTitoliViaggio").empty();
-                $("#divTitoliViaggio").html(result);
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
             },
             error: function (error) {
                 //debugger;
@@ -238,134 +363,6 @@
             }
         });
     }
-
-    function ModalNotificaRichiesta() {
-        //debugger;
-        $('#ModalNotificaRichiestaTV').modal().show();
-    }
-
-    function ModalAnnullaRichiesta() {
-        //debugger;
-        $('#ModalAnnullaRichiestaTV').modal().show();
-    }
-
-    function ModalAttivaRichiesta() {
-        //debugger;
-        $('#ModalAttivaRichiestaTV').modal().show();
-    }
-
-
-    function ConfermaNotificaRichiestaTV() {
-        //debugger;
-        var rotta = "/TitoliViaggio/ConfermaNotificaRichiestaTV";
-        var idTitoliViaggio = parseInt('@idTrasportoEffettiPartenza');
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTitoliViaggio: idTitoliViaggio },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    ElencoTitoliViaggio();
-                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
-                    InfoElaborazioneAjax(result.msg);
-
-
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-
-        });
-    }
-
-    function ConfermaAnnullaRichiestaTV() {
-        //debugger;
-        var rotta = "/TitoliViaggio/ConfermaAnnullaRichiestaTV";
-        var idTitoliViaggio = parseInt('@idTrasportoEffettiPartenza');
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTitoliViaggio: idTitoliViaggio },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    ElencoTitoliViaggio();
-                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
-                    InfoElaborazioneAjax(result.msg);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
-    function ConfermaAttivaRichiestaTV() {
-        debugger;
-        var rotta = "/TitoliViaggio/ConfermaAttivaRichiestaTV";
-        var idTitoliViaggio = parseInt('@idTrasportoEffettiPartenza');
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTitoliViaggio: idTitoliViaggio },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    ElencoTitoliViaggio();
-                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
-                    InfoElaborazioneAjax(result.msg);
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
 
 </script>
 

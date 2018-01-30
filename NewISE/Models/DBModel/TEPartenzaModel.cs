@@ -7,12 +7,14 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public class TrasportoEffettiRientroModel
+    public class TEPartenzaModel
     {
         [Key]
-        public decimal idTrasportoEffettiRientro { get; set; }
+        public decimal idTEPartenza { get; set; }
 
         public TrasferimentoModel Trasferimento { get; set; }
+
+       
 
     }
 }

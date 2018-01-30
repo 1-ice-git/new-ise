@@ -77,6 +77,11 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        public ActionResult ElencoDocumentiFormularioPS()
+        {
+            return PartialView();
+        }
+
         public ActionResult ElencoFormulariInseriti(decimal idAttivazioneMagFam)
         {
             bool solaLettura = false;

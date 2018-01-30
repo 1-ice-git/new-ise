@@ -266,21 +266,21 @@ namespace NewISE.Controllers
             List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
             try
             {
-                using (dtTitoliViaggi dtvmf = new dtTitoliViaggi())
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    latvm = dtvmf.GetListAttivazioniTitoliViaggio(idTitoliViaggio).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
+                    latvm = dttv.GetListAttivazioniTitoliViaggio(idTitoliViaggio).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
 
                     //var i = latvm.Count();
                     var i = 1;
 
                     foreach (var atv in latvm)
                     {
-                        if(dtvmf.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
+                        if(dttv.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
                         {
                             richiestaNotificata = true;
                         }
 
-                        bool inLavorazione = dtvmf.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
+                        bool inLavorazione = dttv.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
 
                         if (inLavorazione)
                         {

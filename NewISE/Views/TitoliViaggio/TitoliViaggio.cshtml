@@ -153,42 +153,41 @@
                     $("#btNotificaRichiestaTV").attr("disabled", "disabled");
                     $("#btNotificaRichiestaTV").addClass("disabled");
 
-                    $("#btAttivaRichiestaTV").attr("disabled", "disabled");
-                    $("#btAttivaRichiestaTV").addClass("disabled");
-
-                    $("#btAnnullaRichiestaTV").attr("disabled", "disabled");
-                    $("#btAnnullaRichiestaTV").addClass("disabled");
+                    $("#btNotificaRichiestaTV").removeAttr("hidden");
+                    $("#btNotificaRichiestaTV").removeClass("hidden");
 
                     //se amministratore vedo i pulsanti altrimenti solo notifica
                     if (admin) {
-                        $("#btNotificaRichiestaTV").removeAttr("hidden");
-                        $("#btNotificaRichiestaTV").removeClass("hidden");
+                        $("#btAttivaRichiestaTV").attr("disabled", "disabled");
+                        $("#btAttivaRichiestaTV").addClass("disabled");
+
+                        $("#btAnnullaRichiestaTV").attr("disabled", "disabled");
+                        $("#btAnnullaRichiestaTV").addClass("disabled");
 
                         $("#btAttivaRichiestaTV").removeAttr("hidden");
                         $("#btAttivaRichiestaTV").removeClass("hidden");
 
                         $("#btAnnullaRichiestaTV").removeAttr("hidden");
                         $("#btAnnullaRichiestaTV").removeClass("hidden");
-                    } else {
-                        $("#btNotificaRichiestaTV").removeAttr("hidden");
-                        $("#btNotificaRichiestaTV").removeClass("hidden");
-                    }
+                    } 
 
                     //Se risulta in lavorazione abilito la il pulsante notifica
                     if (inLavorazione && richiediNotifica) {
                         $("#btNotificaRichiestaTV").removeAttr("disabled");
                         $("#btNotificaRichiestaTV").removeClass("disabled");
                     } else {
-                        if (richiediAttivazione) {
-                            $("#btAttivaRichiestaTV").removeAttr("disabled");
-                            $("#btAttivaRichiestaTV").removeClass("disabled");
-                            $("#btAnnullaRichiestaTV").removeAttr("disabled");
-                            $("#btAnnullaRichiestaTV").removeClass("disabled");
-                        } else {
-                            if (richiediNotifica) {
-                                $("#btNotificaRichiestaTV").removeAttr("disabled");
-                                $("#btNotificaRichiestaTV").removeClass("disabled");
+                        if (admin) {
+                            if (richiediAttivazione) {
+                                $("#btAttivaRichiestaTV").removeAttr("disabled");
+                                $("#btAttivaRichiestaTV").removeClass("disabled");
+                                $("#btAnnullaRichiestaTV").removeAttr("disabled");
+                                $("#btAnnullaRichiestaTV").removeClass("disabled");
+                            } else {
+                                if (richiediNotifica) {
+                                    $("#btNotificaRichiestaTV").removeAttr("disabled");
+                                    $("#btNotificaRichiestaTV").removeClass("disabled");
 
+                                }
                             }
                         }
                     }

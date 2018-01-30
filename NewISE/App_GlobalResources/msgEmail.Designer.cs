@@ -61,7 +61,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaInizialeTitoloViaggio {
             get {
@@ -91,11 +91,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaSuccessivaTitoloViaggio {
             get {
                 return ResourceManager.GetString("MessaggioAnnullaRichiestaSuccessivaTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti in partenza è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiRientro", resourceCulture);
             }
         }
         
@@ -123,6 +141,24 @@ namespace Resources {
         internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("MessaggioAttivazioneMaggiorazioniFamiliari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa la richiesta di rimborso per il trasporto effetti in fase di partenza è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientro", resourceCulture);
             }
         }
         
@@ -163,6 +199,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di partenza..
+        /// </summary>
+        internal static string MessaggioNotificaTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di rientro..
+        /// </summary>
+        internal static string MessaggioNotificaTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio {1} dal {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
@@ -199,7 +253,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta per le Maggiorazioni Familiari.
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta per le Maggiorazioni Familiari..
         /// </summary>
         internal static string OggettoAnnullaRichiestaMaggiorazioniFamiliari {
             get {
@@ -226,7 +280,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attivazione dei titoli di viaggio.
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di rimborso per il trasporto effetti (partenza)..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaTrasportoPartenza {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di rimborso per il trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaTrasportoRientro {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione dei titoli di viaggio..
         /// </summary>
         internal static string OggettoAttivaRichiestaInizialeTitoloViaggio {
             get {
@@ -235,7 +307,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attivazione ulteriori titoli di viaggio.
+        ///   Looks up a localized string similar to Attivazione ulteriori titoli di viaggio..
         /// </summary>
         internal static string OggettoAttivaRichiestaSuccessivaTitoloViaggio {
             get {
@@ -244,7 +316,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attivazione delle maggiorazioni familiari.
+        ///   Looks up a localized string similar to Attivazione delle maggiorazioni familiari..
         /// </summary>
         internal static string OggettoAttivazioneMaggiorazioniFamiliari {
             get {
@@ -253,7 +325,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per i titoli di viaggio.
+        ///   Looks up a localized string similar to Attivazione rimborso trasporto effetti (partenza)..
+        /// </summary>
+        internal static string OggettoAttivazioneTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAttivazioneTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per i titoli di viaggio..
         /// </summary>
         internal static string OggettoNotificaRichiestaInizialeTitoloViaggio {
             get {
@@ -262,7 +352,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per le Maggiorazioni Familiari.
+        ///   Looks up a localized string similar to Notifica della richiesta per le Maggiorazioni Familiari..
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioniFamiliari {
             get {
@@ -271,7 +361,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta di invio di ulteriore documentazione per i titoli di viaggio.
+        ///   Looks up a localized string similar to Notifica della richiesta di invio di ulteriore documentazione per i titoli di viaggio..
         /// </summary>
         internal static string OggettoNotificaRichiestaSuccessivaTitoloViaggio {
             get {
@@ -280,7 +370,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica del trasferimento.
+        ///   Looks up a localized string similar to Notifica del trasferimento..
         /// </summary>
         internal static string OggettoNotificaTrasferimento {
             get {
@@ -289,7 +379,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per le pratiche passaporto/visti.
+        ///   Looks up a localized string similar to Notifica richiesta rimborso trasporto effetti (partenza)..
+        /// </summary>
+        internal static string OggettoNotificaTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoNotificaTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per le pratiche passaporto/visti..
         /// </summary>
         internal static string OggettoRichiestaPratichePassaporto {
             get {
@@ -298,7 +406,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della chiusura della pratica per la richiesta dei passaporto/visti.
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica per la richiesta dei passaporto/visti..
         /// </summary>
         internal static string OggettoRichiestaPratichePassaportoConcluse {
             get {
@@ -307,7 +415,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica richiesta rimborso successivo titoli di viaggio.
+        ///   Looks up a localized string similar to Notifica richiesta rimborso successivo titoli di viaggio..
         /// </summary>
         internal static string OggettoRimborsoSuccessivoTitoliViaggio {
             get {

@@ -45,19 +45,21 @@ namespace NewISE.Controllers
 
             using (dtUffici dtl = new dtUffici())
             {
-                var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
+                //bypass by gull
 
-                if (llm != null && llm.Count > 0)
-                {
-                    r = (from t in llm
-                         select new SelectListItem()
-                         {
-                             Text = t.descUfficio,
-                             Value = t.idUfficio.ToString()
-                         }).ToList();
+                //var llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
 
-                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
-                }
+                //if (llm != null && llm.Count > 0)
+                //{
+                //    r = (from t in llm
+                //         select new SelectListItem()
+                //         {
+                //             Text = t.descUfficio,
+                //             Value = t.idUfficio.ToString()
+                //         }).ToList();
+
+                //    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                //}
 
                 lUffici = r;
             }
@@ -1427,7 +1429,9 @@ namespace NewISE.Controllers
                             r = (from e in lt
                                  select new SelectListItem()
                                  {
-                                     Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + (e.dataRientro.HasValue == true ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                                     //commented by gull
+                                     //Text = e.Ufficio.descUfficio + " (" + e.Ufficio.codiceUfficio + ")" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + (e.dataRientro.HasValue == true ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
+                                     Text = "test" + " - " + e.dataPartenza.ToShortDateString() + " ÷ " + (e.dataRientro.HasValue == true ? e.dataRientro.Value.ToShortDateString() : "--/--/----"),
                                      Value = e.idTrasferimento.ToString()
                                  }).ToList();
 

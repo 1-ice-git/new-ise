@@ -117,12 +117,13 @@ namespace NewISE.Models.DBModel.dtObj
                                            idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
                                            descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                                        },
-                                       Ufficio = new UfficiModel()
-                                       {
-                                           idUfficio = t.UFFICI.IDUFFICIO,
-                                           codiceUfficio = t.UFFICI.CODICEUFFICIO,
-                                           descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
-                                       },
+                                       //gull commented
+                                       //Ufficio = new UfficiModel()
+                                       //{
+                                       //    idUfficio = t.UFFICI.IDUFFICIO,
+                                       //    codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                       //    descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                       //},
                                        Dipendente = new DipendentiModel()
                                        {
                                            idDipendente = t.DIPENDENTI.IDDIPENDENTE,
@@ -1388,12 +1389,13 @@ namespace NewISE.Models.DBModel.dtObj
                             idTipoTrasferimento = tr.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
                             descTipoTrasf = tr.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
                         },
-                        Ufficio = new UfficiModel()
-                        {
-                            idUfficio = tr.UFFICI.IDUFFICIO,
-                            codiceUfficio = tr.UFFICI.CODICEUFFICIO,
-                            descUfficio = tr.UFFICI.DESCRIZIONEUFFICIO
-                        },
+                        //gull commented
+                        //Ufficio = new UfficiModel()
+                        //{
+                        //    idUfficio = tr.UFFICI.IDUFFICIO,
+                        //    codiceUfficio = tr.UFFICI.CODICEUFFICIO,
+                        //    descUfficio = tr.UFFICI.DESCRIZIONEUFFICIO
+                        //},
                         Dipendente = new DipendentiModel()
                         {
                             idDipendente = tr.DIPENDENTI.IDDIPENDENTE,

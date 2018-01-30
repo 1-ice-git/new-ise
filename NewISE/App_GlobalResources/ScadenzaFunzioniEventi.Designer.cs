@@ -86,5 +86,23 @@ namespace Resources {
                 return ResourceManager.GetString("RichiestaTitoliViaggio", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 90.
+        /// </summary>
+        internal static string RichiestaTrasportoEffettiPartenza {
+            get {
+                return ResourceManager.GetString("RichiestaTrasportoEffettiPartenza", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 90.
+        /// </summary>
+        internal static string RichiestaTrasportoEffettiRientro {
+            get {
+                return ResourceManager.GetString("RichiestaTrasportoEffettiRientro", resourceCulture);
+            }
+        }
     }
 }
