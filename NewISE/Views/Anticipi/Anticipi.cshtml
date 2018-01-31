@@ -1,16 +1,20 @@
 ﻿@model NewISE.Models.DBModel.PrimaSistemazioneModel
 
+@{
+    decimal idPrimaSistemazione = Convert.ToDecimal(ViewData["idPrimaSistemazione"]);
+}
+
 <div class="row">
     <div class="col-xs-12">
-        <div id="ContenitoreAticipi">
-
+        <div id="divAnticipi">
+            @Html.Action("AttivitaAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <div id="ContenitoreAttivazioneAnticipi">
-
+        <div id="divAttivazioneAnticipi">
+            @Html.Action("GestionePulsantiAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })
         </div>
     </div>
 </div>

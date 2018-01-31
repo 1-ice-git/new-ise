@@ -2092,6 +2092,11 @@
     <Content Include="FormulariMaster\FormularioMF\ProvvScolastiche\formulario 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 1.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 2.pdf" />
+    <Content Include="FormulariMaster\FormularioMA\modulo 1.pdf" />
+    <Content Include="FormulariMaster\FormularioMA\modulo 2.pdf" />
+    <Content Include="FormulariMaster\FormularioMA\modulo 3.pdf" />
+    <Content Include="FormulariMaster\FormularioMA\modulo 4.pdf" />
+    <Content Include="FormulariMaster\FormularioMA\modulo 5.pdf" />
     <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
@@ -2803,6 +2808,7 @@
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPassaportoRichiedente.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
@@ -2929,6 +2935,7 @@
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
+    <Compile Include="Models\ViewModel\AttivitaAnticipiModel.cs" />
     <Compile Include="Models\ViewModel\ElencoFamiliariPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
@@ -3080,7 +3087,6 @@
     <Content Include="Views\TrasportoEffetti\TabDocumentiTEPartenzaInseriti.cshtml" />
     <Content Include="Views\TrasportoEffetti\NuovoDocumentoTEPartenza.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\ElencoDocumentiFormularioPS.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

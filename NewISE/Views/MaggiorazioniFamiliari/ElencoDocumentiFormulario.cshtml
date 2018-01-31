@@ -81,15 +81,70 @@
         <tr>
             <td colspan="3">
                 <div class="col-xs-3">
-                    <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
-                        <button class="btn btn-default btn-sm" onclick="DownloadFormularioPS();" >
+                    <div id="divPulsanteMostra" style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
+                        <button class="btn btn-default btn-sm" onclick="MostraDocFormularioPS();">
                             <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
-                            Download formulario Provvidenze scolastiche
+                            Mostra Elenco Formulari Provvidenze Scolastiche
                         </button>
-
                     </div>
+                    <div id="divPulsanteNascondi" hidden style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
+                        <button class="btn btn-default btn-sm" onclick="NascondiDocFormularioPS();">
+                            <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                            Chiudi Elenco Formulari Provvidenze Scolastiche
+                        </button>
+                    </div>
+                </div>
+                <div id="ElencoPS" hidden>
+
+                    <table class="table">
+                        <tr>
+                            <td>1</td>
+                            <td><label>Domanda di rimborso spese scolastiche ai sensi del comma 1 art. 10 della "Disciplina del trattamento del personale di ruolo in servizio all'estero dell'ICE-Agenzia" (in servizio all'estero)</label></td>
+                            <td>
+                                <a href="~/FormulariMaster/FormularioMF/ProvvScolastiche/formulario 1.pdf" target="_blank">
+                                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><label>Domanda di rimborso spese scolastiche ai sensi del comma 1 art. 10 della "Disciplina del trattamento del personale di ruolo in servizio all'estero dell'ICE-Agenzia" (richiamato in Italia)</label></td>
+                            <td>
+                                <a href="~/FormulariMaster/FormularioMF/ProvvScolastiche/formulario 2.pdf" target="_blank">
+                                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><label>Dichiarazione (da allegare alla domanda per ogni figlio/a)</label></td>
+                            <td>
+                                <a href="~/FormulariMaster/FormularioMF/ProvvScolastiche/formulario 3.pdf" target="_blank">
+                                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="30" />
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
+
+
+<script type="text/javascript">
+
+    function MostraDocFormularioPS() {
+        document.getElementById('ElencoPS').style.display = 'block';
+        document.getElementById('divPulsanteMostra').style.display = 'none';
+        document.getElementById('divPulsanteNascondi').style.display = 'block';
+    }
+
+    function NascondiDocFormularioPS() {
+        document.getElementById('ElencoPS').style.display = 'none';
+        document.getElementById('divPulsanteMostra').style.display = 'block';
+        document.getElementById('divPulsanteNascondi').style.display = 'none';
+    }
+
+</script>

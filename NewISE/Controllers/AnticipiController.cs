@@ -16,6 +16,7 @@ namespace NewISE.Controllers
         public ActionResult Anticipi(decimal idTrasferimento)
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
+            AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
 
             try
             {
@@ -23,15 +24,62 @@ namespace NewISE.Controllers
                 {
                     psm = dtps.GetPrimaSistemazioneBtIdTrasf(idTrasferimento);
                 }
+
+                using (dtAnticipi dta = new dtAnticipi())
+                {
+                    aam = dta.GetAttivitaAnticipi(idTrasferimento);
+                }
+
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+            ViewData["idPrimaSistemazione"] = psm.idPrimaSistemazione;
+
             return PartialView(psm);
         }
+
+
+        //public ActionResult AttivitaAnticipi(decimal idPrimaSistemazione)
+        //{
+        //    AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
+
+        //    try
+        //    {
+        //        using (dtAnticipi dta = new dtAnticipi())
+        //        {
+        //            var ltfm = dttf.GetListTipologiaFiglio().ToList();
+
+        //            if (ltfm?.Any() ?? false)
+        //            {
+        //                r = (from t in ltfm
+        //                     select new SelectListItem()
+        //                     {
+        //                         Text = t.tipologiaFiglio,
+        //                         Value = t.idTipologiaFiglio.ToString()
+        //                     }).ToList();
+        //                r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+        //            }
+
+        //            lTipologiaFiglio = r;
+        //        }
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
+
+        //    ViewData.Add("idAttivazioneMagFam", idAttivazioneMagFam);
+
+        //    return PartialView(fm);
+
+        //}
+
 
         public ActionResult PrimaSistemazionePrevista(decimal idPrimaSistemazione)
         {
