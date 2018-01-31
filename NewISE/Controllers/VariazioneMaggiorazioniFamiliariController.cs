@@ -631,6 +631,11 @@ namespace NewISE.Controllers
         {
             return PartialView();
         }
+        public ActionResult ElencoDocumentiFormularioPS()
+        {
+            return PartialView();
+        }
+
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult AltriDatiFamiliariConiuge(decimal idConiuge)

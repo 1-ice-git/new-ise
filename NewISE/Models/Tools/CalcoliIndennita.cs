@@ -49,7 +49,7 @@ namespace NewISE.Models.Tools
         public decimal indennitaPersonaleTeorica { get; set; } = 0;
         public decimal indennitaSistemazioneLorda { get; set; } = 0;
 
-
+        public decimal anticipoIndennitaSistemazioneLorda { get; set; } = 0;
 
 
         public void Dispose()
@@ -382,10 +382,18 @@ namespace NewISE.Models.Tools
 
 
                                     indennitaSistemazioneLorda = indSist.COEFFICIENTE * indennitaPersonaleTeorica;
+
+                                    #region Anticipo Indennità Sistemazione Lorda
+
+                                    anticipoIndennitaSistemazioneLorda = indSist.COEFFICIENTE * indennitaServizio;
+
+                                    #endregion
                                 }
 
 
                                 #endregion
+
+
 
 
                             }
