@@ -44,6 +44,27 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void RimuoviAssciazioniIndennitaBase_Indennita(decimal idTrasferimento, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lib =
+                i.INDENNITABASE.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+
+            if (lib?.Any() ?? false)
+            {
+                foreach (var ib in lib)
+                {
+                    i.INDENNITABASE.Remove(ib);
+                }
+
+                db.SaveChanges();
+            }
+
+
+        }
+
         public void RimuoviAssociazioneIndennitaBase_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             //var i = db.INDENNITA.Find(idTrasferimento);

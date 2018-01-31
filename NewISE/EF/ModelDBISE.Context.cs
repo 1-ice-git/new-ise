@@ -120,7 +120,8 @@ namespace NewISE.EF
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<GRUPPO_FKM> GRUPPO_FKM { get; set; }
         public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
-        public virtual DbSet<PRIMASIST_FASCIAKM> PRIMASIST_FASCIAKM { get; set; }
         public virtual DbSet<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
+        public virtual DbSet<TEP_FK> TEP_FK { get; set; }
+        public virtual DbSet<TER_FK> TER_FK { get; set; }
     }
 }

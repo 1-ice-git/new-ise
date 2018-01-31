@@ -12,14 +12,11 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASIST_FASCIAKM
+    public partial class TEP_FK
     {
-        public decimal IDPRIMASISTEMAZIONE { get; set; }
-        public decimal IDKM { get; set; }
-        public bool ANNULLATO { get; set; }
-        public Nullable<System.DateTime> DATAANNULLATO { get; set; }
+        public decimal IDTEPARTENZA { get; set; }
+        public decimal IDCFKM { get; set; }
     
-        public virtual FASCIA_KM FASCIA_KM { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+        public virtual TEPARTENZA TEPARTENZA { get; set; }
     }
 }

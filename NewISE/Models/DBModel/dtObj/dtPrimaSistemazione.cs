@@ -15,6 +15,25 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public PrimaSistemazioneModel GetPrimaSistemazioneBtIdTrasf(decimal idTrasferimento, ModelDBISE db)
+        {
+            PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
+
+
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            var ps = t.PRIMASITEMAZIONE;
+
+            psm = new PrimaSistemazioneModel()
+            {
+                idPrimaSistemazione = ps.IDPRIMASISTEMAZIONE,
+
+            };
+
+
+            return psm;
+        }
+
         public PrimaSistemazioneModel GetPrimaSistemazioneBtIdTrasf(decimal idTrasferimento)
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();

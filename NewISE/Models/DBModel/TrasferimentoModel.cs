@@ -33,6 +33,10 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Tipo Co.An.")]
         public decimal idTipoCoan { get; set; }
 
+        [Required(ErrorMessage = "Fascia KM richiesta.")]
+        [Display(Name = "Fascia KM")]
+        public decimal idFKM { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Data di partenza")]

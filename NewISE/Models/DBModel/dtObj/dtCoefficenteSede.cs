@@ -47,6 +47,23 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void RimuoviCoefficientiSede_Indennita(decimal idTrasferimento, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lcs =
+                i.COEFFICIENTESEDE.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+            if (lcs?.Any() ?? false)
+            {
+                foreach (var cs in lcs)
+                {
+                    i.COEFFICIENTESEDE.Remove(cs);
+                }
+
+                db.SaveChanges();
+            }
+        }
 
         public void RimuoviAssociaCoefficenteSede_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {

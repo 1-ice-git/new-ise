@@ -21,7 +21,7 @@ namespace NewISE.Controllers
     {
         #region Metodi privati
 
-        private void ListeComboNuovoTrasf(out List<SelectListItem> lTipoTrasferimento, out List<SelectListItem> lUffici, out List<SelectListItem> lRuoloUfficio, out List<SelectListItem> lTipologiaCoan)
+        private void ListeComboNuovoTrasf(out List<SelectListItem> lTipoTrasferimento, out List<SelectListItem> lUffici, out List<SelectListItem> lRuoloUfficio, out List<SelectListItem> lTipologiaCoan, out List<SelectListItem> lFasciaKM)
         {
             var r = new List<SelectListItem>();
 
@@ -99,6 +99,28 @@ namespace NewISE.Controllers
 
                 lTipologiaCoan = r;
             }
+
+
+            using (dtFasciaKm dtfkm = new dtFasciaKm())
+            {
+                var lfkm = dtfkm.GetListFascieChilometriche().ToList();
+
+                if (lfkm?.Any() ?? false)
+                {
+                    r = (from t in lfkm
+                         select new SelectListItem()
+                         {
+                             Text = t.KM,
+                             Value = t.idFKM.ToString()
+                         }).ToList();
+
+                    r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                }
+
+                lFasciaKM = r;
+            }
+
+
         }
 
         #endregion Metodi privati
@@ -209,6 +231,7 @@ namespace NewISE.Controllers
             var lUffici = new List<SelectListItem>();
             var lRuoloUfficio = new List<SelectListItem>();
             var lTipologiaCoan = new List<SelectListItem>();
+            var lFasciaKM = new List<SelectListItem>();
 
             int matricola = 0;
             bool ricaricaInfoTrasf = true;
@@ -222,12 +245,13 @@ namespace NewISE.Controllers
                     matricola = d.matricola;
                 }
 
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;
                 ViewBag.ListRuolo = lRuoloUfficio;
                 ViewBag.ListTipoCoan = lTipologiaCoan;
+                ViewBag.ListFasciaKM = lFasciaKM;
 
                 ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                 ViewBag.Matricola = matricola;
@@ -281,6 +305,7 @@ namespace NewISE.Controllers
             var lUffici = new List<SelectListItem>();
             var lRuoloUfficio = new List<SelectListItem>();
             var lTipologiaCoan = new List<SelectListItem>();
+            var lFasciaKM = new List<SelectListItem>();
 
             try
             {
@@ -291,15 +316,17 @@ namespace NewISE.Controllers
                     matricola = d.matricola;
                 }
 
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;
                 ViewBag.ListRuolo = lRuoloUfficio;
                 ViewBag.ListTipoCoan = lTipologiaCoan;
+                ViewBag.ListFasciaKM = lFasciaKM;
 
                 ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                 ViewBag.Matricola = matricola;
+
 
                 //using (dtTrasferimento dttr = new dtTrasferimento())
                 //{
@@ -427,17 +454,19 @@ namespace NewISE.Controllers
             var lUffici = new List<SelectListItem>();
             var lRuoloUfficio = new List<SelectListItem>();
             var lTipologiaCoan = new List<SelectListItem>();
+            var lFasciaKM = new List<SelectListItem>();
 
             bool trasfSuccessivo = false;
 
             try
             {
-                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                 ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                 ViewBag.ListUfficio = lUffici;
                 ViewBag.ListRuolo = lRuoloUfficio;
                 ViewBag.ListTipoCoan = lTipologiaCoan;
+                ViewBag.ListFasciaKM = lFasciaKM;
 
                 ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                 ViewBag.Matricola = matricola;
@@ -579,119 +608,332 @@ namespace NewISE.Controllers
 
                                     dti.EditIndennita(im, db);
 
+                                    DateTime dataRientro = trm.dataRientro.HasValue == true
+                                            ? trm.dataRientro.Value
+                                            : Utility.DataFineStop();
+
+                                    //using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                                    //{
+
+                                    //dtld.RimuoviAssociazioneLivelloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+
+                                    //LivelloDipendenteModel ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
+                                    //if (ldm.HasValue())
+                                    //{
+                                    //    dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+                                    //}
+                                    //else
+                                    //{
+                                    //    throw new Exception("Non risulta assegnato nessun livello per il dipendente " + trm.Dipendente.Nominativo + " (" + trm.Dipendente.matricola + ")");
+                                    //}
+
+                                    //using (dtIndennitaBase dtib = new dtIndennitaBase())
+                                    //{
+                                    //    dtib.RimuoviAssociazioneIndennitaBase_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                    //    IndennitaBaseModel ibm = new IndennitaBaseModel();
+                                    //    ibm = dtib.GetIndennitaBaseValida(ldm.idLivello, trm.dataPartenza, db);
+                                    //    if (ibm.HasValue())
+                                    //    {
+                                    //        dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                    //    }
+                                    //}
+
+
+
                                     using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                     {
+                                        dtld.RimuoviAssociazioneLivelliDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
 
-                                        dtld.RimuoviAssociazioneLivelloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
-
-
-                                        LivelloDipendenteModel ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
-                                        if (ldm.HasValue())
+                                        var lldm =
+                                                dtld.GetLivelliDipendentiByRangeDate(trm.idDipendente, trm.dataPartenza,
+                                                    dataRientro, db).ToList();
+                                        if (lldm?.Any() ?? false)
                                         {
-                                            dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento, ldm.idLivDipendente, db);
+                                            foreach (var ldm in lldm)
+                                            {
+                                                dtld.AssociaLivelloDipendente_Indennita(trm.idTrasferimento,
+                                                    ldm.idLivDipendente, db);
+
+                                                using (dtIndennitaBase dtib = new dtIndennitaBase())
+                                                {
+                                                    List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+
+                                                    DateTime dataInizio = Utility.GetData_Inizio_Base();
+                                                    DateTime dataFine = Utility.DataFineStop();
+
+                                                    if (trm.dataPartenza > ldm.dataInizioValdita)
+                                                    {
+                                                        dataInizio = trm.dataPartenza;
+                                                    }
+                                                    else
+                                                    {
+                                                        dataInizio = trm.dataPartenza;
+                                                    }
+
+                                                    if (trm.dataRientro.HasValue)
+                                                    {
+                                                        if (trm.dataRientro > ldm.dataFineValidita)
+                                                        {
+                                                            dataFine = ldm.dataFineValidita.HasValue == true
+                                                                ? ldm.dataFineValidita.Value
+                                                                : Utility.DataFineStop();
+                                                        }
+                                                        else
+                                                        {
+                                                            dataFine = trm.dataRientro.Value;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        dataFine = ldm.dataFineValidita.HasValue == true
+                                                            ? ldm.dataFineValidita.Value
+                                                            : Utility.DataFineStop();
+                                                    }
+
+
+                                                    dtib.RimuoviAssciazioniIndennitaBase_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
+
+                                                    libm =
+                                                        dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
+                                                            dataFine, db).ToList();
+
+                                                    if (libm?.Any() ?? false)
+                                                    {
+                                                        foreach (var ibm in libm)
+                                                        {
+                                                            dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
+                                                        }
+
+
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new Exception("Non risulta l'indennità base per il livello interessato.");
+                                                    }
+                                                }
+
+                                            }
                                         }
                                         else
                                         {
                                             throw new Exception("Non risulta assegnato nessun livello per il dipendente " + trm.Dipendente.Nominativo + " (" + trm.Dipendente.matricola + ")");
                                         }
+                                    }
 
-                                        using (dtIndennitaBase dtib = new dtIndennitaBase())
+
+
+
+
+                                    //using (dtTFR dttfr = new dtTFR())
+                                    //{
+                                    //    dttfr.RimuoviAssociaTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                    //    TFRModel tfrm = dttfr.GetTFRValido(trm.idUfficio, trm.dataPartenza, db);
+                                    //    if (tfrm.HasValue())
+                                    //    {
+                                    //        dttfr.AssociaTFR_Indennita(trm.idTrasferimento, tfrm.idTFR, db);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
+                                    //    }
+                                    //}
+
+                                    using (dtTFR dttfr = new dtTFR())
+                                    {
+                                        dttfr.RimuoviAsscoiazioniTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
+
+                                        List<TFRModel> ltfrm =
+                                            dttfr.GetTfrIndennitaByRangeDate(trm.idUfficio, trm.dataPartenza,
+                                                dataRientro, db).ToList();
+
+                                        if (ltfrm?.Any() ?? false)
                                         {
-                                            dtib.RimuoviAssociazioneIndennitaBase_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
-
-                                            IndennitaBaseModel ibm = new IndennitaBaseModel();
-                                            ibm = dtib.GetIndennitaBaseValida(ldm.idLivello, trm.dataPartenza, db);
-                                            if (ibm.HasValue())
-                                            {
-                                                dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
-                                            }
-                                            else
-                                            {
-                                                throw new Exception("Non risulta l'indennità base per il livello interessato.");
-                                            }
-                                        }
-
-                                        using (dtTFR dttfr = new dtTFR())
-                                        {
-                                            dttfr.RimuoviAssociaTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
-
-                                            TFRModel tfrm = dttfr.GetTFRValido(trm.idUfficio, trm.dataPartenza, db);
-                                            if (tfrm.HasValue())
+                                            foreach (var tfrm in ltfrm)
                                             {
                                                 dttfr.AssociaTFR_Indennita(trm.idTrasferimento, tfrm.idTFR, db);
                                             }
-                                            else
-                                            {
-                                                throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
-                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
                                         }
 
-                                        using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+
+                                    }
+
+                                    //using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                                    //{
+                                    //    dtpd.RimuoviAssociaPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                    //    PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioValida(trm.idUfficio, trm.dataPartenza, db);
+
+                                    //    if (pdm.HasValue())
+                                    //    {
+                                    //        dtpd.AssociaPercentualeDisagio_Indennita(trm.idTrasferimento, pdm.idPercentualeDisagio, db);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
+                                    //    }
+                                    //}
+
+                                    using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
+                                    {
+                                        dtpd.RimuoviAssociazioniPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
+
+                                        List<PercentualeDisagioModel> lpdm =
+                                            dtpd.GetPercentualeDisagioIndennitaByRange(trm.idUfficio,
+                                                trm.dataPartenza, dataRientro, db).ToList();
+
+
+                                        if (lpdm?.Any() ?? false)
                                         {
-                                            dtpd.RimuoviAssociaPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
-
-                                            PercentualeDisagioModel pdm = dtpd.GetPercentualeDisagioValida(trm.idUfficio, trm.dataPartenza, db);
-
-                                            if (pdm.HasValue())
+                                            foreach (var pdm in lpdm)
                                             {
                                                 dtpd.AssociaPercentualeDisagio_Indennita(trm.idTrasferimento, pdm.idPercentualeDisagio, db);
                                             }
-                                            else
-                                            {
-                                                throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
-                                            }
                                         }
-                                        using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                                        else
                                         {
-                                            dtcs.RimuoviAssociaCoefficenteSede_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
-
-                                            CoefficientiSedeModel cs = dtcs.GetCoefficenteSedeValido(trm.idUfficio, trm.dataPartenza, db);
-                                            if (cs.HasValue())
-                                            {
-                                                dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, cs.idCoefficientiSede, db);
-                                            }
-                                            else
-                                            {
-                                                throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
-                                            }
+                                            throw new Exception("Non risulta la percentuale di disagio per l'ufficio interessato.");
                                         }
 
-                                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                                        {
 
-                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
-
-                                            if (rdm == null || rdm.hasValue() == false)
-                                            {
-                                                rdm = new RuoloDipendenteModel()
-                                                {
-                                                    idRuolo = trm.idRuoloUfficio,
-                                                    dataInizioValidita = trm.dataPartenza,
-                                                    dataFineValidita = Utility.DataFineStop(),
-                                                    dataAggiornamento = DateTime.Now,
-                                                    annullato = false
-                                                };
-
-                                                var rdnOld =
-                                                    dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento,
-                                                        trm.dataPartenza, db);
-
-
-
-                                                dtrd.SetRuoloDipendente(ref rdm, db);
-
-
-
-
-                                                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
-                                            }
-                                            else
-                                            {
-                                                dtrd.SetNuovoRuoloDipendente(ref rdm, db);
-                                            }
-
-                                        }
                                     }
+
+
+                                    //using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                                    //{
+                                    //    dtcs.RimuoviAssociaCoefficenteSede_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
+
+                                    //    CoefficientiSedeModel cs = dtcs.GetCoefficenteSedeValido(trm.idUfficio, trm.dataPartenza, db);
+                                    //    if (cs.HasValue())
+                                    //    {
+                                    //        dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, cs.idCoefficientiSede, db);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
+                                    //    }
+                                    //}
+
+                                    using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
+                                    {
+                                        dtcs.RimuoviCoefficientiSede_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
+
+                                        List<CoefficientiSedeModel> lcsm =
+                                            dtcs.GetCoefficenteSedeIndennitaByRangeDate(trm.idUfficio,
+                                                trm.dataPartenza, dataRientro, db).ToList();
+
+                                        if (lcsm?.Any() ?? false)
+                                        {
+                                            foreach (var csm in lcsm)
+                                            {
+                                                dtcs.AssociaCoefficenteSede_Indennita(trm.idTrasferimento, csm.idCoefficientiSede, db);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
+                                        }
+
+                                    }
+
+                                    //using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                    //{
+
+                                    //    RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
+
+                                    //    if (rdm == null || rdm.hasValue() == false)
+                                    //    {
+                                    //        rdm = new RuoloDipendenteModel()
+                                    //        {
+                                    //            idRuolo = trm.idRuoloUfficio,
+                                    //            dataInizioValidita = trm.dataPartenza,
+                                    //            dataFineValidita = Utility.DataFineStop(),
+                                    //            dataAggiornamento = DateTime.Now,
+                                    //            annullato = false
+                                    //        };
+
+                                    //        var rdnOld =
+                                    //            dtrd.GetRuoloDipendenteByIdTrasferimento(trm.idTrasferimento,
+                                    //                trm.dataPartenza, db);
+
+
+
+                                    //        dtrd.SetRuoloDipendente(ref rdm, db);
+
+
+
+
+                                    //        Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendete.", "RuoloDipendente", db, trm.idTrasferimento, rdm.idRuoloDipendente);
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        dtrd.SetNuovoRuoloDipendente(ref rdm, db);
+                                    //    }
+
+                                    //}
+
+
+
+                                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                    {
+                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
+
+                                        if (rdm == null || rdm.hasValue() == false)
+                                        {
+                                            rdm = new RuoloDipendenteModel()
+                                            {
+                                                idRuolo = trm.idRuoloUfficio,
+                                                idTrasferimento = trm.idTrasferimento,
+                                                dataInizioValidita = trm.dataPartenza,
+                                                dataFineValidita = Utility.DataFineStop(),
+                                                dataAggiornamento = DateTime.Now,
+                                                annullato = false
+                                            };
+
+                                            dtrd.SetRuoloDipendente(ref rdm, db);
+
+                                        }
+                                        else
+                                        {
+                                            dtrd.SetNuovoRuoloDipendente(ref rdm, db);
+                                        }
+
+                                    }
+
+
+                                    using (dtFasciaKm dtfkm = new dtFasciaKm())
+                                    {
+                                        dtfkm.RimuoviAssociazionePercentualeFKM(trm.idTrasferimento, db);
+
+                                        using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                                        {
+                                            var pfkmm = dtfkm.GetPercentualeFKM(trm.idFKM, trm.dataPartenza, db);
+                                            var psm = dtps.GetPrimaSistemazioneBtIdTrasf(trm.idTrasferimento, db);
+
+                                            if (pfkmm?.idPFKM > 0)
+                                            {
+                                                dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+                                            }
+                                        }
+
+                                    }
+
+
+                                    // }
 
                                 }
 
@@ -1000,6 +1242,25 @@ namespace NewISE.Controllers
                                             else
                                             {
                                                 dtrd.SetNuovoRuoloDipendente(ref rdm, db);
+                                            }
+
+                                        }
+
+                                        using (dtFasciaKm dtfkm = new dtFasciaKm())
+                                        {
+                                            using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
+                                            {
+                                                var pfkmm = dtfkm.GetPercentualeFKM(trm.idFKM, trm.dataPartenza, db);
+                                                var psm = dtps.GetPrimaSistemazioneBtIdTrasf(trm.idTrasferimento, db);
+
+                                                if (pfkmm?.idPFKM > 0)
+                                                {
+                                                    dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                                                }
+                                                else
+                                                {
+                                                    throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+                                                }
                                             }
 
                                         }

@@ -2669,9 +2669,6 @@
     <Compile Include="EF\PERCENTUALEMAGFIGLI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\PRIMASIST_FASCIAKM.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\PRIMASITEMAZIONE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2714,7 +2711,13 @@
     <Compile Include="EF\TEPARTENZA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\TEP_FK.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\TERIENTRO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\TER_FK.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TFR.cs">
@@ -2801,10 +2804,14 @@
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\AttivitaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtFasciaKm.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtPassaportoRichiedente.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
+    <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
+    <Compile Include="Models\DBModel\Gruppo_FKMModel.cs" />
+    <Compile Include="Models\DBModel\PercentualeFasciaKMModel.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
     <Compile Include="Models\DBModel\TipologiaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\TipologiaSospensioneModel.cs" />

@@ -19,6 +19,7 @@ namespace NewISE.EF
         {
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
             this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.TEP_FK = new HashSet<TEP_FK>();
         }
     
         public decimal IDTEPARTENZA { get; set; }
@@ -28,5 +29,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEP_FK> TEP_FK { get; set; }
     }
 }

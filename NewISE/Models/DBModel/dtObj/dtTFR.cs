@@ -38,6 +38,23 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void RimuoviAsscoiazioniTFR_Indennita(decimal idTrasferimento, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var ltfr =
+                i.TFR.Where(a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+            if (ltfr?.Any() ?? false)
+            {
+                foreach (var tfr in ltfr)
+                {
+                    i.TFR.Remove(tfr);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
         public void RimuoviAssociaTFR_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             //var i = db.INDENNITA.Find(idTrasferimento);
