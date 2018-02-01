@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet14 : global::System.Data.DataSet {
         
-        private V_OP_EFFETTUATE_CANONE_ANTIDataTable tableV_OP_EFFETTUATE_CANONE_ANTI;
+        private DataTable14DataTable tableDataTable14;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["V_OP_EFFETTUATE_CANONE_ANTI"] != null)) {
-                    base.Tables.Add(new V_OP_EFFETTUATE_CANONE_ANTIDataTable(ds.Tables["V_OP_EFFETTUATE_CANONE_ANTI"]));
+                if ((ds.Tables["DataTable14"] != null)) {
+                    base.Tables.Add(new DataTable14DataTable(ds.Tables["DataTable14"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public V_OP_EFFETTUATE_CANONE_ANTIDataTable V_OP_EFFETTUATE_CANONE_ANTI {
+        public DataTable14DataTable DataTable14 {
             get {
-                return this.tableV_OP_EFFETTUATE_CANONE_ANTI;
+                return this.tableDataTable14;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["V_OP_EFFETTUATE_CANONE_ANTI"] != null)) {
-                    base.Tables.Add(new V_OP_EFFETTUATE_CANONE_ANTIDataTable(ds.Tables["V_OP_EFFETTUATE_CANONE_ANTI"]));
+                if ((ds.Tables["DataTable14"] != null)) {
+                    base.Tables.Add(new DataTable14DataTable(ds.Tables["DataTable14"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableV_OP_EFFETTUATE_CANONE_ANTI = ((V_OP_EFFETTUATE_CANONE_ANTIDataTable)(base.Tables["V_OP_EFFETTUATE_CANONE_ANTI"]));
+            this.tableDataTable14 = ((DataTable14DataTable)(base.Tables["DataTable14"]));
             if ((initTable == true)) {
-                if ((this.tableV_OP_EFFETTUATE_CANONE_ANTI != null)) {
-                    this.tableV_OP_EFFETTUATE_CANONE_ANTI.InitVars();
+                if ((this.tableDataTable14 != null)) {
+                    this.tableDataTable14.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet14.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableV_OP_EFFETTUATE_CANONE_ANTI = new V_OP_EFFETTUATE_CANONE_ANTIDataTable();
-            base.Tables.Add(this.tableV_OP_EFFETTUATE_CANONE_ANTI);
+            this.tableDataTable14 = new DataTable14DataTable();
+            base.Tables.Add(this.tableDataTable14);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeV_OP_EFFETTUATE_CANONE_ANTI() {
+        private bool ShouldSerializeDataTable14() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler(object sender, V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent e);
+        public delegate void DataTable14RowChangeEventHandler(object sender, DataTable14RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class V_OP_EFFETTUATE_CANONE_ANTIDataTable : global::System.Data.TypedTableBase<V_OP_EFFETTUATE_CANONE_ANTIRow> {
+        public partial class DataTable14DataTable : global::System.Data.TypedTableBase<DataTable14Row> {
             
             private global::System.Data.DataColumn columnNOMINATIVO;
             
@@ -301,8 +301,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIDataTable() {
-                this.TableName = "V_OP_EFFETTUATE_CANONE_ANTI";
+            public DataTable14DataTable() {
+                this.TableName = "DataTable14";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -310,7 +310,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_OP_EFFETTUATE_CANONE_ANTIDataTable(global::System.Data.DataTable table) {
+            internal DataTable14DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -327,7 +327,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected V_OP_EFFETTUATE_CANONE_ANTIDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable14DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -423,34 +423,34 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIRow this[int index] {
+            public DataTable14Row this[int index] {
                 get {
-                    return ((V_OP_EFFETTUATE_CANONE_ANTIRow)(this.Rows[index]));
+                    return ((DataTable14Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler V_OP_EFFETTUATE_CANONE_ANTIRowChanging;
+            public event DataTable14RowChangeEventHandler DataTable14RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler V_OP_EFFETTUATE_CANONE_ANTIRowChanged;
+            public event DataTable14RowChangeEventHandler DataTable14RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler V_OP_EFFETTUATE_CANONE_ANTIRowDeleting;
+            public event DataTable14RowChangeEventHandler DataTable14RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_CANONE_ANTIRowChangeEventHandler V_OP_EFFETTUATE_CANONE_ANTIRowDeleted;
+            public event DataTable14RowChangeEventHandler DataTable14RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddV_OP_EFFETTUATE_CANONE_ANTIRow(V_OP_EFFETTUATE_CANONE_ANTIRow row) {
+            public void AddDataTable14Row(DataTable14Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIRow AddV_OP_EFFETTUATE_CANONE_ANTIRow(string NOMINATIVO, short MATRICOLA, string SEDE, string VALUTA, System.DateTime DATA_DECORRENZA, System.DateTime DATA_LETTERA, System.DateTime DATA_OPERAZIONE, double CAN_CANONE_ANNUO_VALUTA, short CAN_PROG_TRASFERIMENTO, short CAN_PROG_CAN_ABITAZIONE) {
-                V_OP_EFFETTUATE_CANONE_ANTIRow rowV_OP_EFFETTUATE_CANONE_ANTIRow = ((V_OP_EFFETTUATE_CANONE_ANTIRow)(this.NewRow()));
+            public DataTable14Row AddDataTable14Row(string NOMINATIVO, string MATRICOLA, string SEDE, string VALUTA, string DATA_DECORRENZA, string DATA_LETTERA, string DATA_OPERAZIONE, string CAN_CANONE_ANNUO_VALUTA, string CAN_PROG_TRASFERIMENTO, string CAN_PROG_CAN_ABITAZIONE) {
+                DataTable14Row rowDataTable14Row = ((DataTable14Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NOMINATIVO,
                         MATRICOLA,
@@ -462,15 +462,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         CAN_CANONE_ANNUO_VALUTA,
                         CAN_PROG_TRASFERIMENTO,
                         CAN_PROG_CAN_ABITAZIONE};
-                rowV_OP_EFFETTUATE_CANONE_ANTIRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowV_OP_EFFETTUATE_CANONE_ANTIRow);
-                return rowV_OP_EFFETTUATE_CANONE_ANTIRow;
+                rowDataTable14Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable14Row);
+                return rowDataTable14Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                V_OP_EFFETTUATE_CANONE_ANTIDataTable cln = ((V_OP_EFFETTUATE_CANONE_ANTIDataTable)(base.Clone()));
+                DataTable14DataTable cln = ((DataTable14DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -478,7 +478,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new V_OP_EFFETTUATE_CANONE_ANTIDataTable();
+                return new DataTable14DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -501,61 +501,50 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             private void InitClass() {
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMATRICOLA);
                 this.columnSEDE = new global::System.Data.DataColumn("SEDE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSEDE);
                 this.columnVALUTA = new global::System.Data.DataColumn("VALUTA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVALUTA);
-                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_DECORRENZA);
-                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_LETTERA);
-                this.columnDATA_OPERAZIONE = new global::System.Data.DataColumn("DATA_OPERAZIONE", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_OPERAZIONE = new global::System.Data.DataColumn("DATA_OPERAZIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_OPERAZIONE);
-                this.columnCAN_CANONE_ANNUO_VALUTA = new global::System.Data.DataColumn("CAN_CANONE_ANNUO_VALUTA", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnCAN_CANONE_ANNUO_VALUTA = new global::System.Data.DataColumn("CAN_CANONE_ANNUO_VALUTA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCAN_CANONE_ANNUO_VALUTA);
-                this.columnCAN_PROG_TRASFERIMENTO = new global::System.Data.DataColumn("CAN_PROG_TRASFERIMENTO", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnCAN_PROG_TRASFERIMENTO = new global::System.Data.DataColumn("CAN_PROG_TRASFERIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCAN_PROG_TRASFERIMENTO);
-                this.columnCAN_PROG_CAN_ABITAZIONE = new global::System.Data.DataColumn("CAN_PROG_CAN_ABITAZIONE", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnCAN_PROG_CAN_ABITAZIONE = new global::System.Data.DataColumn("CAN_PROG_CAN_ABITAZIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCAN_PROG_CAN_ABITAZIONE);
-                this.columnNOMINATIVO.MaxLength = 101;
-                this.columnMATRICOLA.AllowDBNull = false;
-                this.columnSEDE.AllowDBNull = false;
-                this.columnSEDE.MaxLength = 35;
-                this.columnVALUTA.AllowDBNull = false;
-                this.columnVALUTA.MaxLength = 20;
-                this.columnDATA_DECORRENZA.AllowDBNull = false;
-                this.columnDATA_OPERAZIONE.AllowDBNull = false;
-                this.columnCAN_CANONE_ANNUO_VALUTA.AllowDBNull = false;
-                this.columnCAN_PROG_TRASFERIMENTO.AllowDBNull = false;
-                this.columnCAN_PROG_CAN_ABITAZIONE.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIRow NewV_OP_EFFETTUATE_CANONE_ANTIRow() {
-                return ((V_OP_EFFETTUATE_CANONE_ANTIRow)(this.NewRow()));
+            public DataTable14Row NewDataTable14Row() {
+                return ((DataTable14Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new V_OP_EFFETTUATE_CANONE_ANTIRow(builder);
+                return new DataTable14Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(V_OP_EFFETTUATE_CANONE_ANTIRow);
+                return typeof(DataTable14Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.V_OP_EFFETTUATE_CANONE_ANTIRowChanged != null)) {
-                    this.V_OP_EFFETTUATE_CANONE_ANTIRowChanged(this, new V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent(((V_OP_EFFETTUATE_CANONE_ANTIRow)(e.Row)), e.Action));
+                if ((this.DataTable14RowChanged != null)) {
+                    this.DataTable14RowChanged(this, new DataTable14RowChangeEvent(((DataTable14Row)(e.Row)), e.Action));
                 }
             }
             
@@ -563,8 +552,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.V_OP_EFFETTUATE_CANONE_ANTIRowChanging != null)) {
-                    this.V_OP_EFFETTUATE_CANONE_ANTIRowChanging(this, new V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent(((V_OP_EFFETTUATE_CANONE_ANTIRow)(e.Row)), e.Action));
+                if ((this.DataTable14RowChanging != null)) {
+                    this.DataTable14RowChanging(this, new DataTable14RowChangeEvent(((DataTable14Row)(e.Row)), e.Action));
                 }
             }
             
@@ -572,8 +561,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.V_OP_EFFETTUATE_CANONE_ANTIRowDeleted != null)) {
-                    this.V_OP_EFFETTUATE_CANONE_ANTIRowDeleted(this, new V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent(((V_OP_EFFETTUATE_CANONE_ANTIRow)(e.Row)), e.Action));
+                if ((this.DataTable14RowDeleted != null)) {
+                    this.DataTable14RowDeleted(this, new DataTable14RowChangeEvent(((DataTable14Row)(e.Row)), e.Action));
                 }
             }
             
@@ -581,14 +570,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.V_OP_EFFETTUATE_CANONE_ANTIRowDeleting != null)) {
-                    this.V_OP_EFFETTUATE_CANONE_ANTIRowDeleting(this, new V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent(((V_OP_EFFETTUATE_CANONE_ANTIRow)(e.Row)), e.Action));
+                if ((this.DataTable14RowDeleting != null)) {
+                    this.DataTable14RowDeleting(this, new DataTable14RowChangeEvent(((DataTable14Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveV_OP_EFFETTUATE_CANONE_ANTIRow(V_OP_EFFETTUATE_CANONE_ANTIRow row) {
+            public void RemoveDataTable14Row(DataTable14Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -615,7 +604,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "V_OP_EFFETTUATE_CANONE_ANTIDataTable";
+                attribute2.FixedValue = "DataTable14DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -659,15 +648,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class V_OP_EFFETTUATE_CANONE_ANTIRow : global::System.Data.DataRow {
+        public partial class DataTable14Row : global::System.Data.DataRow {
             
-            private V_OP_EFFETTUATE_CANONE_ANTIDataTable tableV_OP_EFFETTUATE_CANONE_ANTI;
+            private DataTable14DataTable tableDataTable14;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_OP_EFFETTUATE_CANONE_ANTIRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable14Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableV_OP_EFFETTUATE_CANONE_ANTI = ((V_OP_EFFETTUATE_CANONE_ANTIDataTable)(this.Table));
+                this.tableDataTable14 = ((DataTable14DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -675,26 +664,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableDataTable14.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_OP_EFFETTUATE_CANONE_ANTI\' " +
-                                "è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'DataTable14\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.NOMINATIVOColumn] = value;
+                    this[this.tableDataTable14.NOMINATIVOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short MATRICOLA {
+            public string MATRICOLA {
                 get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.MATRICOLAColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.MATRICOLAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.MATRICOLAColumn] = value;
+                    this[this.tableDataTable14.MATRICOLAColumn] = value;
                 }
             }
             
@@ -702,10 +695,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string SEDE {
                 get {
-                    return ((string)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.SEDEColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.SEDEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.SEDEColumn] = value;
+                    this[this.tableDataTable14.SEDEColumn] = value;
                 }
             }
             
@@ -713,107 +711,235 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string VALUTA {
                 get {
-                    return ((string)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.VALUTAColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.VALUTAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_DECORRENZA {
-                get {
-                    return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_DECORRENZAColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_DECORRENZAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_LETTERA {
-                get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_LETTERAColumn]));
+                        return ((string)(this[this.tableDataTable14.VALUTAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'V_OP_EFFETTUATE_CANONE_ANTI" +
-                                "\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'DataTable14\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_LETTERAColumn] = value;
+                    this[this.tableDataTable14.VALUTAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_OPERAZIONE {
+            public string DATA_DECORRENZA {
                 get {
-                    return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_OPERAZIONEColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.DATA_DECORRENZAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_DECORRENZA\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_OPERAZIONEColumn] = value;
+                    this[this.tableDataTable14.DATA_DECORRENZAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double CAN_CANONE_ANNUO_VALUTA {
+            public string DATA_LETTERA {
                 get {
-                    return ((double)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_CANONE_ANNUO_VALUTAColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.DATA_LETTERAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_CANONE_ANNUO_VALUTAColumn] = value;
+                    this[this.tableDataTable14.DATA_LETTERAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short CAN_PROG_TRASFERIMENTO {
+            public string DATA_OPERAZIONE {
                 get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_PROG_TRASFERIMENTOColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.DATA_OPERAZIONEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_OPERAZIONE\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_PROG_TRASFERIMENTOColumn] = value;
+                    this[this.tableDataTable14.DATA_OPERAZIONEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short CAN_PROG_CAN_ABITAZIONE {
+            public string CAN_CANONE_ANNUO_VALUTA {
                 get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_PROG_CAN_ABITAZIONEColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable14.CAN_CANONE_ANNUO_VALUTAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CAN_CANONE_ANNUO_VALUTA\' nella tabella \'DataTable14\' è D" +
+                                "BNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.CAN_PROG_CAN_ABITAZIONEColumn] = value;
+                    this[this.tableDataTable14.CAN_CANONE_ANNUO_VALUTAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CAN_PROG_TRASFERIMENTO {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable14.CAN_PROG_TRASFERIMENTOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CAN_PROG_TRASFERIMENTO\' nella tabella \'DataTable14\' è DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable14.CAN_PROG_TRASFERIMENTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CAN_PROG_CAN_ABITAZIONE {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable14.CAN_PROG_CAN_ABITAZIONEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CAN_PROG_CAN_ABITAZIONE\' nella tabella \'DataTable14\' è D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable14.CAN_PROG_CAN_ABITAZIONEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_CANONE_ANTI.NOMINATIVOColumn);
+                return this.IsNull(this.tableDataTable14.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable14.NOMINATIVOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMATRICOLANull() {
+                return this.IsNull(this.tableDataTable14.MATRICOLAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMATRICOLANull() {
+                this[this.tableDataTable14.MATRICOLAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSEDENull() {
+                return this.IsNull(this.tableDataTable14.SEDEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSEDENull() {
+                this[this.tableDataTable14.SEDEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVALUTANull() {
+                return this.IsNull(this.tableDataTable14.VALUTAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVALUTANull() {
+                this[this.tableDataTable14.VALUTAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDATA_DECORRENZANull() {
+                return this.IsNull(this.tableDataTable14.DATA_DECORRENZAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDATA_DECORRENZANull() {
+                this[this.tableDataTable14.DATA_DECORRENZAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDATA_LETTERANull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_LETTERAColumn);
+                return this.IsNull(this.tableDataTable14.DATA_LETTERAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDATA_LETTERANull() {
-                this[this.tableV_OP_EFFETTUATE_CANONE_ANTI.DATA_LETTERAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable14.DATA_LETTERAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDATA_OPERAZIONENull() {
+                return this.IsNull(this.tableDataTable14.DATA_OPERAZIONEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDATA_OPERAZIONENull() {
+                this[this.tableDataTable14.DATA_OPERAZIONEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCAN_CANONE_ANNUO_VALUTANull() {
+                return this.IsNull(this.tableDataTable14.CAN_CANONE_ANNUO_VALUTAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCAN_CANONE_ANNUO_VALUTANull() {
+                this[this.tableDataTable14.CAN_CANONE_ANNUO_VALUTAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCAN_PROG_TRASFERIMENTONull() {
+                return this.IsNull(this.tableDataTable14.CAN_PROG_TRASFERIMENTOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCAN_PROG_TRASFERIMENTONull() {
+                this[this.tableDataTable14.CAN_PROG_TRASFERIMENTOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCAN_PROG_CAN_ABITAZIONENull() {
+                return this.IsNull(this.tableDataTable14.CAN_PROG_CAN_ABITAZIONEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCAN_PROG_CAN_ABITAZIONENull() {
+                this[this.tableDataTable14.CAN_PROG_CAN_ABITAZIONEColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -821,22 +947,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent : global::System.EventArgs {
+        public class DataTable14RowChangeEvent : global::System.EventArgs {
             
-            private V_OP_EFFETTUATE_CANONE_ANTIRow eventRow;
+            private DataTable14Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIRowChangeEvent(V_OP_EFFETTUATE_CANONE_ANTIRow row, global::System.Data.DataRowAction action) {
+            public DataTable14RowChangeEvent(DataTable14Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_CANONE_ANTIRow Row {
+            public DataTable14Row Row {
                 get {
                     return this.eventRow;
                 }
@@ -847,549 +973,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public global::System.Data.DataRowAction Action {
                 get {
                     return this.eventAction;
-                }
-            }
-        }
-    }
-}
-namespace NewISE.Areas.Statistiche.RPTDataSet.DataSet14TableAdapters {
-    
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class V_OP_EFFETTUATE_CANONE_ANTITableAdapter : global::System.ComponentModel.Component {
-        
-        private global::Oracle.ManagedDataAccess.Client.OracleDataAdapter _adapter;
-        
-        private global::Oracle.ManagedDataAccess.Client.OracleConnection _connection;
-        
-        private global::Oracle.ManagedDataAccess.Client.OracleTransaction _transaction;
-        
-        private global::Oracle.ManagedDataAccess.Client.OracleCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public V_OP_EFFETTUATE_CANONE_ANTITableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected internal global::Oracle.ManagedDataAccess.Client.OracleDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        internal global::Oracle.ManagedDataAccess.Client.OracleConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::Oracle.ManagedDataAccess.Client.OracleCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        internal global::Oracle.ManagedDataAccess.Client.OracleTransaction Transaction {
-            get {
-                return this._transaction;
-            }
-            set {
-                this._transaction = value;
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    this.CommandCollection[i].Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.DeleteCommand != null))) {
-                    this.Adapter.DeleteCommand.Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.InsertCommand != null))) {
-                    this.Adapter.InsertCommand.Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.UpdateCommand != null))) {
-                    this.Adapter.UpdateCommand.Transaction = this._transaction;
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected global::Oracle.ManagedDataAccess.Client.OracleCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitAdapter() {
-            this._adapter = new global::Oracle.ManagedDataAccess.Client.OracleDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "V_OP_EFFETTUATE_CANONE_ANTI";
-            tableMapping.ColumnMappings.Add("NOMINATIVO", "NOMINATIVO");
-            tableMapping.ColumnMappings.Add("MATRICOLA", "MATRICOLA");
-            tableMapping.ColumnMappings.Add("SEDE", "SEDE");
-            tableMapping.ColumnMappings.Add("VALUTA", "VALUTA");
-            tableMapping.ColumnMappings.Add("DATA_DECORRENZA", "DATA_DECORRENZA");
-            tableMapping.ColumnMappings.Add("DATA_LETTERA", "DATA_LETTERA");
-            tableMapping.ColumnMappings.Add("DATA_OPERAZIONE", "DATA_OPERAZIONE");
-            tableMapping.ColumnMappings.Add("CAN_CANONE_ANNUO_VALUTA", "CAN_CANONE_ANNUO_VALUTA");
-            tableMapping.ColumnMappings.Add("CAN_PROG_TRASFERIMENTO", "CAN_PROG_TRASFERIMENTO");
-            tableMapping.ColumnMappings.Add("CAN_PROG_CAN_ABITAZIONE", "CAN_PROG_CAN_ABITAZIONE");
-            this._adapter.TableMappings.Add(tableMapping);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitConnection() {
-            this._connection = new global::Oracle.ManagedDataAccess.Client.OracleConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::Oracle.ManagedDataAccess.Client.OracleCommand[1];
-            this._commandCollection[0] = new global::Oracle.ManagedDataAccess.Client.OracleCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT NOMINATIVO, MATRICOLA, SEDE, VALUTA, DATA_DECORRENZA, DATA_LETTERA, DATA_O" +
-                "PERAZIONE, CAN_CANONE_ANNUO_VALUTA, CAN_PROG_TRASFERIMENTO, CAN_PROG_CAN_ABITAZI" +
-                "ONE FROM ISESTOR.V_OP_EFFETTUATE_CANONE_ANTI";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DataSet14.V_OP_EFFETTUATE_CANONE_ANTIDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DataSet14.V_OP_EFFETTUATE_CANONE_ANTIDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            DataSet14.V_OP_EFFETTUATE_CANONE_ANTIDataTable dataTable = new DataSet14.V_OP_EFFETTUATE_CANONE_ANTIDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-    }
-    
-    /// <summary>
-    ///TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
-    ///</summary>
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerDesigner, Microsoft.VSD" +
-        "esigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapterManager")]
-    public partial class TableAdapterManager : global::System.ComponentModel.Component {
-        
-        private UpdateOrderOption _updateOrder;
-        
-        private bool _backupDataSetBeforeUpdate;
-        
-        private global::System.Data.IDbConnection _connection;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public UpdateOrderOption UpdateOrder {
-            get {
-                return this._updateOrder;
-            }
-            set {
-                this._updateOrder = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public bool BackupDataSetBeforeUpdate {
-            get {
-                return this._backupDataSetBeforeUpdate;
-            }
-            set {
-                this._backupDataSetBeforeUpdate = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        public global::System.Data.IDbConnection Connection {
-            get {
-                if ((this._connection != null)) {
-                    return this._connection;
-                }
-                return null;
-            }
-            set {
-                this._connection = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        public int TableAdapterInstanceCount {
-            get {
-                int count = 0;
-                return count;
-            }
-        }
-        
-        /// <summary>
-        ///Update rows in top-down order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(DataSet14 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Insert rows in top-down order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(DataSet14 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Delete rows in bottom-up order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(DataSet14 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private global::System.Data.DataRow[] GetRealUpdatedRows(global::System.Data.DataRow[] updatedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            if (((updatedRows == null) 
-                        || (updatedRows.Length < 1))) {
-                return updatedRows;
-            }
-            if (((allAddedRows == null) 
-                        || (allAddedRows.Count < 1))) {
-                return updatedRows;
-            }
-            global::System.Collections.Generic.List<global::System.Data.DataRow> realUpdatedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            for (int i = 0; (i < updatedRows.Length); i = (i + 1)) {
-                global::System.Data.DataRow row = updatedRows[i];
-                if ((allAddedRows.Contains(row) == false)) {
-                    realUpdatedRows.Add(row);
-                }
-            }
-            return realUpdatedRows.ToArray();
-        }
-        
-        /// <summary>
-        ///Update all changes to the dataset.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(DataSet14 dataSet) {
-            if ((dataSet == null)) {
-                throw new global::System.ArgumentNullException("dataSet");
-            }
-            if ((dataSet.HasChanges() == false)) {
-                return 0;
-            }
-            global::System.Data.IDbConnection workConnection = this.Connection;
-            if ((workConnection == null)) {
-                throw new global::System.ApplicationException("TableAdapterManager non contiene informazioni di connessione. Impostare la propri" +
-                        "età TableAdapter di ciascun oggetto TableAdapterManager su un\'istanza TableAdapt" +
-                        "er valida.");
-            }
-            bool workConnOpened = false;
-            if (((workConnection.State & global::System.Data.ConnectionState.Broken) 
-                        == global::System.Data.ConnectionState.Broken)) {
-                workConnection.Close();
-            }
-            if ((workConnection.State == global::System.Data.ConnectionState.Closed)) {
-                workConnection.Open();
-                workConnOpened = true;
-            }
-            global::System.Data.IDbTransaction workTransaction = workConnection.BeginTransaction();
-            if ((workTransaction == null)) {
-                throw new global::System.ApplicationException("Impossibile avviare la transazione. La connessione dati corrente non supporta le " +
-                        "transazioni oppure lo stato corrente non consente l\'avvio della transazione.");
-            }
-            global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            global::System.Collections.Generic.List<global::System.Data.Common.DataAdapter> adaptersWithAcceptChangesDuringUpdate = new global::System.Collections.Generic.List<global::System.Data.Common.DataAdapter>();
-            global::System.Collections.Generic.Dictionary<object, global::System.Data.IDbConnection> revertConnections = new global::System.Collections.Generic.Dictionary<object, global::System.Data.IDbConnection>();
-            int result = 0;
-            global::System.Data.DataSet backupDataSet = null;
-            if (this.BackupDataSetBeforeUpdate) {
-                backupDataSet = new global::System.Data.DataSet();
-                backupDataSet.Merge(dataSet);
-            }
-            try {
-                // ---- Prepare for update -----------
-                //
-                // 
-                //---- Perform updates -----------
-                //
-                if ((this.UpdateOrder == UpdateOrderOption.UpdateInsertDelete)) {
-                    result = (result + this.UpdateUpdatedRows(dataSet, allChangedRows, allAddedRows));
-                    result = (result + this.UpdateInsertedRows(dataSet, allAddedRows));
-                }
-                else {
-                    result = (result + this.UpdateInsertedRows(dataSet, allAddedRows));
-                    result = (result + this.UpdateUpdatedRows(dataSet, allChangedRows, allAddedRows));
-                }
-                result = (result + this.UpdateDeletedRows(dataSet, allChangedRows));
-                // 
-                //---- Commit updates -----------
-                //
-                workTransaction.Commit();
-                if ((0 < allAddedRows.Count)) {
-                    global::System.Data.DataRow[] rows = new System.Data.DataRow[allAddedRows.Count];
-                    allAddedRows.CopyTo(rows);
-                    for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                        global::System.Data.DataRow row = rows[i];
-                        row.AcceptChanges();
-                    }
-                }
-                if ((0 < allChangedRows.Count)) {
-                    global::System.Data.DataRow[] rows = new System.Data.DataRow[allChangedRows.Count];
-                    allChangedRows.CopyTo(rows);
-                    for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                        global::System.Data.DataRow row = rows[i];
-                        row.AcceptChanges();
-                    }
-                }
-            }
-            catch (global::System.Exception ex) {
-                workTransaction.Rollback();
-                // ---- Restore the dataset -----------
-                if (this.BackupDataSetBeforeUpdate) {
-                    global::System.Diagnostics.Debug.Assert((backupDataSet != null));
-                    dataSet.Clear();
-                    dataSet.Merge(backupDataSet);
-                }
-                else {
-                    if ((0 < allAddedRows.Count)) {
-                        global::System.Data.DataRow[] rows = new System.Data.DataRow[allAddedRows.Count];
-                        allAddedRows.CopyTo(rows);
-                        for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                            global::System.Data.DataRow row = rows[i];
-                            row.AcceptChanges();
-                            row.SetAdded();
-                        }
-                    }
-                }
-                throw ex;
-            }
-            finally {
-                if (workConnOpened) {
-                    workConnection.Close();
-                }
-                if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
-                    global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];
-                    adaptersWithAcceptChangesDuringUpdate.CopyTo(adapters);
-                    for (int i = 0; (i < adapters.Length); i = (i + 1)) {
-                        global::System.Data.Common.DataAdapter adapter = adapters[i];
-                        adapter.AcceptChangesDuringUpdate = true;
-                    }
-                }
-            }
-            return result;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected virtual void SortSelfReferenceRows(global::System.Data.DataRow[] rows, global::System.Data.DataRelation relation, bool childFirst) {
-            global::System.Array.Sort<global::System.Data.DataRow>(rows, new SelfReferenceComparer(relation, childFirst));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected virtual bool MatchTableAdapterConnection(global::System.Data.IDbConnection inputConnection) {
-            if ((this._connection != null)) {
-                return true;
-            }
-            if (((this.Connection == null) 
-                        || (inputConnection == null))) {
-                return true;
-            }
-            if (string.Equals(this.Connection.ConnectionString, inputConnection.ConnectionString, global::System.StringComparison.Ordinal)) {
-                return true;
-            }
-            return false;
-        }
-        
-        /// <summary>
-        ///Update Order Option
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public enum UpdateOrderOption {
-            
-            InsertUpdateDelete = 0,
-            
-            UpdateInsertDelete = 1,
-        }
-        
-        /// <summary>
-        ///Used to sort self-referenced table's rows
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private class SelfReferenceComparer : object, global::System.Collections.Generic.IComparer<global::System.Data.DataRow> {
-            
-            private global::System.Data.DataRelation _relation;
-            
-            private int _childFirst;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal SelfReferenceComparer(global::System.Data.DataRelation relation, bool childFirst) {
-                this._relation = relation;
-                if (childFirst) {
-                    this._childFirst = -1;
-                }
-                else {
-                    this._childFirst = 1;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            private global::System.Data.DataRow GetRoot(global::System.Data.DataRow row, out int distance) {
-                global::System.Diagnostics.Debug.Assert((row != null));
-                global::System.Data.DataRow root = row;
-                distance = 0;
-
-                global::System.Collections.Generic.IDictionary<global::System.Data.DataRow, global::System.Data.DataRow> traversedRows = new global::System.Collections.Generic.Dictionary<global::System.Data.DataRow, global::System.Data.DataRow>();
-                traversedRows[row] = row;
-
-                global::System.Data.DataRow parent = row.GetParentRow(this._relation, global::System.Data.DataRowVersion.Default);
-                for (
-                ; ((parent != null) 
-                            && (traversedRows.ContainsKey(parent) == false)); 
-                ) {
-                    distance = (distance + 1);
-                    root = parent;
-                    traversedRows[parent] = parent;
-                    parent = parent.GetParentRow(this._relation, global::System.Data.DataRowVersion.Default);
-                }
-
-                if ((distance == 0)) {
-                    traversedRows.Clear();
-                    traversedRows[row] = row;
-                    parent = row.GetParentRow(this._relation, global::System.Data.DataRowVersion.Original);
-                    for (
-                    ; ((parent != null) 
-                                && (traversedRows.ContainsKey(parent) == false)); 
-                    ) {
-                        distance = (distance + 1);
-                        root = parent;
-                        traversedRows[parent] = parent;
-                        parent = parent.GetParentRow(this._relation, global::System.Data.DataRowVersion.Original);
-                    }
-                }
-
-                return root;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Compare(global::System.Data.DataRow row1, global::System.Data.DataRow row2) {
-                if (object.ReferenceEquals(row1, row2)) {
-                    return 0;
-                }
-                if ((row1 == null)) {
-                    return -1;
-                }
-                if ((row2 == null)) {
-                    return 1;
-                }
-
-                int distance1 = 0;
-                global::System.Data.DataRow root1 = this.GetRoot(row1, out distance1);
-
-                int distance2 = 0;
-                global::System.Data.DataRow root2 = this.GetRoot(row2, out distance2);
-
-                if (object.ReferenceEquals(root1, root2)) {
-                    return (this._childFirst * distance1.CompareTo(distance2));
-                }
-                else {
-                    global::System.Diagnostics.Debug.Assert(((root1.Table != null) 
-                                    && (root2.Table != null)));
-                    if ((root1.Table.Rows.IndexOf(root1) < root2.Table.Rows.IndexOf(root2))) {
-                        return -1;
-                    }
-                    else {
-                        return 1;
-                    }
                 }
             }
         }

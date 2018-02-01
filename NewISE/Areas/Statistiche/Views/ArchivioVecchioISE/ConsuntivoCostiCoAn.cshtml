@@ -19,7 +19,8 @@
         </div>
 
         <div class="select2-container select2-container--classic">
-            @Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoan(this.value);", @onclick = "PrelevaCoan(this.value);" })
+            @*@Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoan(this.value);", @onclick = "PrelevaCoan(this.value);" })*@
+            @Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select" })
         </div>
 
     </div>

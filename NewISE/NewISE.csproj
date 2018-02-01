@@ -1682,6 +1682,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet18.xss">
       <DependentUpon>DataSet18.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet19.xsc">
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet19.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet19.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet19.xss">
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet2.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1692,6 +1703,28 @@
     </Content>
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet3.xsc">
       <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet20.xsc">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet20.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet20.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet20.xss">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet21.xsc">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet21.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet21.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet21.xss">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
     </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet3.xsd">
       <SubType>Designer</SubType>
@@ -1818,6 +1851,17 @@
     <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita1.cshtml" />
     <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita2.cshtml" />
     <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\PartialViewOpIndennitaEstera.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet99.xsc">
+      <DependentUpon>DataSet99.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet99.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet99.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet99.xss">
+      <DependentUpon>DataSet99.xsd</DependentUpon>
+    </Content>
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -1825,6 +1869,28 @@
     </None>
     <Content Include="DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet20.xsc">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet20.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet20.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSet20.xss">
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet21.xsc">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet21.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet21.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DataSet21.xss">
+      <DependentUpon>DataSet21.xsd</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -2116,6 +2182,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet16.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet17.cs">
+      <DependentUpon>DataSet17.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet17.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2126,6 +2195,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet18.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet19.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet19.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet2.cs">
       <DependentUpon>DataSet2.xsd</DependentUpon>
     </Compile>
@@ -2133,6 +2207,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet20.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet21.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet21.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2169,6 +2253,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet9.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet99.cs">
+      <DependentUpon>DataSet99.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet99.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet99.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\StatisticheAreaRegistration.cs" />
     <Compile Include="Controllers\AltriDatiFamiliariController.cs" />
     <Compile Include="Controllers\CalendariEventiController.cs" />
@@ -2187,6 +2279,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet20.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet20.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet21.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet21.xsd</DependentUpon>
     </Compile>
     <Compile Include="DBComuniItalia\Cm.cs" />
     <Compile Include="DBComuniItalia\Comuni.cs" />
@@ -2787,6 +2889,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report31.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report32.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report33.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report34.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />

@@ -15,39 +15,21 @@
   <xs:element name="DataSet3" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet3" msprop:Generator_UserDSName="DataSet3">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="V_OP_EFFETTUATE_MAGG_ABITAZ" msprop:Generator_TableClassName="V_OP_EFFETTUATE_MAGG_ABITAZDataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_MAGG_ABITAZ" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_MAGG_ABITAZRowChanged" msprop:Generator_TablePropName="V_OP_EFFETTUATE_MAGG_ABITAZ" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_MAGG_ABITAZRowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_MAGG_ABITAZRowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_MAGG_ABITAZRowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_MAGG_ABITAZRowDeleted" msprop:Generator_RowClassName="V_OP_EFFETTUATE_MAGG_ABITAZRow" msprop:Generator_UserTableName="V_OP_EFFETTUATE_MAGG_ABITAZ" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_MAGG_ABITAZRowChangeEvent">
+        <xs:element name="DataTable3" msprop:Generator_TableClassName="DataTable3DataTable" msprop:Generator_TableVarName="tableDataTable3" msprop:Generator_RowChangedName="DataTable3RowChanged" msprop:Generator_TablePropName="DataTable3" msprop:Generator_RowDeletingName="DataTable3RowDeleting" msprop:Generator_RowChangingName="DataTable3RowChanging" msprop:Generator_RowEvHandlerName="DataTable3RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable3RowDeleted" msprop:Generator_RowClassName="DataTable3Row" msprop:Generator_UserTableName="DataTable3" msprop:Generator_RowEvArgName="DataTable3RowChangeEvent">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
-              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="101" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="CODSEDE" msprop:Generator_ColumnVarNameInTable="columnCODSEDE" msprop:Generator_ColumnPropNameInRow="CODSEDE" msprop:Generator_ColumnPropNameInTable="CODSEDEColumn" msprop:Generator_UserColumnName="CODSEDE">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="4" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="35" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" type="xs:decimal" minOccurs="0" />
-              <xs:element name="DATADECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATADECORRENZA" msprop:Generator_ColumnPropNameInRow="DATADECORRENZA" msprop:Generator_ColumnPropNameInTable="DATADECORRENZAColumn" msprop:Generator_UserColumnName="DATADECORRENZA" type="xs:dateTime" />
-              <xs:element name="DATALETTERA" msprop:Generator_ColumnVarNameInTable="columnDATALETTERA" msprop:Generator_ColumnPropNameInRow="DATALETTERA" msprop:Generator_ColumnPropNameInTable="DATALETTERAColumn" msprop:Generator_UserColumnName="DATALETTERA" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="DATAOPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATAOPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATAOPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATAOPERAZIONEColumn" msprop:Generator_UserColumnName="DATAOPERAZIONE" type="xs:dateTime" />
-              <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:decimal" />
-              <xs:element name="RATAINVIATA" msprop:Generator_ColumnVarNameInTable="columnRATAINVIATA" msprop:Generator_ColumnPropNameInRow="RATAINVIATA" msprop:Generator_ColumnPropNameInTable="RATAINVIATAColumn" msprop:Generator_UserColumnName="RATAINVIATA" type="xs:decimal" />
-              <xs:element name="PERCENTUALE" msprop:Generator_ColumnVarNameInTable="columnPERCENTUALE" msprop:Generator_ColumnPropNameInRow="PERCENTUALE" msprop:Generator_ColumnPropNameInTable="PERCENTUALEColumn" msprop:Generator_UserColumnName="PERCENTUALE" type="xs:float" />
-              <xs:element name="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="IES_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="IES_PROG_TRASFERIMENTO" type="xs:short" />
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:string" minOccurs="0" />
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
+              <xs:element name="CODSEDE" msprop:Generator_ColumnVarNameInTable="columnCODSEDE" msprop:Generator_ColumnPropNameInRow="CODSEDE" msprop:Generator_ColumnPropNameInTable="CODSEDEColumn" msprop:Generator_UserColumnName="CODSEDE" type="xs:string" minOccurs="0" />
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE" type="xs:string" minOccurs="0" />
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATADECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATADECORRENZA" msprop:Generator_ColumnPropNameInRow="DATADECORRENZA" msprop:Generator_ColumnPropNameInTable="DATADECORRENZAColumn" msprop:Generator_UserColumnName="DATADECORRENZA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATALETTERA" msprop:Generator_ColumnVarNameInTable="columnDATALETTERA" msprop:Generator_ColumnPropNameInRow="DATALETTERA" msprop:Generator_ColumnPropNameInTable="DATALETTERAColumn" msprop:Generator_UserColumnName="DATALETTERA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATAOPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATAOPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATAOPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATAOPERAZIONEColumn" msprop:Generator_UserColumnName="DATAOPERAZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:string" minOccurs="0" />
+              <xs:element name="RATAINVIATA" msprop:Generator_ColumnVarNameInTable="columnRATAINVIATA" msprop:Generator_ColumnPropNameInRow="RATAINVIATA" msprop:Generator_ColumnPropNameInTable="RATAINVIATAColumn" msprop:Generator_UserColumnName="RATAINVIATA" type="xs:string" minOccurs="0" />
+              <xs:element name="PERCENTUALE" msprop:Generator_ColumnVarNameInTable="columnPERCENTUALE" msprop:Generator_ColumnPropNameInRow="PERCENTUALE" msprop:Generator_ColumnPropNameInTable="PERCENTUALEColumn" msprop:Generator_UserColumnName="PERCENTUALE" type="xs:string" minOccurs="0" />
+              <xs:element name="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="IES_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="IES_PROG_TRASFERIMENTO" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

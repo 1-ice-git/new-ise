@@ -6,33 +6,7 @@
         <Connections>
           <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
         </Connections>
-        <Tables>
-          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="V_OP_EFFETTUATE_SPESE_DIVERSETableAdapter" GeneratorDataComponentClassName="V_OP_EFFETTUATE_SPESE_DIVERSETableAdapter" Name="V_OP_EFFETTUATE_SPESE_DIVERSE" UserDataComponentName="V_OP_EFFETTUATE_SPESE_DIVERSETableAdapter">
-            <MainSource>
-              <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectName="ISESTOR.V_OP_EFFETTUATE_SPESE_DIVERSE" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
-                <SelectCommand>
-                  <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT NOMINATIVO, MATRICOLA, DESCRIZIONE, TSP_DESCRIZIONE, SPD_DT_DECORRENZA, SPD_DT_OPERAZIONE, SPD_IMPORTO_LIRE, SPD_TIPO_MOVIMENTO, SPD_PROG_SPESA, SPD_PROG_TRASFERIMENTO FROM ISESTOR.V_OP_EFFETTUATE_SPESE_DIVERSE</CommandText>
-                    <Parameters />
-                  </DbCommand>
-                </SelectCommand>
-              </DbSource>
-            </MainSource>
-            <Mappings>
-              <Mapping SourceColumn="NOMINATIVO" DataSetColumn="NOMINATIVO" />
-              <Mapping SourceColumn="MATRICOLA" DataSetColumn="MATRICOLA" />
-              <Mapping SourceColumn="DESCRIZIONE" DataSetColumn="DESCRIZIONE" />
-              <Mapping SourceColumn="TSP_DESCRIZIONE" DataSetColumn="TSP_DESCRIZIONE" />
-              <Mapping SourceColumn="SPD_DT_DECORRENZA" DataSetColumn="SPD_DT_DECORRENZA" />
-              <Mapping SourceColumn="SPD_DT_OPERAZIONE" DataSetColumn="SPD_DT_OPERAZIONE" />
-              <Mapping SourceColumn="SPD_IMPORTO_LIRE" DataSetColumn="SPD_IMPORTO_LIRE" />
-              <Mapping SourceColumn="SPD_TIPO_MOVIMENTO" DataSetColumn="SPD_TIPO_MOVIMENTO" />
-              <Mapping SourceColumn="SPD_PROG_SPESA" DataSetColumn="SPD_PROG_SPESA" />
-              <Mapping SourceColumn="SPD_PROG_TRASFERIMENTO" DataSetColumn="SPD_PROG_TRASFERIMENTO" />
-            </Mappings>
-            <Sources />
-          </TableAdapter>
-        </Tables>
+        <Tables />
         <Sources />
       </DataSource>
     </xs:appinfo>
@@ -40,43 +14,19 @@
   <xs:element name="DataSet17" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet17" msprop:Generator_UserDSName="DataSet17">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="V_OP_EFFETTUATE_SPESE_DIVERSE" msprop:Generator_TableClassName="V_OP_EFFETTUATE_SPESE_DIVERSEDataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_SPESE_DIVERSE" msprop:Generator_TablePropName="V_OP_EFFETTUATE_SPESE_DIVERSE" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_SPESE_DIVERSERowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_SPESE_DIVERSERowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_SPESE_DIVERSERowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_SPESE_DIVERSERowDeleted" msprop:Generator_UserTableName="V_OP_EFFETTUATE_SPESE_DIVERSE" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_SPESE_DIVERSERowChanged" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_SPESE_DIVERSERowChangeEvent" msprop:Generator_RowClassName="V_OP_EFFETTUATE_SPESE_DIVERSERow">
+        <xs:element name="DataTable17" msprop:Generator_TableClassName="DataTable17DataTable" msprop:Generator_TableVarName="tableDataTable17" msprop:Generator_TablePropName="DataTable17" msprop:Generator_RowDeletingName="DataTable17RowDeleting" msprop:Generator_RowChangingName="DataTable17RowChanging" msprop:Generator_RowEvHandlerName="DataTable17RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable17RowDeleted" msprop:Generator_UserTableName="DataTable17" msprop:Generator_RowChangedName="DataTable17RowChanged" msprop:Generator_RowEvArgName="DataTable17RowChangeEvent" msprop:Generator_RowClassName="DataTable17Row">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="101" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
-              <xs:element name="DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnDESCRIZIONE" msprop:Generator_ColumnPropNameInRow="DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="DESCRIZIONEColumn" msprop:Generator_UserColumnName="DESCRIZIONE">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="35" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="TSP_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnTSP_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="TSP_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="TSP_DESCRIZIONEColumn" msprop:Generator_UserColumnName="TSP_DESCRIZIONE">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="35" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SPD_DT_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnSPD_DT_DECORRENZA" msprop:Generator_ColumnPropNameInRow="SPD_DT_DECORRENZA" msprop:Generator_ColumnPropNameInTable="SPD_DT_DECORRENZAColumn" msprop:Generator_UserColumnName="SPD_DT_DECORRENZA" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="SPD_DT_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnSPD_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="SPD_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="SPD_DT_OPERAZIONEColumn" msprop:Generator_UserColumnName="SPD_DT_OPERAZIONE" type="xs:dateTime" />
-              <xs:element name="SPD_IMPORTO_LIRE" msprop:Generator_ColumnVarNameInTable="columnSPD_IMPORTO_LIRE" msprop:Generator_ColumnPropNameInRow="SPD_IMPORTO_LIRE" msprop:Generator_ColumnPropNameInTable="SPD_IMPORTO_LIREColumn" msprop:Generator_UserColumnName="SPD_IMPORTO_LIRE" type="xs:double" />
-              <xs:element name="SPD_TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnSPD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="SPD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="SPD_TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="SPD_TIPO_MOVIMENTO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="1" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SPD_PROG_SPESA" msprop:Generator_ColumnVarNameInTable="columnSPD_PROG_SPESA" msprop:Generator_ColumnPropNameInRow="SPD_PROG_SPESA" msprop:Generator_ColumnPropNameInTable="SPD_PROG_SPESAColumn" msprop:Generator_UserColumnName="SPD_PROG_SPESA" type="xs:short" />
-              <xs:element name="SPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnSPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="SPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="SPD_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="SPD_PROG_TRASFERIMENTO" type="xs:short" />
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:string" minOccurs="0" />
+              <xs:element name="DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnDESCRIZIONE" msprop:Generator_ColumnPropNameInRow="DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="DESCRIZIONEColumn" msprop:Generator_UserColumnName="DESCRIZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="TSP_DESCRIZIONE" msprop:Generator_ColumnVarNameInTable="columnTSP_DESCRIZIONE" msprop:Generator_ColumnPropNameInRow="TSP_DESCRIZIONE" msprop:Generator_ColumnPropNameInTable="TSP_DESCRIZIONEColumn" msprop:Generator_UserColumnName="TSP_DESCRIZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_DT_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnSPD_DT_DECORRENZA" msprop:Generator_ColumnPropNameInRow="SPD_DT_DECORRENZA" msprop:Generator_ColumnPropNameInTable="SPD_DT_DECORRENZAColumn" msprop:Generator_UserColumnName="SPD_DT_DECORRENZA" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_DT_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnSPD_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="SPD_DT_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="SPD_DT_OPERAZIONEColumn" msprop:Generator_UserColumnName="SPD_DT_OPERAZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_IMPORTO_LIRE" msprop:Generator_ColumnVarNameInTable="columnSPD_IMPORTO_LIRE" msprop:Generator_ColumnPropNameInRow="SPD_IMPORTO_LIRE" msprop:Generator_ColumnPropNameInTable="SPD_IMPORTO_LIREColumn" msprop:Generator_UserColumnName="SPD_IMPORTO_LIRE" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnSPD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="SPD_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="SPD_TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="SPD_TIPO_MOVIMENTO" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_PROG_SPESA" msprop:Generator_ColumnVarNameInTable="columnSPD_PROG_SPESA" msprop:Generator_ColumnPropNameInRow="SPD_PROG_SPESA" msprop:Generator_ColumnPropNameInTable="SPD_PROG_SPESAColumn" msprop:Generator_UserColumnName="SPD_PROG_SPESA" type="xs:string" minOccurs="0" />
+              <xs:element name="SPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnSPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="SPD_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="SPD_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="SPD_PROG_TRASFERIMENTO" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

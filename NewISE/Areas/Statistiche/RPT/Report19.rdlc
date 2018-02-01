@@ -959,8 +959,8 @@ coniuge</Value>
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox25</rd:DefaultName>
-        <Top>0.03528cm</Top>
-        <Left>0.42016cm</Left>
+        <Top>0.16228cm</Top>
+        <Left>0.42014cm</Left>
         <Height>1.49958cm</Height>
         <Width>24.33854cm</Width>
         <ZIndex>1</ZIndex>
@@ -1059,7 +1059,7 @@ coniuge</Value>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
           </Style>
         </Image>

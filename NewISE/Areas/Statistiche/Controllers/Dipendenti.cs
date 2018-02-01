@@ -201,7 +201,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
                 {
-                    string query = string.Format("SELECT DISTINCT DECODE(T.PRO_COAN, 'S', 'Serv. Ist.', T.PRO_COAN) COAN    FROM SERVIZIPROMOZIONALI T   WHERE T.PRO_COAN <> 'S'   ORDER BY COAN");
+                    //string query = string.Format("SELECT DISTINCT DECODE(T.PRO_COAN, 'S', 'Serv. Ist.', T.PRO_COAN) COAN    FROM SERVIZIPROMOZIONALI T   WHERE T.PRO_COAN <> 'S'   ORDER BY COAN");
+                    string query = string.Format("SELECT DISTINCT DECODE(T.PRO_COAN, 'S', 'Serv. Ist.', T.PRO_COAN) COAN    FROM SERVIZIPROMOZIONALI T ORDER BY COAN");
                     {
                         using (OracleCommand cmd1 = new OracleCommand(query, cn))
                         {

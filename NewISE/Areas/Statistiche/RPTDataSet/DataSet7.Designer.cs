@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet7 : global::System.Data.DataSet {
         
-        private V_OP_EFFETTUATE_IND_ESTERADataTable tableV_OP_EFFETTUATE_IND_ESTERA;
+        private DataTable7DataTable tableDataTable7;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["V_OP_EFFETTUATE_IND_ESTERA"] != null)) {
-                    base.Tables.Add(new V_OP_EFFETTUATE_IND_ESTERADataTable(ds.Tables["V_OP_EFFETTUATE_IND_ESTERA"]));
+                if ((ds.Tables["DataTable7"] != null)) {
+                    base.Tables.Add(new DataTable7DataTable(ds.Tables["DataTable7"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public V_OP_EFFETTUATE_IND_ESTERADataTable V_OP_EFFETTUATE_IND_ESTERA {
+        public DataTable7DataTable DataTable7 {
             get {
-                return this.tableV_OP_EFFETTUATE_IND_ESTERA;
+                return this.tableDataTable7;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["V_OP_EFFETTUATE_IND_ESTERA"] != null)) {
-                    base.Tables.Add(new V_OP_EFFETTUATE_IND_ESTERADataTable(ds.Tables["V_OP_EFFETTUATE_IND_ESTERA"]));
+                if ((ds.Tables["DataTable7"] != null)) {
+                    base.Tables.Add(new DataTable7DataTable(ds.Tables["DataTable7"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableV_OP_EFFETTUATE_IND_ESTERA = ((V_OP_EFFETTUATE_IND_ESTERADataTable)(base.Tables["V_OP_EFFETTUATE_IND_ESTERA"]));
+            this.tableDataTable7 = ((DataTable7DataTable)(base.Tables["DataTable7"]));
             if ((initTable == true)) {
-                if ((this.tableV_OP_EFFETTUATE_IND_ESTERA != null)) {
-                    this.tableV_OP_EFFETTUATE_IND_ESTERA.InitVars();
+                if ((this.tableDataTable7 != null)) {
+                    this.tableDataTable7.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet7.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableV_OP_EFFETTUATE_IND_ESTERA = new V_OP_EFFETTUATE_IND_ESTERADataTable();
-            base.Tables.Add(this.tableV_OP_EFFETTUATE_IND_ESTERA);
+            this.tableDataTable7 = new DataTable7DataTable();
+            base.Tables.Add(this.tableDataTable7);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeV_OP_EFFETTUATE_IND_ESTERA() {
+        private bool ShouldSerializeDataTable7() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler(object sender, V_OP_EFFETTUATE_IND_ESTERARowChangeEvent e);
+        public delegate void DataTable7RowChangeEventHandler(object sender, DataTable7RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class V_OP_EFFETTUATE_IND_ESTERADataTable : global::System.Data.TypedTableBase<V_OP_EFFETTUATE_IND_ESTERARow> {
+        public partial class DataTable7DataTable : global::System.Data.TypedTableBase<DataTable7Row> {
             
             private global::System.Data.DataColumn columnNOMINATIVO;
             
@@ -303,18 +303,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             private global::System.Data.DataColumn columnSISTEMAZIONE_RIENTRO;
             
-            private global::System.Data.DataColumn columnANTICIPO;
-            
-            private global::System.Data.DataColumn columnSISRIENETTA;
-            
-            private global::System.Data.DataColumn columnIES_PROG_TRASFERIMENTO;
-            
-            private global::System.Data.DataColumn columnIES_PROG_MOVIMENTO;
-            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERADataTable() {
-                this.TableName = "V_OP_EFFETTUATE_IND_ESTERA";
+            public DataTable7DataTable() {
+                this.TableName = "DataTable7";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -322,7 +314,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_OP_EFFETTUATE_IND_ESTERADataTable(global::System.Data.DataTable table) {
+            internal DataTable7DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -339,7 +331,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected V_OP_EFFETTUATE_IND_ESTERADataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable7DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -442,38 +434,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ANTICIPOColumn {
-                get {
-                    return this.columnANTICIPO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn SISRIENETTAColumn {
-                get {
-                    return this.columnSISRIENETTA;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IES_PROG_TRASFERIMENTOColumn {
-                get {
-                    return this.columnIES_PROG_TRASFERIMENTO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IES_PROG_MOVIMENTOColumn {
-                get {
-                    return this.columnIES_PROG_MOVIMENTO;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -483,50 +443,34 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERARow this[int index] {
+            public DataTable7Row this[int index] {
                 get {
-                    return ((V_OP_EFFETTUATE_IND_ESTERARow)(this.Rows[index]));
+                    return ((DataTable7Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler V_OP_EFFETTUATE_IND_ESTERARowChanging;
+            public event DataTable7RowChangeEventHandler DataTable7RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler V_OP_EFFETTUATE_IND_ESTERARowChanged;
+            public event DataTable7RowChangeEventHandler DataTable7RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler V_OP_EFFETTUATE_IND_ESTERARowDeleting;
+            public event DataTable7RowChangeEventHandler DataTable7RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler V_OP_EFFETTUATE_IND_ESTERARowDeleted;
+            public event DataTable7RowChangeEventHandler DataTable7RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddV_OP_EFFETTUATE_IND_ESTERARow(V_OP_EFFETTUATE_IND_ESTERARow row) {
+            public void AddDataTable7Row(DataTable7Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERARow AddV_OP_EFFETTUATE_IND_ESTERARow(
-                        string NOMINATIVO, 
-                        short MATRICOLA, 
-                        string QUALIFICA, 
-                        string SEDE, 
-                        string VALUTA, 
-                        string TIPO_MOVIMENTO, 
-                        string CODICE_TIPO_MOVIMENTO, 
-                        System.DateTime DATA_DECORRENZA, 
-                        System.DateTime DATA_LETTERA, 
-                        System.DateTime DATA_OPERAZIONE, 
-                        decimal ISEP, 
-                        double SISTEMAZIONE_RIENTRO, 
-                        double ANTICIPO, 
-                        decimal SISRIENETTA, 
-                        short IES_PROG_TRASFERIMENTO, 
-                        short IES_PROG_MOVIMENTO) {
-                V_OP_EFFETTUATE_IND_ESTERARow rowV_OP_EFFETTUATE_IND_ESTERARow = ((V_OP_EFFETTUATE_IND_ESTERARow)(this.NewRow()));
+            public DataTable7Row AddDataTable7Row(string NOMINATIVO, string MATRICOLA, string QUALIFICA, string SEDE, string VALUTA, string TIPO_MOVIMENTO, string CODICE_TIPO_MOVIMENTO, string DATA_DECORRENZA, string DATA_LETTERA, string DATA_OPERAZIONE, string ISEP, string SISTEMAZIONE_RIENTRO) {
+                DataTable7Row rowDataTable7Row = ((DataTable7Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NOMINATIVO,
                         MATRICOLA,
@@ -539,20 +483,16 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         DATA_LETTERA,
                         DATA_OPERAZIONE,
                         ISEP,
-                        SISTEMAZIONE_RIENTRO,
-                        ANTICIPO,
-                        SISRIENETTA,
-                        IES_PROG_TRASFERIMENTO,
-                        IES_PROG_MOVIMENTO};
-                rowV_OP_EFFETTUATE_IND_ESTERARow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowV_OP_EFFETTUATE_IND_ESTERARow);
-                return rowV_OP_EFFETTUATE_IND_ESTERARow;
+                        SISTEMAZIONE_RIENTRO};
+                rowDataTable7Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable7Row);
+                return rowDataTable7Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                V_OP_EFFETTUATE_IND_ESTERADataTable cln = ((V_OP_EFFETTUATE_IND_ESTERADataTable)(base.Clone()));
+                DataTable7DataTable cln = ((DataTable7DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -560,7 +500,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new V_OP_EFFETTUATE_IND_ESTERADataTable();
+                return new DataTable7DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -578,10 +518,6 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnDATA_OPERAZIONE = base.Columns["DATA_OPERAZIONE"];
                 this.columnISEP = base.Columns["ISEP"];
                 this.columnSISTEMAZIONE_RIENTRO = base.Columns["SISTEMAZIONE_RIENTRO"];
-                this.columnANTICIPO = base.Columns["ANTICIPO"];
-                this.columnSISRIENETTA = base.Columns["SISRIENETTA"];
-                this.columnIES_PROG_TRASFERIMENTO = base.Columns["IES_PROG_TRASFERIMENTO"];
-                this.columnIES_PROG_MOVIMENTO = base.Columns["IES_PROG_MOVIMENTO"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -589,7 +525,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             private void InitClass() {
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMATRICOLA);
                 this.columnQUALIFICA = new global::System.Data.DataColumn("QUALIFICA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQUALIFICA);
@@ -601,63 +537,42 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnTIPO_MOVIMENTO);
                 this.columnCODICE_TIPO_MOVIMENTO = new global::System.Data.DataColumn("CODICE_TIPO_MOVIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCODICE_TIPO_MOVIMENTO);
-                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_DECORRENZA);
-                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_LETTERA);
-                this.columnDATA_OPERAZIONE = new global::System.Data.DataColumn("DATA_OPERAZIONE", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_OPERAZIONE = new global::System.Data.DataColumn("DATA_OPERAZIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_OPERAZIONE);
-                this.columnISEP = new global::System.Data.DataColumn("ISEP", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnISEP = new global::System.Data.DataColumn("ISEP", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnISEP);
-                this.columnSISTEMAZIONE_RIENTRO = new global::System.Data.DataColumn("SISTEMAZIONE_RIENTRO", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnSISTEMAZIONE_RIENTRO = new global::System.Data.DataColumn("SISTEMAZIONE_RIENTRO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSISTEMAZIONE_RIENTRO);
-                this.columnANTICIPO = new global::System.Data.DataColumn("ANTICIPO", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnANTICIPO);
-                this.columnSISRIENETTA = new global::System.Data.DataColumn("SISRIENETTA", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnSISRIENETTA);
-                this.columnIES_PROG_TRASFERIMENTO = new global::System.Data.DataColumn("IES_PROG_TRASFERIMENTO", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIES_PROG_TRASFERIMENTO);
-                this.columnIES_PROG_MOVIMENTO = new global::System.Data.DataColumn("IES_PROG_MOVIMENTO", typeof(short), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIES_PROG_MOVIMENTO);
-                this.columnNOMINATIVO.MaxLength = 101;
-                this.columnMATRICOLA.AllowDBNull = false;
-                this.columnQUALIFICA.MaxLength = 6;
-                this.columnSEDE.AllowDBNull = false;
-                this.columnSEDE.MaxLength = 35;
-                this.columnVALUTA.AllowDBNull = false;
-                this.columnVALUTA.MaxLength = 20;
-                this.columnTIPO_MOVIMENTO.MaxLength = 20;
-                this.columnCODICE_TIPO_MOVIMENTO.MaxLength = 1;
-                this.columnDATA_DECORRENZA.AllowDBNull = false;
-                this.columnDATA_OPERAZIONE.AllowDBNull = false;
-                this.columnIES_PROG_TRASFERIMENTO.AllowDBNull = false;
-                this.columnIES_PROG_MOVIMENTO.AllowDBNull = false;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERARow NewV_OP_EFFETTUATE_IND_ESTERARow() {
-                return ((V_OP_EFFETTUATE_IND_ESTERARow)(this.NewRow()));
+            public DataTable7Row NewDataTable7Row() {
+                return ((DataTable7Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new V_OP_EFFETTUATE_IND_ESTERARow(builder);
+                return new DataTable7Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(V_OP_EFFETTUATE_IND_ESTERARow);
+                return typeof(DataTable7Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.V_OP_EFFETTUATE_IND_ESTERARowChanged != null)) {
-                    this.V_OP_EFFETTUATE_IND_ESTERARowChanged(this, new V_OP_EFFETTUATE_IND_ESTERARowChangeEvent(((V_OP_EFFETTUATE_IND_ESTERARow)(e.Row)), e.Action));
+                if ((this.DataTable7RowChanged != null)) {
+                    this.DataTable7RowChanged(this, new DataTable7RowChangeEvent(((DataTable7Row)(e.Row)), e.Action));
                 }
             }
             
@@ -665,8 +580,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.V_OP_EFFETTUATE_IND_ESTERARowChanging != null)) {
-                    this.V_OP_EFFETTUATE_IND_ESTERARowChanging(this, new V_OP_EFFETTUATE_IND_ESTERARowChangeEvent(((V_OP_EFFETTUATE_IND_ESTERARow)(e.Row)), e.Action));
+                if ((this.DataTable7RowChanging != null)) {
+                    this.DataTable7RowChanging(this, new DataTable7RowChangeEvent(((DataTable7Row)(e.Row)), e.Action));
                 }
             }
             
@@ -674,8 +589,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.V_OP_EFFETTUATE_IND_ESTERARowDeleted != null)) {
-                    this.V_OP_EFFETTUATE_IND_ESTERARowDeleted(this, new V_OP_EFFETTUATE_IND_ESTERARowChangeEvent(((V_OP_EFFETTUATE_IND_ESTERARow)(e.Row)), e.Action));
+                if ((this.DataTable7RowDeleted != null)) {
+                    this.DataTable7RowDeleted(this, new DataTable7RowChangeEvent(((DataTable7Row)(e.Row)), e.Action));
                 }
             }
             
@@ -683,14 +598,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.V_OP_EFFETTUATE_IND_ESTERARowDeleting != null)) {
-                    this.V_OP_EFFETTUATE_IND_ESTERARowDeleting(this, new V_OP_EFFETTUATE_IND_ESTERARowChangeEvent(((V_OP_EFFETTUATE_IND_ESTERARow)(e.Row)), e.Action));
+                if ((this.DataTable7RowDeleting != null)) {
+                    this.DataTable7RowDeleting(this, new DataTable7RowChangeEvent(((DataTable7Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveV_OP_EFFETTUATE_IND_ESTERARow(V_OP_EFFETTUATE_IND_ESTERARow row) {
+            public void RemoveDataTable7Row(DataTable7Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -717,7 +632,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "V_OP_EFFETTUATE_IND_ESTERADataTable";
+                attribute2.FixedValue = "DataTable7DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -761,15 +676,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class V_OP_EFFETTUATE_IND_ESTERARow : global::System.Data.DataRow {
+        public partial class DataTable7Row : global::System.Data.DataRow {
             
-            private V_OP_EFFETTUATE_IND_ESTERADataTable tableV_OP_EFFETTUATE_IND_ESTERA;
+            private DataTable7DataTable tableDataTable7;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_OP_EFFETTUATE_IND_ESTERARow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable7Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableV_OP_EFFETTUATE_IND_ESTERA = ((V_OP_EFFETTUATE_IND_ESTERADataTable)(this.Table));
+                this.tableDataTable7 = ((DataTable7DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -777,26 +692,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableDataTable7.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\' è" +
-                                " DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'DataTable7\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.NOMINATIVOColumn] = value;
+                    this[this.tableDataTable7.NOMINATIVOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short MATRICOLA {
+            public string MATRICOLA {
                 get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.MATRICOLAColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable7.MATRICOLAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.MATRICOLAColumn] = value;
+                    this[this.tableDataTable7.MATRICOLAColumn] = value;
                 }
             }
             
@@ -805,15 +724,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string QUALIFICA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.QUALIFICAColumn]));
+                        return ((string)(this[this.tableDataTable7.QUALIFICAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\' è " +
-                                "DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'DataTable7\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.QUALIFICAColumn] = value;
+                    this[this.tableDataTable7.QUALIFICAColumn] = value;
                 }
             }
             
@@ -821,10 +739,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string SEDE {
                 get {
-                    return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SEDEColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable7.SEDEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SEDEColumn] = value;
+                    this[this.tableDataTable7.SEDEColumn] = value;
                 }
             }
             
@@ -832,10 +755,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string VALUTA {
                 get {
-                    return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.VALUTAColumn]));
+                    try {
+                        return ((string)(this[this.tableDataTable7.VALUTAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.VALUTAColumn] = value;
+                    this[this.tableDataTable7.VALUTAColumn] = value;
                 }
             }
             
@@ -844,15 +772,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string TIPO_MOVIMENTO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.TIPO_MOVIMENTOColumn]));
+                        return ((string)(this[this.tableDataTable7.TIPO_MOVIMENTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPO_MOVIMENTO\' nella tabella \'V_OP_EFFETTUATE_IND_ESTER" +
-                                "A\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPO_MOVIMENTO\' nella tabella \'DataTable7\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.TIPO_MOVIMENTOColumn] = value;
+                    this[this.tableDataTable7.TIPO_MOVIMENTOColumn] = value;
                 }
             }
             
@@ -861,253 +788,241 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string CODICE_TIPO_MOVIMENTO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.CODICE_TIPO_MOVIMENTOColumn]));
+                        return ((string)(this[this.tableDataTable7.CODICE_TIPO_MOVIMENTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CODICE_TIPO_MOVIMENTO\' nella tabella \'V_OP_EFFETTUATE_IN" +
-                                "D_ESTERA\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CODICE_TIPO_MOVIMENTO\' nella tabella \'DataTable7\' è DBNu" +
+                                "ll.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.CODICE_TIPO_MOVIMENTOColumn] = value;
+                    this[this.tableDataTable7.CODICE_TIPO_MOVIMENTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_DECORRENZA {
-                get {
-                    return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_DECORRENZAColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_DECORRENZAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_LETTERA {
+            public string DATA_DECORRENZA {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_LETTERAColumn]));
+                        return ((string)(this[this.tableDataTable7.DATA_DECORRENZAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\'" +
-                                " è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_DECORRENZA\' nella tabella \'DataTable7\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_LETTERAColumn] = value;
+                    this[this.tableDataTable7.DATA_DECORRENZAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_OPERAZIONE {
-                get {
-                    return ((global::System.DateTime)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_OPERAZIONEColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_OPERAZIONEColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal ISEP {
+            public string DATA_LETTERA {
                 get {
                     try {
-                        return ((decimal)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ISEPColumn]));
+                        return ((string)(this[this.tableDataTable7.DATA_LETTERAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ISEP\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\' è DBNul" +
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable7.DATA_LETTERAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DATA_OPERAZIONE {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable7.DATA_OPERAZIONEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_OPERAZIONE\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable7.DATA_OPERAZIONEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ISEP {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable7.ISEPColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ISEP\' nella tabella \'DataTable7\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable7.ISEPColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string SISTEMAZIONE_RIENTRO {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable7.SISTEMAZIONE_RIENTROColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SISTEMAZIONE_RIENTRO\' nella tabella \'DataTable7\' è DBNul" +
                                 "l.", e);
                     }
                 }
                 set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ISEPColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double SISTEMAZIONE_RIENTRO {
-                get {
-                    try {
-                        return ((double)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISTEMAZIONE_RIENTROColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SISTEMAZIONE_RIENTRO\' nella tabella \'V_OP_EFFETTUATE_IND" +
-                                "_ESTERA\' è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISTEMAZIONE_RIENTROColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double ANTICIPO {
-                get {
-                    try {
-                        return ((double)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ANTICIPOColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ANTICIPO\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\' è D" +
-                                "BNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ANTICIPOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal SISRIENETTA {
-                get {
-                    try {
-                        return ((decimal)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISRIENETTAColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SISRIENETTA\' nella tabella \'V_OP_EFFETTUATE_IND_ESTERA\' " +
-                                "è DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISRIENETTAColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short IES_PROG_TRASFERIMENTO {
-                get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.IES_PROG_TRASFERIMENTOColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.IES_PROG_TRASFERIMENTOColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short IES_PROG_MOVIMENTO {
-                get {
-                    return ((short)(this[this.tableV_OP_EFFETTUATE_IND_ESTERA.IES_PROG_MOVIMENTOColumn]));
-                }
-                set {
-                    this[this.tableV_OP_EFFETTUATE_IND_ESTERA.IES_PROG_MOVIMENTOColumn] = value;
+                    this[this.tableDataTable7.SISTEMAZIONE_RIENTROColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.NOMINATIVOColumn);
+                return this.IsNull(this.tableDataTable7.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.NOMINATIVOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMATRICOLANull() {
+                return this.IsNull(this.tableDataTable7.MATRICOLAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMATRICOLANull() {
+                this[this.tableDataTable7.MATRICOLAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsQUALIFICANull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.QUALIFICAColumn);
+                return this.IsNull(this.tableDataTable7.QUALIFICAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQUALIFICANull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.QUALIFICAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.QUALIFICAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSEDENull() {
+                return this.IsNull(this.tableDataTable7.SEDEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSEDENull() {
+                this[this.tableDataTable7.SEDEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsVALUTANull() {
+                return this.IsNull(this.tableDataTable7.VALUTAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetVALUTANull() {
+                this[this.tableDataTable7.VALUTAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTIPO_MOVIMENTONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.TIPO_MOVIMENTOColumn);
+                return this.IsNull(this.tableDataTable7.TIPO_MOVIMENTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTIPO_MOVIMENTONull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCODICE_TIPO_MOVIMENTONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.CODICE_TIPO_MOVIMENTOColumn);
+                return this.IsNull(this.tableDataTable7.CODICE_TIPO_MOVIMENTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCODICE_TIPO_MOVIMENTONull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.CODICE_TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.CODICE_TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDATA_DECORRENZANull() {
+                return this.IsNull(this.tableDataTable7.DATA_DECORRENZAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDATA_DECORRENZANull() {
+                this[this.tableDataTable7.DATA_DECORRENZAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDATA_LETTERANull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_LETTERAColumn);
+                return this.IsNull(this.tableDataTable7.DATA_LETTERAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDATA_LETTERANull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.DATA_LETTERAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.DATA_LETTERAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDATA_OPERAZIONENull() {
+                return this.IsNull(this.tableDataTable7.DATA_OPERAZIONEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDATA_OPERAZIONENull() {
+                this[this.tableDataTable7.DATA_OPERAZIONEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsISEPNull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.ISEPColumn);
+                return this.IsNull(this.tableDataTable7.ISEPColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetISEPNull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ISEPColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.ISEPColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsSISTEMAZIONE_RIENTRONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.SISTEMAZIONE_RIENTROColumn);
+                return this.IsNull(this.tableDataTable7.SISTEMAZIONE_RIENTROColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetSISTEMAZIONE_RIENTRONull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISTEMAZIONE_RIENTROColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsANTICIPONull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.ANTICIPOColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetANTICIPONull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.ANTICIPOColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsSISRIENETTANull() {
-                return this.IsNull(this.tableV_OP_EFFETTUATE_IND_ESTERA.SISRIENETTAColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetSISRIENETTANull() {
-                this[this.tableV_OP_EFFETTUATE_IND_ESTERA.SISRIENETTAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable7.SISTEMAZIONE_RIENTROColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1115,22 +1030,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class V_OP_EFFETTUATE_IND_ESTERARowChangeEvent : global::System.EventArgs {
+        public class DataTable7RowChangeEvent : global::System.EventArgs {
             
-            private V_OP_EFFETTUATE_IND_ESTERARow eventRow;
+            private DataTable7Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERARowChangeEvent(V_OP_EFFETTUATE_IND_ESTERARow row, global::System.Data.DataRowAction action) {
+            public DataTable7RowChangeEvent(DataTable7Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_OP_EFFETTUATE_IND_ESTERARow Row {
+            public DataTable7Row Row {
                 get {
                     return this.eventRow;
                 }

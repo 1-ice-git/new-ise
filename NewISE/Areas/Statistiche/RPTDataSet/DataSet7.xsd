@@ -14,61 +14,21 @@
   <xs:element name="DataSet7" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet7" msprop:Generator_UserDSName="DataSet7">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="V_OP_EFFETTUATE_IND_ESTERA" msprop:Generator_TableClassName="V_OP_EFFETTUATE_IND_ESTERADataTable" msprop:Generator_TableVarName="tableV_OP_EFFETTUATE_IND_ESTERA" msprop:Generator_TablePropName="V_OP_EFFETTUATE_IND_ESTERA" msprop:Generator_RowDeletingName="V_OP_EFFETTUATE_IND_ESTERARowDeleting" msprop:Generator_RowChangingName="V_OP_EFFETTUATE_IND_ESTERARowChanging" msprop:Generator_RowEvHandlerName="V_OP_EFFETTUATE_IND_ESTERARowChangeEventHandler" msprop:Generator_RowDeletedName="V_OP_EFFETTUATE_IND_ESTERARowDeleted" msprop:Generator_UserTableName="V_OP_EFFETTUATE_IND_ESTERA" msprop:Generator_RowChangedName="V_OP_EFFETTUATE_IND_ESTERARowChanged" msprop:Generator_RowEvArgName="V_OP_EFFETTUATE_IND_ESTERARowChangeEvent" msprop:Generator_RowClassName="V_OP_EFFETTUATE_IND_ESTERARow">
+        <xs:element name="DataTable7" msprop:Generator_TableClassName="DataTable7DataTable" msprop:Generator_TableVarName="tableDataTable7" msprop:Generator_TablePropName="DataTable7" msprop:Generator_RowDeletingName="DataTable7RowDeleting" msprop:Generator_RowChangingName="DataTable7RowChanging" msprop:Generator_RowEvHandlerName="DataTable7RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable7RowDeleted" msprop:Generator_UserTableName="DataTable7" msprop:Generator_RowChangedName="DataTable7RowChanged" msprop:Generator_RowEvArgName="DataTable7RowChangeEvent" msprop:Generator_RowClassName="DataTable7Row">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="101" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:short" />
-              <xs:element name="QUALIFICA" msprop:Generator_ColumnVarNameInTable="columnQUALIFICA" msprop:Generator_ColumnPropNameInRow="QUALIFICA" msprop:Generator_ColumnPropNameInTable="QUALIFICAColumn" msprop:Generator_UserColumnName="QUALIFICA" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="6" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="35" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnTIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="TIPO_MOVIMENTO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="CODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnCODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="CODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="CODICE_TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="CODICE_TIPO_MOVIMENTO" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="1" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="DATA_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATA_DECORRENZA" msprop:Generator_ColumnPropNameInRow="DATA_DECORRENZA" msprop:Generator_ColumnPropNameInTable="DATA_DECORRENZAColumn" msprop:Generator_UserColumnName="DATA_DECORRENZA" type="xs:dateTime" />
-              <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:dateTime" />
-              <xs:element name="ISEP" msprop:Generator_ColumnVarNameInTable="columnISEP" msprop:Generator_ColumnPropNameInRow="ISEP" msprop:Generator_ColumnPropNameInTable="ISEPColumn" msprop:Generator_UserColumnName="ISEP" type="xs:decimal" minOccurs="0" />
-              <xs:element name="SISTEMAZIONE_RIENTRO" msprop:Generator_ColumnVarNameInTable="columnSISTEMAZIONE_RIENTRO" msprop:Generator_ColumnPropNameInRow="SISTEMAZIONE_RIENTRO" msprop:Generator_ColumnPropNameInTable="SISTEMAZIONE_RIENTROColumn" msprop:Generator_UserColumnName="SISTEMAZIONE_RIENTRO" type="xs:double" minOccurs="0" />
-              <xs:element name="ANTICIPO" msprop:Generator_ColumnVarNameInTable="columnANTICIPO" msprop:Generator_ColumnPropNameInRow="ANTICIPO" msprop:Generator_ColumnPropNameInTable="ANTICIPOColumn" msprop:Generator_UserColumnName="ANTICIPO" type="xs:double" minOccurs="0" />
-              <xs:element name="SISRIENETTA" msprop:Generator_ColumnVarNameInTable="columnSISRIENETTA" msprop:Generator_ColumnPropNameInRow="SISRIENETTA" msprop:Generator_ColumnPropNameInTable="SISRIENETTAColumn" msprop:Generator_UserColumnName="SISRIENETTA" type="xs:decimal" minOccurs="0" />
-              <xs:element name="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="IES_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="IES_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="IES_PROG_TRASFERIMENTO" type="xs:short" />
-              <xs:element name="IES_PROG_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnIES_PROG_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="IES_PROG_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="IES_PROG_MOVIMENTOColumn" msprop:Generator_UserColumnName="IES_PROG_MOVIMENTO" type="xs:short" />
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:string" minOccurs="0" />
+              <xs:element name="QUALIFICA" msprop:Generator_ColumnVarNameInTable="columnQUALIFICA" msprop:Generator_ColumnPropNameInRow="QUALIFICA" msprop:Generator_ColumnPropNameInTable="QUALIFICAColumn" msprop:Generator_UserColumnName="QUALIFICA" type="xs:string" minOccurs="0" />
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE" type="xs:string" minOccurs="0" />
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" type="xs:string" minOccurs="0" />
+              <xs:element name="TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnTIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="TIPO_MOVIMENTO" type="xs:string" minOccurs="0" />
+              <xs:element name="CODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnVarNameInTable="columnCODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInRow="CODICE_TIPO_MOVIMENTO" msprop:Generator_ColumnPropNameInTable="CODICE_TIPO_MOVIMENTOColumn" msprop:Generator_UserColumnName="CODICE_TIPO_MOVIMENTO" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATA_DECORRENZA" msprop:Generator_ColumnPropNameInRow="DATA_DECORRENZA" msprop:Generator_ColumnPropNameInTable="DATA_DECORRENZAColumn" msprop:Generator_UserColumnName="DATA_DECORRENZA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="ISEP" msprop:Generator_ColumnVarNameInTable="columnISEP" msprop:Generator_ColumnPropNameInRow="ISEP" msprop:Generator_ColumnPropNameInTable="ISEPColumn" msprop:Generator_UserColumnName="ISEP" type="xs:string" minOccurs="0" />
+              <xs:element name="SISTEMAZIONE_RIENTRO" msprop:Generator_ColumnVarNameInTable="columnSISTEMAZIONE_RIENTRO" msprop:Generator_ColumnPropNameInRow="SISTEMAZIONE_RIENTRO" msprop:Generator_ColumnPropNameInTable="SISTEMAZIONE_RIENTROColumn" msprop:Generator_UserColumnName="SISTEMAZIONE_RIENTRO" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

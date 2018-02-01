@@ -837,7 +837,7 @@
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
           </Style>
         </Image>

@@ -188,8 +188,9 @@
             rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
 
             var codicesede = $("#codicesede").select2('val');
-            var data = $("#datepicker").datepicker().val()
-
+            var data = $("#datepicker").datepicker().val();
+            var V_UTENTE = "fantomas";
+            //var V_UTENTE = V_UTENTE;
 
             $.ajax({
                 type: "POST",
@@ -197,6 +198,7 @@
                 data: {
                     codicesede: codicesede,
                     V_DATA: data,
+                    V_UTENTE: 'fantomas'
                 },
                 dataType: 'html',
                 beforeSend: function () {

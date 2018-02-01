@@ -473,7 +473,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatDateTime(Fields!TRA_DT_FIN_TRASFERIMENTO.Value, DateFormat.ShortDate)</Value>
+                              <Value>=IIf(IsNothing(Fields!TRA_DT_FIN_TRASFERIMENTO.Value), "", "Fields!TRA_DT_FIN_TRASFERIMENTO.Value")</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
