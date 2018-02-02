@@ -564,7 +564,7 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatDateTime(Fields!DATA_DECORRENZA.Value,dateformat.ShortDate)</Value>
+                              <Value>=IIF(IsNothing(Fields!DATA_DECORRENZA.Value),"", FormatDateTime(Fields!DATA_DECORRENZA.Value, DateFormat.ShortDate))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -596,7 +596,7 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatDateTime(Fields!DATA_LETTERA.Value,dateformat.ShortDate)</Value>
+                              <Value>=IIF(IsNothing(Fields!DATA_LETTERA.Value),"", FormatDateTime(Fields!DATA_LETTERA.Value, DateFormat.ShortDate))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>

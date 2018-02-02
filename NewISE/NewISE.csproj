@@ -1726,6 +1726,17 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet21.xss">
       <DependentUpon>DataSet21.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet22.xsc">
+      <DependentUpon>DataSet22.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DataSet22.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet22.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DataSet22.xss">
+      <DependentUpon>DataSet22.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\DataSet3.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -2217,6 +2228,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet21.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DataSet22.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet22.xsd</DependentUpon>
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\DataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -2890,6 +2906,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report32.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report33.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report34.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report35.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report8.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />

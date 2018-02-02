@@ -1135,9 +1135,10 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
-                //adp.Fill(ds15, "ds15");
-               
+                //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
+                adp.Fill(ds15, ds15.DataTable15.TableName);
+                
+
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report19.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
 
@@ -1861,9 +1862,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds1, ds1.V_OP_EFFETTUATE_USO_ABITAZ.TableName);
+                //adp.Fill(ds1, ds1.V_OP_EFFETTUATE_USO_ABITAZ.TableName);
+                adp.Fill(ds1, ds1.DataTable1.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report24.rdlc";
+
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", ds1.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1949,7 +1952,8 @@ namespace NewISE.Areas.Statistiche.Controllers
         // Report Operazioni Effettuate - Canone Anticipato
         public ActionResult RptOpCanoneAnticipato(string V_DATA = "", string V_DATA1 = "")
         {
-            DataSet14 ds14 = new DataSet14();
+            //DataSet14 ds14 = new DataSet14();
+            DataSet22 ds22 = new DataSet22();
             try
             {
 
@@ -1991,13 +1995,46 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "CAN_PROG_CAN_ABITAZIONE ";
                 #endregion
 
+
+                //String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
+                //Sql += "CAN_MATRICOLA AS MATRICOLA, ";
+                //Sql += "SED_DESCRIZIONE AS SEDE, ";
+                //Sql += "VAL_DESCRIZIONE AS VALUTA, ";
+                //Sql += "CAN_DT_DECORRENZA AS DATA_DECORRENZA, "; 
+                //Sql += "CAN_DT_LETTERA AS DATA_DECORRENZA, ";
+                //Sql += "CAN_DT_OPERAZIONE AS DATA_OPERAZIONE, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA, ";
+                //Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE, ";
+                //Sql += "0, ";
+                //Sql += "0, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
+                //Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE, ";
+                //Sql += "0, ";
+                //Sql += "0, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / ";
+                //Sql += "CAN_N_MESI) QUOTA_MENS, ";
+                //Sql += "CAN_PROG_TRASFERIMENTO, ";
+                //Sql += "CAN_PROG_CAN_ABITAZIONE ";
+                //Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
+                //Sql += "Where CAN_COD_SEDE = SED_COD_SEDE ";
+                //Sql += "And CAN_VALUTA_CANONE = VAL_COD_VALUTA ";
+                //Sql += "And CAN_MATRICOLA = AND_MATRICOLA ";
+                //Sql += "And(CAN_DT_OPERAZIONE >= To_Date ('" + V_DATA + "','DD-MM-YYYY') And ";
+                //Sql += "CAN_DT_OPERAZIONE <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
+                //Sql += "Order By NOMINATIVO, ";
+                //Sql += "CAN_PROG_TRASFERIMENTO, ";
+                //Sql += "CAN_DT_DECORRENZA, ";
+                //Sql += "CAN_PROG_CAN_ABITAZIONE ";
+
+
+
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 //adp.Fill(ds14, ds14.V_OP_EFFETTUATE_CANONE_ANTI.TableName);
-                adp.Fill(ds14, ds14.DataTable14.TableName);
+                adp.Fill(ds22, ds22.DataTable22.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report30.rdlc";
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet14", ds14.Tables[0]));
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet22", ds22.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
                 {

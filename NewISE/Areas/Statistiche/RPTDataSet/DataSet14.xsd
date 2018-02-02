@@ -14,7 +14,7 @@
   <xs:element name="DataSet14" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet14" msprop:Generator_UserDSName="DataSet14">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable14" msprop:Generator_TableClassName="DataTable14DataTable" msprop:Generator_TableVarName="tableDataTable14" msprop:Generator_TablePropName="DataTable14" msprop:Generator_RowDeletingName="DataTable14RowDeleting" msprop:Generator_RowChangingName="DataTable14RowChanging" msprop:Generator_RowEvHandlerName="DataTable14RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable14RowDeleted" msprop:Generator_UserTableName="DataTable14" msprop:Generator_RowChangedName="DataTable14RowChanged" msprop:Generator_RowEvArgName="DataTable14RowChangeEvent" msprop:Generator_RowClassName="DataTable14Row">
+        <xs:element name="DataTable14" msprop:Generator_TableClassName="DataTable14DataTable" msprop:Generator_TableVarName="tableDataTable14" msprop:Generator_RowChangedName="DataTable14RowChanged" msprop:Generator_TablePropName="DataTable14" msprop:Generator_RowDeletingName="DataTable14RowDeleting" msprop:Generator_RowChangingName="DataTable14RowChanging" msprop:Generator_RowEvHandlerName="DataTable14RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable14RowDeleted" msprop:Generator_RowClassName="DataTable14Row" msprop:Generator_UserTableName="DataTable14" msprop:Generator_RowEvArgName="DataTable14RowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
@@ -27,6 +27,7 @@
               <xs:element name="CAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnVarNameInTable="columnCAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnPropNameInRow="CAN_CANONE_ANNUO_VALUTA" msprop:Generator_ColumnPropNameInTable="CAN_CANONE_ANNUO_VALUTAColumn" msprop:Generator_UserColumnName="CAN_CANONE_ANNUO_VALUTA" type="xs:string" minOccurs="0" />
               <xs:element name="CAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnVarNameInTable="columnCAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInRow="CAN_PROG_TRASFERIMENTO" msprop:Generator_ColumnPropNameInTable="CAN_PROG_TRASFERIMENTOColumn" msprop:Generator_UserColumnName="CAN_PROG_TRASFERIMENTO" type="xs:string" minOccurs="0" />
               <xs:element name="CAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnVarNameInTable="columnCAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnPropNameInRow="CAN_PROG_CAN_ABITAZIONE" msprop:Generator_ColumnPropNameInTable="CAN_PROG_CAN_ABITAZIONEColumn" msprop:Generator_UserColumnName="CAN_PROG_CAN_ABITAZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="QUOTA_MENS" msprop:Generator_ColumnVarNameInTable="columnQUOTA_MENS" msprop:Generator_ColumnPropNameInRow="QUOTA_MENS" msprop:Generator_ColumnPropNameInTable="QUOTA_MENSColumn" msprop:Generator_UserColumnName="QUOTA_MENS" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

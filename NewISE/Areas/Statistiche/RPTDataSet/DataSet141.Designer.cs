@@ -299,6 +299,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             private global::System.Data.DataColumn columnCAN_PROG_CAN_ABITAZIONE;
             
+            private global::System.Data.DataColumn columnQUOTA_MENS;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable14DataTable() {
@@ -414,6 +416,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn QUOTA_MENSColumn {
+                get {
+                    return this.columnQUOTA_MENS;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -449,7 +459,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable14Row AddDataTable14Row(string NOMINATIVO, string MATRICOLA, string SEDE, string VALUTA, string DATA_DECORRENZA, string DATA_LETTERA, string DATA_OPERAZIONE, string CAN_CANONE_ANNUO_VALUTA, string CAN_PROG_TRASFERIMENTO, string CAN_PROG_CAN_ABITAZIONE) {
+            public DataTable14Row AddDataTable14Row(string NOMINATIVO, string MATRICOLA, string SEDE, string VALUTA, string DATA_DECORRENZA, string DATA_LETTERA, string DATA_OPERAZIONE, string CAN_CANONE_ANNUO_VALUTA, string CAN_PROG_TRASFERIMENTO, string CAN_PROG_CAN_ABITAZIONE, string QUOTA_MENS) {
                 DataTable14Row rowDataTable14Row = ((DataTable14Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NOMINATIVO,
@@ -461,7 +471,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         DATA_OPERAZIONE,
                         CAN_CANONE_ANNUO_VALUTA,
                         CAN_PROG_TRASFERIMENTO,
-                        CAN_PROG_CAN_ABITAZIONE};
+                        CAN_PROG_CAN_ABITAZIONE,
+                        QUOTA_MENS};
                 rowDataTable14Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable14Row);
                 return rowDataTable14Row;
@@ -494,6 +505,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.columnCAN_CANONE_ANNUO_VALUTA = base.Columns["CAN_CANONE_ANNUO_VALUTA"];
                 this.columnCAN_PROG_TRASFERIMENTO = base.Columns["CAN_PROG_TRASFERIMENTO"];
                 this.columnCAN_PROG_CAN_ABITAZIONE = base.Columns["CAN_PROG_CAN_ABITAZIONE"];
+                this.columnQUOTA_MENS = base.Columns["QUOTA_MENS"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -519,6 +531,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnCAN_PROG_TRASFERIMENTO);
                 this.columnCAN_PROG_CAN_ABITAZIONE = new global::System.Data.DataColumn("CAN_PROG_CAN_ABITAZIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCAN_PROG_CAN_ABITAZIONE);
+                this.columnQUOTA_MENS = new global::System.Data.DataColumn("QUOTA_MENS", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnQUOTA_MENS);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -824,6 +838,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string QUOTA_MENS {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable14.QUOTA_MENSColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUOTA_MENS\' nella tabella \'DataTable14\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable14.QUOTA_MENSColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
                 return this.IsNull(this.tableDataTable14.NOMINATIVOColumn);
             }
@@ -940,6 +970,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCAN_PROG_CAN_ABITAZIONENull() {
                 this[this.tableDataTable14.CAN_PROG_CAN_ABITAZIONEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsQUOTA_MENSNull() {
+                return this.IsNull(this.tableDataTable14.QUOTA_MENSColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetQUOTA_MENSNull() {
+                this[this.tableDataTable14.QUOTA_MENSColumn] = global::System.Convert.DBNull;
             }
         }
         
