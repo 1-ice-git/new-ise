@@ -960,15 +960,17 @@ namespace NewISE.Controllers
                     var lUffici = new List<SelectListItem>();
                     var lRuoloUfficio = new List<SelectListItem>();
                     var lTipologiaCoan = new List<SelectListItem>();
+                    var lFasciaKM = new List<SelectListItem>();
 
                     try
                     {
-                        ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                        ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                         ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                         ViewBag.ListUfficio = lUffici;
                         ViewBag.ListRuolo = lRuoloUfficio;
                         ViewBag.ListTipoCoan = lTipologiaCoan;
+                        ViewBag.ListFasciaKM = lFasciaKM;
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                         ViewBag.Matricola = matricola;
@@ -1286,13 +1288,15 @@ namespace NewISE.Controllers
                         var lUffici = new List<SelectListItem>();
                         var lRuoloUfficio = new List<SelectListItem>();
                         var lTipologiaCoan = new List<SelectListItem>();
+                        var lFasciaKM = new List<SelectListItem>();
 
-                        ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                        ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                         ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                         ViewBag.ListUfficio = lUffici;
                         ViewBag.ListRuolo = lRuoloUfficio;
                         ViewBag.ListTipoCoan = lTipologiaCoan;
+                        ViewBag.ListFasciaKM = lFasciaKM;
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                         ViewBag.Matricola = matricola;
@@ -1358,13 +1362,15 @@ namespace NewISE.Controllers
                     var lUffici = new List<SelectListItem>();
                     var lRuoloUfficio = new List<SelectListItem>();
                     var lTipologiaCoan = new List<SelectListItem>();
+                    var lFasciaKM = new List<SelectListItem>();
 
-                    ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan);
+                    ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
 
                     ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                     ViewBag.ListUfficio = lUffici;
                     ViewBag.ListRuolo = lRuoloUfficio;
                     ViewBag.ListTipoCoan = lTipologiaCoan;
+                    ViewBag.ListFasciaKM = lFasciaKM;
 
                     ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                     ViewBag.Matricola = matricola;
