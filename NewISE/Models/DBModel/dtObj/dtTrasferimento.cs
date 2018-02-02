@@ -173,7 +173,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiestaPP, out bool conclusePP,
                                                       out bool richiesteTV, out bool concluseTV,
                                                       out bool richiestaTE, out bool attivazioneTE,
-                                                      out bool richiestaAnticipi, out bool attivazioneAnticipi)
+                                                      out bool richiestaAnticipi, out bool attivazioneAnticipi,
+                                                      out bool richiestaMAB, out bool attivazioneMAB)
         {
             richiestaMF = false;
             attivazioneMF = false;
@@ -189,6 +190,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             richiestaAnticipi = false;
             attivazioneAnticipi = false;
+
+            richiestaMAB = false;
+            attivazioneMAB = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -294,6 +298,23 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 #endregion
+
+                //#region MaggiorazioneAbitazione
+                ////var ma = t.m PRIMASITEMAZIONE;
+                //if (ps != null && ps.IDPRIMASISTEMAZIONE > 0)
+                //{
+                //    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVITAANTICIPI).ToList();
+
+                //    if (laa?.Any() ?? false)
+                //    {
+                //        var aa = laa.First();
+
+                //        richiestaAnticipi = aa.NOTIFICARICHIESTA;
+                //        attivazioneAnticipi = aa.ATTIVARICHIESTA;
+                //    }
+                //}
+
+                //#endregion
             }
         }
 
