@@ -992,6 +992,8 @@ namespace NewISE.Controllers
                     var lTipologiaCoan = new List<SelectListItem>();
                     var lFasciaKM = new List<SelectListItem>();
 
+                    bool trasfSuccessivo = false;
+
                     try
                     {
                         ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
@@ -1004,6 +1006,18 @@ namespace NewISE.Controllers
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                         ViewBag.Matricola = matricola;
+
+                        using (dtTrasferimento dttr = new dtTrasferimento())
+                        {
+                            trasfSuccessivo = dttr.EsisteTrasferimentoSuccessivo(trm.idTrasferimento);
+                            ViewData.Add("TrasfSucc", trasfSuccessivo);
+                        }
+
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            var d = dtd.GetDipendenteByID(trm.idDipendente);
+                            ViewBag.Dipendente = d;
+                        }
 
                         return PartialView("ModificaTrasferimento", trm);
                     }

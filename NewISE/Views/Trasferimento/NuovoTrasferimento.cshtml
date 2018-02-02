@@ -76,7 +76,7 @@
                 @Html.LabelFor(model => model.idTipoCoan, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AbilitaDisabilitaCoan(this.value);" })
+                        @Html.DropDownList("idTipoCoan", ViewBag.ListTipoCoan as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AbilitaDisabilitaCoan();" })
                     </div>
                     @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
                 </div>
@@ -210,10 +210,14 @@
         $('#myModalInfo').modal('toggle');
     }
 
+    AbilitaDisabilitaCoan();
 
-    function AbilitaDisabilitaCoan(value) {
+    function AbilitaDisabilitaCoan() {
         //debugger;
-        if (value == "1") {
+
+        var value = $("#idTipoCoan").val();
+
+        if (isNaN(value) || value == "" || value == "1") {
             $("#coan").attr("disabled", "disabled");
         }
         else {
