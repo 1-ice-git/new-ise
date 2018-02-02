@@ -1,0 +1,103 @@
+﻿@model NewISE.Models.ViewModel.AnticipiViewModel
+
+@{
+    decimal idAttivitaAnticipi = Convert.ToDecimal(ViewData["idAttivitaAnticipi"]);
+    decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    decimal ValsoloLettura = Convert.ToDecimal(ViewData["soloLettura"]);
+    string txtReadOnly = "";
+    if (soloLettura)
+    {
+        txtReadOnly = "readonly";
+    }
+}
+
+@Html.Hidden("hiPercentualeRichiesta")
+
+<div style="padding-right: 10px;">
+    <h4>Richiesta Anticipi</h4>
+    <hr />
+    <table class="col-xs-10">
+        <tr>
+            <td>
+            </td>
+            <td style="padding-left:10px;font-weight:bold" align="center">
+                @Html.DisplayNameFor(model => model.ImportoPrevisto)
+            </td>
+            <td style="font-weight:bold" align="center">
+                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
+            </td>
+            <td style="font-weight:bold" align="center">
+                @Html.DisplayNameFor(model => model.ImportoPercepito)
+            </td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold;padding-right:15px" align="right" >
+                Indennità di Prima Sistemazione:
+            </td>
+            <td class = "col-xs-2" >
+                <input id="ImportoPrevisto" name="ImportoPrevisto" type="number" value="@Model.ImportoPrevisto" class="form-control" readonly />
+
+            </td>
+            <td class="col-xs-2">
+                <input maxlength="5" onkeyup="CalcolaAnticipo();"  id="PercentualeAnticipoRichiesto" name="PercentualeAnticipoRichiesto" type="number"  value="@Model.PercentualeAnticipoRichiesto" class="form-control" @txtReadOnly />
+            </td>
+            <td class="col-xs-2">
+                <input id="ImportoPercepito" name="ImportoPercepito" type="number" value="@Model.ImportoPercepito" class="form-control" readonly />
+            </td>
+        </tr>
+    </table>
+ 
+</div>
+
+<script type="text/javascript">
+
+    $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
+
+    CalcolaAnticipo();
+
+    $(document).ready(function () {
+        $('[id^=PercentualeAnticipoRichiesto]').keypress(validateNumber);
+    });
+
+    function validateNumber(event) {
+        var key = window.event ? event.keyCode : event.which;
+        if (event.keyCode === 8 || event.keyCode === 44) {
+            return true;
+        } else if (key < 48 || key > 57) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+
+
+    function CalcolaAnticipo() {
+        //debugger;
+        var appo = document.getElementById("PercentualeAnticipoRichiesto").value.replace(",", ".");
+        var percentualeRichiesta = parseFloat(appo).toFixed(2);
+
+        var appo = document.getElementById("ImportoPrevisto").value.replace(",", ".");
+        var ImportoPrevisto =parseFloat(appo).toFixed(2);
+
+        var calcolo = Number((ImportoPrevisto * (percentualeRichiesta / 100)).toFixed(2));
+        document.getElementById("ImportoPercepito").value = calcolo;
+
+        var appo1 = document.getElementById("ImportoPercepito").value.replace(".", ",");
+        document.getElementById("ImportoPercepito").value = appo1;
+
+        var percentualeRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val()).toFixed(2);
+
+        if (!isNaN(percentualeRichiesta) && @ValsoloLettura==0 && percentualeRichiesta_old != percentualeRichiesta) {
+            $("#btNotificaRichiestaAnticipi").removeAttr("disabled");
+            $("#btNotificaRichiestaAnticipi").removeClass("disabled");
+        } else
+        {
+            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
+            $("#btNotificaRichiestaAnticipi").addClass("disabled");
+        }
+
+    }
+</script>
+

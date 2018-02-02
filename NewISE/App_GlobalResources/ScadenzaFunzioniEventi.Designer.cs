@@ -63,6 +63,15 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to 10.
         /// </summary>
+        internal static string RichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("RichiestaAnticipi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 10.
+        /// </summary>
         internal static string RichiestaMaggiorazioniFamiliari {
             get {
                 return ResourceManager.GetString("RichiestaMaggiorazioniFamiliari", resourceCulture);

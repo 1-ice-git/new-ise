@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaAnticipi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaInizialeTitoloViaggio {
@@ -118,6 +127,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("MessaggioAttivaRichiestaAnticipi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata confermata..
         /// </summary>
         internal static string MessaggioAttivaRichiestaInizialeTitoliViaggio {
@@ -159,6 +177,15 @@ namespace Resources {
         internal static string MessaggioAttivazioneTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di anticipo..
+        /// </summary>
+        internal static string MessaggioNotificaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaRichiestaAnticipi", resourceCulture);
             }
         }
         
@@ -244,6 +271,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di anticipo..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaAnticipi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta dei titoli di viaggio..
         /// </summary>
         internal static string OggettoAnnullaRichiestaInizialeTitioliViaggio {
@@ -298,6 +334,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attivazione richiesta anticipo..
+        /// </summary>
+        internal static string OggettoAttivaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("OggettoAttivaRichiestaAnticipi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attivazione dei titoli di viaggio..
         /// </summary>
         internal static string OggettoAttivaRichiestaInizialeTitoloViaggio {
@@ -339,6 +384,15 @@ namespace Resources {
         internal static string OggettoAttivazioneTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta anticipo..
+        /// </summary>
+        internal static string OggettoNotificaRichiestaAnticipi {
+            get {
+                return ResourceManager.GetString("OggettoNotificaRichiestaAnticipi", resourceCulture);
             }
         }
         

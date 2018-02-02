@@ -8,7 +8,7 @@ using System.Web;
 
 namespace NewISE.Models.ViewModel
 {
-    public class AttivitaAnticipiModel : AnticipiModel
+    public class AnticipiViewModel : AnticipiModel
     {
         [Display(Name = "Importo Previsto")]
         public decimal ImportoPrevisto { get; set; }

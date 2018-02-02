@@ -46,7 +46,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 psm = new PrimaSistemazioneModel()
                 {
-                    idPrimaSistemazione = ps.IDPRIMASISTEMAZIONE,
+                    idPrimaSistemazione = ps.IDPRIMASISTEMAZIONE
 
                 };
             }
