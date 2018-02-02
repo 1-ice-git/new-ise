@@ -19,6 +19,7 @@ namespace NewISE.EF
         {
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
             this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
+            this.TER_FK = new HashSet<TER_FK>();
         }
     
         public decimal IDTERIENTRO { get; set; }
@@ -28,5 +29,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TER_FK> TER_FK { get; set; }
     }
 }

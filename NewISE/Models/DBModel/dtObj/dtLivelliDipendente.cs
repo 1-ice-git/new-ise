@@ -184,6 +184,25 @@ namespace NewISE.Models.dtObj
 
         }
 
+        public void RimuoviAssociazioneLivelliDipendente_Indennita(decimal idTrasferimento, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lld =
+                i.LIVELLIDIPENDENTI.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+            if (lld?.Any() ?? false)
+            {
+                foreach (var ld in lld)
+                {
+                    i.LIVELLIDIPENDENTI.Remove(ld);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+
         public void RimuoviAssociazioneLivelloDipendente_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             //var i = db.INDENNITA.Find(idTrasferimento);

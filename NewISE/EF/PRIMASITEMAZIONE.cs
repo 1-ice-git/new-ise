@@ -20,7 +20,7 @@ namespace NewISE.EF
             this.ALIQUOTECONTRIBUTIVE = new HashSet<ALIQUOTECONTRIBUTIVE>();
             this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
             this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
-            this.PRIMASIST_FASCIAKM = new HashSet<PRIMASIST_FASCIAKM>();
+            this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
         }
     
         public decimal IDPRIMASISTEMAZIONE { get; set; }
@@ -33,6 +33,6 @@ namespace NewISE.EF
         public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRIMASIST_FASCIAKM> PRIMASIST_FASCIAKM { get; set; }
+        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
     }
 }

@@ -44,6 +44,24 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
+        public void RimuoviAssociazioniPercentualeDisagio_Indennita(decimal idTrasferimento, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            var i = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA;
+            var lpd =
+                i.PERCENTUALEDISAGIO.Where(
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+            if (lpd?.Any() ?? false)
+            {
+                foreach (var pd in lpd)
+                {
+                    i.PERCENTUALEDISAGIO.Remove(pd);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
         public void RimuoviAssociaPercentualeDisagio_Indennita(decimal idTrasferimento, DateTime dt, ModelDBISE db)
         {
             //var i = db.INDENNITA.Find(idTrasferimento);

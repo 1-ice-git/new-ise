@@ -164,12 +164,9 @@
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONEMAB" Width="1.5" PointX="8.75" PointY="48.75" />
         <EntityTypeShape EntityType="DBISEPRO.CANOMEMAB" Width="1.5" PointX="19" PointY="44" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="19" PointY="55.625" />
-        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="22.25" PointY="52.5" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_CMAB" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_MAB" />
-        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.AMAB_DOC" />
         <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
         <AssociationConnector Association="DBISEPRO.MAB_MA" />
@@ -244,14 +241,20 @@
         <EntityTypeShape EntityType="DBISEPRO.FASCIA_KM" Width="1.5" PointX="5.625" PointY="4" />
         <EntityTypeShape EntityType="DBISEPRO.GRUPPO_FKM" Width="1.5" PointX="3.375" PointY="4" />
         <EntityTypeShape EntityType="DBISEPRO.PERCENTUALEFKM" Width="1.5" PointX="7.875" PointY="3.875" />
-        <EntityTypeShape EntityType="DBISEPRO.PRIMASIST_FASCIAKM" Width="1.5" PointX="31.25" PointY="32.375" />
         <EntityTypeShape EntityType="DBISEPRO.RICHIAMO_FKM" Width="1.5" PointX="34.25" PointY="34.375" />
         <AssociationConnector Association="DBISEPRO.R_DFK_CFK1" />
-        <AssociationConnector Association="DBISEPRO.R_FKM_PSFKM" />
         <AssociationConnector Association="DBISEPRO.R_FKM_RFKM" />
         <AssociationConnector Association="DBISEPRO.R_GFKM_F_KM" />
-        <AssociationConnector Association="DBISEPRO.R_PS_PSFKM" />
         <AssociationConnector Association="DBISEPRO.R_R_RFKM" />
+        <EntityTypeShape EntityType="DBISEPRO.TEP_FK" Width="1.5" PointX="13" PointY="31.5" />
+        <EntityTypeShape EntityType="DBISEPRO.TER_FK" Width="1.5" PointX="15" PointY="70.5" />
+        <AssociationConnector Association="DBISEPRO.R_TEP_TEPFK" />
+        <AssociationConnector Association="DBISEPRO.R_TER_TERFK" />
+        <AssociationConnector Association="DBISEPRO.PS_PFKM" />
+        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="43.5" PointY="53.375" />
+        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_T_PCMAB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

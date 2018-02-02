@@ -14,6 +14,12 @@ namespace NewISE.EF
     
     public partial class PERCENTUALEFKM
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PERCENTUALEFKM()
+        {
+            this.PRIMASITEMAZIONE = new HashSet<PRIMASITEMAZIONE>();
+        }
+    
         public decimal IDPFKM { get; set; }
         public decimal IDFKM { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
@@ -23,5 +29,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual FASCIA_KM FASCIA_KM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PRIMASITEMAZIONE> PRIMASITEMAZIONE { get; set; }
     }
 }
