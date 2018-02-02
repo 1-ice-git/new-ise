@@ -110,7 +110,7 @@
         </tr>
         <tr>
             <th>
-                Richiesta Maggiorazione Abitazione
+                @Ajax.ActionLink("Richiesta Maggiorazione Abitazione", "MaggiorazioneAbitazione", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkMAB" })
             </th>
             <td>
                 <div class="material-switch pull-right">

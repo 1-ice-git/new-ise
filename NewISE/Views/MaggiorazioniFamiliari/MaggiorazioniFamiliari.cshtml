@@ -12,30 +12,32 @@
 @Html.Hidden("idAttivitaMagFam", idAttivazioneMagFam)
 
 <div class="row">
-    <div class="col-xs-12" style="padding-right: 20px; margin-left: -10px;">
-        <div class="nav nav-justified nav-tabs">
-            <ul class="nav nav-tabs tabs-destro" id="tabsMaggiorazioniFamiliari">
-                <li id="mnConiuge">
-                    <a data-toggle="tab" href="#tabConiuge" id="lkConiuge" onclick=" ElencoConiuge(); ">Coniuge</a>
-                </li>
-                <li id="mnFigli">
-                    <a data-toggle="tab" href="#tabFigli" id="lkFigli" onclick=" ElencoFigli(); ">Figli</a>
-                </li>
-                <li id="mnFormulari">
-                    <a data-toggle="tab" href="#tabFormulari" id="lkFormulari" onclick=" ElencoFormulariInseriti(); ">Formulari</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-content" id="tabContenuti">
-            <div class="active tab-pane" id="tabConiuge"></div>
-            <div class="tab-pane" id="tabFigli"></div>
-            <div class="tab-pane" id="tabFormulari"></div>
+    <div class="col-md-12" style="margin-top: 10px; margin-bottom: 10px;margin-right:20px ">
+        <div style="padding-bottom:10px;margin-right:20px;  border-bottom:solid;border-width:1px;border-color:limegreen">
+            <div class="nav nav-justified nav-tabs">
+                <ul class="nav nav-tabs tabs-destro" id="tabsMaggiorazioniFamiliari">
+                    <li id="mnConiuge">
+                        <a data-toggle="tab" href="#tabConiuge" id="lkConiuge" onclick=" ElencoConiuge(); ">Coniuge</a>
+                    </li>
+                    <li id="mnFigli">
+                        <a data-toggle="tab" href="#tabFigli" id="lkFigli" onclick=" ElencoFigli(); ">Figli</a>
+                    </li>
+                    <li id="mnFormulari">
+                        <a data-toggle="tab" href="#tabFormulari" id="lkFormulari" onclick=" ElencoFormulariInseriti(); ">Formulari</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="tabContenuti" style="border:0">
+                <div class="active tab-pane" id="tabConiuge"></div>
+                <div class="tab-pane" id="tabFigli"></div>
+                <div class="tab-pane" id="tabFormulari"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-xs-8" style="margin-top: 10px; margin-bottom: 10px;">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
         <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam" onclick="ModalNotificaRichiesta();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
@@ -130,15 +132,15 @@
     @if (callElenco == EnumCallElenco.Coniuge)
     {
         @:ElencoConiuge();
-                                                                                                                                                            }
+                                                                                                                                                                }
     else if (callElenco == EnumCallElenco.Figli)
     {
         @:ElencoFigli();
-                                                                                                                                                            }
+                                                                                                                                                                }
     else if (callElenco == EnumCallElenco.Formulari)
     {
         @:ElencoFormulariInseriti();
-                                                                                                                                                            }
+                                                                                                                                                                }
 
 
     function ElencoFormulariInseriti() {

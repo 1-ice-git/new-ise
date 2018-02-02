@@ -140,6 +140,8 @@ namespace NewISE.Controllers
             bool attivazioneTE = false;
             bool richiestaAnticipi = false;
             bool attivazioneAnticipi = false;
+            bool richiestaMAB = false;
+            bool attivazioneMAB = false;
 
             try
             {
@@ -147,7 +149,7 @@ namespace NewISE.Controllers
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
                         out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
-                        out richiestaAnticipi, out attivazioneAnticipi);
+                        out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB);
                 }
 
             }
