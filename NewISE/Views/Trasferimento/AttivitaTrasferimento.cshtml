@@ -210,6 +210,8 @@
                     var concluseTV = result.concluseTV;
                     var richiestaTE = result.richiestaTE;
                     var attivazioneTE = result.attivazioneTE;
+                    var richiestaAnticipi = result.richiestaAnticipi;
+                    var attivazioneAnticipi = result.attivazioneAnticipi;
 
 
                     if (richiestaMF == true) {
@@ -269,6 +271,19 @@
                     } else {
                         $("#chkTrasportoEffettiR").each(function () { this.checked = false; });
                         $("#chkTrasportoEffettiSR").each(function () { this.checked = false; });
+                    }
+
+                    //chkAnticipiR
+                    if (richiestaAnticipi == true) {
+                        $("#chkAnticipiR").each(function () { this.checked = true; });
+                        if (attivazioneAnticipi == true) {
+                            $("#chkAnticipiSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkAnticipiSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkAnticipiR").each(function () { this.checked = false; });
+                        $("#chkAnticipiSR").each(function () { this.checked = false; });
                     }
 
                     AggiornaInfoTrasferimento();

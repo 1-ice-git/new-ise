@@ -172,7 +172,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiestaMF, out bool attivazioneMF,
                                                       out bool richiestaPP, out bool conclusePP,
                                                       out bool richiesteTV, out bool concluseTV,
-                                                      out bool richiestaTE, out bool attivazioneTE)
+                                                      out bool richiestaTE, out bool attivazioneTE,
+                                                      out bool richiestaAnticipi, out bool attivazioneAnticipi)
         {
             richiestaMF = false;
             attivazioneMF = false;
@@ -185,6 +186,9 @@ namespace NewISE.Models.DBModel.dtObj
 
             richiestaTE = false;
             attivazioneTE = false;
+
+            richiestaAnticipi = false;
+            attivazioneAnticipi = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -270,6 +274,23 @@ namespace NewISE.Models.DBModel.dtObj
                     //{
                     //    throw new Exception("Errore 'GestioneAttivitaTrasferimento' record ATTIVITATEPARTENZA non trovato.");
                     //}
+                }
+
+                #endregion
+
+                #region Anticipi
+                var ps = t.PRIMASITEMAZIONE;
+                if (ps != null && ps.IDPRIMASISTEMAZIONE > 0)
+                {
+                    var laa = ps.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVITAANTICIPI).ToList();
+
+                    if (laa?.Any() ?? false)
+                    {
+                        var aa = laa.First();
+
+                        richiestaAnticipi = aa.NOTIFICARICHIESTA;
+                        attivazioneAnticipi = aa.ATTIVARICHIESTA;
+                    }
                 }
 
                 #endregion

@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <div id="divAnticipi">
+        <div id="divAttivitaAnticipi">
             @Html.Action("AttivitaAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })
         </div>
     </div>
@@ -18,3 +18,72 @@
         </div>
     </div>
 </div>
+
+
+
+
+<script type="text/javascript">
+    function GestionePulsantiNotificaAttivaAnnullaAnticipi() {
+        //debugger;
+        var rotta = "/Anticipi/GestionePulsantiAnticipi";
+        var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idPrimaSistemazione: idPrimaSistemazione },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divAttivazioneAnticipi").empty();
+                $("#divAttivazioneAnticipi").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function AttivitaAnticipi() {
+        //debugger;
+        var rotta = "/Anticipi/AttivitaAnticipi";
+        var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idPrimaSistemazione: idPrimaSistemazione },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divAttivitaAnticipi").empty();
+                $("#divAttivitaAnticipi").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+</script>

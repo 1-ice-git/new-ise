@@ -17,17 +17,17 @@
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px;">
                 @if (
-            (NumAttivazioniTEPartenza == 0
-                && richiestaTEPartenza == false
-                && attivazioneTEPartenza == false
-                && idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo
-            ) ||
-            (NumAttivazioniTEPartenza == 1
-                && ((richiestaTEPartenza == false && attivazioneTEPartenza == false)
-                        || (richiestaTEPartenza && attivazioneTEPartenza))
-                && idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
-            )
-        )
+                    (NumAttivazioniTEPartenza == 0
+                        && richiestaTEPartenza == false
+                        && attivazioneTEPartenza == false
+                        && idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo
+                    ) ||
+                    (NumAttivazioniTEPartenza == 1
+                        && ((richiestaTEPartenza == false && attivazioneTEPartenza == false)
+                                || (richiestaTEPartenza && attivazioneTEPartenza))
+                        && idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
+                    )
+                )
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTE();">
                         <table>

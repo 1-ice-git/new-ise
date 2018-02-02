@@ -31,6 +31,6 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ANTICIPI> ANTICIPI { get; set; }
-        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
     }
 }

@@ -2935,7 +2935,7 @@
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DettagliMessaggio.cs" />
-    <Compile Include="Models\ViewModel\AttivitaAnticipiModel.cs" />
+    <Compile Include="Models\ViewModel\AnticipiViewModel.cs" />
     <Compile Include="Models\ViewModel\ElencoFamiliariPassaportoModel.cs" />
     <Compile Include="Models\ViewModel\FunzioneEventoModel.cs" />
     <Compile Include="Models\LogAttivitaModel.cs" />
@@ -3087,6 +3087,8 @@
     <Content Include="Views\TrasportoEffetti\TabDocumentiTEPartenzaInseriti.cshtml" />
     <Content Include="Views\TrasportoEffetti\NuovoDocumentoTEPartenza.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
+    <Content Include="Views\Anticipi\AttivitaAnticipi.cshtml" />
+    <Content Include="Views\Anticipi\GestionePulsantiAnticipi.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

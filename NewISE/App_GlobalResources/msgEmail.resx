@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessaggioAnnullaRichiestaAnticipi" xml:space="preserve">
+    <value>Si notifica che la richiesta di anticipo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
   <data name="MessaggioAnnullaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="MessaggioAnnullaRichiestaTrasportoEffettiRientro" xml:space="preserve">
     <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
+  <data name="MessaggioAttivaRichiestaAnticipi" xml:space="preserve">
+    <value>Si notifica che l'anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermata.</value>
+  </data>
   <data name="MessaggioAttivaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata confermata.</value>
   </data>
@@ -152,6 +158,9 @@
   </data>
   <data name="MessaggioAttivazioneTrasportoEffettiRientro" xml:space="preserve">
     <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata.</value>
+  </data>
+  <data name="MessaggioNotificaRichiestaAnticipi" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta di anticipo.</value>
   </data>
   <data name="MessaggioNotificaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica la richiesta dei titoli di viaggio per {0}</value>
@@ -180,6 +189,9 @@
   <data name="MessaggioRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}.</value>
   </data>
+  <data name="OggettoAnnullaRichiestaAnticipi" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di anticipo.</value>
+  </data>
   <data name="OggettoAnnullaRichiestaInizialeTitioliViaggio" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta dei titoli di viaggio.</value>
   </data>
@@ -198,6 +210,9 @@
   <data name="OggettoAnnullaRichiestaTrasportoRientro" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta di rimborso per il trasporto effetti (rientro).</value>
   </data>
+  <data name="OggettoAttivaRichiestaAnticipi" xml:space="preserve">
+    <value>Attivazione richiesta anticipo.</value>
+  </data>
   <data name="OggettoAttivaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Attivazione dei titoli di viaggio.</value>
   </data>
@@ -212,6 +227,9 @@
   </data>
   <data name="OggettoAttivazioneTrasportoEffettiRientro" xml:space="preserve">
     <value>Attivazione rimborso trasporto effetti (rientro).</value>
+  </data>
+  <data name="OggettoNotificaRichiestaAnticipi" xml:space="preserve">
+    <value>Notifica richiesta anticipo.</value>
   </data>
   <data name="OggettoNotificaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Notifica della richiesta per i titoli di viaggio.</value>
