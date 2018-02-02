@@ -49,15 +49,27 @@ namespace NewISE.Controllers
                                out richiestaTE, out attivazioneTE,
                                out DocContributo, out DocAttestazione, out NumAttivazioni);
 
-                tepm.indennitaPrimaSistemazione = 0;
-                tepm.percKM = 0;
-                tepm.contributoLordo = 0;
 
-                ViewData.Add("richiestaTE", richiestaTE);
-                ViewData.Add("attivazioneTE", attivazioneTE);
-                ViewData.Add("DocContributo", DocContributo);
-                ViewData.Add("DocAttestazione", DocAttestazione);
-                ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+
+                    var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+
+                    CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                    tepm.indennitaPrimaSistemazione = ci.indennitaSistemazioneLorda;
+                    tepm.percKM = ci.percentualeFasciaKmTrasferimento;
+                    tepm.contributoLordo = ci.contributoOmnicomprensivoTrasferimentoAnticipo;
+
+                    ViewData.Add("richiestaTE", richiestaTE);
+                    ViewData.Add("attivazioneTE", attivazioneTE);
+                    ViewData.Add("DocContributo", DocContributo);
+                    ViewData.Add("DocAttestazione", DocAttestazione);
+                    ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                }
+
+
+
 
                 return PartialView(tepm);
             }
@@ -104,7 +116,7 @@ namespace NewISE.Controllers
                 {
                     DescrizioneTE = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
                 }
-    
+
                 using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                 {
                     var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
@@ -190,9 +202,9 @@ namespace NewISE.Controllers
                 {
 
                     dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
-                                            out richiestaTE, 
+                                            out richiestaTE,
                                             out attivazioneTE,
-                                            out DocContributo, 
+                                            out DocContributo,
                                             out DocAttestazione,
                                             out NumAttivazioni);
                 }
@@ -212,7 +224,7 @@ namespace NewISE.Controllers
                         attivazioneTE = attivazioneTE,
                         DocContributo = DocContributo,
                         DocAttestazione = DocAttestazione,
-                        NumAttivazioni=NumAttivazioni,
+                        NumAttivazioni = NumAttivazioni,
                         err = errore
                     });
 

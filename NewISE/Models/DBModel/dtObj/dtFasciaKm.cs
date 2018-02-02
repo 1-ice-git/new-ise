@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using Newtonsoft.Json.Schema;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -31,31 +32,34 @@ namespace NewISE.Models.DBModel.dtObj
         //    }
         //}
 
-        public Fascia_KMModel GetFasciaKmByTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        public Fascia_KMModel GetFasciaKmByTrasf(decimal idTrasferimento, DateTime dt)
         {
             Fascia_KMModel fkmm = new Fascia_KMModel();
 
-            var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            var ps = t.PRIMASITEMAZIONE;
-            var lpfkm =
-                ps.PERCENTUALEFKM.Where(
-                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
-                    .OrderByDescending(a => a.DATAINIZIOVALIDITA);
-
-            if (lpfkm?.Any() ?? false)
+            using (ModelDBISE db = new ModelDBISE())
             {
-                var pfkm = lpfkm.First();
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                var ps = t.PRIMASITEMAZIONE;
+                var lpfkm =
+                    ps.PERCENTUALEFKM.Where(
+                        a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA);
 
-                var fkm = pfkm.FASCIA_KM;
-
-
-                fkmm = new Fascia_KMModel()
+                if (lpfkm?.Any() ?? false)
                 {
-                    idFKM = fkm.IDFKM,
-                    idGruppoFKM = fkm.IDGRUPPOFKM,
-                    KM = fkm.KM
-                };
+                    var pfkm = lpfkm.First();
 
+                    var fkm = pfkm.FASCIA_KM;
+
+
+                    fkmm = new Fascia_KMModel()
+                    {
+                        idFKM = fkm.IDFKM,
+                        idGruppoFKM = fkm.IDGRUPPOFKM,
+                        KM = fkm.KM
+                    };
+
+                }
             }
 
             return fkmm;

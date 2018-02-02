@@ -18,7 +18,7 @@
         <td style="padding-top:10px">
             <table>
                 <tr>
-                    <td class="col-xs-3 text-right" >
+                    <td class="col-xs-3 text-right">
                         <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
                     </td>
                     <td class="col-xs-2">
@@ -34,7 +34,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="col-xs-3 text-right"">
+                    <td class="col-xs-3 text-right" ">
                         <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
                     </td>
                     <td class="col-xs-2">
@@ -48,7 +48,7 @@
         <td>&nbsp;</td>
     </tr>
     <tr>
-        <td >
+        <td>
             <table>
                 <tr>
                     <td>
@@ -56,7 +56,7 @@
                             Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
                         </label>
                     </td>
-                    <td  style="padding-left:10px;padding-bottom:10px">
+                    <td style="padding-left:10px;padding-bottom:10px">
                         @if (DocContributo)
                         {
                             <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
@@ -93,52 +93,52 @@
                     </td>
                 </tr>
             </table>
-        </tr>
-    </table>
+    </tr>
+</table>
 
-    <script type="text/javascript">
-        function ElencoDocumentiTE(idTipoDocumento) {
-            //debugger;
-            var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+<script type="text/javascript">
+    function ElencoDocumentiTE(idTipoDocumento) {
+        //debugger;
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
 
-            var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
+        var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
 
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { 
-                    idTipoDocumento: idTipoDocumento, 
-                    idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
-                },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                },
-                success: function (result) {
-                    //debugger;
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    $("#divTrasportoEffettiPartenza").empty();
-                    $("#divTrasportoEffettiPartenza").html(result);
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
 
-                    //RicercaDocumenti();
+                //RicercaDocumenti();
 
-                },
-                complete: function () {
+            },
+            complete: function () {
 
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    ErroreElaborazioneAjax(msg);
-                }
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
 
-            });
+        });
 
-        }
+    }
 
-    </script>
+</script>
 
 

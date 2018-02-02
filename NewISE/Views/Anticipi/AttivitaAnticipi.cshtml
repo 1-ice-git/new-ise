@@ -19,8 +19,7 @@
     <hr />
     <table class="col-xs-10">
         <tr>
-            <td>
-            </td>
+            <td></td>
             <td style="padding-left:10px;font-weight:bold" align="center">
                 @Html.DisplayNameFor(model => model.ImportoPrevisto)
             </td>
@@ -32,25 +31,30 @@
             </td>
         </tr>
         <tr>
-            <td style="font-weight:bold;padding-right:15px" align="right" >
+            <td style="font-weight:bold;padding-right:15px" align="right">
                 Indennità di Prima Sistemazione:
             </td>
-            <td class = "col-xs-2" >
-                <input id="ImportoPrevisto" name="ImportoPrevisto" type="number" value="@Model.ImportoPrevisto" class="form-control" readonly />
+            <td class="col-xs-2">
+                <input id="ImportoPrevisto" name="ImportoPrevisto" type="number" value="@Model.ImportoPrevisto" class="form-control " readonly style="text-align: right" />
 
             </td>
             <td class="col-xs-2">
-                <input maxlength="5" onkeyup="CalcolaAnticipo();"  id="PercentualeAnticipoRichiesto" name="PercentualeAnticipoRichiesto" type="number"  value="@Model.PercentualeAnticipoRichiesto" class="form-control" @txtReadOnly />
+                <input maxlength="5" onkeyup="CalcolaAnticipo();" id="PercentualeAnticipoRichiesto" name="PercentualeAnticipoRichiesto" type="number" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
             </td>
-            <td class="col-xs-2">
-                <input id="ImportoPercepito" name="ImportoPercepito" type="number" value="@Model.ImportoPercepito" class="form-control" readonly />
+            <td class="col-xs-3">
+                <input id="ImportoPercepito" name="ImportoPercepito" type="number" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
             </td>
         </tr>
     </table>
- 
+
 </div>
 
 <script type="text/javascript">
+
+    $("#PercentualeAnticipoRichiesto").focus(function() {
+        $(this).select();
+    });
+
 
     $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
 
@@ -100,4 +104,3 @@
 
     }
 </script>
-
