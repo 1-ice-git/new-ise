@@ -31,6 +31,37 @@ namespace NewISE.Models.DBModel.dtObj
         //    }
         //}
 
+        public Fascia_KMModel GetFasciaKmByTrasf(decimal idTrasferimento, DateTime dt, ModelDBISE db)
+        {
+            Fascia_KMModel fkmm = new Fascia_KMModel();
+
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+            var ps = t.PRIMASITEMAZIONE;
+            var lpfkm =
+                ps.PERCENTUALEFKM.Where(
+                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                    .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+
+            if (lpfkm?.Any() ?? false)
+            {
+                var pfkm = lpfkm.First();
+
+                var fkm = pfkm.FASCIA_KM;
+
+
+                fkmm = new Fascia_KMModel()
+                {
+                    idFKM = fkm.IDFKM,
+                    idGruppoFKM = fkm.IDGRUPPOFKM,
+                    KM = fkm.KM
+                };
+
+            }
+
+            return fkmm;
+
+        }
+
         public void RimuoviAssociazionePercentualeFKM(decimal idTrasferimento, ModelDBISE db)
         {
             var ps = db.TRASFERIMENTO.Find(idTrasferimento).PRIMASITEMAZIONE;
@@ -124,7 +155,9 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var lgfkm =
                     db.GRUPPO_FKM.Where(
-                        a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                        a =>
+                            a.ANNULLATO == false && dataIntercettazioneFascia >= a.DATAINIZIOVALIDITA &&
+                            dataIntercettazioneFascia <= a.DATAFINEVALIDITA)
                         .OrderByDescending(a => a.DATAFINEVALIDITA);
 
                 if (lgfkm?.Any() ?? false)

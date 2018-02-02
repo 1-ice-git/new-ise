@@ -83,20 +83,20 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.coan, new { @class = "form-control", @style = "width:200px;" })
+                    @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(model => model.idFKM, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div id="divCombo" class="col-xs-9">
                     <div class="select2-container select2-container--classic">
                         @Html.DropDownList("idFKM", ViewBag.ListFasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
                     </div>
-                    @Html.ValidationMessageFor(model => model.idTipoCoan, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
-                    @Html.EditorFor(model => model.coan, new { @class = "form-control", @style = "width:200px;" })
-                    @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.idFKM, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -171,6 +171,14 @@
 
     $("#idTipoCoan").select2({
         placeholder: "Seleziona la tipologia del coan",
+        allowClear: true,
+        language: "it",
+        width: '200'
+
+    });
+
+    $("#idFKM").select2({
+        placeholder: "Seleziona la fascia chilometrica",
         allowClear: true,
         language: "it",
         width: '200'

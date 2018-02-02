@@ -505,6 +505,14 @@ namespace NewISE.Controllers
                                 trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
                             }
 
+                            using (dtFasciaKm dtfkm = new dtFasciaKm())
+                            {
+
+
+
+                                //var pfkm = dtfkm.GetPercentualeFKM()
+                            }
+
                             using (dtDocumenti dtd = new dtDocumenti())
                             {
                                 DocumentiModel dm = new DocumentiModel();
