@@ -508,9 +508,9 @@ namespace NewISE.Controllers
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
                             {
 
+                                var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
 
-
-                                //var pfkm = dtfkm.GetPercentualeFKM()
+                                trm.idFKM = fkm.idFKM;
                             }
 
                             using (dtDocumenti dtd = new dtDocumenti())
@@ -535,6 +535,14 @@ namespace NewISE.Controllers
                             {
                                 trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
                                 trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                            }
+
+                            using (dtFasciaKm dtfkm = new dtFasciaKm())
+                            {
+
+                                var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
+
+                                trm.idFKM = fkm.idFKM;
                             }
 
                             using (dtDocumenti dtd = new dtDocumenti())
@@ -566,6 +574,13 @@ namespace NewISE.Controllers
                             {
                                 trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
                                 trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                            }
+                            using (dtFasciaKm dtfkm = new dtFasciaKm())
+                            {
+
+                                var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
+
+                                trm.idFKM = fkm.idFKM;
                             }
                             using (dtDocumenti dtd = new dtDocumenti())
                             {
