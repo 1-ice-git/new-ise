@@ -212,6 +212,8 @@
                     var attivazioneTE = result.attivazioneTE;
                     var richiestaAnticipi = result.richiestaAnticipi;
                     var attivazioneAnticipi = result.attivazioneAnticipi;
+                    var richiestaMAB = result.richiestaMAB;
+                    var attivazioneMAB = result.attivazioneMAB;
 
 
                     if (richiestaMF == true) {
@@ -286,6 +288,19 @@
                         $("#chkAnticipiSR").each(function () { this.checked = false; });
                     }
 
+                    //chkMABR
+                    if (richiestaMAB == true) {
+                        $("#chkMABR").each(function () { this.checked = true; });
+                        if (attivazioneMAB == true) {
+                            $("#chkMABSR").each(function () { this.checked = true; });
+                        } else {
+                            $("#chkMABSR").each(function () { this.checked = false; });
+                        }
+                    } else {
+                        $("#chkMABR").each(function () { this.checked = false; });
+                        $("#chkMABSR").each(function () { this.checked = false; });
+                    }
+
                     AggiornaInfoTrasferimento();
 
                 } else {
@@ -338,6 +353,18 @@
             //disableLink
             $("#linkAnticipoPrimaSistemazione").attr("disabled", "disabled");
             $("#linkAnticipoPrimaSistemazione").addClass("disableLink");
+        }
+    }
+
+    function EnableDisableLinkMAB(abilitato) {
+        //debugger;
+        if (abilitato == true) {
+            $("#linkMAB").removeAttr("disabled");
+            $("#linkMAB").removeClass("disableLink");
+        } else {
+            //disableLink
+            $("#linkMAB").attr("disabled", "disabled");
+            $("#linkMAB").addClass("disableLink");
         }
     }
 

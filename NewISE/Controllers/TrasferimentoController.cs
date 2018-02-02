@@ -172,7 +172,9 @@ namespace NewISE.Controllers
                         richiestaTE = richiestaTE,
                         attivazioneTE = attivazioneTE,
                         richiestaAnticipi = richiestaAnticipi,
-                        attivazioneAnticipi = attivazioneAnticipi
+                        attivazioneAnticipi = attivazioneAnticipi,
+                        richiestaMAB = richiestaMAB,
+                        attivazioneMAB = attivazioneMAB
                     });
 
         }
