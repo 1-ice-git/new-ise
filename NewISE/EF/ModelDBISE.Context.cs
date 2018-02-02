@@ -100,7 +100,6 @@ namespace NewISE.EF
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
         public virtual DbSet<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
         public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
-        public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
@@ -123,5 +122,6 @@ namespace NewISE.EF
         public virtual DbSet<TEP_FK> TEP_FK { get; set; }
         public virtual DbSet<TER_FK> TER_FK { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

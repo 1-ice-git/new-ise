@@ -26,7 +26,7 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
     }
 }

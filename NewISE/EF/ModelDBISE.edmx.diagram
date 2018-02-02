@@ -163,14 +163,9 @@
         <AssociationConnector Association="DBISEPRO.R_PS_AA" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONEMAB" Width="1.5" PointX="8.75" PointY="48.75" />
         <EntityTypeShape EntityType="DBISEPRO.CANOMEMAB" Width="1.5" PointX="19" PointY="44" />
-        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="19" PointY="55.625" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_CMAB" />
-        <AssociationConnector Association="DBISEPRO.R_AMAB_MAB" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
         <AssociationConnector Association="DBISEPRO.AMAB_DOC" />
         <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
-        <AssociationConnector Association="DBISEPRO.MAB_MA" />
-        <AssociationConnector Association="DBISEPRO.MAB_PMAB" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Width="1.5" PointX="11" PointY="71.875" />
         <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Width="1.5" PointX="39.25" PointY="62.25" />
         <EntityTypeShape EntityType="DBISEPRO.VIAGGICONGEDO" Width="1.5" PointX="8.75" PointY="72.75" />
@@ -253,8 +248,14 @@
         <AssociationConnector Association="DBISEPRO.PS_PFKM" />
         <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="43.5" PointY="53.375" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_T_PCMAB" />
+        <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="43.5" PointY="57.375" />
+        <AssociationConnector Association="DBISEPRO.R_AMAB_MAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_T_MAB" />
+        <AssociationConnector Association="DBISEPRO.MAB_MA" />
+        <AssociationConnector Association="DBISEPRO.MAB_PMAB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
