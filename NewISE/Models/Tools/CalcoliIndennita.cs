@@ -51,6 +51,13 @@ namespace NewISE.Models.Tools
 
         public decimal anticipoIndennitaSistemazioneLorda { get; set; } = 0;
 
+        public decimal contributoOmnicomprensivoTrasferimentoAnticipo { get; set; } = 0;
+        public decimal contributoOmnicomprensivoTrasferimentoSaldo { get; set; } = 0;
+        public decimal percentualeFasciaKmTrasferimento { get; set; } = 0;
+        public decimal contributoOmnicomprensivoRientroAnticipo { get; set; } = 0;
+        public decimal contributoOmnicomprensivoRientroSaldo { get; set; } = 0;
+        public decimal percentualeFasciaKmRientro { get; set; } = 0;
+
 
         public void Dispose()
         {
@@ -402,6 +409,27 @@ namespace NewISE.Models.Tools
 
                             if (indennitaSistemazioneLorda > 0)
                             {
+                                var primaSistemazione = trasferimento.PRIMASITEMAZIONE;
+
+                                var lpercentualeFKM =
+                                    primaSistemazione.PERCENTUALEFKM.Where(
+                                        a =>
+                                            a.ANNULLATO == false && trasferimento.DATAPARTENZA >= a.DATAINIZIOVALIDITA &&
+                                            trasferimento.DATAPARTENZA <= a.DATAFINEVALIDITA)
+                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+
+                                if (lpercentualeFKM?.Any() ?? false)
+                                {
+                                    var pfkm = lpercentualeFKM.First();
+                                    percentualeFasciaKmTrasferimento = pfkm.COEFFICIENTEKM;
+                                    contributoOmnicomprensivoTrasferimentoAnticipo = indennitaSistemazioneLorda * (percentualeFasciaKmTrasferimento / 100);
+                                    contributoOmnicomprensivoTrasferimentoSaldo = indennitaSistemazioneLorda *
+                                                                                  ((100 -
+                                                                                    percentualeFasciaKmTrasferimento) /
+                                                                                   100);
+
+                                }
+
 
                             }
                             #endregion
