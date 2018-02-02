@@ -164,12 +164,9 @@
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONEMAB" Width="1.5" PointX="8.75" PointY="48.75" />
         <EntityTypeShape EntityType="DBISEPRO.CANOMEMAB" Width="1.5" PointX="19" PointY="44" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="19" PointY="55.625" />
-        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="22.25" PointY="52.5" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_CMAB" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_MAB" />
-        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.AMAB_DOC" />
         <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
         <AssociationConnector Association="DBISEPRO.MAB_MA" />
@@ -254,6 +251,10 @@
         <AssociationConnector Association="DBISEPRO.R_TEP_TEPFK" />
         <AssociationConnector Association="DBISEPRO.R_TER_TERFK" />
         <AssociationConnector Association="DBISEPRO.PS_PFKM" />
+        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="43.5" PointY="53.375" />
+        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_T_PCMAB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

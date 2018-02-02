@@ -808,9 +808,11 @@
           <Property Name="IDPAGATOCONDIVISO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDTRASFERIMENTOCONDIVISO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINIZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="CONDIVISO" Type="number" Precision="1" Scale="0" Nullable="false" />
+          <Property Name="PAGATO" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
           <Property Name="ANNULLATO" Type="number" Precision="1" Scale="0" Nullable="false" />
         </EntityType>
@@ -3341,6 +3343,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_T_PCMAB">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAGATOCONDIVISOMAB" Type="Self.PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDTRASFERIMENTOCONDIVISO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_R">
           <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -4782,6 +4798,10 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
           </AssociationSet>
+          <AssociationSet Name="R_T_PCMAB" Association="Self.R_T_PCMAB">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_T_R" Association="Self.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
@@ -5408,7 +5428,6 @@
           <EntitySet Name="ATTIVAZIONEMAB" EntityType="DBISEPRO.ATTIVAZIONEMAB" />
           <EntitySet Name="CANOMEMAB" EntityType="DBISEPRO.CANOMEMAB" />
           <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" />
-          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
           <AssociationSet Name="R_AMAB_CMAB" Association="DBISEPRO.R_AMAB_CMAB">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
@@ -5417,17 +5436,9 @@
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
           </AssociationSet>
-          <AssociationSet Name="R_AMAB_PCMAB" Association="DBISEPRO.R_AMAB_PCMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
           <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_PCMAB" Association="DBISEPRO.R_MAB_PCMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
           <AssociationSet Name="AMAB_DOC" Association="DBISEPRO.AMAB_DOC">
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
@@ -5701,6 +5712,19 @@
           <AssociationSet Name="PS_PFKM" Association="DBISEPRO.PS_PFKM">
             <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+          </AssociationSet>
+          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
+          <AssociationSet Name="R_AMAB_PCMAB" Association="DBISEPRO.R_AMAB_PCMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAB_PCMAB" Association="DBISEPRO.R_MAB_PCMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_PCMAB" Association="DBISEPRO.R_T_PCMAB">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -7586,9 +7610,9 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANOMEMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.AMAB_DOC" FromRole="ATTIVAZIONEMAB" ToRole="DOCUMENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_AMAB" FromRole="ATTIVAZIONEMAB" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
         </EntityType>
         <EntityType Name="CANOMEMAB">
           <Key>
@@ -7620,24 +7644,9 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="CANOMEMAB" />
-          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.MAB_MA" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.MAB_PMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
-        </EntityType>
-        <EntityType Name="PAGATOCONDIVISOMAB">
-          <Key>
-            <PropertyRef Name="IDPAGATOCONDIVISO" />
-          </Key>
-          <Property Name="IDPAGATOCONDIVISO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
         </EntityType>
         <Association Name="R_AMAB_CMAB">
           <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
@@ -7667,20 +7676,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_AMAB_PCMAB">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="PAGATOCONDIVISOMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MAB_CMAB">
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -7691,20 +7686,6 @@
               <PropertyRef Name="IDMAB" />
             </Principal>
             <Dependent Role="CANOMEMAB">
-              <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_MAB_PCMAB">
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDMAB" />
-            </Principal>
-            <Dependent Role="PAGATOCONDIVISOMAB">
               <PropertyRef Name="IDMAB" />
             </Dependent>
           </ReferentialConstraint>
@@ -8279,6 +8260,7 @@
           <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.T_RC" FromRole="TRASFERIMENTO" ToRole="REGOLECALCOLO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_T_PCMAB" FromRole="TRASFERIMENTO" ToRole="PAGATOCONDIVISOMAB" />
         </EntityType>
         <Association Name="R_T_AMAB">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
@@ -8736,6 +8718,66 @@
         <Association Name="PS_PFKM">
           <End Type="DBISEPRO.PERCENTUALEFKM" Role="PERCENTUALEFKM" Multiplicity="*" />
           <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="*" />
+        </Association>
+        <EntityType Name="PAGATOCONDIVISOMAB">
+          <Key>
+            <PropertyRef Name="IDPAGATOCONDIVISO" />
+          </Key>
+          <Property Name="IDPAGATOCONDIVISO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTOCONDIVISO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINIZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="CONDIVISO" Type="Boolean" Nullable="false" />
+          <Property Name="PAGATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <Association Name="R_AMAB_PCMAB">
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_MAB_PCMAB">
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDMAB" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_PCMAB">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDTRASFERIMENTOCONDIVISO" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -9821,20 +9863,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PAGATOCONDIVISOMAB">
-            <EntityTypeMapping TypeName="DBISEPRO.PAGATOCONDIVISOMAB">
-              <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="CONDIVISO" ColumnName="CONDIVISO" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
-                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
-                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
-                <ScalarProperty Name="IDPAGATOCONDIVISO" ColumnName="IDPAGATOCONDIVISO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AMAB_DOC" TypeName="DBISEPRO.AMAB_DOC" StoreEntitySet="AMAB_DOC">
             <EndProperty Name="DOCUMENTI">
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
@@ -10211,6 +10239,22 @@
               <ScalarProperty Name="IDPFKM" ColumnName="IDPFKM" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="PAGATOCONDIVISOMAB">
+            <EntityTypeMapping TypeName="DBISEPRO.PAGATOCONDIVISOMAB">
+              <MappingFragment StoreEntitySet="PAGATOCONDIVISOMAB">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="PAGATO" ColumnName="PAGATO" />
+                <ScalarProperty Name="CONDIVISO" ColumnName="CONDIVISO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINIZIOVALIDITA" ColumnName="DATAINIZIOVALIDITA" />
+                <ScalarProperty Name="IDTRASFERIMENTOCONDIVISO" ColumnName="IDTRASFERIMENTOCONDIVISO" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+                <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
+                <ScalarProperty Name="IDPAGATOCONDIVISO" ColumnName="IDPAGATOCONDIVISO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
