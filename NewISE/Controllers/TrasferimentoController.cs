@@ -649,7 +649,6 @@ namespace NewISE.Controllers
 
                                     //dtld.RimuoviAssociazioneLivelloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
 
-
                                     //LivelloDipendenteModel ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
                                     //if (ldm.HasValue())
                                     //{
@@ -742,7 +741,6 @@ namespace NewISE.Controllers
                                                             dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
                                                         }
 
-
                                                     }
                                                     else
                                                     {
@@ -796,7 +794,6 @@ namespace NewISE.Controllers
                                         {
                                             throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
                                         }
-
 
                                     }
 
@@ -994,6 +991,8 @@ namespace NewISE.Controllers
                     var lTipologiaCoan = new List<SelectListItem>();
                     var lFasciaKM = new List<SelectListItem>();
 
+                    bool trasfSuccessivo = false;
+
                     try
                     {
                         ListeComboNuovoTrasf(out lTipoTrasferimento, out lUffici, out lRuoloUfficio, out lTipologiaCoan, out lFasciaKM);
@@ -1006,6 +1005,18 @@ namespace NewISE.Controllers
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
                         ViewBag.Matricola = matricola;
+
+                        using (dtTrasferimento dttr = new dtTrasferimento())
+                        {
+                            trasfSuccessivo = dttr.EsisteTrasferimentoSuccessivo(trm.idTrasferimento);
+                            ViewData.Add("TrasfSucc", trasfSuccessivo);
+                        }
+
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            var d = dtd.GetDipendenteByID(trm.idDipendente);
+                            ViewBag.Dipendente = d;
+                        }
 
                         return PartialView("ModificaTrasferimento", trm);
                     }
