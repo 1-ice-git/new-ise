@@ -12,40 +12,44 @@
     }
 }
 
+<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+
 @Html.Hidden("hiPercentualeRichiesta")
+@Html.Hidden("hiPercentualeAnticipoRichiesto")
 
 <div style="padding-right: 10px;">
     <h4>Richiesta Anticipi</h4>
     <hr />
-    <table class="col-xs-10">
-        <tr>
-            <td></td>
-            <td style="padding-left:10px;font-weight:bold" align="center">
-                @Html.DisplayNameFor(model => model.ImportoPrevisto)
-            </td>
-            <td style="font-weight:bold" align="center">
-                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
-            </td>
-            <td style="font-weight:bold" align="center">
-                @Html.DisplayNameFor(model => model.ImportoPercepito)
-            </td>
-        </tr>
-        <tr>
-            <td style="font-weight:bold;padding-right:15px" align="right">
-                Indennità di Prima Sistemazione:
-            </td>
-            <td class="col-xs-2">
-                <input id="ImportoPrevisto" name="ImportoPrevisto" type="number" value="@Model.ImportoPrevisto" class="form-control " readonly style="text-align: right" />
+    <div class="table col-xs-12">
+        <div class="row">
+            <div class="col-xs-4">
+            </div>
 
-            </td>
-            <td class="col-xs-2">
-                <input maxlength="5" onkeyup="CalcolaAnticipo();" id="PercentualeAnticipoRichiesto" name="PercentualeAnticipoRichiesto" type="number" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
-            </td>
-            <td class="col-xs-3">
-                <input id="ImportoPercepito" name="ImportoPercepito" type="number" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
-            </td>
-        </tr>
-    </table>
+            <div class="col-xs-2 text-center" style="font-weight:bold">
+                @Html.DisplayNameFor(model => model.ImportoPrevisto)
+            </div>
+            <div class="col-xs-2 text-center" style="font-weight:bold">
+                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
+            </div>
+            <div class="col-xs-2 text-center" style="font-weight:bold">
+                @Html.DisplayNameFor(model => model.ImportoPercepito)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-right" style="padding-right:15px;font-weight:bold">
+                Indennità di Prima Sistemazione:
+            </div>
+            <div class="col-xs-2">
+                <input id="ImportoPrevisto" value="@Model.ImportoPrevisto" class="form-control " readonly style="text-align: right" />
+            </div>
+            <div class="col-xs-2">
+                <input maxlength="3" onkeyup="CalcolaAnticipo();" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
+            </div>
+            <div class="col-xs-2">
+                <input id="ImportoPercepito" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -55,18 +59,46 @@
         $(this).select();
     });
 
+    //Globalize.culture("it-IT");
+
+    $("#PercentualeAnticipoRichiesto").autoNumeric('init',
+	{
+	    aSep: '.',
+	    aDec: ',',
+	    aSign: ''
+	});
+
+    $("#ImportoPrevisto").autoNumeric('init',
+   {
+       aSep: '.',
+       aDec: ',',
+       aSign: ''
+   });
+    //new AutoNumeric("#PercentualeAnticipoRichiesto", { currencySymbol : '€' });
+
+    //const autoNumericOptionsEuro = {
+    //    digitGroupSeparator        : '.',
+    //    decimalCharacter           : ',',
+    //    decimalCharacterAlternative: '.',
+    //    currencySymbol             : '\u202f€',
+    //    currencySymbolPlacement    : AutoNumeric.options.currencySymbolPlacement.suffix,
+    //    roundingMethod             : 'U',
+    //};
+    //new AutoNumeric("#PercentualeAnticipoRichiesto", autoNumericOptionsEuro);
+
+    
 
     $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
 
-    CalcolaAnticipo();
+    //CalcolaAnticipo();
 
     $(document).ready(function () {
-        $('[id^=PercentualeAnticipoRichiesto]').keypress(validateNumber);
+        $('[id^=idPercentualeAnticipoRichiesto]').keypress(validateNumber);
     });
 
     function validateNumber(event) {
         var key = window.event ? event.keyCode : event.which;
-        if (event.keyCode === 8 || event.keyCode === 44) {
+        if (event.keyCode === 8) {
             return true;
         } else if (key < 48 || key > 57) {
             return false;
@@ -79,17 +111,19 @@
 
     function CalcolaAnticipo() {
         //debugger;
-        var appo = document.getElementById("PercentualeAnticipoRichiesto").value.replace(",", ".");
+
+
+        var appo = parseInt($("#PercentualeAnticipoRichiesto").val());
         var percentualeRichiesta = parseFloat(appo).toFixed(2);
 
-        var appo = document.getElementById("ImportoPrevisto").value.replace(",", ".");
-        var ImportoPrevisto =parseFloat(appo).toFixed(2);
+        var ImportoPrevisto = parseFloat($("#ImportoPrevisto").val());
+        //var ImportoPrevisto = parseFloat(appo).toFixed(2);
 
-        var calcolo = Number((ImportoPrevisto * (percentualeRichiesta / 100)).toFixed(2));
-        document.getElementById("ImportoPercepito").value = calcolo;
+        var calcolo = Number((ImportoPrevisto * (percentualeRichiesta / 100))).toFixed(2);
+        $("#ImportoPercepito").val(calcolo);
 
-        var appo1 = document.getElementById("ImportoPercepito").value.replace(".", ",");
-        document.getElementById("ImportoPercepito").value = appo1;
+        //var appo1 = parseFloat($("ImportoPercepito").val());
+        //$("#ImportoPercepito").val(appo1);
 
         var percentualeRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val()).toFixed(2);
 
@@ -101,6 +135,10 @@
             $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
             $("#btNotificaRichiestaAnticipi").addClass("disabled");
         }
+
+
+       
+
 
     }
 </script>

@@ -158,7 +158,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
                     {
-                        var importoPrevisto =decimal.Round(ci.anticipoIndennitaSistemazioneLorda,2);
+                        var importoPrevisto =ci.anticipoIndennitaSistemazioneLorda;
     
                         var al = db.ANTICIPI.Where(x=>x.IDATTIVITAANTICIPI==idAttivitaAnticipi).ToList();
 

@@ -5,89 +5,89 @@
     decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
 }
 
-<div style="padding-right: 15px;">
+<div>
     <h4>Altri Dati Familiari</h4>
     <hr />
-    <table style="width:100%">
-        <tr>
-            <td>
-                <table >
-                    <tr>
-                        <td style="font-weight:bold">
-                            @Html.DisplayNameFor(model => model.Coniuge.nominativo)
-                        </td>
-                        <td style="padding-left:10px">
-                            <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
-                            @Html.DisplayNameFor(model => model.nazionalita)
-                        </td>
-                        <td style="padding-left:10px">
-                            <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
-                            @Html.DisplayNameFor(model => model.residente)
-                        </td>
-                        <td style="padding-left:10px">
-                            <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
-                            @Html.DisplayNameFor(model => model.ulterioreMagConiuge)
-                        </td>
-                        <td style="padding-left:10px">
-                            <span class="text-uppercase">@Html.DisplayFor(model => model.ulterioreMagConiuge)</span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-                <table >
-                    <tr>
-                        <td style="font-weight:bold">
+    <div class="table">
+        <div class="row">
+           <div class="col-xs-6">
+               <div class="table" style="background-color:transparent">
+                   <div class="row">
+                       <div class="col-xs-5 text-right" style="font-weight:bold">
+                           @Html.DisplayNameFor(model => model.Coniuge.nominativo)
+                       </div>
+                       <div class="col-xs-6" style="padding-left:10px">
+                           <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-xs-5 text-right" style="font-weight:bold">
+                           @Html.DisplayNameFor(model => model.nazionalita)
+                       </div>
+                       <div class="col-xs-6" style="padding-left:10px">
+                           <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-xs-5 text-right" style="font-weight:bold">
+                           @Html.DisplayNameFor(model => model.residente)
+                       </div>
+                       <div class="col-xs-6" style="padding-left:10px">
+                           <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-xs-5 text-right" style="font-weight:bold">
+                           @Html.DisplayNameFor(model => model.ulterioreMagConiuge)
+                       </div>
+                       <div class="col-xs-6" style="padding-left:10px">
+                           <span class="text-uppercase">@Html.DisplayFor(model => model.ulterioreMagConiuge)</span>
+                       </div>
+                   </div>
+               </div>
+             </div> 
+            <div class="col-xs-6">
+                <div class="table" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.indirizzoResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.capResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             @Html.DisplayFor(model => model.capResidenza)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.comuneResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.provinciaResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-    </table>
-
-    <hr />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+    <hr />
+
+</>
 <p style="padding-left: 15px;">
     @Ajax.ActionLink("Torna indietro", "ElencoTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
