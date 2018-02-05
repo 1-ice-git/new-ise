@@ -647,7 +647,6 @@ namespace NewISE.Controllers
 
                                     //dtld.RimuoviAssociazioneLivelloDipendente_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
 
-
                                     //LivelloDipendenteModel ldm = dtld.GetLivelloDipendente(trm.idDipendente, trm.dataPartenza, db);
                                     //if (ldm.HasValue())
                                     //{
@@ -740,7 +739,6 @@ namespace NewISE.Controllers
                                                             dtib.AssociaIndennitaBase_Indennita(trm.idTrasferimento, ibm.idIndennitaBase, db);
                                                         }
 
-
                                                     }
                                                     else
                                                     {
@@ -794,7 +792,6 @@ namespace NewISE.Controllers
                                         {
                                             throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
                                         }
-
 
                                     }
 
