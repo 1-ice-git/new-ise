@@ -9,127 +9,127 @@
 <div style="padding-left: 15px;">
     <h4>Altri Dati Familiari Figlio</h4>
     <hr />
-    <table style="width:100%">
-        <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td style="font-weight:bold">
+    <div class="table">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="table" style="background-color:transparent" >
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.Figli.nominativo)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.Figli.nominativo)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.dataNascita)
-                        </td>
+                        </div>
                         @if (Model.dataNascita.HasValue)
                         {
-                            <td style="padding-left:10px">
+                            <div class="col-xs-6" style="padding-left:10px">
                                 <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
-                            </td>
+                            </div>
                         }
                         else
                         {
-                            <td></td>
-                        }
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
-                            @Html.DisplayNameFor(model => model.capNascita)
-                        </td>
+                            <div class="col-xs-6" style="padding-left:10px">
+                            </div>
 
-                        <td style="padding-left:10px">
+                        }
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
+                            @Html.DisplayNameFor(model => model.capNascita)
+                        </div>
+
+                        <div class="col-xs-6" style="padding-left:10px">
                             @Html.DisplayFor(model => model.capNascita)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.comuneNascita)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.provinciaNascita)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.nazionalita)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.nazionalita)</span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="table" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.indirizzoResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.indirizzoResidenza)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.capResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             @Html.DisplayFor(model => model.capResidenza)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.comuneResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.comuneResidenza)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.provinciaResidenza)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaResidenza)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.residente)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.residente)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight:bold">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 text-right" style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.studente)
-                        </td>
-                        <td style="padding-left:10px">
+                        </div>
+                        <div class="col-xs-6" style="padding-left:10px">
                             <span class="text-uppercase">@Html.DisplayFor(model => model.studente)</span>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <hr />
 </div>
 <p style="padding-left: 15px;">
     @Ajax.ActionLink("Torna indietro", "ElencoTitoliViaggio", "TitoliViaggio", new { idTitoliViaggio = idTitoliViaggio }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divTitoliViaggio", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
-
-
 
