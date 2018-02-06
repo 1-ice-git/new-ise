@@ -430,9 +430,9 @@ namespace NewISE.Models.DBModel.dtObj
                         c.CODICEFISCALE != cm.codiceFiscale)
                     {
                         c.IDTIPOLOGIACONIUGE = (decimal)cm.idTipologiaConiuge;
-                        c.NOME = cm.nome;
-                        c.COGNOME = cm.cognome;
-                        c.CODICEFISCALE = cm.codiceFiscale;
+                        c.NOME = cm.nome.ToUpper();
+                        c.COGNOME = cm.cognome.ToUpper();
+                        c.CODICEFISCALE = cm.codiceFiscale.ToUpper();
                         c.DATAINIZIOVALIDITA = cm.dataInizio.Value;
                         c.DATAFINEVALIDITA = dtFin;
                         c.DATAAGGIORNAMENTO = DateTime.Now;

@@ -1586,7 +1586,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumParentela.Figlio:
                         var lfp =
                             ap.FIGLIPASSAPORTO.Where(
-                                a => a.ANNULLATO == false && a.IDFIGLIPASSAPORTO == idAttivazionePassaporto);
+                            a => a.ANNULLATO == false && a.IDFIGLIPASSAPORTO == idFamiliarePassaporto);
 
                         if (lfp?.Any() ?? false)
                         {

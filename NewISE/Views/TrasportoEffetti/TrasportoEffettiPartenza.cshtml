@@ -13,50 +13,51 @@
 }
 
 
-<table>
-    <tr>
-        <td style="padding-top:10px">
-            <table>
-                <tr>
-                    <td class="col-xs-3 text-right">
+<div class="table col-xs-12">
+    <div class="row">
+        <div class="col-xs-12" style="padding-top:10px">
+            <div class="table" style="background-color:transparent">
+                <div class="row">
+                    <div class="col-xs-5 text-right"  style="padding-top:10px">
                         <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
-                    </td>
-                    <td class="col-xs-2">
-                        <input class="form-control" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-xs-3 text-right">
+                    </div>
+                    <div class="col-xs-2" style="padding-top:5px">
+                        <input class="form-control" style="text-align: right" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right" style="padding-top:10px">
                         <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
-                    </td>
-                    <td class="col-xs-2">
-                        <input class="form-control" value="@Html.DisplayFor(model => model.percKM)" readonly />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-xs-3 text-right" ">
+                    </div>
+                    <div class="col-xs-2" style="padding-top:5px">
+                        <input class="form-control" style="text-align: right" value="@Html.DisplayFor(model => model.percKM)" readonly />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right" style="padding-top:10px">
                         <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
-                    </td>
-                    <td class="col-xs-2">
-                        <input class="form-control" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
-        <td>&nbsp;</td>
-    </tr>
-    <tr>
-        <td>
-            <table>
-                <tr>
-                    <td>
+                    </div>
+                    <div class="col-xs-2" style="padding-top:5px">
+                        <input class="form-control" style="text-align: right" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">&nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div  class="col-xs-12">
+            <div class="table" style="background-color:transparent">
+                <div class="row">
+                    <div class="col-xs-7">
                         <label for="modulo1" class="control-label">
                             Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
                         </label>
-                    </td>
-                    <td style="padding-left:10px;padding-bottom:10px">
+                    </div>
+                    <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
                         @if (DocContributo)
                         {
                             <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
@@ -69,15 +70,15 @@
                                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
                             </a>
                         }
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-7">
                         <label for="modulo2" class="control-label">
                             Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
                         </label>
-                    </td>
-                    <td style="padding-left:10px;padding-bottom:10px">
+                    </div>
+                    <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
                         @if (DocAttestazione)
                         {
                             <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
@@ -90,55 +91,140 @@
                                 <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
                             </a>
                         }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+                        @*<table>
+                <tr>
+                    <td style="padding-top:10px">
+                        <table>
+                            <tr>
+                                <td class="col-xs-3 text-right">
+                                    <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
+                                </td>
+                                <td class="col-xs-2">
+                                    <input class="form-control" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-3 text-right">
+                                    <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
+                                </td>
+                                <td class="col-xs-2">
+                                    <input class="form-control" value="@Html.DisplayFor(model => model.percKM)" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-xs-3 text-right" ">
+                                    <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+                                </td>
+                                <td class="col-xs-2">
+                                    <input class="form-control" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
-            </table>
-    </tr>
-</table>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="modulo1" class="control-label">
+                                        Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
+                                    </label>
+                                </td>
+                                <td style="padding-left:10px;padding-bottom:10px">
+                                    @if (DocContributo)
+                                    {
+                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="modulo2" class="control-label">
+                                        Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
+                                    </label>
+                                </td>
+                                <td style="padding-left:10px;padding-bottom:10px">
+                                    @if (DocAttestazione)
+                                    {
+                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                </tr>
+            </table>*@
 
-<script type="text/javascript">
-    function ElencoDocumentiTE(idTipoDocumento) {
-        //debugger;
-        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+                        <script type="text/javascript">
+                            function ElencoDocumentiTE(idTipoDocumento) {
+                                //debugger;
+                                var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
 
-        var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
+                                var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                idTipoDocumento: idTipoDocumento,
-                idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divTrasportoEffettiPartenza").empty();
-                $("#divTrasportoEffettiPartenza").html(result);
+                                $.ajax({
+                                    type: "POST",
+                                    url: rotta,
+                                    data: {
+                                        idTipoDocumento: idTipoDocumento,
+                                        idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
+                                    },
+                                    dataType: 'html',
+                                    beforeSend: function () {
+                                        //debugger;
+                                        VerificaAutenticazione();
+                                        //$("#DialogNewDoc").dialog("destroy");
+                                        //$("#divEffettoLoadAutNoDoc").show("slow");
+                                    },
+                                    success: function (result) {
+                                        //debugger;
+                                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                        $("#divTrasportoEffettiPartenza").empty();
+                                        $("#divTrasportoEffettiPartenza").html(result);
 
-                //RicercaDocumenti();
+                                        //RicercaDocumenti();
 
-            },
-            complete: function () {
+                                    },
+                                    complete: function () {
 
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
+                                    },
+                                    error: function (jqXHR, textStatus, errorThrow) {
+                                        //debugger;
+                                        var msg = errorThrow.err;
+                                        ErroreElaborazioneAjax(msg);
+                                    }
 
-        });
+                                });
 
-    }
+                            }
 
-</script>
+                        </script>
 
 

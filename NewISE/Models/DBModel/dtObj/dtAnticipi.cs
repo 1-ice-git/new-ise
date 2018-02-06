@@ -158,7 +158,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                     using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
                     {
-                        var importoPrevisto =ci.anticipoIndennitaSistemazioneLorda;
+                        var importoPrevisto =Math.Round(ci.anticipoIndennitaSistemazioneLorda,2);
     
                         var al = db.ANTICIPI.Where(x=>x.IDATTIVITAANTICIPI==idAttivitaAnticipi).ToList();
 
@@ -196,6 +196,35 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 return avm;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public decimal CalcolaImportoPercepito(decimal idAttivitaAnticipi, decimal percRichiesta)
+        {
+            try
+            {
+                decimal importoPercepito;
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var idTrasferimento = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO;
+
+                    using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
+                    {
+                        var importoPrevisto = ci.anticipoIndennitaSistemazioneLorda;
+
+                        importoPercepito = Math.Round((importoPrevisto * (percRichiesta / 100)),2);
+
+                    }
+                }
+
+                return importoPercepito;
 
             }
             catch (Exception ex)

@@ -30,23 +30,15 @@
                 )
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTE();">
-                        <table>
-                            <tr>
-                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
-                                <td style="padding-left:10px">Aggiungi Documento</td>
-                            </tr>
-                        </table>
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                        Aggiungi Documento
                     </button>
                 }
                 else
                 {
                     <button class="btn btn-default btn-sm" disabled>
-                        <table>
-                            <tr>
-                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
-                                <td style="padding-left:10px">Aggiungi Documento</td>
-                            </tr>
-                        </table>
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                        Aggiungi Documento
                     </button>
                 }
             </div>
@@ -58,23 +50,15 @@
                 @if (idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo)
                 {
                     <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 1.pdf" target="_blank">
-                        <table>
-                            <tr>
-                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
-                                <td style="padding-left:10px">Download Formulario</td>
-                            </tr>
-                        </table>
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                        Download Formulario
                     </a>
                 }
                 @if (idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco)
                 {
                     <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 3.pdf" target="_blank">
-                        <table>
-                            <tr>
-                                <td><i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i></td>
-                                <td style="padding-left:10px">Download Formulario</td>
-                            </tr>
-                        </table>
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                         Download Formulario
                     </a>
                 }
             </div>

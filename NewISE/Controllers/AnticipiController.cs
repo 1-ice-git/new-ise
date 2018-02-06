@@ -36,6 +36,34 @@ namespace NewISE.Controllers
             return PartialView(psm);
         }
 
+        public JsonResult CalcolaAnticipo (decimal idAttivitaAnticipi, decimal percRichiesta)
+        {
+            string errore = "";
+            decimal importoPercepito=0;
+
+            try
+            {
+                using (dtAnticipi dta = new dtAnticipi())
+                {
+                    importoPercepito = dta.CalcolaImportoPercepito(idAttivitaAnticipi,percRichiesta);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        importoPercepito = importoPercepito,
+                        err = errore
+                    });
+    
+
+        }
 
         public ActionResult AttivitaAnticipi(decimal idPrimaSistemazione)
         {

@@ -1048,6 +1048,7 @@
     <Content Include="Immagini\Errore2.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
+    <Content Include="Immagini\Loading\loader.gif" />
     <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\switch3.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />

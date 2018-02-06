@@ -15,40 +15,16 @@
     <hr />
     <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
         <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaAnticipi" onclick="ModalNotificaRichiestaAnticipi();">
-            <table>
-                <tr>
-                    <td>
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    </td>
-                    <td style="padding-left:5px">
-                        Notifica richiesta
-                    </td>
-                </tr>
-            </table>
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Notifica richiesta
         </button>
         <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaAnticipi" onclick="ModalAttivaRichiestaAnticipi();">
-            <table>
-                <tr>
-                    <td>
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    </td>
-                    <td style="padding-left:5px">
-                        Attiva richiesta
-                    </td>
-                </tr>
-            </table>
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Attiva richiesta
         </button>
         <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaAnticipi" onclick="ModalAnnullaRichiestaAnticipi();">
-            <table>
-                <tr>
-                    <td>
-                        <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-                    </td>
-                    <td style="padding-left:5px">
-                        Annulla richiesta
-                    </td>
-                </tr>
-            </table>
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Annulla richiesta
         </button>
     </div>
 </div>
@@ -142,7 +118,8 @@
         //debugger;
         var rotta = "/Anticipi/ConfermaNotificaRichiestaAnticipi";
         var idAttivitaAnticipi = parseInt('@idAttivitaAnticipi');
-        var percentualeRichiesta = document.getElementById("PercentualeAnticipoRichiesto").value;
+        //var percentualeRichiesta = document.getElementById("PercentualeAnticipoRichiesto").value;
+        var percentualeRichiesta = parseInt($("#PercentualeAnticipoRichiesto").val());
 
 
         $.ajax({
