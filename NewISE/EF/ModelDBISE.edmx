@@ -1039,8 +1039,6 @@
         <EntityType Name="RUOLODIPENDENTE">
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
-            <PropertyRef Name="IDTRASFERIMENTO" />
-            <PropertyRef Name="IDRUOLO" />
           </Key>
           <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -8780,8 +8778,6 @@
         <EntityType Name="RUOLODIPENDENTE">
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
-            <PropertyRef Name="IDTRASFERIMENTO" />
-            <PropertyRef Name="IDRUOLO" />
           </Key>
           <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
