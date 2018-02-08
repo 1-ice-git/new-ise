@@ -21,13 +21,13 @@ namespace NewISE.EF
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
-            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.TEORICI = new HashSet<TEORICI>();
             this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
         }
     
         public decimal IDTRASFERIMENTO { get; set; }
@@ -58,8 +58,6 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SOSPENSIONE> SOSPENSIONE { get; set; }
         public virtual STATOTRASFERIMENTO STATOTRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -79,5 +77,7 @@ namespace NewISE.EF
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
     }
 }

@@ -3,8 +3,8 @@
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel>
 
 
-
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+    <h4>Pratiche passaporto</h4>
     <table cellspacing="0" id="tabElencoFamiliariPass">
         <thead>
             <tr>
@@ -440,14 +440,14 @@
 
     }
 
-    function AltriDatiFamiliariFiglio(idFiglio) {
+    function AltriDatiFamiliariFiglio(idAltriDati) {
         //debugger;
         var rotta = "/AltriDatiFamiliari/AltriDatiFamiliariFiglioPassaporto";
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idFiglio: idFiglio },
+            data: { idAltriDati: idAltriDati },
             dataType: 'html',
             async: false,
             beforeSend: function () {

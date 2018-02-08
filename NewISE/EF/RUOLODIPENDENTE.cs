@@ -15,8 +15,8 @@ namespace NewISE.EF
     public partial class RUOLODIPENDENTE
     {
         public decimal IDRUOLODIPENDENTE { get; set; }
-        public decimal IDRUOLO { get; set; }
         public decimal IDTRASFERIMENTO { get; set; }
+        public decimal IDRUOLO { get; set; }
         public System.DateTime DATAINZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }

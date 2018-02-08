@@ -17,7 +17,7 @@
 
     bool ricaricaTrasferimenti = Convert.ToBoolean(ViewData["ricaricaTrasferimenti"]);
 
-
+    decimal idRuoloDipendente = Convert.ToDecimal(ViewBag.idRuoloDipendente);
 
     if (Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato)
     {
@@ -80,6 +80,8 @@
 
         @Html.Hidden("matricola", vMatricola)
         @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
+        @Html.Hidden("idRuoloDipendente", idRuoloDipendente)
+
 
 
         <div style="padding-top: 3px;">

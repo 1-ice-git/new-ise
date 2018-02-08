@@ -1039,10 +1039,12 @@
         <EntityType Name="RUOLODIPENDENTE">
           <Key>
             <PropertyRef Name="IDRUOLODIPENDENTE" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
+            <PropertyRef Name="IDRUOLO" />
           </Key>
           <Property Name="IDRUOLODIPENDENTE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDRUOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATAINZIOVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAFINEVALIDITA" Type="date" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="date" Nullable="false" />
@@ -5586,7 +5588,6 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
-          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
           <EntitySet Name="TRASFERIMENTO" EntityType="DBISEPRO.TRASFERIMENTO" />
           <AssociationSet Name="R_T_AMAB" Association="DBISEPRO.R_T_AMAB">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5623,14 +5624,6 @@
           <AssociationSet Name="R_T_R" Association="DBISEPRO.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-          </AssociationSet>
-          <AssociationSet Name="R_RU_RD" Association="DBISEPRO.R_RU_RD">
-            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_RD" Association="DBISEPRO.R_T_RD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_SOSP" Association="DBISEPRO.R_TRASF_SOSP">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5747,6 +5740,15 @@
           <AssociationSet Name="MAB_PMAB" Association="DBISEPRO.MAB_PMAB">
             <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
             <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
+          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
+          <AssociationSet Name="R_RU_RD" Association="DBISEPRO.R_RU_RD">
+            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_RD" Association="DBISEPRO.R_T_RD">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -8175,20 +8177,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="RUOLODIPENDENTE">
-          <Key>
-            <PropertyRef Name="IDRUOLODIPENDENTE" />
-          </Key>
-          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISEPRO.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_RD" FromRole="RUOLODIPENDENTE" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="TRASFERIMENTO">
           <Key>
             <PropertyRef Name="IDTRASFERIMENTO" />
@@ -8215,7 +8203,6 @@
           <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
           <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
           <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_T_R" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
           <NavigationProperty Name="SOSPENSIONE" Relationship="DBISEPRO.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
           <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISEPRO.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
@@ -8230,6 +8217,7 @@
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_T_PCMAB" FromRole="TRASFERIMENTO" ToRole="PAGATOCONDIVISOMAB" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
         </EntityType>
         <Association Name="R_T_AMAB">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
@@ -8353,34 +8341,6 @@
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Principal>
             <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_RU_RD">
-          <End Type="DBISEPRO.RUOLOUFFICIO" Role="RUOLOUFFICIO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RUOLOUFFICIO">
-              <PropertyRef Name="IDRUOLO" />
-            </Principal>
-            <Dependent Role="RUOLODIPENDENTE">
-              <PropertyRef Name="IDRUOLO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_RD">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="RUOLODIPENDENTE">
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
@@ -8816,6 +8776,50 @@
         <Association Name="MAB_PMAB">
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
           <End Type="DBISEPRO.PERCENTUALEMAB" Role="PERCENTUALEMAB" Multiplicity="*" />
+        </Association>
+        <EntityType Name="RUOLODIPENDENTE">
+          <Key>
+            <PropertyRef Name="IDRUOLODIPENDENTE" />
+            <PropertyRef Name="IDTRASFERIMENTO" />
+            <PropertyRef Name="IDRUOLO" />
+          </Key>
+          <Property Name="IDRUOLODIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDRUOLO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAINZIOVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RUOLOUFFICIO" Relationship="DBISEPRO.R_RU_RD" FromRole="RUOLODIPENDENTE" ToRole="RUOLOUFFICIO" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_RD" FromRole="RUOLODIPENDENTE" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <Association Name="R_RU_RD">
+          <End Type="DBISEPRO.RUOLOUFFICIO" Role="RUOLOUFFICIO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RUOLOUFFICIO">
+              <PropertyRef Name="IDRUOLO" />
+            </Principal>
+            <Dependent Role="RUOLODIPENDENTE">
+              <PropertyRef Name="IDRUOLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_RD">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RUOLODIPENDENTE" Role="RUOLODIPENDENTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="RUOLODIPENDENTE">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -10131,19 +10135,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RUOLODIPENDENTE">
-            <EntityTypeMapping TypeName="DBISEPRO.RUOLODIPENDENTE">
-              <MappingFragment StoreEntitySet="RUOLODIPENDENTE">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
-                <ScalarProperty Name="DATAINZIOVALIDITA" ColumnName="DATAINZIOVALIDITA" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
-                <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TRASFERIMENTO">
             <EntityTypeMapping TypeName="DBISEPRO.TRASFERIMENTO">
               <MappingFragment StoreEntitySet="TRASFERIMENTO">
@@ -10293,6 +10284,19 @@
               <ScalarProperty Name="IDMAB" ColumnName="IDMAB" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="RUOLODIPENDENTE">
+            <EntityTypeMapping TypeName="DBISEPRO.RUOLODIPENDENTE">
+              <MappingFragment StoreEntitySet="RUOLODIPENDENTE">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAFINEVALIDITA" ColumnName="DATAFINEVALIDITA" />
+                <ScalarProperty Name="DATAINZIOVALIDITA" ColumnName="DATAINZIOVALIDITA" />
+                <ScalarProperty Name="IDRUOLO" ColumnName="IDRUOLO" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDRUOLODIPENDENTE" ColumnName="IDRUOLODIPENDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -206,31 +206,31 @@ namespace NewISE.Controllers
             return PartialView(dit);
         }
 
-        [Authorize(Roles = "1 ,2")]
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult VerificaTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
-        {
-            try
-            {
-                using (dtTrasferimento dttr = new dtTrasferimento())
-                {
-                    var trm = dttr.GetUltimoTrasferimentoByMatricola(matricola);
+        //[Authorize(Roles = "1 ,2")]
+        //[AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        //public ActionResult VerificaTrasferimento(string matricola, bool ricaricaInfoTrasf = false)
+        //{
+        //    try
+        //    {
+        //        using (dtTrasferimento dttr = new dtTrasferimento())
+        //        {
+        //            var trm = dttr.GetUltimoTrasferimentoByMatricola(matricola);
 
-                    if (trm != null && trm.HasValue())
-                    {
-                        return RedirectToAction("", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-                    }
-                    else
-                    {
-                        return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-            }
-        }
+        //            if (trm != null && trm.HasValue())
+        //            {
+        //                return RedirectToAction("", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
+        //            }
+        //            else
+        //            {
+        //                return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+        //    }
+        //}
 
         [Authorize(Roles = "1 ,2")]
         [HttpPost]
@@ -308,7 +308,7 @@ namespace NewISE.Controllers
 
 
         [Authorize(Roles = "1 ,2")]
-        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false)
+        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false, decimal idRuoloDipendente=0)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
@@ -342,8 +342,18 @@ namespace NewISE.Controllers
 
                 if (idTrasferimento > 0)
                 {
+
+                    if (idRuoloDipendente <= 0)
+                    {
+                        using (dtRuoloDipendente dtrd=new dtRuoloDipendente())
+                        {
+                            var rdm = dtrd.GetRuoloDipendentePartenza(idTrasferimento);
+                            idRuoloDipendente = rdm.idRuoloDipendente;
+                        }
+                    }
+
                     //TrasferimentoModel trm = dttr.GetSoloTrasferimentoById(idTrasferimento);
-                    return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti });
+                    return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = idTrasferimento, matricola = matricola, idRuoloDipendente = idRuoloDipendente, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti });
                 }
                 else
                 {
@@ -457,7 +467,7 @@ namespace NewISE.Controllers
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ModificaTrasferimento(decimal idTrasferimento, int matricola, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false)
+        public ActionResult ModificaTrasferimento(decimal idTrasferimento, int matricola, decimal idRuoloDipendente, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
@@ -503,10 +513,12 @@ namespace NewISE.Controllers
 
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                             ViewBag.ListUfficio = lUffici;
-                            using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
-                                trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
-                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                                var rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
+                                ViewBag.idRuoloDipendente = rdm.idRuoloDipendente;
+                                trm.RuoloUfficio = rdm.RuoloUfficio;
+                                trm.idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio;
                             }
 
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
@@ -535,10 +547,12 @@ namespace NewISE.Controllers
                         case EnumStatoTraferimento.Da_Attivare:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == trm.idTipoTrasferimento.ToString());
 
-                            using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
-                                trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
-                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                                var rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
+                                ViewBag.idRuoloDipendente = rdm.idRuoloDipendente;
+                                trm.RuoloUfficio = rdm.RuoloUfficio;
+                                trm.idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio;
                             }
 
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
@@ -574,10 +588,12 @@ namespace NewISE.Controllers
 
                         case EnumStatoTraferimento.Terminato:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
-                            using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                            using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
-                                trm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(trm.idTrasferimento);
-                                trm.idRuoloUfficio = trm.RuoloUfficio.idRuoloUfficio;
+                                var rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
+                                ViewBag.idRuoloDipendente = rdm.idRuoloDipendente;
+                                trm.RuoloUfficio = rdm.RuoloUfficio;
+                                trm.idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio;
                             }
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
                             {
@@ -614,7 +630,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, int matricola, bool ricaricaInfoTrasf = false)
+        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, int matricola, decimal idRuoloDipendente, bool ricaricaInfoTrasf = false)
         {
             try
             {
@@ -912,34 +928,46 @@ namespace NewISE.Controllers
                                     //}
 
 
+                                    //-------------------------------------------------------
+                                    //using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
+                                    //{
+                                    //    RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
 
+                                    //    if (rdm == null || rdm.hasValue() == false)
+                                    //    {
+                                    //        rdm = new RuoloDipendenteModel()
+                                    //        {
+                                    //            idRuolo = trm.idRuoloUfficio,
+                                    //            idTrasferimento = trm.idTrasferimento,
+                                    //            dataInizioValidita = trm.dataPartenza,
+                                    //            dataFineValidita = Utility.DataFineStop(),
+                                    //            dataAggiornamento = DateTime.Now,
+                                    //            annullato = false
+                                    //        };
+
+                                    //        dtrd.SetRuoloDipendente(ref rdm, db);
+
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        dtrd.SetNuovoRuoloDipendente(ref rdm, db);
+                                    //    }
+
+                                    //}
+                                    //-------------------------------------------------
                                     using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                     {
-                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
+                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
 
-                                        if (rdm == null || rdm.hasValue() == false)
+                                        if (rdm != null && rdm.idRuoloDipendente > 0)
                                         {
-                                            rdm = new RuoloDipendenteModel()
-                                            {
-                                                idRuolo = trm.idRuoloUfficio,
-                                                idTrasferimento = trm.idTrasferimento,
-                                                dataInizioValidita = trm.dataPartenza,
-                                                dataFineValidita = Utility.DataFineStop(),
-                                                dataAggiornamento = DateTime.Now,
-                                                annullato = false
-                                            };
-
-                                            dtrd.SetRuoloDipendente(ref rdm, db);
-
+                                            dtrd.AggiornaRuoloDipendentePartenza(ref rdm, trm, db);
                                         }
-                                        else
-                                        {
-                                            dtrd.SetNuovoRuoloDipendente(ref rdm, db);
-                                        }
+                                        
+
 
                                     }
-
-
+                                    //-------------------------------------------------
                                     using (dtFasciaKm dtfkm = new dtFasciaKm())
                                     {
                                         dtfkm.RimuoviAssociazionePercentualeFKM(trm.idTrasferimento, db);
@@ -1040,6 +1068,7 @@ namespace NewISE.Controllers
         public ActionResult InserisciTrasferimento(TrasferimentoModel trm, int matricola, bool ricaricaInfoTrasf = false, decimal idTrasferimentoOld = 0)
         {
             bool ricaricaTrasferimenti = true;
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
             try
             {
                 //trm.idTrasferimento = 0;
@@ -1267,27 +1296,28 @@ namespace NewISE.Controllers
 
                                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                         {
-                                            RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
+                                            //RuoloDipendenteModel rdm = dtrd.GetRuoloDipendente(trm.idTrasferimento, trm.idRuoloUfficio, trm.dataPartenza, db);
 
-                                            if (rdm == null || rdm.hasValue() == false)
-                                            {
-                                                rdm = new RuoloDipendenteModel()
-                                                {
-                                                    idRuolo = trm.idRuoloUfficio,
-                                                    idTrasferimento = trm.idTrasferimento,
-                                                    dataInizioValidita = trm.dataPartenza,
-                                                    dataFineValidita = Utility.DataFineStop(),
-                                                    dataAggiornamento = DateTime.Now,
-                                                    annullato = false
-                                                };
+                                            //if (rdm != null && rdm.idRuoloDipendente>0)
+                                            //{
+                                                //rdm = new RuoloDipendenteModel()
+                                                //{
+                                                //    idRuolo = trm.idRuoloUfficio,
+                                                //    idTrasferimento = trm.idTrasferimento,
+                                                //    dataInizioValidita = trm.dataPartenza,
+                                                //    dataFineValidita = Utility.DataFineStop(),
+                                                //    dataAggiornamento = DateTime.Now,
+                                                //    annullato = false
+                                                //};
 
-                                                dtrd.SetRuoloDipendente(ref rdm, db);
+                                            //    dtrd.AggiornaRuoloDipendente(ref rdm, trm, db);
 
-                                            }
-                                            else
-                                            {
-                                                dtrd.SetNuovoRuoloDipendente(ref rdm, db);
-                                            }
+                                            //}
+                                            //else
+                                            //{
+                                               rdm= dtrd.InserisciRuoloDipendentePartenza(trm, db);
+                                            //}
+
 
                                         }
 
@@ -1322,7 +1352,7 @@ namespace NewISE.Controllers
                             }
 
                             ricaricaInfoTrasf = true;
-                            return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, idTrasferimento = trm.idTrasferimento, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti });
+                            return RedirectToAction("NuovoTrasferimento", new { matricola = matricola, idTrasferimento = trm.idTrasferimento, ricaricaInfoTrasf = ricaricaInfoTrasf, ricaricaTrasferimenti = ricaricaTrasferimenti, idRuoloDipendente = rdm.idRuoloDipendente });
                         }
                     }
                     catch (Exception ex)

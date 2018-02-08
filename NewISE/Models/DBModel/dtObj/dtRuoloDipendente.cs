@@ -18,7 +18,42 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
+        public RuoloDipendenteModel GetRuoloDipendentePartenza(decimal idTrasferimento)
+        {
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var lrd = t.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false && a.DATAINZIOVALIDITA == t.DATAPARTENZA).OrderBy(a => a.DATAINZIOVALIDITA);
+                if (lrd?.Any() ?? false)
+                {
+                    var rd = lrd.First();
+                    rdm = new RuoloDipendenteModel()
+                    {
+                        idRuoloDipendente = rd.IDRUOLODIPENDENTE,
+                        idRuolo = rd.IDRUOLO,
+                        idTrasferimento = rd.IDTRASFERIMENTO,
+                        dataInizioValidita = rd.DATAINZIOVALIDITA,
+                        dataFineValidita = rd.DATAFINEVALIDITA,
+                        dataAggiornamento = rd.DATAAGGIORNAMENTO,
+                        annullato = rd.ANNULLATO,
+                        RuoloUfficio = new RuoloUfficioModel()
+                        {
+                            idRuoloUfficio = rd.RUOLOUFFICIO.IDRUOLO,
+                            DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
+                        }
+                    };
+                }
+                else
+                {
+                    throw new Exception("Non risulta nessun ruolo dipendente per il trasferimento verso " + t.UFFICI.DESCRIZIONEUFFICIO + " del " + t.DATAPARTENZA.Date );
+                }
+
+            }
+            return rdm;
+        }
 
         public IList<RuoloDipendenteModel> GetRuoliDipendenteIndennitaByRangeDate(decimal idRuolo, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
@@ -59,27 +94,20 @@ namespace NewISE.Models.DBModel.dtObj
 
         }
 
-        public RuoloDipendenteModel GetRuoloDipendente(decimal idTrasferimento, decimal idRuolo, DateTime dataIni, ModelDBISE db)
+        public RuoloDipendenteModel GetRuoloDipendenteById(decimal idRuoloDipendente)
         {
+
             RuoloDipendenteModel rdm = new RuoloDipendenteModel();
 
-            var lrd = db.RUOLODIPENDENTE.Where(a => a.IDRUOLO == idRuolo &&
-                                                    a.IDTRASFERIMENTO == idTrasferimento &&
-                                                    dataIni >= a.DATAINZIOVALIDITA &&
-                                                    dataIni <= a.DATAFINEVALIDITA &&
-                                                    a.ANNULLATO == false)
-                .OrderByDescending(a => a.DATAINZIOVALIDITA).ToList();
-
-
-            if (lrd != null && lrd.Count > 0)
+            using (ModelDBISE db = new ModelDBISE())
             {
+                var lrd = db.RUOLODIPENDENTE.Where(a=>a.IDRUOLODIPENDENTE == idRuoloDipendente);
                 var rd = lrd.First();
-
                 rdm = new RuoloDipendenteModel()
                 {
                     idRuoloDipendente = rd.IDRUOLODIPENDENTE,
-                    idRuolo = rd.IDRUOLO,
                     idTrasferimento = rd.IDTRASFERIMENTO,
+                    idRuolo = rd.IDRUOLO,
                     dataInizioValidita = rd.DATAINZIOVALIDITA,
                     dataFineValidita = rd.DATAFINEVALIDITA,
                     dataAggiornamento = rd.DATAAGGIORNAMENTO,
@@ -90,12 +118,10 @@ namespace NewISE.Models.DBModel.dtObj
                         DescrizioneRuolo = rd.RUOLOUFFICIO.DESCRUOLO
                     }
                 };
-
-
             }
 
-            return rdm;
 
+            return rdm;
         }
 
         public RuoloDipendenteModel GetRuoloDipendenteByIdTrasferimento(decimal idTrasferimento, DateTime dt, ModelDBISE db)
@@ -259,6 +285,68 @@ namespace NewISE.Models.DBModel.dtObj
 
 
 
+        }
+
+        public void AggiornaRuoloDipendentePartenza(ref RuoloDipendenteModel rdm, TrasferimentoModel trm, ModelDBISE db)
+        {
+            decimal idRuoloDip = rdm.idRuoloDipendente;
+
+            var  lrd = db.RUOLODIPENDENTE.Where(a=>a.IDRUOLODIPENDENTE == idRuoloDip);
+
+            var rd = lrd.First();
+
+            if (rd != null && rd.IDRUOLODIPENDENTE > 0)
+            {
+                rd.IDRUOLO = trm.idRuoloUfficio;
+                rd.IDTRASFERIMENTO = trm.idTrasferimento;
+                rd.DATAINZIOVALIDITA = trm.dataPartenza;
+                rd.DATAFINEVALIDITA = trm.dataRientro.HasValue == true ? trm.dataRientro.Value : Utility.DataFineStop();
+                rd.DATAAGGIORNAMENTO = DateTime.Now;
+
+                db.SaveChanges();
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica Ruolo Dipendente.", "RuoloDipendente", db, rdm.idTrasferimento, rdm.idRuoloDipendente);
+            }
+        }
+
+        public RuoloDipendenteModel InserisciRuoloDipendentePartenza(TrasferimentoModel trm, ModelDBISE db)
+        {
+            decimal idTrasferimento = trm.idTrasferimento;
+            DateTime dtIni = trm.dataPartenza;
+            DateTime dtFin = trm.dataRientro.HasValue == true ? trm.dataRientro.Value : Utility.DataFineStop();
+
+            RUOLODIPENDENTE rd;
+
+            rd = new RUOLODIPENDENTE()
+            {
+                IDRUOLO = trm.idRuoloUfficio,
+                IDTRASFERIMENTO = trm.idTrasferimento,
+                DATAINZIOVALIDITA = dtIni,
+                DATAFINEVALIDITA = dtFin,
+                DATAAGGIORNAMENTO = DateTime.Now,
+                ANNULLATO = false
+            };
+
+            db.RUOLODIPENDENTE.Add(rd);
+
+            RuoloDipendenteModel rdm = new RuoloDipendenteModel();
+
+            if (db.SaveChanges() > 0)
+            {
+                rdm.idRuoloDipendente = rd.IDRUOLODIPENDENTE;
+                rdm.idRuolo = rd.IDRUOLO;
+                rdm.annullato = rd.ANNULLATO;
+                rdm.dataAggiornamento = rd.DATAAGGIORNAMENTO;
+                rdm.dataFineValidita = rd.DATAFINEVALIDITA;
+                rdm.dataInizioValidita = rd.DATAINZIOVALIDITA;
+                rdm.idTrasferimento = rd.IDTRASFERIMENTO;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo ruolo dipendente.", "RuoloDipendente", db, rdm.idTrasferimento, rdm.idRuoloDipendente);
+
+            }
+
+
+            return rdm;
         }
 
 

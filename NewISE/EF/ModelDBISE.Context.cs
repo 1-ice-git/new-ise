@@ -113,7 +113,6 @@ namespace NewISE.EF
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
-        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
         public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<GRUPPO_FKM> GRUPPO_FKM { get; set; }
@@ -123,5 +122,6 @@ namespace NewISE.EF
         public virtual DbSet<TER_FK> TER_FK { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
     }
 }
