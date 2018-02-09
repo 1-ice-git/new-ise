@@ -111,6 +111,13 @@ namespace NewISE.Controllers
                 bool richiestaTEPartenza = false;
                 bool attivazioneTEPartenza = false;
                 decimal NumAttivazioniTEPartenza = 0;
+                decimal idStatoTrasferimento = 0;
+
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+                    idStatoTrasferimento = (decimal)t.idStatoTrasferimento;
+                }
 
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
@@ -137,6 +144,7 @@ namespace NewISE.Controllers
                 ViewData.Add("DescrizioneTE", DescrizioneTE);
                 ViewData.Add("idTipoDocumento", idTipoDocumento);
                 ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                ViewData.Add("idStatoTrasferimento", idStatoTrasferimento);
                 ViewData.Add("richiestaTEPartenza", richiestaTEPartenza);
                 ViewData.Add("attivazioneTEPartenza", attivazioneTEPartenza);
                 ViewData.Add("NumAttivazioniTEPartenza", NumAttivazioniTEPartenza);

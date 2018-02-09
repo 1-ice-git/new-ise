@@ -220,6 +220,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ATTIVITATEPARTENZA atep = new ATTIVITATEPARTENZA();
 
                 var tep = db.TEPARTENZA.Find(idTrasportoEffettiPartenza);
+
                 if (tep != null && tep.IDTEPARTENZA > 0)
                 {
 
