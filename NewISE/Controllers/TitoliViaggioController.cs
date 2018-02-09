@@ -55,13 +55,12 @@ namespace NewISE.Controllers
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
 
-                    using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                    using (dtConiuge dtc = new dtConiuge())
                     {
-                        PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
-
-                        if (pc != null && pc.HasValue())
+                        ConiugeModel c = dtc.GetConiugebyID(idConiuge);
+                        if (c != null && c.HasValue())
                         {
-                            switch (pc.idTipologiaConiuge)
+                            switch (c.idTipologiaConiuge)
                             {
                                 case EnumTipologiaConiuge.Residente:
                                     adfcm.residente = true;
@@ -123,12 +122,12 @@ namespace NewISE.Controllers
                     ViewData.Add("idTitoliViaggio", idTitoliViaggio);
                     ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
 
-                    using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                    using (dtFigli dtf = new dtFigli())
                     {
-                        PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                        if (pf != null && pf.HasValue())
+                        FigliModel f = dtf.GetFigliobyID(idFiglio);
+                        if (f != null && f.HasValue())
                         {
-                            switch (pf.idTipologiaFiglio)
+                            switch (f.idTipologiaFiglio)
                             {
                                 case EnumTipologiaFiglio.Residente:
                                     adffm.residente = true;

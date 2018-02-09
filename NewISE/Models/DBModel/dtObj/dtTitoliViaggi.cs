@@ -472,6 +472,9 @@ namespace NewISE.Models.DBModel.dtObj
                 var ltvr = tv.TITOLIVIAGGIORICHIEDENTE.Where(a => a.ANNULLATO == false).ToList();
                 var t = tv.TRASFERIMENTO;
                 var d = t.DIPENDENTI;
+                var mf = t.MAGGIORAZIONIFAMILIARI;
+                var amf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true).OrderBy(a => a.IDATTIVAZIONEMAGFAM).First();
+                var atv = tv.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).First();
 
 
                 if (ltvr?.Any() ?? false)
@@ -496,7 +499,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 //coniuge
-                var ltvc = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+                var ltvc = atv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                 if (ltvc?.Any() ?? false)
                 {
@@ -523,7 +526,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
                 //figli
-                var ltvf = tv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
+                var ltvf = atv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                 if (ltvf?.Any() ?? false)
                 {
@@ -663,10 +666,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                         //verifico se su ConiugeTitoloViaggio esistono i record relativi ai coniugi residenti
                         //(se non esistono li creo)
+                        var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
                         var lctv = tv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
                         if(lctv.Count()==0)
                         {
-                            var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
+                            //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente && a.MODIFICATO==false).ToList();
+                            var lc = amf.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 foreach (var c in lc)
@@ -700,7 +705,8 @@ namespace NewISE.Models.DBModel.dtObj
                         if (lftv.Count() == 0)
                         {
                             //cerco eventuali figli residenti e ne creo il titolo di viaggio
-                            var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) && a.MODIFICATO==false).ToList();
+                            //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente) && a.MODIFICATO==false).ToList();
+                            var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
                             if (lf?.Any() ?? false)
                             {
                                 foreach (var f in lf)
@@ -793,7 +799,9 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             //cerco eventuali coniugi residenti e ne creo il titolo di viaggio
-                            var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+                            //var lc = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
+                            var amf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM == true & a.RICHIESTAATTIVAZIONE == true).First();
+                            var lc = amf.CONIUGE.Where(a=> a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente).ToList();
                             if (lc?.Any() ?? false)
                             {
                                 foreach (var c in lc)
@@ -823,7 +831,8 @@ namespace NewISE.Models.DBModel.dtObj
                             }
 
                             //cerco eventuali figli residenti e ne creo il titolo di viaggio
-                            var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+                            //var lf = db.TITOLIVIAGGIO.Find(idTitoliViaggio).TRASFERIMENTO.MAGGIORAZIONIFAMILIARI.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
+                            var lf = amf.FIGLI.Where(a => a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente || a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.StudenteResidente).ToList();
                             if (lf?.Any() ?? false)
                             {
                                 foreach (var f in lf)

@@ -2247,6 +2247,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ValidationWithBoot.js" />
     <Content Include="Template\HtmlPage1.html" />
+    <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -3003,7 +3004,6 @@
     <Content Include="Views\Trasferimento\ModificaTrasferimento.cshtml" />
     <Content Include="Views\Documenti\LetteraDiTrasferimento.cshtml" />
     <Content Include="Views\Trasferimento\GestioneTrasferimento.cshtml" />
-    <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ElencoConiuge.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\NuovoConiuge.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\MaggiorazioniFamiliari.cshtml" />
@@ -3037,7 +3037,6 @@
     <Content Include="Views\MaggiorazioniFamiliari\TabFormulariInseriti.cshtml" />
     <Content Include="Views\Home\GetListaHome.cshtml" />
     <Content Include="Views\Home\DetailsFunzioneEvento.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\GestioneMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\MaggiorazioniFamiliari\ModificaMaggiorazioniFamiliari.cshtml" />
     <Content Include="Views\CalendariEventi\Index.cshtml" />
     <Content Include="Views\CalendariEventi\GetCalendarioEvento.cshtml" />
@@ -3094,7 +3093,6 @@
     <Content Include="Views\TrasportoEffetti\ElencoDocumentiTEPartenza.cshtml" />
     <Content Include="Views\TrasportoEffetti\TabDocumentiTEPartenzaInseriti.cshtml" />
     <Content Include="Views\TrasportoEffetti\NuovoDocumentoTEPartenza.cshtml" />
-    <Content Include="Views\MaggiorazioniFamiliari\AttivitaMaggiorazioneFamiliare.cshtml" />
     <Content Include="Views\Anticipi\AttivitaAnticipi.cshtml" />
     <Content Include="Views\Anticipi\GestionePulsantiAnticipi.cshtml" />
     <None Include="Web.Debug.config">

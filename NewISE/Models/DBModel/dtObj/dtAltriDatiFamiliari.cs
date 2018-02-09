@@ -510,7 +510,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 comuneResidenza = adf.COMUNERESIDENZA,
                                 provinciaResidenza = adf.PROVINCIARESIDENZA,
                                 dataAggiornamento = adf.DATAAGGIORNAMENTO,
-                                annullato = adf.ANNULLATO
+                                annullato = adf.ANNULLATO                               
                             };
                         }
                     }

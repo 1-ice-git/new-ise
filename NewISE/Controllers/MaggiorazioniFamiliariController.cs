@@ -607,6 +607,7 @@ namespace NewISE.Controllers
 
                         ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
                         ViewData.Add("idAttivazioneMagFam", fm.idAttivazioneMagFam);
+
                         return PartialView("NuovoFiglio", fm);
                     }
 
@@ -634,6 +635,15 @@ namespace NewISE.Controllers
                         lTipologiaFiglio = r;
                     }
 
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        TrasferimentoModel tm = new TrasferimentoModel();
+
+                        tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
+
+                        ViewData.Add("Trasferimento", tm);
+                    }
 
                     ViewData["lTipologiaFiglio"] = lTipologiaFiglio;
                     ViewData.Add("idAttivazioneMagFam", fm.idAttivazioneMagFam);

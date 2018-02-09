@@ -998,7 +998,7 @@ namespace NewISE.Controllers
 
                                 ricaricaInfoTrasf = true;
 
-                                return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, ricaricaInfoTrasf = ricaricaInfoTrasf });
+                                return RedirectToAction("ModificaTrasferimento", new { idTrasferimento = trm.idTrasferimento, matricola = matricola, idRuoloDipendente = idRuoloDipendente, ricaricaInfoTrasf = ricaricaInfoTrasf });
 
                             }
                             catch (Exception ex)

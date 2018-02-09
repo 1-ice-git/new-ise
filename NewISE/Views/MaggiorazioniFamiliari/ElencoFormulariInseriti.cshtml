@@ -118,7 +118,6 @@
                 $("#divViewNuovoFormulario").empty();
                 $("#divViewNuovoFormulario").html(result);
 
-
             },
             error: function (error) {
                 //debugger;
@@ -171,6 +170,7 @@
     $("#ModalNuovoFormulario").on("hidden.bs.modal", function() {
         //debugger;
         TabElencoFormulari();
+        PulsantiNotificaAttivaMagFam();
     });
 
 

@@ -12,6 +12,7 @@
     decimal contributoLordo = Convert.ToDecimal(ViewData["contributoLordo"]);
 }
 
+<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 
 <div class="table col-xs-12">
     <div class="row">
@@ -22,7 +23,7 @@
                         <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
                     </div>
                     <div class="col-xs-2" style="padding-top:5px">
-                        <input class="form-control" style="text-align: right" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
+                        <input id="valIndennitaPrimaSistemazione" value="@Model.indennitaPrimaSistemazione" class="form-control " readonly style="text-align: right" />
                     </div>
                 </div>
                 <div class="row">
@@ -38,7 +39,7 @@
                         <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
                     </div>
                     <div class="col-xs-2" style="padding-top:5px">
-                        <input class="form-control" style="text-align: right" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
+                        <input id="valContributoLordo" class="form-control" style="text-align: right" value="@Model.contributoLordo" readonly/>
                     </div>
                 </div>
             </div>
@@ -52,10 +53,12 @@
         <div  class="col-xs-12">
             <div class="table" style="background-color:transparent">
                 <div class="row">
-                    <div class="col-xs-7">
-                        <label for="modulo1" class="control-label">
+                    <div class="col-xs-7" style="text-align:right"><b>
+                        @*<label for="modulo1" class="control-label" style="text-align:right">
                             Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
-                        </label>
+                        </label>*@
+                            Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
+                        </b>
                     </div>
                     <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
                         @if (DocContributo)
@@ -73,10 +76,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-7">
-                        <label for="modulo2" class="control-label">
-                            Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
-                        </label>
+                    <div class="col-xs-7" style="text-align:right">
+                        <b>
+                            @*<label for="modulo2" class="control-label" style="text-align:right">
+                                Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
+                            </label>*@
+                        Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
+                            </b>
                     </div>
                     <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
                         @if (DocAttestazione)
@@ -99,132 +105,67 @@
     </div>
 </div>
 
-                        @*<table>
-                <tr>
-                    <td style="padding-top:10px">
-                        <table>
-                            <tr>
-                                <td class="col-xs-3 text-right">
-                                    <label for="indennitaPrimaSistemazione" class="control-label">@Html.DisplayNameFor(model => model.indennitaPrimaSistemazione)</label>
-                                </td>
-                                <td class="col-xs-2">
-                                    <input class="form-control" value="@Html.DisplayFor(model => model.indennitaPrimaSistemazione)" readonly />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-3 text-right">
-                                    <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
-                                </td>
-                                <td class="col-xs-2">
-                                    <input class="form-control" value="@Html.DisplayFor(model => model.percKM)" readonly />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-xs-3 text-right" ">
-                                    <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
-                                </td>
-                                <td class="col-xs-2">
-                                    <input class="form-control" value="@Html.DisplayFor(model => model.contributoLordo)" readonly />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <label for="modulo1" class="control-label">
-                                        Modulo 1 - (Richiesta Contributo Fisso Omnicomprensivo - Trasferimento)
-                                    </label>
-                                </td>
-                                <td style="padding-left:10px;padding-bottom:10px">
-                                    @if (DocContributo)
-                                    {
-                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo));" id="linkElencoDocTE">
-                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
-                                        </a>
-                                    }
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="modulo2" class="control-label">
-                                        Modulo 3 - (Richiesta Attestazione Avvenuto Trasloco - Trasferimento)
-                                    </label>
-                                </td>
-                                <td style="padding-left:10px;padding-bottom:10px">
-                                    @if (DocAttestazione)
-                                    {
-                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documenti attestazione trasloco" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a href="#" onclick="ElencoDocumentiTE(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco));" id="linkElencoDocTE">
-                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documenti attestazione trasloco" />
-                                        </a>
-                                    }
-                                </td>
-                            </tr>
-                        </table>
-                </tr>
-            </table>*@
 
-                        <script type="text/javascript">
-                            function ElencoDocumentiTE(idTipoDocumento) {
-                                //debugger;
-                                var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+<script type="text/javascript">
 
-                                var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
+    $("#valIndennitaPrimaSistemazione").autoNumeric('init',
+        {
+            aSep: '.',
+            aDec: ',',
+            aSign: '',
+            nSep: true
+        });
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: rotta,
-                                    data: {
-                                        idTipoDocumento: idTipoDocumento,
-                                        idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
-                                    },
-                                    dataType: 'html',
-                                    beforeSend: function () {
-                                        //debugger;
-                                        VerificaAutenticazione();
-                                        //$("#DialogNewDoc").dialog("destroy");
-                                        //$("#divEffettoLoadAutNoDoc").show("slow");
-                                    },
-                                    success: function (result) {
-                                        //debugger;
-                                        //$("#divEffettoLoadAutNoDoc").hide("slow");
-                                        $("#divTrasportoEffettiPartenza").empty();
-                                        $("#divTrasportoEffettiPartenza").html(result);
+    $("#valContributoLordo").autoNumeric('init',
+        {
+            aSep: '.',
+            aDec: ',',
+            aSign: '',
+            nSep: true
+        });
 
-                                        //RicercaDocumenti();
+    function ElencoDocumentiTE(idTipoDocumento) {
+        //debugger;
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
 
-                                    },
-                                    complete: function () {
+        var rotta = "/TrasportoEffetti/ElencoDocumentiTEPartenza";
 
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrow) {
-                                        //debugger;
-                                        var msg = errorThrow.err;
-                                        ErroreElaborazioneAjax(msg);
-                                    }
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTrasportoEffettiPartenza: idTrasportoEffettiPartenza
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiPartenza").empty();
+                $("#divTrasportoEffettiPartenza").html(result);
 
-                                });
+                //RicercaDocumenti();
 
-                            }
+            },
+            complete: function () {
 
-                        </script>
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+</script>
 
 

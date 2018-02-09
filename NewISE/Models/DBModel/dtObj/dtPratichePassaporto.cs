@@ -713,6 +713,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var d = t.DIPENDENTI;
 
                         var mf = t.MAGGIORAZIONIFAMILIARI;
+                        var amf = mf.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true).OrderBy(a => a.IDATTIVAZIONEMAGFAM).First();
 
                         var p = t.PASSAPORTI;
 
@@ -801,7 +802,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #region Coniuge
 
                             var lc =
-                                mf.CONIUGE.Where(
+                                amf.CONIUGE.Where(
                                     a =>
                                         (a.MODIFICATO == false || a.FK_IDCONIUGE.HasValue == false) &&
                                         a.IDTIPOLOGIACONIUGE == (decimal)EnumTipologiaConiuge.Residente)
@@ -892,7 +893,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #region Figli
 
                             var lf =
-                                mf.FIGLI.Where(
+                                amf.FIGLI.Where(
                                     a =>
                                         (a.MODIFICATO == false || a.FK_IDFIGLI.HasValue == false) &&
                                         (a.IDTIPOLOGIAFIGLIO == (decimal)EnumTipologiaFiglio.Residente ||

@@ -56,12 +56,36 @@ namespace NewISE.Controllers
 
                     ViewData.Add("solaLettura", solaLettura);
                 }
-                using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                //using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
+                //{
+                //    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
+                //    if (pf != null && pf.HasValue())
+                //    {
+                //        switch (pf.idTipologiaFiglio)
+                //        {
+                //            case EnumTipologiaFiglio.Residente:
+                //                adf.residente = true;
+                //                adf.studente = false;
+                //                break;
+                //            case EnumTipologiaFiglio.StudenteResidente:
+                //                adf.studente = true;
+                //                adf.residente = true;
+                //                break;
+                //            case EnumTipologiaFiglio.StudenteNonResidente:
+                //                adf.studente = true;
+                //                adf.residente = false;
+                //                break;
+                //            default:
+                //                throw new ArgumentOutOfRangeException();
+                //        }
+                //    }
+                //}
+                using (dtFigli dtf = new dtFigli())
                 {
-                    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                    if (pf != null && pf.HasValue())
+                    FigliModel f = dtf.GetFigliobyID(idFiglio);
+                    if (f != null && f.HasValue())
                     {
-                        switch (pf.idTipologiaFiglio)
+                        switch (f.idTipologiaFiglio)
                         {
                             case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
@@ -271,13 +295,37 @@ namespace NewISE.Controllers
                     ViewData.Add("solaLettura", solaLettura);
                 }
 
-                using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                {
-                    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
+                //using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
+                //{
+                //    PercentualeMagConiugeModel pc = dtpc.GetPercMagConiugeNow(idConiuge, DateTime.Now.Date);
 
-                    if (pc != null && pc.HasValue())
+                //    if (pc != null && pc.HasValue())
+                //    {
+                //        switch (pc.idTipologiaConiuge)
+                //        {
+                //            case EnumTipologiaConiuge.Residente:
+                //                adf.residente = true;
+                //                adf.ulterioreMagConiuge = false;
+                //                break;
+
+                //            case EnumTipologiaConiuge.NonResidente_A_Carico:
+                //                adf.residente = false;
+                //                adf.ulterioreMagConiuge = true;
+                //                break;
+
+                //            default:
+                //                break;
+                //        }
+                //    }
+                //}
+
+                using (dtConiuge dtc = new dtConiuge())
+                {
+                    ConiugeModel c = dtc.GetConiugebyID(idConiuge);
+
+                    if (c != null && c.HasValue())
                     {
-                        switch (pc.idTipologiaConiuge)
+                        switch (c.idTipologiaConiuge)
                         {
                             case EnumTipologiaConiuge.Residente:
                                 adf.residente = true;
@@ -294,6 +342,7 @@ namespace NewISE.Controllers
                         }
                     }
                 }
+
             }
             catch (Exception ex)
             {

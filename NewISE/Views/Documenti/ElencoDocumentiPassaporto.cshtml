@@ -31,8 +31,9 @@
     @Html.Hidden("hiEliminaDoc")
 
 <p style="padding-left: 15px;">
-
-    @if (solaLettura)
+@if (enParentela == EnumParentela.Richiedente)
+{
+    if (solaLettura)
     {
         <button class="btn btn-default disabled" disabled="disabled">Nuovo documento</button>
     }
@@ -40,6 +41,7 @@
     {
         <button class="btn btn-success" onclick=" NuovoDocumento(@idAttivazionePassaporto, @idFamiliarePassaporto , @tipoDoc , @parentela , @chiamante ) ">Nuovo documento</button>
     }
+}
 
 </p>
 

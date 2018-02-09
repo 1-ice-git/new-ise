@@ -266,8 +266,8 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btUpload" type="button" class="btn btn-info" onclick="SalvaDocumento();">Salva</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                <button id="btUploadLett" type="button" class="btn btn-info" onclick="SalvaDocumento();">Salva</button>
+                <button id="btAnnullaLett" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
     </div>
@@ -446,6 +446,10 @@
     });
 
     function CloseTimeModal() {
+        $("#btUploadLett").attr("disabled", "disabled");
+        $("#btUploadLett").addClass("disabled");
+        $("#btAnnullaLett").attr("disabled", "disabled");
+        $("#btAnnullaLett").addClass("disabled");
         setTimeout(CloseModalFile, 2000);
         //CloseModalFile();
     }
@@ -637,11 +641,12 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
         var matricola = '@vMatricola';
         var ricaricaInfoTrasf = '@ricaricaInfoTrasf';
+        var idRuoloDipendente = @idRuoloDipendente;
 
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { idTrasferimento: idTrasferimento, matricola: matricola, ricaricaInfoTrasf: ricaricaInfoTrasf },
+            data: { idTrasferimento: idTrasferimento, matricola: matricola, idRuoloDipendente: idRuoloDipendente, ricaricaInfoTrasf: ricaricaInfoTrasf },
             dataType: 'html',
             async: false,
             beforeSend: function () {

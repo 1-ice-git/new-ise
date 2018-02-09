@@ -101,8 +101,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var lrd = db.RUOLODIPENDENTE.Where(a=>a.IDRUOLODIPENDENTE == idRuoloDipendente);
-                var rd = lrd.First();
+                var rd = db.RUOLODIPENDENTE.Find(idRuoloDipendente);
                 rdm = new RuoloDipendenteModel()
                 {
                     idRuoloDipendente = rd.IDRUOLODIPENDENTE,
@@ -291,9 +290,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             decimal idRuoloDip = rdm.idRuoloDipendente;
 
-            var  lrd = db.RUOLODIPENDENTE.Where(a=>a.IDRUOLODIPENDENTE == idRuoloDip);
-
-            var rd = lrd.First();
+            var  rd = db.RUOLODIPENDENTE.Find(idRuoloDip);
 
             if (rd != null && rd.IDRUOLODIPENDENTE > 0)
             {

@@ -359,13 +359,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     #region anticipo
                                     var ant_Old =
                                         aa_Old.ANTICIPI.Where(
-                                            a => a.ANNULLATO && a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipologiaAnticipi.Prima_Sistemazione).First();
+                                            a => a.ANNULLATO==false && a.IDTIPOLOGIAANTICIPI == (decimal)EnumTipologiaAnticipi.Prima_Sistemazione).First();
 
                                     if (ant_Old!=null && ant_Old.IDATTIVITAANTICIPI>0)
                                     {
                                         ANTICIPI ant_New = new ANTICIPI()
                                         {
-                                            IDATTIVITAANTICIPI = ant_Old.IDATTIVITAANTICIPI,
+                                            IDATTIVITAANTICIPI=aa_New.IDATTIVITAANTICIPI,
                                             IDTIPOLOGIAANTICIPI = ant_Old.IDTIPOLOGIAANTICIPI,
                                             PERCENTUALEANTICIPO = ant_Old.PERCENTUALEANTICIPO,
                                             DATAAGGIORNAMENTO = ant_Old.DATAAGGIORNAMENTO,
