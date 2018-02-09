@@ -12,7 +12,7 @@
     }
 }
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+
 
 
 @Html.Hidden("hiPercentualeRichiesta")
@@ -41,16 +41,16 @@
                 Indennità di Prima Sistemazione
             </div>
             <div class="col-xs-3">
-                <input type="text" id="ValImportoPrevisto" value="@Model.ImportoPrevisto" class="form-control " readonly style="text-align: right" />
+                <input type="text" id="ValImportoPrevisto" class="form-control " readonly style="text-align: right" />
             </div>
             <div class="col-xs-2">
                 <input type="text" maxlength="3" onkeyup="CalcolaAnticipo();" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
             </div>
             <div>
-                <div id="divLoader"  class="col-xs-3" hidden>
-                    <img src="~/Immagini/Loading/loader.gif" style="width:100%" height="30"/>
+                <div id="divLoader" class="col-xs-3" hidden>
+                    <img src="~/Immagini/Loading/loader.gif" style="width:100%" height="30" />
                 </div>
-                <div id="divImportoPercepito" class="col-xs-3" >
+                <div id="divImportoPercepito" class="col-xs-3">
                     <input type="text" id="ValImportoPercepito" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
                 </div>
             </div>
@@ -61,37 +61,39 @@
 
 <script type="text/javascript">
 
-    $("#PercentualeAnticipoRichiesto").focus(function() {
+    $('#PercentualeAnticipoRichiesto').focus(function() {
         $(this).select();
     });
 
 
-    $("#PercentualeAnticipoRichiesto").autoNumeric('init',
+    $('#PercentualeAnticipoRichiesto').autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: '',
+	    aSign: '%',
 	    vMin: 0,
-	    vMax: 100
+	    vMax: 100,
+	    nSep: true
 	});
 
-    $("#ValImportoPercepito").autoNumeric('init',
+    $('#ValImportoPercepito').autoNumeric('init',
       {
           aSep: '.',
           aDec: ',',
-          aSign: '',
+          aSign: '€',
           nSep: true
       });
 
 
 
-    $("#ValImportoPrevisto").autoNumeric('init',
+    $('#ValImportoPrevisto').autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: '',
+	    aSign: '€',
 	    nSep: true
 	});
+
 
 
 
@@ -101,14 +103,17 @@
 
     function CalcolaAnticipo() {
 
-            //debugger;
-            var rotta = "/Anticipi/CalcolaAnticipo";
-            var idAttivitaAnticipi = parseInt('@idAttivitaAnticipi');
-            var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").val());
-      
-            if (!isNaN(percRichiesta))
-            {
-                $.ajax({
+        //debugger;
+        var rotta = "/Anticipi/CalcolaAnticipo";
+
+        $('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
+
+        var idAttivitaAnticipi = parseInt('@idAttivitaAnticipi');
+        var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+
+        if (!isNaN(percRichiesta))
+        {
+            $.ajax({
                 type: "POST",
                 url: rotta,
                 data: { idAttivitaAnticipi: idAttivitaAnticipi, percRichiesta: percRichiesta },
@@ -126,9 +131,9 @@
                         var appo = result.importoPercepito;
                         var appo1 = appo.toString();
                         appo1 = appo1.replace(".", ",");
-                            
+
                         //$("#ValImportoPercepito").val(appo1);
-                        $("#ValImportoPercepito").val(result.importoPercepito);
+                        $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
 
                         var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
 
