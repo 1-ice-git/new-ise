@@ -54,20 +54,7 @@
                         }
                     </td>
                     <td style="text-align: center;">
-                        @switch (item.parentela)
-                        {
-                            case EnumParentela.Coniuge:
-                                <span>Coniuge</span>
-                                break;
-                            case EnumParentela.Figlio:
-                                <span>Figlio</span>
-                                break;
-                            case EnumParentela.Richiedente:
-                                <span>Richiedente</span>
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
                     </td>
                     @if (item.idAltriDati > 0)
                     {
@@ -152,6 +139,7 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "order": [[4, "desc"]]
         //dom: 'Bfrtip',
         //buttons: [
         //    {

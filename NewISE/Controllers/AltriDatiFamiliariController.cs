@@ -584,35 +584,33 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
-                    if (adfm != null && adfm.HasValue())
-                    {
-                        using (dtPercentualeMagFigli dtpf = new dtPercentualeMagFigli())
-                        {
-                            PercentualeMagFigliModel pf = new PercentualeMagFigliModel();
-                            pf = dtpf.GetPercentualeMaggiorazioneFigli(adfm.idFigli, DateTime.Now.Date);
-
-                            if (pf?.HasValue() ?? false)
-                            {
-                                switch (pf.idTipologiaFiglio)
-                                {
-                                    case EnumTipologiaFiglio.Residente:
-                                        adfm.residente = true;
-                                        adfm.studente = false;
-                                        break;
-                                    case EnumTipologiaFiglio.StudenteResidente:
-                                        adfm.studente = true;
-                                        adfm.residente = true;
-                                        break;
-                                    case EnumTipologiaFiglio.StudenteNonResidente:
-                                        adfm.studente = true;
-                                        adfm.residente = false;
-                                        break;
-                                    default:
-                                        throw new ArgumentOutOfRangeException();
-                                }
-                            }
-                        }
-                    }
+                    //if (adfm != null && adfm.HasValue())
+                    //{
+                    //    using (dtFigli dtf = new dtFigli())
+                    //    {
+                    //        FigliModel f = dtf.GetFigliobyID(adfm.idFigli);
+                    //        if (f != null && f.HasValue())
+                    //        {
+                    //            switch (f.idTipologiaFiglio)
+                    //            {
+                    //                case EnumTipologiaFiglio.Residente:
+                    //                    adfm.residente = true;
+                    //                    adfm.studente = false;
+                    //                    break;
+                    //                case EnumTipologiaFiglio.StudenteResidente:
+                    //                    adfm.studente = true;
+                    //                    adfm.residente = true;
+                    //                    break;
+                    //                case EnumTipologiaFiglio.StudenteNonResidente:
+                    //                    adfm.studente = true;
+                    //                    adfm.residente = false;
+                    //                    break;
+                    //                default:
+                    //                    throw new ArgumentOutOfRangeException();
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)
@@ -652,34 +650,31 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
-                    if (adfm != null && adfm.HasValue())
-                    {
-                        using (dtPercentualeConiuge dtpc = new dtPercentualeConiuge())
-                        {
-                            PercentualeMagConiugeModel pc = new PercentualeMagConiugeModel();
+                    //if (adfm != null && adfm.HasValue())
+                    //{
+                    //    using (dtConiuge dtc = new dtConiuge())
+                    //    {
+                    //        ConiugeModel c = dtc.GetConiugebyID(adfm.idConiuge);
+                    //        if (c != null && c.HasValue())
+                    //        {
+                    //            switch (c.idTipologiaConiuge)
+                    //            {
+                    //                case EnumTipologiaConiuge.Residente:
+                    //                    adfm.residente = true;
+                    //                    adfm.ulterioreMagConiuge = false;
+                    //                    break;
 
-                            pc = dtpc.GetPercMagConiugeNow(adfm.idConiuge, DateTime.Now.Date);
+                    //                case EnumTipologiaConiuge.NonResidente_A_Carico:
+                    //                    adfm.residente = false;
+                    //                    adfm.ulterioreMagConiuge = true;
+                    //                    break;
 
-                            if (pc != null && pc.HasValue())
-                            {
-                                switch (pc.idTipologiaConiuge)
-                                {
-                                    case EnumTipologiaConiuge.Residente:
-                                        adfm.residente = true;
-                                        adfm.ulterioreMagConiuge = false;
-                                        break;
-
-                                    case EnumTipologiaConiuge.NonResidente_A_Carico:
-                                        adfm.residente = false;
-                                        adfm.ulterioreMagConiuge = true;
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                    }
+                    //                default:
+                    //                    break;
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
             catch (Exception ex)
