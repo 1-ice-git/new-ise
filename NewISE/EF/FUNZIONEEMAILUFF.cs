@@ -12,25 +12,18 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class UTENTIAUTORIZZATI
+    public partial class FUNZIONEEMAILUFF
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UTENTIAUTORIZZATI()
+        public FUNZIONEEMAILUFF()
         {
-            this.ACCESSI = new HashSet<ACCESSI>();
-            this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
+            this.EMAILUFFDEST = new HashSet<EMAILUFFDEST>();
         }
     
-        public decimal IDUTENTEAUTORIZZATO { get; set; }
-        public decimal IDRUOLOUTENTE { get; set; }
-        public string UTENTE { get; set; }
-        public Nullable<decimal> IDDIPENDENTE { get; set; }
+        public decimal IDFUNZIONEUFF { get; set; }
+        public string FUNZIONE { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ACCESSI> ACCESSI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
-        public virtual RUOLOACCESSO RUOLOACCESSO { get; set; }
-        public virtual DIPENDENTI DIPENDENTI { get; set; }
+        public virtual ICollection<EMAILUFFDEST> EMAILUFFDEST { get; set; }
     }
 }

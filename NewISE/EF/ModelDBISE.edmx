@@ -132,7 +132,7 @@
             <PropertyRef Name="IDATTIVAZIONEMAB" />
           </Key>
           <Property Name="IDATTIVAZIONEMAB" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" />
+          <Property Name="IDTRASFERIMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NOTIFICARICHIESTA" Type="number" Precision="1" Scale="0" Nullable="false" />
           <Property Name="DATANOTIFICARICHIESTA" Type="date" />
           <Property Name="ATTIVAZIONE" Type="number" Precision="1" Scale="0" Nullable="false" />
@@ -490,6 +490,23 @@
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="EMAILSECONDARIEDIP">
+          <Key>
+            <PropertyRef Name="IDEMAILSECONDARIA" />
+          </Key>
+          <Property Name="IDEMAILSECONDARIA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="ATTIVA" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EMAILUFFDEST">
+          <Key>
+            <PropertyRef Name="IDEMAILUFFDEST" />
+          </Key>
+          <Property Name="IDEMAILUFFDEST" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="IDFUNZIONEUFF" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="F_IPS">
           <Key>
             <PropertyRef Name="IDFIGLI" />
@@ -561,6 +578,13 @@
           </Key>
           <Property Name="IDFIGLITITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FUNZIONEEMAILUFF">
+          <Key>
+            <PropertyRef Name="IDFUNZIONEUFF" />
+          </Key>
+          <Property Name="IDFUNZIONEUFF" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FUNZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="FUNZIONERIDUZIONE">
           <Key>
@@ -780,6 +804,18 @@
           </Key>
           <Property Name="IDNORMACALCOLO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RIFERIMENTONORMATIVO" Type="varchar2" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOTIFICHE">
+          <Key>
+            <PropertyRef Name="IDNOTIFICA" />
+          </Key>
+          <Property Name="IDNOTIFICA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDMITTENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDDESTINATARIO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="OGGETTO" Type="varchar2" MaxLength="250" Nullable="false" />
+          <Property Name="CORPOMESSAGGIO" Type="clob" Nullable="false" />
+          <Property Name="DATANOTIFICA" Type="date" Nullable="false" />
+          <Property Name="ALLEGATO" Type="blob" />
         </EntityType>
         <EntityType Name="OA">
           <Key>
@@ -2139,6 +2175,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="R_D_DEST_N">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NOTIFICHE" Type="Self.NOTIFICHE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="NOTIFICHE">
+              <PropertyRef Name="IDDESTINATARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_ESD">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EMAILSECONDARIEDIP" Type="Self.EMAILSECONDARIEDIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="EMAILSECONDARIEDIP">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_D_FD">
           <End Role="DOCUMENTI" Type="Self.DOCUMENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2164,6 +2228,20 @@
             </Principal>
             <Dependent Role="FTV_DOC">
               <PropertyRef Name="IDDOCUMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_MIT_N">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="NOTIFICHE" Type="Self.NOTIFICHE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="NOTIFICHE">
+              <PropertyRef Name="IDMITTENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2416,6 +2494,20 @@
             </Principal>
             <Dependent Role="CALENDARIOEVENTI">
               <PropertyRef Name="IDFUNZIONIEVENTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FEU_EUD">
+          <End Role="FUNZIONEEMAILUFF" Type="Self.FUNZIONEEMAILUFF" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EMAILUFFDEST" Type="Self.EMAILUFFDEST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONEEMAILUFF">
+              <PropertyRef Name="IDFUNZIONEUFF" />
+            </Principal>
+            <Dependent Role="EMAILUFFDEST">
+              <PropertyRef Name="IDFUNZIONEUFF" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3232,7 +3324,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="R_T_AMAB">
-          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="0..1">
+          <End Role="TRASFERIMENTO" Type="Self.TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ATTIVAZIONEMAB" Type="Self.ATTIVAZIONEMAB" Multiplicity="*" />
@@ -4157,6 +4249,8 @@
           <EntitySet Name="DOC_ATER" EntityType="Self.DOC_ATER" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="EMAILUFFDEST" EntityType="Self.EMAILUFFDEST" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISEPRO" store:Type="Tables" />
@@ -4164,6 +4258,7 @@
           <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="FUNZIONEEMAILUFF" EntityType="Self.FUNZIONEEMAILUFF" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISEPRO" store:Type="Tables" />
@@ -4188,6 +4283,7 @@
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISEPRO" store:Type="Tables" />
+          <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="OA" EntityType="Self.OA" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="Self.PAGATOCONDIVISOMAB" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISEPRO" store:Type="Tables" />
@@ -4468,6 +4564,14 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="DOC_ATER" EntitySet="DOC_ATER" />
           </AssociationSet>
+          <AssociationSet Name="R_D_DEST_N" Association="Self.R_D_DEST_N">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_ESD" Association="Self.R_D_ESD">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="EMAILSECONDARIEDIP" EntitySet="EMAILSECONDARIEDIP" />
+          </AssociationSet>
           <AssociationSet Name="R_D_FD" Association="Self.R_D_FD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="FIGLI_DOC" EntitySet="FIGLI_DOC" />
@@ -4475,6 +4579,10 @@
           <AssociationSet Name="R_D_FTVD" Association="Self.R_D_FTVD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="FTV_DOC" EntitySet="FTV_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_MIT_N" Association="Self.R_D_MIT_N">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
           </AssociationSet>
           <AssociationSet Name="R_D_PRD" Association="Self.R_D_PRD">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
@@ -4547,6 +4655,10 @@
           <AssociationSet Name="R_FE_CE" Association="Self.R_FE_CE">
             <End Role="FUNZIONIEVENTI" EntitySet="FUNZIONIEVENTI" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
+          </AssociationSet>
+          <AssociationSet Name="R_FEU_EUD" Association="Self.R_FEU_EUD">
+            <End Role="FUNZIONEEMAILUFF" EntitySet="FUNZIONEEMAILUFF" />
+            <End Role="EMAILUFFDEST" EntitySet="EMAILUFFDEST" />
           </AssociationSet>
           <AssociationSet Name="R_FKM_RFKM" Association="Self.R_FKM_RFKM">
             <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
@@ -5044,7 +5156,6 @@
           <EntitySet Name="CDCGEPE" EntityType="DBISEPRO.CDCGEPE" />
           <EntitySet Name="COEFFICIENTESEDE" EntityType="DBISEPRO.COEFFICIENTESEDE" />
           <EntitySet Name="CONTABILITA" EntityType="DBISEPRO.CONTABILITA" />
-          <EntitySet Name="DIPENDENTI" EntityType="DBISEPRO.DIPENDENTI" />
           <EntitySet Name="FUNZIONIEVENTI" EntityType="DBISEPRO.FUNZIONIEVENTI" />
           <EntitySet Name="INDENNITA" EntityType="DBISEPRO.INDENNITA" />
           <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="DBISEPRO.INDENNITAPRIMOSEGRETARIO" />
@@ -5092,10 +5203,6 @@
             <End Role="ATTIVITACRUD" EntitySet="ATTIVITACRUD" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
-          <AssociationSet Name="R_DIP_CDCG" Association="DBISEPRO.R_DIP_CDCG">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="CDCGEPE" EntitySet="CDCGEPE" />
-          </AssociationSet>
           <AssociationSet Name="R_C_AQ" Association="DBISEPRO.R_C_AQ">
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
             <End Role="OA" EntitySet="OA" />
@@ -5103,14 +5210,6 @@
           <AssociationSet Name="R_T_C" Association="DBISEPRO.R_T_C">
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_UA" Association="DBISEPRO.R_D_UA">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
-          </AssociationSet>
-          <AssociationSet Name="R_DIP_LIVDIP" Association="DBISEPRO.R_DIP_LIVDIP">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
           </AssociationSet>
           <AssociationSet Name="R_L_PMAB" Association="DBISEPRO.R_L_PMAB">
             <End Role="LIVELLI" EntitySet="LIVELLI" />
@@ -5443,16 +5542,7 @@
             <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
           </AssociationSet>
-          <EntitySet Name="ATTIVAZIONEMAB" EntityType="DBISEPRO.ATTIVAZIONEMAB" />
           <EntitySet Name="CANOMEMAB" EntityType="DBISEPRO.CANOMEMAB" />
-          <AssociationSet Name="R_AMAB_CMAB" Association="DBISEPRO.R_AMAB_CMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="AMAB_DOC" Association="DBISEPRO.AMAB_DOC">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
-          </AssociationSet>
           <AssociationSet Name="CMAB_TFR" Association="DBISEPRO.CMAB_TFR">
             <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
             <End Role="TFR" EntitySet="TFR" />
@@ -5586,7 +5676,82 @@
             <End Role="VALUTE" EntitySet="VALUTE" />
             <End Role="VALUTAUFFICIO" EntitySet="VALUTAUFFICIO" />
           </AssociationSet>
+          <EntitySet Name="FASCIA_KM" EntityType="DBISEPRO.FASCIA_KM" />
+          <EntitySet Name="GRUPPO_FKM" EntityType="DBISEPRO.GRUPPO_FKM" />
+          <EntitySet Name="PERCENTUALEFKM" EntityType="DBISEPRO.PERCENTUALEFKM" />
+          <EntitySet Name="RICHIAMO_FKM" EntityType="DBISEPRO.RICHIAMO_FKM" />
+          <AssociationSet Name="R_DFK_CFK1" Association="DBISEPRO.R_DFK_CFK1">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_FKM_RFKM" Association="DBISEPRO.R_FKM_RFKM">
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
+          </AssociationSet>
+          <AssociationSet Name="R_GFKM_F_KM" Association="DBISEPRO.R_GFKM_F_KM">
+            <End Role="GRUPPO_FKM" EntitySet="GRUPPO_FKM" />
+            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
+          </AssociationSet>
+          <AssociationSet Name="R_R_RFKM" Association="DBISEPRO.R_R_RFKM">
+            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
+          </AssociationSet>
+          <EntitySet Name="TEP_FK" EntityType="DBISEPRO.TEP_FK" />
+          <EntitySet Name="TER_FK" EntityType="DBISEPRO.TER_FK" />
+          <AssociationSet Name="R_TEP_TEPFK" Association="DBISEPRO.R_TEP_TEPFK">
+            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
+            <End Role="TEP_FK" EntitySet="TEP_FK" />
+          </AssociationSet>
+          <AssociationSet Name="R_TER_TERFK" Association="DBISEPRO.R_TER_TERFK">
+            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
+            <End Role="TER_FK" EntitySet="TER_FK" />
+          </AssociationSet>
+          <AssociationSet Name="PS_PFKM" Association="DBISEPRO.PS_PFKM">
+            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
+            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
+          </AssociationSet>
+          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
+          <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" />
+          <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_MAB_PCMAB" Association="DBISEPRO.R_MAB_PCMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_MA" Association="DBISEPRO.MAB_MA">
+            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="MAB_PMAB" Association="DBISEPRO.MAB_PMAB">
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
+          </AssociationSet>
+          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
+          <AssociationSet Name="R_RU_RD" Association="DBISEPRO.R_RU_RD">
+            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
+          </AssociationSet>
+          <EntitySet Name="ATTIVAZIONEMAB" EntityType="DBISEPRO.ATTIVAZIONEMAB" />
+          <EntitySet Name="DIPENDENTI" EntityType="DBISEPRO.DIPENDENTI" />
+          <EntitySet Name="EMAILSECONDARIEDIP" EntityType="DBISEPRO.EMAILSECONDARIEDIP" />
+          <EntitySet Name="EMAILUFFDEST" EntityType="DBISEPRO.EMAILUFFDEST" />
+          <EntitySet Name="FUNZIONEEMAILUFF" EntityType="DBISEPRO.FUNZIONEEMAILUFF" />
+          <EntitySet Name="NOTIFICHE" EntityType="DBISEPRO.NOTIFICHE" />
           <EntitySet Name="TRASFERIMENTO" EntityType="DBISEPRO.TRASFERIMENTO" />
+          <AssociationSet Name="R_AMAB_CMAB" Association="DBISEPRO.R_AMAB_CMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_MAB" Association="DBISEPRO.R_AMAB_MAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
+          <AssociationSet Name="R_AMAB_PCMAB" Association="DBISEPRO.R_AMAB_PCMAB">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
+          </AssociationSet>
           <AssociationSet Name="R_T_AMAB" Association="DBISEPRO.R_T_AMAB">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
@@ -5595,9 +5760,37 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="CALENDARIOEVENTI" EntitySet="CALENDARIOEVENTI" />
           </AssociationSet>
+          <AssociationSet Name="R_DIP_CDCG" Association="DBISEPRO.R_DIP_CDCG">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="CDCGEPE" EntitySet="CDCGEPE" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_DEST_N" Association="DBISEPRO.R_D_DEST_N">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_ESD" Association="DBISEPRO.R_D_ESD">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="EMAILSECONDARIEDIP" EntitySet="EMAILSECONDARIEDIP" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_MIT_N" Association="DBISEPRO.R_D_MIT_N">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_UA" Association="DBISEPRO.R_D_UA">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="UTENTIAUTORIZZATI" EntitySet="UTENTIAUTORIZZATI" />
+          </AssociationSet>
+          <AssociationSet Name="R_DIP_LIVDIP" Association="DBISEPRO.R_DIP_LIVDIP">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="LIVELLIDIPENDENTI" EntitySet="LIVELLIDIPENDENTI" />
+          </AssociationSet>
           <AssociationSet Name="R_DIP_TRASF" Association="DBISEPRO.R_DIP_TRASF">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+          </AssociationSet>
+          <AssociationSet Name="R_FEU_EUD" Association="DBISEPRO.R_FEU_EUD">
+            <End Role="FUNZIONEEMAILUFF" EntitySet="FUNZIONEEMAILUFF" />
+            <End Role="EMAILUFFDEST" EntitySet="EMAILUFFDEST" />
           </AssociationSet>
           <AssociationSet Name="R_T_I" Association="DBISEPRO.R_T_I">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5607,9 +5800,17 @@
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="LOGATTIVITA" EntitySet="LOGATTIVITA" />
           </AssociationSet>
+          <AssociationSet Name="R_T_MAB" Association="DBISEPRO.R_T_MAB">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
+          </AssociationSet>
           <AssociationSet Name="R_T_MF" Association="DBISEPRO.R_T_MF">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="MAGGIORAZIONIFAMILIARI" EntitySet="MAGGIORAZIONIFAMILIARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_PCMAB" Association="DBISEPRO.R_T_PCMAB">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
           </AssociationSet>
           <AssociationSet Name="R_T_P" Association="DBISEPRO.R_T_P">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5622,6 +5823,10 @@
           <AssociationSet Name="R_T_R" Association="DBISEPRO.R_T_R">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
             <End Role="RICHIAMO" EntitySet="RICHIAMO" />
+          </AssociationSet>
+          <AssociationSet Name="R_T_RD" Association="DBISEPRO.R_T_RD">
+            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
+            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           <AssociationSet Name="R_TRASF_SOSP" Association="DBISEPRO.R_TRASF_SOSP">
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5663,6 +5868,10 @@
             <End Role="UFFICI" EntitySet="UFFICI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
           </AssociationSet>
+          <AssociationSet Name="AMAB_DOC" Association="DBISEPRO.AMAB_DOC">
+            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
+            <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
+          </AssociationSet>
           <AssociationSet Name="T_RC" Association="DBISEPRO.T_RC">
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
@@ -5670,83 +5879,6 @@
           <AssociationSet Name="TRASF_DOC" Association="DBISEPRO.TRASF_DOC">
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-          </AssociationSet>
-          <EntitySet Name="FASCIA_KM" EntityType="DBISEPRO.FASCIA_KM" />
-          <EntitySet Name="GRUPPO_FKM" EntityType="DBISEPRO.GRUPPO_FKM" />
-          <EntitySet Name="PERCENTUALEFKM" EntityType="DBISEPRO.PERCENTUALEFKM" />
-          <EntitySet Name="RICHIAMO_FKM" EntityType="DBISEPRO.RICHIAMO_FKM" />
-          <AssociationSet Name="R_DFK_CFK1" Association="DBISEPRO.R_DFK_CFK1">
-            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-          </AssociationSet>
-          <AssociationSet Name="R_FKM_RFKM" Association="DBISEPRO.R_FKM_RFKM">
-            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
-          </AssociationSet>
-          <AssociationSet Name="R_GFKM_F_KM" Association="DBISEPRO.R_GFKM_F_KM">
-            <End Role="GRUPPO_FKM" EntitySet="GRUPPO_FKM" />
-            <End Role="FASCIA_KM" EntitySet="FASCIA_KM" />
-          </AssociationSet>
-          <AssociationSet Name="R_R_RFKM" Association="DBISEPRO.R_R_RFKM">
-            <End Role="RICHIAMO" EntitySet="RICHIAMO" />
-            <End Role="RICHIAMO_FKM" EntitySet="RICHIAMO_FKM" />
-          </AssociationSet>
-          <EntitySet Name="TEP_FK" EntityType="DBISEPRO.TEP_FK" />
-          <EntitySet Name="TER_FK" EntityType="DBISEPRO.TER_FK" />
-          <AssociationSet Name="R_TEP_TEPFK" Association="DBISEPRO.R_TEP_TEPFK">
-            <End Role="TEPARTENZA" EntitySet="TEPARTENZA" />
-            <End Role="TEP_FK" EntitySet="TEP_FK" />
-          </AssociationSet>
-          <AssociationSet Name="R_TER_TERFK" Association="DBISEPRO.R_TER_TERFK">
-            <End Role="TERIENTRO" EntitySet="TERIENTRO" />
-            <End Role="TER_FK" EntitySet="TER_FK" />
-          </AssociationSet>
-          <AssociationSet Name="PS_PFKM" Association="DBISEPRO.PS_PFKM">
-            <End Role="PERCENTUALEFKM" EntitySet="PERCENTUALEFKM" />
-            <End Role="PRIMASITEMAZIONE" EntitySet="PRIMASITEMAZIONE" />
-          </AssociationSet>
-          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
-          <AssociationSet Name="R_AMAB_PCMAB" Association="DBISEPRO.R_AMAB_PCMAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_PCMAB" Association="DBISEPRO.R_T_PCMAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
-          <EntitySet Name="MAGGIORAZIONEABITAZIONE" EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" />
-          <AssociationSet Name="R_AMAB_MAB" Association="DBISEPRO.R_AMAB_MAB">
-            <End Role="ATTIVAZIONEMAB" EntitySet="ATTIVAZIONEMAB" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_CMAB" Association="DBISEPRO.R_MAB_CMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="CANOMEMAB" EntitySet="CANOMEMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_MAB_PCMAB" Association="DBISEPRO.R_MAB_PCMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="PAGATOCONDIVISOMAB" EntitySet="PAGATOCONDIVISOMAB" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_MAB" Association="DBISEPRO.R_T_MAB">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_MA" Association="DBISEPRO.MAB_MA">
-            <End Role="MAGGIORAZIONIANNUALI" EntitySet="MAGGIORAZIONIANNUALI" />
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-          </AssociationSet>
-          <AssociationSet Name="MAB_PMAB" Association="DBISEPRO.MAB_PMAB">
-            <End Role="MAGGIORAZIONEABITAZIONE" EntitySet="MAGGIORAZIONEABITAZIONE" />
-            <End Role="PERCENTUALEMAB" EntitySet="PERCENTUALEMAB" />
-          </AssociationSet>
-          <EntitySet Name="RUOLODIPENDENTE" EntityType="DBISEPRO.RUOLODIPENDENTE" />
-          <AssociationSet Name="R_RU_RD" Association="DBISEPRO.R_RU_RD">
-            <End Role="RUOLOUFFICIO" EntitySet="RUOLOUFFICIO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
-          </AssociationSet>
-          <AssociationSet Name="R_T_RD" Association="DBISEPRO.R_T_RD">
-            <End Role="TRASFERIMENTO" EntitySet="TRASFERIMENTO" />
-            <End Role="RUOLODIPENDENTE" EntitySet="RUOLODIPENDENTE" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="ACCESSI">
@@ -5825,30 +5957,6 @@
           <NavigationProperty Name="OA" Relationship="DBISEPRO.R_C_AQ" FromRole="CONTABILITA" ToRole="OA" />
           <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_C" FromRole="CONTABILITA" ToRole="TEORICI" />
         </EntityType>
-        <EntityType Name="DIPENDENTI">
-          <Key>
-            <PropertyRef Name="IDDIPENDENTE" />
-          </Key>
-          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
-          <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="DATAASSUNZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATACESSAZIONE" Type="DateTime" />
-          <Property Name="INDIRIZZO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="CAP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CITTA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="PROVINCIA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TELEFONO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="CDCGEPE" Relationship="DBISEPRO.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
-          <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISEPRO.R_D_UA" FromRole="DIPENDENTI" ToRole="UTENTIAUTORIZZATI" />
-          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
-        </EntityType>
         <EntityType Name="FUNZIONIEVENTI">
           <Key>
             <PropertyRef Name="IDFUNZIONIEVENTI" />
@@ -5904,9 +6012,9 @@
           <Property Name="DATAFINEVALIDITA" Type="DateTime" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LIVELLI" Relationship="DBISEPRO.R_LIV_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="LIVELLI" />
           <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.INDENNITA_LIVELLIDIPENDENTI" FromRole="LIVELLIDIPENDENTI" ToRole="INDENNITA" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="LIVELLIDIPENDENTI" ToRole="DIPENDENTI" />
         </EntityType>
         <EntityType Name="LOGATTIVITA">
           <Key>
@@ -6237,9 +6345,9 @@
           <Property Name="UTENTE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IDDIPENDENTE" Type="Decimal" Precision="38" Scale="0" />
           <NavigationProperty Name="ACCESSI" Relationship="DBISEPRO.R_UL_C" FromRole="UTENTIAUTORIZZATI" ToRole="ACCESSI" />
-          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_UA" FromRole="UTENTIAUTORIZZATI" ToRole="DIPENDENTI" />
           <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_UL_LA" FromRole="UTENTIAUTORIZZATI" ToRole="LOGATTIVITA" />
           <NavigationProperty Name="RUOLOACCESSO" Relationship="DBISEPRO.R_RU_UA" FromRole="UTENTIAUTORIZZATI" ToRole="RUOLOACCESSO" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_UA" FromRole="UTENTIAUTORIZZATI" ToRole="DIPENDENTI" />
         </EntityType>
         <EntityType Name="VOCI">
           <Key>
@@ -6296,20 +6404,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_DIP_CDCG">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CDCGEPE" Role="CDCGEPE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="CDCGEPE">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_C_AQ">
           <End Type="DBISEPRO.CONTABILITA" Role="CONTABILITA" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -6335,34 +6429,6 @@
             </Principal>
             <Dependent Role="CONTABILITA">
               <PropertyRef Name="IDTEORICI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_UA">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="UTENTIAUTORIZZATI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_DIP_LIVDIP">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="LIVELLIDIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7102,10 +7168,10 @@
           <NavigationProperty Name="PASSAPORTORICHIEDENTE" Relationship="DBISEPRO.PASSRICH_DOC" FromRole="DOCUMENTI" ToRole="PASSAPORTORICHIEDENTE" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.DOC_ATEP" FromRole="DOCUMENTI" ToRole="ATTIVITATEPARTENZA" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.DOC_ATER" FromRole="DOCUMENTI" ToRole="ATTIVITATERIENTRO" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.AMAB_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="ATTIVAZIONIVIAGGICONGEDO" Relationship="DBISEPRO.AVC_D" FromRole="DOCUMENTI" ToRole="ATTIVAZIONIVIAGGICONGEDO" />
           <NavigationProperty Name="TITOLIVIAGGIORICHIEDENTE" Relationship="DBISEPRO.TVR_DOC" FromRole="DOCUMENTI" ToRole="TITOLIVIAGGIORICHIEDENTE" />
           <NavigationProperty Name="ATTIVAZIONETITOLIVIAGGIO" Relationship="DBISEPRO.ATV_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONETITOLIVIAGGIO" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.AMAB_DOC" FromRole="DOCUMENTI" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.TRASF_DOC" FromRole="DOCUMENTI" ToRole="TRASFERIMENTO" />
         </EntityType>
         <Association Name="R_D_D">
@@ -7345,8 +7411,8 @@
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.RICHIAMO_ALIQCONTR" FromRole="RICHIAMO" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="COEFFICIENTEINDRICHIAMO" Relationship="DBISEPRO.RICHIAMO_COEFFRICH" FromRole="RICHIAMO" ToRole="COEFFICIENTEINDRICHIAMO" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="RICHIAMO_FKM" Relationship="DBISEPRO.R_R_RFKM" FromRole="RICHIAMO" ToRole="RICHIAMO_FKM" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_R" FromRole="RICHIAMO" ToRole="TRASFERIMENTO" />
         </EntityType>
         <Association Name="RICHIAMO_ALIQCONTR">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -7360,8 +7426,8 @@
           <NavigationProperty Name="ALIQUOTECONTRIBUTIVE" Relationship="DBISEPRO.PS_AC" FromRole="PRIMASITEMAZIONE" ToRole="ALIQUOTECONTRIBUTIVE" />
           <NavigationProperty Name="ATTIVITAANTICIPI" Relationship="DBISEPRO.R_PS_AA" FromRole="PRIMASITEMAZIONE" ToRole="ATTIVITAANTICIPI" />
           <NavigationProperty Name="INDENNITASISTEMAZIONE" Relationship="DBISEPRO.IS_PS" FromRole="PRIMASITEMAZIONE" ToRole="INDENNITASISTEMAZIONE" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="PRIMASITEMAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="PERCENTUALEFKM" Relationship="DBISEPRO.PS_PFKM" FromRole="PRIMASITEMAZIONE" ToRole="PERCENTUALEFKM" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="PRIMASITEMAZIONE" ToRole="TRASFERIMENTO" />
         </EntityType>
         <Association Name="PS_AC">
           <End Type="DBISEPRO.ALIQUOTECONTRIBUTIVE" Role="ALIQUOTECONTRIBUTIVE" Multiplicity="*" />
@@ -7432,8 +7498,8 @@
           <Property Name="IDTEPARTENZA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATEPARTENZA" Relationship="DBISEPRO.R_TEP_ATEP" FromRole="TEPARTENZA" ToRole="ATTIVITATEPARTENZA" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TEP_PATE" FromRole="TEPARTENZA" ToRole="PERCENTUALEANTICIPOTE" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TEP" FromRole="TEPARTENZA" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TEP_FK" Relationship="DBISEPRO.R_TEP_TEPFK" FromRole="TEPARTENZA" ToRole="TEP_FK" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TEP" FromRole="TEPARTENZA" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="TERIENTRO">
           <Key>
@@ -7442,8 +7508,8 @@
           <Property Name="IDTERIENTRO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <NavigationProperty Name="ATTIVITATERIENTRO" Relationship="DBISEPRO.R_TER_ATER" FromRole="TERIENTRO" ToRole="ATTIVITATERIENTRO" />
           <NavigationProperty Name="PERCENTUALEANTICIPOTE" Relationship="DBISEPRO.TER_PATE" FromRole="TERIENTRO" ToRole="PERCENTUALEANTICIPOTE" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="TER_FK" Relationship="DBISEPRO.R_TER_TERFK" FromRole="TERIENTRO" ToRole="TER_FK" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_TER" FromRole="TERIENTRO" ToRole="TRASFERIMENTO" />
         </EntityType>
         <EntityType Name="TIPOANTICIPOTRASPORTOEFFETTI">
           <Key>
@@ -7617,25 +7683,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ATTIVAZIONEMAB">
-          <Key>
-            <PropertyRef Name="IDATTIVAZIONEMAB" />
-          </Key>
-          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
-          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
-          <Property Name="ATTIVAZIONE" Type="Boolean" Nullable="false" />
-          <Property Name="DATAATTIVAZIONE" Type="DateTime" />
-          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANOMEMAB" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.AMAB_DOC" FromRole="ATTIVAZIONEMAB" ToRole="DOCUMENTI" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_AMAB" FromRole="ATTIVAZIONEMAB" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
-        </EntityType>
         <EntityType Name="CANOMEMAB">
           <Key>
             <PropertyRef Name="IDCANONE" />
@@ -7648,28 +7695,10 @@
           <Property Name="IMPORTOCANONE" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="CANOMEMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="TFR" Relationship="DBISEPRO.CMAB_TFR" FromRole="CANOMEMAB" ToRole="TFR" />
           <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="CANOMEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="CANOMEMAB" ToRole="ATTIVAZIONEMAB" />
         </EntityType>
-        <Association Name="R_AMAB_CMAB">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CANOMEMAB" Role="CANOMEMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="CANOMEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AMAB_DOC">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="*" />
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-        </Association>
         <Association Name="CMAB_TFR">
           <End Type="DBISEPRO.CANOMEMAB" Role="CANOMEMAB" Multiplicity="*" />
           <End Type="DBISEPRO.TFR" Role="TFR" Multiplicity="*" />
@@ -8175,322 +8204,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="TRASFERIMENTO">
-          <Key>
-            <PropertyRef Name="IDTRASFERIMENTO" />
-          </Key>
-          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" />
-          <Property Name="DATARIENTRO" Type="DateTime" />
-          <Property Name="COAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DATALETTERA" Type="DateTime" />
-          <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
-          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_T_AMAB" FromRole="TRASFERIMENTO" ToRole="ATTIVAZIONEMAB" />
-          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
-          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
-          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
-          <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
-          <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
-          <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
-          <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
-          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_T_R" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
-          <NavigationProperty Name="SOSPENSIONE" Relationship="DBISEPRO.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
-          <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISEPRO.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
-          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
-          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.R_T_TEP" FromRole="TRASFERIMENTO" ToRole="TEPARTENZA" />
-          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.R_T_TER" FromRole="TRASFERIMENTO" ToRole="TERIENTRO" />
-          <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
-          <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISEPRO.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
-          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
-          <NavigationProperty Name="VIAGGICONGEDO" Relationship="DBISEPRO.R_T_VC" FromRole="TRASFERIMENTO" ToRole="VIAGGICONGEDO" />
-          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
-          <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.T_RC" FromRole="TRASFERIMENTO" ToRole="REGOLECALCOLO" />
-          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
-          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_T_PCMAB" FromRole="TRASFERIMENTO" ToRole="PAGATOCONDIVISOMAB" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
-          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
-        </EntityType>
-        <Association Name="R_T_AMAB">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_CE">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="CALENDARIOEVENTI">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_DIP_TRASF">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_I">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="INDENNITA">
-              <PropertyRef Name="IDTRASFINDENNITA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_LA">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.LOGATTIVITA" Role="LOGATTIVITA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="LOGATTIVITA">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MF">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONIFAMILIARI" Role="MAGGIORAZIONIFAMILIARI" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONIFAMILIARI">
-              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_P">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="PASSAPORTI">
-              <PropertyRef Name="IDPASSAPORTI" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TRASF_PRIMASIST">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="PRIMASITEMAZIONE">
-              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_R">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="RICHIAMO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TRASF_SOSP">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.SOSPENSIONE" Role="SOSPENSIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="SOSPENSIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_ST_T">
-          <End Type="DBISEPRO.STATOTRASFERIMENTO" Role="STATOTRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="STATOTRASFERIMENTO">
-              <PropertyRef Name="IDSTATOTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDSTATOTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_T">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TEORICI">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_TEP">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TEPARTENZA">
-              <PropertyRef Name="IDTEPARTENZA" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_TER">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TERIENTRO">
-              <PropertyRef Name="IDTERIENTRO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TIPCOAN_TRASF">
-          <End Type="DBISEPRO.TIPOLOGIACOAN" Role="TIPOLOGIACOAN" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOLOGIACOAN">
-              <PropertyRef Name="IDTIPOCOAN" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTIPOCOAN" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_TT_T">
-          <End Type="DBISEPRO.TIPOTRASFERIMENTO" Role="TIPOTRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIPOTRASFERIMENTO">
-              <PropertyRef Name="IDTIPOTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTIPOTRASFERIMENTO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_B">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="TITOLIVIAGGIO">
-              <PropertyRef Name="IDTITOLOVIAGGIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_VC">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.VIAGGICONGEDO" Role="VIAGGICONGEDO" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="VIAGGICONGEDO">
-              <PropertyRef Name="IDVIAGGICONGEDO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_U_T">
-          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UFFICI">
-              <PropertyRef Name="IDUFFICIO" />
-            </Principal>
-            <Dependent Role="TRASFERIMENTO">
-              <PropertyRef Name="IDUFFICIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="T_RC">
-          <End Type="DBISEPRO.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="*" />
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-        </Association>
-        <Association Name="TRASF_DOC">
-          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
-        </Association>
         <EntityType Name="FASCIA_KM">
           <Key>
             <PropertyRef Name="IDFKM" />
@@ -8660,38 +8373,10 @@
           <Property Name="PAGATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
           <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="TRASFERIMENTO" />
-          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="PAGATOCONDIVISOMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
         </EntityType>
-        <Association Name="R_AMAB_PCMAB">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="PAGATOCONDIVISOMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_PCMAB">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="PAGATOCONDIVISOMAB">
-              <PropertyRef Name="IDTRASFERIMENTOCONDIVISO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="MAGGIORAZIONEABITAZIONE">
           <Key>
             <PropertyRef Name="IDMAB" />
@@ -8704,27 +8389,13 @@
           <Property Name="ANTICIPOANNUALE" Type="Boolean" Nullable="false" />
           <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
           <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ATTIVAZIONEMAB" />
           <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_MAB_CMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="CANOMEMAB" />
           <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_MAB_PCMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PAGATOCONDIVISOMAB" />
-          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
           <NavigationProperty Name="MAGGIORAZIONIANNUALI" Relationship="DBISEPRO.MAB_MA" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="MAGGIORAZIONIANNUALI" />
           <NavigationProperty Name="PERCENTUALEMAB" Relationship="DBISEPRO.MAB_PMAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="PERCENTUALEMAB" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_MAB" FromRole="MAGGIORAZIONEABITAZIONE" ToRole="TRASFERIMENTO" />
         </EntityType>
-        <Association Name="R_AMAB_MAB">
-          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ATTIVAZIONEMAB">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDATTIVAZIONEMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_MAB_CMAB">
           <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8750,20 +8421,6 @@
             </Principal>
             <Dependent Role="PAGATOCONDIVISOMAB">
               <PropertyRef Name="IDMAB" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_T_MAB">
-          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TRASFERIMENTO">
-              <PropertyRef Name="IDTRASFERIMENTO" />
-            </Principal>
-            <Dependent Role="MAGGIORAZIONEABITAZIONE">
-              <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8803,6 +8460,429 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ATTIVAZIONEMAB">
+          <Key>
+            <PropertyRef Name="IDATTIVAZIONEMAB" />
+          </Key>
+          <Property Name="IDATTIVAZIONEMAB" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="NOTIFICARICHIESTA" Type="Boolean" Nullable="false" />
+          <Property Name="DATANOTIFICARICHIESTA" Type="DateTime" />
+          <Property Name="ATTIVAZIONE" Type="Boolean" Nullable="false" />
+          <Property Name="DATAATTIVAZIONE" Type="DateTime" />
+          <Property Name="DATAVARIAZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <Property Name="ANNULLATO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CANOMEMAB" Relationship="DBISEPRO.R_AMAB_CMAB" FromRole="ATTIVAZIONEMAB" ToRole="CANOMEMAB" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_AMAB_MAB" FromRole="ATTIVAZIONEMAB" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_AMAB_PCMAB" FromRole="ATTIVAZIONEMAB" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_T_AMAB" FromRole="ATTIVAZIONEMAB" ToRole="TRASFERIMENTO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.AMAB_DOC" FromRole="ATTIVAZIONEMAB" ToRole="DOCUMENTI" />
+        </EntityType>
+        <EntityType Name="DIPENDENTI">
+          <Key>
+            <PropertyRef Name="IDDIPENDENTE" />
+          </Key>
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MATRICOLA" Type="Int32" Nullable="false" />
+          <Property Name="NOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="COGNOME" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DATAASSUNZIONE" Type="DateTime" Nullable="false" />
+          <Property Name="DATACESSAZIONE" Type="DateTime" />
+          <Property Name="INDIRIZZO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CAP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CITTA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PROVINCIA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TELEFONO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="FAX" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="CDCGEPE" Relationship="DBISEPRO.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
+          <NavigationProperty Name="NOTIFICHE" Relationship="DBISEPRO.R_D_DEST_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
+          <NavigationProperty Name="EMAILSECONDARIEDIP" Relationship="DBISEPRO.R_D_ESD" FromRole="DIPENDENTI" ToRole="EMAILSECONDARIEDIP" />
+          <NavigationProperty Name="NOTIFICHE1" Relationship="DBISEPRO.R_D_MIT_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
+          <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISEPRO.R_D_UA" FromRole="DIPENDENTI" ToRole="UTENTIAUTORIZZATI" />
+          <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
+          <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
+        </EntityType>
+        <EntityType Name="EMAILSECONDARIEDIP">
+          <Key>
+            <PropertyRef Name="IDEMAILSECONDARIA" />
+          </Key>
+          <Property Name="IDEMAILSECONDARIA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="ATTIVA" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_ESD" FromRole="EMAILSECONDARIEDIP" ToRole="DIPENDENTI" />
+        </EntityType>
+        <EntityType Name="EMAILUFFDEST">
+          <Key>
+            <PropertyRef Name="IDEMAILUFFDEST" />
+          </Key>
+          <Property Name="IDEMAILUFFDEST" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMAIL" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IDFUNZIONEUFF" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <NavigationProperty Name="FUNZIONEEMAILUFF" Relationship="DBISEPRO.R_FEU_EUD" FromRole="EMAILUFFDEST" ToRole="FUNZIONEEMAILUFF" />
+        </EntityType>
+        <EntityType Name="FUNZIONEEMAILUFF">
+          <Key>
+            <PropertyRef Name="IDFUNZIONEUFF" />
+          </Key>
+          <Property Name="IDFUNZIONEUFF" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FUNZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EMAILUFFDEST" Relationship="DBISEPRO.R_FEU_EUD" FromRole="FUNZIONEEMAILUFF" ToRole="EMAILUFFDEST" />
+        </EntityType>
+        <EntityType Name="NOTIFICHE">
+          <Key>
+            <PropertyRef Name="IDNOTIFICA" />
+          </Key>
+          <Property Name="IDNOTIFICA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMITTENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDDESTINATARIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="OGGETTO" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CORPOMESSAGGIO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" />
+          <Property Name="ALLEGATO" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_DEST_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
+          <NavigationProperty Name="DIPENDENTI1" Relationship="DBISEPRO.R_D_MIT_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
+        </EntityType>
+        <EntityType Name="TRASFERIMENTO">
+          <Key>
+            <PropertyRef Name="IDTRASFERIMENTO" />
+          </Key>
+          <Property Name="IDTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTIPOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDUFFICIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDSTATOTRASFERIMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDTIPOCOAN" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="DATAPARTENZA" Type="DateTime" Nullable="false" />
+          <Property Name="DATARIENTRO" Type="DateTime" />
+          <Property Name="COAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PROTOCOLLOLETTERA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DATALETTERA" Type="DateTime" />
+          <Property Name="NOTIFICATRASFERIMENTO" Type="Boolean" Nullable="false" />
+          <Property Name="DATAAGGIORNAMENTO" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ATTIVAZIONEMAB" Relationship="DBISEPRO.R_T_AMAB" FromRole="TRASFERIMENTO" ToRole="ATTIVAZIONEMAB" />
+          <NavigationProperty Name="CALENDARIOEVENTI" Relationship="DBISEPRO.R_T_CE" FromRole="TRASFERIMENTO" ToRole="CALENDARIOEVENTI" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="TRASFERIMENTO" ToRole="DIPENDENTI" />
+          <NavigationProperty Name="INDENNITA" Relationship="DBISEPRO.R_T_I" FromRole="TRASFERIMENTO" ToRole="INDENNITA" />
+          <NavigationProperty Name="LOGATTIVITA" Relationship="DBISEPRO.R_T_LA" FromRole="TRASFERIMENTO" ToRole="LOGATTIVITA" />
+          <NavigationProperty Name="MAGGIORAZIONEABITAZIONE" Relationship="DBISEPRO.R_T_MAB" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONEABITAZIONE" />
+          <NavigationProperty Name="MAGGIORAZIONIFAMILIARI" Relationship="DBISEPRO.R_T_MF" FromRole="TRASFERIMENTO" ToRole="MAGGIORAZIONIFAMILIARI" />
+          <NavigationProperty Name="PAGATOCONDIVISOMAB" Relationship="DBISEPRO.R_T_PCMAB" FromRole="TRASFERIMENTO" ToRole="PAGATOCONDIVISOMAB" />
+          <NavigationProperty Name="PASSAPORTI" Relationship="DBISEPRO.R_T_P" FromRole="TRASFERIMENTO" ToRole="PASSAPORTI" />
+          <NavigationProperty Name="PRIMASITEMAZIONE" Relationship="DBISEPRO.R_TRASF_PRIMASIST" FromRole="TRASFERIMENTO" ToRole="PRIMASITEMAZIONE" />
+          <NavigationProperty Name="RICHIAMO" Relationship="DBISEPRO.R_T_R" FromRole="TRASFERIMENTO" ToRole="RICHIAMO" />
+          <NavigationProperty Name="RUOLODIPENDENTE" Relationship="DBISEPRO.R_T_RD" FromRole="TRASFERIMENTO" ToRole="RUOLODIPENDENTE" />
+          <NavigationProperty Name="SOSPENSIONE" Relationship="DBISEPRO.R_TRASF_SOSP" FromRole="TRASFERIMENTO" ToRole="SOSPENSIONE" />
+          <NavigationProperty Name="STATOTRASFERIMENTO" Relationship="DBISEPRO.R_ST_T" FromRole="TRASFERIMENTO" ToRole="STATOTRASFERIMENTO" />
+          <NavigationProperty Name="TEORICI" Relationship="DBISEPRO.R_T_T" FromRole="TRASFERIMENTO" ToRole="TEORICI" />
+          <NavigationProperty Name="TEPARTENZA" Relationship="DBISEPRO.R_T_TEP" FromRole="TRASFERIMENTO" ToRole="TEPARTENZA" />
+          <NavigationProperty Name="TERIENTRO" Relationship="DBISEPRO.R_T_TER" FromRole="TRASFERIMENTO" ToRole="TERIENTRO" />
+          <NavigationProperty Name="TIPOLOGIACOAN" Relationship="DBISEPRO.R_TIPCOAN_TRASF" FromRole="TRASFERIMENTO" ToRole="TIPOLOGIACOAN" />
+          <NavigationProperty Name="TIPOTRASFERIMENTO" Relationship="DBISEPRO.R_TT_T" FromRole="TRASFERIMENTO" ToRole="TIPOTRASFERIMENTO" />
+          <NavigationProperty Name="TITOLIVIAGGIO" Relationship="DBISEPRO.R_T_B" FromRole="TRASFERIMENTO" ToRole="TITOLIVIAGGIO" />
+          <NavigationProperty Name="VIAGGICONGEDO" Relationship="DBISEPRO.R_T_VC" FromRole="TRASFERIMENTO" ToRole="VIAGGICONGEDO" />
+          <NavigationProperty Name="UFFICI" Relationship="DBISEPRO.R_U_T" FromRole="TRASFERIMENTO" ToRole="UFFICI" />
+          <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.T_RC" FromRole="TRASFERIMENTO" ToRole="REGOLECALCOLO" />
+          <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.TRASF_DOC" FromRole="TRASFERIMENTO" ToRole="DOCUMENTI" />
+        </EntityType>
+        <Association Name="R_AMAB_CMAB">
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CANOMEMAB" Role="CANOMEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="CANOMEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_MAB">
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_AMAB_PCMAB">
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDATTIVAZIONEMAB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_AMAB">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="ATTIVAZIONEMAB">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_CE">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CALENDARIOEVENTI" Role="CALENDARIOEVENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="CALENDARIOEVENTI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_CDCG">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.CDCGEPE" Role="CDCGEPE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="CDCGEPE">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_DEST_N">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="NOTIFICHE">
+              <PropertyRef Name="IDDESTINATARIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_ESD">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.EMAILSECONDARIEDIP" Role="EMAILSECONDARIEDIP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="EMAILSECONDARIEDIP">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_MIT_N">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="NOTIFICHE">
+              <PropertyRef Name="IDMITTENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_UA">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.UTENTIAUTORIZZATI" Role="UTENTIAUTORIZZATI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="UTENTIAUTORIZZATI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_LIVDIP">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.LIVELLIDIPENDENTI" Role="LIVELLIDIPENDENTI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="LIVELLIDIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_TRASF">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_FEU_EUD">
+          <End Type="DBISEPRO.FUNZIONEEMAILUFF" Role="FUNZIONEEMAILUFF" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.EMAILUFFDEST" Role="EMAILUFFDEST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FUNZIONEEMAILUFF">
+              <PropertyRef Name="IDFUNZIONEUFF" />
+            </Principal>
+            <Dependent Role="EMAILUFFDEST">
+              <PropertyRef Name="IDFUNZIONEUFF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_I">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.INDENNITA" Role="INDENNITA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="INDENNITA">
+              <PropertyRef Name="IDTRASFINDENNITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_LA">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.LOGATTIVITA" Role="LOGATTIVITA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="LOGATTIVITA">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_MAB">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONEABITAZIONE" Role="MAGGIORAZIONEABITAZIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONEABITAZIONE">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_MF">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.MAGGIORAZIONIFAMILIARI" Role="MAGGIORAZIONIFAMILIARI" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="MAGGIORAZIONIFAMILIARI">
+              <PropertyRef Name="IDMAGGIORAZIONIFAMILIARI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_PCMAB">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PAGATOCONDIVISOMAB" Role="PAGATOCONDIVISOMAB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="PAGATOCONDIVISOMAB">
+              <PropertyRef Name="IDTRASFERIMENTOCONDIVISO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_P">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PASSAPORTI" Role="PASSAPORTI" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="PASSAPORTI">
+              <PropertyRef Name="IDPASSAPORTI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TRASF_PRIMASIST">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.PRIMASITEMAZIONE" Role="PRIMASITEMAZIONE" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="PRIMASITEMAZIONE">
+              <PropertyRef Name="IDPRIMASISTEMAZIONE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_R">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.RICHIAMO" Role="RICHIAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="RICHIAMO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="R_T_RD">
           <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -8816,6 +8896,158 @@
               <PropertyRef Name="IDTRASFERIMENTO" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TRASF_SOSP">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.SOSPENSIONE" Role="SOSPENSIONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="SOSPENSIONE">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_ST_T">
+          <End Type="DBISEPRO.STATOTRASFERIMENTO" Role="STATOTRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STATOTRASFERIMENTO">
+              <PropertyRef Name="IDSTATOTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDSTATOTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_T">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEORICI" Role="TEORICI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEORICI">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_TEP">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TEPARTENZA" Role="TEPARTENZA" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TEPARTENZA">
+              <PropertyRef Name="IDTEPARTENZA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_TER">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TERIENTRO" Role="TERIENTRO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TERIENTRO">
+              <PropertyRef Name="IDTERIENTRO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TIPCOAN_TRASF">
+          <End Type="DBISEPRO.TIPOLOGIACOAN" Role="TIPOLOGIACOAN" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOLOGIACOAN">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTIPOCOAN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_TT_T">
+          <End Type="DBISEPRO.TIPOTRASFERIMENTO" Role="TIPOTRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOTRASFERIMENTO">
+              <PropertyRef Name="IDTIPOTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTIPOTRASFERIMENTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_B">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TITOLIVIAGGIO" Role="TITOLIVIAGGIO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="TITOLIVIAGGIO">
+              <PropertyRef Name="IDTITOLOVIAGGIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_T_VC">
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.VIAGGICONGEDO" Role="VIAGGICONGEDO" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="TRASFERIMENTO">
+              <PropertyRef Name="IDTRASFERIMENTO" />
+            </Principal>
+            <Dependent Role="VIAGGICONGEDO">
+              <PropertyRef Name="IDVIAGGICONGEDO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_U_T">
+          <End Type="DBISEPRO.UFFICI" Role="UFFICI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UFFICI">
+              <PropertyRef Name="IDUFFICIO" />
+            </Principal>
+            <Dependent Role="TRASFERIMENTO">
+              <PropertyRef Name="IDUFFICIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AMAB_DOC">
+          <End Type="DBISEPRO.ATTIVAZIONEMAB" Role="ATTIVAZIONEMAB" Multiplicity="*" />
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+        </Association>
+        <Association Name="T_RC">
+          <End Type="DBISEPRO.REGOLECALCOLO" Role="REGOLECALCOLO" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
+        </Association>
+        <Association Name="TRASF_DOC">
+          <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
+          <End Type="DBISEPRO.TRASFERIMENTO" Role="TRASFERIMENTO" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -8892,27 +9124,6 @@
                 <ScalarProperty Name="ANNOELABORAZIONE" ColumnName="ANNOELABORAZIONE" />
                 <ScalarProperty Name="IDTEORICI" ColumnName="IDTEORICI" />
                 <ScalarProperty Name="IDCONTABILITA" ColumnName="IDCONTABILITA" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DIPENDENTI">
-            <EntityTypeMapping TypeName="DBISEPRO.DIPENDENTI">
-              <MappingFragment StoreEntitySet="DIPENDENTI">
-                <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
-                <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
-                <ScalarProperty Name="FAX" ColumnName="FAX" />
-                <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
-                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
-                <ScalarProperty Name="PROVINCIA" ColumnName="PROVINCIA" />
-                <ScalarProperty Name="CITTA" ColumnName="CITTA" />
-                <ScalarProperty Name="CAP" ColumnName="CAP" />
-                <ScalarProperty Name="INDIRIZZO" ColumnName="INDIRIZZO" />
-                <ScalarProperty Name="DATACESSAZIONE" ColumnName="DATACESSAZIONE" />
-                <ScalarProperty Name="DATAASSUNZIONE" ColumnName="DATAASSUNZIONE" />
-                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
-                <ScalarProperty Name="NOME" ColumnName="NOME" />
-                <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
-                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9858,21 +10069,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ATTIVAZIONEMAB">
-            <EntityTypeMapping TypeName="DBISEPRO.ATTIVAZIONEMAB">
-              <MappingFragment StoreEntitySet="ATTIVAZIONEMAB">
-                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="DATAVARIAZIONE" ColumnName="DATAVARIAZIONE" />
-                <ScalarProperty Name="DATAATTIVAZIONE" ColumnName="DATAATTIVAZIONE" />
-                <ScalarProperty Name="ATTIVAZIONE" ColumnName="ATTIVAZIONE" />
-                <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
-                <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CANOMEMAB">
             <EntityTypeMapping TypeName="DBISEPRO.CANOMEMAB">
               <MappingFragment StoreEntitySet="CANOMEMAB">
@@ -9887,14 +10083,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AMAB_DOC" TypeName="DBISEPRO.AMAB_DOC" StoreEntitySet="AMAB_DOC">
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-            <EndProperty Name="ATTIVAZIONEMAB">
-              <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="CMAB_TFR" TypeName="DBISEPRO.CMAB_TFR" StoreEntitySet="CMAB_TFR">
             <EndProperty Name="TFR">
               <ScalarProperty Name="IDTFR" ColumnName="IDTFR" />
@@ -10131,41 +10319,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TRASFERIMENTO">
-            <EntityTypeMapping TypeName="DBISEPRO.TRASFERIMENTO">
-              <MappingFragment StoreEntitySet="TRASFERIMENTO">
-                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
-                <ScalarProperty Name="NOTIFICATRASFERIMENTO" ColumnName="NOTIFICATRASFERIMENTO" />
-                <ScalarProperty Name="DATALETTERA" ColumnName="DATALETTERA" />
-                <ScalarProperty Name="PROTOCOLLOLETTERA" ColumnName="PROTOCOLLOLETTERA" />
-                <ScalarProperty Name="COAN" ColumnName="COAN" />
-                <ScalarProperty Name="DATARIENTRO" ColumnName="DATARIENTRO" />
-                <ScalarProperty Name="DATAPARTENZA" ColumnName="DATAPARTENZA" />
-                <ScalarProperty Name="IDTIPOCOAN" ColumnName="IDTIPOCOAN" />
-                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
-                <ScalarProperty Name="IDSTATOTRASFERIMENTO" ColumnName="IDSTATOTRASFERIMENTO" />
-                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
-                <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
-                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="T_RC" TypeName="DBISEPRO.T_RC" StoreEntitySet="T_RC">
-            <EndProperty Name="TRASFERIMENTO">
-              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-            </EndProperty>
-            <EndProperty Name="REGOLECALCOLO">
-              <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
-            <EndProperty Name="TRASFERIMENTO">
-              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
-            </EndProperty>
-            <EndProperty Name="DOCUMENTI">
-              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="FASCIA_KM">
             <EntityTypeMapping TypeName="DBISEPRO.FASCIA_KM">
               <MappingFragment StoreEntitySet="FASCIA_KM">
@@ -10293,6 +10446,125 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ATTIVAZIONEMAB">
+            <EntityTypeMapping TypeName="DBISEPRO.ATTIVAZIONEMAB">
+              <MappingFragment StoreEntitySet="ATTIVAZIONEMAB">
+                <ScalarProperty Name="ANNULLATO" ColumnName="ANNULLATO" />
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="DATAVARIAZIONE" ColumnName="DATAVARIAZIONE" />
+                <ScalarProperty Name="DATAATTIVAZIONE" ColumnName="DATAATTIVAZIONE" />
+                <ScalarProperty Name="ATTIVAZIONE" ColumnName="ATTIVAZIONE" />
+                <ScalarProperty Name="DATANOTIFICARICHIESTA" ColumnName="DATANOTIFICARICHIESTA" />
+                <ScalarProperty Name="NOTIFICARICHIESTA" ColumnName="NOTIFICARICHIESTA" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+                <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DIPENDENTI">
+            <EntityTypeMapping TypeName="DBISEPRO.DIPENDENTI">
+              <MappingFragment StoreEntitySet="DIPENDENTI">
+                <ScalarProperty Name="DATAINIZIORICALCOLI" ColumnName="DATAINIZIORICALCOLI" />
+                <ScalarProperty Name="ABILITATO" ColumnName="ABILITATO" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="PROVINCIA" ColumnName="PROVINCIA" />
+                <ScalarProperty Name="CITTA" ColumnName="CITTA" />
+                <ScalarProperty Name="CAP" ColumnName="CAP" />
+                <ScalarProperty Name="INDIRIZZO" ColumnName="INDIRIZZO" />
+                <ScalarProperty Name="DATACESSAZIONE" ColumnName="DATACESSAZIONE" />
+                <ScalarProperty Name="DATAASSUNZIONE" ColumnName="DATAASSUNZIONE" />
+                <ScalarProperty Name="COGNOME" ColumnName="COGNOME" />
+                <ScalarProperty Name="NOME" ColumnName="NOME" />
+                <ScalarProperty Name="MATRICOLA" ColumnName="MATRICOLA" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMAILSECONDARIEDIP">
+            <EntityTypeMapping TypeName="DBISEPRO.EMAILSECONDARIEDIP">
+              <MappingFragment StoreEntitySet="EMAILSECONDARIEDIP">
+                <ScalarProperty Name="ATTIVA" ColumnName="ATTIVA" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+                <ScalarProperty Name="IDEMAILSECONDARIA" ColumnName="IDEMAILSECONDARIA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMAILUFFDEST">
+            <EntityTypeMapping TypeName="DBISEPRO.EMAILUFFDEST">
+              <MappingFragment StoreEntitySet="EMAILUFFDEST">
+                <ScalarProperty Name="IDFUNZIONEUFF" ColumnName="IDFUNZIONEUFF" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="IDEMAILUFFDEST" ColumnName="IDEMAILUFFDEST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FUNZIONEEMAILUFF">
+            <EntityTypeMapping TypeName="DBISEPRO.FUNZIONEEMAILUFF">
+              <MappingFragment StoreEntitySet="FUNZIONEEMAILUFF">
+                <ScalarProperty Name="FUNZIONE" ColumnName="FUNZIONE" />
+                <ScalarProperty Name="IDFUNZIONEUFF" ColumnName="IDFUNZIONEUFF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTIFICHE">
+            <EntityTypeMapping TypeName="DBISEPRO.NOTIFICHE">
+              <MappingFragment StoreEntitySet="NOTIFICHE">
+                <ScalarProperty Name="ALLEGATO" ColumnName="ALLEGATO" />
+                <ScalarProperty Name="DATANOTIFICA" ColumnName="DATANOTIFICA" />
+                <ScalarProperty Name="CORPOMESSAGGIO" ColumnName="CORPOMESSAGGIO" />
+                <ScalarProperty Name="OGGETTO" ColumnName="OGGETTO" />
+                <ScalarProperty Name="IDDESTINATARIO" ColumnName="IDDESTINATARIO" />
+                <ScalarProperty Name="IDMITTENTE" ColumnName="IDMITTENTE" />
+                <ScalarProperty Name="IDNOTIFICA" ColumnName="IDNOTIFICA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRASFERIMENTO">
+            <EntityTypeMapping TypeName="DBISEPRO.TRASFERIMENTO">
+              <MappingFragment StoreEntitySet="TRASFERIMENTO">
+                <ScalarProperty Name="DATAAGGIORNAMENTO" ColumnName="DATAAGGIORNAMENTO" />
+                <ScalarProperty Name="NOTIFICATRASFERIMENTO" ColumnName="NOTIFICATRASFERIMENTO" />
+                <ScalarProperty Name="DATALETTERA" ColumnName="DATALETTERA" />
+                <ScalarProperty Name="PROTOCOLLOLETTERA" ColumnName="PROTOCOLLOLETTERA" />
+                <ScalarProperty Name="COAN" ColumnName="COAN" />
+                <ScalarProperty Name="DATARIENTRO" ColumnName="DATARIENTRO" />
+                <ScalarProperty Name="DATAPARTENZA" ColumnName="DATAPARTENZA" />
+                <ScalarProperty Name="IDTIPOCOAN" ColumnName="IDTIPOCOAN" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+                <ScalarProperty Name="IDSTATOTRASFERIMENTO" ColumnName="IDSTATOTRASFERIMENTO" />
+                <ScalarProperty Name="IDUFFICIO" ColumnName="IDUFFICIO" />
+                <ScalarProperty Name="IDTIPOTRASFERIMENTO" ColumnName="IDTIPOTRASFERIMENTO" />
+                <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AMAB_DOC" TypeName="DBISEPRO.AMAB_DOC" StoreEntitySet="AMAB_DOC">
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+            <EndProperty Name="ATTIVAZIONEMAB">
+              <ScalarProperty Name="IDATTIVAZIONEMAB" ColumnName="IDATTIVAZIONEMAB" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="T_RC" TypeName="DBISEPRO.T_RC" StoreEntitySet="T_RC">
+            <EndProperty Name="TRASFERIMENTO">
+              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="REGOLECALCOLO">
+              <ScalarProperty Name="IDREGOLA" ColumnName="IDREGOLA" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TRASF_DOC" TypeName="DBISEPRO.TRASF_DOC" StoreEntitySet="TRASF_DOC">
+            <EndProperty Name="TRASFERIMENTO">
+              <ScalarProperty Name="IDTRASFERIMENTO" ColumnName="IDTRASFERIMENTO" />
+            </EndProperty>
+            <EndProperty Name="DOCUMENTI">
+              <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+            </EndProperty>
+          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

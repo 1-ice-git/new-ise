@@ -2575,6 +2575,12 @@
     <Compile Include="EF\DOCUMENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\EMAILSECONDARIEDIP.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\EMAILUFFDEST.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\FASCIA_KM.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2585,6 +2591,9 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\FIGLITITOLIVIAGGIO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\FUNZIONEEMAILUFF.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\FUNZIONERIDUZIONE.cs">
@@ -2642,6 +2651,9 @@
       <DependentUpon>ModelDBISE.edmx</DependentUpon>
     </Compile>
     <Compile Include="EF\NORMACALCOLO.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\NOTIFICHE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\OA.cs">

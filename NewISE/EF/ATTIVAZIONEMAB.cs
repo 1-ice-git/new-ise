@@ -18,13 +18,13 @@ namespace NewISE.EF
         public ATTIVAZIONEMAB()
         {
             this.CANOMEMAB = new HashSet<CANOMEMAB>();
-            this.DOCUMENTI = new HashSet<DOCUMENTI>();
-            this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public Nullable<decimal> IDTRASFERIMENTO { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool ATTIVAZIONE { get; set; }
@@ -36,11 +36,11 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }
 }

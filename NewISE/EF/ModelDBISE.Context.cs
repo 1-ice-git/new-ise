@@ -31,7 +31,6 @@ namespace NewISE.EF
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
-        public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<FUNZIONIEVENTI> FUNZIONIEVENTI { get; set; }
         public virtual DbSet<INDENNITA> INDENNITA { get; set; }
         public virtual DbSet<INDENNITAPRIMOSEGRETARIO> INDENNITAPRIMOSEGRETARIO { get; set; }
@@ -98,7 +97,6 @@ namespace NewISE.EF
         public virtual DbSet<ANTICIPI> ANTICIPI { get; set; }
         public virtual DbSet<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
         public virtual DbSet<TIPOLOGIAANTICIPI> TIPOLOGIAANTICIPI { get; set; }
-        public virtual DbSet<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
         public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
         public virtual DbSet<ATTIVAZIONIVIAGGICONGEDO> ATTIVAZIONIVIAGGICONGEDO { get; set; }
         public virtual DbSet<TITOLIVIAGGIORICHIEDENTE> TITOLIVIAGGIORICHIEDENTE { get; set; }
@@ -113,7 +111,6 @@ namespace NewISE.EF
         public virtual DbSet<UFFICI> UFFICI { get; set; }
         public virtual DbSet<VALUTAUFFICIO> VALUTAUFFICIO { get; set; }
         public virtual DbSet<VALUTE> VALUTE { get; set; }
-        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
         public virtual DbSet<FASCIA_KM> FASCIA_KM { get; set; }
         public virtual DbSet<GRUPPO_FKM> GRUPPO_FKM { get; set; }
         public virtual DbSet<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
@@ -123,5 +120,12 @@ namespace NewISE.EF
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual DbSet<RUOLODIPENDENTE> RUOLODIPENDENTE { get; set; }
+        public virtual DbSet<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
+        public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
+        public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
+        public virtual DbSet<EMAILUFFDEST> EMAILUFFDEST { get; set; }
+        public virtual DbSet<FUNZIONEEMAILUFF> FUNZIONEEMAILUFF { get; set; }
+        public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
+        public virtual DbSet<TRASFERIMENTO> TRASFERIMENTO { get; set; }
     }
 }
