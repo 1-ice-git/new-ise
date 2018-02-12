@@ -143,15 +143,15 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                             };
 
-                            var lpmf =
-                                f.PERCENTUALEMAGFIGLI.Where(
-                                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
+                            //var lpmf =
+                            //    f.PERCENTUALEMAGFIGLI.Where(
+                            //        a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
 
-                            if (lpmf?.Any() ?? false)
-                            {
-                                var pmf = lpmf.First();
+                            //if (lpmf?.Any() ?? false)
+                            //{
+                            //    var pmf = lpmf.First();
 
-                                switch ((EnumTipologiaFiglio)pmf.IDTIPOLOGIAFIGLIO)
+                                switch ((EnumTipologiaFiglio)adfm.Figli.idTipologiaFiglio)
                                 {
                                     case EnumTipologiaFiglio.Residente:
                                         adfm.residente = true;
@@ -168,11 +168,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }
-                            }
-                            else
-                            {
-                                throw new Exception("Nessuna percentuale maggiorazione figli rilevata alla data odierna.");
-                            }
+                            //}
+                            //else
+                            //{
+                            //    throw new Exception("Nessuna percentuale maggiorazione figli rilevata alla data odierna.");
+                            //}
 
                         }
                         else
@@ -239,30 +239,30 @@ namespace NewISE.Models.DBModel.dtObj
                             };
 
 
-                            var lpmc =
-                                c.PERCENTUALEMAGCONIUGE.Where(
-                                    a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
-                            if (lpmc?.Any() ?? false)
+                            //var lpmc =
+                            //    c.PERCENTUALEMAGCONIUGE.Where(
+                            //        a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA);
+                            //        if (lpmc?.Any() ?? false)
+                            //{
+                                //var pmc = lpmc.First();
+                            switch ((EnumTipologiaConiuge)adfm.Coniuge.idTipologiaConiuge)
                             {
-                                var pmc = lpmc.First();
-                                switch ((EnumTipologiaConiuge)pmc.IDTIPOLOGIACONIUGE)
-                                {
-                                    case EnumTipologiaConiuge.Residente:
-                                        adfm.residente = true;
-                                        adfm.ulterioreMagConiuge = false;
-                                        break;
-                                    case EnumTipologiaConiuge.NonResidente_A_Carico:
-                                        adfm.residente = false;
-                                        adfm.ulterioreMagConiuge = true;
-                                        break;
-                                    default:
-                                        throw new ArgumentOutOfRangeException();
-                                }
+                                case EnumTipologiaConiuge.Residente:
+                                    adfm.residente = true;
+                                    adfm.ulterioreMagConiuge = false;
+                                    break;
+                                case EnumTipologiaConiuge.NonResidente_A_Carico:
+                                    adfm.residente = false;
+                                    adfm.ulterioreMagConiuge = true;
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
                             }
-                            else
-                            {
-                                throw new Exception("Nessuna percentuale maggiorazione coniuge rilevata alla data odierna.");
-                            }
+                            //}
+                            //else
+                            //{
+                            //    throw new Exception("Nessuna percentuale maggiorazione coniuge rilevata alla data odierna.");
+                            //}
 
 
                         }

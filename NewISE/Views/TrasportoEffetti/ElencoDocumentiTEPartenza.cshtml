@@ -4,6 +4,7 @@
     decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
     decimal idTrasportoEffettiPartenza = Convert.ToDecimal(ViewData["idTrasportoEffettiPartenza"]);
     bool richiestaTEPartenza = Convert.ToBoolean(ViewData["richiestaTEPartenza"]);
+    decimal idStatoTrasferimento = Convert.ToDecimal(ViewData["idStatoTrasferimento"]);
     bool attivazioneTEPartenza = Convert.ToBoolean(ViewData["attivazioneTEPartenza"]);
     decimal NumAttivazioniTEPartenza = Convert.ToDecimal(ViewData["NumAttivazioniTEPartenza"]);
 }
@@ -16,17 +17,59 @@
     <div class="row">
         <div class="col-xs-3">
             <div style="margin-top: 10px; margin-bottom: 10px;">
+                @if (idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo)
+                {
+                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 1.pdf" target="_blank">
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                        Download Formulario
+                    </a>
+                }
+                @if (idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco)
+                {
+                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 3.pdf" target="_blank">
+                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                        Download Formulario
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
                 @if (
-                    (NumAttivazioniTEPartenza == 0
-                        && richiestaTEPartenza == false
-                        && attivazioneTEPartenza == false
-                        && idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo
-                    ) ||
-                    (NumAttivazioniTEPartenza == 1
-                        && ((richiestaTEPartenza == false && attivazioneTEPartenza == false)
-                                || (richiestaTEPartenza && attivazioneTEPartenza))
-                        && idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
-                    )
+                        (
+                            (
+                                NumAttivazioniTEPartenza == 0 
+                                &&
+                                richiestaTEPartenza == false 
+                                &&
+                                attivazioneTEPartenza == false 
+                                &&
+                                idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo
+                            )
+                            ||
+                            (
+                                NumAttivazioniTEPartenza == 1 
+                                &&
+                                (
+                                    (
+                                        richiestaTEPartenza == false 
+                                        && 
+                                        attivazioneTEPartenza == false
+                                    )
+                                    || 
+                                    (
+                                        richiestaTEPartenza 
+                                        && 
+                                        attivazioneTEPartenza
+                                    )
+                            )
+                            && 
+                            idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
+                        )
+                        
+                    ) 
+                    && 
+                    idStatoTrasferimento!=(decimal)EnumStatoTraferimento.Terminato
                 )
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTE();">
@@ -44,25 +87,6 @@
             </div>
         </div>
 
-
-        <div class="col-xs-9">
-            <div style="margin-top: 10px; margin-bottom: 10px;">
-                @if (idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo)
-                {
-                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 1.pdf" target="_blank">
-                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
-                        Download Formulario
-                    </a>
-                }
-                @if (idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco)
-                {
-                    <a class="btn btn-default btn-sm" href="~/FormulariMaster/FormularioTE/modulo 3.pdf" target="_blank">
-                        <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
-                         Download Formulario
-                    </a>
-                }
-            </div>
-        </div>
     </div>
 
     <div class="row">
