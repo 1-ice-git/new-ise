@@ -2247,6 +2247,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ValidationWithBoot.js" />
     <Content Include="Scripts\ViewScripts\anticipo.js" />
+    <Content Include="Scripts\ViewScripts\MaggiorazioneAbitazione.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <Content Include="Web.config">
@@ -2474,6 +2475,7 @@
     <Compile Include="Controllers\DipendentiController.cs" />
     <Compile Include="Controllers\DocumentiController.cs" />
     <Compile Include="Controllers\FunzioniEventiController.cs" />
+    <Compile Include="Controllers\MaggiorazioneAbitazioneController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
@@ -2808,9 +2810,11 @@
     <Compile Include="Models\DBModel\AnticipoSaldoTEModel.cs" />
     <Compile Include="Models\DBModel\AnticipiModel.cs" />
     <Compile Include="Models\DBModel\AttivazionePassaportiModel.cs" />
+    <Compile Include="Models\DBModel\AttivazioneMABModel.cs" />
     <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\AttivitaAnticipiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFasciaKm.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFigliPassaporto.cs" />
@@ -2820,6 +2824,7 @@
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
     <Compile Include="Models\DBModel\Gruppo_FKMModel.cs" />
+    <Compile Include="Models\DBModel\MaggiorazioniAbitazioneModel.cs" />
     <Compile Include="Models\DBModel\PercentualeFasciaKMModel.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
     <Compile Include="Models\DBModel\TipologiaAnticipiModel.cs" />
@@ -3096,6 +3101,8 @@
     <Content Include="Views\TrasportoEffetti\NuovoDocumentoTEPartenza.cshtml" />
     <Content Include="Views\Anticipi\AttivitaAnticipi.cshtml" />
     <Content Include="Views\Anticipi\GestionePulsantiAnticipi.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\MaggiorazioneAbitazione.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\AttivitaMAB.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

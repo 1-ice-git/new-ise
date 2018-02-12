@@ -1,7 +1,6 @@
 ﻿using System.Web.Routing;
 using NewISE.EF;
 using NewISE.Models.Tools;
-using MaggiorazioniFamiliariModel = NewISE.Models.DBModel.MaggiorazioniFamiliariModel;
 using Newtonsoft.Json;
 using System.IO;
 using System;
