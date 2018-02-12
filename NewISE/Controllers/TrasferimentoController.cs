@@ -1104,10 +1104,7 @@ namespace NewISE.Controllers
 
                                     if (idTrasferimentoOld > 0)
                                     {
-
-
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
-                                        //ricaricaTrasferimenti = true;
                                     }
 
 
