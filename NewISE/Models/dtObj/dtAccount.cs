@@ -32,7 +32,13 @@ namespace NewISE.Models.dtObj
 
                     if (lua?.Any() ?? false)
                     {
-                        ret = true;
+
+                        var dip = lua.First().DIPENDENTI;
+
+                        if (dip.ABILITATO)
+                        {
+                            ret = true;
+                        }
                     }
                 }
             }
