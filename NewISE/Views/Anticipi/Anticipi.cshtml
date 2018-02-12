@@ -2,7 +2,6 @@
 
 <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
 
-
 @{
     decimal idPrimaSistemazione = Convert.ToDecimal(ViewData["idPrimaSistemazione"]);
 }
@@ -10,14 +9,14 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divAttivitaAnticipi">
-            @Html.Action("AttivitaAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })
+            @*@Html.Action("AttivitaAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })*@
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
         <div id="divAttivazioneAnticipi">
-            @Html.Action("GestionePulsantiAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })
+            @*@Html.Action("GestionePulsantiAnticipi", "Anticipi", new { idPrimaSistemazione = idPrimaSistemazione })*@
         </div>
     </div>
 </div>
@@ -26,6 +25,10 @@
 
 
 <script type="text/javascript">
+    //debugger;
+
+    AttivitaAnticipi();
+
     function GestionePulsantiNotificaAttivaAnnullaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/GestionePulsantiAnticipi";
@@ -44,6 +47,8 @@
                 //debugger;
                 $("#divAttivazioneAnticipi").empty();
                 $("#divAttivazioneAnticipi").html(result);
+                //CalcolaAnticipo();
+                Sblocca();
             },
             complete: function () {
 
@@ -75,6 +80,8 @@
                 //debugger;
                 $("#divAttivitaAnticipi").empty();
                 $("#divAttivitaAnticipi").html(result);
+                GestionePulsantiNotificaAttivaAnnullaAnticipi();
+
             },
             complete: function () {
 
@@ -87,6 +94,172 @@
 
         });
     }
+
+    function ConfermaNotificaRichiestaAnticipi(idAttivitaAnticipi) {
+        //debugger;
+        var rotta = "/Anticipi/ConfermaNotificaRichiestaAnticipi";
+        //var percentualeRichiesta = document.getElementById("PercentualeAnticipoRichiesto").value;
+        var percentualeRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivitaAnticipi: idAttivitaAnticipi, percentualeRichiesta: percentualeRichiesta },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    InfoElaborazioneAjax(result.msg);
+                    AttivitaAnticipi();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function ConfermaAnnullaRichiestaAnticipi(idAttivitaAnticipi) {
+        //debugger;
+        var rotta = "/Anticipi/ConfermaAnnullaRichiestaAnticipi";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivitaAnticipi: idAttivitaAnticipi },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    InfoElaborazioneAjax(result.msg);
+                    AttivitaAnticipi();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaAnticipi(idAttivitaAnticipi) {
+        //debugger;
+        var rotta = "/Anticipi/ConfermaAttivaRichiestaAnticipi";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttivitaAnticipi: idAttivitaAnticipi },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    InfoElaborazioneAjax(result.msg);
+                    AttivitaAnticipi();
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function CalcolaAnticipo(idAttivitaAnticipi,ValsoloLettura) {
+
+        //debugger;
+        var rotta = "/Anticipi/CalcolaAnticipo";
+
+        var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+
+        if (!isNaN(percRichiesta))
+        {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idAttivitaAnticipi: idAttivitaAnticipi, percRichiesta: percRichiesta },
+                async: true,
+                dataType: 'json',
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    $("#divLoader").show();
+                    $("#divImportoPercepito").hide();
+                },
+                success: function (result) {
+                    //debugger;
+                    if (result.err == "") {
+                       
+                        $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
+
+                        var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
+
+                        if (ValsoloLettura==0 && percRichiesta_old != percRichiesta && percRichiesta>0) {
+                            $("#btNotificaRichiestaAnticipi").removeAttr("disabled");
+                            $("#btNotificaRichiestaAnticipi").removeClass("disabled");
+                        } else
+                        {
+                            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaAnticipi").addClass("disabled");
+                        }
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+                    $("#divLoader").hide();
+                    $("#divImportoPercepito").show();
+
+                },
+                complete: function () {
+
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+
+            });
+        } else
+        {
+            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
+            $("#btNotificaRichiestaAnticipi").addClass("disabled");
+        }
+    }
+
 
 
 </script>

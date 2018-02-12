@@ -2246,6 +2246,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\ValidationWithBoot.js" />
+    <Content Include="Scripts\ViewScripts\anticipo.js" />
     <Content Include="Template\HtmlPage1.html" />
     <Content Include="Views\Trasferimento\AttivitaTrasferimento.cshtml" />
     <Content Include="Web.config">
