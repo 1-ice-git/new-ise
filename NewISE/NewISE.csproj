@@ -2938,6 +2938,7 @@
     <Compile Include="Models\dtObj\dtAccount.cs" />
     <Compile Include="Models\DBModel\dtObj\dtLivelliDipendente.cs" />
     <Compile Include="Models\dtObj\dtLogAttivita.cs" />
+    <Compile Include="Models\dtObj\dtUtenteAutorizzato.cs" />
     <Compile Include="Models\dtObj\objB\objAccesso.cs" />
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
