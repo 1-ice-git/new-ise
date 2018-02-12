@@ -308,7 +308,7 @@ namespace NewISE.Controllers
 
 
         [Authorize(Roles = "1 ,2")]
-        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false, decimal idRuoloDipendente=0)
+        public ActionResult NuovoTrasferimento(int matricola, decimal idTrasferimento = 0, bool ricaricaInfoTrasf = false, bool ricaricaTrasferimenti = false, decimal idRuoloDipendente = 0)
         {
             var lTipoTrasferimento = new List<SelectListItem>();
             var lUffici = new List<SelectListItem>();
@@ -345,7 +345,7 @@ namespace NewISE.Controllers
 
                     if (idRuoloDipendente <= 0)
                     {
-                        using (dtRuoloDipendente dtrd=new dtRuoloDipendente())
+                        using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                         {
                             var rdm = dtrd.GetRuoloDipendentePartenza(idTrasferimento);
                             idRuoloDipendente = rdm.idRuoloDipendente;
@@ -963,7 +963,7 @@ namespace NewISE.Controllers
                                         {
                                             dtrd.AggiornaRuoloDipendentePartenza(ref rdm, trm, db);
                                         }
-                                        
+
 
 
                                     }
@@ -1075,7 +1075,6 @@ namespace NewISE.Controllers
                 trm.idStatoTrasferimento = EnumStatoTraferimento.Da_Attivare;
                 trm.dataAggiornamento = DateTime.Now;
 
-
                 if (ModelState.IsValid)
                 {
                     try
@@ -1097,13 +1096,15 @@ namespace NewISE.Controllers
                                         trm.Dipendente = dtd.GetDipendenteByIDTrasf(trm.idTrasferimento, db);
                                     }
 
+                                    using (dtUtenteAutorizzato dtua = new dtUtenteAutorizzato())
+                                    {
+                                        dtua.SetAutorizzaUtenteTrasferito(trm.idDipendente, db);
+                                    }
+
 
                                     if (idTrasferimentoOld > 0)
                                     {
-
-
                                         dttr.TerminaTrasferimento(idTrasferimentoOld, trm.dataPartenza, db);
-                                        //ricaricaTrasferimenti = true;
                                     }
 
 
@@ -1300,22 +1301,22 @@ namespace NewISE.Controllers
 
                                             //if (rdm != null && rdm.idRuoloDipendente>0)
                                             //{
-                                                //rdm = new RuoloDipendenteModel()
-                                                //{
-                                                //    idRuolo = trm.idRuoloUfficio,
-                                                //    idTrasferimento = trm.idTrasferimento,
-                                                //    dataInizioValidita = trm.dataPartenza,
-                                                //    dataFineValidita = Utility.DataFineStop(),
-                                                //    dataAggiornamento = DateTime.Now,
-                                                //    annullato = false
-                                                //};
+                                            //rdm = new RuoloDipendenteModel()
+                                            //{
+                                            //    idRuolo = trm.idRuoloUfficio,
+                                            //    idTrasferimento = trm.idTrasferimento,
+                                            //    dataInizioValidita = trm.dataPartenza,
+                                            //    dataFineValidita = Utility.DataFineStop(),
+                                            //    dataAggiornamento = DateTime.Now,
+                                            //    annullato = false
+                                            //};
 
                                             //    dtrd.AggiornaRuoloDipendente(ref rdm, trm, db);
 
                                             //}
                                             //else
                                             //{
-                                               rdm= dtrd.InserisciRuoloDipendentePartenza(trm, db);
+                                            rdm = dtrd.InserisciRuoloDipendentePartenza(trm, db);
                                             //}
 
 
