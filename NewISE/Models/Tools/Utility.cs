@@ -42,6 +42,28 @@ namespace NewISE.Models.Tools
             return admin;
         }
 
+        public static bool SuperAmministratore()
+        {
+            bool admin = false;
+
+            //AccountModel ac = new AccountModel();
+            var ac = Utility.UtenteAutorizzato();
+
+            if (ac != null)
+            {
+                if (ac.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
+                {
+                    admin = true;
+                }
+                else
+                {
+                    admin = false;
+                }
+            }
+
+            return admin;
+        }
+
         public static bool Amministratore(out AccountModel ac)
         {
             bool admin = false;

@@ -1,5 +1,6 @@
 ﻿
 using NewISE.EF;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,19 +27,30 @@ namespace NewISE.Models.dtObj
 
             try
             {
+                //bool sadmin = Utility.SuperAmministratore();
+
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var lua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola);
+                    var lua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).ToList();
 
                     if (lua?.Any() ?? false)
                     {
-
-                        var dip = lua.First().DIPENDENTI;
-
-                        if (dip.ABILITATO)
+                        
+                        var ua = lua.First();
+                        var dip = ua.DIPENDENTI;
+                        if (dip?.IDDIPENDENTE > 0)
+                        {
+                            if (dip.ABILITATO)
+                            {
+                                ret = true;
+                            }
+                        }
+                        else
                         {
                             ret = true;
                         }
+                        
+                        
                     }
                 }
             }
