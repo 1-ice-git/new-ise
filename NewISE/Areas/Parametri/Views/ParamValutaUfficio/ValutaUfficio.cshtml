@@ -1,0 +1,366 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.ValutaUfficioModel>
+@using NewISE.Areas.Parametri.Models.dtObj;
+@using NewISE.Models.Tools;
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
+
+
+    IEnumerable<SelectListItem> GruppoValute = (IEnumerable<SelectListItem>)ViewBag.ValutaList;
+    string idValuta = GruppoValute.Where(x => x.Selected).FirstOrDefault().Value;
+    string descrizioneValue = GruppoValute.Where(x => x.Selected).FirstOrDefault().Text;
+
+    IEnumerable<SelectListItem> GruppoUffici = (IEnumerable<SelectListItem>)ViewBag.UfficiList;
+    string idUfficio = GruppoUffici.Where(x => x.Selected).FirstOrDefault().Value;
+    string descrizioneUfficio = GruppoUffici.Where(x => x.Selected).FirstOrDefault().Text;
+}
+
+<p>
+    <a id="btnInsNuovaValutazioneUfficio" href="#" onclick="NuovaValutaUfficio()">Inserisci Nuova Valuta Ufficio</a>
+</p>
+
+<p>
+    <div class="form-group">
+        @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
+            </div>
+        </div>
+    </div>
+</p>
+<p>
+    <div class="form-group">
+        @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idUfficio", ViewBag.UfficiList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
+            </div>
+        </div>
+    </div>
+</p>
+<table id="tbParValutaUfficio" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            @*<th class="text-center">
+                    @Html.DisplayNameFor(model => model.Livello.DescLivello)
+                </th>*@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.percentuale)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.percentualeResponsabile)
+            </th>*@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataAggiornamento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                    </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                @*<td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.percentuale)
+                </td>
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.percentualeResponsabile)
+                </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataAggiornamento)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td style="text-align:center;">
+                    @using (dtParValutaUfficio dtib = new dtParValutaUfficio())
+                    {
+                        if (dtib.ParValutaUfficioAnnullato(item))
+                        {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idValutaUfficio == idMinimoNonAnnullato)
+                            {
+                                 <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                 <a href="#" onclick="EliminaValutaUfficio(@item.idValutaUfficio)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="dialog-confirm" title="Elimina Parametro Valuta Ufficio?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione della Valuta Ufficio?</p>
+</div>
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "ordering":false,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idValuta").select2({
+        placeholder: "Seleziona la Valuta",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#idUfficio").select2({
+        placeholder: "Seleziona Ufficio",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsNuovaValutazioneUfficio").button();
+
+   
+    function PrelevaPValutaUfficio() {
+         //  debugger;
+           rotta = "/Parametri/ParamValutaUfficio/ValutaUfficioLivello";
+
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        $("#hiTipoContributo").val(idValuta);
+
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+        $("#hiIdUfficio").val(idUfficio);
+
+        if (isNaN(idValuta)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        if (isNaN(idUfficio)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {escludiAnnullati: chk, idValuta: idValuta, idUfficio: idUfficio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaValutaUfficio() {
+        //debugger;
+
+        var rotta = "/Parametri/ParamValutaUfficio/NuovaValutaUfficio";
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+
+
+        if (isNaN(idValuta)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un livello per procedere.");
+            return false;
+        }
+
+        if (isNaN(idUfficio)) {
+            //$("#divPViewParametri").empty();
+            AlertDialog("Selezionare un ufficio per procedere.");
+            return false;
+        }
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idValuta: idValuta, idUfficio: idUfficio, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaValutaUfficio(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamValutaUfficio/EliminaValutaUfficio";
+
+    
+        var idValuta = parseInt($("#idValuta").select2('val'));
+        var idUfficio = parseInt($("#idUfficio").select2('val'));
+
+        if (isNaN(idValuta)) {
+            $("#divPViewParametri").empty();
+            return false;
+        }
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idValuta: idValuta, idValutaUfficio: id ,idUfficio: idUfficio}, 
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
+
+</script>

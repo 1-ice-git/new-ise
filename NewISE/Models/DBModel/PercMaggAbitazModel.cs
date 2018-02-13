@@ -36,12 +36,14 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Maggiorazione Abitazione")]
-       // [DisplayFormat(DataFormatString = "{0:P1}")]
+        // [DisplayFormat(DataFormatString = "{0:P1}")]
+        [CustomValidation(typeof(dtParPercMaggAbitazione), "VerificaPercentuale")]
         public decimal percentuale { get; set; }
 
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Responsabile")]
-      //  [DisplayFormat(DataFormatString = "{0:P1}")]
+        //  [DisplayFormat(DataFormatString = "{0:P1}")]
+        [CustomValidation(typeof(dtParPercMaggAbitazione), "VerificaPercentualeResponsabile")]
         public decimal percentualeResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

@@ -11,132 +11,101 @@ namespace NewISE.Areas.Parametri.Controllers
 {
     public class ParamRiduzioniController : Controller
     {
-        // GET: /Parametri/ParamRiduzioni/Riduzioni
-
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult Riduzioni(bool escludiAnnullati, decimal idRegola = 0)
+        public ActionResult Riduzioni(bool escludiAnnullati, decimal idLivello = 0)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<RiduzioniModel> libm = new List<RiduzioniModel>();
             var r = new List<SelectListItem>();
-            List<RegoleCalcoloModel> llm = new List<RegoleCalcoloModel>();
-
+            List<FunzioneRiduzioneModel> llm = new List<FunzioneRiduzioneModel>();
             try
             {
-                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
-                {
-                    llm = dtl.GetRegoleCalcolo().OrderBy(a => a.formulaRegolaCalcolo).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.formulaRegolaCalcolo,
-                                 Value = t.idRegola.ToString()
-                             }).ToList();
-
-                        if (idRegola == 0)
-                        {
-                            r.First().Selected = true;
-                            idRegola = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            r.Where(a => a.Value == idRegola.ToString()).First().Selected = true;
-                        }
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
+                idLivello = CaricaComboFunzioniRiduzione(idLivello);
                 using (dtRiduzioni dtib = new dtRiduzioni())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        //libm = dtib.getListRiduzioni(idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        //libm = dtib.getListRiduzioni(idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_RiduzionePrimoNonAnnullato(idLivello);
+                    libm = dtib.getListRiduzioni(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return PartialView("ErrorPartial");
             }
-
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView(libm);
         }
-
-        [HttpPost]
-        [Authorize(Roles = "1 ,2")]
-        public ActionResult RiduzioniLivello(decimal idRegola, bool escludiAnnullati)
+        decimal CaricaComboFunzioniRiduzione(decimal idFunzioneRiduzione)
         {
-            List<RiduzioniModel> libm = new List<RiduzioniModel>();
             var r = new List<SelectListItem>();
-            List<RegoleCalcoloModel> llm = new List<RegoleCalcoloModel>();
-
-            try
+            List<FunzioneRiduzioneModel> llm = new List<FunzioneRiduzioneModel>();
+            using (dtRiduzioni dtl = new dtRiduzioni())
             {
-                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
+                llm = dtl.GetFunzioniRiduzione().OrderBy(a => a.DescFunzione).ToList();
+
+                if (llm != null && llm.Count > 0)
                 {
-                    llm = dtl.GetRegoleCalcolo().OrderBy(a => a.formulaRegolaCalcolo).ToList();
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.DescFunzione,
+                             Value = t.idFunzioneRiduzione.ToString()
+                         }).ToList();
 
-                    if (llm != null && llm.Count > 0)
+                    if (idFunzioneRiduzione == 0)
                     {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.formulaRegolaCalcolo,
-                                 Value = t.idRegola.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idRegola.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
-                using (dtRiduzioni dtib = new dtRiduzioni())
-                {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        //libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola, escludiAnnullati).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        r.First().Selected = true;
+                        idFunzioneRiduzione = Convert.ToDecimal(r.First().Value);
                     }
                     else
                     {
-                        //libm = dtib.getListRiduzioni(llm.Where(a => a.idRegola == idRegola).First().idRegola).OrderBy(a => a.idRegola).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        var temp = r.Where(a => a.Value == idFunzioneRiduzione.ToString()).ToList();
+                        if (temp.Count == 0)
+                        {
+                            r.First().Selected = true;
+                            idFunzioneRiduzione = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                            r.Where(a => a.Value == idFunzioneRiduzione.ToString()).First().Selected = true;
                     }
+                }
+                ViewBag.LivelliList = r;
+            }
+            return idFunzioneRiduzione;
+        }
+        [HttpPost]
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult RiduzioniLivello(decimal idFunzioneRiduzione, bool escludiAnnullati)
+        {
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
+            var r = new List<SelectListItem>();
+            List<FunzioneRiduzioneModel> llm = new List<FunzioneRiduzioneModel>();
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            try
+            {
+                idFunzioneRiduzione = CaricaComboFunzioniRiduzione(idFunzioneRiduzione);
+                using (dtRiduzioni dtib = new dtRiduzioni())
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_RiduzionePrimoNonAnnullato(idFunzioneRiduzione);
+                    libm = dtib.getListRiduzioni(idFunzioneRiduzione, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial");
             }
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView("Riduzioni", libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuoveRiduzioni(decimal idRegola, bool escludiAnnullati)
+        public ActionResult NuoveRiduzioni(decimal idFunzioneRiduzione, bool escludiAnnullati)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
-                {
-                    var lm = dtl.GetRegoleCalcolo(idRegola);
-                    ViewBag.FormulaRegolaCalcolo = lm;
-                }
-                ViewBag.escludiAnnullati = escludiAnnullati;
+                CaricaComboFunzioniRiduzione(idFunzioneRiduzione);
                 return PartialView();
             }
             catch (Exception ex)
@@ -147,30 +116,35 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciRiduzione(RiduzioniModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciRiduzione(RiduzioniModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
-
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtRiduzioni dtib = new dtRiduzioni())
                     {
-
-                        dtib.SetRiduzioni(ibm);
+                        dtib.SetRiduzioni(ibm, aggiornaTutto);
                     }
-
-                    return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRegola = ibm.idRegola });
+                    decimal idFunzioneRiduzione = CaricaComboFunzioniRiduzione(ibm.idFunzioneRiduzione);
+                    using (dtRiduzioni dtib = new dtRiduzioni())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_RiduzionePrimoNonAnnullato(idFunzioneRiduzione);
+                        libm = dtib.getListRiduzioni(idFunzioneRiduzione, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("Riduzioni", libm);
                 }
                 else
                 {
-                    using (dtRegoleCalcolo dtl = new dtRegoleCalcolo())
+                    decimal idFunzioneRiduzione = CaricaComboFunzioniRiduzione(ibm.idFunzioneRiduzione);
+                    using (dtRiduzioni dtib = new dtRiduzioni())
                     {
-                        var lm = dtl.GetRegoleCalcolo(ibm.idRegola);
-                        ViewBag.FormulaRegolaCalcolo = lm;
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_RiduzionePrimoNonAnnullato(idFunzioneRiduzione);
+                        libm = dtib.getListRiduzioni(idFunzioneRiduzione, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuoveRiduzioni", ibm);
                 }
             }
@@ -182,27 +156,28 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaRiduzione(bool escludiAnnullati, decimal idRegola, decimal idRiduzioni)
+        public ActionResult EliminaRiduzione(bool escludiAnnullati, decimal idFunzioneRiduzione, decimal idRiduzioni)
         {
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<RiduzioniModel> libm = new List<RiduzioniModel>();
             try
             {
                 using (dtRiduzioni dtib = new dtRiduzioni())
                 {
                     dtib.DelRiduzioni(idRiduzioni);
                 }
-
-                return RedirectToAction("Riduzioni", new { escludiAnnullati = escludiAnnullati, idRegola = idRegola });
+                idFunzioneRiduzione = CaricaComboFunzioniRiduzione(idFunzioneRiduzione);
+                using (dtRiduzioni dtib = new dtRiduzioni())
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_RiduzionePrimoNonAnnullato(idFunzioneRiduzione);
+                    libm = dtib.getListRiduzioni(idFunzioneRiduzione, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
+                return PartialView("Riduzioni", libm);
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial");
             }
-
-
         }
-
-
     }
 }

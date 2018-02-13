@@ -14,25 +14,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public IList<DefFasciaKmModel> GetFasciaKm()
+        public GruppoFKMModel GetGroupFasciaKm(bool escludiAnnullati=true)
         {
-            List<DefFasciaKmModel> llm = new List<DefFasciaKmModel>();
-
+            GruppoFKMModel lm = new GruppoFKMModel();
             try
             {
-                using (ModelDBISE db = new ModelDBISE())
+                using (dtGruppoFKM dtl = new dtGruppoFKM())
                 {
-                    //var ll = db.DEFFASCIACHILOMETRICA.ToList();
-
-                    //llm = (from e in ll
-                    //       select new DefFasciaKmModel()
-                    //       {
-                    //           idDefKm =e.IDDEFKM,
-                    //           km=e.KM
-                    //       }).ToList();
+                    lm = dtl.getListGruppoFKM(escludiAnnullati).ToList().First();
                 }
-
-                return llm;
+                return lm;
             }
             catch (Exception ex)
             {
@@ -43,20 +34,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public DefFasciaKmModel GetFasciaKm(decimal idDefKm)
         {
             DefFasciaKmModel lm = new DefFasciaKmModel();
-
             try
             {
-                using (ModelDBISE db = new ModelDBISE())
+                using (dtGruppoFKM dtl = new dtGruppoFKM())
                 {
-                    //var liv = db.DEFFASCIACHILOMETRICA.Find(idDefKm);
-
-                    //lm = new DefFasciaKmModel()
-                    //{
-                    //    idDefKm = liv.IDDEFKM,
-                    //    km = liv.KM
-                    //};
+                    lm = dtl.getListFasciaKM(idDefKm).ToList().First();
                 }
-
                 return lm;
             }
             catch (Exception ex)

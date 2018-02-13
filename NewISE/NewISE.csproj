@@ -2374,6 +2374,8 @@
     </Compile>
     <Compile Include="Areas\Parametri\Controllers\ParamCoeffIndRichiamoController.cs" />
     <Compile Include="Areas\Parametri\Controllers\ParamTFRController.cs" />
+    <Compile Include="Areas\Parametri\Controllers\ParamValutaUfficioController.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtGruppoFKM.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoefficienteKm.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffIndRichiamo.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParCoeffRiduzioni.cs" />
@@ -2429,6 +2431,7 @@
     <Compile Include="Areas\Parametri\Models\dtObj\dtParRiduzioni.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipologiaConiuge.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParTipoTrasferimento.cs" />
+    <Compile Include="Areas\Parametri\Models\dtObj\dtParValutaUfficio.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtParValute.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercentualeDisagio.cs" />
     <Compile Include="Areas\Parametri\Models\dtObj\dtPercMaggAbitazione.cs" />
@@ -2975,7 +2978,8 @@
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
-    <Compile Include="Models\DBModel\Gruppo_FKMModel.cs" />
+    <Compile Include="Models\DBModel\FunzioneRiduzioneModel.cs" />
+    <Compile Include="Models\DBModel\GruppoFKMModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniAbitazioneModel.cs" />
     <Compile Include="Models\DBModel\PercentualeFasciaKMModel.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
@@ -3088,6 +3092,7 @@
     <Compile Include="Models\DBModel\TEPartenzaModel.cs" />
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\Utils.cs" />
+    <Compile Include="Models\DBModel\ValutaUfficioModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />

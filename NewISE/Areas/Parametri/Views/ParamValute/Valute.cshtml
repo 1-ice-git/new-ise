@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.ValuteModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
 
-
 <p>
     <a id="btnInsNuovaValuta" href="#" onclick="NuoveValute();">Inserisci Valuta</a>
 </p>
@@ -21,23 +20,33 @@
 <table id="tbValuta" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.idValuta)
-            </th>
-            <th>
+            </th>*@
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.descrizioneValuta)
             </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.valutaUfficiale)
+            </th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                @*<td class="text-center">
                     @Html.DisplayFor(modelItem => item.idValuta)
-                </td>
-                <td >
+                </td>*@
+                <td class="text-center" >
                     @Html.DisplayFor(modelItem => item.descrizioneValuta)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.valutaUfficiale)
+                </td>
+                <td class="text-center">
+                    <a href="#" onclick="EliminaValuta(@item.idValuta);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                 </td>
             </tr>
         }
@@ -79,8 +88,9 @@
         allowClear: true,
         language: "it",
         width: '150'
-
     });
+
+
 
     $("#btnInsNuovaValuta").button();
 
@@ -89,14 +99,16 @@
         rotta = "/Parametri/ParamValute/ValutaLivello";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
-        var chk = true;
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-
         $.ajax({
             type: "POST",
             url: rotta,
@@ -113,9 +125,7 @@
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#divPViewParametri").empty();
                 $("#divPViewParametri").html(result);
-
                 //RicercaDocumenti();
-
             },
             complete: function () {
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
@@ -126,9 +136,7 @@
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
-
         });
-
     }
 
     function NuoveValute() {
@@ -160,15 +168,12 @@
                 var msg = errorThrow.err;
                 AlertDialog(msg);
             }
-
         });
-
     }
 
     function EliminaValuta(id) {
         //debugger;
         var rotta = "/Parametri/ParamValute/EliminaValuta";
-
         var idValuta = parseInt($("#idValuta").select2('val'));
         var chk = true;
 
@@ -177,6 +182,10 @@
             return false;
         }
 
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -189,14 +198,13 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { idValuta: id },
+                            data: {idValuta: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;
                                 //VerificaAutenticazione();
                                 //$("#DialogNewDoc").dialog("destroy");
                                 //$("#divEffettoLoadAutNoDoc").show("slow");
-
                             },
                             success: function (result) {
                                 //debugger;
@@ -216,7 +224,6 @@
                                 var msg = errorThrow.err;
                                 AlertDialog(msg);
                             }
-
                         });
                     },
                     "class": "ui-button-danger"

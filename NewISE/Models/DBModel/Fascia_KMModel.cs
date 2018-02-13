@@ -17,6 +17,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "KM")]
         public string KM { get; set; }
 
-        public Gruppo_FKMModel GruppoFKM { get; set; }
+        public GruppoFKMModel GruppoFKM { get; set; }
     }
 }

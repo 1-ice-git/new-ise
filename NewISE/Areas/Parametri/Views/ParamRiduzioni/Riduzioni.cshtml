@@ -1,66 +1,73 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.RiduzioniModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
     <a id="btnInsNuoveRid" href="#" onclick="NuoveRiduzioni();">Inserisci Riduzione </a>
 </p>
-
 <p>
     <div class="form-group">
-        @Html.Label("lblRiduzioni", "Seleziona Riduzione", new { @class = "control-label" })
+        @Html.Label("lblFunzione Reduzione", "Seleziona Funzione Riduzione", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idRegola", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVRiduzioni();", @onClick = "PrelevaPVRiduzioni();" })
+                @Html.DropDownList("idFunzioneRiduzione", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVRiduzioni();", @onClick = "PrelevaPVRiduzioni();" })
             </div>
         </div>
     </div>
 </p>
+
 <table id="tbRiduzioni" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.RegolaCalcolo.formulaRegolaCalcolo)
-            </th>
-            <th>
+            </th>*@
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.percentuale)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td style="text-align:center;">
+                @*<td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.RegolaCalcolo.formulaRegolaCalcolo)
-                </td>
+                </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.percentuale) %
+                </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentuale)
-                </td>
-                <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
@@ -69,17 +76,22 @@
                 <td style="text-align:center;">
                     @using (dtRiduzioni dtib = new dtRiduzioni())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaRiduzione(@item.idRiduzioni );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                        if (dtib.RiduzioniAnnullate(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                        {
+                            if (item.idRiduzioni == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaRiduzione(@item.idRiduzioni);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
-
-
                 </td>
             </tr>
         }
@@ -91,6 +103,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -116,7 +129,7 @@
         }
     });
 
-    $("#idRegola").select2({
+    $("#idFunzioneRiduzione").select2({
         placeholder: "Seleziona Riduzioni",
         allowClear: true,
         language: "it",
@@ -130,22 +143,22 @@
         //debugger;
         rotta = "/Parametri/ParamRiduzioni/RiduzioniLivello";
 
-        var idRegola = parseInt($("#idRegola").select2('val'));
-        var chk = true;
+        var idFunzioneRiduzione = parseInt($("#idFunzioneRiduzione").select2('val'));
+        $("#hiTipoContributo").val(idFunzioneRiduzione);
 
-        if (isNaN(idRegola)) {
+        if (isNaN(idFunzioneRiduzione)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRegola: idRegola, escludiAnnullati: chk },
+            data: { idFunzioneRiduzione: idFunzioneRiduzione, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -177,26 +190,27 @@
     }
 
     function NuoveRiduzioni() {
-        debugger;
+    //    debugger;
 
         var rotta = "/Parametri/ParamRiduzioni/NuoveRiduzioni";
-        var idRegola = parseInt($("#idRegola").select2('val'));
-        var chk = false;
+        var idFunzioneRiduzione = parseInt($("#idFunzioneRiduzione").select2('val'));
 
-        if (isNaN(idRegola)) {
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        if (isNaN(idFunzioneRiduzione)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare una riduzione per procedere.");
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRegola: idRegola, escludiAnnullati: chk },
+            data: { idFunzioneRiduzione: idFunzioneRiduzione, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -231,17 +245,19 @@
         //debugger;
         var rotta = "/Parametri/ParamRiduzioni/EliminaRiduzione";
 
-        var idRegola = parseInt($("#idRegola").select2('val'));
-        var chk = true;
+        var idFunzioneRiduzione = parseInt($("#idFunzioneRiduzione").select2('val'));
 
-        if (isNaN(idRegola)) {
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        if (isNaN(idFunzioneRiduzione)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+        
 
         $('#dialog-confirm').dialog({
             autoOpen: true,
@@ -254,7 +270,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idRegola: idRegola, idRiduzioni: id },
+                            data: { escludiAnnullati: chk, idFunzioneRiduzione: idFunzioneRiduzione, idRiduzioni: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

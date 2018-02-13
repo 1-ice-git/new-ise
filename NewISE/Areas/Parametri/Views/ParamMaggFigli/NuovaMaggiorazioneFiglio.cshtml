@@ -8,12 +8,10 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 @{
-
     TipologiaFiglioModel lm = (TipologiaFiglioModel)ViewBag.Figlio;
     string tipologiaFiglio = lm.tipologiaFiglio;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idTipologiaFiglio = lm.idTipologiaFiglio;
-
 }
 
 @using (Ajax.BeginForm("InserisciPercMaggiorazioneFiglio", "ParamMaggFigli", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
@@ -29,34 +27,42 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idTipologiaFiglio) 
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
-
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Tipologia Figlio </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaFiglio</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@tipologiaFiglio.ToString()</label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.percentualeFigli, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -65,8 +71,6 @@
                 @Html.ValidationMessageFor(model => model.percentualeFigli, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -137,6 +141,15 @@
         changeMonth: true,
         changeYear: true,
     });
+
+    function AggiornaTutto() {
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
+
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamMaggFigli/PercMaggiorazioneFiglioLivello";

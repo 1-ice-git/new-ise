@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaPrimoSegretModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
@@ -23,31 +23,38 @@
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.indennita)
             </th>           
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.indennita)
                 </td>               
@@ -55,20 +62,6 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @*@using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
-                    {
-                    if (dtib.IndPrimoSegretarioAnnullato(item))
-                    {
-                        <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            //if (dtib.EsistonoMovimentiPrima(item))
-                            //{
-                            <a href="#" onclick="EliminaIndPrimoSegretario(@item.idIndPrimoSegr );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                            //}
-                        }
-                    }*@
                     @using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
                         if (dtib.IndPrimoSegretarioAnnullato(item))
@@ -98,6 +91,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -137,24 +131,23 @@
       //  debugger;
         rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
 
-        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
-        $("#hiTipoContributo").val(idIndPrimoSegr);
+       // var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+       // $("#hiTipoContributo").val(idIndPrimoSegr);
 
-        var chk = true;
+        //if (isNaN(idIndPrimoSegr)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
-        if (isNaN(idIndPrimoSegr)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            data: {escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -190,7 +183,7 @@
 
         var rotta = "/Parametri/ParamPrimoIndSegr/NuovaIndennitaPrimoSegretario";
        // var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
-       
+
 
         //if (isNaN(idIndPrimoSegr)) {
         //    //$("#divPViewParametri").empty();
@@ -198,8 +191,8 @@
         //    return false;
         //}
         var chk = false;
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -241,18 +234,19 @@
         //debugger;
         var rotta = "/Parametri/ParamPrimoIndSegr/EliminaIndennitaPrimoSegretario";
 
-        var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+        //var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
 
-        var chk = true;
+        //var chk = true;
 
         //if (isNaN(idIndPrimoSegr)) {
         //    $("#divPViewParametri").empty();
         //    return false;
         //}
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

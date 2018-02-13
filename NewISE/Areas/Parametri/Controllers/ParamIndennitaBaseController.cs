@@ -22,45 +22,7 @@ namespace NewISE.Areas.Parametri.Controllers
             List<RiduzioniModel> lrm = new List<RiduzioniModel>();
             try
             {
-                using (dtParLivelli dtl = new dtParLivelli())
-                {
-                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()                               
-                             }).ToList();
-
-                        if (idLivello == 0)
-                        {
-                            r.First().Selected = true;
-                            idLivello = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
-                //using (dtParRiduzioni dtpr = new dtParRiduzioni())
-                //{
-                //    lrm = dtpr.getListRiduzioni()
-                //}
-               
+                idLivello = CaricaComboLivelli(idLivello);
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
@@ -72,9 +34,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.idLivello = idLivello;
-
             ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView(libm);
         }
 
@@ -90,43 +50,11 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtParLivelli dtl = new dtParLivelli())
-                {
-                    llm = dtl.GetLivelli().OrderBy(a => a.idLivello==idLivello).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
-                             }).ToList();
-
-                        if (idLivello == 0)
-                        {
-                            r.First().Selected = true;
-                            idLivello = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
-                    }
-                    ViewBag.LivelliList = r;
-                }
-
+                CaricaComboLivelli(idLivello);
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
-                    libm = dtib.getListIndennitaBase(llm.Where(a => a.idLivello == idLivello).First().idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -134,7 +62,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView("IndennitaBase", libm);
         }
 
@@ -164,43 +91,24 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
-
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
-
-                        //if (!dtib.EsistonoMovimentiPrimaUguale(ibm))
-                        //{
-                        //    if (!dtib.EsistonoMovimentiSuccessiviUguale(ibm))
-                        //    {
-                        //        dtib.SetIndennitaDiBase(ibm);
-                        //    }
-                        //    else
-                        //    {
-                        //        ModelState.AddModelError("", "Imposibile inserire un parametro di indennità di base precedente al primo parametro presente nel database.");
-                        //        using (dtLivelli dtl = new dtLivelli())
-                        //        {
-                        //            var lm = dtl.GetLivelli(ibm.idLivello);
-                        //            ViewBag.Livello = lm;
-                        //        }
-
-                        //        return PartialView("NuovaIndennitaBase", ibm);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    dtib.SetIndennitaDiBase(ibm);
-                        //}
-
-
                         dtib.SetIndennitaDiBase(ibm,aggiornaTutto);
                     }
-
-                    return RedirectToAction("IndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
+                    CaricaComboLivelli(ibm.idLivello);
+                    using (dtParIndennitaBase dtib = new dtParIndennitaBase())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(ibm.idLivello);
+                        libm = dtib.getListIndennitaBase(ibm.idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("IndennitaBase", libm);
                 }
                 else
                 {
@@ -211,7 +119,6 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaBase", ibm);
-                  //  return RedirectToAction("NuovaIndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
                 }
             }
             catch (Exception ex)
@@ -224,26 +131,63 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaIndennitaBase(bool escludiAnnullati, decimal idLivello, decimal idIndBase)
         {
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             try
             {
                 using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                 {
                     dtib.DelIndennitaDiBase(idIndBase);
                 }
-
-                return RedirectToAction("IndennitaBase", new { escludiAnnullati = escludiAnnullati, idLivello = idLivello });
+                CaricaComboLivelli(idLivello);
+                using (dtParIndennitaBase dtib = new dtParIndennitaBase())
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndennitaBaseNonAnnullato(idLivello);
+                    libm = dtib.getListIndennitaBase(idLivello, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                }
+                return PartialView("IndennitaBase", libm);
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-
         }
-
-
-
+        public decimal CaricaComboLivelli(decimal idLivello = 0)
+        {
+            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
+            var r = new List<SelectListItem>();
+            List<LivelloModel> llm = new List<LivelloModel>();          
+            using (dtParLivelli dtl = new dtParLivelli())
+            {
+                    llm = dtl.GetLivelli().OrderBy(a=>a.idLivello).ToList();
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.DescLivello,
+                                 Value = t.idLivello.ToString()
+                             }).ToList();
+                        if (idLivello == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                            if (temp.Count == 0)
+                            {
+                                r.First().Selected = true;
+                                idLivello = Convert.ToDecimal(r.First().Value);
+                            }
+                            else
+                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                        }
+                    }
+                    ViewBag.LivelliList = r;                
+            }
+            return idLivello;
+        }
     }
 }

@@ -12,11 +12,11 @@
     TipologiaConiugeModel lm = (TipologiaConiugeModel)ViewBag.Coniuge;
     string tipologiaConiuge = lm.tipologiaConiuge;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idTipologiaConiuge = lm.idTipologiaConiuge;
+    decimal idTipologiaConiuge_ = lm.idTipologiaConiuge;
 
 }
 
-@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new { idTipologiaConiuge = idTipologiaConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
+@using (Ajax.BeginForm("InserisciMaggiorazioneConiuge", "ParamMaggConiuge", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri" }))
 {
     @Html.AntiForgeryToken()
 
@@ -28,10 +28,9 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idTipologiaConiuge)
-        @Html.HiddenFor(model => model.id_TipologiaConiuge)
+        @Html.HiddenFor(model => model.idTipologiaConiuge)       
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-        
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Livello </label>
@@ -43,21 +42,44 @@
             </div>
         </div>
 
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
+
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
+
+        @*<div class="form-group">
+            <div class="col-xs-2 text-right">
+                <label>Ufficio </label>
+            </div>
+            <div class="col-xs-10">
+                <div class="panel panel-default">
+                    <label style="padding-left:5px; padding-top:5px; font-weight: bold;">@descrizioneUfficio.ToString()</label>
+                </div>
+            </div>
+        </div>*@
+
+        @*<div class="form-group">
             @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.percentualeConiuge, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -139,10 +161,18 @@
         changeYear: true,
     });
 
+    function AggiornaTutto() {
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
+
     function TornaElencoIb() {
         rotta = "/Parametri/ParamMaggConiuge/PercMaggiorazioneConiugeLivello";
 
-        var idTipologiaConiuge = parseFloat('@idTipologiaConiuge');
+        var idTipologiaConiuge = parseFloat('@idTipologiaConiuge_');
         
         if (isNaN(idTipologiaConiuge)) {
             $("#divPViewParametri").empty();

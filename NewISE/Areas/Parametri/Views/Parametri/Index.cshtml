@@ -58,7 +58,7 @@
         });
 
         function prelevaPartiaViewParametri() {
-           // debugger;
+         //  debugger;
             var rotta = "";
             
             var tabParam = parseInt($("#idParametro").select2('val'));
@@ -132,6 +132,10 @@
                     break;
                 case 1:// Coefficiente Fascia Chilometrica
                     rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKm";
+                    idLivello = parseInt($("#idFKm").select2('val'));
+                    //$("#hiTipoContributo").val(idLivello);
+                    idUfficio = parseInt($("#idGruppoFKm").select2('val'));
+                  //  $("#hiIdUfficio").val(idUfficio);
                     break;
                 case 2:// Coefficiente di Richiamo
                     rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamo";
@@ -169,8 +173,10 @@
                 case 13:// Valute
                     rotta = "/Parametri/ParamValute/Valute";
                     break;
+                case 14:// ValutaUfficio
+                    rotta = "/Parametri/ParamValutaUfficio/ValutaUfficio";
+                    break;
                 default:
-
             }
            
                 $.ajax({

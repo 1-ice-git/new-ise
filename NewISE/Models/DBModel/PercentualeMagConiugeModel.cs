@@ -36,7 +36,8 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Coniuge")]
-     //   [DisplayFormat(DataFormatString = "{0:P2}")]
+        //   [DisplayFormat(DataFormatString = "{0:P2}")]
+        [CustomValidation(typeof(dtParMaggConiuge), "VerificaPercentualeConiuge")]
         public decimal percentualeConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
@@ -58,8 +59,5 @@ namespace NewISE.Models.DBModel
         {
             return idPercentualeConiuge > 0 ? true : false;
         }
-
-        public decimal id_TipologiaConiuge { get; set; }
-
     }
 }

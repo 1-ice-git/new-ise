@@ -19,44 +19,14 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<MaggiorazioniAnnualiModel> libm = new List<MaggiorazioniAnnualiModel>();
-            var r = new List<SelectListItem>();
-            List<UfficiModel> llm = new List<UfficiModel>();
+           
             try
             {
-                using (dtUffici dtl = new dtUffici())
-                {
-                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-
-                        if (idLivello == 0)
-                        {
-                            r.First().Selected = true;
-                            idLivello = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
-                    }
-                    ViewBag.LivelliList = r;
-                }
+                idLivello = CaricaCombo(idLivello);
                 using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
-                {                    
-                    libm = dtib.getListMaggiorazioneAnnuale(idLivello, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idLivello);
+                    libm = dtib.getListMaggiorazioneAnnuale(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -66,7 +36,44 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             return PartialView(libm);
         }
+        
+        decimal CaricaCombo(decimal idLivello)
+        {            
+            var r = new List<SelectListItem>();
+            List<UfficiModel> llm = new List<UfficiModel>();
+            using (dtUffici dtl = new dtUffici())
+            {
+                llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.descUfficio,
+                             Value = t.idUfficio.ToString()
+                         }).ToList();
 
+                    if (idLivello == 0)
+                    {
+                        r.First().Selected = true;
+                        idLivello = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                        if (temp.Count == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                    }
+                }
+                ViewBag.LivelliList = r;
+            }
+            return idLivello;
+        }
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
         public ActionResult MaggiorazioneAnnualeLivello(decimal idUfficio, bool escludiAnnullati)
@@ -77,25 +84,11 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtUffici dtl = new dtUffici())
-                {
-                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                    }
-                    ViewBag.LivelliList = r;
-                }
+                idUfficio = CaricaCombo(idUfficio);
                 using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                 {
-                   libm = dtib.getListMaggiorazioneAnnuale(llm.Where(a => a.idUfficio == idUfficio).First().idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idUfficio);
+                    libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -129,7 +122,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneAnnuale(MaggiorazioniAnnualiModel ibm, bool escludiAnnullati = true,bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
@@ -141,34 +134,12 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                     {
-                        dtib.SetMaggiorazioneAnnuale(ibm);
-                    }
-                    using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
-                    {
-                        libm = dtib.getListMaggiorazioneAnnuale(ibm.idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    using (dtUffici dtl = new dtUffici())
-                    {
-                        llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
-                        if (llm != null && llm.Count > 0)
-                        {
-                            r = (from t in llm
-                                 select new SelectListItem()
-                                 {
-                                     Text = t.descUfficio,
-                                     Value = t.idUfficio.ToString()
-                                 }).ToList();
-                            r.Where(a => a.Value == ibm.idUfficio.ToString()).First().Selected = true;
-                        }
-                        ViewBag.LivelliList = r;
-                    }
-                    using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
-                    {
-                        libm = dtib.getListMaggiorazioneAnnuale(ibm.idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        dtib.SetMaggiorazioneAnnuale(ibm, aggiornaTutto);
+                        decimal idUfficio = CaricaCombo(ibm.idUfficio);
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idUfficio);
+                        libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("MaggiorazioniAnnuali",libm);
-                   // return RedirectToAction("MaggiorazioniAnnuali", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
                 }
                 else
                 {
@@ -177,7 +148,6 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetUffici(ibm.idUfficio);
                         ViewBag.Descrizione = lm;
                     }
-                  
                     return PartialView("NuovaMaggiorazioneAnnuale", ibm);
                 }
             }
@@ -199,29 +169,11 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                 {
                     dtib.DelMaggiorazioneAnnuale(idMaggAnnuale);
-                }
-                using (dtUffici dtl = new dtUffici())
-                {
-                    llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                    }
-                    ViewBag.LivelliList = r;
-                }
-                using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
-                {
-                    libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    idUfficio = CaricaCombo(idUfficio);
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAnnualiNonAnnullato(idUfficio);
+                    libm = dtib.getListMaggiorazioneAnnuale(idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("MaggiorazioniAnnuali",libm);
-             //   return RedirectToAction("MaggiorazioneAnnuale", new { escludiAnnullati = escludiAnnullati, idUfficio = idUfficio });
             }
             catch (Exception ex)
             {

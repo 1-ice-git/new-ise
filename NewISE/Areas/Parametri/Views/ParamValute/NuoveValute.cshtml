@@ -113,16 +113,17 @@
         rotta = "/Parametri/ParamValute/ValutaLivello";
 
         var idValuta = parseFloat('@idValuta');
-        var chk = true;
-
+       
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
 
         $.ajax({
             type: "POST",

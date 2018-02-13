@@ -17,81 +17,19 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercentualeMaggAbitazione(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
         {
-            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
+            
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
             ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
-                {
-                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
-                             }).ToList();
-
-                        if (idLivello == 0)
-                        {
-                            r.First().Selected = true;
-                            idLivello = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
-                    }
-                    ViewBag.LivelliList = r;
-                }
-                r = new List<SelectListItem>();
-                using (dtUffici dtl1 = new dtUffici())
-                {
-                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
-                    if (llm1 != null && llm1.Count > 0)
-                    {
-                        r = (from t in llm1
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-
-                        if (idUfficio == 0)
-                        {
-                            r.First().Selected = true;
-                            idUfficio = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idUfficio.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idUfficio = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                        }
-                    }
-                    ViewBag.UfficiList = r;
-                }
-
+                decimal[] tmp = AggiornaListaPerCombo(idLivello, idUfficio);
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                   libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0], tmp[1]);
+                    libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -112,52 +50,18 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtLivelli dtl = new dtLivelli())
-                {
-                    llm = dtl.GetLivelli().OrderBy(a => a.DescLivello).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
-                using (dtUffici dtl1 = new dtUffici())
-                {
-                    llm1 = dtl1.GetUffici().OrderBy(a => a.descUfficio).ToList();
-
-                    if (llm1 != null && llm1.Count > 0)
-                    {
-                        r = (from t in llm1
-                             select new SelectListItem()
-                             {
-                                 Text = t.descUfficio,
-                                 Value = t.idUfficio.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idUfficio.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.UfficiList = r;
-                }
+                decimal[] tmp = AggiornaListaPerCombo(idLivello, idUfficio);
 
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                    libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0],tmp[1]);
+                    libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-           
 
             return PartialView("PercentualeMaggAbitazione", libm);
         }
@@ -193,7 +97,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -204,12 +108,13 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {                        
-                        dtib.SetMaggiorazioneAbitazione(ibm);
+                        dtib.SetMaggiorazioneAbitazione(ibm, aggiornaTutto);
                     }
-                    AggiornaListaPerCombo(ibm.idLivello, ibm.idUfficio);
+                    decimal[] tmp = AggiornaListaPerCombo(ibm.idLivello,ibm.idUfficio);
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {
-                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio ,escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0], tmp[1]);
+                        libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("PercentualeMaggAbitazione",libm);
                   //  return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = ibm.idLivello });
@@ -223,7 +128,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                     {
-                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("NuovaPercentualeMaggAbitazione", ibm);
                 }
@@ -238,6 +143,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaMaggiorazioneAbitazione(bool escludiAnnullati, decimal idLivello, decimal idPercMabAbitaz,decimal idUfficio)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
             {
@@ -245,21 +151,21 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelMaggiorazioneAbitazione(idPercMabAbitaz);
                 }
-                AggiornaListaPerCombo(idLivello, idUfficio);
+                decimal[] tmp = AggiornaListaPerCombo(idLivello, idUfficio);
                 using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
                 {
-                    libm = dtib.getListMaggiorazioneAbitazione(idLivello, idUfficio, escludiAnnullati).OrderBy(a => a.idLivello).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_MaggAbitazioneNonAnnullato(tmp[0], tmp[1]);
+                    libm = dtib.getListMaggiorazioneAbitazione(tmp[0], tmp[1], escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("PercentualeMaggAbitazione", libm);
-                //return RedirectToAction("PercentualeMaggAbitazione", new { escludiAnnullati = escludiAnnullati, idLivello = idLivello });
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
-        void AggiornaListaPerCombo(decimal idLivello, decimal idUfficio )
-        {           
+        decimal[] AggiornaListaPerCombo(decimal idLivello, decimal idUfficio )
+        {  
             var r = new List<SelectListItem>();
             List<LivelloModel> llm = new List<LivelloModel>();
             List<UfficiModel> llm1 = new List<UfficiModel>();
@@ -328,6 +234,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     }
                     ViewBag.UfficiList = r;
                 }
+            return new decimal[] { idLivello, idUfficio };
             }
     }
 }

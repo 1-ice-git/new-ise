@@ -29,12 +29,12 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente Indennita di Richiamo")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
+        [CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeRICHIAMO")]
         public decimal coefficienteRichiamo { get; set; }
 
         [Required(ErrorMessage = "Il coefficiente Indennita Base è richiesto.")]
         [Display(Name = "Coefficiente Indennita Base")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:P2")]
+        [CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeINDBASE")]
         public decimal coefficienteIndBase { get; set; }
 
         // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

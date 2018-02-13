@@ -171,10 +171,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ibm"></param>
+       
         public void SetAliquoteContributive(AliquoteContributiveModel ibm,bool aggiornaTutto)
         {
             List<ALIQUOTECONTRIBUTIVE> libNew = new List<ALIQUOTECONTRIBUTIVE>();
@@ -354,16 +351,36 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         //CASO DELL'ULTIMA RIGA CON LA DATA FINE UGUALE A 31/12/9999
                         if (giafatta == false)
                         {
+                            //Attenzione qui se la lista non contiene nessun elemento
+                            //significa che non esiste nessun elemento corrispondentemente al livello selezionato
                             lista = dtal.RestituisciLaRigaMassima(ibm.idTipoContributo);
-                            decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
-                            DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
-                            DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
+                            if (lista.Count == 0)
+                            {
+                                ibNew1 = new ALIQUOTECONTRIBUTIVE()
+                                {
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                    ALIQUOTA = ibm.aliquota,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOCONTRIBUTO = ibm.idTipoContributo, 
+                                };
+                                libNew.Add(ibNew1);
+                                db.Database.BeginTransaction();
+                                db.ALIQUOTECONTRIBUTIVE.Add(ibNew1);
+                                db.SaveChanges();
+                                db.Database.CurrentTransaction.Commit();
+                            }
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
+                               
+                                decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
+                                decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
                                 if (dataInizioUltimo == ibm.dataInizioValidita)
                                 {
                                     ibNew1 = new ALIQUOTECONTRIBUTIVE()
@@ -493,7 +510,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                             ALIQUOTA = precedenteIB.ALIQUOTA,
-                            DATAAGGIORNAMENTO =DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
+                            DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
                         db.ALIQUOTECONTRIBUTIVE.Add(NuovoPrecedente);
@@ -512,27 +529,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
-
         public bool AliquoteContributiveAnnullato(AliquoteContributiveModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
                 return db.ALIQUOTECONTRIBUTIVE.Where(a => a.IDALIQCONTR == ibm.idAliqContr && a.IDTIPOCONTRIBUTO == ibm.idTipoContributo).First().ANNULLATO == true ? true : false;
             }
-        }
-
-        public static DateTime DataInizioMinimaNonAnnullataIndennitaBase(decimal idLivello)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var TuttiNonAnnullati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDTIPOCONTRIBUTO == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-                if (TuttiNonAnnullati.Count > 0)
-                {
-                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
-                }
-            }
-            return Utility.GetData_Inizio_Base();
         }
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
@@ -570,7 +572,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return tmp;
         }
-
+        public static DateTime DataInizioMinimaNonAnnullataIndennitaBase(decimal idLivello)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.ALIQUOTECONTRIBUTIVE.Where(a => a.ANNULLATO == false && a.IDTIPOCONTRIBUTO == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
         public ALIQUOTECONTRIBUTIVE RestituisciIlRecordPrecedente(decimal idAliqContr)
         {           
             ALIQUOTECONTRIBUTIVE tmp = null;

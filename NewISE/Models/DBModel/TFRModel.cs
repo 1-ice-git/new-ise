@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La valuta è richiesta.")]
         public decimal idValuta { get; set; }
         [Required(ErrorMessage = "Il tasso di cambio è richiesto")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+       // [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         [Display(Name = "Tasso di cambio")]
         public decimal tassoCambio { get; set; } = 0;
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
@@ -29,8 +29,8 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Data Lettera")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]

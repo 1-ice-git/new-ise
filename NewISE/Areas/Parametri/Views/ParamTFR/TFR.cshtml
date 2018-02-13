@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.TFRModel>
-
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
-
 <p>
     <a id="btnInsNuovoTfr" href="#" onclick="NuovoTFR();">Inserisci Nuovo TFR </a>
 </p>
@@ -24,44 +22,51 @@
 <table id="tbValuta" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.DescrizioneValuta.descrizioneValuta)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.tassoCambio)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.DescrizioneValuta.descrizioneValuta)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
+                        @if (item.dataFineValidita != Utility.DataFineStop())
+                        {
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.dataFineValidita)
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.tassoCambio)
                 </td>
-                <td style="text-align:right;">
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
@@ -70,17 +75,22 @@
                 <td style="text-align:center;">
                     @using (dtTfr dtib = new dtTfr())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaTFR(@item.idTFR );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                        if (dtib.TFRAnnullate(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                        {
+                            if (item.idTFR == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaTFR(@item.idTFR);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
-
-
                 </td>
             </tr>
         }
@@ -92,6 +102,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -132,15 +143,16 @@
         rotta = "/Parametri/ParamTFR/TfrLivello";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idValuta);
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
-        }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
         }
 
         $.ajax({
@@ -182,7 +194,8 @@
 
         var rotta = "/Parametri/ParamTFR/NuovoTFR";
         var idValuta = parseInt($("#idValuta").select2('val'));
-        var chk = false;
+        $("#hiTipoContributo").val(idValuta);
+
 
         if (isNaN(idValuta)) {
             //$("#divPViewParametri").empty();
@@ -190,8 +203,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+         var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -233,15 +247,16 @@
         var rotta = "/Parametri/ParamTFR/EliminaTFR";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
-        var chk = true;
+      
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $('#dialog-confirm').dialog({

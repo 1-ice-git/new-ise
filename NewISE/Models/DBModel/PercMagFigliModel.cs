@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Areas.Parametri.Models.dtObj;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,12 @@ namespace NewISE.Models.DBModel
 {
     public class PercMagFigliModel
     {
+        //public enum EnumTipologiaFiglio
+        //{
+        //    Residente = 1,
+        //    Studende_Residente = 2,
+        //    Studente_Non_Residente=3
+        //}
         [Key]
         [Display(Name = "ID")]
         public decimal idPercMagFigli { get; set; }
@@ -23,6 +30,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data ini. validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
+        [CustomValidation(typeof(dtMaggFigli), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
 
         [Display(Name = "Data fin. validità")]
@@ -32,13 +40,14 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Figli")]
-        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
-        [RegularExpression(@"[0-9]+(\.[0-9][0-9]?)?$")]
+        //[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
+        //[RegularExpression(@"[0-9]+(\.[0-9][0-9]?)?$")]
+        [CustomValidation(typeof(dtMaggFigli), "VerificaPercentualeFiglio")]
         public decimal percentualeFigli { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
 

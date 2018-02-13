@@ -13,10 +13,14 @@
     string descrizioneLivello = lm.DescLivello;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idLivello = lm.idLivello;
-    
     UfficiModel lm1 = (UfficiModel)ViewBag.Ufficio;
     string descrizioneUfficio = lm1.descUfficio;
-    decimal idUfficio = lm1.idUfficio;
+    decimal idUfficio= lm1.idUfficio;
+
+    /*IEnumerable<SelectListItem> GruppoLivelli = (IEnumerable<SelectListItem>)ViewBag.LivelliList;
+    string idLivello = GruppoLivelli.Where(x => x.Selected).FirstOrDefault().Value;
+    IEnumerable<SelectListItem> GruppoUffici = (IEnumerable<SelectListItem>)ViewBag.UfficiList;
+    string idUfficio = GruppoUffici.Where(x => x.Selected).FirstOrDefault().Value;*/
 }
 
 @using (Ajax.BeginForm("InserisciMaggiorazioneAbitazione", "ParamPercMaggAbitaz", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formPercentualeMaggAbitazione" }))
@@ -35,7 +39,7 @@
         @Html.HiddenFor(model => model.idUfficio)
 
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Livello </label>
@@ -57,18 +61,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
             </div>
         </div>
 
@@ -157,6 +161,15 @@
         changeMonth: true,
         changeYear: true,
     });
+
+    function AggiornaTutto() {
+
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamPercMaggAbitaz/PercentualeMaggiorazioneAbitazioneLivello";

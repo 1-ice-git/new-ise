@@ -130,7 +130,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             VALUTE precedenteIB = new VALUTE();
             VALUTE delIB = new VALUTE();
 
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -142,14 +141,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     if (lib.Count() > 0)
                     {
                         delIB = lib.First();
+                        VALUTE xx= db.VALUTE.Find(idValuta);
+                        db.VALUTE.Remove(xx);
                         db.SaveChanges();
-
                         using (objLogAttivita log = new objLogAttivita())
                         {
                             log.Log(enumAttivita.Eliminazione, "Eliminazione parametro valute.", "VALUTE", idValuta);
                         }
-
-
                         db.Database.CurrentTransaction.Commit();
                     }
                 }

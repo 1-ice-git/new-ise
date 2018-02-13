@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.PercMagFigliModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -23,25 +23,25 @@
 <table id="tbMaggFigli" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Figlio.tipologiaFiglio)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.percentualeFigli)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
@@ -54,13 +54,20 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
+                        @if (item.dataFineValidita != Utility.DataFineStop())
+                        {
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.dataFineValidita)
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                <td style="text-align:right;">
+                    @Html.DisplayFor(modelItem => item.percentualeFigli)  %
+                </td>
                 <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentualeFigli)
-                </td>
-                <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
                 <td style="text-align:center;">
@@ -68,18 +75,23 @@
                 </td>
                 <td style="text-align:center;">
                     @using (dtMaggFigli dtib = new dtMaggFigli())
-                    {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idPercMagFigli );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                    {                        
+                        if (dtib.PercMaggiorazioneFiglioAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
+                        else
+                        {
+                            if (item.idPercMagFigli == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaMaggiorazioneFiglio(@item.idPercMagFigli);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
-
-
                 </td>
             </tr>
         }
@@ -131,16 +143,17 @@
         rotta = "/Parametri/ParamMaggFigli/PercMaggiorazioneFiglioLivello";
 
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
-        var chk = true;
+        $("#hiTipoContributo").val(idTipologiaFiglio);
 
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
         if (isNaN(idTipologiaFiglio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
 
         $.ajax({
             type: "POST",
@@ -181,7 +194,6 @@
 
         var rotta = "/Parametri/ParamMaggFigli/NuovaMaggiorazioneFiglio";
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
-        var chk = false;
 
         if (isNaN(idTipologiaFiglio)) {
             //$("#divPViewParametri").empty();
@@ -189,8 +201,9 @@
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({
@@ -227,22 +240,21 @@
 
     }
 
-    function EliminaPercMaggiorazioneFiglio(id) {
-        //debugger;
-        var rotta = "/Parametri/ParamMaggFigli/EliminaPercMaggiorazioneFiglio";
+    function EliminaMaggiorazioneFiglio(id) {
+        // debugger;
+         var rotta = "/Parametri/ParamMaggFigli/EliminaPercMaggiorazioneFiglio";
 
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
-        var chk = true;
+
 
         if (isNaN(idTipologiaFiglio)) {
             $("#divPViewParametri").empty();
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
-
         $('#dialog-confirm').dialog({
             autoOpen: true,
             width: 400,
@@ -254,7 +266,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idTipologiaFiglio: idTipologiaFiglio, idPercMaggFigli: id },
+                            data: { escludiAnnullati: chk, idTipologiaFiglio: idTipologiaFiglio, idMaggFiglio: id },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

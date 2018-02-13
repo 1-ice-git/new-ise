@@ -4,6 +4,7 @@ using NewISE.Models.dtObj.objB;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,8 +16,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
-
-
         public IList<IndennitaSistemazioneModel> getListIndennitaSistemazione()
         {
             List<IndennitaSistemazioneModel> libm = new List<IndennitaSistemazioneModel>();
@@ -105,7 +104,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idIndSist = e.IDINDSIST,
                                 idTipoTrasferimento = e.IDTIPOTRASFERIMENTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new IndennitaSistemazioneModel().dataFineValidita,
                                 coefficiente = e.COEFFICIENTE,
                                 dataAggiornamento = System.DateTime.Now,
                                 annullato = e.ANNULLATO,
@@ -164,194 +163,263 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ibm"></param>
-        public void SetIndennitaSistemazione(IndennitaSistemazioneModel ibm)
+        public void SetIndennitaSistemazione(IndennitaSistemazioneModel ibm, bool aggiornaTutto)
         {
             List<INDENNITASISTEMAZIONE> libNew = new List<INDENNITASISTEMAZIONE>();
 
-            INDENNITASISTEMAZIONE ibNew = new INDENNITASISTEMAZIONE();
-
             INDENNITASISTEMAZIONE ibPrecedente = new INDENNITASISTEMAZIONE();
-
+            INDENNITASISTEMAZIONE ibNew1 = new INDENNITASISTEMAZIONE();
+            INDENNITASISTEMAZIONE ibNew2 = new INDENNITASISTEMAZIONE();
             List<INDENNITASISTEMAZIONE> lArchivioIB = new List<INDENNITASISTEMAZIONE>();
-
+            List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
+                bool giafatta = false;
                 try
                 {
-                    if (ibm.dataFineValidita.HasValue)
+                    using (dtParIndSist dtal = new dtParIndSist())
                     {
-                        if (EsistonoMovimentiSuccessiviUguale(ibm))
+                        //Se la data variazione coincide con una data inizio esistente
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idTipoTrasferimento);
+                        if (lista.Count != 0)
                         {
-                            ibNew = new INDENNITASISTEMAZIONE()
-                            {
+                            giafatta = true;
+                            decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
+                            DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
+                            DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
+                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
-                                IDINDSIST = ibm.idIndSist,
-                                IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                COEFFICIENTE = ibm.coefficiente,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                        else
-                        {
-                            ibNew = new INDENNITASISTEMAZIONE()
+                            ibNew1 = new INDENNITASISTEMAZIONE()
                             {
-
-                                IDINDSIST = ibm.idIndSist,
                                 IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
+                                DATAINIZIOVALIDITA = dataInizioFirst,
+                                DATAFINEVALIDITA = dataFineFirst,
                                 COEFFICIENTE = ibm.coefficiente,
                                 DATAAGGIORNAMENTO = DateTime.Now,
-                                ANNULLATO = ibm.annullato
                             };
+
+                            if (aggiornaTutto)
+                            {
+                                ibNew1 = new INDENNITASISTEMAZIONE()
+                                {
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                    DATAINIZIOVALIDITA = dataInizioFirst,
+                                    DATAFINEVALIDITA = Utility.DataFineStop(),
+                                    COEFFICIENTE = ibm.coefficiente,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                //qui annullo tutti i record rimanenti dalla data inizio inserita
+                                libNew = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento
+                                && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
+                                foreach (var elem in libNew)
+                                {
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDSIST), db);
+                                }
+                            }
+                            db.Database.BeginTransaction();
+                            db.INDENNITASISTEMAZIONE.Add(ibNew1);
+                            db.SaveChanges();
+                            RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            db.Database.CurrentTransaction.Commit();
                         }
-                    }
-                    else
-                    {
-                        ibNew = new INDENNITASISTEMAZIONE()
+                        ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
+                        if (giafatta == false)
                         {
-
-                            IDINDSIST = ibm.idIndSist,
-                            IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
-                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                            COEFFICIENTE = ibm.coefficiente,
-                            DATAAGGIORNAMENTO = DateTime.Now,
-                            ANNULLATO = ibm.annullato
-                        };
-                    }
-
-                    db.Database.BeginTransaction();
-
-                    var recordInteressati = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false && a.IDTIPOTRASFERIMENTO == ibNew.IDTIPOTRASFERIMENTO)
-                                                            .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
-                                                            .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                                            .ToList();
-
-
-
-                    recordInteressati.ForEach(a => a.ANNULLATO = true);
-                    //db.SaveChanges();
-
-                    if (recordInteressati.Count > 0)
-                    {
-                        foreach (var item in recordInteressati)
-                        {
-
-                            if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
+                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idTipoTrasferimento);
+                            if (lista.Count != 0)
                             {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+                                giafatta = true;
+                                decimal idIntervalloLast = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioLast = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineLast = Convert.ToDateTime(lista[2]);
+                                decimal COEFFICIENTELast = Convert.ToDecimal(lista[3]);
+
+                                ibNew1 = new INDENNITASISTEMAZIONE()
                                 {
-                                    var ibOld1 = new INDENNITASISTEMAZIONE()
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                    DATAINIZIOVALIDITA = dataInizioLast,
+                                    DATAFINEVALIDITA = dataFineLast.AddDays(-1),
+                                    COEFFICIENTE = COEFFICIENTELast,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                ibNew2 = new INDENNITASISTEMAZIONE()
+                                {
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
+                                    COEFFICIENTE = ibm.coefficiente,
+                                    DATAAGGIORNAMENTO = DateTime.Now
+                                };
+                                if (aggiornaTutto)
+                                {
+                                    ibNew2 = new INDENNITASISTEMAZIONE()
                                     {
-                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
+                                        IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        COEFFICIENTE = ibm.coefficiente,
+                                        DATAAGGIORNAMENTO = DateTime.Now
                                     };
-
-                                    libNew.Add(ibOld1);
-
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new INDENNITASISTEMAZIONE()
+                                    libNew = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento
+                                    && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    foreach (var elem in libNew)
                                     {
-                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-                                        COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    var ibOld2 = new INDENNITASISTEMAZIONE()
-                                    {
-                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                    libNew.Add(ibOld2);
-
+                                        RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDSIST), db);
+                                    }
                                 }
 
-                            }
-                            else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new INDENNITASISTEMAZIONE()
-                                    {
-                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
+                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                            else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new INDENNITASISTEMAZIONE()
-                                    {
-                                        IDTIPOTRASFERIMENTO = item.IDTIPOTRASFERIMENTO,
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-                                        COEFFICIENTE = item.COEFFICIENTE,
-                                        DATAAGGIORNAMENTO = DateTime.Now,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                }
+                                db.Database.BeginTransaction();
+                                db.INDENNITASISTEMAZIONE.AddRange(libNew);
+                                db.SaveChanges();
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+                                db.Database.CurrentTransaction.Commit();
                             }
                         }
+                        //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
+                        if (giafatta == false)
+                        {
+                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idTipoTrasferimento);
+                            if (lista.Count != 0)
+                            {
+                                giafatta = true;
+                                decimal idIntervallo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizio = Convert.ToDateTime(lista[1]);
+                                DateTime dataFine = Convert.ToDateTime(lista[2]);
+                                decimal COEFFICIENTE = Convert.ToDecimal(lista[3]);
 
-                        libNew.Add(ibNew);
-                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
-                        db.INDENNITASISTEMAZIONE.AddRange(libNew);
+                                ibNew1 = new INDENNITASISTEMAZIONE()
+                                {
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                    DATAINIZIOVALIDITA = dataInizio,
+                                    DATAFINEVALIDITA = NewdataFine1,
+                                    COEFFICIENTE = COEFFICIENTE,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                ibNew2 = new INDENNITASISTEMAZIONE()
+                                {
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = dataFine,
+                                    COEFFICIENTE = ibm.coefficiente,
+                                    DATAAGGIORNAMENTO = DateTime.Now
+                                };
+
+                                if (aggiornaTutto)
+                                {
+                                    ibNew2 = new INDENNITASISTEMAZIONE()
+                                    {
+                                        IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        COEFFICIENTE = ibm.coefficiente,
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento
+                                    && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    foreach (var elem in libNew)
+                                    {
+                                        RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDSIST), db);
+                                    }
+                                }
+
+                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                db.Database.BeginTransaction();
+                                db.INDENNITASISTEMAZIONE.AddRange(libNew);
+                                db.SaveChanges();
+                                //annullare l'intervallo trovato
+                                RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+                                db.Database.CurrentTransaction.Commit();
+                            }
+                        }
+                        //CASO DELL'ULTIMA RIGA CON LA DATA FINE UGUALE A 31/12/9999
+                        if (giafatta == false)
+                        {
+                            //Attenzione qui se la lista non contiene nessun elemento
+                            //significa che non esiste nessun elemento corrispondentemente al livello selezionato
+                            lista = dtal.RestituisciLaRigaMassima(ibm.idTipoTrasferimento);
+                            if (lista.Count == 0)
+                            {
+                                ibNew1 = new INDENNITASISTEMAZIONE()
+                                {
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                    COEFFICIENTE = ibm.coefficiente,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                };
+                                libNew.Add(ibNew1);
+                                db.Database.BeginTransaction();
+                                db.INDENNITASISTEMAZIONE.Add(ibNew1);
+                                db.SaveChanges();
+                                db.Database.CurrentTransaction.Commit();
+                            }
+
+                            if (lista.Count != 0)
+                            {
+                                giafatta = true;
+                                //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
+                                //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
+                               
+                                decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
+                                decimal COEFFICIENTEUltimo = Convert.ToDecimal(lista[3]);
+                                if (dataInizioUltimo == ibm.dataInizioValidita)
+                                {
+                                    ibNew1 = new INDENNITASISTEMAZIONE()
+                                    {
+                                        IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                        DATAINIZIOVALIDITA = dataInizioUltimo,
+                                        DATAFINEVALIDITA = dataFineUltimo,
+                                        COEFFICIENTE = ibm.coefficiente,//nuova aliquota rispetto alla vecchia registrata
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew.Add(ibNew1);
+                                    db.Database.BeginTransaction();
+                                    db.INDENNITASISTEMAZIONE.Add(ibNew1);
+                                    db.SaveChanges();
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
+                                if (ibm.dataInizioValidita > dataInizioUltimo)
+                                {
+                                    ibNew1 = new INDENNITASISTEMAZIONE()
+                                    {
+                                        IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                        DATAINIZIOVALIDITA = dataInizioUltimo,
+                                        DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
+                                        COEFFICIENTE = COEFFICIENTEUltimo,
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    ibNew2 = new INDENNITASISTEMAZIONE()
+                                    {
+                                        IDTIPOTRASFERIMENTO = ibm.idTipoTrasferimento,
+                                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                        DATAFINEVALIDITA = Utility.DataFineStop(),
+                                        COEFFICIENTE = ibm.coefficiente,//nuova aliquota rispetto alla vecchia registrata
+                                        DATAAGGIORNAMENTO = DateTime.Now
+                                    };
+                                    libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                    libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                    db.Database.BeginTransaction();
+                                    db.INDENNITASISTEMAZIONE.AddRange(libNew);
+                                    db.SaveChanges();
+                                    RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                            }
+                        }
+                        // db.Database.CurrentTransaction.Commit();
                     }
-                    else
-                    {
-                        db.INDENNITASISTEMAZIONE.Add(ibNew);
-
-                    }
-                    db.SaveChanges();
-
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di indennità di sistemazione.", "INDENNITASISTEMAZIONE", ibNew.IDINDSIST);
-                    }
-
-                    db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
@@ -398,9 +466,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-
-
+        
         public bool EsistonoMovimentiPrimaUguale(IndennitaSistemazioneModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -469,6 +535,217 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
 
         }
+        public decimal Get_Id_IndSistemNonAnnullato(decimal idTipoTrasferimento)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDINDSIST;
+            }
+            return tmp;
+        }
 
+        public void DelINDENNITASISTEMAZIONE(decimal idIndSist)
+        {
+            INDENNITASISTEMAZIONE precedenteIB = new INDENNITASISTEMAZIONE();
+            INDENNITASISTEMAZIONE delIB = new INDENNITASISTEMAZIONE();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    db.Database.BeginTransaction();
+                    var lib = db.INDENNITASISTEMAZIONE.Where(a => a.IDINDSIST == idIndSist);
+                    if (lib.Count() > 0)
+                    {
+                        delIB = lib.First();
+                        delIB.ANNULLATO = true;
+                        RendiAnnullatoUnRecord(delIB.IDINDSIST, db);
+                        precedenteIB = RestituisciIlRecordPrecedente(idIndSist);
+                        RendiAnnullatoUnRecord(precedenteIB.IDINDSIST, db);
+
+                        var NuovoPrecedente = new INDENNITASISTEMAZIONE()
+                        {
+                            IDTIPOTRASFERIMENTO = precedenteIB.IDTIPOTRASFERIMENTO,
+                            DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
+                            DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
+                            COEFFICIENTE = precedenteIB.COEFFICIENTE,
+                            DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
+                            ANNULLATO = false
+                        };
+                        db.INDENNITASISTEMAZIONE.Add(NuovoPrecedente);
+                    }
+                    db.SaveChanges();
+                    using (objLogAttivita log = new objLogAttivita())
+                    {
+                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Indennita Sistemazione", "INDENNITASISTEMAZIONE", idIndSist);
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+        public bool INDENNITASISTEMAZIONEAnnullato(IndennitaSistemazioneModel ibm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                return db.INDENNITASISTEMAZIONE.Where(a => a.IDINDSIST == ibm.idIndSist && a.IDTIPOTRASFERIMENTO == ibm.idTipoTrasferimento).First().ANNULLATO == true ? true : false;
+            }
+        }
+        public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as IndennitaSistemazioneModel;
+
+            if (fm != null)
+            {
+                DateTime d = DataInizioMinimaNonAnnullataIndennitaBase(fm.idTipoTrasferimento);
+                if (fm.dataInizioValidita < d)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di inizio validità è richiesta.");
+            }
+            return vr;
+        }
+        public decimal Get_Id_INDENNITASISTEMAZIONEPrimoNonAnnullato(decimal idTipoTrasferimento)
+        {
+            decimal tmp = 0;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                if (libm.Count != 0)
+                    tmp = libm.First().IDINDSIST;
+            }
+            return tmp;
+        }
+        public static DateTime DataInizioMinimaNonAnnullataIndennitaBase(decimal idLivello)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var TuttiNonAnnullati = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false && a.IDTIPOTRASFERIMENTO == idLivello).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                if (TuttiNonAnnullati.Count > 0)
+                {
+                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+                }
+            }
+            return Utility.GetData_Inizio_Base();
+        }
+        public INDENNITASISTEMAZIONE RestituisciIlRecordPrecedente(decimal idIndSist)
+        {
+            INDENNITASISTEMAZIONE tmp = null;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                INDENNITASISTEMAZIONE interessato = new INDENNITASISTEMAZIONE();
+                interessato = db.INDENNITASISTEMAZIONE.Find(idIndSist);
+                tmp = db.INDENNITASISTEMAZIONE.Where(a => a.IDTIPOTRASFERIMENTO == interessato.IDTIPOTRASFERIMENTO
+                && a.ANNULLATO == false).ToList().Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1)).ToList().First();
+            }
+            return tmp;
+        }
+        public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione, decimal idTipoTrasferimento)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).ToList().Where(b =>
+                b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
+                && DataCampione > b.DATAINIZIOVALIDITA
+                && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDINDSIST.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].COEFFICIENTE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public List<string> DataVariazioneCoincideConDataInizio(DateTime DataCampione, decimal idTipoTrasferimento)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
+                 b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDINDSIST.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].COEFFICIENTE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public List<string> DataVariazioneCoincideConDataFine(DateTime DataCampione, decimal idTipoTrasferimento)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
+                Where(b => DataCampione == b.DATAFINEVALIDITA
+                && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
+
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDINDSIST.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].COEFFICIENTE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public List<string> RestituisciLaRigaMassima(decimal idTipoTrasferimento)
+        {
+            List<string> tmp = new List<string>();
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                List<INDENNITASISTEMAZIONE> libm = new List<INDENNITASISTEMAZIONE>();
+                libm = db.INDENNITASISTEMAZIONE.Where(a => a.ANNULLATO == false
+                && a.IDTIPOTRASFERIMENTO == idTipoTrasferimento).ToList().Where(b =>
+                b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
+                if (libm.Count != 0)
+                {
+                    tmp.Add(libm[0].IDINDSIST.ToString());
+                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+                    tmp.Add(libm[0].COEFFICIENTE.ToString());
+                }
+            }
+            return tmp;
+        }
+        public void RendiAnnullatoUnRecord(decimal idIndSist, ModelDBISE db)
+        {
+            INDENNITASISTEMAZIONE entita = new INDENNITASISTEMAZIONE();
+            entita = db.INDENNITASISTEMAZIONE.Find(idIndSist);
+            entita.ANNULLATO = true;
+            db.SaveChanges();
+        }
     }
 }

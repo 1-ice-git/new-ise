@@ -8,309 +8,393 @@
 }
 
 <p>
-    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci nuovo Coefficiente Fascia Km</a>
+    <a id="btnInsNuovoCoeffFasciaKm" href="#" onclick="NuovoCoeffFasciakm();">Inserisci nuovo Percentuale Km</a>
 </p>
 
-<p>
+<div class="form-horizontal">
     <div class="form-group">
-        @Html.Label("lblCoeffFasciaKm", "Seleziona nuovo Coeff. Fascia Km ", new { @class = "control-label" })
+        <div class="col-xs-2 text-right">
+            @Html.Label("lblGruppoFasciaKM", "Seleziona Gruppo Fascia Km ", new { @class = "control-label" })
+        </div>
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idDefKm", ViewBag.CoeffFasciaKm as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffFasciaKm();", @onClick = "PrelevaPVCoeffFasciaKm();" })
+                @Html.DropDownList("idGruppoFKm", ViewBag.GruppoFKM as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "AggiornaListaFasciaKmDalGruppo();", @onClick = "AggiornaListaFasciaKmDalGruppo();" })
             </div>
         </div>
     </div>
-</p>
+    <div class="form-group">
+        <div class="col-xs-2 text-right">
+            @Html.Label("lblFasciaKm", "Seleziona Fascia Km", new { @class = "control-label" })
+        </div>
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idFKm", ViewBag.FasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffFasciaKm();", @onClick = "PrelevaPVCoeffFasciaKm();" })
+            </div>
+        </div>
+    </div>
+    </div>
 
-
-
-<table id="tbCoeffFasciaKm" class="display" cellspacing="0">
-    <thead>
-        <tr>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.dataInizioValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataFineValidita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.coefficienteKm)
-            </th>           
-            <th>
-                @Html.DisplayNameFor(model => model.annullato)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table id="tbCoeffFasciaKm" class="display" cellspacing="0">
+        <thead>
             <tr>
-            <td style="text-align:center;">
-                 @Html.DisplayFor(modelItem => item.dataInizioValidita)
-            </td>
-               @if (item.dataFineValidita != Utility.DataFineStop())
-                {
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
-               }
-               else
-               {
-                <td></td>
-               }
-                <td>
-                    @Html.DisplayFor(modelItem => item.coefficienteKm)
-                </td>               
-                <td>
-                    @Html.DisplayFor(modelItem => item.annullato)
-                </td>
-                <td style="text-align:center;">                    
-                    @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInizioValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataFineValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.coefficienteKm)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.annullato)
+                </th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    </td>
+                    @if (item.dataFineValidita != Utility.DataFineStop())
                     {
-                        if (dtib.CoefficienteFasciaKmAnnullato(item))
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.coefficienteKm) %
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.annullato)
+                    </td>
+                    <td style="text-align:center;">
+                        @using (dtParCoefficienteKm dtib = new dtParCoefficienteKm())
                         {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            if (item.idCfKm == idMinimoNonAnnullato)
+                            if (dtib.CoefficienteFasciaKmAnnullato(item))
                             {
                                 <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
                             else
                             {
-                                <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                if (item.idCfKm == idMinimoNonAnnullato)
+                                {
+                                    <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                                }
+                                else
+                                {
+                                    <a href="#" onclick="EliminaCoeffFasciaKm(@item.idCfKm)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                }
                             }
                         }
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<div id="dialog-confirm" title="Elimina aliquota contributiva?" class="hide">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del coefficiente KM?</p>
-</div>
-
-<script type="text/javascript">
-    $('.display').DataTable({
-        "ordering": false,
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                    </td>
+                </tr>
             }
-        }
-    });
+        </tbody>
+    </table>
 
-    $("#idDefKm").select2({
-        placeholder: "Seleziona nuovo Coefficiente di Fascia Km",
-        allowClear: true,
-        language: "it",
-        width: '150'
+    <div id="dialog-confirm" title="Elimina aliquota contributiva?" class="hide">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del coefficiente KM?</p>
+    </div>
 
-    });
-
-    $("#btnInsNuovoCoeffFasciaKm").button();
-
-
-    function PrelevaPVCoeffFasciaKm() {
-        //debugger;
-        rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
-
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
-        $("#hiTipoContributo").val(idDefKm);
-
-        if (isNaN(idDefKm)) {
-            //$("#divPViewParametri").empty();
-            //return false;
-            idDefKm=$("#hiTipoContributo").val();
-        }
-
-        if (isNaN(idDefKm)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        var chk = false;
-        if ($("#escludiAnnullati").is(":checked")) {
-            chk = true;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idDefKm: idDefKm, escludiAnnullati: chk },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divPViewParametri").empty();
-                $("#divPViewParametri").html(result);
-                //RicercaDocumenti();
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-
-        });
-
-    }
-
-    function NuovoCoeffFasciakm() {
-     //  debugger;
-        var rotta = "/Parametri/ParamCoeffFasciaKm/NuovoCoefficienteFasciaKm";
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
-        $("#hiTipoContributo").val(idDefKm);
-
-        if (isNaN(idDefKm)) {
-            //$("#divPViewParametri").empty();
-            AlertDialog("Selezionare un coeff. per procedere.");
-            return false;
-        }
-
-        @*if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }*@
-        var chk = false;
-        if ($("#escludiAnnullati").is(":checked")) {
-            chk = true;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idDefKm: idDefKm, escludiAnnullati: chk },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divPViewParametri").empty();
-                $("#divPViewParametri").html(result);
-
-                //RicercaDocumenti();
-
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-
-        });
-
-    }
-
-    function EliminaCoeffFasciaKm(id) {
-     //   debugger;
-        var rotta = "/Parametri/ParamCoeffFasciaKm/EliminaCoeffFasciaKm";
-
-        var idDefKm = parseInt($("#idDefKm").select2('val'));
-
-        if (isNaN(idDefKm)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
-
-        var chk = false;
-        if ($("#escludiAnnullati").is(":checked")) {
-            chk = true;
-        }
-
-        $('#dialog-confirm').dialog({
-            autoOpen: true,
-            width: 400,
-            buttons: [
-                {
-                    text: "OK",
-                    click: function () {
-                        $(this).dialog("close");
-                        $.ajax({
-                            type: "POST",
-                            url: rotta,
-                            data: { escludiAnnullati: chk,idCfKm:id, idDefKm: idDefKm },
-                            dataType: 'html',
-                            beforeSend: function () {
-                                //debugger;
-                                //VerificaAutenticazione();
-                                //$("#DialogNewDoc").dialog("destroy");
-                                //$("#divEffettoLoadAutNoDoc").show("slow");
-
-                            },
-                            success: function (result) {
-                                //debugger;
-                                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                                $("#divPViewParametri").empty();
-                                $("#divPViewParametri").html(result);
-
-                                //RicercaDocumenti();
-
-                            },
-                            complete: function () {
-                                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                                //                $("#Centro").getNiceScroll().resize();
-                            },
-                            error: function (jqXHR, textStatus, errorThrow) {
-                                //debugger;
-                                var msg = errorThrow.err;
-                                AlertDialog(msg);
-                            }
-
-                        });
-                    },
-                    "class": "ui-button-danger"
+    <script type="text/javascript">
+        $('.display').DataTable({
+            "ordering": false,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
                 },
-                {
-                    text: "Annulla",
-                    click: function () {
-                        $(this).dialog("close");
-                    }
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
                 }
-            ]
+            }
         });
 
-    }
+        $("#idGruppoFKm").select2({
+            placeholder: "Seleziona Percentua Km",
+            allowClear: true,
+            language: "it",
+            width: '150'
+        });
 
-</script>
+        $("#idFKm").select2({
+            placeholder: "Seleziona Fascia Km",
+            allowClear: true,
+            language: "it",
+            width: '150'
+        });
+
+        $("#btnInsNuovoCoeffFasciaKm").button();
+
+        //AggiornaListaFasciaKmDalGruppo
+
+        function AggiornaListaFasciaKmDalGruppo() {
+        //    debugger;
+            rotta = "/Parametri/ParamCoeffFasciaKm/AggiornaListaFasciaKmDalGruppo";
+
+            var idLivello_FKM = parseInt($("#idFKm").select2('val'));
+            $("#hiTipoContributo").val(idLivello_FKM);
+
+            var idGruppoFKm = parseInt($("#idGruppoFKm").select2('val'));
+            $("#hiIdUfficio").val(idGruppoFKm);
+
+            //if (isNaN(idDefKm)) {
+            //    //$("#divPViewParametri").empty();
+            //    //return false;
+            //    idDefKm = $("#hiTipoContributo").val();
+            //}
+
+            //if (isNaN(idDefKm)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idGruppoFKm: idGruppoFKm, escludiAnnullati: chk},// idLivello_FKM: idLivello_FKM },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+                    //RicercaDocumenti();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+
+        function PrelevaPVCoeffFasciaKm() {
+            //debugger;
+            rotta = "/Parametri/ParamCoeffFasciaKm/CoefficienteFasciaKmLivello";
+
+            var idFKm = parseInt($("#idFKm").select2('val'));
+            $("#hiTipoContributo").val(idFKm);
+
+            var idGruppoFKm = parseInt($("#idGruppoFKm").select2('val'));
+            $("#hiIdUfficio").val(idGruppoFKm);
+
+            //if (isNaN(idDefKm)) {
+            //    //$("#divPViewParametri").empty();
+            //    //return false;
+            //    idDefKm = $("#hiTipoContributo").val();
+            //}
+
+            //if (isNaN(idDefKm)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idGruppoFKm: idGruppoFKm, idFKm: idFKm, escludiAnnullati: chk },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+                    //RicercaDocumenti();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        function NuovoCoeffFasciakm() {
+          //   debugger;
+            var rotta = "/Parametri/ParamCoeffFasciaKm/NuovoCoeffFasciakm";
+            var idGruppoFKm = parseInt($("#idGruppoFKm").select2('val'));
+            
+            var idFKm = parseInt($("#idFKm").select2('val'));
+            $("#hiTipoContributo").val(idFKm);
+
+            var idGruppoFKm = parseInt($("#idGruppoFKm").select2('val'));
+            $("#hiIdUfficio").val(idGruppoFKm);
+
+            //if (isNaN(idDefKm)) {
+            //    //$("#divPViewParametri").empty();
+            //    AlertDialog("Selezionare un coeff. per procedere.");
+            //    return false;
+            //}
+                      
+            var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idGruppoFKm: idGruppoFKm, escludiAnnullati: chk, idFKm: idFKm },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        function EliminaCoeffFasciaKm(id) {
+              // debugger;
+            var rotta = "/Parametri/ParamCoeffFasciaKm/EliminaCoeffFasciaKm";
+                        
+            var idDefKm = parseInt($("#idFKm").select2('val'));
+            $("#hiTipoContributo").val(idDefKm);
+
+            var idGruppoFKm = parseInt($("#idGruppoFKm").select2('val'));
+            $("#hiIdUfficio").val(idGruppoFKm);
+
+            if (isNaN(idDefKm)) {
+                $("#divPViewParametri").empty();
+                return false;
+            }
+
+            var chk = false;
+            if ($("#escludiAnnullati").is(":checked")) {
+                chk = true;
+            }
+
+            $('#dialog-confirm').dialog({
+                autoOpen: true,
+                width: 400,
+                buttons: [
+                    {
+                        text: "OK",
+                        click: function () {
+                            $(this).dialog("close");
+                            $.ajax({
+                                type: "POST",
+                                url: rotta,
+                                data: { escludiAnnullati: chk, idCfKm: id, idDefKm: idDefKm ,idGruppoFKm:idGruppoFKm},
+                                dataType: 'html',
+                                beforeSend: function () {
+                                    //debugger;
+                                    //VerificaAutenticazione();
+                                    //$("#DialogNewDoc").dialog("destroy");
+                                    //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                                },
+                                success: function (result) {
+                                    //debugger;
+                                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                    $("#divPViewParametri").empty();
+                                    $("#divPViewParametri").html(result);
+
+                                    //RicercaDocumenti();
+
+                                },
+                                complete: function () {
+                                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                    //                $("#Centro").getNiceScroll().resize();
+                                },
+                                error: function (jqXHR, textStatus, errorThrow) {
+                                    //debugger;
+                                    var msg = errorThrow.err;
+                                    AlertDialog(msg);
+                                }
+
+                            });
+                        },
+                        "class": "ui-button-danger"
+                    },
+                    {
+                        text: "Annulla",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+
+        }
+
+    </script>

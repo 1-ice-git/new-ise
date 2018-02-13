@@ -24,38 +24,7 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                //{
-                //    llm = dtl.GetCoeffRiduzioni().(a => a.idRiduzioni).ToList();
-                //    if (llm != null && llm.Count > 0)
-                //    {
-                //        r = (from t in llm
-                //             select new SelectListItem()
-                //             {
-                //                 Text = t.percentuale.ToString(),
-                //                 Value = t.idRiduzioni.ToString()
-                //             }).ToList();
-
-                //        if (idLivello == 0)
-                //        {
-                //            r.First().Selected = true;
-                //            idLivello = Convert.ToDecimal(r.First().Value);
-                //        }
-                //        else
-                //        {
-                //            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                //            if (temp.Count == 0)
-                //            {
-                //                r.First().Selected = true;
-                //                idLivello = Convert.ToDecimal(r.First().Value);
-
-                //            }                           
-                //            else
-                //                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                //        }
-                //    }
-                //    ViewBag.CoeffIndRichiamo = r;
-                //}
+                
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     //    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idLivello);
@@ -101,7 +70,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
-                 //  libm = dtib.getListCoeffIndRichiamo(idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
+                    libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -216,23 +186,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelCoefficienteRichiamo(idCoeffIndRichiamo);
                 }
-
-                //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                //{
-                //    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
-
-                //    if (llm != null && llm.Count > 0)
-                //    {
-                //        r = (from t in llm
-                //             select new SelectListItem()
-                //             {
-                //                 Text = t.percentuale.ToString(),
-                //                 Value = t.idRiduzioni.ToString()
-                //             }).ToList();
-                //        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
-                //    }
-                //    ViewBag.CoeffIndRichiamo = r;
-                //}
                 using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();

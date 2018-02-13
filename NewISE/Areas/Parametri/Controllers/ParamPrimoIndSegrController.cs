@@ -14,7 +14,7 @@ namespace NewISE.Areas.Parametri.Controllers
         // GET: Parametri/ParamPrimoIndSegr/PrimoSegretario
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult PrimoSegretario(bool escludiAnnullati)//, decimal idLivello = 0)
+        public ActionResult PrimoSegretario(bool escludiAnnullati)
         {
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
             var r = new List<SelectListItem>();
@@ -22,37 +22,10 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                //using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                //{
-                //    llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
-
-                //    if (llm != null && llm.Count > 0)
-                //    {
-                //        r = (from t in llm
-                //             select new SelectListItem()
-                //             {
-                //                 Text = t.indennita.ToString(),
-                //                 Value = t.idIndPrimoSegr.ToString()
-                //             }).ToList();
-
-                //        if (idLivello == 0)
-                //        {
-                //            r.First().Selected = true;
-                //            idLivello = Convert.ToDecimal(r.First().Value);
-                //        }
-                //        else
-                //        {
-                //            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                //        }
-                //    }
-
-                //    ViewBag.PrimoSegretarioList = r;
-                //}
-
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
-                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -61,13 +34,12 @@ namespace NewISE.Areas.Parametri.Controllers
             }
 
             ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView(libm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult IndennitaPrimoSegretarioLivello(decimal idIndPrimoSegr, bool escludiAnnullati)
+        public ActionResult IndennitaPrimoSegretarioLivello(bool escludiAnnullati)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<IndennitaPrimoSegretModel> libm = new List<IndennitaPrimoSegretModel>();
@@ -76,34 +48,17 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                {
-                    llm = dtl.getIndennitaPrimoSegretario().OrderBy(a => a.indennita).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.indennita.ToString(),
-                                 Value = t.idIndPrimoSegr.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idIndPrimoSegr.ToString()).First().Selected = true;
-                    }
-                    ViewBag.PrimoSegretarioList = r;
-                }
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
-                    libm = dtib.getListIndennitaPrimoSegretario(llm.Where(a => a.idIndPrimoSegr == idIndPrimoSegr).First().idIndPrimoSegr, escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    return PartialView("PrimoSegretario", libm);
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            ViewBag.escludiAnnullati = escludiAnnullati;
-            return PartialView("PrimoSegretario", libm);
         }
 
         [HttpPost]
@@ -119,7 +74,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 //    var lm = dtl.getIndennitaPrimoSegretario(idIndPrimoSegr);
                 //    ViewBag.idIndPrimoSegr = lm;
                 //}
-                //ViewBag.escludiAnnullati = escludiAnnullati;
+                ViewBag.escludiAnnullati = escludiAnnullati;
                 return PartialView("NuovaIndennitaPrimoSegretario");
             }
             catch (Exception ex)
@@ -129,7 +84,7 @@ namespace NewISE.Areas.Parametri.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciIndennitaPrimoSegretario(IndennitaPrimoSegretModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciIndennitaPrimoSegretario(IndennitaPrimoSegretModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -140,23 +95,18 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
-                        dtib.SetIndennitaPrimoSegretario(ibm);
+                        dtib.SetIndennitaPrimoSegretario(ibm,aggiornaTutto);
                     }
                     using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                     {
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
-                        libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("PrimoSegretario",libm);
                     //return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = ibm.idIndPrimoSegr });
                 }
                 else
-                {
-                    //using (dtIndPrimoSegr dtl = new dtIndPrimoSegr())
-                    //{
-                    //    var lm = dtl.getIndennitaPrimoSegretario(ibm.idIndPrimoSegr);
-                    //    ViewBag.idIndPrimoSegr = lm;
-                    //}
+                {                    
                     ViewBag.escludiAnnullati = escludiAnnullati;
                     return PartialView("NuovaIndennitaPrimoSegretario", ibm);
                 }
@@ -176,11 +126,11 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 using (dtIndPrimoSegr dtib = new dtIndPrimoSegr())
                 {
-                    dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);                
-                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a => a.idIndPrimoSegr).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    dtib.DelIndennitaPrimoSegretario(idIndPrimoSegr);
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_IndPrimoSegretarioNonAnnullato();
+                    libm = dtib.getListIndennitaPrimoSegretario(escludiAnnullati).OrderBy(a=>a.dataFineValidita).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("PrimoSegretario", libm);
-                //return RedirectToAction("PrimoSegretario", new { escludiAnnullati = escludiAnnullati, idIndPrimoSegr = idIndPrimoSegr });
             }
             catch (Exception ex)
             {

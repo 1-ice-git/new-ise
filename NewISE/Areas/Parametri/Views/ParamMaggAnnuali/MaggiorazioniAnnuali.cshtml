@@ -3,13 +3,11 @@
 @using NewISE.Areas.Parametri.Models.dtObj;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-  
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
-
 <p>
     <a id="btnInsMaggAnnuale" href="#" onclick="NuovaMaggiorazioneAnnuale();">Inserisci Maggiorazione Annuale</a>
 </p>
-
 <p>
     <div class="form-group">
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
@@ -25,25 +23,25 @@
     <thead>
 
         <tr>
-            @*<th>
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.DescrizioneUfficio.descUfficio)
             </th>*@
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annualita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
@@ -53,52 +51,44 @@
                 @*<td>
                     @Html.DisplayFor(model => item.DescrizioneUfficio.descUfficio)
                 </td>*@
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                @if (item.dataFineValidita != Utility.DataFineStop())
-                {
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.dataFineValidita)
-                    </td>
-                }
-                else
-                {
-                    <td></td>
-                }
-                <td>
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annualita)
                 </td>
-                <td style="text-align:right;">
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
                     @using (dtParMaggAnnuali dtib = new dtParMaggAnnuali())
                     {
-                        @*if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }*@
                         if (dtib.MaggiorazioniAnnualiAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                            if (dtib.EsistonoMovimentiPrima(item))
+                            if (item.idMagAnnuali == idMinimoNonAnnullato)
                             {
-                                <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaMaggiorazioneAnnuale(@item.idMagAnnuali);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
@@ -115,12 +105,8 @@
 
 <script type="text/javascript">
 
-     
-
-
-
-
     $('.display').DataTable({
+        "ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",

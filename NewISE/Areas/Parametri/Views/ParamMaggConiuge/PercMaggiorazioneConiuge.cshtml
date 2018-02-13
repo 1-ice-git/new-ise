@@ -22,22 +22,22 @@
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.percentualeConiuge)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
@@ -45,22 +45,21 @@
         @foreach (var item in Model)
         {
             <tr>
-               
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                @if (item.dataFineValidita != Utility.DataFineStop())
-                {
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.dataFineValidita)
-                    </td>
-                }
-                else
-                {
-                    <td></td>
-                }
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                 <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentualeConiuge)
+                    @Html.DisplayFor(modelItem => item.percentualeConiuge) %
                 </td>
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
@@ -71,14 +70,6 @@
                 <td style="text-align:center;">
                     @using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
-                        @*if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaIndbase(@item.idPercentualeConiuge );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }*@
                         if (dtib.PercMaggiorazioneConiugeAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
@@ -106,6 +97,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
+        "ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",

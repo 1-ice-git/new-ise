@@ -22,47 +22,16 @@ namespace NewISE.Areas.Parametri.Controllers
 
             try
             {
-                using (dtValute dtl = new dtValute())
-                {
-                    llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.descrizioneValuta,
-                                 Value = t.idValuta.ToString()
-                             }).ToList();
-
-                        if (idValuta == 0)
-                        {
-                            r.First().Selected = true;
-                            idValuta = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
-                        }
-                    }
-
-                    ViewBag.Valute = r;
-                }
-
+                ListeValute();
                 using (dtValute dtib = new dtValute())
                 {
-
                     libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
-
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial");
             }
-
-
-
             return PartialView(libm);
         }
 
@@ -73,32 +42,12 @@ namespace NewISE.Areas.Parametri.Controllers
             List<ValuteModel> libm = new List<ValuteModel>();
             var r = new List<SelectListItem>();
             List<ValuteModel> llm = new List<ValuteModel>();
-
             try
             {
-                using (dtValute dtl = new dtValute())
-                {
-                    llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.descrizioneValuta,
-                                 Value = t.idValuta.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.Valute = r;
-                }
-
+                ListeValute();
                 using (dtValute dtib = new dtValute())
                 {
-
                     libm = dtib.getListValute(idValuta).OrderBy(a => a.idValuta).ToList();
-
                 }
             }
             catch (Exception ex)
@@ -106,7 +55,6 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial");
             }
             //ViewBag.escludiAnnullati = escludiAnnullati;
-
             return PartialView("Valute", libm);
         }
 
@@ -115,8 +63,6 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult NuoveValute(decimal idValuta)
         {
             var r = new List<SelectListItem>();
-
-
             try
             {
                 using (dtValute dtl = new dtValute())
@@ -133,24 +79,58 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial");
             }
         }
+        public decimal ListeValute()
+        {
+            decimal idValuta = 0;
+            List<ValuteModel> llm = new List<ValuteModel>();
+            var r = new List<SelectListItem>();
+            using (dtValute dtl = new dtValute())
+            {
+                llm = dtl.GetValute().OrderBy(a => a.descrizioneValuta).ToList();
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.descrizioneValuta,
+                             Value = t.idValuta.ToString()
+                         }).ToList();
 
+                    if (idValuta == 0)
+                    {
+                        r.First().Selected = true;
+                        idValuta = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        r.Where(a => a.Value == idValuta.ToString()).First().Selected = true;
+                    }
+                }
+                ViewBag.Valute = r;
+            }
+            return idValuta;
+        }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
         public ActionResult InserisciValuta(ValuteModel ibm)
         {
             var r = new List<SelectListItem>();
-
+            List<ValuteModel> libm = new List<ValuteModel>();
+            List<ValuteModel> llm = new List<ValuteModel>();
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtValute dtib = new dtValute())
                     {
-
                         dtib.SetValute(ibm);
                     }
-
-                    return RedirectToAction("Valute", new { idValuta = ibm.idValuta });
+                    ListeValute();
+                    using (dtValute dtib = new dtValute())
+                    {
+                        libm = dtib.getListValute().OrderBy(a => a.idValuta).ToList();
+                    }
+                    return PartialView("Valute", libm);
                 }
                 else
                 {
@@ -159,7 +139,6 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetValute(ibm.idValuta);
                         ViewBag.descrizionevaluta = lm;
                     }
-
                     return PartialView("NuoveValute", ibm);
                 }
             }
@@ -173,23 +152,24 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult EliminaValuta(decimal idValuta)
         {
-
+            List<ValuteModel> libm = new List<ValuteModel>();
             try
             {
                 using (dtValute dtib = new dtValute())
                 {
                     dtib.DelValute(idValuta);
                 }
-
-                return RedirectToAction("Valute", new { idValuta = idValuta });
+                ListeValute();
+                using (dtValute dtib = new dtValute())
+                {
+                    libm = dtib.getListValute(idValuta).OrderBy(a => a.descrizioneValuta).ToList();
+                }
+                return PartialView("Valute", libm);
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial");
             }
-
-
         }
     }
 

@@ -492,7 +492,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             var fm = context.ObjectInstance as PercentualeMagConiugeModel;
             if (fm != null)
             {
-                DateTime d = DataInizioMinimaNonAnnullata(fm.id_TipologiaConiuge);
+                DateTime d = DataInizioMinimaNonAnnullata(Convert.ToDecimal(fm.idTipologiaConiuge));
                 if (fm.dataInizioValidita < d)
                 {
                     vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di Base ({0}).", d.ToShortDateString()));

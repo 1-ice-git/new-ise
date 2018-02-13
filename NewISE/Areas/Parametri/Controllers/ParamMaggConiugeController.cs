@@ -18,45 +18,10 @@ namespace NewISE.Areas.Parametri.Controllers
         public ActionResult PercMaggiorazioneConiuge(bool escludiAnnullati, decimal idLivello = 0)
         {
             List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
-            var r = new List<SelectListItem>();
-            List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
-                {
-                    llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.tipologiaConiuge,
-                                 Value = t.idTipologiaConiuge.ToString()
-                             }).ToList();
-
-                        if (idLivello == 0)
-                        {
-                            r.First().Selected = true;
-                            idLivello = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
-                    }
-                    ViewBag.LivelliList = r;
-                    
-                }
-
+                idLivello=CaricaComboTipConiuge(idLivello);
                 using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idLivello);
@@ -67,10 +32,46 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
             return PartialView(libm);
         }
+        decimal CaricaComboTipConiuge(decimal idLivello)
+        {
+            var r = new List<SelectListItem>();
+            List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
+            using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
+            {
+                llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
 
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.tipologiaConiuge,
+                             Value = t.idTipologiaConiuge.ToString()
+                         }).ToList();
+
+                    if (idLivello == 0)
+                    {
+                        r.First().Selected = true;
+                        idLivello = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                        if (temp.Count == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
+                    }
+                }
+                ViewBag.LivelliList = r;
+            }
+            return idLivello;
+        }
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercMaggiorazioneConiugeLivello(decimal idTipologiaConiuge, bool escludiAnnullati)
@@ -80,24 +81,7 @@ namespace NewISE.Areas.Parametri.Controllers
             List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
             try
             {
-                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
-                {
-                    llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.tipologiaConiuge,
-                                 Value = t.idTipologiaConiuge.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idTipologiaConiuge.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
+                idTipologiaConiuge = CaricaComboTipConiuge(idTipologiaConiuge);
                 using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idTipologiaConiuge);
@@ -137,42 +121,22 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm,decimal idTipologiaConiuge, bool escludiAnnullati = true)
+        public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercentualeMagConiugeModel> libm = new List<PercentualeMagConiugeModel>();
             List<TipologiaConiugeModel> llm = new List<TipologiaConiugeModel>();
-            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtMaggConiuge dtib = new dtMaggConiuge())
-                    {
-                        dtib.SetPercMagConiuge(ibm, idTipologiaConiuge);
-                    }
-                    using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
-                    {
-                        llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
-
-                        if (llm != null && llm.Count > 0)
-                        {
-                            r = (from t in llm
-                                 select new SelectListItem()
-                                 {
-                                     Text = t.tipologiaConiuge,
-                                     Value = t.idTipologiaConiuge.ToString()
-                                 }).ToList();
-
-                            r.Where(a => a.Value == idTipologiaConiuge.ToString()).First().Selected= true;
-                        }
-                        ViewBag.LivelliList = r;
-                    }
                     using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
-                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(Convert.ToDecimal(idTipologiaConiuge));
-                        libm = dtib.getListPercMagConiuge(Convert.ToDecimal(ibm.idTipologiaConiuge), escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        dtib.SetPercMagConiuge(ibm,aggiornaTutto);                    
+                        decimal idTipologiaConiuge_ = CaricaComboTipConiuge(Convert.ToDecimal(ibm.idTipologiaConiuge));
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idTipologiaConiuge_);
+                        libm = dtib.getListPercMagConiuge(idTipologiaConiuge_, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
                     return PartialView("PercMaggiorazioneConiuge",libm);
                    // return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
@@ -206,27 +170,11 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     dtib.DelPercMagConiuge(idMaggConiuge);
                 }
-                using (dtParTipologiaConiuge dtl = new dtParTipologiaConiuge())
-                {
-                    llm = dtl.GetTipologiaConiuge().OrderBy(a => a.tipologiaConiuge).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.tipologiaConiuge,
-                                 Value = t.idTipologiaConiuge.ToString()
-                             }).ToList();
-
-                        r.Where(a => a.Value == idTipologiaConiuge.ToString()).First().Selected = true;
-                    }
-                    ViewBag.LivelliList = r;
-                }
+                idTipologiaConiuge = CaricaComboTipConiuge(idTipologiaConiuge);
                 using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(Convert.ToDecimal(idTipologiaConiuge));
-                    libm = dtib.getListPercMagConiuge(Convert.ToDecimal(idTipologiaConiuge), escludiAnnullati).OrderBy(a => a.idTipologiaConiuge).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idTipologiaConiuge);
+                    libm = dtib.getListPercMagConiuge(idTipologiaConiuge, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
                 return PartialView("PercMaggiorazioneConiuge", libm);
                 //return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = idTipologiaConiuge });

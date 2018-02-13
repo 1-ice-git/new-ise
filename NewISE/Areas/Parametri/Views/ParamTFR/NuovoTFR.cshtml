@@ -27,15 +27,15 @@
             </div>
         </div>
         @Html.HiddenFor(model => model.idValuta)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati" />
-
+        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Valuta </label>
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@DescrizioneValuta</label>
+                    <label style="padding-left:5px; padding-top:5px; font:bold;">@DescrizioneValuta.ToString()</label>
                 </div>
             </div>
         </div>
@@ -49,20 +49,21 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+            <div id="divChkAgg" class="col-xs-5">
+                <div style="display:inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                </div>
+                <div style="vertical-align:middle; display:inline-block;">
+                    <label>Aggiorna tutto</label>
+                </div>
             </div>
         </div>
+
         
 
         <div class="form-group">
@@ -128,19 +129,28 @@
         changeYear: true,
     });
 
+    function AggiornaTutto() {
+        var chk = false;
+        if ($("#aggiornaTuttoX").is(":checked")) {
+            chk = true;
+        }
+        $("#aggiornaTutto").val(chk);
+    }
+
     function TornaElencoIb() {
         rotta = "/Parametri/ParamTFR/TfrLivello";
 
         var idValuta = parseFloat('@idValuta');
-        var chk = true;
+      
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
+       var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
         }
 
         $.ajax({

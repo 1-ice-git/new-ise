@@ -17,7 +17,7 @@ function Blocca(msg) {
             opacity: .5,
             color: '#fff'
         },
-        message: '<div><img width="150px" src="../Immagini/Loading/source.gif" alt="Fase di caricamento..." /></div>'
+        message: '<div><img width="150px" src="../../Immagini/Loading/source.gif" alt="Fase di caricamento..." /></div>'
     });
     //<br /><h1>' + msg + '</h1>
 }

@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
-
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-    decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
+   // decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
+    IEnumerable<SelectListItem> Gruppo = (IEnumerable<SelectListItem>)ViewBag.LivelliList;
+    string idLivello = Gruppo.Where(x => x.Selected).FirstOrDefault().Value;
+    
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
@@ -25,40 +28,47 @@
 <table id="tbIndBase" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Livello.DescLivello)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.valore)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.valoreResponsabile)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.Livello.DescLivello)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                 <td style="text-align:right;">
                     @Html.DisplayFor(modelItem => item.valore)
                 </td>
@@ -69,20 +79,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @*@using (dtParIndennitaBase dtib = new dtParIndennitaBase())
-                    {
-                        if (dtib.IndennitaBaseAnnullato(item))
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                        else
-                        {
-                            if (dtib.EsistonoMovimentiPrima(item))
-                            {
-                               <a href="#" onclick="EliminaIndbase(@item.idIndennitaBase );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                            }
-                        }
-                    }*@
+                    
                     @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
                         if (dtib.IndennitaBaseAnnullato(item))
@@ -203,22 +200,29 @@
     }
 
     function NuovaIndennitaDiBase() {
-        //debugger;
+     //  debugger;
 
         var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
         var idLivello = parseInt($("#idLivello").select2('val'));
-        var chk = false;
+      
+        if (isNaN(idLivello)) {
+            idLivello = parseInt($("#hiTipoContributo").val());
+        }
 
+        if (isNaN(idLivello)) {
+            idLivello = parseInt('@idLivello');
+        }
+        
         if (isNaN(idLivello)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un livello per procedere.");
             return false;
         }
 
-
-           if ($("#escludiAnnullati").is(":checked")) {
-                chk = true;
-            }
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $.ajax({
             type: "POST",
@@ -255,11 +259,14 @@
     }
 
     function EliminaIndbase(id) {
-       // debugger;
+    //    debugger;
         var rotta = "/Parametri/ParamIndennitaBase/EliminaIndennitaBase";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
-       
+        if (isNaN(idLivello)) {
+            idLivello = parseInt($("#hiTipoContributo").val());
+        }
+
 
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();

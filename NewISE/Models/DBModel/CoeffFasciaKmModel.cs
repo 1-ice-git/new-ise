@@ -14,7 +14,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idCfKm { get; set; }
 
-        [Display(Name = "IDDefKm")]
+        [Display(Name = "idDefKm")]
         public decimal idDefKm { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
@@ -29,8 +29,10 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
 
-        [Required(ErrorMessage = "Il valore per il coefficiente è richiesto")]
-        [Display(Name = "Coefficiente Km")]
+        [Required(ErrorMessage = "Il valore per la percentuale è richiesto")]
+        [Display(Name = "Percentuale F.Km")]
+        //[DisplayFormat(DataFormatString = "{0:0}")]
+        [CustomValidation(typeof(dtParCoefficienteKm), "VerificaPercentualeKM")]
         public decimal coefficienteKm { get; set; }
 
         //[Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

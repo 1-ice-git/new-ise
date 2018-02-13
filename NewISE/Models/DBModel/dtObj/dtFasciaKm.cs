@@ -174,9 +174,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 idFKM = e.IDFKM,
                                 idGruppoFKM = e.IDGRUPPOFKM,
                                 KM = e.KM,
-                                GruppoFKM = new Gruppo_FKMModel()
+                                GruppoFKM = new GruppoFKMModel()
                                 {
-                                    idGruppoFK = e.GRUPPO_FKM.IDGRUPPOFK,
+                                    IDGRUPPOFK = e.GRUPPO_FKM.IDGRUPPOFK,
                                     leggeFasciaKM = e.GRUPPO_FKM.LEGGEFASCIAKM,
                                     dataInizioValidita = e.GRUPPO_FKM.DATAINIZIOVALIDITA,
                                     dataFineValidita = e.GRUPPO_FKM.DATAFINEVALIDITA,

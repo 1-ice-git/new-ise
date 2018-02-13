@@ -15,62 +15,63 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-
-        public ActionResult MaggiorazioneFigli(bool escludiAnnullati, decimal idTipologiaFiglio = 0)
+        decimal CaricaComboTipoFiglio(decimal idLivello)
         {
-            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
-
-            try
+            using (dtParTipologiaFiglio dtl = new dtParTipologiaFiglio())
             {
-                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
+                llm = dtl.GetTipologiaFiglio().OrderBy(a => a.idTipologiaFiglio).ToList();
+
+                if (llm != null && llm.Count > 0)
                 {
-                    llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.tipologiaFiglio,
+                             Value = t.idTipologiaFiglio.ToString()
+                         }).ToList();
 
-                    if (llm != null && llm.Count > 0)
+                    if (idLivello == 0)
                     {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.tipologiaFiglio,
-                                 Value = t.idTipologiaFiglio.ToString()
-                             }).ToList();
-
-                        if (idTipologiaFiglio == 0)
-                        {
-                            r.First().Selected = true;
-                            idTipologiaFiglio = Convert.ToDecimal(r.First().Value);
-                        }
-                        else
-                        {
-                            r.Where(a => a.Value == idTipologiaFiglio.ToString()).First().Selected = true;
-                        }
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
-                using (dtMaggFigli dtib = new dtMaggFigli())
-                {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneFiglio(idTipologiaFiglio, escludiAnnullati).OrderBy(a => a.idTipologiaFiglio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        r.First().Selected = true;
+                        idLivello = Convert.ToDecimal(r.First().Value);
                     }
                     else
                     {
-                        libm = dtib.getListMaggiorazioneFiglio(idTipologiaFiglio).OrderBy(a => a.idTipologiaFiglio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                        if (temp.Count == 0)
+                        {
+                            r.First().Selected = true;
+                            idLivello = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                     }
+                }
+                ViewBag.LivelliList = r;
+            }
+            return idLivello;
+        }
+        public ActionResult MaggiorazioneFigli(bool escludiAnnullati, decimal idLivello = 0)
+        {
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
+            var r = new List<SelectListItem>();
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            try
+            {
+                idLivello = CaricaComboTipoFiglio(idLivello);
+                using (dtMaggFigli dtib = new dtMaggFigli())
+                {
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualFiglioPrimoNonAnnullato(idLivello);
+                    libm = dtib.getListMaggiorazioneFiglio(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial");
             }
-
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
+           
             return PartialView(libm);
         }
 
@@ -78,49 +79,24 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult PercMaggiorazioneFiglioLivello(decimal idTipologiaFiglio, bool escludiAnnullati)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             var r = new List<SelectListItem>();
             List<TipologiaFiglioModel> llm = new List<TipologiaFiglioModel>();
-
             try
             {
-                using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
-                {
-                    llm = dtl.GetTipologiaFiglio().OrderBy(a => a.tipologiaFiglio).ToList();
-
-                    if (llm != null && llm.Count > 0)
-                    {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.tipologiaFiglio,
-                                 Value = t.idTipologiaFiglio.ToString()
-                             }).ToList();
-                        r.Where(a => a.Value == idTipologiaFiglio.ToString()).First().Selected = true;
-                    }
-
-                    ViewBag.LivelliList = r;
-                }
-
+                idTipologiaFiglio = CaricaComboTipoFiglio(idTipologiaFiglio);
                 using (dtMaggFigli dtib = new dtMaggFigli())
                 {
-                    if (escludiAnnullati)
-                    {
-                        escludiAnnullati = false;
-                        libm = dtib.getListMaggiorazioneFiglio(llm.Where(a => a.idTipologiaFiglio == idTipologiaFiglio).First().idTipologiaFiglio, escludiAnnullati).OrderBy(a => a.idTipologiaFiglio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
-                    else
-                    {
-                        libm = dtib.getListMaggiorazioneFiglio(llm.Where(a => a.idTipologiaFiglio == idTipologiaFiglio).First().idTipologiaFiglio).OrderBy(a => a.idTipologiaFiglio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualFiglioPrimoNonAnnullato(idTipologiaFiglio);
+                    libm = dtib.getListMaggiorazioneFiglio(idTipologiaFiglio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial");
             }
-            ViewBag.escludiAnnullati = escludiAnnullati;
-
+           
             return PartialView("MaggiorazioneFigli", libm);
         }
 
@@ -128,8 +104,9 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1, 2")]
         public ActionResult NuovaMaggiorazioneFiglio(decimal idTipologiaFiglio, bool escludiAnnullati)
         {
+            ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 using (dtTipologiaFiglio dtl = new dtTipologiaFiglio())
@@ -137,7 +114,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetTipologiaFiglio(idTipologiaFiglio);
                     ViewBag.Figlio = lm;
                 }
-                ViewBag.escludiAnnullati = escludiAnnullati;
+              
                 return PartialView();
             }
             catch (Exception ex)
@@ -148,20 +125,26 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciPercMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true)
+        public ActionResult InserisciPercMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
         {
             var r = new List<SelectListItem>();
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
                 if (ModelState.IsValid)
                 {
                     using (dtMaggFigli dtib = new dtMaggFigli())
                     {
-                        dtib.SetMaggiorazioneFiglio(ibm);
+                        dtib.SetMaggiorazioneFiglio(ibm, aggiornaTutto);
                     }
-
-                    return RedirectToAction("PercMaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = ibm.idTipologiaFiglio });
+                    List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
+                    decimal idLivello = CaricaComboTipoFiglio(ibm.idTipologiaFiglio);
+                    using (dtMaggFigli dtib = new dtMaggFigli())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualFiglioPrimoNonAnnullato(idLivello);
+                        libm = dtib.getListMaggiorazioneFiglio(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("MaggiorazioneFigli", libm);
                 }
                 else
                 {
@@ -182,25 +165,27 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaPercMaggiorazioneFiglio(bool escludiAnnullati, decimal idTipologiaFiglio, decimal idPercMagFigli)
+        public ActionResult EliminaPercMaggiorazioneFiglio(bool escludiAnnullati, decimal idTipologiaFiglio, decimal idMaggFiglio)
         {
-
+            ViewBag.escludiAnnullati = escludiAnnullati;
+            List<PercMagFigliModel> libm = new List<PercMagFigliModel>();
             try
             {
                 using (dtMaggFigli dtib = new dtMaggFigli())
                 {
-                    dtib.DelMaggiorazioneFiglio(idPercMagFigli);
+                    dtib.DelMaggiorazioneFiglio(idMaggFiglio);
+                
+                    idTipologiaFiglio = CaricaComboTipoFiglio(idTipologiaFiglio);
+                
+                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualFiglioPrimoNonAnnullato(idTipologiaFiglio);
+                    libm = dtib.getListMaggiorazioneFiglio(idTipologiaFiglio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-
-                return RedirectToAction("MaggiorazioneFigli", new { escludiAnnullati = escludiAnnullati, idTipologiaFiglio = idTipologiaFiglio });
+                return PartialView("MaggiorazioneFigli", libm);
             }
             catch (Exception ex)
             {
-
                 return PartialView("ErrorPartial");
             }
-
-
         }
     }
 }

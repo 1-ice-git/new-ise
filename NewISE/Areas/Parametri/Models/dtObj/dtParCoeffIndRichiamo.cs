@@ -865,18 +865,39 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         //CASO DELL'ULTIMA RIGA CON LA DATA FINE UGUALE A 31/12/9999
                         if (giafatta == false)
                         {
+                            //Attenzione qui se la lista non contiene nessun elemento
+                            //significa che non esiste nessun elemento corrispondentemente al livello selezionato
                             lista = dtal.RestituisciLaRigaMassima();
-                            decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
-                            DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
-                            DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
-                            //  decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
-                            decimal COEFFICIENTERICHIAMO_Ultimo = Convert.ToDecimal(lista[3]);
-                            decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
+                            if (lista.Count == 0)
+                            {
+                                ibNew1 = new COEFFICIENTEINDRICHIAMO()
+                                {
+                                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
+                                    COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
+                                    COEFFICIENTEINDBASE=ibm.coefficienteIndBase,
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                };
+                                libNew.Add(ibNew1);
+                                db.Database.BeginTransaction();
+                                db.COEFFICIENTEINDRICHIAMO.Add(ibNew1);
+                                db.SaveChanges();
+                                db.Database.CurrentTransaction.Commit();
+                            }
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
+                               
+                                decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
+                                DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
+                                DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
+                                //  decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
+                                decimal COEFFICIENTERICHIAMO_Ultimo = Convert.ToDecimal(lista[3]);
+                                decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
+
                                 if (dataInizioUltimo == ibm.dataInizioValidita)
                                 {
                                     ibNew1 = new COEFFICIENTEINDRICHIAMO()
@@ -974,6 +995,29 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 throw ex;
             }
+        }
+       
+        public static ValidationResult VerificaPercentualeRICHIAMO(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+
+            if (fm != null)
+            {
+                if (fm.coefficienteIndBase > 100)
+                {
+                    vr = new ValidationResult(string.Format("Impossibile inserire percentuale maggiore di 100 ({0}).", fm.coefficienteIndBase.ToString()));
+                }
+                else
+                {
+                    vr = ValidationResult.Success;
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La percentuale KM è richiesta.");
+            }
+            return vr;
         }
     }
 }

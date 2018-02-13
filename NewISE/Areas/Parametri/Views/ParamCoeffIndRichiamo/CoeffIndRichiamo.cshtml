@@ -25,29 +25,29 @@
 <table id="tbCoeffIndRichiamo" class="display" cellspacing="0">
     <thead>
         <tr>            
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.coefficienteRichiamo)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.coefficienteIndBase)
             </th>            
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
                 @if (item.dataFineValidita != Utility.DataFineStop())
@@ -60,13 +60,13 @@
                 {
                     <td></td>
                 }
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.coefficienteRichiamo)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.coefficienteIndBase)
                 </td>                
-                <td>
+                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">                    
