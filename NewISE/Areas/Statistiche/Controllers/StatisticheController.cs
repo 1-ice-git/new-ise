@@ -13,10 +13,8 @@ namespace NewISE.Areas.Statistiche.Controllers
         // GET: Statistiche/Statistiche
         public ActionResult Index()
         {
-            
             return View("Index");
-
         }
-        
+
     }
 }

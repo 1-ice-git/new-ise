@@ -1,7 +1,7 @@
 ﻿<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
 @model IEnumerable<NewISE.Models.LogAttivitaModel>
 
@@ -13,71 +13,71 @@
 
 
 @*<table class="table table-hover">
-    <thead>
-        <tr>
-            <th><a href="#" onclick="callpartial();">LOG Attivita</a></th>
-            <th><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></th>
-            <th>ISE</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th></th>
-            <td>Consuntivo dei Costi</td>
-            <td>ISE Mensile</td>
-            
-        </tr>
-        <tr>
-            <th></th>
-            <td>Consuntivo dei Costi per codice Coan</td>
-            <td>Maggiorazione Abitazione</td>
-            
-        </tr>
-        <tr>
-            <th scope="row"></th>
-            <td>Presenze dei livelli in servizio all'estero</td>
-            <td>Altre Spese</td>
-        </tr>
-        <tr>
-            <th></th>
-            <td>Spese Diverse</td>
-            <td>Altre Indennità</td>
-        </tr>
-        <tr>
-            <th scope="row"></th>
-            <td>Spese di avvicendamento</td>
+        <thead>
+            <tr>
+                <th><a href="#" onclick="callpartial();">LOG Attivita</a></th>
+                <th><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></th>
+                <th>ISE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th></th>
+                <td>Consuntivo dei Costi</td>
+                <td>ISE Mensile</td>
 
-        <tr>
-            <th scope="row"></th>
-            <td>Storia del dipendente</td>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni effettuate - Indennità di Sede Estera</td>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni Effettuate - Contributo Abitazione</td>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni Effettuate - Uso Abitazione</td>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni Effettuate - Canone Anticipato</td>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni Effettuate - Spese Diverse</td>
-        </tr>
-        <tr>
-            <th scope="row"></th>
-            
-            <td>Operazioni Effettuate - Maggiorazione Abitazione</td>
-        </tr>
-    </tbody>
-</table>*@
+            </tr>
+            <tr>
+                <th></th>
+                <td>Consuntivo dei Costi per codice Coan</td>
+                <td>Maggiorazione Abitazione</td>
+
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Presenze dei livelli in servizio all'estero</td>
+                <td>Altre Spese</td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>Spese Diverse</td>
+                <td>Altre Indennità</td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+                <td>Spese di avvicendamento</td>
+
+            <tr>
+                <th scope="row"></th>
+                <td>Storia del dipendente</td>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni effettuate - Indennità di Sede Estera</td>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni Effettuate - Contributo Abitazione</td>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni Effettuate - Uso Abitazione</td>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni Effettuate - Canone Anticipato</td>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni Effettuate - Spese Diverse</td>
+            </tr>
+            <tr>
+                <th scope="row"></th>
+
+                <td>Operazioni Effettuate - Maggiorazione Abitazione</td>
+            </tr>
+        </tbody>
+    </table>*@
 
 
 
@@ -106,7 +106,7 @@
             </ul>
         </div>
 
-        
+
 
     </div>
 
@@ -121,16 +121,16 @@
 
 
 @*<div class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-        Dropdown Example
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-        <li><a href="#" onclick="callpartial7();">HTML</a></li>
-        <li><a href="#">CSS</a></li>
-        <li><a href="#">JavaScript</a></li>
-    </ul>
-</div>*@
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Dropdown Example
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" onclick="callpartial7();">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+        </ul>
+    </div>*@
 
 <script type="text/javascript">
     function callpartial() {
@@ -272,7 +272,7 @@
     //ISE Mensile
     function callpartial6() {
         debugger;
-        
+
         rotta = "/Statistiche/RiepiloghiIseMensile/Index";
         $.ajax({
             type: "POST",
