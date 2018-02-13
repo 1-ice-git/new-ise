@@ -63,7 +63,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
 
 
-                return PartialView(libm);
+                return PartialView("LogAttivita2",libm);
             
         }
 

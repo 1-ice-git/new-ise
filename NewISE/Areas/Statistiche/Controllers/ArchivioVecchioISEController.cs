@@ -28,8 +28,8 @@ namespace NewISE.Areas.Statistiche.Controllers
             try
             {
                 t.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
-                t.Add(new SelectListItem() { Text = "Consuntivo dei Costi", Value = "0" });
-                t.Add(new SelectListItem() { Text = "Consuntivo dei Costi per Codice Co.An.", Value = "1" });
+                //t.Add(new SelectListItem() { Text = "Consuntivo dei Costi", Value = "0" });
+                //t.Add(new SelectListItem() { Text = "Consuntivo dei Costi per Codice Co.An.", Value = "1" });
                 t.Add(new SelectListItem() { Text = "Dislocazione dei dipendenti all'estero", Value = "2" });
                 //t.Add(new SelectListItem() { Text = "Operazioni effettuate nel periodo", Value = "3" });
                 t.Add(new SelectListItem() { Text = "Presenze dei livelli in servizio all'estero", Value = "4" });
@@ -1129,16 +1129,13 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "ISEP +CONTRIBUTO + USO TOTALE ";
                 Sql += "From ISE_STP_ELENCOTRASFERIMENTI ";
                 Sql += "Where UTENTE = '" + V_UTENTE + "' ";
-                Sql += "Order By SEDE, NOMINATIVO";
-
-
-
+                Sql += "Order By SEDE, NOMINATIVO ";
+                
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
                 adp.Fill(ds15, ds15.DataTable15.TableName);
                 
-
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report19.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
 
@@ -2440,7 +2437,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.matricola = rdr["IES_MATRICOLA"].ToString();
                                 details.sede = rdr["SED_DESCRIZIONE"].ToString();
                                 details.dt_Trasferimento = Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
-                                details.dt_Rientro = rdr["TRA_DT_FIN_TRASFERIMENTO"].ToString();
+                                details.dt_Rientro = Convert.ToDateTime(rdr["TRA_DT_FIN_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
                                 details.dt_Decorrenza = Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
                                 details.progr_trasferimento = rdr["IES_PROG_TRASFERIMENTO"].ToString();
                                 details.progr_movimento = rdr["IES_PROG_MOVIMENTO"].ToString();
@@ -2881,8 +2878,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             cnn.Close();
             return View();
         }
-
-
+        
     }
     
 }

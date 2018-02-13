@@ -1,5 +1,7 @@
 ﻿<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 @model IEnumerable<NewISE.Models.LogAttivitaModel>
 
@@ -10,6 +12,75 @@
 }
 
 
+@*<table class="table table-hover">
+    <thead>
+        <tr>
+            <th><a href="#" onclick="callpartial();">LOG Attivita</a></th>
+            <th><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></th>
+            <th>ISE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th></th>
+            <td>Consuntivo dei Costi</td>
+            <td>ISE Mensile</td>
+            
+        </tr>
+        <tr>
+            <th></th>
+            <td>Consuntivo dei Costi per codice Coan</td>
+            <td>Maggiorazione Abitazione</td>
+            
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Presenze dei livelli in servizio all'estero</td>
+            <td>Altre Spese</td>
+        </tr>
+        <tr>
+            <th></th>
+            <td>Spese Diverse</td>
+            <td>Altre Indennità</td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            <td>Spese di avvicendamento</td>
+
+        <tr>
+            <th scope="row"></th>
+            <td>Storia del dipendente</td>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni effettuate - Indennità di Sede Estera</td>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni Effettuate - Contributo Abitazione</td>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni Effettuate - Uso Abitazione</td>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni Effettuate - Canone Anticipato</td>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni Effettuate - Spese Diverse</td>
+        </tr>
+        <tr>
+            <th scope="row"></th>
+            
+            <td>Operazioni Effettuate - Maggiorazione Abitazione</td>
+        </tr>
+    </tbody>
+</table>*@
+
+
+
 <div style="margin: 15px"></div>
 <div class="row">
   
@@ -17,7 +88,7 @@
         <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <br /><br />
             <ul>
-                <li><a href="#" onclick="callpartial();">Tabella Log Attivita</a></li>
+                <li><a href="#" onclick="callpartial();">LOG Attivita</a></li>
             </ul>
             <ul>
                 <li><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></li>
@@ -26,16 +97,17 @@
                 <li>
                     <a href="#" onclick="callpartial();">ISE</a>
                     <ul class="no-bullets">
-                        <li><a href="#" onclick="callpartial();">Interrogazione dipendente</a></li>
-                        <li><a href="#" onclick="callpartial3();">Riepiloghi</a></li>
-                        <li><a href="#" onclick="callpartial2();">Altre Statistiche</a></li>
-                        <li><a href="#" onclick="callpartial3();">Test</a></li>
-
+                        <li><a href="#">Interrogazione dipendente</a></li>
+                        <li><a href="#" onclick="callpartial5();">Riepiloghi</a></li>
+                        <li><a href="#">Altre Statistiche</a></li>
                     </ul>
 
                 </li>
             </ul>
         </div>
+
+        
+
     </div>
 
     <div id="divPartialView" class="col-xs-12">
@@ -43,6 +115,22 @@
     </div>
 
 </div>
+
+
+
+
+
+@*<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Dropdown Example
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="#" onclick="callpartial7();">HTML</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">JavaScript</a></li>
+    </ul>
+</div>*@
 
 <script type="text/javascript">
     function callpartial() {
@@ -134,6 +222,91 @@
             type: "POST",
             url: rotta,
             data: { },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    function callpartial5() {
+        //debugger;
+        var rotta = "/Statistiche/Riepiloghi/Index";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    //ISE Mensile
+    function callpartial6() {
+        debugger;
+        
+        rotta = "/Statistiche/RiepiloghiIseMensile/Index";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+
+    function callpartial7() {
+        //debugger;
+
+        rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
             dataType: 'html',
             beforeSend: function () {
 

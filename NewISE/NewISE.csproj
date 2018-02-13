@@ -1873,6 +1873,16 @@
     <Content Include="Areas\Statistiche\RPTDataSet\DataSet99.xss">
       <DependentUpon>DataSet99.xsd</DependentUpon>
     </Content>
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\IseMensile.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\MaggAbitazione.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\AltreIndennita.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiIseMensile\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiMaggAbitazione\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\RiepiloghiAltreIndennita\Index.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Riepiloghi\AltreSpese.cshtml" />
+    <Content Include="Areas\Statistiche\Views\ArchivioVecchioISE\Test.cshtml" />
+    <Content Include="Areas\Statistiche\Views\LogAttivita\LogAttivita3.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -2128,6 +2138,10 @@
     <Compile Include="Areas\Statistiche\Controllers\ArchivioVecchioISEController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\Dipendenti.cs" />
     <Compile Include="Areas\Statistiche\Controllers\LogAttivitaController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiAltreIndennitaController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiIseMensileController.cs" />
+    <Compile Include="Areas\Statistiche\Controllers\RiepiloghiMaggAbitazioneController.cs" />
     <Compile Include="Areas\Statistiche\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Statistiche\Models\CategoryModel.cs" />
     <Compile Include="Areas\Statistiche\Models\CodiceCoanModel.cs" />
@@ -2851,7 +2865,6 @@
     <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Statistiche\Views\AltreStatistiche\" />
-    <Folder Include="Areas\Statistiche\Views\Riepiloghi\" />
     <Folder Include="Lib\json\" />
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />

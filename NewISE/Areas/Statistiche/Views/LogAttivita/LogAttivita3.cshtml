@@ -1,5 +1,6 @@
-﻿
-@model IEnumerable<NewISE.Models.LogAttivitaModel>
+﻿@model IEnumerable<NewISE.Models.LogAttivitaModel>
+
+<div style="margin: 15px"></div>
 
 <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="~/Content/DataTables-1.10.13/media/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
@@ -54,24 +55,6 @@
 
 <script src="~/Content/DataTables-1.10.13/extensions/Select/js/dataTables.select.min.js"></script>
 
-
-<div style="margin: 15px"></div>
-<table border="0" class="display" cellpadding="2" cellspacing="2">
-    <tbody>
-        <tr>
-            <td>&nbsp;Dal&nbsp;</td>
-            <td><input type="text" id="min" name="min"></td>
-            <td>&nbsp;Al&nbsp;</td>
-            <td><input type="text" id="max" name="max"></td>
-        </tr>
-        <tr>
-           
-        </tr>
-    </tbody>
-</table>
-
-<div style="margin: 15px"></div>
-
 <table id="tbLogAttivita" class="display" cellspacing="0">
     <thead>
         <tr>
@@ -111,59 +94,10 @@
 </table>
 
 <script type="text/javascript">
-    $('tbLogAttivita').DataTable({
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
-        }
-    });
-
-   
-    /* Custom filtering function which will search data in column four between two values */
-    $.fn.dataTable.ext.search.push(
-        function (settings, data, dataIndex) {
-            var min = parseInt($('#min').val(), 10);
-            var max = parseInt($('#max').val(), 10);
-            var age = parseFloat(data[1]) || 0; // use data for the age column
-
-            if ((isNaN(min) && isNaN(max)) ||
-                 (isNaN(min) && age <= max) ||
-                 (min <= age && isNaN(max)) ||
-                 (min <= age && age <= max)) {
-                return true;
-            }
-            return false;
-        }
-    );
-
-    $(document).ready(function () {
-        var table = $('#tbLogAttivita').DataTable();
-
-        // Event listener to the two range filtering inputs to redraw on input
-        $('#min, #max').keyup(function () {
-            table.draw();
+        $(document).ready(function() {
+            $('#tbLogAttivita').DataTable();
         });
-    });
-
-
-
 </script>
+
+
+
