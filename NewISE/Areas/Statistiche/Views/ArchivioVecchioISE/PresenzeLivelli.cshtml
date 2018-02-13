@@ -1,64 +1,37 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Presenze_Livelli>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<div id="dialog" title="Presenze dei Livelli in servizio all'Estero'"></div>
 
+@*<button id="opener">xx</button>*@
 
  <div class="form-horizontal">
     <div class="form-group">
         <hr />
-
         <div class="col-md-2">
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-            
         </div>
-
         <div class="col-md-2">
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
-
-        @*<div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
-        </div>
-
-        <div class="col-md-2">
-            @Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })
-        </div>*@
         <div class="select2-container select2-container--classic">
             @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
-            
         </div>
-
     </div>
+  </div>
     <br />
-    @*<div class="form-group">*@
-        @*<div class="col-md-3">
-            <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
-        </div>*@
-
-        @*<div class="col-md-3">
-            <input type="submit" value="Stampa" class="btn btn-default" />
-            <input type="button" value="StampaLivelli" class="btn btn-default" onclick="location.href='@Url.Action("StampaLivelli", "ArchivioVecchioISE", new { @class = "btn btn-default" })'" />*@
-
-            @*@Html.ActionLink("Button text", "ActionName", "ControllerName", new { @class = "btn btn-primary" })*@
-
-            @*<button type="button" class="btn btn-default" onclick="location.href='@Url.Action("MyAction", "MyController", new { @class = "btn btn-default" })'" />
-
-        </div>*@
-    @*</div>*@
 
      <div class="form-group">
+         
+         <div class="col-md-3">
+             @*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
+             <a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>
+         </div>
          <div class="col-md-3">
              <a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>
          </div>
-         <div class="col-md-3">
-             <a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>
-         </div>
     </div>
-
+<br /><br />
     <table id="tbDipEsteroLivello" class="display" cellspacing="0">
         <thead>
             <tr>
@@ -163,6 +136,77 @@
 
             }
         });
+
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    //effect: "blind",
+                    //duration: 1000
+                },
+                hide: {
+                    //effect: "explode",
+                    //duration: 1000
+                },
+                close: function (event, ui) {
+                    $('.container').removeClass("NoOverflow");
+                },
+                height: windowHeight, width: windowWidth
+
+
+            });
+
+            $("#opener").on("click", function () {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
+
+
+                var codicequalifica = $("#COD_QUALIFICA").select2('val');
+                var data = $("#datepicker").datepicker().val()
+                var data1 = $("#datepicker1").datepicker().val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        codicequalifica: codicequalifica,
+                        V_DATA: data,
+                        V_DATA1: data1
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+
+
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+            });
+        });
+
 
         function invia() {
             //debugger
@@ -278,20 +322,7 @@
             var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").val();
 
-            var chk = true;
-
-            //$("#codicedipendente").val = idMatricola;
-
-            //if (isNaN(codicequalifica)) {
-            //    $("#divPViewParametri").empty();
-            //    return false;
-            //}
-
-            //if (isNaN(null)) {
-            //    alert("null is not a number");
-            //} else {
-            //    alert("i think null is a number");
-            //}
+            
 
             $.ajax({
                 type: "POST",

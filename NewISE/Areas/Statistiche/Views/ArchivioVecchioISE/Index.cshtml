@@ -7,18 +7,18 @@
 
 <div style="margin: 15px"></div>
 <div class="form-horizontal" id="divRiga1">
-    <hr />
+   <br /><br />
     <div class="form-group">
         @Html.Label("lblStampa", "Modalità estrazione", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic" id="test">
-                @Html.DropDownList("idStampa", ViewBag.VecchioIse as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();", @onclick = "prelevaPartiaViewStatistiche();" })
+                @Html.DropDownList("idStampa", ViewBag.VecchioIse as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewStatistiche();" })
             </div>
             @Html.ValidationMessage("idStampa", "", new { @class = "text-danger" })
         </div>
 
     </div>
-
+    
 </div>
 
 
@@ -44,16 +44,21 @@
             $("#idStampa").select2({
                 placeholder: "Seleziona la Tabella per la Stampa",
                 allowClear: true,
-                language: "it"
+                language: "it",
+                width: '550'
+
             });
 
         });
 
         function prelevaPartiaViewStatistiche() {
             //debugger;
-            var rotta = "";
+
+            //var rotta = "/Trasferimento/NotificaTrasferimento";
+            var rotta = "/ArchivioVecchioIse/Index";
 
             var tabParam = parseInt($("#idStampa").select2('val'));
+            //var tabParam = $("#idStampa").select2('val');
 
 
             switch (tabParam) {
@@ -68,7 +73,8 @@
                     break;
                 case 3:// Operazioni effettuate nel periodo
                     //rotta = "/Statistiche/AltreStatistiche/ReportEmployee";
-                    rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
+                    //rotta = "/Statistiche/ArchivioVecchioISE/OperazioniEffettuate";
+                    rotta = "";
                     break;
                 case 4:// Presenze dei livelli in servizio all'estero
                     rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
@@ -82,13 +88,30 @@
                 case 7:// Storia del dipendente
                     rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
                     break;
+                case 8:// Operazioni effettuate - Indennità di Sede Estera
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
+                    break;
+                case 9:// Operazioni Effettuate - Contributo Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpContributoAbitazione";
+                    break;
+                case 10:// Operazioni Effettuate - Uso Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpUsoAbitazione";
+                    break;
+                case 11:// Operazioni Effettuate - Canone Anticipato
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpCanoneAnticipato";
+                    break;
+                case 12:// Operazioni Effettuate - Spese Diverse
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpSpeseDiverse";
+                    break;
+                case 13:// Operazioni Effettuate - Maggiorazione Abitazione
+                    rotta = "/Statistiche/ArchivioVecchioISE/OpMaggiorazioneAbitazione";
+                    break;
                 default:
             }
 
             $.ajax({
-                type: "POST",
                 url: rotta,
-                //data: { escludiAnnullati: chk },
+                type: "POST",
                 data: {},
                 dataType: 'html',
                 beforeSend: function () {

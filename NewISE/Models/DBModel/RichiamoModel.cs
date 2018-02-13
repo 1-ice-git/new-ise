@@ -1,8 +1,8 @@
 ﻿using NewISE.Models.DBModel.dtObj;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
 
 namespace NewISE.Models.DBModel
@@ -10,9 +10,16 @@ namespace NewISE.Models.DBModel
     public class RichiamoModel
     {
         [Key]
-        public decimal IDTRASFRICHIAMO { get; set; }
+        public decimal IdRichiamo { get; set; }
         public decimal idTrasferimento { get; set; }
-        public DateTime DATAOPERAZIONE { get; set; }
-       
+        public DateTime DataRientro { get; set; }
+        public DateTime DataAggiornamento { get; set; }
+        public bool annullato { get; set; }
+
+        public bool HasValue()
+        {
+            return idTrasferimento > 0 ? true : false;
+        }
+
     }
 }

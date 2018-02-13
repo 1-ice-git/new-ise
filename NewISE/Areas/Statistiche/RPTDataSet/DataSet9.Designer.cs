@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet9 : global::System.Data.DataSet {
         
-        private V_ISE_STP_CONS_COSTIDataTable tableV_ISE_STP_CONS_COSTI;
+        private DataTable9DataTable tableDataTable9;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["V_ISE_STP_CONS_COSTI"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_CONS_COSTIDataTable(ds.Tables["V_ISE_STP_CONS_COSTI"]));
+                if ((ds.Tables["DataTable9"] != null)) {
+                    base.Tables.Add(new DataTable9DataTable(ds.Tables["DataTable9"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public V_ISE_STP_CONS_COSTIDataTable V_ISE_STP_CONS_COSTI {
+        public DataTable9DataTable DataTable9 {
             get {
-                return this.tableV_ISE_STP_CONS_COSTI;
+                return this.tableDataTable9;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["V_ISE_STP_CONS_COSTI"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_CONS_COSTIDataTable(ds.Tables["V_ISE_STP_CONS_COSTI"]));
+                if ((ds.Tables["DataTable9"] != null)) {
+                    base.Tables.Add(new DataTable9DataTable(ds.Tables["DataTable9"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableV_ISE_STP_CONS_COSTI = ((V_ISE_STP_CONS_COSTIDataTable)(base.Tables["V_ISE_STP_CONS_COSTI"]));
+            this.tableDataTable9 = ((DataTable9DataTable)(base.Tables["DataTable9"]));
             if ((initTable == true)) {
-                if ((this.tableV_ISE_STP_CONS_COSTI != null)) {
-                    this.tableV_ISE_STP_CONS_COSTI.InitVars();
+                if ((this.tableDataTable9 != null)) {
+                    this.tableDataTable9.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet9.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableV_ISE_STP_CONS_COSTI = new V_ISE_STP_CONS_COSTIDataTable();
-            base.Tables.Add(this.tableV_ISE_STP_CONS_COSTI);
+            this.tableDataTable9 = new DataTable9DataTable();
+            base.Tables.Add(this.tableDataTable9);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeV_ISE_STP_CONS_COSTI() {
+        private bool ShouldSerializeDataTable9() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void V_ISE_STP_CONS_COSTIRowChangeEventHandler(object sender, V_ISE_STP_CONS_COSTIRowChangeEvent e);
+        public delegate void DataTable9RowChangeEventHandler(object sender, DataTable9RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class V_ISE_STP_CONS_COSTIDataTable : global::System.Data.TypedTableBase<V_ISE_STP_CONS_COSTIRow> {
+        public partial class DataTable9DataTable : global::System.Data.TypedTableBase<DataTable9Row> {
             
             private global::System.Data.DataColumn columnMATRICOLA;
             
@@ -299,8 +299,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIDataTable() {
-                this.TableName = "V_ISE_STP_CONS_COSTI";
+            public DataTable9DataTable() {
+                this.TableName = "DataTable9";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -308,7 +308,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_CONS_COSTIDataTable(global::System.Data.DataTable table) {
+            internal DataTable9DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -325,7 +325,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected V_ISE_STP_CONS_COSTIDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable9DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -413,34 +413,34 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIRow this[int index] {
+            public DataTable9Row this[int index] {
                 get {
-                    return ((V_ISE_STP_CONS_COSTIRow)(this.Rows[index]));
+                    return ((DataTable9Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_CONS_COSTIRowChangeEventHandler V_ISE_STP_CONS_COSTIRowChanging;
+            public event DataTable9RowChangeEventHandler DataTable9RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_CONS_COSTIRowChangeEventHandler V_ISE_STP_CONS_COSTIRowChanged;
+            public event DataTable9RowChangeEventHandler DataTable9RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_CONS_COSTIRowChangeEventHandler V_ISE_STP_CONS_COSTIRowDeleting;
+            public event DataTable9RowChangeEventHandler DataTable9RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_CONS_COSTIRowChangeEventHandler V_ISE_STP_CONS_COSTIRowDeleted;
+            public event DataTable9RowChangeEventHandler DataTable9RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddV_ISE_STP_CONS_COSTIRow(V_ISE_STP_CONS_COSTIRow row) {
+            public void AddDataTable9Row(DataTable9Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIRow AddV_ISE_STP_CONS_COSTIRow(long MATRICOLA, string NOMINATIVO, string SEDE, string VALUTA, string DESCRIZIONE, double IMPORTO, string TIPOIMPORTO, string QUALIFICA, string CODSEDE) {
-                V_ISE_STP_CONS_COSTIRow rowV_ISE_STP_CONS_COSTIRow = ((V_ISE_STP_CONS_COSTIRow)(this.NewRow()));
+            public DataTable9Row AddDataTable9Row(string MATRICOLA, string NOMINATIVO, string SEDE, string VALUTA, string DESCRIZIONE, string IMPORTO, string TIPOIMPORTO, string QUALIFICA, string CODSEDE) {
+                DataTable9Row rowDataTable9Row = ((DataTable9Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MATRICOLA,
                         NOMINATIVO,
@@ -451,15 +451,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         TIPOIMPORTO,
                         QUALIFICA,
                         CODSEDE};
-                rowV_ISE_STP_CONS_COSTIRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowV_ISE_STP_CONS_COSTIRow);
-                return rowV_ISE_STP_CONS_COSTIRow;
+                rowDataTable9Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable9Row);
+                return rowDataTable9Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                V_ISE_STP_CONS_COSTIDataTable cln = ((V_ISE_STP_CONS_COSTIDataTable)(base.Clone()));
+                DataTable9DataTable cln = ((DataTable9DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -467,7 +467,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new V_ISE_STP_CONS_COSTIDataTable();
+                return new DataTable9DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -487,7 +487,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(long), null, global::System.Data.MappingType.Element);
+                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMATRICOLA);
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
@@ -497,7 +497,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnVALUTA);
                 this.columnDESCRIZIONE = new global::System.Data.DataColumn("DESCRIZIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDESCRIZIONE);
-                this.columnIMPORTO = new global::System.Data.DataColumn("IMPORTO", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnIMPORTO = new global::System.Data.DataColumn("IMPORTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIMPORTO);
                 this.columnTIPOIMPORTO = new global::System.Data.DataColumn("TIPOIMPORTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTIPOIMPORTO);
@@ -505,39 +505,32 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnQUALIFICA);
                 this.columnCODSEDE = new global::System.Data.DataColumn("CODSEDE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCODSEDE);
-                this.columnNOMINATIVO.MaxLength = 100;
-                this.columnSEDE.MaxLength = 100;
-                this.columnVALUTA.MaxLength = 100;
-                this.columnDESCRIZIONE.MaxLength = 100;
-                this.columnTIPOIMPORTO.MaxLength = 100;
-                this.columnQUALIFICA.MaxLength = 100;
-                this.columnCODSEDE.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIRow NewV_ISE_STP_CONS_COSTIRow() {
-                return ((V_ISE_STP_CONS_COSTIRow)(this.NewRow()));
+            public DataTable9Row NewDataTable9Row() {
+                return ((DataTable9Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new V_ISE_STP_CONS_COSTIRow(builder);
+                return new DataTable9Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(V_ISE_STP_CONS_COSTIRow);
+                return typeof(DataTable9Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.V_ISE_STP_CONS_COSTIRowChanged != null)) {
-                    this.V_ISE_STP_CONS_COSTIRowChanged(this, new V_ISE_STP_CONS_COSTIRowChangeEvent(((V_ISE_STP_CONS_COSTIRow)(e.Row)), e.Action));
+                if ((this.DataTable9RowChanged != null)) {
+                    this.DataTable9RowChanged(this, new DataTable9RowChangeEvent(((DataTable9Row)(e.Row)), e.Action));
                 }
             }
             
@@ -545,8 +538,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.V_ISE_STP_CONS_COSTIRowChanging != null)) {
-                    this.V_ISE_STP_CONS_COSTIRowChanging(this, new V_ISE_STP_CONS_COSTIRowChangeEvent(((V_ISE_STP_CONS_COSTIRow)(e.Row)), e.Action));
+                if ((this.DataTable9RowChanging != null)) {
+                    this.DataTable9RowChanging(this, new DataTable9RowChangeEvent(((DataTable9Row)(e.Row)), e.Action));
                 }
             }
             
@@ -554,8 +547,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.V_ISE_STP_CONS_COSTIRowDeleted != null)) {
-                    this.V_ISE_STP_CONS_COSTIRowDeleted(this, new V_ISE_STP_CONS_COSTIRowChangeEvent(((V_ISE_STP_CONS_COSTIRow)(e.Row)), e.Action));
+                if ((this.DataTable9RowDeleted != null)) {
+                    this.DataTable9RowDeleted(this, new DataTable9RowChangeEvent(((DataTable9Row)(e.Row)), e.Action));
                 }
             }
             
@@ -563,14 +556,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.V_ISE_STP_CONS_COSTIRowDeleting != null)) {
-                    this.V_ISE_STP_CONS_COSTIRowDeleting(this, new V_ISE_STP_CONS_COSTIRowChangeEvent(((V_ISE_STP_CONS_COSTIRow)(e.Row)), e.Action));
+                if ((this.DataTable9RowDeleting != null)) {
+                    this.DataTable9RowDeleting(this, new DataTable9RowChangeEvent(((DataTable9Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveV_ISE_STP_CONS_COSTIRow(V_ISE_STP_CONS_COSTIRow row) {
+            public void RemoveDataTable9Row(DataTable9Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -597,7 +590,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "V_ISE_STP_CONS_COSTIDataTable";
+                attribute2.FixedValue = "DataTable9DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -641,31 +634,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class V_ISE_STP_CONS_COSTIRow : global::System.Data.DataRow {
+        public partial class DataTable9Row : global::System.Data.DataRow {
             
-            private V_ISE_STP_CONS_COSTIDataTable tableV_ISE_STP_CONS_COSTI;
+            private DataTable9DataTable tableDataTable9;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_CONS_COSTIRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable9Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableV_ISE_STP_CONS_COSTI = ((V_ISE_STP_CONS_COSTIDataTable)(this.Table));
+                this.tableDataTable9 = ((DataTable9DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long MATRICOLA {
+            public string MATRICOLA {
                 get {
                     try {
-                        return ((long)(this[this.tableV_ISE_STP_CONS_COSTI.MATRICOLAColumn]));
+                        return ((string)(this[this.tableDataTable9.MATRICOLAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.MATRICOLAColumn] = value;
+                    this[this.tableDataTable9.MATRICOLAColumn] = value;
                 }
             }
             
@@ -674,15 +666,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableDataTable9.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNul" +
-                                "l.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.NOMINATIVOColumn] = value;
+                    this[this.tableDataTable9.NOMINATIVOColumn] = value;
                 }
             }
             
@@ -691,14 +682,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string SEDE {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.SEDEColumn]));
+                        return ((string)(this[this.tableDataTable9.SEDEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.SEDEColumn] = value;
+                    this[this.tableDataTable9.SEDEColumn] = value;
                 }
             }
             
@@ -707,14 +698,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string VALUTA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.VALUTAColumn]));
+                        return ((string)(this[this.tableDataTable9.VALUTAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.VALUTAColumn] = value;
+                    this[this.tableDataTable9.VALUTAColumn] = value;
                 }
             }
             
@@ -723,31 +714,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string DESCRIZIONE {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.DESCRIZIONEColumn]));
+                        return ((string)(this[this.tableDataTable9.DESCRIZIONEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DESCRIZIONE\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DESCRIZIONE\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.DESCRIZIONEColumn] = value;
+                    this[this.tableDataTable9.DESCRIZIONEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double IMPORTO {
+            public string IMPORTO {
                 get {
                     try {
-                        return ((double)(this[this.tableV_ISE_STP_CONS_COSTI.IMPORTOColumn]));
+                        return ((string)(this[this.tableDataTable9.IMPORTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IMPORTO\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'IMPORTO\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.IMPORTOColumn] = value;
+                    this[this.tableDataTable9.IMPORTOColumn] = value;
                 }
             }
             
@@ -756,15 +746,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string TIPOIMPORTO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.TIPOIMPORTOColumn]));
+                        return ((string)(this[this.tableDataTable9.TIPOIMPORTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPOIMPORTO\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPOIMPORTO\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.TIPOIMPORTOColumn] = value;
+                    this[this.tableDataTable9.TIPOIMPORTOColumn] = value;
                 }
             }
             
@@ -773,15 +762,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string QUALIFICA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.QUALIFICAColumn]));
+                        return ((string)(this[this.tableDataTable9.QUALIFICAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.QUALIFICAColumn] = value;
+                    this[this.tableDataTable9.QUALIFICAColumn] = value;
                 }
             }
             
@@ -790,123 +778,123 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string CODSEDE {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_CONS_COSTI.CODSEDEColumn]));
+                        return ((string)(this[this.tableDataTable9.CODSEDEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CODSEDE\' nella tabella \'V_ISE_STP_CONS_COSTI\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CODSEDE\' nella tabella \'DataTable9\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_CONS_COSTI.CODSEDEColumn] = value;
+                    this[this.tableDataTable9.CODSEDEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMATRICOLANull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.MATRICOLAColumn);
+                return this.IsNull(this.tableDataTable9.MATRICOLAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMATRICOLANull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.MATRICOLAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.MATRICOLAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.NOMINATIVOColumn);
+                return this.IsNull(this.tableDataTable9.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.NOMINATIVOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsSEDENull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.SEDEColumn);
+                return this.IsNull(this.tableDataTable9.SEDEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetSEDENull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.SEDEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.SEDEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsVALUTANull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.VALUTAColumn);
+                return this.IsNull(this.tableDataTable9.VALUTAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetVALUTANull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.VALUTAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.VALUTAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDESCRIZIONENull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.DESCRIZIONEColumn);
+                return this.IsNull(this.tableDataTable9.DESCRIZIONEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDESCRIZIONENull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.DESCRIZIONEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.DESCRIZIONEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIMPORTONull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.IMPORTOColumn);
+                return this.IsNull(this.tableDataTable9.IMPORTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetIMPORTONull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.IMPORTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.IMPORTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTIPOIMPORTONull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.TIPOIMPORTOColumn);
+                return this.IsNull(this.tableDataTable9.TIPOIMPORTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTIPOIMPORTONull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.TIPOIMPORTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.TIPOIMPORTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsQUALIFICANull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.QUALIFICAColumn);
+                return this.IsNull(this.tableDataTable9.QUALIFICAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQUALIFICANull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.QUALIFICAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.QUALIFICAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCODSEDENull() {
-                return this.IsNull(this.tableV_ISE_STP_CONS_COSTI.CODSEDEColumn);
+                return this.IsNull(this.tableDataTable9.CODSEDEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCODSEDENull() {
-                this[this.tableV_ISE_STP_CONS_COSTI.CODSEDEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable9.CODSEDEColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -914,22 +902,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class V_ISE_STP_CONS_COSTIRowChangeEvent : global::System.EventArgs {
+        public class DataTable9RowChangeEvent : global::System.EventArgs {
             
-            private V_ISE_STP_CONS_COSTIRow eventRow;
+            private DataTable9Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIRowChangeEvent(V_ISE_STP_CONS_COSTIRow row, global::System.Data.DataRowAction action) {
+            public DataTable9RowChangeEvent(DataTable9Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_CONS_COSTIRow Row {
+            public DataTable9Row Row {
                 get {
                     return this.eventRow;
                 }

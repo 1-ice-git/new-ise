@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Dislocazione_dipendenti>
-@using NewISE.Areas.Statistiche.Models;
 
 <link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
+<div id="dialog" title="Dislocazione dei Dipendenti all'Estero per Livello"></div>
 
-@{
-    //List<CategoryModel> lm2 = (List<CategoryModel>)ViewData["CategoryModel"];
-
-}
-
+@*<button id="opener">xx</button>*@
 
 <div class="form-horizontal">
     <div class="form-group">
@@ -28,11 +25,14 @@
 </div>
 <div class="form-group">
     <div class="col-md-3">
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>*@
+        <a href="#" id="opener">Stampa Dipendenti all' Estero per Livello </a>
+    </div>
+
+    <div class="col-md-3">
         <a href="#" onclick="Dislocazione()">Visualizza Dipendenti all' Estero per Livello </a>
     </div>
-    <div class="col-md-3">
-        <a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>
-    </div>
+    
     
 </div>
 <br /><br />
@@ -156,7 +156,77 @@
             }
         });
 
-   
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+
+            var codicesede = $("#codicesede").select2('val');
+            var data = $("#datepicker").datepicker().val();
+            var V_UTENTE = "fantomas";
+            //var V_UTENTE = V_UTENTE;
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicesede: codicesede,
+                    V_DATA: data,
+                    V_UTENTE: 'fantomas'
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
         function invia() {
             //debugger
 
@@ -232,6 +302,7 @@
             });
 
         }
+
 
         $("#codicesede").select2({
             placeholder: "Seleziona una sede",

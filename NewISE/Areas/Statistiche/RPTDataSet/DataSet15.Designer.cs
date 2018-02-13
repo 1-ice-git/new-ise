@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet15 : global::System.Data.DataSet {
         
-        private V_ISE_STP_ELENCO_TRASFDataTable tableV_ISE_STP_ELENCO_TRASF;
+        private DataTable15DataTable tableDataTable15;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["V_ISE_STP_ELENCO_TRASF"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_ELENCO_TRASFDataTable(ds.Tables["V_ISE_STP_ELENCO_TRASF"]));
+                if ((ds.Tables["DataTable15"] != null)) {
+                    base.Tables.Add(new DataTable15DataTable(ds.Tables["DataTable15"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public V_ISE_STP_ELENCO_TRASFDataTable V_ISE_STP_ELENCO_TRASF {
+        public DataTable15DataTable DataTable15 {
             get {
-                return this.tableV_ISE_STP_ELENCO_TRASF;
+                return this.tableDataTable15;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["V_ISE_STP_ELENCO_TRASF"] != null)) {
-                    base.Tables.Add(new V_ISE_STP_ELENCO_TRASFDataTable(ds.Tables["V_ISE_STP_ELENCO_TRASF"]));
+                if ((ds.Tables["DataTable15"] != null)) {
+                    base.Tables.Add(new DataTable15DataTable(ds.Tables["DataTable15"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableV_ISE_STP_ELENCO_TRASF = ((V_ISE_STP_ELENCO_TRASFDataTable)(base.Tables["V_ISE_STP_ELENCO_TRASF"]));
+            this.tableDataTable15 = ((DataTable15DataTable)(base.Tables["DataTable15"]));
             if ((initTable == true)) {
-                if ((this.tableV_ISE_STP_ELENCO_TRASF != null)) {
-                    this.tableV_ISE_STP_ELENCO_TRASF.InitVars();
+                if ((this.tableDataTable15 != null)) {
+                    this.tableDataTable15.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet15.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableV_ISE_STP_ELENCO_TRASF = new V_ISE_STP_ELENCO_TRASFDataTable();
-            base.Tables.Add(this.tableV_ISE_STP_ELENCO_TRASF);
+            this.tableDataTable15 = new DataTable15DataTable();
+            base.Tables.Add(this.tableDataTable15);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeV_ISE_STP_ELENCO_TRASF() {
+        private bool ShouldSerializeDataTable15() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void V_ISE_STP_ELENCO_TRASFRowChangeEventHandler(object sender, V_ISE_STP_ELENCO_TRASFRowChangeEvent e);
+        public delegate void DataTable15RowChangeEventHandler(object sender, DataTable15RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class V_ISE_STP_ELENCO_TRASFDataTable : global::System.Data.TypedTableBase<V_ISE_STP_ELENCO_TRASFRow> {
+        public partial class DataTable15DataTable : global::System.Data.TypedTableBase<DataTable15Row> {
             
             private global::System.Data.DataColumn columnSEDE;
             
@@ -305,8 +305,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFDataTable() {
-                this.TableName = "V_ISE_STP_ELENCO_TRASF";
+            public DataTable15DataTable() {
+                this.TableName = "DataTable15";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -314,7 +314,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_ELENCO_TRASFDataTable(global::System.Data.DataTable table) {
+            internal DataTable15DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -331,7 +331,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected V_ISE_STP_ELENCO_TRASFDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable15DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -443,34 +443,34 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFRow this[int index] {
+            public DataTable15Row this[int index] {
                 get {
-                    return ((V_ISE_STP_ELENCO_TRASFRow)(this.Rows[index]));
+                    return ((DataTable15Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_ELENCO_TRASFRowChangeEventHandler V_ISE_STP_ELENCO_TRASFRowChanging;
+            public event DataTable15RowChangeEventHandler DataTable15RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_ELENCO_TRASFRowChangeEventHandler V_ISE_STP_ELENCO_TRASFRowChanged;
+            public event DataTable15RowChangeEventHandler DataTable15RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_ELENCO_TRASFRowChangeEventHandler V_ISE_STP_ELENCO_TRASFRowDeleting;
+            public event DataTable15RowChangeEventHandler DataTable15RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event V_ISE_STP_ELENCO_TRASFRowChangeEventHandler V_ISE_STP_ELENCO_TRASFRowDeleted;
+            public event DataTable15RowChangeEventHandler DataTable15RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddV_ISE_STP_ELENCO_TRASFRow(V_ISE_STP_ELENCO_TRASFRow row) {
+            public void AddDataTable15Row(DataTable15Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFRow AddV_ISE_STP_ELENCO_TRASFRow(string SEDE, string VALUTA, long MATRICOLA, string NOMINATIVO, System.DateTime DT_TRASFERIMENTO, string QUALIFICA, long CONIUGE, long FIGLI, double ISEP, double CONTRIBUTO, double USO, decimal TOTALE) {
-                V_ISE_STP_ELENCO_TRASFRow rowV_ISE_STP_ELENCO_TRASFRow = ((V_ISE_STP_ELENCO_TRASFRow)(this.NewRow()));
+            public DataTable15Row AddDataTable15Row(string SEDE, string VALUTA, string MATRICOLA, string NOMINATIVO, string DT_TRASFERIMENTO, string QUALIFICA, string CONIUGE, string FIGLI, string ISEP, string CONTRIBUTO, string USO, string TOTALE) {
+                DataTable15Row rowDataTable15Row = ((DataTable15Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         SEDE,
                         VALUTA,
@@ -484,15 +484,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         CONTRIBUTO,
                         USO,
                         TOTALE};
-                rowV_ISE_STP_ELENCO_TRASFRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowV_ISE_STP_ELENCO_TRASFRow);
-                return rowV_ISE_STP_ELENCO_TRASFRow;
+                rowDataTable15Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable15Row);
+                return rowDataTable15Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                V_ISE_STP_ELENCO_TRASFDataTable cln = ((V_ISE_STP_ELENCO_TRASFDataTable)(base.Clone()));
+                DataTable15DataTable cln = ((DataTable15DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -500,7 +500,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new V_ISE_STP_ELENCO_TRASFDataTable();
+                return new DataTable15DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -527,56 +527,52 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 base.Columns.Add(this.columnSEDE);
                 this.columnVALUTA = new global::System.Data.DataColumn("VALUTA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVALUTA);
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(long), null, global::System.Data.MappingType.Element);
+                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMATRICOLA);
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
-                this.columnDT_TRASFERIMENTO = new global::System.Data.DataColumn("DT_TRASFERIMENTO", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDT_TRASFERIMENTO = new global::System.Data.DataColumn("DT_TRASFERIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDT_TRASFERIMENTO);
                 this.columnQUALIFICA = new global::System.Data.DataColumn("QUALIFICA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQUALIFICA);
-                this.columnCONIUGE = new global::System.Data.DataColumn("CONIUGE", typeof(long), null, global::System.Data.MappingType.Element);
+                this.columnCONIUGE = new global::System.Data.DataColumn("CONIUGE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCONIUGE);
-                this.columnFIGLI = new global::System.Data.DataColumn("FIGLI", typeof(long), null, global::System.Data.MappingType.Element);
+                this.columnFIGLI = new global::System.Data.DataColumn("FIGLI", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFIGLI);
-                this.columnISEP = new global::System.Data.DataColumn("ISEP", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnISEP = new global::System.Data.DataColumn("ISEP", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnISEP);
-                this.columnCONTRIBUTO = new global::System.Data.DataColumn("CONTRIBUTO", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnCONTRIBUTO = new global::System.Data.DataColumn("CONTRIBUTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCONTRIBUTO);
-                this.columnUSO = new global::System.Data.DataColumn("USO", typeof(double), null, global::System.Data.MappingType.Element);
+                this.columnUSO = new global::System.Data.DataColumn("USO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUSO);
-                this.columnTOTALE = new global::System.Data.DataColumn("TOTALE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnTOTALE = new global::System.Data.DataColumn("TOTALE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTOTALE);
-                this.columnSEDE.MaxLength = 100;
-                this.columnVALUTA.MaxLength = 100;
-                this.columnNOMINATIVO.MaxLength = 100;
-                this.columnQUALIFICA.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFRow NewV_ISE_STP_ELENCO_TRASFRow() {
-                return ((V_ISE_STP_ELENCO_TRASFRow)(this.NewRow()));
+            public DataTable15Row NewDataTable15Row() {
+                return ((DataTable15Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new V_ISE_STP_ELENCO_TRASFRow(builder);
+                return new DataTable15Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(V_ISE_STP_ELENCO_TRASFRow);
+                return typeof(DataTable15Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.V_ISE_STP_ELENCO_TRASFRowChanged != null)) {
-                    this.V_ISE_STP_ELENCO_TRASFRowChanged(this, new V_ISE_STP_ELENCO_TRASFRowChangeEvent(((V_ISE_STP_ELENCO_TRASFRow)(e.Row)), e.Action));
+                if ((this.DataTable15RowChanged != null)) {
+                    this.DataTable15RowChanged(this, new DataTable15RowChangeEvent(((DataTable15Row)(e.Row)), e.Action));
                 }
             }
             
@@ -584,8 +580,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.V_ISE_STP_ELENCO_TRASFRowChanging != null)) {
-                    this.V_ISE_STP_ELENCO_TRASFRowChanging(this, new V_ISE_STP_ELENCO_TRASFRowChangeEvent(((V_ISE_STP_ELENCO_TRASFRow)(e.Row)), e.Action));
+                if ((this.DataTable15RowChanging != null)) {
+                    this.DataTable15RowChanging(this, new DataTable15RowChangeEvent(((DataTable15Row)(e.Row)), e.Action));
                 }
             }
             
@@ -593,8 +589,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.V_ISE_STP_ELENCO_TRASFRowDeleted != null)) {
-                    this.V_ISE_STP_ELENCO_TRASFRowDeleted(this, new V_ISE_STP_ELENCO_TRASFRowChangeEvent(((V_ISE_STP_ELENCO_TRASFRow)(e.Row)), e.Action));
+                if ((this.DataTable15RowDeleted != null)) {
+                    this.DataTable15RowDeleted(this, new DataTable15RowChangeEvent(((DataTable15Row)(e.Row)), e.Action));
                 }
             }
             
@@ -602,14 +598,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.V_ISE_STP_ELENCO_TRASFRowDeleting != null)) {
-                    this.V_ISE_STP_ELENCO_TRASFRowDeleting(this, new V_ISE_STP_ELENCO_TRASFRowChangeEvent(((V_ISE_STP_ELENCO_TRASFRow)(e.Row)), e.Action));
+                if ((this.DataTable15RowDeleting != null)) {
+                    this.DataTable15RowDeleting(this, new DataTable15RowChangeEvent(((DataTable15Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveV_ISE_STP_ELENCO_TRASFRow(V_ISE_STP_ELENCO_TRASFRow row) {
+            public void RemoveDataTable15Row(DataTable15Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -636,7 +632,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "V_ISE_STP_ELENCO_TRASFDataTable";
+                attribute2.FixedValue = "DataTable15DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -680,15 +676,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class V_ISE_STP_ELENCO_TRASFRow : global::System.Data.DataRow {
+        public partial class DataTable15Row : global::System.Data.DataRow {
             
-            private V_ISE_STP_ELENCO_TRASFDataTable tableV_ISE_STP_ELENCO_TRASF;
+            private DataTable15DataTable tableDataTable15;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal V_ISE_STP_ELENCO_TRASFRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable15Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableV_ISE_STP_ELENCO_TRASF = ((V_ISE_STP_ELENCO_TRASFDataTable)(this.Table));
+                this.tableDataTable15 = ((DataTable15DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -696,14 +692,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string SEDE {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_ELENCO_TRASF.SEDEColumn]));
+                        return ((string)(this[this.tableDataTable15.SEDEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'SEDE\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.SEDEColumn] = value;
+                    this[this.tableDataTable15.SEDEColumn] = value;
                 }
             }
             
@@ -712,32 +708,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string VALUTA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_ELENCO_TRASF.VALUTAColumn]));
+                        return ((string)(this[this.tableDataTable15.VALUTAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull." +
-                                "", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'VALUTA\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.VALUTAColumn] = value;
+                    this[this.tableDataTable15.VALUTAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long MATRICOLA {
+            public string MATRICOLA {
                 get {
                     try {
-                        return ((long)(this[this.tableV_ISE_STP_ELENCO_TRASF.MATRICOLAColumn]));
+                        return ((string)(this[this.tableDataTable15.MATRICOLAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.MATRICOLAColumn] = value;
+                    this[this.tableDataTable15.MATRICOLAColumn] = value;
                 }
             }
             
@@ -746,32 +740,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_ELENCO_TRASF.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableDataTable15.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBN" +
-                                "ull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.NOMINATIVOColumn] = value;
+                    this[this.tableDataTable15.NOMINATIVOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DT_TRASFERIMENTO {
+            public string DT_TRASFERIMENTO {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableV_ISE_STP_ELENCO_TRASF.DT_TRASFERIMENTOColumn]));
+                        return ((string)(this[this.tableDataTable15.DT_TRASFERIMENTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DT_TRASFERIMENTO\' nella tabella \'V_ISE_STP_ELENCO_TRASF\'" +
-                                " è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DT_TRASFERIMENTO\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.DT_TRASFERIMENTOColumn] = value;
+                    this[this.tableDataTable15.DT_TRASFERIMENTOColumn] = value;
                 }
             }
             
@@ -780,259 +772,255 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string QUALIFICA {
                 get {
                     try {
-                        return ((string)(this[this.tableV_ISE_STP_ELENCO_TRASF.QUALIFICAColumn]));
+                        return ((string)(this[this.tableDataTable15.QUALIFICAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'QUALIFICA\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.QUALIFICAColumn] = value;
+                    this[this.tableDataTable15.QUALIFICAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long CONIUGE {
+            public string CONIUGE {
                 get {
                     try {
-                        return ((long)(this[this.tableV_ISE_STP_ELENCO_TRASF.CONIUGEColumn]));
+                        return ((string)(this[this.tableDataTable15.CONIUGEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CONIUGE\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CONIUGE\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.CONIUGEColumn] = value;
+                    this[this.tableDataTable15.CONIUGEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long FIGLI {
+            public string FIGLI {
                 get {
                     try {
-                        return ((long)(this[this.tableV_ISE_STP_ELENCO_TRASF.FIGLIColumn]));
+                        return ((string)(this[this.tableDataTable15.FIGLIColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'FIGLI\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'FIGLI\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.FIGLIColumn] = value;
+                    this[this.tableDataTable15.FIGLIColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double ISEP {
+            public string ISEP {
                 get {
                     try {
-                        return ((double)(this[this.tableV_ISE_STP_ELENCO_TRASF.ISEPColumn]));
+                        return ((string)(this[this.tableDataTable15.ISEPColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ISEP\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ISEP\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.ISEPColumn] = value;
+                    this[this.tableDataTable15.ISEPColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double CONTRIBUTO {
+            public string CONTRIBUTO {
                 get {
                     try {
-                        return ((double)(this[this.tableV_ISE_STP_ELENCO_TRASF.CONTRIBUTOColumn]));
+                        return ((string)(this[this.tableDataTable15.CONTRIBUTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CONTRIBUTO\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBN" +
-                                "ull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'CONTRIBUTO\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.CONTRIBUTOColumn] = value;
+                    this[this.tableDataTable15.CONTRIBUTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double USO {
+            public string USO {
                 get {
                     try {
-                        return ((double)(this[this.tableV_ISE_STP_ELENCO_TRASF.USOColumn]));
+                        return ((string)(this[this.tableDataTable15.USOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'USO\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'USO\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.USOColumn] = value;
+                    this[this.tableDataTable15.USOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal TOTALE {
+            public string TOTALE {
                 get {
                     try {
-                        return ((decimal)(this[this.tableV_ISE_STP_ELENCO_TRASF.TOTALEColumn]));
+                        return ((string)(this[this.tableDataTable15.TOTALEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TOTALE\' nella tabella \'V_ISE_STP_ELENCO_TRASF\' è DBNull." +
-                                "", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TOTALE\' nella tabella \'DataTable15\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableV_ISE_STP_ELENCO_TRASF.TOTALEColumn] = value;
+                    this[this.tableDataTable15.TOTALEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsSEDENull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.SEDEColumn);
+                return this.IsNull(this.tableDataTable15.SEDEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetSEDENull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.SEDEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.SEDEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsVALUTANull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.VALUTAColumn);
+                return this.IsNull(this.tableDataTable15.VALUTAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetVALUTANull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.VALUTAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.VALUTAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMATRICOLANull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.MATRICOLAColumn);
+                return this.IsNull(this.tableDataTable15.MATRICOLAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMATRICOLANull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.MATRICOLAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.MATRICOLAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.NOMINATIVOColumn);
+                return this.IsNull(this.tableDataTable15.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.NOMINATIVOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDT_TRASFERIMENTONull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.DT_TRASFERIMENTOColumn);
+                return this.IsNull(this.tableDataTable15.DT_TRASFERIMENTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDT_TRASFERIMENTONull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.DT_TRASFERIMENTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.DT_TRASFERIMENTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsQUALIFICANull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.QUALIFICAColumn);
+                return this.IsNull(this.tableDataTable15.QUALIFICAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQUALIFICANull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.QUALIFICAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.QUALIFICAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCONIUGENull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.CONIUGEColumn);
+                return this.IsNull(this.tableDataTable15.CONIUGEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCONIUGENull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.CONIUGEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.CONIUGEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsFIGLINull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.FIGLIColumn);
+                return this.IsNull(this.tableDataTable15.FIGLIColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetFIGLINull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.FIGLIColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.FIGLIColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsISEPNull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.ISEPColumn);
+                return this.IsNull(this.tableDataTable15.ISEPColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetISEPNull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.ISEPColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.ISEPColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCONTRIBUTONull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.CONTRIBUTOColumn);
+                return this.IsNull(this.tableDataTable15.CONTRIBUTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCONTRIBUTONull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.CONTRIBUTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.CONTRIBUTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsUSONull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.USOColumn);
+                return this.IsNull(this.tableDataTable15.USOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetUSONull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.USOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.USOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTOTALENull() {
-                return this.IsNull(this.tableV_ISE_STP_ELENCO_TRASF.TOTALEColumn);
+                return this.IsNull(this.tableDataTable15.TOTALEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTOTALENull() {
-                this[this.tableV_ISE_STP_ELENCO_TRASF.TOTALEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable15.TOTALEColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1040,22 +1028,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class V_ISE_STP_ELENCO_TRASFRowChangeEvent : global::System.EventArgs {
+        public class DataTable15RowChangeEvent : global::System.EventArgs {
             
-            private V_ISE_STP_ELENCO_TRASFRow eventRow;
+            private DataTable15Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFRowChangeEvent(V_ISE_STP_ELENCO_TRASFRow row, global::System.Data.DataRowAction action) {
+            public DataTable15RowChangeEvent(DataTable15Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public V_ISE_STP_ELENCO_TRASFRow Row {
+            public DataTable15Row Row {
                 get {
                     return this.eventRow;
                 }

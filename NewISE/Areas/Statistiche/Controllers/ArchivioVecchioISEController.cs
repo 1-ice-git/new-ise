@@ -28,15 +28,21 @@ namespace NewISE.Areas.Statistiche.Controllers
             try
             {
                 t.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
-                t.Add(new SelectListItem() { Text = "Consuntivo dei Costi", Value = "0" });
-                t.Add(new SelectListItem() { Text = "Consuntivo dei Costi per Codice Co.An.", Value = "1" });
+                //t.Add(new SelectListItem() { Text = "Consuntivo dei Costi", Value = "0" });
+                //t.Add(new SelectListItem() { Text = "Consuntivo dei Costi per Codice Co.An.", Value = "1" });
                 t.Add(new SelectListItem() { Text = "Dislocazione dei dipendenti all'estero", Value = "2" });
-                t.Add(new SelectListItem() { Text = "Operazioni effettuate nel periodo", Value = "3" });
+                //t.Add(new SelectListItem() { Text = "Operazioni effettuate nel periodo", Value = "3" });
                 t.Add(new SelectListItem() { Text = "Presenze dei livelli in servizio all'estero", Value = "4" });
                 t.Add(new SelectListItem() { Text = "Spese diverse", Value = "5" });
                 t.Add(new SelectListItem() { Text = "Spese di avvicendamento", Value = "6" });
                 t.Add(new SelectListItem() { Text = "Storia del dipendente", Value = "7" });
-                //t.Add(new SelectListItem() { Text = "Operazioni effettuate- Indennità di Sede Estera", Value = "10" });
+                t.Add(new SelectListItem() { Text = "Operazioni effettuate - Indennità di Sede Estera", Value = "8" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Contributo Abitazione", Value = "9" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Uso Abitazione", Value = "10" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Canone Anticipato", Value = "11" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Spese Diverse", Value = "12" });
+                t.Add(new SelectListItem() { Text = "Operazioni Effettuate - Maggiorazione Abitazione", Value = "13" });
+                
 
                 ViewBag.VecchioIse = t;
                 return PartialView();
@@ -343,7 +349,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
         //}
   
-        public ActionResult RptStoriaDipendente(string matricola)
+        public ActionResult RptStoriaDipendente(string matricola = "", string V_DATA="")
         {
             DataSet6 ds6 = new DataSet6();
             try
@@ -575,10 +581,21 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
                 
-                adp.Fill(ds6, ds6.STP_STORIA_DIP_ISESTOR.TableName);
+                //adp.Fill(ds6, ds6.STP_STORIA_DIP_ISESTOR.TableName);
+                adp.Fill(ds6, ds6.DataTable6.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptStoriaDipendente.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet6", ds6.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    //new ReportParameter ("fromDate","Test"),
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate","Test2")
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -990,103 +1007,41 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             //StampeISE.Class1 xx = new Class1();
             //xx.Stampa_Elenco_Trasferimenti();
-
-
-
-            //string cnnString = System.Configuration.ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
-
-            //OracleConnection cnn = new OracleConnection(cnnString);
-            //OracleCommand cmd = new OracleCommand();
-            //cmd.Connection = cnn;
-            //cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            //cmd.CommandText = "ISE_STAMPA_ELENCO_TRASF";
-            ////add any parameters the stored procedure might require
-            //cnn.Open();
-            //object o = cmd.ExecuteScalar();
-            //cnn.Close();
-
-
-            //SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["ConnectionString"]);
-            //con.Open();
-
-
-
-            //SqlCommand Cmd = new SqlCommand("usp_CheckEmailMobile", con);
-            //Cmd.CommandType = CommandType.StoredProcedure;
-            //Cmd.CommandText = "Registration";
-            //Cmd.Parameters.AddWithValue("@Name", txtName.Text);
-            //Cmd.Parameters.AddWithValue("@Email", txtEmailAddress.Text);
-            //Cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
-            //Cmd.Parameters.AddWithValue("@CountryCode", ddlCountryCode.Text);
-            //Cmd.Parameters.AddWithValue("@Mobile", txtMobileNumber.Text);
-            ////Cmd.Parameters.Add("@Result", DbType.Boolean);
-            //SqlParameter sqlParam = new SqlParameter("@Result", DbType.Boolean);
-            ////sqlParam.ParameterName = "@Result";
-            ////sqlParam.DbType = DbType.Boolean;
-            //sqlParam.Direction = ParameterDirection.Output;
-            //Cmd.Parameters.Add(sqlParam);
-            //Cmd.ExecuteNonQuery();
-            //con.Close();
-            //Response.Write(Cmd.Parameters["@Result"].Value);
-
-
-            //bool result = false;
-            //SqlCommand scCommand = new SqlCommand("usp_CheckEmailMobile", sqlCon);
-            //scCommand.CommandType = CommandType.StoredProcedure;
-            //scCommand.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = txtName.Text;
-            //scCommand.Parameters.Add("@Email", SqlDbType.NVarChar, 50).Value = txtEmailAddress.Text;
-            //scCommand.Parameters.Add("@Password ", SqlDbType.NVarChar, 50).Value = txtPassword.Text;
-            //scCommand.Parameters.Add("@CountryCode", SqlDbType.VarChar.50).Value = ddlCountryCode.SelectedText;
-            //scCommand.Parameters.Add("@Mobile", SqlDbType.NVarChar, 50).Value = txtMobileNumber.Text;
-            //scCommand.Parameters.Add("@Result ", SqlDbType.Bit).Direction = ParameterDirection.Output;
-            //try
-            //{
-            //    if (scCommand.Connection.State == ConnectionState.Closed)
-            //    {
-            //        scCommand.Connection.Open();
-            //    }
-            //    scCommand.ExecuteNonQuery();
-            //    result = Convert.ToBoolean(scCommand.Parameters["@Result"].Value);
-
-
-            //}
-            //catch (Exception)
-            //{
-
-            //}
-            //finally
-            //{
-            //    scCommand.Connection.Close();
-            //    Response.Write(result);
-            //}
-
-
+            
+            
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
             {
-
-                //OracleConnection cnn = new OracleConnection(cn);
+                
                 OracleCommand cmd1 = new OracleCommand();
                 cmd1.Connection = cn;
                 cmd1.CommandText = "ISE_STAMPA_ELENCO_TRASF";
                 cmd1.CommandType = System.Data.CommandType.StoredProcedure;
-
-                ////add any parameters the stored procedure might require
-                //scCommand.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = txtName.Text;
-
+                
                 cmd1.Parameters.Add("@V_UTENTE", OracleDbType.Varchar2, 50).Value = V_UTENTE;
                 cmd1.Parameters.Add("@V_DATA", OracleDbType.Varchar2, 50).Value = V_DATA;
                 cmd1.Parameters.Add("@V_UFFICIO", OracleDbType.Varchar2, 50).Value = codicesede;
-
-                //cmd1.Parameters.Add("@V_UTENTE", "fantomas");
-                //cmd1.Parameters.Add("@V_DATA", "15/09/2017");
-                //cmd1.Parameters.Add("@V_UFFICIO", "BUDAPEST");
-
+                
                 cn.Open();
                 cmd1.ExecuteNonQuery();
+                
+                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
 
-                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI WHERE SEDE ='" + V_UFFICIO + "' Order By SEDE, NOMINATIVO";
+                String Sql = "Select SEDE,VALUTA, ";
+                Sql += "MATRICOLA, ";
+                Sql += "NOMINATIVO, ";
+                Sql += "DT_TRASFERIMENTO, ";
+                Sql += "QUALIFICA, ";
+                Sql += "CONIUGE, ";
+                Sql += "FIGLI, ";
+                Sql += "ISEP, ";
+                Sql += "CONTRIBUTO, ";
+                Sql += "USO, ";
+                Sql += "ISEP +CONTRIBUTO + USO TOTALE ";
+                Sql += "From ISE_STP_ELENCOTRASFERIMENTI ";
+                Sql += "Where UTENTE = '" + V_UTENTE + "' ";
+                Sql += "Order By SEDE, NOMINATIVO";
 
-                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
+
 
                 using (OracleCommand cmd = new OracleCommand())
                 {
@@ -1129,7 +1084,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Report Dislocazione dei Dipendenti all'Estero
-        public ActionResult RptDislocazione(string codicesede = "", string V_DATA = "")
+        public ActionResult RptDislocazione(string codicesede = "", string V_UTENTE = "", string V_DATA = "")
         {
             DataSet15 ds15 = new DataSet15();
 
@@ -1147,30 +1102,50 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleConnection conx = new OracleConnection(connectionString);
 
-                //String Sql = "SELECT DISTINCT SEDE, ";
-                //        Sql += "VALUTA, ";
-                //        Sql += "MATRICOLA, ";
-                //        Sql += "NOMINATIVO, ";
-                //        Sql += "DT_TRASFERIMENTO, ";
-                //        Sql += "QUALIFICA, ";
-                //        Sql += "CONIUGE, ";
-                //        Sql += "FIGLI, ";
-                //        Sql += "ISEP, ";
-                //        Sql += "CONTRIBUTO, ";
-                //        Sql += "USO, ";
-                //        Sql += "ISEP + CONTRIBUTO + USO TOTALE ";
-                //        Sql += "FROM ISE_STP_ELENCOTRASFERIMENTI ";
-                //        Sql += "ORDER BY SEDE, ";
-                //        Sql += "NOMINATIVO ";
+                OracleCommand cmd1 = new OracleCommand();
+                cmd1.Connection = conx;
+                cmd1.CommandText = "ISE_STAMPA_ELENCO_TRASF";
+                cmd1.CommandType = System.Data.CommandType.StoredProcedure;
 
-                String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
+                cmd1.Parameters.Add("@V_UTENTE", OracleDbType.Varchar2, 50).Value = V_UTENTE;
+                cmd1.Parameters.Add("@V_DATA", OracleDbType.Varchar2, 50).Value = V_DATA;
+                cmd1.Parameters.Add("@V_UFFICIO", OracleDbType.Varchar2, 50).Value = codicesede;
 
+                conx.Open();
+                cmd1.ExecuteNonQuery();
+
+                //String Sql = "Select distinct SEDE, VALUTA, MATRICOLA, NOMINATIVO, DT_TRASFERIMENTO, QUALIFICA, CONIUGE, FIGLI, ISEP, CONTRIBUTO, USO, ISEP + CONTRIBUTO + USO TOTALE From ISE_STP_ELENCOTRASFERIMENTI, SEDIESTERE WHERE SEDIESTERE.SED_COD_SEDE = '" + codicesede + "' AND ISE_STP_ELENCOTRASFERIMENTI.SEDE = SEDIESTERE.SED_DESCRIZIONE Order By SEDE, NOMINATIVO";
+
+                String Sql = "Select SEDE,VALUTA, ";
+                Sql += "MATRICOLA, ";
+                Sql += "NOMINATIVO, ";
+                Sql += "DT_TRASFERIMENTO, ";
+                Sql += "QUALIFICA, ";
+                Sql += "CONIUGE, ";
+                Sql += "FIGLI, ";
+                Sql += "ISEP, ";
+                Sql += "CONTRIBUTO, ";
+                Sql += "USO, ";
+                Sql += "ISEP +CONTRIBUTO + USO TOTALE ";
+                Sql += "From ISE_STP_ELENCOTRASFERIMENTI ";
+                Sql += "Where UTENTE = '" + V_UTENTE + "' ";
+                Sql += "Order By SEDE, NOMINATIVO ";
+                
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
-
+                //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
+                adp.Fill(ds15, ds15.DataTable15.TableName);
+                
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report19.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {   
+                    new ReportParameter ("fromDate",V_DATA)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1184,45 +1159,53 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Consuntivo Costi
-        public ActionResult ConsuntivoCosti(string V_DATA = "", string V_DATA1 = "")
+        public ActionResult ConsuntivoCosti(string V_DATA = "", string V_DATA1 = "", string V_UTENTE = "")
         {
-            // Chiamata Visual Basic
 
             using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
-            {
-                String Sql = "Select MATRICOLA, ";
-                Sql += "NOMINATIVO, ";
-                Sql += "SEDE, ";
-                Sql += "VALUTA, ";
-                Sql += "DESCRIZIONE, ";
-                Sql += "IMPORTO, ";
-                Sql += "TIPOIMPORTO, ";
-                Sql += "QUALIFICA, ";
-                Sql += "CODSEDE ";
-                Sql += "From ISE_STP_CONSUNTIVOCOSTI ";
-                Sql += "Order By SEDE, NOMINATIVO, DESCRIZIONE ";
-
-                OracleCommand cmd = new OracleCommand(Sql, cn);
-                cn.Open();
-                OracleDataReader rdr = cmd.ExecuteReader();
+            {  
                 List<Stp_Consuntivo_dei_costi> model = new List<Stp_Consuntivo_dei_costi>();
-                while (rdr.Read())
+
+                if (V_DATA != string.Empty && V_DATA1 != string.Empty)
                 {
-                    var details = new Stp_Consuntivo_dei_costi();
+                    OracleCommand cmd1 = new OracleCommand();
+                    cmd1.Connection = cn;
+                                        
+                    cmd1.CommandText = "ISE_Consuntivo_Costi.CONSUNTIVO_COSTI_MAIN";
+                    cmd1.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd1.Parameters.Add("@P_DATA_INI", OracleDbType.Date).Value = Convert.ToDateTime(V_DATA);
+                    cmd1.Parameters.Add("@P_DATA_FIN", OracleDbType.Date).Value = Convert.ToDateTime(V_DATA1);
+                    cmd1.Parameters.Add("@P_USER", OracleDbType.Varchar2, 50).Value = "fantomas";
+
+                    cn.Open();
+                    cmd1.ExecuteNonQuery();
+
+                    String Sql = "SELECT * FROM ISE_STP_CONSUNTIVOCOSTI2";
+
+                    OracleCommand cmd = new OracleCommand(Sql, cn);
+                    OracleDataReader rdr = cmd.ExecuteReader();
                     
-                    details.matricola = rdr["MATRICOLA"].ToString();
-                    details.nominativo = rdr["NOMINATIVO"].ToString();
-                    details.sede = rdr["SEDE"].ToString();
-                    details.valuta = rdr["VALUTA"].ToString();
-                    details.descrizione = rdr["DESCRIZIONE"].ToString();
-                    details.importo = rdr["IMPORTO"].ToString();
-                    details.tipoImporto = rdr["TIPOIMPORTO"].ToString();
-                    details.qualifica = rdr["QUALIFICA"].ToString();
-                    details.codsede = rdr["CODSEDE"].ToString();
-                    
-                    model.Add(details);
+                    while (rdr.Read())
+                    {
+                        var details = new Stp_Consuntivo_dei_costi();
+
+                        details.matricola = rdr["MATRICOLA"].ToString();
+                        details.nominativo = rdr["NOMINATIVO"].ToString();
+                        details.sede = rdr["SEDE"].ToString();
+                        details.valuta = rdr["VALUTA"].ToString();
+                        details.descrizione = rdr["DESCRIZIONE"].ToString();
+                        details.importo = rdr["IMPORTO"].ToString();
+                        details.tipoImporto = rdr["TIPOIMPORTO"].ToString();
+                        details.qualifica = rdr["QUALIFICA"].ToString();
+                        details.codsede = rdr["CODSEDE"].ToString();
+                        details.utente = rdr["UTENTE"].ToString();
+
+                        model.Add(details);
+                    }
+                    //cn.Close();
                 }
-                //return View("ViewName", model);
+
                 return PartialView("ConsuntivoCosti", model);
             }
         }
@@ -1261,10 +1244,20 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds9, ds9.V_ISE_STP_CONS_COSTI.TableName);
+                //adp.Fill(ds9, ds9.V_ISE_STP_CONS_COSTI.TableName);
+                adp.Fill(ds9, ds9.DataTable9.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report12.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet9", ds9.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {    
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1278,7 +1271,7 @@ namespace NewISE.Areas.Statistiche.Controllers
         }
 
         // Consuntivo Costi CoAn
-        public ActionResult ConsuntivoCostiCoAn(string codicecoan ="")
+        public ActionResult ConsuntivoCostiCoAn(string codicecoan ="", string V_DATA = "", string V_DATA1 = "")
         {
 
             ViewBag.ListaCodiceCoan = new List<SelectListItem>();
@@ -1304,7 +1297,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 if (codicecoan == string.Empty)
                 {
-                    lr.First().Selected = true;
+                    //lr.First().Selected = true;
+                    lr.First().Value = "";
                     codicecoan = lr.First().Value;
                 }
                 else
@@ -1324,63 +1318,59 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             // Chiamare Sub Stampa_Consuntivo_Costi_x_Coan 
 
-            //using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
-            //{
+            using (var cn = new OracleConnection(ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString))
+            {
 
-            //    String Sql = "SELECT C.MATRICOLA, ";
-            //    Sql += "C.NOMINATIVO, ";
-            //    Sql += "C.SEDE, ";
-            //    Sql += "C.VALUTA , ";
-            //    Sql += "C.DESCRIZIONE, ";
-            //    Sql += "SUM(C.IMPORTO) IMPORTO, ";
-            //    Sql += "C.TIPOIMPORTO, ";
-            //    Sql += "C.QUALIFICA, ";
-            //    Sql += "C.CODSEDE, ";
-            //    Sql += "DECODE(C.COAN, 'S', 'Serv. Ist.', C.COAN) COAN ";
-            //    Sql += "FROM ISE_STP_CONSUNTIVOCOSTICOAN C ";
-            //    Sql += "WHERE 1 = 1 ";
-            //    Sql += "AND C.COAN = 'S' ";
-            //    Sql += "GROUP BY C.MATRICOLA, ";
-            //    Sql += "C.NOMINATIVO, ";
-            //    Sql += "C.SEDE, ";
-            //    Sql += "C.VALUTA, ";
-            //    Sql += "C.DESCRIZIONE, ";
-            //    Sql += "C.TIPOIMPORTO, ";
-            //    Sql += "C.QUALIFICA, ";
-            //    Sql += "C.CODSEDE, ";
-            //    Sql += "C.COAN ";
-            //    Sql += "ORDER BY COAN, NOMINATIVO, SEDE, DESCRIZIONE ";
+                String Sql = "SELECT C.MATRICOLA, ";
+                Sql += "C.NOMINATIVO, ";
+                Sql += "C.SEDE, ";
+                Sql += "C.VALUTA , ";
+                Sql += "C.DESCRIZIONE, ";
+                Sql += "SUM(C.IMPORTO) IMPORTO, ";
+                Sql += "C.TIPOIMPORTO, ";
+                Sql += "C.QUALIFICA, ";
+                Sql += "C.CODSEDE, ";
+                Sql += "DECODE(C.COAN, 'S', 'Serv. Ist.', C.COAN) COAN ";
+                Sql += "FROM ISE_STP_CONSUNTIVOCOSTICOAN C ";
+                Sql += "WHERE 1 = 1 ";
+                Sql += "AND C.COAN = 'S' ";
+                Sql += "GROUP BY C.MATRICOLA, ";
+                Sql += "C.NOMINATIVO, ";
+                Sql += "C.SEDE, ";
+                Sql += "C.VALUTA, ";
+                Sql += "C.DESCRIZIONE, ";
+                Sql += "C.TIPOIMPORTO, ";
+                Sql += "C.QUALIFICA, ";
+                Sql += "C.CODSEDE, ";
+                Sql += "C.COAN ";
+                Sql += "ORDER BY COAN, NOMINATIVO, SEDE, DESCRIZIONE ";
 
-            //    OracleCommand cmd = new OracleCommand(Sql, cn);
-            //    cn.Open();
-            //    OracleDataReader rdr = cmd.ExecuteReader();
-            //    List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
-            //    while (rdr.Read())
-            //    {
-            //        var details = new Stp_Consuntivo_dei_costi_per_codice_Coan();
+                OracleCommand cmd = new OracleCommand(Sql, cn);
+                cn.Open();
+                OracleDataReader rdr = cmd.ExecuteReader();
+                //List<Stp_Consuntivo_dei_costi_per_codice_Coan> model = new List<Stp_Consuntivo_dei_costi_per_codice_Coan>();
+                while (rdr.Read())
+                {
+                    var details = new Stp_Consuntivo_dei_costi_per_codice_Coan();
 
-            //        details.matricola = rdr["MATRICOLA"].ToString();
-            //        details.nominativo = rdr["NOMINATIVO"].ToString();
-            //        details.ufficio = rdr["SEDE"].ToString();
-            //        details.valuta = rdr["VALUTA"].ToString();
-            //        details.descrizione = rdr["DESCRIZIONE"].ToString();
-            //        details.tipoimporto = rdr["TIPOIMPORTO"].ToString();
-            //        details.livello = rdr["QUALIFICA"].ToString();
-            //        details.codsede = rdr["CODSEDE"].ToString();
-            //        details.euro = rdr["IMPORTO"].ToString();
-            //        details.coan= rdr["COAN"].ToString();
-            //        model.Add(details);
-            //    }
-            //    //return View("ViewName", model);
-            //    return PartialView("ConsuntivoCostiCoAn", model);
-            //}
+                    details.matricola = rdr["MATRICOLA"].ToString();
+                    details.nominativo = rdr["NOMINATIVO"].ToString();
+                    details.livello = rdr["QUALIFICA"].ToString();
+                    details.ufficio = rdr["SEDE"].ToString();
+                    details.descrizione = rdr["DESCRIZIONE"].ToString();
+                    details.valuta = rdr["VALUTA"].ToString();
+                    details.importo = rdr["IMPORTO"].ToString();
 
-            return PartialView("ConsuntivoCostiCoAn", model);
-
+                    model.Add(details);
+                }
+            
+                return PartialView("ConsuntivoCostiCoAn", model);
+            }
+            
         }
 
         // Report Consuntivo Costi CoAn
-        public ActionResult RptConsuntivoCostiCoAn()
+        public ActionResult RptConsuntivoCostiCoAn(string codicecoan = "", string V_DATA = "", string V_DATA1 = "")
         {
             DataSet10 ds10 = new DataSet10();
             try
@@ -1425,10 +1415,22 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds10, ds10.V_ISE_STP_CONS_COSTI_COAN.TableName);
+                //adp.Fill(ds10, ds10.V_ISE_STP_CONS_COSTI_COAN.TableName);
+                adp.Fill(ds10, ds10.DataTable10.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report13.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet10", ds10.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {
+                        new ReportParameter ("xcodicecoan",codicecoan),
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1532,6 +1534,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 //return View("ViewName", model);
                 return PartialView("OpIndennitaEstera", model);
+                // return PartialView("PartialViewOpIndennitaEstera", model);
             }
         }
 
@@ -1592,10 +1595,21 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds7, ds7.V_OP_EFFETTUATE_IND_ESTERA.TableName);
+                //adp.Fill(ds7, ds7.V_OP_EFFETTUATE_IND_ESTERA.TableName);
+                adp.Fill(ds7, ds7.DataTable7.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report22.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet7", ds7.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
+
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1666,7 +1680,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("OpContributoAbitazione", model);
             }
         }
-
+       
         // Report Operazioni Effettuate - Contributo Abitazione
         public ActionResult RptOpContributoAbitazione(string V_DATA = "", string V_DATA1 = "")
         {
@@ -1714,10 +1728,20 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds8, ds8.V_OP_EFFETTUATE_CONTR_ABITAZ.TableName);
+                //adp.Fill(ds8, ds8.V_OP_EFFETTUATE_CONTR_ABITAZ.TableName);
+                adp.Fill(ds8, ds8.DataTable8.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report23.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet8", ds8.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+               {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+               };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1835,10 +1859,21 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds1, ds1.V_OP_EFFETTUATE_USO_ABITAZ.TableName);
+                //adp.Fill(ds1, ds1.V_OP_EFFETTUATE_USO_ABITAZ.TableName);
+                adp.Fill(ds1, ds1.DataTable1.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report24.rdlc";
+
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", ds1.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+               {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+               };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -1914,7 +1949,8 @@ namespace NewISE.Areas.Statistiche.Controllers
         // Report Operazioni Effettuate - Canone Anticipato
         public ActionResult RptOpCanoneAnticipato(string V_DATA = "", string V_DATA1 = "")
         {
-            DataSet14 ds14 = new DataSet14();
+            //DataSet14 ds14 = new DataSet14();
+            DataSet22 ds22 = new DataSet22();
             try
             {
 
@@ -1956,13 +1992,55 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "CAN_PROG_CAN_ABITAZIONE ";
                 #endregion
 
+
+                //String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
+                //Sql += "CAN_MATRICOLA AS MATRICOLA, ";
+                //Sql += "SED_DESCRIZIONE AS SEDE, ";
+                //Sql += "VAL_DESCRIZIONE AS VALUTA, ";
+                //Sql += "CAN_DT_DECORRENZA AS DATA_DECORRENZA, "; 
+                //Sql += "CAN_DT_LETTERA AS DATA_DECORRENZA, ";
+                //Sql += "CAN_DT_OPERAZIONE AS DATA_OPERAZIONE, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA, ";
+                //Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE, ";
+                //Sql += "0, ";
+                //Sql += "0, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
+                //Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE, ";
+                //Sql += "0, ";
+                //Sql += "0, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / ";
+                //Sql += "CAN_N_MESI) QUOTA_MENS, ";
+                //Sql += "CAN_PROG_TRASFERIMENTO, ";
+                //Sql += "CAN_PROG_CAN_ABITAZIONE ";
+                //Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
+                //Sql += "Where CAN_COD_SEDE = SED_COD_SEDE ";
+                //Sql += "And CAN_VALUTA_CANONE = VAL_COD_VALUTA ";
+                //Sql += "And CAN_MATRICOLA = AND_MATRICOLA ";
+                //Sql += "And(CAN_DT_OPERAZIONE >= To_Date ('" + V_DATA + "','DD-MM-YYYY') And ";
+                //Sql += "CAN_DT_OPERAZIONE <= To_Date ('" + V_DATA1 + "','DD-MM-YYYY')) ";
+                //Sql += "Order By NOMINATIVO, ";
+                //Sql += "CAN_PROG_TRASFERIMENTO, ";
+                //Sql += "CAN_DT_DECORRENZA, ";
+                //Sql += "CAN_PROG_CAN_ABITAZIONE ";
+
+
+
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds14, ds14.V_OP_EFFETTUATE_CANONE_ANTI.TableName);
-                
+                //adp.Fill(ds14, ds14.V_OP_EFFETTUATE_CANONE_ANTI.TableName);
+                adp.Fill(ds22, ds22.DataTable22.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report30.rdlc";
-                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet14", ds14.Tables[0]));
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
+                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet22", ds22.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2071,11 +2149,20 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds17, ds17.V_OP_EFFETTUATE_SPESE_DIVERSE.TableName);
-
+                //adp.Fill(ds17, ds17.V_OP_EFFETTUATE_SPESE_DIVERSE.TableName);
+                adp.Fill(ds17, ds17.DataTable17.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report32.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet17", ds17.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2200,10 +2287,21 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds3, ds3.V_OP_EFFETTUATE_MAGG_ABITAZ.TableName);
+                //adp.Fill(ds3, ds3.V_OP_EFFETTUATE_MAGG_ABITAZ.TableName);
+                adp.Fill(ds3, ds3.DataTable3.TableName);
+
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report26.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet3", ds3.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2339,7 +2437,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.matricola = rdr["IES_MATRICOLA"].ToString();
                                 details.sede = rdr["SED_DESCRIZIONE"].ToString();
                                 details.dt_Trasferimento = Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
-                                details.dt_Rientro = rdr["TRA_DT_FIN_TRASFERIMENTO"].ToString();
+                                details.dt_Rientro = Convert.ToDateTime(rdr["TRA_DT_FIN_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
                                 details.dt_Decorrenza = Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
                                 details.progr_trasferimento = rdr["IES_PROG_TRASFERIMENTO"].ToString();
                                 details.progr_movimento = rdr["IES_PROG_MOVIMENTO"].ToString();
@@ -2356,7 +2454,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             
         }
 
-        // Report Presenze Livelli
+        // Report Presenze Livelli in servizio all' Estero
         public ActionResult RptPresenzeLivelli(string codicequalifica="", string V_DATA="", string V_DATA1="")
         {
             DataSet13 ds13 = new DataSet13();
@@ -2377,6 +2475,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                 //String Sql = "Select distinct CODQUALIFICA, QUALIFICA, NOMINATIVO, MATRICOLA, SEDE, DT_TRASFERIMENTO, DT_RIENTRO, DT_DECORRENZA From ISE_STP_LIVELLIESTERI Order By QUALIFICA, NOMINATIVO";
 
+                #region MyRegion
                 String Sql = "Select Distinct IES_COD_QUALIFICA, ";
                 Sql += "IBS_DESCRIZIONE, ";
                 Sql += "IES_MATRICOLA, ";
@@ -2419,19 +2518,24 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "IES_PROG_TRASFERIMENTO Desc, ";
                 Sql += "IES_DT_DECORRENZA Desc, ";
                 Sql += "IES_PROG_MOVIMENTO Desc ";
-                
+                #endregion
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
-
-                //ReportParameter[] parameters = new ReportParameter[2];
-                //parameters[0] = new ReportParameter("datepicker", V_DATA);
-                //parameters[1] = new ReportParameter("datepicker1", V_DATA1);
-                //reportViewer.LocalReport.SetParameters(parameters);
+                //adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
+                adp.Fill(ds13, ds13.DataTable13.TableName);
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report20.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                   {
+                        new ReportParameter ("fromDate",V_DATA),
+                        new ReportParameter ("toDate",V_DATA1)
+                   };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2520,7 +2624,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 var connectionString = ConfigurationManager.ConnectionStrings["DBISESTOR"].ConnectionString;
 
                 OracleConnection conx = new OracleConnection(connectionString);
-                #region MyRegion
+
 
                 //String Sql = "Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO, ";
                 //Sql += "ANADIPE.AND_LIVELLO LIVELLO, ";
@@ -2533,8 +2637,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //Sql += "And SPD_COD_SEDE = SED_COD_SEDE ";
                 //Sql += "And (SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY')  ";
                 //Sql += "And SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY'))  ";
-                #endregion
 
+                #region MyRegion
                 String Sql = "SELECT DISTINCT ANADIPE.AND_MATRICOLA AS MATRICOLA, ";
                 Sql += "ANADIPE.AND_COGNOME || ' ' || ANADIPE.AND_NOME  AS NOMINATIVO, ";
                 Sql += "ANADIPE.AND_LIVELLO AS LIVELLO, ";
@@ -2552,13 +2656,31 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND SPD_COD_SEDE = SED_COD_SEDE ";
                 Sql += "AND(SPD_DT_DECORRENZA >= To_Date ('" + V_DATA + "', 'DD-MM-YYYY') ";
                 Sql += "AND SPD_DT_DECORRENZA <= To_Date ('" + V_DATA1 + "', 'DD-MM-YYYY')) ";
+                Sql += "ORDER BY NOMINATIVO ";
+                #endregion
+
+                //string sql = "";
+                //sql += "SELECT * FROM TABLE WHERE NAME='JOHN SMITH'";
+                //OdbcDataAdapter adptr = new OdbcDataAdapter(sql, _connection);
+                //DataSet ds = new DataSet();
+                //adptr.Fill(ds);
+                //return ds;
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
-
-                adp.Fill(ds18, ds18.V_ISE_STP_SPESE_DIVERSE.TableName);
+                adp.Fill(ds18, ds18.DataTable1.TableName);
+                
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report33.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet18", ds18.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2660,14 +2782,44 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "AND(SPD_DT_DECORRENZA >= To_Date('" + V_DATA + "', 'DD-MM-YYYY')";
                 Sql += "AND SPD_DT_DECORRENZA <= To_Date('" + V_DATA1 + "', 'DD-MM-YYYY')) ";
                 Sql += "AND TSP_COD_SPESA NOT IN (1) ";
+                Sql += "ORDER BY NOMINATIVO ASC ";
                 #endregion
+
+
+                // query originale
+
+                //Select Distinct AND_COGNOME || ' ' || AND_NOME NOMINATIVO,
+                //       ANADIPE.AND_LIVELLO,
+                //       SED_DESCRIZIONE,
+                //       TSP_DESCRIZIONE,
+                //       SPESEDIVERSE.*
+                //From ANADIPE, TIPISPESE, SPESEDIVERSE, SEDIESTERE
+                //Where TSP_COD_SPESA = SPD_COD_SPESA
+                //And SPD_MATRICOLA = AND_MATRICOLA
+                //And SPD_COD_SEDE = SED_COD_SEDE
+                //And(SPD_DT_DECORRENZA >= To_Date('01-gen-2017', 'DD-MON-RRRR') And
+                //   SPD_DT_DECORRENZA <= To_Date('31-dic-2017', 'DD-MON-RRRR'))
+                //   And TSP_COD_SPESA Not In (1)
+                //ORDER BY NOMINATIVO ASC
+
 
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
-                adp.Fill(ds12, ds12.V_ISE_STP_CONS_SPESE_AVVICE.TableName);
+                //adp.Fill(ds12, ds12.V_ISE_STP_CONS_SPESE_AVVICE.TableName);
+                adp.Fill(ds12, ds12.DataTable12.TableName);
+
 
                 reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report31.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet12", ds12.Tables[0]));
+
+                ReportParameter[] parameterValues = new ReportParameter[]
+                {
+                    new ReportParameter ("fromDate",V_DATA),
+                    new ReportParameter ("toDate",V_DATA1)
+                };
+
+                reportViewer.LocalReport.SetParameters(parameterValues);
+                reportViewer.LocalReport.Refresh();
 
                 ViewBag.ReportViewer = reportViewer;
             }
@@ -2679,7 +2831,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return View();
         }
-
+        
+        // Stampa Livelli
         public ActionResult StampaLivelli()
         {
 
@@ -2725,8 +2878,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             cnn.Close();
             return View();
         }
-
-
+        
     }
     
 }

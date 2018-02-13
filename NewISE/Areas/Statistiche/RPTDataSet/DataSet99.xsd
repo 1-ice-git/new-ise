@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet99" targetNamespace="http://tempuri.org/DataSet99.xsd" xmlns:mstns="http://tempuri.org/DataSet99.xsd" xmlns="http://tempuri.org/DataSet99.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBISESTOR" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBISESTOR (Web.config)" ParameterPrefix=":" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBISESTOR.ConnectionString" Provider="Oracle.ManagedDataAccess.Client" />
+        </Connections>
+        <Tables />
+        <Sources>
+          <DbSource ConnectionRef="DBISESTOR (Web.config)" DbObjectType="Unknown" GenerateShortCommands="true" GeneratorSourceName="Test" MethodsParameterType="CLR" Modifier="Public" Name="Test" QueryType="Scalar" ScalarCallRetval="System.Int16, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetDataBy" UserSourceName="Test">
+            <SelectCommand>
+              <DbCommand CommandType="Text" ModifiedByUser="true">
+                <CommandText>SELECT DISTINCT 
+                         MAB.IES_MATRICOLA AS MATRICOLA, "A".AND_NOME AS NOMINATIVO, S.SED_COD_SEDE AS CodSede, S.SED_DESCRIZIONE AS SEDE, 
+                         MAB.VAL_ID_VALUTACANONE + MAB.VAL_ID_VALUTAUFFICIALE AS VALUTA, MAB.MAB_DT_DATADECORRENZA AS DATADECORRENZA, MAB.MAB_DT_LETTERA AS DATALETTERA, 
+                         MAB.MAB_DT_OPERAZIONE AS DATAOPERAZIONE, MAB.MAB_CANONELOCAZIONE AS CANONE, RMAB.MAB_RAT_MAGINVIATA AS RATAINVIATA, P.MAB_PAR_PERCENTUALE AS PERCENTUALE, 
+                         MAB.IES_PROG_TRASFERIMENTO
+FROM            ISESTOR.MAG_ABITAZIONE MAB INNER JOIN
+                         ISESTOR.RATEIZZAZIONECONTMAB RMAB ON MAB.MAB_ID = RMAB.MAB_ID INNER JOIN
+                         ISESTOR.ANADIPE "A" ON MAB.IES_MATRICOLA = "A".AND_MATRICOLA INNER JOIN
+                         ISESTOR.SEDIESTERE S ON MAB.IES_COD_SEDE = S.SED_COD_SEDE INNER JOIN
+                         ISESTOR.PARAMETRIMAB P ON MAB.MAB_PAR_ID = P.MAB_PAR_ID
+WHERE        (1 = 1) AND (MAB.MAB_FLAG_ANNULLATO = 0) AND (RMAB.MAB_RAT_FLAG_ANNULLATO = 0) AND (MAB.MAB_CESSAZIONE = 0)</CommandText>
+                <Parameters />
+              </DbCommand>
+            </SelectCommand>
+          </DbSource>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet99" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet99" msprop:Generator_UserDSName="DataSet99">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

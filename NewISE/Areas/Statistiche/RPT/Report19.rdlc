@@ -44,7 +44,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.6cm</Height>
+              <Height>0.94396cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -266,7 +266,8 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>% coniuge</Value>
+                              <Value>% 
+coniuge</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -371,7 +372,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Contr. Abitaz. lordo</Value>
+                              <Value>Contr. Abitaz. Lordo</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -914,7 +915,7 @@
         <DataSetName>DataSet15</DataSetName>
         <Top>3.64808cm</Top>
         <Left>0.42016cm</Left>
-        <Height>1.2cm</Height>
+        <Height>1.54396cm</Height>
         <Width>24.33852cm</Width>
         <Style>
           <Border>
@@ -958,8 +959,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox25</rd:DefaultName>
-        <Top>0.03528cm</Top>
-        <Left>0.42016cm</Left>
+        <Top>0.16228cm</Top>
+        <Left>0.42014cm</Left>
         <Height>1.49958cm</Height>
         <Width>24.33854cm</Width>
         <ZIndex>1</ZIndex>
@@ -1012,7 +1013,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>="Situazione al, " &amp; Today()</Value>
+                <Value>="Situazione al " &amp; Parameters!fromDate.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1038,10 +1039,10 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>4.0625in</Height>
+    <Height>3.0625in</Height>
     <Style />
   </Body>
-  <Width>9.98686in</Width>
+  <Width>10.07552in</Width>
   <Page>
     <PageHeader>
       <Height>2.05811cm</Height>
@@ -1058,7 +1059,7 @@
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
           </Style>
         </Image>
@@ -1220,6 +1221,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="fromDate">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="logo_ITA_rgb1">
       <MIMEType>image/jpeg</MIMEType>

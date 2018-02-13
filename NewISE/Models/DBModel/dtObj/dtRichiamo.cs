@@ -18,35 +18,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
         
-        public bool Delete_Richiamo(decimal idTrasfRichiamo, bool permesso = true)
-        {
-            bool esito = false;
-            if (permesso)
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var ca = db.RICHIAMO.Find(idTrasfRichiamo);
-                    db.RICHIAMO.Remove(ca);
-                    int i = db.SaveChanges();
-                    if (i <= 0)
-                    {
-                        esito = false;
-                        throw new Exception("Errore nella fase della cancellazione del richiamo");
-                    }
-                    else
-                    {
-                        esito = true;
-                        //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Cancellazione Richiamo",
-                        //    "RICHIAMO", db, ca.IDTRASFRICHIAMO);
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Eliminazione Richiamo non autorizzata");
-            }
-            return esito;
-        }
+        
         public List<RichiamoModel> GetLista_Richiamo(decimal idtrasferimento)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -81,85 +53,92 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public string[] InserisciRichiamo(RichiamoModel sosp, decimal idTrasfRichiamo)
+
+        public void SetRichiamo(ref RichiamoModel ric, ModelDBISE db)
         {
-            string[] my_array = new string[] { "0", "0" };
-           
-               
-                    using (var db = new ModelDBISE())
+            RICHIAMO ri;
+            ri = new RICHIAMO()
+            {
+                IDRICHIAMO = ric.IdRichiamo,
+                IDTRASFERIMENTO = ric.idTrasferimento,
+                DATARIENTRO = ric.DataRientro,
+                DATAAGGIORNAMENTO = DateTime.Now,
+                ANNULLATO = ric.annullato
+            };
+
+            db.RICHIAMO.Add(ri);
+
+            int i = db.SaveChanges();
+
+            if (i > 0)
+            {
+                ric.idTrasferimento = ri.IDTRASFERIMENTO;
+
+                Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di un nuovo richiamo.", "Richiamo", db, ric.idTrasferimento, ri.IDTRASFERIMENTO);
+            }
+            
+        }
+
+
+        public void EditTrasferimento(TrasferimentoModel trm)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+                if (tr != null && tr.IDTRASFERIMENTO > 0)
+                {
+                    tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento;
+                    tr.IDUFFICIO = trm.idUfficio;
+                    tr.IDSTATOTRASFERIMENTO = (decimal)trm.idStatoTrasferimento;
+                    tr.IDDIPENDENTE = trm.idDipendente;
+                    tr.IDTIPOCOAN = trm.idTipoCoan;
+                    tr.DATAPARTENZA = trm.dataPartenza;
+                    tr.DATARIENTRO = trm.dataRientro;
+                    tr.COAN = trm.coan.ToUpper();
+                    tr.PROTOCOLLOLETTERA = trm.protocolloLettera.ToUpper();
+                    tr.DATALETTERA = trm.dataLettera;
+                    tr.DATAAGGIORNAMENTO = trm.dataAggiornamento;
+
+                    if (db.SaveChanges() > 0)
                     {
-                        try
-                        {
-                            db.Database.BeginTransaction();
-                            var sospnew = new RICHIAMO
-                            {
-                                //IDTRASFERIMENTO = sosp.idTrasferimento,//tmp.FirstOrDefault().idTrasferimento,
-                                //DATAINIZIO = sosp.DataInizioSospensione.Value,
-                                //DATAFINE = sosp.DataFineSospensione.Value,
-                                //IDTIPOSOSPENSIONE = idTipoSospensione,// sosp.idTipoSospensione,
-                                //DATAAGGIORNAMENTO = DateTime.Now
-
-                                //IDTRASFRICHIAMO = sosp.IDTRASFRICHIAMO,
-                                //DATAOPERAZIONE = sosp.DATAOPERAZIONE
-                            };
-                            db.RICHIAMO.Add(sospnew);
-
-                            if (db.SaveChanges() > 0)
-                            {
-                                //sosp.IDTRASFRICHIAMO = sospnew.IDTRASFRICHIAMO;
-                                //Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento RICHIAMO avvenuta con successo", "RICHIAMO", db, sospnew.IDTRASFRICHIAMO, sospnew.IDTRASFRICHIAMO);
-                                db.Database.CurrentTransaction.Commit();
-                            }
-                            else
-                            {
-                                throw new Exception("L'inserimento del RICHIAMO non è avvenuto.");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            db.Database.CurrentTransaction.Rollback();
-                            throw ex;
-                        }
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
                     }
-                
-               
-            return my_array;
+
+
+                }
+            }
+
         }
 
-        public string[] Modifica_Richiamo(RichiamoModel sospmod)
+        public void EditTrasferimento(TrasferimentoModel trm, ModelDBISE db)
         {
-            string[] my_array = new string[] { "0", "0" };
-            try
-            {
-              
-                    
-                        using (ModelDBISE db = new ModelDBISE())
-                        {
-                            RICHIAMO sosp = db.RICHIAMO.Find(sospmod.IDTRASFRICHIAMO);
-                            //sosp.DATAOPERAZIONE = sospmod.DATAOPERAZIONE;
-                            
-                            int i = db.SaveChanges();
+            TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
 
-                            if (i < 0)
-                            {
-                                throw new Exception(string.Format("Errore nella fase di modifica del Richiamo."));
-                            }
-                            else
-                            {
-                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica Richiamo avvenuta con successo",
-                                  "RICHIAMO", db, sospmod.idTrasferimento, sospmod.IDTRASFRICHIAMO);
-                            }
-                        }
-                    
-                    
-              
-            }
-            catch (Exception ex)
+            if (tr != null && tr.IDTRASFERIMENTO > 0)
             {
-                throw ex;
+                tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
+                tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
+                tr.IDSTATOTRASFERIMENTO = Convert.ToDecimal(trm.idStatoTrasferimento) > 0 ? (decimal)trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
+                tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
+                tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
+                tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
+                tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
+                tr.COAN = trm.coan ?? tr.COAN;
+                tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
+                tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
+                tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
+
+
+                if (db.SaveChanges() > 0)
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                }
+
             }
-            return my_array;
         }
+
+
 
     }
 }

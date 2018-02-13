@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet22" targetNamespace="http://tempuri.org/DataSet22.xsd" xmlns:mstns="http://tempuri.org/DataSet22.xsd" xmlns="http://tempuri.org/DataSet22.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet22" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet22" msprop:Generator_UserDSName="DataSet22">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable22" msprop:Generator_TableClassName="DataTable22DataTable" msprop:Generator_TableVarName="tableDataTable22" msprop:Generator_TablePropName="DataTable22" msprop:Generator_RowDeletingName="DataTable22RowDeleting" msprop:Generator_RowChangingName="DataTable22RowChanging" msprop:Generator_RowEvHandlerName="DataTable22RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable22RowDeleted" msprop:Generator_UserTableName="DataTable22" msprop:Generator_RowChangedName="DataTable22RowChanged" msprop:Generator_RowEvArgName="DataTable22RowChangeEvent" msprop:Generator_RowClassName="DataTable22Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
+              <xs:element name="MATRICOLA" msprop:Generator_ColumnVarNameInTable="columnMATRICOLA" msprop:Generator_ColumnPropNameInRow="MATRICOLA" msprop:Generator_ColumnPropNameInTable="MATRICOLAColumn" msprop:Generator_UserColumnName="MATRICOLA" type="xs:string" minOccurs="0" />
+              <xs:element name="SEDE" msprop:Generator_ColumnVarNameInTable="columnSEDE" msprop:Generator_ColumnPropNameInRow="SEDE" msprop:Generator_ColumnPropNameInTable="SEDEColumn" msprop:Generator_UserColumnName="SEDE" type="xs:string" minOccurs="0" />
+              <xs:element name="VALUTA" msprop:Generator_ColumnVarNameInTable="columnVALUTA" msprop:Generator_ColumnPropNameInRow="VALUTA" msprop:Generator_ColumnPropNameInTable="VALUTAColumn" msprop:Generator_UserColumnName="VALUTA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_DECORRENZA" msprop:Generator_ColumnVarNameInTable="columnDATA_DECORRENZA" msprop:Generator_ColumnPropNameInRow="DATA_DECORRENZA" msprop:Generator_ColumnPropNameInTable="DATA_DECORRENZAColumn" msprop:Generator_UserColumnName="DATA_DECORRENZA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:string" minOccurs="0" />
+              <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:string" minOccurs="0" />
+              <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:string" minOccurs="0" />
+              <xs:element name="QUOTA_MENS" msprop:Generator_ColumnVarNameInTable="columnQUOTA_MENS" msprop:Generator_ColumnPropNameInRow="QUOTA_MENS" msprop:Generator_ColumnPropNameInTable="QUOTA_MENSColumn" msprop:Generator_UserColumnName="QUOTA_MENS" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,124 @@
+﻿<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Statistiche";
+    Layout = "~/Areas/Statistiche/Views/Shared/_Layout.cshtml";
+}
+
+<div style="margin: 15px"></div>
+<div class="form-horizontal" id="divRiga1">
+    <br /><br />
+    <div class="form-group">
+        @Html.Label("lblStampa", "Modalità estrazione", new { @class = "control-label col-xs-2" })
+        <div id="divCombo" class="col-xs-3 ">
+            <div class="select2-container select2-container--classic" id="test">
+                @Html.DropDownList("idStampa", ViewBag.Riepiloghi as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewRiepiloghi(this.value);", @onclick = "prelevaPartiaViewRiepiloghi(this.value);" })
+            </div>
+            @Html.ValidationMessage("idStampa", "", new { @class = "text-danger" })
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="divContentpartial" class="row">
+    <div id="divPViewParametri" class="col-xs-12">
+
+    </div>
+</div>
+
+<div id="dialog-message" title="Attenzione!!!" style="display:none;">
+    <div>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 50px 0;"></span>
+        <strong><span id="msgDialog"></span></strong>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#idStampa").select2({
+                placeholder: "Seleziona la Tabella per la Stampa",
+                allowClear: true,
+                language: "it",
+                width: '550'
+
+            });
+
+        });
+
+        function prelevaPartiaViewRiepiloghi(value) {
+            //debugger;
+                        
+            var rotta = "/Statistiche/Riepiloghi";
+
+            var tabParam = parseInt($("#idStampa").select2('val'));
+            //var tabParam = $("#idStampa").select2('val');
+
+
+            switch (tabParam) {
+                case 0:// ISE Mensile
+                    // Ipotesi con Controller diverso
+                    //rotta = "/Statistiche/RiepiloghiIseMensile/Index";
+
+                    // Ipotesi con stesso Controller 
+                    rotta = "/Statistiche/Riepiloghi/IseMensile";
+                    
+                    break;
+                case 1:// Maggiorazione Abitazione
+                    // Ipotesi con Controller diverso
+                    //rotta = "/Statistiche/RiepiloghiMaggAbitazione/Index";
+                    
+                    rotta = "/Statistiche/Riepiloghi/MaggAbitazione";
+
+                    break;
+                case 2:// Altre Indennità
+                    // Ipotesi con Controller diverso
+                    //rotta = "/Statistiche/RiepiloghiAltreIndennita/Index";
+                    
+                    rotta = "/Statistiche/Riepiloghi/AltreIndennita";
+
+                    break;
+                case 3:// Altre Spese
+                    rotta = "/Statistiche/Riepiloghi/AltreSpese";
+
+                    break;
+                default:
+            }
+
+            $.ajax({
+                url: rotta,
+                type: "POST",
+                data: {},
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                  
+                },
+                success: function (result) {
+                    //debugger;
+                    
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                },
+                complete: function () {
+                    //debugger;
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+    </script>
+}
+
+

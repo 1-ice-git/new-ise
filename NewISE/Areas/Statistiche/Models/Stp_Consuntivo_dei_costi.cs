@@ -17,5 +17,7 @@ namespace NewISE.Areas.Statistiche.Models
         public string codiceufficio { get; set; }
         public string qualifica { get; set; }
         public string codsede { get; set; }
+        public string utente { get; set; }
+
     }
 }

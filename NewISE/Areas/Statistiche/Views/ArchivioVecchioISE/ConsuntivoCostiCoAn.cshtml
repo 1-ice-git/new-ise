@@ -1,36 +1,47 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Consuntivo_dei_costi_per_codice_Coan>
 
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Consuntivo dei Costi per codice Co.An."></div>
+
+@*<button id="opener">xx</button>*@
+
 <div class="form-horizontal">
     <div class="form-group">
         <hr />
 
         <div class="col-md-2">
-            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-                @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
 
         <div class="col-md-2">
-            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", placeholder = "dd/mm/yyyy" } })
-                @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
+
         <div class="select2-container select2-container--classic">
-            @Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoan(this.value);", @onclick = "PrelevaCoan(this.value);" })
+            @*@Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoan(this.value);", @onclick = "PrelevaCoan(this.value);" })*@
+            @Html.DropDownList("COAN", ViewBag.ListaCodiceCoan as List<SelectListItem>, new { @class = "form-control select2 select2-select" })
         </div>
 
     </div>
     <br />
-    <div class="form-group">
-        <div class="col-md-3">
-            <a href="#" target="_blank" onclick="invia()">Stampa Consuntivo dei Costi per codice Co.An. </a>
-        </div>
-    </div>
-
-    <hr />
+   
 </div>
 
-<table id="tb_Stp_Op_Contributo_Abitazione" class="display" cellspacing="0">
+
+<div class="form-group">
+    <div class="col-md-3">
+        <a href="#" id="opener">Stampa Consuntivo dei Costi per codice Co.An.</a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="PrelevaCoan()">Visualizza il Consuntivo dei Costi per codice Co.An.</a>
+    </div>
+
+</div>
+<br /><br />
+
+
+<table id="tb_Consuntivo_Costi_Coan" class="display" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -52,17 +63,9 @@
                 @Html.DisplayNameFor(model => model.valuta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.euro)
+                @Html.DisplayNameFor(model => model.importo)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tipoimporto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.codsede)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.coan)
-            </th>
+            
         </tr>
     </thead>
     <tbody>
@@ -88,16 +91,7 @@
                     @Html.DisplayFor(modelItem => item.valuta)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.euro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipoimporto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.codsede)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.coan)
+                    @Html.DisplayFor(modelItem => item.importo)
                 </td>
             </tr>
         }
@@ -105,35 +99,35 @@
 </table>
 
 <script type="text/javascript">
-    $('#tb_Stp_Op_Contributo_Abitazione').DataTable({
-        "order": [],
-        "scrollY": 220,
-        "scrollX": true,
-        "language": {
-            "sEmptyTable": "Nessun dato presente nella tabella",
-            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-            "sInfoPostFix": "",
-            "sInfoThousands": ".",
-            "sLengthMenu": "Visualizza _MENU_ elementi",
-            "sLoadingRecords": "Caricamento...",
-            "sProcessing": "Elaborazione...",
-            "sSearch": "Cerca:",
-            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-            "oPaginate": {
-                "sFirst": "Inizio",
-                "sPrevious": "Precedente",
-                "sNext": "Successivo",
-                "sLast": "Fine"
-            },
-            "oAria": {
-                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            }
+    $('#tb_Consuntivo_Costi_Coan').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
 
-        }
-    });
+            }
+        });
 
     // Calendario con possibilità di cambiare mese e anno
     $(document).ready(function () {
@@ -163,76 +157,177 @@
         });
     });
 
-    function invia() {
-        //debugger
-        //var matricola = parseInt($("#MATRICOLA").select2('val'));
-        //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
 
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCostiCoAn";
-    };
-
-    function PrelevaCoan(codicecoan) {
-        //debugger;
-
-        rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCostiCoAn";
-
-        //var codicequalifica = parseInt($("#COD_QUALIFICA").select2('val'));
-        var chk = true;
-        //$("#codicedipendente").val = idMatricola;
-
-        //if (isNaN(codicequalifica)) {
-        //    $("#divPViewParametri").empty();
-        //    return false;
-        //}
-
-        //if (isNaN(null)) {
-        //    alert("null is not a number");
-        //} else {
-        //    alert("i think null is a number");
-        //}
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { codicecoan: codicecoan },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#divPViewParametri").empty();
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
             },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //$("#divPViewParametri").empty();
-                $("#divPViewParametri").html(result);
-
-                //RicercaDocumenti();
-
+            hide: {
+                //effect: "explode",
+                //duration: 1000
             },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
             },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
+            height: windowHeight, width: windowWidth
+
 
         });
 
-    }
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
 
-    $("#COAN").select2({
-        placeholder: "Seleziona il Gigius ",
-        allowClear: true,
-        language: "it",
-        width: '350'
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
+            rotta = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCostiCoAn";
+
+            var codicecoan = $("#COAN").select2('val');
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicecoan:codicecoan,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
     });
+
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCostiCoAn";
+        };
+
+        function PrelevaCoan(codicecoan) {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCostiCoAn";
+            
+            var codicecoan = $("#COAN").select2('val');
+            var data = $("#datepicker").val();
+            var data1 = $("#datepicker1").val();           
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicecoan: codicecoan,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+              
+                },
+                success: function (result) {
+                    //debugger;
+                    
+                    $("#divPViewParametri").html(result);
+
+                },
+                complete: function () {
+                    
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        function ConsuntivoCostiCoAn(codicecoan) {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCostiCoAn";
+
+            var codicecoan = $("#COAN").select2('val');
+            var data = $("#datepicker").val();
+            var data1 = $("#datepicker1").val();
+
+           
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicecoan: codicecoan,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divPViewParametri").html(result);
+                    
+                },
+                complete: function () {
+                 
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+
+        $("#COAN").select2({
+            placeholder: "Seleziona la tipoligia di Co.An.",
+            allowClear: true,
+            language: "it",
+            width: '350'
+        });
 
 </script>
 

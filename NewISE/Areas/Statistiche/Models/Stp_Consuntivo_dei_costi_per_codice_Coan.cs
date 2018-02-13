@@ -16,10 +16,7 @@ namespace NewISE.Areas.Statistiche.Models
         public string valuta { get; set; }
         public string importo { get; set; }
 
-        //public string euro { get; set; }
-        //public string tipoimporto { get; set; }
-        //public string codsede { get; set; }
-        //public string coan { get; set; }
+       
 
     }
 }

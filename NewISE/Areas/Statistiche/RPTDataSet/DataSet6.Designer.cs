@@ -24,7 +24,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet6 : global::System.Data.DataSet {
         
-        private STP_STORIA_DIP_ISESTORDataTable tableSTP_STORIA_DIP_ISESTOR;
+        private DataTable6DataTable tableDataTable6;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["STP_STORIA_DIP_ISESTOR"] != null)) {
-                    base.Tables.Add(new STP_STORIA_DIP_ISESTORDataTable(ds.Tables["STP_STORIA_DIP_ISESTOR"]));
+                if ((ds.Tables["DataTable6"] != null)) {
+                    base.Tables.Add(new DataTable6DataTable(ds.Tables["DataTable6"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public STP_STORIA_DIP_ISESTORDataTable STP_STORIA_DIP_ISESTOR {
+        public DataTable6DataTable DataTable6 {
             get {
-                return this.tableSTP_STORIA_DIP_ISESTOR;
+                return this.tableDataTable6;
             }
         }
         
@@ -152,8 +152,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["STP_STORIA_DIP_ISESTOR"] != null)) {
-                    base.Tables.Add(new STP_STORIA_DIP_ISESTORDataTable(ds.Tables["STP_STORIA_DIP_ISESTOR"]));
+                if ((ds.Tables["DataTable6"] != null)) {
+                    base.Tables.Add(new DataTable6DataTable(ds.Tables["DataTable6"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableSTP_STORIA_DIP_ISESTOR = ((STP_STORIA_DIP_ISESTORDataTable)(base.Tables["STP_STORIA_DIP_ISESTOR"]));
+            this.tableDataTable6 = ((DataTable6DataTable)(base.Tables["DataTable6"]));
             if ((initTable == true)) {
-                if ((this.tableSTP_STORIA_DIP_ISESTOR != null)) {
-                    this.tableSTP_STORIA_DIP_ISESTOR.InitVars();
+                if ((this.tableDataTable6 != null)) {
+                    this.tableDataTable6.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             this.Namespace = "http://tempuri.org/DataSet6.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableSTP_STORIA_DIP_ISESTOR = new STP_STORIA_DIP_ISESTORDataTable();
-            base.Tables.Add(this.tableSTP_STORIA_DIP_ISESTOR);
+            this.tableDataTable6 = new DataTable6DataTable();
+            base.Tables.Add(this.tableDataTable6);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeSTP_STORIA_DIP_ISESTOR() {
+        private bool ShouldSerializeDataTable6() {
             return false;
         }
         
@@ -270,14 +270,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void STP_STORIA_DIP_ISESTORRowChangeEventHandler(object sender, STP_STORIA_DIP_ISESTORRowChangeEvent e);
+        public delegate void DataTable6RowChangeEventHandler(object sender, DataTable6RowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class STP_STORIA_DIP_ISESTORDataTable : global::System.Data.TypedTableBase<STP_STORIA_DIP_ISESTORRow> {
+        public partial class DataTable6DataTable : global::System.Data.TypedTableBase<DataTable6Row> {
             
             private global::System.Data.DataColumn columnNOMINATIVO;
             
@@ -317,8 +317,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORDataTable() {
-                this.TableName = "STP_STORIA_DIP_ISESTOR";
+            public DataTable6DataTable() {
+                this.TableName = "DataTable6";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -326,7 +326,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal STP_STORIA_DIP_ISESTORDataTable(global::System.Data.DataTable table) {
+            internal DataTable6DataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -343,7 +343,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected STP_STORIA_DIP_ISESTORDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DataTable6DataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -503,52 +503,52 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORRow this[int index] {
+            public DataTable6Row this[int index] {
                 get {
-                    return ((STP_STORIA_DIP_ISESTORRow)(this.Rows[index]));
+                    return ((DataTable6Row)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event STP_STORIA_DIP_ISESTORRowChangeEventHandler STP_STORIA_DIP_ISESTORRowChanging;
+            public event DataTable6RowChangeEventHandler DataTable6RowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event STP_STORIA_DIP_ISESTORRowChangeEventHandler STP_STORIA_DIP_ISESTORRowChanged;
+            public event DataTable6RowChangeEventHandler DataTable6RowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event STP_STORIA_DIP_ISESTORRowChangeEventHandler STP_STORIA_DIP_ISESTORRowDeleting;
+            public event DataTable6RowChangeEventHandler DataTable6RowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event STP_STORIA_DIP_ISESTORRowChangeEventHandler STP_STORIA_DIP_ISESTORRowDeleted;
+            public event DataTable6RowChangeEventHandler DataTable6RowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddSTP_STORIA_DIP_ISESTORRow(STP_STORIA_DIP_ISESTORRow row) {
+            public void AddDataTable6Row(DataTable6Row row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORRow AddSTP_STORIA_DIP_ISESTORRow(
+            public DataTable6Row AddDataTable6Row(
                         string NOMINATIVO, 
-                        decimal MATRICOLA, 
+                        string MATRICOLA, 
                         string LIVELLO, 
                         string TIPO_MOVIMENTO, 
-                        System.DateTime DATA_DECORRENZA, 
-                        System.DateTime DATA_LETTERA, 
-                        decimal COEF_SEDE, 
-                        decimal PERC_DISAGIO, 
-                        decimal PERC_SPETTANTE, 
-                        decimal PERC_CONIUGE, 
-                        decimal PENSIONE, 
-                        decimal N_FIGLI, 
-                        decimal TFR, 
+                        string DATA_DECORRENZA, 
+                        string DATA_LETTERA, 
+                        string COEF_SEDE, 
+                        string PERC_DISAGIO, 
+                        string PERC_SPETTANTE, 
+                        string PERC_CONIUGE, 
+                        string PENSIONE, 
+                        string N_FIGLI, 
+                        string TFR, 
                         string DESCR, 
-                        decimal INDENNITA, 
+                        string INDENNITA, 
                         string ORD2, 
-                        short ORD3, 
-                        System.DateTime ORD1) {
-                STP_STORIA_DIP_ISESTORRow rowSTP_STORIA_DIP_ISESTORRow = ((STP_STORIA_DIP_ISESTORRow)(this.NewRow()));
+                        string ORD3, 
+                        string ORD1) {
+                DataTable6Row rowDataTable6Row = ((DataTable6Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NOMINATIVO,
                         MATRICOLA,
@@ -568,15 +568,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                         ORD2,
                         ORD3,
                         ORD1};
-                rowSTP_STORIA_DIP_ISESTORRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowSTP_STORIA_DIP_ISESTORRow);
-                return rowSTP_STORIA_DIP_ISESTORRow;
+                rowDataTable6Row.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDataTable6Row);
+                return rowDataTable6Row;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                STP_STORIA_DIP_ISESTORDataTable cln = ((STP_STORIA_DIP_ISESTORDataTable)(base.Clone()));
+                DataTable6DataTable cln = ((DataTable6DataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -584,7 +584,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new STP_STORIA_DIP_ISESTORDataTable();
+                return new DataTable6DataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -615,71 +615,66 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             private void InitClass() {
                 this.columnNOMINATIVO = new global::System.Data.DataColumn("NOMINATIVO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNOMINATIVO);
-                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnMATRICOLA = new global::System.Data.DataColumn("MATRICOLA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMATRICOLA);
                 this.columnLIVELLO = new global::System.Data.DataColumn("LIVELLO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLIVELLO);
                 this.columnTIPO_MOVIMENTO = new global::System.Data.DataColumn("TIPO_MOVIMENTO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTIPO_MOVIMENTO);
-                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_DECORRENZA = new global::System.Data.DataColumn("DATA_DECORRENZA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_DECORRENZA);
-                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnDATA_LETTERA = new global::System.Data.DataColumn("DATA_LETTERA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDATA_LETTERA);
-                this.columnCOEF_SEDE = new global::System.Data.DataColumn("COEF_SEDE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnCOEF_SEDE = new global::System.Data.DataColumn("COEF_SEDE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCOEF_SEDE);
-                this.columnPERC_DISAGIO = new global::System.Data.DataColumn("PERC_DISAGIO", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnPERC_DISAGIO = new global::System.Data.DataColumn("PERC_DISAGIO", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPERC_DISAGIO);
-                this.columnPERC_SPETTANTE = new global::System.Data.DataColumn("PERC_SPETTANTE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnPERC_SPETTANTE = new global::System.Data.DataColumn("PERC_SPETTANTE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPERC_SPETTANTE);
-                this.columnPERC_CONIUGE = new global::System.Data.DataColumn("PERC_CONIUGE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnPERC_CONIUGE = new global::System.Data.DataColumn("PERC_CONIUGE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPERC_CONIUGE);
-                this.columnPENSIONE = new global::System.Data.DataColumn("PENSIONE", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnPENSIONE = new global::System.Data.DataColumn("PENSIONE", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPENSIONE);
-                this.columnN_FIGLI = new global::System.Data.DataColumn("N_FIGLI", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnN_FIGLI = new global::System.Data.DataColumn("N_FIGLI", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnN_FIGLI);
-                this.columnTFR = new global::System.Data.DataColumn("TFR", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnTFR = new global::System.Data.DataColumn("TFR", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTFR);
                 this.columnDESCR = new global::System.Data.DataColumn("DESCR", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDESCR);
-                this.columnINDENNITA = new global::System.Data.DataColumn("INDENNITA", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnINDENNITA = new global::System.Data.DataColumn("INDENNITA", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnINDENNITA);
                 this.columnORD2 = new global::System.Data.DataColumn("ORD2", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnORD2);
-                this.columnORD3 = new global::System.Data.DataColumn("ORD3", typeof(short), null, global::System.Data.MappingType.Element);
+                this.columnORD3 = new global::System.Data.DataColumn("ORD3", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnORD3);
-                this.columnORD1 = new global::System.Data.DataColumn("ORD1", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnORD1 = new global::System.Data.DataColumn("ORD1", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnORD1);
-                this.columnNOMINATIVO.MaxLength = 101;
-                this.columnLIVELLO.MaxLength = 30;
-                this.columnTIPO_MOVIMENTO.MaxLength = 20;
-                this.columnDESCR.MaxLength = 14;
-                this.columnORD2.MaxLength = 1;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORRow NewSTP_STORIA_DIP_ISESTORRow() {
-                return ((STP_STORIA_DIP_ISESTORRow)(this.NewRow()));
+            public DataTable6Row NewDataTable6Row() {
+                return ((DataTable6Row)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new STP_STORIA_DIP_ISESTORRow(builder);
+                return new DataTable6Row(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(STP_STORIA_DIP_ISESTORRow);
+                return typeof(DataTable6Row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.STP_STORIA_DIP_ISESTORRowChanged != null)) {
-                    this.STP_STORIA_DIP_ISESTORRowChanged(this, new STP_STORIA_DIP_ISESTORRowChangeEvent(((STP_STORIA_DIP_ISESTORRow)(e.Row)), e.Action));
+                if ((this.DataTable6RowChanged != null)) {
+                    this.DataTable6RowChanged(this, new DataTable6RowChangeEvent(((DataTable6Row)(e.Row)), e.Action));
                 }
             }
             
@@ -687,8 +682,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.STP_STORIA_DIP_ISESTORRowChanging != null)) {
-                    this.STP_STORIA_DIP_ISESTORRowChanging(this, new STP_STORIA_DIP_ISESTORRowChangeEvent(((STP_STORIA_DIP_ISESTORRow)(e.Row)), e.Action));
+                if ((this.DataTable6RowChanging != null)) {
+                    this.DataTable6RowChanging(this, new DataTable6RowChangeEvent(((DataTable6Row)(e.Row)), e.Action));
                 }
             }
             
@@ -696,8 +691,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.STP_STORIA_DIP_ISESTORRowDeleted != null)) {
-                    this.STP_STORIA_DIP_ISESTORRowDeleted(this, new STP_STORIA_DIP_ISESTORRowChangeEvent(((STP_STORIA_DIP_ISESTORRow)(e.Row)), e.Action));
+                if ((this.DataTable6RowDeleted != null)) {
+                    this.DataTable6RowDeleted(this, new DataTable6RowChangeEvent(((DataTable6Row)(e.Row)), e.Action));
                 }
             }
             
@@ -705,14 +700,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.STP_STORIA_DIP_ISESTORRowDeleting != null)) {
-                    this.STP_STORIA_DIP_ISESTORRowDeleting(this, new STP_STORIA_DIP_ISESTORRowChangeEvent(((STP_STORIA_DIP_ISESTORRow)(e.Row)), e.Action));
+                if ((this.DataTable6RowDeleting != null)) {
+                    this.DataTable6RowDeleting(this, new DataTable6RowChangeEvent(((DataTable6Row)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveSTP_STORIA_DIP_ISESTORRow(STP_STORIA_DIP_ISESTORRow row) {
+            public void RemoveDataTable6Row(DataTable6Row row) {
                 this.Rows.Remove(row);
             }
             
@@ -739,7 +734,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "STP_STORIA_DIP_ISESTORDataTable";
+                attribute2.FixedValue = "DataTable6DataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -783,15 +778,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class STP_STORIA_DIP_ISESTORRow : global::System.Data.DataRow {
+        public partial class DataTable6Row : global::System.Data.DataRow {
             
-            private STP_STORIA_DIP_ISESTORDataTable tableSTP_STORIA_DIP_ISESTOR;
+            private DataTable6DataTable tableDataTable6;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal STP_STORIA_DIP_ISESTORRow(global::System.Data.DataRowBuilder rb) : 
+            internal DataTable6Row(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableSTP_STORIA_DIP_ISESTOR = ((STP_STORIA_DIP_ISESTORDataTable)(this.Table));
+                this.tableDataTable6 = ((DataTable6DataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -799,32 +794,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string NOMINATIVO {
                 get {
                     try {
-                        return ((string)(this[this.tableSTP_STORIA_DIP_ISESTOR.NOMINATIVOColumn]));
+                        return ((string)(this[this.tableDataTable6.NOMINATIVOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBN" +
-                                "ull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'NOMINATIVO\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.NOMINATIVOColumn] = value;
+                    this[this.tableDataTable6.NOMINATIVOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal MATRICOLA {
+            public string MATRICOLA {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.MATRICOLAColumn]));
+                        return ((string)(this[this.tableDataTable6.MATRICOLAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'MATRICOLA\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.MATRICOLAColumn] = value;
+                    this[this.tableDataTable6.MATRICOLAColumn] = value;
                 }
             }
             
@@ -833,15 +826,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string LIVELLO {
                 get {
                     try {
-                        return ((string)(this[this.tableSTP_STORIA_DIP_ISESTOR.LIVELLOColumn]));
+                        return ((string)(this[this.tableDataTable6.LIVELLOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'LIVELLO\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'LIVELLO\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.LIVELLOColumn] = value;
+                    this[this.tableDataTable6.LIVELLOColumn] = value;
                 }
             }
             
@@ -850,167 +842,158 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string TIPO_MOVIMENTO {
                 get {
                     try {
-                        return ((string)(this[this.tableSTP_STORIA_DIP_ISESTOR.TIPO_MOVIMENTOColumn]));
+                        return ((string)(this[this.tableDataTable6.TIPO_MOVIMENTOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPO_MOVIMENTO\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è" +
-                                " DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TIPO_MOVIMENTO\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.TIPO_MOVIMENTOColumn] = value;
+                    this[this.tableDataTable6.TIPO_MOVIMENTOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_DECORRENZA {
+            public string DATA_DECORRENZA {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_DECORRENZAColumn]));
+                        return ((string)(this[this.tableDataTable6.DATA_DECORRENZAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_DECORRENZA\' nella tabella \'STP_STORIA_DIP_ISESTOR\' " +
-                                "è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_DECORRENZA\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_DECORRENZAColumn] = value;
+                    this[this.tableDataTable6.DATA_DECORRENZAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime DATA_LETTERA {
+            public string DATA_LETTERA {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_LETTERAColumn]));
+                        return ((string)(this[this.tableDataTable6.DATA_LETTERAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DATA_LETTERA\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_LETTERAColumn] = value;
+                    this[this.tableDataTable6.DATA_LETTERAColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal COEF_SEDE {
+            public string COEF_SEDE {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.COEF_SEDEColumn]));
+                        return ((string)(this[this.tableDataTable6.COEF_SEDEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'COEF_SEDE\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'COEF_SEDE\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.COEF_SEDEColumn] = value;
+                    this[this.tableDataTable6.COEF_SEDEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal PERC_DISAGIO {
+            public string PERC_DISAGIO {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_DISAGIOColumn]));
+                        return ((string)(this[this.tableDataTable6.PERC_DISAGIOColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_DISAGIO\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_DISAGIO\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_DISAGIOColumn] = value;
+                    this[this.tableDataTable6.PERC_DISAGIOColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal PERC_SPETTANTE {
+            public string PERC_SPETTANTE {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_SPETTANTEColumn]));
+                        return ((string)(this[this.tableDataTable6.PERC_SPETTANTEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_SPETTANTE\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è" +
-                                " DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_SPETTANTE\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_SPETTANTEColumn] = value;
+                    this[this.tableDataTable6.PERC_SPETTANTEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal PERC_CONIUGE {
+            public string PERC_CONIUGE {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_CONIUGEColumn]));
+                        return ((string)(this[this.tableDataTable6.PERC_CONIUGEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_CONIUGE\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è D" +
-                                "BNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PERC_CONIUGE\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_CONIUGEColumn] = value;
+                    this[this.tableDataTable6.PERC_CONIUGEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal PENSIONE {
+            public string PENSIONE {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.PENSIONEColumn]));
+                        return ((string)(this[this.tableDataTable6.PENSIONEColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PENSIONE\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNul" +
-                                "l.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'PENSIONE\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.PENSIONEColumn] = value;
+                    this[this.tableDataTable6.PENSIONEColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal N_FIGLI {
+            public string N_FIGLI {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.N_FIGLIColumn]));
+                        return ((string)(this[this.tableDataTable6.N_FIGLIColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'N_FIGLI\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'N_FIGLI\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.N_FIGLIColumn] = value;
+                    this[this.tableDataTable6.N_FIGLIColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal TFR {
+            public string TFR {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.TFRColumn]));
+                        return ((string)(this[this.tableDataTable6.TFRColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TFR\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'TFR\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.TFRColumn] = value;
+                    this[this.tableDataTable6.TFRColumn] = value;
                 }
             }
             
@@ -1019,31 +1002,30 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string DESCR {
                 get {
                     try {
-                        return ((string)(this[this.tableSTP_STORIA_DIP_ISESTOR.DESCRColumn]));
+                        return ((string)(this[this.tableDataTable6.DESCRColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DESCR\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DESCR\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.DESCRColumn] = value;
+                    this[this.tableDataTable6.DESCRColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal INDENNITA {
+            public string INDENNITA {
                 get {
                     try {
-                        return ((decimal)(this[this.tableSTP_STORIA_DIP_ISESTOR.INDENNITAColumn]));
+                        return ((string)(this[this.tableDataTable6.INDENNITAColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'INDENNITA\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'INDENNITA\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.INDENNITAColumn] = value;
+                    this[this.tableDataTable6.INDENNITAColumn] = value;
                 }
             }
             
@@ -1052,263 +1034,263 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
             public string ORD2 {
                 get {
                     try {
-                        return ((string)(this[this.tableSTP_STORIA_DIP_ISESTOR.ORD2Column]));
+                        return ((string)(this[this.tableDataTable6.ORD2Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD2\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD2\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.ORD2Column] = value;
+                    this[this.tableDataTable6.ORD2Column] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public short ORD3 {
+            public string ORD3 {
                 get {
                     try {
-                        return ((short)(this[this.tableSTP_STORIA_DIP_ISESTOR.ORD3Column]));
+                        return ((string)(this[this.tableDataTable6.ORD3Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD3\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD3\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.ORD3Column] = value;
+                    this[this.tableDataTable6.ORD3Column] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime ORD1 {
+            public string ORD1 {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableSTP_STORIA_DIP_ISESTOR.ORD1Column]));
+                        return ((string)(this[this.tableDataTable6.ORD1Column]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD1\' nella tabella \'STP_STORIA_DIP_ISESTOR\' è DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'ORD1\' nella tabella \'DataTable6\' è DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableSTP_STORIA_DIP_ISESTOR.ORD1Column] = value;
+                    this[this.tableDataTable6.ORD1Column] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNOMINATIVONull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.NOMINATIVOColumn);
+                return this.IsNull(this.tableDataTable6.NOMINATIVOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNOMINATIVONull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.NOMINATIVOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.NOMINATIVOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMATRICOLANull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.MATRICOLAColumn);
+                return this.IsNull(this.tableDataTable6.MATRICOLAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMATRICOLANull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.MATRICOLAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.MATRICOLAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsLIVELLONull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.LIVELLOColumn);
+                return this.IsNull(this.tableDataTable6.LIVELLOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLIVELLONull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.LIVELLOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.LIVELLOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTIPO_MOVIMENTONull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.TIPO_MOVIMENTOColumn);
+                return this.IsNull(this.tableDataTable6.TIPO_MOVIMENTOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTIPO_MOVIMENTONull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.TIPO_MOVIMENTOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDATA_DECORRENZANull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.DATA_DECORRENZAColumn);
+                return this.IsNull(this.tableDataTable6.DATA_DECORRENZAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDATA_DECORRENZANull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_DECORRENZAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.DATA_DECORRENZAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDATA_LETTERANull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.DATA_LETTERAColumn);
+                return this.IsNull(this.tableDataTable6.DATA_LETTERAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDATA_LETTERANull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.DATA_LETTERAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.DATA_LETTERAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCOEF_SEDENull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.COEF_SEDEColumn);
+                return this.IsNull(this.tableDataTable6.COEF_SEDEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCOEF_SEDENull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.COEF_SEDEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.COEF_SEDEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPERC_DISAGIONull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.PERC_DISAGIOColumn);
+                return this.IsNull(this.tableDataTable6.PERC_DISAGIOColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPERC_DISAGIONull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_DISAGIOColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.PERC_DISAGIOColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPERC_SPETTANTENull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.PERC_SPETTANTEColumn);
+                return this.IsNull(this.tableDataTable6.PERC_SPETTANTEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPERC_SPETTANTENull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_SPETTANTEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.PERC_SPETTANTEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPERC_CONIUGENull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.PERC_CONIUGEColumn);
+                return this.IsNull(this.tableDataTable6.PERC_CONIUGEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPERC_CONIUGENull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.PERC_CONIUGEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.PERC_CONIUGEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPENSIONENull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.PENSIONEColumn);
+                return this.IsNull(this.tableDataTable6.PENSIONEColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPENSIONENull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.PENSIONEColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.PENSIONEColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsN_FIGLINull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.N_FIGLIColumn);
+                return this.IsNull(this.tableDataTable6.N_FIGLIColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetN_FIGLINull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.N_FIGLIColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.N_FIGLIColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsTFRNull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.TFRColumn);
+                return this.IsNull(this.tableDataTable6.TFRColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetTFRNull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.TFRColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.TFRColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDESCRNull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.DESCRColumn);
+                return this.IsNull(this.tableDataTable6.DESCRColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDESCRNull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.DESCRColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.DESCRColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsINDENNITANull() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.INDENNITAColumn);
+                return this.IsNull(this.tableDataTable6.INDENNITAColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetINDENNITANull() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.INDENNITAColumn] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.INDENNITAColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsORD2Null() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.ORD2Column);
+                return this.IsNull(this.tableDataTable6.ORD2Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetORD2Null() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.ORD2Column] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.ORD2Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsORD3Null() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.ORD3Column);
+                return this.IsNull(this.tableDataTable6.ORD3Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetORD3Null() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.ORD3Column] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.ORD3Column] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsORD1Null() {
-                return this.IsNull(this.tableSTP_STORIA_DIP_ISESTOR.ORD1Column);
+                return this.IsNull(this.tableDataTable6.ORD1Column);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetORD1Null() {
-                this[this.tableSTP_STORIA_DIP_ISESTOR.ORD1Column] = global::System.Convert.DBNull;
+                this[this.tableDataTable6.ORD1Column] = global::System.Convert.DBNull;
             }
         }
         
@@ -1316,22 +1298,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class STP_STORIA_DIP_ISESTORRowChangeEvent : global::System.EventArgs {
+        public class DataTable6RowChangeEvent : global::System.EventArgs {
             
-            private STP_STORIA_DIP_ISESTORRow eventRow;
+            private DataTable6Row eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORRowChangeEvent(STP_STORIA_DIP_ISESTORRow row, global::System.Data.DataRowAction action) {
+            public DataTable6RowChangeEvent(DataTable6Row row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public STP_STORIA_DIP_ISESTORRow Row {
+            public DataTable6Row Row {
                 get {
                     return this.eventRow;
                 }
