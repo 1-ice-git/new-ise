@@ -151,7 +151,6 @@ namespace NewISE.Models.Tools
             return ac;
         }
 
-
         public static void PreSetLogAttivita(EnumAttivitaCrud eac, string descAttivitaSvolta, string tabellaCoinvolta, ModelDBISE db, decimal idTrasferimento = 0, decimal idTabellaCoinvolta = 0)
         {
             using (dtLogAttivita dtla = new dtLogAttivita())
@@ -177,7 +176,6 @@ namespace NewISE.Models.Tools
             }
         }
 
-
         public static void SetLogAttivita(EnumAttivitaCrud eac, string descAttivitaSvolta, string tabellaCoinvolta, ModelDBISE db, decimal idTrasferimento = 0, decimal idTabellaCoinvolta = 0)
         {
             using (dtLogAttivita dtla = new dtLogAttivita())
@@ -202,6 +200,7 @@ namespace NewISE.Models.Tools
                 dtla.SetLogAttivita(lam, db);
             }
         }
+
         public static void PreSetDocumento(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, EnumTipoDoc tipoDoc)
         {
 
@@ -270,6 +269,7 @@ namespace NewISE.Models.Tools
         {
             return Convert.ToDateTime(Data_Inizio_Base);
         }
+
         public static DateTime GetDtFineMeseCorrente()
         {
             string giorno = "01";
@@ -354,6 +354,7 @@ namespace NewISE.Models.Tools
             return result;
 
         }
+
 
     }
 
