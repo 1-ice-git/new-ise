@@ -1,0 +1,305 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    bool siDocCopiaContratto = Convert.ToBoolean(ViewData["siDocCopiaContratto"]);
+    bool siDocCopiaRicevuta = Convert.ToBoolean(ViewData["siDocCopiaRicevuta"]);
+    bool siDocModulo1 = Convert.ToBoolean(ViewData["siDocModulo1"]);
+    bool siDocModulo2 = Convert.ToBoolean(ViewData["siDocModulo2"]);
+    bool siDocModulo3 = Convert.ToBoolean(ViewData["siDocModulo3"]);
+    bool siDocModulo4 = Convert.ToBoolean(ViewData["siDocModulo4"]);
+    bool siDocModulo5 = Convert.ToBoolean(ViewData["siDocModulo5"]);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
+}
+
+<div class="row">
+    <hr />
+    <div class="col-xs-3">
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 10px;">
+            <button class="btn btn-default btn-sm" onclick="DownloadFormularioMAB(); ">
+                <i aria-hidden="true" class="fa fa-2x fa-file-pdf-o"></i>
+                Download formulario
+            </button>
+
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="table" style="background-color:transparent;padding-top:10px">
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Modulo Richiesta Prima Rata Maggiorazione Abitazione (Modulo1)
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocModulo1)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idAttivazione);" id="linkDoc1MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDoc1MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDoc1MAB">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idAttivazione);" id="uploadDoc1MAB">
+                            <img src="~/Immagini/Plus_Green.png"  width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Dichiarazione del Costo della Locazione (Modulo2)
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocModulo2)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Dichiarazione_Costo_Locazione),@idAttivazione);" id="linkDoc2MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDoc2MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"  />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDoc2MAB">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17"/>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Dichiarazione_Costo_Locazione ),@idAttivazione);" id="uploadDoc2MAB">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Attestazione Spese di Abitazione - Dirigente Responsabile (Modulo3)
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocModulo3)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente ),@idAttivazione);" id="linkDoc3MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDoc3MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"  />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDoc3MAB">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17"/>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente ),@idAttivazione);" id="uploadDoc3MAB">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Attestazione Spese di Abitazione - Collaboratore (Modulo4)
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocModulo4)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ),@idAttivazione);" id="linkDoc4MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDoc4MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"  />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDoc4MAB">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ),@idAttivazione);" id="uploadDoc4MAB">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Dichiarazione Clausola Contratto di Alloggio (Modulo5)
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocModulo5)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Clausole_Contratto_Alloggio ),@idAttivazione);" id="linkDoc5MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDoc5MAB">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDoc5MAB">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Clausole_Contratto_Alloggio ),@idAttivazione);" id="uploadDoc5MAB">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Copia Conforme all'originale del Contratto di Locazione
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocCopiaContratto)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Copia_Contratto_Locazione ),@idAttivazione);" id="linkDocContratto">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDocContratto">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"  />
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDocContratto">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17"  />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Copia_Contratto_Locazione ),@idAttivazione);" id="uploadDocContratto">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-7" style="text-align:right">
+                    <b>
+                        Copia Ricevuta/Bonifico di Pagamento
+                    </b>
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (siDocCopiaRicevuta)
+                    {
+                        <a href="#" onclick="VisualizzaDoc(@Convert.ToDecimal(@EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione ),@idAttivazione);" id="linkDocRicevuta">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Visualizza" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" id="linkDocRicevuta">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17"/>
+                        </a>
+                    }
+                </div>
+                <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
+                    @if (soloLettura)
+                    {
+                        <a href="#" id="uploadDocRicevuta">
+                            <img src="~/Immagini/IconeDocumenti/File-New-icon.png" width="17" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" onclick="UploadDocMAB(@Convert.ToDecimal(@EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione ),@idAttivazione);" id="uploadDocRicevuta">
+                            <img src="~/Immagini/Plus_Green.png" width="17" title="Aggiungi" />
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalDownloadFormularioMAB" tabindex="-1" role="dialog" aria-labelledby="ModalDownloadFormularioMABLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadFormularioMABLabel">Formulari Maggiorazione Abitazione</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="divFormularioMAB">
+                    @Html.Action("ElencoDocumentiFormularioMAB", "MaggiorazioneAbitazione")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function DownloadFormularioMAB() {
+        $('#ModalDownloadFormularioMAB').modal().show();
+    }
+
+</script>

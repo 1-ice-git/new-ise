@@ -1047,6 +1047,7 @@
     <Content Include="Immagini\EliminazioneDisable.png" />
     <Content Include="Immagini\Errore.gif" />
     <Content Include="Immagini\Errore2.png" />
+    <Content Include="Immagini\IconeDocumenti\File-New-icon.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\loader.gif" />
@@ -3093,6 +3094,7 @@
     <Compile Include="Models\DBModel\UfficiModel.cs" />
     <Compile Include="Models\DBModel\Utils.cs" />
     <Compile Include="Models\DBModel\ValutaUfficioModel.cs" />
+    <Compile Include="Models\DBModel\CanoneMABModel.cs" />
     <Compile Include="Models\DBModel\ValuteModel.cs" />
     <Compile Include="Models\dipInfoTrasferimentoModel.cs" />
     <Compile Include="Models\dtObj\dtAccesso.cs" />
@@ -3148,6 +3150,7 @@
     <Compile Include="Models\ViewModel\VariazioneElencoFamiliariModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneConiugeModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneDocumentiModel.cs" />
+    <Compile Include="Models\ViewModel\MaggiorazioneAbitazioneViewModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneMaggiorazioniFamiliariModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -3258,6 +3261,9 @@
     <Content Include="Views\Anticipi\GestionePulsantiAnticipi.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\MaggiorazioneAbitazione.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\AttivitaMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\FormulariMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\GestionePulsantiMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\ElencoDocumentiFormularioMAB.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -3273,7 +3279,6 @@
     <Folder Include="Lib\js\" />
     <Folder Include="Lib\locale\" />
     <Folder Include="Scripts\DayPilot\" />
-    <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>

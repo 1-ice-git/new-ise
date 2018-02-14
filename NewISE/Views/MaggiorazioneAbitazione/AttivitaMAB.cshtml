@@ -1,59 +1,90 @@
-﻿
-@model NewISE.Models.DBModel.MaggiorazioneAbitazioneModel
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.ViewModel
+
+@model IEnumerable<NewISE.Models.ViewModel.MaggiorazioneAbitazioneViewModel>
 
 @{
-    decimal idAttivitaAnticipi = Convert.ToDecimal(ViewData["idAttivitaAnticipi"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idAttivazioneMAB = Convert.ToDecimal(ViewData["idAttivazioneMAB"]);
+    decimal idMAB = Convert.ToDecimal(ViewData["idMAB"]);
     decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool siDati = Convert.ToBoolean(ViewData["siDati"]);
     decimal ValsoloLettura = Convert.ToDecimal(ViewData["soloLettura"]);
-    string txtReadOnly = "";
-    if (soloLettura)
-    {
-        txtReadOnly = "readonly";
-    }
 }
 
-@Html.Hidden("hiPercentualeRichiesta")
-@Html.Hidden("hiPercentualeAnticipoRichiesto")
 
+<h4>Maggiorazione Abitazione</h4>
+<hr />
 <div style="padding-right: 10px;">
-    <h4>Richiesta Anticipi</h4>
-    <hr />
-    <div class="table col-xs-12">
-        <div class="row">
-            <div class="col-xs-3">
-            </div>
 
-            <div class="col-xs-3 text-center" style="font-weight:bold">
-                @Html.DisplayNameFor(model => model.ImportoPrevisto)
-            </div>
-            <div class="col-xs-2 text-center" style="font-weight:bold">
-                @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
-            </div>
-            <div class="col-xs-3 text-center" style="font-weight:bold">
-                @Html.DisplayNameFor(model => model.ImportoPercepito)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-3 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
-                Indennità di Prima Sistemazione
-            </div>
-            <div class="col-xs-3">
-                <input type="text" id="ValImportoPrevisto" class="form-control " readonly style="text-align: right" />
-            </div>
-            <div class="col-xs-2">
-                <input type="text" maxlength="3" onkeyup="CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
-            </div>
-            <div>
-                <div id="divLoader" class="col-xs-3" hidden>
-                    <img src="~/Immagini/Loading/loader.gif" style="width:100%" height="30" />
-                </div>
-                <div id="divImportoPercepito" class="col-xs-3">
-                    <input type="text" id="ValImportoPercepito" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
-                </div>
-            </div>
-        </div>
-    </div>
+    @if (idMAB > 0)
+    {
+        @Ajax.ActionLink("Modifica", "ModificaMAB", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica Maggiorazione Abitazione", @id = "linkNuovaMAB" })
+    }
+    else
+    {
+        @Ajax.ActionLink("Inserisci", "InserisciMAB", "MaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divMaggiorazioneAbitazione", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci Maggiorazione Abitazione", @id = "linkEditMAB" })
+    }
+
+
+    <table id="tabMAB" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Tipo Anticipo
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.descrizioneValuta )
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CanoneMAB.ImportoCanone )
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataInizioMAB )
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.dataFineMAB)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (siDati)
+                        {
+                            if (item.AnticipoAnnuale)
+                            {
+                                <span class="text-uppercase">ANNUALE</span>
+                            }
+                            else
+                            {
+                                <span class="text-uppercase">SEMESTRALE</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-uppercase"></span>
+                        }
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CanoneMAB.ImportoCanone)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
+                    </td>
+                    <td>
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 </div>
 
@@ -61,17 +92,17 @@
 
     
 
-    $('#ValImportoPercepito').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: '€ ',
-        nSep: true
-    });
+    //$('#ValImportoPercepito').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ ',
+    //    nSep: true
+    //});
 
 
 
-    $('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
+    @*//$('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);*@
 
     
 
