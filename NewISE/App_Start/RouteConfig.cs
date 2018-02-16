@@ -39,7 +39,11 @@ namespace NewISE
             routes.MapRoute(
                 name: "CalendariEventi",
                 url: "CalendariEventi/index"
-            );            
+            );
+            routes.MapRoute(
+               name: "UtenzeDipendenti",
+               url: "UtenzeDipendenti/index"
+           );
         }
     }
 }

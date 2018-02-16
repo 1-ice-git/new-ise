@@ -1,0 +1,276 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.EmailSecondarieDipModel>
+@{
+    ViewBag.Title = "Lista email secondarie Dipendenti";
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    var errori = ViewData.ModelState;
+    string emailPrincipale = ViewBag.emailPrincipale;
+    decimal idDipendente = (decimal)ViewBag.idDipendente;
+}
+<input type="hidden" id="Amministratore" value="@admin.ToString()" />
+<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+    <div>
+        <h2 style="text-align:center; color:darkblue">Email principale: @emailPrincipale</h2>
+    </div>
+    <hr />
+    <div class="text-center">
+        <input type="text" name="newmail" id="newmail" />
+        <button type="button" class="btn btn-secondary" onclick="AggiungiMail(@idDipendente)"><b>Aggiungi email</b></button>
+        
+    </div>
+        <h3 style="text-align:center; color:darkblue">Elenco email secondarie:</h3>
+        <table id="tbelencoEmail" class="table">
+            <thead style="background-color:forestgreen;color:white">
+                <tr>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.Attiva)
+                    </th>
+                    <th class="text-center">
+                        Elimina email
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var rowColor = "#ffffff"; }
+                @foreach (var item in Model)
+                {
+                    <tr style="background-color:@rowColor;">
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Email)</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Attiva)</span>
+                        </td>
+                        <td class="text-center">
+                           @*<a href="#" onclick="EliminaEmail(@item.idEmailSecDip,@idDipendente);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" />*@
+                            <a href="#" onclick="EliminaEmailUtenze2(@item.idEmailSecDip);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" />
+                    </a>
+                    @*<a href="javascript:void(0);"
+       style="color:white"
+       class="anchorDetail" id_dip="@item.idDipendente">
+        <span class="text-uppercase"><img alt="Modifica" src="~/Immagini/Plus_Green.png" width="17" height="17" /></span>
+    </a>*@
+                        </td>
+                    </tr>
+                    if (@rowColor.Equals("#ffffff"))
+                    {
+                        rowColor = "#D9E6C4";
+                    }
+                    else
+                    {
+                        rowColor = "#ffffff";
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+<div class="modal fade" id="inviaUtenzeModal2" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                        <div id="viewUtenzeMail2">
+                            <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="background-color:white;text-align:center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                    </div>
+                 </div>
+            </div>
+    </div>
+
+
+
+
+<script type="text/javascript">
+     //   DocumentoModal();
+
+    $("#tbelencoEmail").DataTable({
+            "ordering": false,            
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+            }
+        });
+
+
+
+        $("#btModifica").click(function () {
+            //debugger;
+            $("#formEditTrasf").submit();
+        });
+
+        function CloseTimeModal() {
+            setTimeout(CloseModalFile, 2000);
+            //CloseModalFile();
+        }
+
+        function CloseModalFile() {
+            $('#inviaDocModal').modal('hide');
+            //RicaricaModificaTrasferimento();
+            setTimeout(RicaricaModificaTrasferimento, 1000);
+        }
+
+        //function DocumentoModal() {
+        //    $(".anchorDetail").click(function () {
+        //       //debugger;
+        //        var rotta = "/UtenzeDipendenti/ElencoEmailSecondarioDip";
+        //        var $buttonClicked = $(this);
+        //     //   var idf = $buttonClicked.attr('id_fe');
+        //        var idd = $buttonClicked.attr('id_dip');
+        //        $.ajax({
+        //            url: rotta,
+        //            type: "POST", //Le info testuali saranno passate in POST
+        //            data: {"idd": idd },
+        //            dataType: 'html',
+        //            async: false,
+        //            beforeSend: function () {
+        //                // debugger;
+        //                $('#inviaDocModal').modal('show');
+        //                //Blocca();
+        //            },
+        //            success: function (result) {
+        //               // debugger;
+        //                $("#viewDocumentoDettagli").empty();
+        //                $("#viewDocumentoDettagli").html(result);
+        //            },
+        //            error: function (error) {
+        //                //debugger;
+        //                //Sblocca();
+        //                var msg = error.responseText;
+        //                ErroreElaborazioneAjax(msg);
+        //            }
+        //        });
+        //    });
+        //}
+
+
+        function DialogInfo(response) {
+            $("#msgModalInfo").text(response);
+            $('#myModalInfo').modal('toggle');
+        }
+
+        
+        
+        function EliminaEmailUtenze2(idmail) {
+              //  debugger;
+            var rotta = "/UtenzeDipendenti/EliminaEmail";
+            var idd = @idDipendente;
+           
+            $('#dialog-confirm-Utenze').dialog({
+                autoOpen: true,
+                width: 400,
+                buttons: [
+                    {
+                        text: "OK",
+                        click: function () {
+                            $(this).dialog("close");
+                            $.ajax({
+                                type: "POST",
+                                url: rotta,
+                                data: { idEmailSec: idmail, idd: idd },
+                                dataType: 'html',
+                                beforeSend: function () {
+                                    //debugger;
+                                    //VerificaAutenticazione();
+                                //    $("#viewUtenzeMail").dialog("destroy");
+                                   $("#viewUtenzeMail2").show("slow");
+
+                                },
+                                success: function (result) {
+                                    //debugger;                                   
+                                    $("#viewUtenzeMail2").empty();
+                                    $("#viewUtenzeMail2").html(result);
+                                },
+                                complete: function () {
+                                   
+                                },
+                                error: function (jqXHR, textStatus, errorThrow) {
+                                    debugger;
+                                    var msg = errorThrow.err;
+                                    AlertDialog(msg);
+                                }
+
+                            });
+                        },
+                        "class": "ui-button-danger"
+                    },
+                    {
+                        text: "Annulla",
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+            //setInterval(function(){
+            //    $("#viewUtenzeMail").load().fadeIn("slow");
+            //},1000);
+        }
+
+        function AggiungiMail(id) {
+            debugger;
+            var rotta = "/UtenzeDipendenti/AggiungiEmail";
+            var newmail = $("#newmail").val();
+            
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { newmail: newmail, idd: id },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                    
+                },
+                success: function (result) {
+                    debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#viewUtenzeMail").empty();
+                    $("#viewUtenzeMail").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        }
+</script>
+
+
+
