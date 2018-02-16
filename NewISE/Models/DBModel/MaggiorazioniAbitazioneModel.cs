@@ -17,7 +17,9 @@ namespace NewISE.Models.DBModel
         public decimal idTrasferimento { get; set; }
         public decimal idAttivazioneMAB { get; set; }
 
+        [Display(Name = "Dal")]
         public DateTime? dataInizioMAB { get; set; }
+        [Display(Name = "Al")]
         public DateTime? dataFineMAB { get; set; }
 
         public bool AnticipoAnnuale { get; set; }
@@ -30,5 +32,7 @@ namespace NewISE.Models.DBModel
         {
             return idMAB > 0 ? true : false;
         }
+
+        public CanoneMABModel CanoneMAB;
     }
 }

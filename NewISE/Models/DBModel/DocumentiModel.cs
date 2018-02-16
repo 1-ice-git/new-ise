@@ -28,7 +28,7 @@ namespace NewISE.Models.DBModel
         Titolo_Viaggio = 2,
         Prima_Rata_Maggiorazione_abitazione = 3,
         Dichiarazione_Costo_Locazione = 4,
-        Attestazione_Spese_Abitazione = 5,
+        Attestazione_Spese_Abitazione_Dirigente = 5,
         Clausole_Contratto_Alloggio = 6,
         Copia_Contratto_Locazione = 7,
         Contributo_Fisso_Omnicomprensivo = 8,
@@ -37,8 +37,8 @@ namespace NewISE.Models.DBModel
         Lettera_Trasferimento = 11,
         Formulario_Maggiorazioni_Familiari = 12,
         Formulario_Titoli_Viaggio = 13,
-
-
+        Attestazione_Spese_Abitazione_Collaboratore = 41,
+        Copia_Ricevuta_Pagamento_Locazione = 42,
     }
 
 
