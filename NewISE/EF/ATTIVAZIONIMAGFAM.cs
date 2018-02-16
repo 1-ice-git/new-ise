@@ -17,11 +17,11 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ATTIVAZIONIMAGFAM()
         {
+            this.CONIUGE = new HashSet<CONIUGE>();
+            this.FIGLI = new HashSet<FIGLI>();
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
             this.PENSIONE = new HashSet<PENSIONE>();
             this.RINUNCIAMAGGIORAZIONIFAMILIARI = new HashSet<RINUNCIAMAGGIORAZIONIFAMILIARI>();
-            this.CONIUGE = new HashSet<CONIUGE>();
-            this.FIGLI = new HashSet<FIGLI>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
@@ -31,21 +31,21 @@ namespace NewISE.EF
         public Nullable<System.DateTime> DATARICHIESTAATTIVAZIONE { get; set; }
         public bool ATTIVAZIONEMAGFAM { get; set; }
         public Nullable<System.DateTime> DATAATTIVAZIONEMAGFAM { get; set; }
+        public System.DateTime DATAVARIAZIONE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public System.DateTime DATAVARIAZIONE { get; set; }
     
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PENSIONE> PENSIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RINUNCIAMAGGIORAZIONIFAMILIARI> RINUNCIAMAGGIORAZIONIFAMILIARI { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FIGLI> FIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

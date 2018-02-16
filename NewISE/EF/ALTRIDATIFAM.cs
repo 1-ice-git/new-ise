@@ -35,9 +35,9 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
         public virtual CONIUGE CONIUGE { get; set; }
         public virtual FIGLI FIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
     }
 }

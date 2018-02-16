@@ -23,12 +23,12 @@ namespace NewISE.EF
         }
     
         public decimal IDRIDUZIONI { get; set; }
+        public decimal IDFUNZIONERIDUZIONE { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
         public decimal PERCENTUALE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
-        public decimal IDFUNZIONERIDUZIONE { get; set; }
     
         public virtual FUNZIONERIDUZIONE FUNZIONERIDUZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public COEFFICIENTEINDRICHIAMO()
         {
-            this.RICHIAMO = new HashSet<RICHIAMO>();
             this.RIDUZIONI = new HashSet<RIDUZIONI>();
+            this.RICHIAMO = new HashSet<RICHIAMO>();
         }
     
         public decimal IDCOEFINDRICHIAMO { get; set; }
@@ -30,8 +30,8 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
     }
 }

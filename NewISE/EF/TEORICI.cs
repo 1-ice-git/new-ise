@@ -35,8 +35,8 @@ namespace NewISE.EF
         public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<STIPENDI> STIPENDI { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }

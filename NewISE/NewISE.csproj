@@ -2654,12 +2654,6 @@
     <Compile Include="EF\ANTICIPOSALDOTE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\AP_C.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\AP_F.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\ATTIVAZIONEMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
@@ -2876,13 +2870,7 @@
     <Compile Include="EF\TEPARTENZA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\TEP_FK.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
     <Compile Include="EF\TERIENTRO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TER_FK.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TFR.cs">
@@ -2925,9 +2913,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOTRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOTRASPORTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOVOCE.cs">

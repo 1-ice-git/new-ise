@@ -17,8 +17,8 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITABASE()
         {
-            this.INDENNITA = new HashSet<INDENNITA>();
             this.RIDUZIONI = new HashSet<RIDUZIONI>();
+            this.INDENNITA = new HashSet<INDENNITA>();
         }
     
         public decimal IDINDENNITABASE { get; set; }
@@ -32,8 +32,8 @@ namespace NewISE.EF
     
         public virtual LIVELLI LIVELLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RIDUZIONI> RIDUZIONI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<INDENNITA> INDENNITA { get; set; }
     }
 }

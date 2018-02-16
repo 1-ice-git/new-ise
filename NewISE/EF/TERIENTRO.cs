@@ -18,18 +18,18 @@ namespace NewISE.EF
         public TERIENTRO()
         {
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
+            this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
             this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
-            this.TER_FK = new HashSet<TER_FK>();
         }
     
         public decimal IDTERIENTRO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
+        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TER_FK> TER_FK { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
     }
 }
