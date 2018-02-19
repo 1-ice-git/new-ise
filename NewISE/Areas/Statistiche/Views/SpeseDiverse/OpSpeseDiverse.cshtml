@@ -1,0 +1,386 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Spese_Diverse>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Spese Diverse"></div>
+
+@*<button id="opener">xx</button>*@
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+
+        <div class="col-md-2">
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+
+
+    </div>
+    <br />
+
+</div>
+
+<div class="form-group">
+    <div class="col-md-3">
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>*@
+        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="OpSpeseDiverse()">Visualizza il Riepilogo delle Operazioni effettuate - Spese Diverse </a>
+
+    </div>
+
+</div>
+<br /><br />
+<table id="tb_Stp_Op_Spese_Diverse" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NOMINATIVO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MATRICOLA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DESCRIZIONE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TSP_DESCRIZIONE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_DT_DECORRENZA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_DT_OPERAZIONE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_IMPORTO_LIRE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_TIPO_MOVIMENTO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_PROG_SPESA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SPD_PROG_TRASFERIMENTO)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MATRICOLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DESCRIZIONE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSP_DESCRIZIONE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_DT_DECORRENZA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_DT_OPERAZIONE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_IMPORTO_LIRE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_TIPO_MOVIMENTO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_PROG_SPESA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPD_PROG_TRASFERIMENTO)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Stp_Op_Spese_Diverse').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptOpSpeseDiverse";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+
+    function invia() {
+        //debugger
+        var DATA = $("#datepicker").datepicker().val()
+        var DATA1 = $("#datepicker1").datepicker().val()
+
+        window.location.href = "/Statistiche/ArchivioVecchioISE/RptOpSpeseDiverse?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
+    };
+
+    /* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data_operazione, dataIndex) {
+            var min = parseInt($('#min').val(), 10);
+            var max = parseInt($('#max').val(), 10);
+            var data_operazione = parseFloat(data_operazione[8]) || 0; // use data for the age column
+
+            if ((isNaN(min) && isNaN(max)) ||
+                 (isNaN(min) && data_operazione <= max) ||
+                 (min <= data_operazione && isNaN(max)) ||
+                 (min <= data_operazione && data_operazione <= max)) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $(document).ready(function () {
+        var table = $('#tb_Op_Indennita_Estera').DataTable();
+
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup(function () {
+            table.draw();
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '2001:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker1").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '1920:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    function OpSpeseDiverse() {
+        //debugger;
+
+        rotta = "/Statistiche/ArchivioVecchioISE/OpSpeseDiverse";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        var chk = true;
+
+        //$("#codicedipendente").val = idMatricola;
+
+        //if (isNaN(codicequalifica)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+
+        //if (isNaN(null)) {
+        //    alert("null is not a number");
+        //} else {
+        //    alert("i think null is a number");
+        //}
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function RptOpSpeseDiverse() {
+        //debugger;
+
+        rotta = "/Statistiche/ArchivioVecchioISE/RptOpSpeseDiverse";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+</script>
+
+
+
+

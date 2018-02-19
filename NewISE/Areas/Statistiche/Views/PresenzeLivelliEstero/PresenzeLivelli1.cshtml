@@ -1,0 +1,403 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Presenze_Livelli>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Presenze dei Livelli in servizio all'Estero'"></div>
+
+@*<button id="opener">xx</button>*@
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+        <div class="col-md-2">
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+        <div class="select2-container select2-container--classic">
+            @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="form-group">
+
+    <div class="col-md-3">
+        @*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
+        <a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>
+    </div>
+</div>
+<br /><br />
+<table id="tbDipEsteroLivello" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.codQualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.qualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_Trasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_Rientro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.dt_Decorrenza)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.progr_trasferimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.progr_movimento)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codQualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.qualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_Trasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_Rientro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.dt_Decorrenza)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.progr_trasferimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.progr_movimento)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+        $('#tbDipEsteroLivello').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    //effect: "blind",
+                    //duration: 1000
+                },
+                hide: {
+                    //effect: "explode",
+                    //duration: 1000
+                },
+                close: function (event, ui) {
+                    $('.container').removeClass("NoOverflow");
+                },
+                height: windowHeight, width: windowWidth
+
+
+            });
+
+            $("#opener").on("click", function () {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
+                //rotta = "/Statistiche/PresenzeLivelliEstero/RptPresenzeLivelli";
+
+
+                var codicequalifica = $("#COD_QUALIFICA").select2('val');
+                var data = $("#datepicker").datepicker().val()
+                var data1 = $("#datepicker1").datepicker().val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        codicequalifica: codicequalifica,
+                        V_DATA: data,
+                        V_DATA1: data1
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+
+
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+            });
+        });
+
+
+        function invia() {
+            //debugger
+
+            var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli?codicequalifica=" + codicequalifica + "&V_DATA=" + data + "&V_DATA1=" + data1 + ""
+        };
+
+        //$(document).ready(function () {
+        //    $('.datepicker-element').datepicker("show");
+        //});
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '2001:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
+        // Calendario con possibilità di cambiare mese e anno
+        $(document).ready(function () {
+            $(".datepicker1").datepicker({
+
+                changeMonth: true,
+                changeYear: true,
+                //yearRange: '1920:2010',
+                //dateFormat: 'dd-mm-yy',
+                //defaultDate: '01-01-2001'
+                //yearRange: "-15:+0",
+                //defaultDate: '01/01/01'
+            });
+        });
+
+        function PresenzeLivelli(codicequalifica) {
+            //debugger;
+
+            //rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
+            rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
+
+
+            var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").val();
+            var data1 = $("#datepicker1").val();
+
+            var chk = true;
+
+            //$("#codicedipendente").val = idMatricola;
+
+            //if (isNaN(codicequalifica)) {
+            //    $("#divPViewParametri").empty();
+            //    return false;
+            //}
+
+            //if (isNaN(null)) {
+            //    alert("null is not a number");
+            //} else {
+            //    alert("i think null is a number");
+            //}
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicequalifica: codicequalifica,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        function PrelevaReportQualifica(codicequalifica) {
+            //debugger;
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
+
+            var codicequalifica = $("#COD_QUALIFICA").select2('val');
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").val();
+
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicequalifica: codicequalifica,
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divPViewParametri").empty();
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //$("#divPViewParametri").empty();
+                    window.open('_blank');
+                    $("#divPViewParametri").html(result);
+
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        }
+
+        @*$(function (PrelevaReportQualifica) {
+            $("#datepicker").datepicker();
+            $("#datepicker1").datepicker();
+
+            //$("#btndatefilter").click(function() {
+                //var startdate = $('#datestart').datepicker('getDate');
+                var data = $("#datepicker").val();
+                //var enddate = $('#dateend').datepicker('getDate');
+                var data1 = $("#datepicker1").val();
+                var dateFilter =
+                { StartDate: data.toISOString(), EndDate: data1.toISOString() };
+
+                $.ajax({
+                    //url: "@Url.Action("MyAction", "MyController")",
+                    url: "@Url.Action("RptPresenzeLivelli", "ArchivioVecchioISE")",
+                    type: "GET",
+                data: dateFilter
+            })
+                .done(function(auditActivity) {
+                    $("#res").html(auditActivity);
+                });
+        });*@
+
+        $("#COD_QUALIFICA").select2({
+            placeholder: "Seleziona il Livello ",
+            allowClear: true,
+            language: "it",
+            width: '350'
+
+        });
+</script>
+
+
+

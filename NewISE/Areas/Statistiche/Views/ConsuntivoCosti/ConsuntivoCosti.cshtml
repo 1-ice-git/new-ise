@@ -1,0 +1,293 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Consuntivo_dei_costi>
+
+<div id="dialog" title="Consuntivo dei Costi"></div>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <hr />
+
+        <div class="col-md-2">
+            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+
+        <div class="col-md-2">
+            @*@Html.Editor("Al", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+        </div>
+    </div>
+   
+</div>
+
+<div class="form-group">
+    <div class="col-md-3">
+        <a href="#" id="opener">Stampa Consuntivo dei Costi  </a>
+    </div>
+    <div class="col-md-3">
+        <a href="#" onclick="ConsuntivoCosti()">Visualizza il Consuntivo dei Costi</a>
+
+    </div>
+
+</div>
+<br /><br />
+
+
+<table id="tb_Consuntivo_Costi" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nominativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sede)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.valuta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.importo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipoImporto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.qualifica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.codsede)
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.matricola)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nominativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sede)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.valuta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descrizione)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.importo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipoImporto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.qualifica)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.codsede)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#tb_Consuntivo_Costi').DataTable({
+            "order": [],
+            "scrollY": 220,
+            "scrollX": true,
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+
+            }
+        });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '2001:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker1").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '1920:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            //rotta = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
+            rotta = "/Statistiche/ConsuntivoCosti/RptConsuntivoCosti";
+
+            
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1,
+                    V_UTENTE: 'fantomas',
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function ConsuntivoCosti() {
+        //debugger;
+
+        //rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCosti";
+        rotta = "/Statistiche/ConsuntivoCosti/ConsuntivoCosti";
+        
+        var data = $("#datepicker").val();
+        var data1 = $("#datepicker1").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1,
+                V_UTENTE: 'fantomas',
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPViewParametri").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+        function invia() {
+            //debugger
+            //var matricola = parseInt($("#MATRICOLA").select2('val'));
+            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+
+            window.location.href = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
+        };
+
+</script>
+
+
+
+
+
+
+

@@ -1136,7 +1136,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
                 adp.Fill(ds15, ds15.DataTable15.TableName);
                 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report19.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1247,7 +1247,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds9, ds9.V_ISE_STP_CONS_COSTI.TableName);
                 adp.Fill(ds9, ds9.DataTable9.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report12.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet9", ds9.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1418,7 +1418,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds10, ds10.V_ISE_STP_CONS_COSTI_COAN.TableName);
                 adp.Fill(ds10, ds10.DataTable10.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report13.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet10", ds10.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1598,7 +1598,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds7, ds7.V_OP_EFFETTUATE_IND_ESTERA.TableName);
                 adp.Fill(ds7, ds7.DataTable7.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report22.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptOpIndEstera.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet7", ds7.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1663,13 +1663,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.nominativo = rdr["NOMINATIVO"].ToString();
                     details.sede = rdr["SED_DESCRIZIONE"].ToString();
                     details.valuta = rdr["VAL_DESCRIZIONE"].ToString();
-                    //if (rdr["CON_DT_DECORRENZA"] != DBNull.Value)
                     details.data_decorrenza = rdr["CON_DT_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["CON_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
-                    //details.data_decorrenza = rdr["CON_DT_DECORRENZA"].ToString();
-                    //if (rdr["CON_DT_LETTERA"] != DBNull.Value)
-                    //details.data_lettera = Convert.ToDateTime("" + rdr["CON_DT_LETTERA"]).ToString("dd/MM/yyyy");
+                    details.data_lettera = rdr["CON_DT_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["CON_DT_LETTERA"]).ToString("dd/MM/yyyy");
                     details.data_operazione = rdr["CON_DT_OPERAZIONE"] == DBNull.Value ? null : Convert.ToDateTime(rdr["CON_DT_OPERAZIONE"]).ToString("dd/MM/yyyy");
-                    //details.data_operazione = rdr["CON_DT_OPERAZIONE"].ToString();
                     details.contributo_valuta = rdr["CON_CONTRIBUTO_VALUTA"].ToString();
                     details.contributo_L_E = rdr["CON_CONTRIBUTO_LIRE"].ToString();
                     details.canone = rdr["CON_CANONE"].ToString();
@@ -1731,7 +1727,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds8, ds8.V_OP_EFFETTUATE_CONTR_ABITAZ.TableName);
                 adp.Fill(ds8, ds8.DataTable8.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report23.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet8", ds8.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1863,7 +1859,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 adp.Fill(ds1, ds1.DataTable1.TableName);
 
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptOpUsoAbitazione.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", ds1.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -1902,8 +1898,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "CAN_CANONE_ANNUO_VALUTA, ";
                 Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
                 Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
-                Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
-                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI) AS QUOTA_MENS, ";
+                //Sql += "- (DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
+                //Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI) AS QUOTA_MENS, ";
+                Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE, 0, 0, CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE / CAN_N_MESI) AS QUOTA_MENS, ";
                 Sql += "CAN_PROG_TRASFERIMENTO, ";
                 Sql += "CAN_PROG_CAN_ABITAZIONE ";
                 Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
@@ -1929,15 +1926,14 @@ namespace NewISE.Areas.Statistiche.Controllers
                     details.nominativo = rdr["NOMINATIVO"].ToString();
                     details.sede = rdr["SEDE"].ToString();
                     details.valuta = rdr["VALUTA"].ToString();
-                    details.data_decorrenza = rdr["DATA_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
-                    //details.data_decorrenza = rdr["DATA_DECORRENZA"].ToString();
-                    //details.data_lettera = rdr["DATA_LETTERA"].ToString();
-                    details.data_lettera = rdr["DATA_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
-                    details.data_operazione = rdr["DATA_OPERAZIONE"].ToString();
                     details.anticipo_valuta = rdr["CANONE"].ToString();
                     details.anticipo_euro = rdr["CANONE"].ToString();
                     //details.quota_mensile = rdr["QUOTA_MENS"].ToString();
-                     model.Add(details);
+                    //details.quota_mensile = Convert.ToDecimal(rdr["QUOTA_MENS"].ToString());
+                    details.data_decorrenza = rdr["DATA_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_DECORRENZA"]).ToString("dd/MM/yyyy");
+                    details.data_lettera = rdr["DATA_LETTERA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_LETTERA"]).ToString("dd/MM/yyyy");
+                    details.data_operazione = rdr["DATA_OPERAZIONE"] == DBNull.Value ? null : Convert.ToDateTime(rdr["DATA_OPERAZIONE"]).ToString("dd/MM/yyyy");
+                    model.Add(details);
                 }
                 //return View("ViewName", model);
                 return PartialView("OpCanoneAnticipato", model);
@@ -1977,7 +1973,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 Sql += "DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
                 Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) CANONE, ";
                 Sql += "- ROUND((DECODE(CAN_CAMBIO_VALUTA_CANONE,0,0, ";
-                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI),6) AS QUOTA_MENS, ";
+                Sql += "CAN_CANONE_ANNUO_VALUTA / CAN_CAMBIO_VALUTA_CANONE) / CAN_N_MESI),2) AS QUOTA_MENS, ";
                 Sql += "CAN_PROG_TRASFERIMENTO, ";
                 Sql += "CAN_PROG_CAN_ABITAZIONE ";
                 Sql += "From CANONEANNUO, SEDIESTERE, VALUTE, ANADIPE ";
@@ -2028,9 +2024,9 @@ namespace NewISE.Areas.Statistiche.Controllers
                 OracleDataAdapter adp = new OracleDataAdapter(Sql, conx);
 
                 //adp.Fill(ds14, ds14.V_OP_EFFETTUATE_CANONE_ANTI.TableName);
-                adp.Fill(ds22, ds22.DataTable22.TableName);
+                adp.Fill(ds22, ds22.DataTable1.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report35.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report12.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet22", ds22.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -2152,7 +2148,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds17, ds17.V_OP_EFFETTUATE_SPESE_DIVERSE.TableName);
                 adp.Fill(ds17, ds17.DataTable17.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report32.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet17", ds17.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -2291,7 +2287,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 adp.Fill(ds3, ds3.DataTable3.TableName);
 
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report26.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptOpMaggAbitaz.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet3", ds3.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -2436,9 +2432,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 details.nominativo = rdr["NOMINATIVO"].ToString();
                                 details.matricola = rdr["IES_MATRICOLA"].ToString();
                                 details.sede = rdr["SED_DESCRIZIONE"].ToString();
-                                details.dt_Trasferimento = Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
-                                details.dt_Rientro = Convert.ToDateTime(rdr["TRA_DT_FIN_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
-                                details.dt_Decorrenza = Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
+                                //details.dt_Trasferimento = Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
+                                details.dt_Trasferimento = rdr["IES_DT_TRASFERIMENTO"] == DBNull.Value ? null : Convert.ToDateTime(rdr["IES_DT_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
+                                //details.dt_Rientro = Convert.ToDateTime(rdr["TRA_DT_FIN_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
+                                details.dt_Rientro = rdr["TRA_DT_FIN_TRASFERIMENTO"] == DBNull.Value ? null : Convert.ToDateTime(rdr["TRA_DT_FIN_TRASFERIMENTO"]).ToString("dd/MM/yyyy");
+                                //details.dt_Decorrenza = Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
+                                details.dt_Decorrenza = rdr["IES_DT_DECORRENZA"] == DBNull.Value ? null : Convert.ToDateTime(rdr["IES_DT_DECORRENZA"]).ToString("dd/MM/yyyy");
                                 details.progr_trasferimento = rdr["IES_PROG_TRASFERIMENTO"].ToString();
                                 details.progr_movimento = rdr["IES_PROG_MOVIMENTO"].ToString();
                                 model.Add(details);
@@ -2525,7 +2524,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds13, ds13.V_PRESENZE_LIVELLI.TableName);
                 adp.Fill(ds13, ds13.DataTable13.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report20.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet13", ds13.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -2670,7 +2669,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 adp.Fill(ds18, ds18.DataTable1.TableName);
                 
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report33.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptSpeseDiverse.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet18", ds18.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
@@ -2809,7 +2808,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 adp.Fill(ds12, ds12.DataTable12.TableName);
 
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\Report31.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet12", ds12.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]

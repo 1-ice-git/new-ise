@@ -757,7 +757,7 @@
         <Top>5.52662cm</Top>
         <Left>0.94932cm</Left>
         <Height>1.2cm</Height>
-        <Width>24.33917cm</Width>
+        <Width>24.33916cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -780,7 +780,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>RIEPILOGO DELLE OPERAZIONI EFFETTAUTE - CANONE ANTICIPATO</Value>
+                <Value>RIEPILOGO DELLE OPERAZIONI EFFETTUATE - CANONE ANTICIPATO</Value>
                 <Style>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>

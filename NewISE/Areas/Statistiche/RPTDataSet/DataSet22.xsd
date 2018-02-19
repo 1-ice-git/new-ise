@@ -12,7 +12,7 @@
   <xs:element name="DataSet22" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet22" msprop:Generator_UserDSName="DataSet22">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="DataTable22" msprop:Generator_TableClassName="DataTable22DataTable" msprop:Generator_TableVarName="tableDataTable22" msprop:Generator_TablePropName="DataTable22" msprop:Generator_RowDeletingName="DataTable22RowDeleting" msprop:Generator_RowChangingName="DataTable22RowChanging" msprop:Generator_RowEvHandlerName="DataTable22RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable22RowDeleted" msprop:Generator_UserTableName="DataTable22" msprop:Generator_RowChangedName="DataTable22RowChanged" msprop:Generator_RowEvArgName="DataTable22RowChangeEvent" msprop:Generator_RowClassName="DataTable22Row">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="NOMINATIVO" msprop:Generator_ColumnVarNameInTable="columnNOMINATIVO" msprop:Generator_ColumnPropNameInRow="NOMINATIVO" msprop:Generator_ColumnPropNameInTable="NOMINATIVOColumn" msprop:Generator_UserColumnName="NOMINATIVO" type="xs:string" minOccurs="0" />
@@ -23,7 +23,6 @@
               <xs:element name="DATA_LETTERA" msprop:Generator_ColumnVarNameInTable="columnDATA_LETTERA" msprop:Generator_ColumnPropNameInRow="DATA_LETTERA" msprop:Generator_ColumnPropNameInTable="DATA_LETTERAColumn" msprop:Generator_UserColumnName="DATA_LETTERA" type="xs:string" minOccurs="0" />
               <xs:element name="DATA_OPERAZIONE" msprop:Generator_ColumnVarNameInTable="columnDATA_OPERAZIONE" msprop:Generator_ColumnPropNameInRow="DATA_OPERAZIONE" msprop:Generator_ColumnPropNameInTable="DATA_OPERAZIONEColumn" msprop:Generator_UserColumnName="DATA_OPERAZIONE" type="xs:string" minOccurs="0" />
               <xs:element name="CANONE" msprop:Generator_ColumnVarNameInTable="columnCANONE" msprop:Generator_ColumnPropNameInRow="CANONE" msprop:Generator_ColumnPropNameInTable="CANONEColumn" msprop:Generator_UserColumnName="CANONE" type="xs:string" minOccurs="0" />
-              <xs:element name="QUOTA_MENS" msprop:Generator_ColumnVarNameInTable="columnQUOTA_MENS" msprop:Generator_ColumnPropNameInRow="QUOTA_MENS" msprop:Generator_ColumnPropNameInTable="QUOTA_MENSColumn" msprop:Generator_UserColumnName="QUOTA_MENS" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
