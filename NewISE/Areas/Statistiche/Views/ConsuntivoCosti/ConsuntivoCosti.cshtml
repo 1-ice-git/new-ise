@@ -1,138 +1,151 @@
 ﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Consuntivo_dei_costi>
 
 <div id="dialog" title="Consuntivo dei Costi"></div>
+<div style="clear: both"></div>
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <hr />
+<div class="container">
 
-        <div class="col-md-2">
-            @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Consuntivo dei Costi</b></div>
+        <div class="panel-body">
 
-        <div class="col-md-2">
-            @*@Html.Editor("Al", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
-            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
-    </div>
-   
-</div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <hr />
 
-<div class="form-group">
-    <div class="col-md-3">
-        <a href="#" id="opener">Stampa Consuntivo dei Costi  </a>
-    </div>
-    <div class="col-md-3">
-        <a href="#" onclick="ConsuntivoCosti()">Visualizza il Consuntivo dei Costi</a>
+                    <div class="col-md-2">
+                        @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+                            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
 
-    </div>
+                    <div class="col-md-2">
+                        @*@Html.Editor("Al", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/mm/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+                            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
+                </div>
 
-</div>
-<br /><br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    <a href="#" id="opener">Stampa Consuntivo dei Costi  </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="#" onclick="ConsuntivoCosti()">Visualizza il Consuntivo dei Costi</a>
+
+                </div>
+
+            </div>
+            <br /><br />
 
 
-<table id="tb_Consuntivo_Costi" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.matricola)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.nominativo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.sede)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.valuta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.descrizione)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.importo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tipoImporto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.qualifica)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.codsede)
-            </th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+            <table id="tb_Consuntivo_Costi" class="display" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.matricola)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.nominativo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sede)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.valuta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.descrizione)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.importo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tipoImporto)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.qualifica)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.codsede)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.matricola)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nominativo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.sede)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.valuta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.descrizione)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.importo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tipoImporto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.qualifica)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.codsede)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.matricola)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nominativo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.sede)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.valuta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.descrizione)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.importo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tipoImporto)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.qualifica)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.codsede)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/javascript">
     $('#tb_Consuntivo_Costi').DataTable({
-            "order": [],
-            "scrollY": 220,
-            "scrollX": true,
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
-
+        "order": [],
+        "scrollY": 220,
+        "scrollX": true,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        });
+
+        }
+    });
 
     // Calendario con possibilità di cambiare mese e anno
     $(document).ready(function () {
@@ -193,7 +206,7 @@
             //rotta = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
             rotta = "/Statistiche/ConsuntivoCosti/RptConsuntivoCosti";
 
-            
+
             var data = $("#datepicker").datepicker().val()
             var data1 = $("#datepicker1").datepicker().val()
 
@@ -238,7 +251,7 @@
 
         //rotta = "/Statistiche/ArchivioVecchioISE/ConsuntivoCosti";
         rotta = "/Statistiche/ConsuntivoCosti/ConsuntivoCosti";
-        
+
         var data = $("#datepicker").val();
         var data1 = $("#datepicker1").val();
 
@@ -275,13 +288,13 @@
 
     }
 
-        function invia() {
-            //debugger
-            //var matricola = parseInt($("#MATRICOLA").select2('val'));
-            //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
+    function invia() {
+        //debugger
+        //var matricola = parseInt($("#MATRICOLA").select2('val'));
+        //window.location.href = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente?matricola=" + matricola;
 
-            window.location.href = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
-        };
+        window.location.href = "/Statistiche/ArchivioVecchioISE/RptConsuntivoCosti";
+    };
 
 </script>
 

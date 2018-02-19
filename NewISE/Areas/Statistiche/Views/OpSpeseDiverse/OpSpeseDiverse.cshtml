@@ -4,140 +4,151 @@
 <div id="dialog" title="Riepilogo delle Operazioni Effettuate - Spese Diverse"></div>
 
 @*<button id="opener">xx</button>*@
-<div class="form-horizontal">
-    <div class="form-group">
-        <hr />
-
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
-
-        <div class="col-md-2">
-            @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-        </div>
-
-
-    </div>
-    <br />
-
-</div>
-
-<div class="form-group">
-    <div class="col-md-3">
-        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>*@
-        <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>
-    </div>
-    <div class="col-md-3">
-        <a href="#" onclick="OpSpeseDiverse()">Visualizza il Riepilogo delle Operazioni effettuate - Spese Diverse </a>
-
-    </div>
-
-</div>
 <br /><br />
-<table id="tb_Stp_Op_Spese_Diverse" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NOMINATIVO)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MATRICOLA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DESCRIZIONE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSP_DESCRIZIONE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_DT_DECORRENZA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_DT_OPERAZIONE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_IMPORTO_LIRE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_TIPO_MOVIMENTO)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_PROG_SPESA)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SPD_PROG_TRASFERIMENTO)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Spese Diverse</b></div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    
+                    <div class="col-md-2">
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
+
+
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-3">
+                    @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>*@
+                    <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Spese Diverse </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="#" onclick="OpSpeseDiverse()">Visualizza il Riepilogo delle Operazioni effettuate - Spese Diverse </a>
+
+                </div>
+
+            </div>
+            <br /><br />
+            <table id="tb_Stp_Op_Spese_Diverse" class="display" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NOMINATIVO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MATRICOLA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DESCRIZIONE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TSP_DESCRIZIONE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_DT_DECORRENZA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_DT_OPERAZIONE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_IMPORTO_LIRE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_TIPO_MOVIMENTO)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_PROG_SPESA)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SPD_PROG_TRASFERIMENTO)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NOMINATIVO)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MATRICOLA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DESCRIZIONE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TSP_DESCRIZIONE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_DT_DECORRENZA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_DT_OPERAZIONE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_IMPORTO_LIRE)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_TIPO_MOVIMENTO)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_PROG_SPESA)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SPD_PROG_TRASFERIMENTO)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MATRICOLA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DESCRIZIONE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TSP_DESCRIZIONE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_DT_DECORRENZA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_DT_OPERAZIONE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_IMPORTO_LIRE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_TIPO_MOVIMENTO)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_PROG_SPESA)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SPD_PROG_TRASFERIMENTO)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     $('#tb_Stp_Op_Spese_Diverse').DataTable({
-            "order": [],
-            "scrollY": 220,
-            "scrollX": true,
-            "language": {
-                "sEmptyTable": "Nessun dato presente nella tabella",
-                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
-                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
-                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
-                "sInfoPostFix": "",
-                "sInfoThousands": ".",
-                "sLengthMenu": "Visualizza _MENU_ elementi",
-                "sLoadingRecords": "Caricamento...",
-                "sProcessing": "Elaborazione...",
-                "sSearch": "Cerca:",
-                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
-                "oPaginate": {
-                    "sFirst": "Inizio",
-                    "sPrevious": "Precedente",
-                    "sNext": "Successivo",
-                    "sLast": "Fine"
-                },
-                "oAria": {
-                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
-                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-                }
-
+        "order": [],
+        "scrollY": 220,
+        "scrollX": true,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        });
+
+        }
+    });
 
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
@@ -339,7 +350,7 @@
         var data = $("#datepicker").datepicker().val()
         var data1 = $("#datepicker1").datepicker().val()
 
-        
+
 
         $.ajax({
             type: "POST",

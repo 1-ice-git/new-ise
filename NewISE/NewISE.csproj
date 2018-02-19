@@ -200,7 +200,6 @@
     <Content Include="Areas\Statistiche\Views\OpMaggiorazioneAbitazione\OpMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpMaggiorazioneAbitazione\RptOpMaggiorazioneAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\Index.cshtml" />
-    <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput-rtl.min.css" />
     <Content Include="bower_components\bootstrap-fileinput\css\fileinput.css" />
@@ -2184,18 +2183,15 @@
     <Content Include="Areas\Statistiche\Views\DislocazioneDipEstero\RptDislocazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpContributoAbitazione\OpContributoAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpContributoAbitazione\RptOpContributoAbitazione.cshtml" />
-    <Content Include="Areas\Statistiche\Views\OpSpeseDiverse\SpeseDiverse.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpSpeseDiverse\RptOpSpeseDiverse.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpUsoAbitazione\OpUsoAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\OpUsoAbitazione\RptOpUsoAbitazione.cshtml" />
     <Content Include="Areas\Statistiche\Views\SpeseAvvicendamento\SpeseAvvicendamento.cshtml" />
     <Content Include="Areas\Statistiche\Views\SpeseAvvicendamento\RptSpeseAvvicendamento.cshtml" />
     <Content Include="Areas\Statistiche\Views\SpeseDiverse\SpeseDiverse.cshtml" />
-    <Content Include="Areas\Statistiche\Views\SpeseDiverse\RptOpSpeseDiverse.cshtml" />
-    <Content Include="Areas\Statistiche\Views\SpeseDiverse\OpSpeseDiverse.cshtml" />
-    <Content Include="Areas\Statistiche\Views\PresenzeLivelliEstero\PresenzeLivelli1.cshtml" />
-    <Content Include="Areas\Statistiche\Views\PresenzeLivelliEstero\PresenzeLivelli2.cshtml" />
-    <Content Include="Areas\Statistiche\Views\PresenzeLivelliEstero\PresenzeLivelli9.cshtml" />
+    <Content Include="Areas\Statistiche\Views\OpSpeseDiverse\OpSpeseDiverse.cshtml" />
+    <Content Include="Areas\Statistiche\Views\StoriaDipendente\RptStoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -3389,6 +3385,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\Views\SpeseDiverse\RptSpeseDiverse.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

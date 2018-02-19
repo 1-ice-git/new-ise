@@ -89,10 +89,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                 }
                 
                 return PartialView("OpIndennitaEstera", model);
-                
+
+
             }
         }
-
+                
         // Report Operazioni Effettuate - Indennità di Sede Estera
         public ActionResult RptOpIndennitaEstera(string V_DATA = "", string V_DATA1 = "")
         {

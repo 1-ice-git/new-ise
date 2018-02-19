@@ -374,7 +374,7 @@
     function callpartialSpese() {
         //debugger;
 
-        rotta = "/Statistiche/SpeseDiverse/OpSpeseDiverse";
+        rotta = "/Statistiche/SpeseDiverse/SpeseDiverse";
         $.ajax({
             type: "POST",
             url: rotta,
@@ -403,7 +403,7 @@
     function callpartialStoria() {
         //debugger;
 
-        rotta = "Statistiche/StoriaDipendente/StoriaDipendente";
+        rotta = "/Statistiche/StoriaDipendente/StoriaDipendente";
         $.ajax({
             type: "POST",
             url: rotta,
@@ -430,20 +430,20 @@
 
     // Operazioni Effettuate - Indennità di Sede Estera
     function callpartialOpIndEstera() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
-
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
-
-
+        //rotta = "/Statistiche/OpIndEstera/Index";
+        
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+        
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
@@ -467,20 +467,20 @@
 
     // Operazioni Effettuate - Canone Anticipato
     function callpartialOpCanoneAnticipato() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/OpCanoneAnticipato/OpCanoneAnticipato";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
 
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
@@ -504,20 +504,20 @@
 
     // Operazioni Effettuate - Uso Abitazione
     function callpartialOpUsoAbitazione() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/OpUsoAbitazione/OpUsoAbitazione";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
 
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
@@ -541,20 +541,20 @@
 
     // Operazioni Effettuate - Contributo Abitazione
     function callpartialOpContributoAbitazione() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/OpContributoAbitazione/OpContributoAbitazione";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
 
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
@@ -580,18 +580,18 @@
     function callpartialOpSpeseDiverse() {
         //debugger;
 
-        rotta = "/Statistiche/SpeseDiverse/OpSpeseDiverse";
+        rotta = "/Statistiche/SpeseDiverse/SpeseDiverse";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
 
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
@@ -615,20 +615,19 @@
 
     // Operazioni Effettuate - Maggiorazione Abitazione
     function callpartialOpMaggAbitazione() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/OpMaggiorazioneAbitazione/OpMaggiorazioneAbitazione";
 
-        var data = $("#datepicker").datepicker().val()
-        var data1 = $("#datepicker1").datepicker().val()
-
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                V_DATA: data,
-                V_DATA1: data1
+                //V_DATA: data,
+                //V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
