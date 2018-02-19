@@ -17,12 +17,12 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DIPENDENTI()
         {
-            this.NOTIFICHE = new HashSet<NOTIFICHE>();
             this.EMAILSECONDARIEDIP = new HashSet<EMAILSECONDARIEDIP>();
-            this.NOTIFICHE1 = new HashSet<NOTIFICHE>();
             this.UTENTIAUTORIZZATI = new HashSet<UTENTIAUTORIZZATI>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
             this.TRASFERIMENTO = new HashSet<TRASFERIMENTO>();
+            this.DESTINATARI = new HashSet<DESTINATARI>();
+            this.NOTIFICHE = new HashSet<NOTIFICHE>();
         }
     
         public decimal IDDIPENDENTE { get; set; }
@@ -43,16 +43,16 @@ namespace NewISE.EF
     
         public virtual CDCGEPE CDCGEPE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NOTIFICHE> NOTIFICHE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NOTIFICHE> NOTIFICHE1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UTENTIAUTORIZZATI> UTENTIAUTORIZZATI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TRASFERIMENTO> TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DESTINATARI> DESTINATARI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NOTIFICHE> NOTIFICHE { get; set; }
     }
 }

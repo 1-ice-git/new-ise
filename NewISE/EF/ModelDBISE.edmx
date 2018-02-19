@@ -417,6 +417,15 @@
           <Property Name="IDCONIUGETITOLIVIAGGIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <EntityType Name="DESTINATARI">
+          <Key>
+            <PropertyRef Name="IDDIPENDENTE" />
+            <PropertyRef Name="IDNOTIFICA" />
+          </Key>
+          <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDNOTIFICA" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="TOCC" Type="number" Precision="1" Scale="0" Nullable="false" />
+        </EntityType>
         <EntityType Name="DIPENDENTI">
           <Key>
             <PropertyRef Name="IDDIPENDENTE" />
@@ -795,7 +804,6 @@
           </Key>
           <Property Name="IDNOTIFICA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDMITTENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="IDDESTINATARIO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="OGGETTO" Type="varchar2" MaxLength="250" Nullable="false" />
           <Property Name="CORPOMESSAGGIO" Type="clob" Nullable="false" />
           <Property Name="DATANOTIFICA" Type="date" Nullable="false" />
@@ -1354,7 +1362,7 @@
           <Key>
             <PropertyRef Name="IDUTENTEAUTORIZZATO" />
           </Key>
-          <Property Name="IDUTENTEAUTORIZZATO" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="IDUTENTEAUTORIZZATO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IDRUOLOUTENTE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="IDDIPENDENTE" Type="number" Precision="38" Scale="0" />
           <Property Name="UTENTE" Type="varchar2" MaxLength="50" Nullable="false" />
@@ -2165,20 +2173,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_DEST_N">
-          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="NOTIFICHE" Type="Self.NOTIFICHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="NOTIFICHE">
-              <PropertyRef Name="IDDESTINATARIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_D_ESD">
           <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2315,6 +2309,20 @@
               <PropertyRef Name="IDDIPENDENTE" />
             </Principal>
             <Dependent Role="CDCGEPE">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_DIP_DEST">
+          <End Role="DIPENDENTI" Type="Self.DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DESTINATARI" Type="Self.DESTINATARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="DESTINATARI">
               <PropertyRef Name="IDDIPENDENTE" />
             </Dependent>
           </ReferentialConstraint>
@@ -2890,6 +2898,18 @@
             </Principal>
             <Dependent Role="REGOLECALCOLO">
               <PropertyRef Name="IDNORMACALCOLO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_NOTIF_DEST">
+          <End Role="NOTIFICHE" Type="Self.NOTIFICHE" Multiplicity="1" />
+          <End Role="DESTINATARI" Type="Self.DESTINATARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOTIFICHE">
+              <PropertyRef Name="IDNOTIFICA" />
+            </Principal>
+            <Dependent Role="DESTINATARI">
+              <PropertyRef Name="IDNOTIFICA" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4204,6 +4224,7 @@
           <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CONTABILITA" EntityType="Self.CONTABILITA" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="CTV_DOC" EntityType="Self.CTV_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DESTINATARI" EntityType="Self.DESTINATARI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="DOC_ATEP" EntityType="Self.DOC_ATEP" Schema="ISESIM" store:Type="Tables" />
           <EntitySet Name="DOC_ATER" EntityType="Self.DOC_ATER" Schema="ISESIM" store:Type="Tables" />
@@ -4527,10 +4548,6 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="DOC_ATER" EntitySet="DOC_ATER" />
           </AssociationSet>
-          <AssociationSet Name="R_D_DEST_N" Association="Self.R_D_DEST_N">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
-          </AssociationSet>
           <AssociationSet Name="R_D_ESD" Association="Self.R_D_ESD">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="EMAILSECONDARIEDIP" EntitySet="EMAILSECONDARIEDIP" />
@@ -4570,6 +4587,10 @@
           <AssociationSet Name="R_DIP_CDCG" Association="Self.R_DIP_CDCG">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="CDCGEPE" EntitySet="CDCGEPE" />
+          </AssociationSet>
+          <AssociationSet Name="R_DIP_DEST" Association="Self.R_DIP_DEST">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="DESTINATARI" EntitySet="DESTINATARI" />
           </AssociationSet>
           <AssociationSet Name="R_DIP_LIVDIP" Association="Self.R_DIP_LIVDIP">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -4734,6 +4755,10 @@
           <AssociationSet Name="R_NC_RC" Association="Self.R_NC_RC">
             <End Role="NORMACALCOLO" EntitySet="NORMACALCOLO" />
             <End Role="REGOLECALCOLO" EntitySet="REGOLECALCOLO" />
+          </AssociationSet>
+          <AssociationSet Name="R_NOTIF_DEST" Association="Self.R_NOTIF_DEST">
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+            <End Role="DESTINATARI" EntitySet="DESTINATARI" />
           </AssociationSet>
           <AssociationSet Name="R_P_AP" Association="Self.R_P_AP">
             <End Role="PASSAPORTI" EntitySet="PASSAPORTI" />
@@ -5151,7 +5176,6 @@
           <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" />
           <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="DBISEPRO.MAGGIORAZIONIFAMILIARI" />
           <EntitySet Name="NORMACALCOLO" EntityType="DBISEPRO.NORMACALCOLO" />
-          <EntitySet Name="NOTIFICHE" EntityType="DBISEPRO.NOTIFICHE" />
           <EntitySet Name="OA" EntityType="DBISEPRO.OA" />
           <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="DBISEPRO.PAGATOCONDIVISOMAB" />
           <EntitySet Name="PASSAPORTI" EntityType="DBISEPRO.PASSAPORTI" />
@@ -5370,17 +5394,9 @@
             <End Role="TEORICI" EntitySet="TEORICI" />
             <End Role="CONTABILITA" EntitySet="CONTABILITA" />
           </AssociationSet>
-          <AssociationSet Name="R_D_DEST_N" Association="DBISEPRO.R_D_DEST_N">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
-          </AssociationSet>
           <AssociationSet Name="R_D_ESD" Association="DBISEPRO.R_D_ESD">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
             <End Role="EMAILSECONDARIEDIP" EntitySet="EMAILSECONDARIEDIP" />
-          </AssociationSet>
-          <AssociationSet Name="R_D_MIT_N" Association="DBISEPRO.R_D_MIT_N">
-            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
-            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
           </AssociationSet>
           <AssociationSet Name="R_D_UA" Association="DBISEPRO.R_D_UA">
             <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
@@ -5818,7 +5834,21 @@
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="DESTINATARI" EntityType="DBISEPRO.DESTINATARI" />
+          <EntitySet Name="NOTIFICHE" EntityType="DBISEPRO.NOTIFICHE" />
+          <AssociationSet Name="R_DIP_DEST" Association="DBISEPRO.R_DIP_DEST">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="DESTINATARI" EntitySet="DESTINATARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_NOTIF_DEST" Association="DBISEPRO.R_NOTIF_DEST">
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+            <End Role="DESTINATARI" EntitySet="DESTINATARI" />
+          </AssociationSet>
+          <AssociationSet Name="R_D_MIT_N" Association="DBISEPRO.R_D_MIT_N">
+            <End Role="DIPENDENTI" EntitySet="DIPENDENTI" />
+            <End Role="NOTIFICHE" EntitySet="NOTIFICHE" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
             <PropertyRef Name="IDACCESSO" />
@@ -6208,13 +6238,13 @@
           <Property Name="ABILITATO" Type="Boolean" Nullable="false" />
           <Property Name="DATAINIZIORICALCOLI" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="CDCGEPE" Relationship="DBISEPRO.R_DIP_CDCG" FromRole="DIPENDENTI" ToRole="CDCGEPE" />
-          <NavigationProperty Name="NOTIFICHE" Relationship="DBISEPRO.R_D_DEST_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
           <NavigationProperty Name="EMAILSECONDARIEDIP" Relationship="DBISEPRO.R_D_ESD" FromRole="DIPENDENTI" ToRole="EMAILSECONDARIEDIP" />
-          <NavigationProperty Name="NOTIFICHE1" Relationship="DBISEPRO.R_D_MIT_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
           <NavigationProperty Name="UTENTIAUTORIZZATI" Relationship="DBISEPRO.R_D_UA" FromRole="DIPENDENTI" ToRole="UTENTIAUTORIZZATI" />
           <NavigationProperty Name="LIVELLIDIPENDENTI" Relationship="DBISEPRO.R_DIP_LIVDIP" FromRole="DIPENDENTI" ToRole="LIVELLIDIPENDENTI" />
           <NavigationProperty Name="TRASFERIMENTO" Relationship="DBISEPRO.R_DIP_TRASF" FromRole="DIPENDENTI" ToRole="TRASFERIMENTO" />
-        </EntityType>
+          <NavigationProperty Name="DESTINATARI" Relationship="DBISEPRO.R_DIP_DEST" FromRole="DIPENDENTI" ToRole="DESTINATARI" />
+          <NavigationProperty Name="NOTIFICHE" Relationship="DBISEPRO.R_D_MIT_N" FromRole="DIPENDENTI" ToRole="NOTIFICHE" />
+          </EntityType>
         <EntityType Name="DOCUMENTI">
           <Key>
             <PropertyRef Name="IDDOCUMENTO" />
@@ -6519,20 +6549,6 @@
           <Property Name="RIFERIMENTONORMATIVO" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="REGOLECALCOLO" Relationship="DBISEPRO.R_NC_RC" FromRole="NORMACALCOLO" ToRole="REGOLECALCOLO" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISEPRO.DOCUMENTO_NORMACALCOLO" FromRole="NORMACALCOLO" ToRole="DOCUMENTI" />
-        </EntityType>
-        <EntityType Name="NOTIFICHE">
-          <Key>
-            <PropertyRef Name="IDNOTIFICA" />
-          </Key>
-          <Property Name="IDNOTIFICA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IDMITTENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="IDDESTINATARIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="OGGETTO" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CORPOMESSAGGIO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" />
-          <Property Name="ALLEGATO" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_DEST_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
-          <NavigationProperty Name="DIPENDENTI1" Relationship="DBISEPRO.R_D_MIT_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
         </EntityType>
         <EntityType Name="OA">
           <Key>
@@ -7753,20 +7769,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="R_D_DEST_N">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="NOTIFICHE">
-              <PropertyRef Name="IDDESTINATARIO" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="R_D_ESD">
           <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -7778,20 +7780,6 @@
             </Principal>
             <Dependent Role="EMAILSECONDARIEDIP">
               <PropertyRef Name="IDDIPENDENTE" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="R_D_MIT_N">
-          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DIPENDENTI">
-              <PropertyRef Name="IDDIPENDENTE" />
-            </Principal>
-            <Dependent Role="NOTIFICHE">
-              <PropertyRef Name="IDMITTENTE" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8879,6 +8867,70 @@
           <End Type="DBISEPRO.DOCUMENTI" Role="DOCUMENTI" Multiplicity="*" />
           <End Type="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Role="TITOLIVIAGGIORICHIEDENTE" Multiplicity="*" />
         </Association>
+        <EntityType Name="DESTINATARI">
+          <Key>
+            <PropertyRef Name="IDDIPENDENTE" />
+            <PropertyRef Name="IDNOTIFICA" />
+          </Key>
+          <Property Name="IDDIPENDENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="IDNOTIFICA" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="TOCC" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_DIP_DEST" FromRole="DESTINATARI" ToRole="DIPENDENTI" />
+          <NavigationProperty Name="NOTIFICHE" Relationship="DBISEPRO.R_NOTIF_DEST" FromRole="DESTINATARI" ToRole="NOTIFICHE" />
+        </EntityType>
+        <EntityType Name="NOTIFICHE">
+          <Key>
+            <PropertyRef Name="IDNOTIFICA" />
+          </Key>
+          <Property Name="IDNOTIFICA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDMITTENTE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="OGGETTO" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CORPOMESSAGGIO" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DATANOTIFICA" Type="DateTime" Nullable="false" />
+          <Property Name="ALLEGATO" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="DESTINATARI" Relationship="DBISEPRO.R_NOTIF_DEST" FromRole="NOTIFICHE" ToRole="DESTINATARI" />
+          <NavigationProperty Name="DIPENDENTI" Relationship="DBISEPRO.R_D_MIT_N" FromRole="NOTIFICHE" ToRole="DIPENDENTI" />
+        </EntityType>
+        <Association Name="R_DIP_DEST">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.DESTINATARI" Role="DESTINATARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="DESTINATARI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_NOTIF_DEST">
+          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="1" />
+          <End Type="DBISEPRO.DESTINATARI" Role="DESTINATARI" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NOTIFICHE">
+              <PropertyRef Name="IDNOTIFICA" />
+            </Principal>
+            <Dependent Role="DESTINATARI">
+              <PropertyRef Name="IDNOTIFICA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="R_D_MIT_N">
+          <End Type="DBISEPRO.DIPENDENTI" Role="DIPENDENTI" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DBISEPRO.NOTIFICHE" Role="NOTIFICHE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DIPENDENTI">
+              <PropertyRef Name="IDDIPENDENTE" />
+            </Principal>
+            <Dependent Role="NOTIFICHE">
+              <PropertyRef Name="IDMITTENTE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9463,19 +9515,6 @@
               <MappingFragment StoreEntitySet="NORMACALCOLO">
                 <ScalarProperty Name="RIFERIMENTONORMATIVO" ColumnName="RIFERIMENTONORMATIVO" />
                 <ScalarProperty Name="IDNORMACALCOLO" ColumnName="IDNORMACALCOLO" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="NOTIFICHE">
-            <EntityTypeMapping TypeName="DBISEPRO.NOTIFICHE">
-              <MappingFragment StoreEntitySet="NOTIFICHE">
-                <ScalarProperty Name="ALLEGATO" ColumnName="ALLEGATO" />
-                <ScalarProperty Name="DATANOTIFICA" ColumnName="DATANOTIFICA" />
-                <ScalarProperty Name="CORPOMESSAGGIO" ColumnName="CORPOMESSAGGIO" />
-                <ScalarProperty Name="OGGETTO" ColumnName="OGGETTO" />
-                <ScalarProperty Name="IDDESTINATARIO" ColumnName="IDDESTINATARIO" />
-                <ScalarProperty Name="IDMITTENTE" ColumnName="IDMITTENTE" />
-                <ScalarProperty Name="IDNOTIFICA" ColumnName="IDNOTIFICA" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10370,6 +10409,27 @@
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="DESTINATARI">
+            <EntityTypeMapping TypeName="DBISEPRO.DESTINATARI">
+              <MappingFragment StoreEntitySet="DESTINATARI">
+                <ScalarProperty Name="TOCC" ColumnName="TOCC" />
+                <ScalarProperty Name="IDNOTIFICA" ColumnName="IDNOTIFICA" />
+                <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTIFICHE">
+            <EntityTypeMapping TypeName="DBISEPRO.NOTIFICHE">
+              <MappingFragment StoreEntitySet="NOTIFICHE">
+                <ScalarProperty Name="ALLEGATO" ColumnName="ALLEGATO" />
+                <ScalarProperty Name="DATANOTIFICA" ColumnName="DATANOTIFICA" />
+                <ScalarProperty Name="CORPOMESSAGGIO" ColumnName="CORPOMESSAGGIO" />
+                <ScalarProperty Name="OGGETTO" ColumnName="OGGETTO" />
+                <ScalarProperty Name="IDMITTENTE" ColumnName="IDMITTENTE" />
+                <ScalarProperty Name="IDNOTIFICA" ColumnName="IDNOTIFICA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -2709,6 +2709,9 @@
     <Compile Include="EF\CONTABILITA.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\DESTINATARI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\DIPENDENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>

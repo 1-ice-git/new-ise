@@ -51,7 +51,6 @@
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIANNUALI" Width="1.5" PointX="5.25" PointY="84.75" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONIFAMILIARI" Width="1.5" PointX="5.25" PointY="103.75" />
         <EntityTypeShape EntityType="DBISEPRO.NORMACALCOLO" Width="1.5" PointX="12" PointY="96.875" />
-        <EntityTypeShape EntityType="DBISEPRO.NOTIFICHE" Width="1.5" PointX="3" PointY="65.75" />
         <EntityTypeShape EntityType="DBISEPRO.OA" Width="1.5" PointX="9.75" PointY="55.625" />
         <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="12.75" PointY="92.25" />
         <EntityTypeShape EntityType="DBISEPRO.PASSAPORTI" Width="1.5" PointX="5.25" PointY="111.25" />
@@ -144,9 +143,7 @@
         <AssociationConnector Association="DBISEPRO.R_TV_CTV" />
         <AssociationConnector Association="DBISEPRO.R_C_AQ" />
         <AssociationConnector Association="DBISEPRO.R_T_C" />
-        <AssociationConnector Association="DBISEPRO.R_D_DEST_N" />
         <AssociationConnector Association="DBISEPRO.R_D_ESD" />
-        <AssociationConnector Association="DBISEPRO.R_D_MIT_N" />
         <AssociationConnector Association="DBISEPRO.R_D_UA" />
         <AssociationConnector Association="DBISEPRO.R_DIP_LIVDIP" />
         <AssociationConnector Association="DBISEPRO.R_DIP_TRASF" />
@@ -256,7 +253,12 @@
         <AssociationConnector Association="DBISEPRO.TER_PATE" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
         <AssociationConnector Association="DBISEPRO.TVR_DOC" />
-      </Diagram>
+        <EntityTypeShape EntityType="DBISEPRO.DESTINATARI" Width="1.5" PointX="12.25" PointY="59.5" />
+        <EntityTypeShape EntityType="DBISEPRO.NOTIFICHE" Width="1.5" PointX="3" PointY="65.75" />
+        <AssociationConnector Association="DBISEPRO.R_DIP_DEST" />
+        <AssociationConnector Association="DBISEPRO.R_NOTIF_DEST" />
+        <AssociationConnector Association="DBISEPRO.R_D_MIT_N" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

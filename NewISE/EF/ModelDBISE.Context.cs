@@ -71,7 +71,6 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
-        public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
         public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
@@ -122,5 +121,7 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+        public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
+        public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
     }
 }

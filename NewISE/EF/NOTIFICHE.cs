@@ -14,15 +14,21 @@ namespace NewISE.EF
     
     public partial class NOTIFICHE
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public NOTIFICHE()
+        {
+            this.DESTINATARI = new HashSet<DESTINATARI>();
+        }
+    
         public decimal IDNOTIFICA { get; set; }
         public decimal IDMITTENTE { get; set; }
-        public decimal IDDESTINATARIO { get; set; }
         public string OGGETTO { get; set; }
         public string CORPOMESSAGGIO { get; set; }
         public System.DateTime DATANOTIFICA { get; set; }
         public byte[] ALLEGATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DESTINATARI> DESTINATARI { get; set; }
         public virtual DIPENDENTI DIPENDENTI { get; set; }
-        public virtual DIPENDENTI DIPENDENTI1 { get; set; }
     }
 }
