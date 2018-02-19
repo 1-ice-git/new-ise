@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Coefficiente")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N6}")]
         public decimal valore { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
@@ -41,7 +41,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il campo annullato è richiesto.")]
         [Display(Name = "Annullato")]
-        public bool annullato { get; set; } 
+        public bool annullato { get; set; }
 
         public UfficiModel Ufficio { get; set; }
 
