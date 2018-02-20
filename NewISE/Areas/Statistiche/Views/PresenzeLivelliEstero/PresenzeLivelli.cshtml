@@ -14,7 +14,7 @@
 
             <div class="form-horizontal">
                 <div class="form-group">
-                    <hr />
+                   
                     <div class="col-md-2">
                         @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
                     </div>
@@ -35,7 +35,8 @@
                     <a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>
+                    @*<a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>*@
+                    <a href="#" onclick="callpartialPresenze()">Visualizza Presenze dei Livelli all'Estero </a>
                 </div>
             </div>
             <br /><br />
@@ -272,25 +273,10 @@
         //rotta = "/Statistiche/ArchivioVecchioISE/PresenzeLivelli";
         rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
 
-
         var codicequalifica = $("#COD_QUALIFICA").select2('val');
         var data = $("#datepicker").val();
         var data1 = $("#datepicker1").val();
 
-        var chk = true;
-
-        //$("#codicedipendente").val = idMatricola;
-
-        //if (isNaN(codicequalifica)) {
-        //    $("#divPViewParametri").empty();
-        //    return false;
-        //}
-
-        //if (isNaN(null)) {
-        //    alert("null is not a number");
-        //} else {
-        //    alert("i think null is a number");
-        //}
 
         $.ajax({
             type: "POST",
@@ -337,13 +323,9 @@
         //rotta = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli";
         rotta = "/Statistiche/PresenzeLivelliEstero/RptPresenzeLivelli";
 
-
-
         var codicequalifica = $("#COD_QUALIFICA").select2('val');
         var data = $("#datepicker").datepicker().val()
         var data1 = $("#datepicker1").val();
-
-
 
         $.ajax({
             type: "POST",
@@ -385,28 +367,46 @@
 
     }
 
-    @*$(function (PrelevaReportQualifica) {
-            $("#datepicker").datepicker();
-            $("#datepicker1").datepicker();
+    // Presenze Livelli Estero
+    function callpartialPresenze() {
+        //debugger;
 
-            //$("#btndatefilter").click(function() {
-                //var startdate = $('#datestart').datepicker('getDate');
-                var data = $("#datepicker").val();
-                //var enddate = $('#dateend').datepicker('getDate');
-                var data1 = $("#datepicker1").val();
-                var dateFilter =
-                { StartDate: data.toISOString(), EndDate: data1.toISOString() };
+        rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
 
-                $.ajax({
-                    //url: "@Url.Action("MyAction", "MyController")",
-                    url: "@Url.Action("RptPresenzeLivelli", "ArchivioVecchioISE")",
-                    type: "GET",
-                data: dateFilter
-            })
-                .done(function(auditActivity) {
-                    $("#res").html(auditActivity);
-                });
-        });*@
+        var codicequalifica = $("#COD_QUALIFICA").select2('val');
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                codicequalifica: codicequalifica,
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+
+   
 
     $("#COD_QUALIFICA").select2({
         placeholder: "Seleziona il Livello ",

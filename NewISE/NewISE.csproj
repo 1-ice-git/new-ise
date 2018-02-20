@@ -2192,6 +2192,7 @@
     <Content Include="Areas\Statistiche\Views\OpSpeseDiverse\OpSpeseDiverse.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\RptStoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
+    <Content Include="Areas\Statistiche\Views\DislocazioneDipEstero\DislocazioneDipEstero1.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>

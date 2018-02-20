@@ -12,12 +12,9 @@
         <div class="panel-heading"><b>Spese Avvicendamento</b></div>
         <div class="panel-body">
 
-
-
-
             <div class="form-horizontal">
                 <div class="form-group">
-                    <hr />
+                    
 
                     <div class="col-md-2">
                         @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
@@ -42,7 +39,8 @@
                     <a href="#" id="opener">Stampa Spese di Avvicendamento </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>
+                    @*<a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>*@
+                    <a href="#" onclick="callpartialSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>
                 </div>
 
             </div>
@@ -361,6 +359,43 @@
 
         });
 
+    }
+
+
+    // Spese Avvicendamento
+    function callpartialSpeseAvvicendamento() {
+        //debugger;
+
+        rotta = "/Statistiche/SpeseAvvicendamento/SpeseAvvicendamento";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
     }
 
 </script>

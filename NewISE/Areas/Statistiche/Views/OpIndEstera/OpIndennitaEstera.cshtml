@@ -136,10 +136,10 @@
                     }
                 </tbody>
             </table>
-        </div>
+        
     </div>
 </div>
-
+</div>
 
 <script type="text/javascript">
 
@@ -223,9 +223,9 @@
 
                 },
                 success: function (result) {
-                    //debugger;
+                    debugger;
                     $("#dialog").html(result);
-
+                    $("#dialog").close();
 
                 },
                 complete: function () {
@@ -309,7 +309,7 @@
 
 
     function OpIndennitaEstera() {
-        //debugger;
+        debugger;
 
         //rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
         rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera1";
@@ -439,6 +439,10 @@
             }
         });
     }
+
+
+  
+
 
 </script>
 

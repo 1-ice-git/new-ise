@@ -2,87 +2,95 @@
 
 @using NewISE.Areas.Statistiche.Models.dtObj;
 
-<p>
-    <div class="form-group">
-       
-        <div id="divCombo">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idUtenteAutorizzato", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVLogAttivita();", @onClick = "PrelevaPVLogAttivita();" })
-            </div>
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Log Attività</div>
+        <div class="panel-body">
+
+                <div class="form-group">
+
+                    <div id="divCombo">
+                        <div class="select2-container select2-container--classic">
+                            @Html.DropDownList("idUtenteAutorizzato", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVLogAttivita();", @onClick = "PrelevaPVLogAttivita();" })
+                        </div>
+                    </div>
+                </div>
+            
+
+            <table id="tbIndBase" class="display" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.utenteAutorizzato.matricola)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.idLog)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.idUtenteLoggato)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.idTrasferimento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.idAttivitaCrud)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.dataOperazione)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.descAttivitaSvolta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tabellaCoinvolta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.idTabellaCoinvolta)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.utenteAutorizzato.matricola)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idLog)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idUtenteLoggato)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idTrasferimento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idAttivitaCrud)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.dataOperazione)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.descAttivitaSvolta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tabellaCoinvolta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.idTabellaCoinvolta)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
         </div>
     </div>
-</p>
-
-<table id="tbIndBase" class="display" cellspacing="0">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.utenteAutorizzato.matricola)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idLog)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idUtenteLoggato)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idTrasferimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idAttivitaCrud)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dataOperazione)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.descAttivitaSvolta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.tabellaCoinvolta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idTabellaCoinvolta)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.utenteAutorizzato.matricola)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idLog)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idUtenteLoggato)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idTrasferimento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idAttivitaCrud)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataOperazione)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.descAttivitaSvolta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.tabellaCoinvolta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idTabellaCoinvolta)
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
-
+</div>
 <script type="text/javascript">
     $('.display').DataTable({
         "language": {

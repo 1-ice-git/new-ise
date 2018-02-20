@@ -23,9 +23,12 @@
                 <li>
                 <a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a>
                     <ul class="no-bullets">
+                        <li><a href="#">Consuntivo dei Costi * </a></li>
+                        <li><a href="#">Consuntivo dei Costi per codice CoAn * </a></li>
                         <li><a href="#" onclick="callpartialDislocazione();">Dislocazione dei dipendenti all'estero</a></li>
                         <li><a href="#" onclick="callpartialPresenze();">Presenze dei livelli in servizio all'estero</a></li>
                         <li><a href="#" onclick="callpartialSpese();">Spese diverse</a></li>
+                        <li><a href="#" onclick="callpartialSpeseAvvicendamento();">Spese avvicendamento</a></li>
                         <li><a href="#" onclick="callpartialStoria();">Storia del dipendente</a></li>
                         <li><a href="#" onclick="callpartialOpIndEstera();">Operazioni effettuate - Indennità di Sede Estera</a></li>
                         <li><a href="#" onclick="callpartialOpContributoAbitazione();">Operazioni Effettuate - Contributo Abitazione</a></li>
@@ -42,9 +45,9 @@
                 <li>
                     <a href="#" onclick="callpartial();">ISE</a>
                     <ul class="no-bullets">
-                        <li><a href="#">Interrogazione dipendente</a></li>
-                        <li><a href="#" onclick="callpartial5();">Riepiloghi</a></li>
-                        <li><a href="#">Altre Statistiche</a></li>
+                        <li><a href="#">Interrogazione dipendente * </a></li>
+                        <li><a href="#" onclick="callpartial5();">Riepiloghi * </a></li>
+                        <li><a href="#">Altre Statistiche * </a></li>
                     </ul>
 
                 </li>
@@ -399,6 +402,36 @@
         });
     }
     
+    // Spese Avvicendamento 
+    function callpartialSpeseAvvicendamento() {
+        //debugger;
+
+        rotta = "/Statistiche/SpeseAvvicendamento/SpeseAvvicendamento";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+
     // Storia del Dipendente
     function callpartialStoria() {
         //debugger;
@@ -619,15 +652,15 @@
 
         rotta = "/Statistiche/OpMaggiorazioneAbitazione/OpMaggiorazioneAbitazione";
 
-        //var data = $("#datepicker").datepicker().val()
-        //var data1 = $("#datepicker1").datepicker().val()
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
 
         $.ajax({
             type: "POST",
             url: rotta,
             data: {
-                //V_DATA: data,
-                //V_DATA1: data1
+                V_DATA: data,
+                V_DATA1: data1
             },
             dataType: 'html',
             beforeSend: function () {
