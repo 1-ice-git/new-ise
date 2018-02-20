@@ -11,14 +11,17 @@
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
     <div>
         <h2 style="text-align:center; color:darkblue">Email principale: @emailPrincipale</h2>
+        <p class="text-center"><a href="#" onclick="RicaricaDip();">Torna all'elenco delle Utenze</a></p>
     </div>
     <hr />
+   
     <div class="text-center">
-        <input type="text" name="newmail" id="newmail" />
-        <button type="button" class="btn btn-secondary" onclick="AggiungiMail(@idDipendente)"><b>Aggiungi email</b></button>
         
+        @*<input type="text" name="newmail" id="newmail" />*@
+        <button type="button" class="btn btn-secondary" onclick="AggiungiMail2(@idDipendente)"><b>Aggiungi email secondaria a '@emailPrincipale'</b></button>
     </div>
-        <h3 style="text-align:center; color:darkblue">Elenco email secondarie:</h3>
+
+     @*<h3 style="text-align:center; color:darkblue">Elenco email secondarie:</h3>*@
         <table id="tbelencoEmail" class="table">
             <thead style="background-color:forestgreen;color:white">
                 <tr>
@@ -30,6 +33,9 @@
                     </th>
                     <th class="text-center">
                         Elimina email
+                    </th>
+                    <th class="text-center">
+                        Attiva/Disatt email
                     </th>
                 </tr>
             </thead>
@@ -46,13 +52,12 @@
                         </td>
                         <td class="text-center">
                            @*<a href="#" onclick="EliminaEmail(@item.idEmailSecDip,@idDipendente);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" />*@
-                            <a href="#" onclick="EliminaEmailUtenze2(@item.idEmailSecDip);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" />
-                    </a>
-                    @*<a href="javascript:void(0);"
-       style="color:white"
-       class="anchorDetail" id_dip="@item.idDipendente">
-        <span class="text-uppercase"><img alt="Modifica" src="~/Immagini/Plus_Green.png" width="17" height="17" /></span>
-    </a>*@
+                            <a href="#" onclick="EliminaEmailUtenze2(@item.idEmailSecDip);">
+                                <img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" />
+                            </a>
+                         </td>
+                        <td class="text-center">
+                            <a href="#" onclick="VisualizzaModificaStatoEmailSecondaria(@item.idEmailSecDip);"><img alt="Elimina" src="~/Immagini/edit.png" width="17" height="17" /></a>
                         </td>
                     </tr>
                     if (@rowColor.Equals("#ffffff"))
@@ -86,10 +91,29 @@
     </div>
 
 
+<div id="dago3" title="Inserisci Nuova Email Secondaria" hidden>
+    <p>
+        <input type="text" name="newmail2" id="newmail2" />
+        <input type="button" name="newbutto" id="newbutton" onclick="resaho()" />
+    </p>
+</div>
 
+<div id="dialog-confirm-Utenze" title="Conferma " class="hide">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Elimina email secondaria ?<br />
+    </p>
+</div>
 
 <script type="text/javascript">
-     //   DocumentoModal();
+    //   DocumentoModal();
+  ///  debugger;
+ //   $("#inviaUtenzeModalNewMail").modal('hide');
+
+    function resaho()
+    {
+        var newmail = $("#newmail2").val();
+        alert(newmail);
+    }
 
     $("#tbelencoEmail").DataTable({
             "ordering": false,            
@@ -136,38 +160,41 @@
             setTimeout(RicaricaModificaTrasferimento, 1000);
         }
 
-        //function DocumentoModal() {
-        //    $(".anchorDetail").click(function () {
-        //       //debugger;
-        //        var rotta = "/UtenzeDipendenti/ElencoEmailSecondarioDip";
-        //        var $buttonClicked = $(this);
-        //     //   var idf = $buttonClicked.attr('id_fe');
-        //        var idd = $buttonClicked.attr('id_dip');
-        //        $.ajax({
-        //            url: rotta,
-        //            type: "POST", //Le info testuali saranno passate in POST
-        //            data: {"idd": idd },
-        //            dataType: 'html',
-        //            async: false,
-        //            beforeSend: function () {
-        //                // debugger;
-        //                $('#inviaDocModal').modal('show');
-        //                //Blocca();
-        //            },
-        //            success: function (result) {
-        //               // debugger;
-        //                $("#viewDocumentoDettagli").empty();
-        //                $("#viewDocumentoDettagli").html(result);
-        //            },
-        //            error: function (error) {
-        //                //debugger;
-        //                //Sblocca();
-        //                var msg = error.responseText;
-        //                ErroreElaborazioneAjax(msg);
-        //            }
-        //        });
-        //    });
-        //}
+        function VisualizzaModificaStatoEmailSecondaria(id) {
+            // debugger;
+            // $(".anchorModifica").click(function () {
+            var idDipendente=@idDipendente;
+            var rotta = "/UtenzeDipendenti/VisualizzaEmailSecondaria";
+            //    var $buttonClicked = $(this);
+            //   var idf = $buttonClicked.attr('id_fe');
+            //  var idd = $buttonClicked.attr('id_dip');
+            $.ajax({
+                url: rotta,
+                type: "POST",
+                data: {"idEmailSec": id,idDipendente:idDipendente },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    // debugger;
+                    $('#inviaModificaModalEmail').modal('show');
+                    // $('#dialog-confirm-Utenze').modal('show');
+                    //Blocca();
+                },
+                success: function (result) {
+                    // debugger;
+                    $("#viewDocumentoModificaEmail").empty();
+                    $("#viewDocumentoModificaEmail").html(result);
+                    
+                },                    
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+            // });
+        }
 
 
         function DialogInfo(response) {
@@ -199,13 +226,13 @@
                                     //debugger;
                                     //VerificaAutenticazione();
                                 //    $("#viewUtenzeMail").dialog("destroy");
-                                   $("#viewUtenzeMail2").show("slow");
+                                  // $("#viewUtenzeMail2").show("slow");
 
                                 },
                                 success: function (result) {
                                     //debugger;                                   
-                                    $("#viewUtenzeMail2").empty();
-                                    $("#viewUtenzeMail2").html(result);
+                                    $("#divPanelUtenzeDip").empty();
+                                    $("#divPanelUtenzeDip").html(result);
                                 },
                                 complete: function () {
                                    
@@ -233,35 +260,35 @@
             //},1000);
         }
 
-        function AggiungiMail(id) {
-            debugger;
-            var rotta = "/UtenzeDipendenti/AggiungiEmail";
-            var newmail = $("#newmail").val();
-            
-            $.ajax({
+      
+
+        function AggiungiMail2(id) {
+           // debugger;
+            var rotta = "/UtenzeDipendenti/NuovaEmail";
+           // var newmail = $("#newmail").val();         
+           $.ajax({
                 type: "POST",
                 url: rotta,
-                data: { newmail: newmail, idd: id },
+                data: {idd: id },
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
-                    //VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                    
+                    //VerificaAutenticazione();                  
+                    //$("#inviaUtenzeModalNewMail").modal('show');     
+                    $("#inviaUtenzeModalNewMail").modal('show'); 
                 },
                 success: function (result) {
-                    debugger;
+                  //  debugger;
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
                     $("#viewUtenzeMail").empty();
                     $("#viewUtenzeMail").html(result);
-
                     //RicercaDocumenti();
 
                 },
                 complete: function () {
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
                     //                $("#Centro").getNiceScroll().resize();
+                    //$("#inviaUtenzeModal").modal('hide');
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
                     //debugger;
@@ -269,7 +296,13 @@
                     AlertDialog(msg);
                 }
             });
+           
         }
+
+        
+
+        
+      
 </script>
 
 

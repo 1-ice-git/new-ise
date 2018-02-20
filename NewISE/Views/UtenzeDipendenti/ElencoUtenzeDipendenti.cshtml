@@ -45,23 +45,13 @@
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.cognome)</span>
                     </td>                   
                     <td class="text-center">
-                        @*<a href="javascript:void(0);"
-                           style="color:white"
-                           class="anchorDetail" id_dip="@item.idDipendente">
-                            <span class="text-uppercase"><img alt="Modifica" src="~/Immagini/Plus_Green.png" width="17" height="17" /></span>
-                        </a>*@
-                        <a href="#" onclick="DocumentoModal_0(@item.idDipendente);"><img alt="Visualizza" src="~/Immagini/Plus_Green.png" width="17" height="17" /></a>
+                        <a href="#" onclick="ViewElencoEmailSecondarie(@item.idDipendente);"><img alt="Elimina" src="~/Immagini/Plus_Green.png" width="17" height="17" /></a>
                     </td>
                     <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.abilitato)</span>
                     </td>
                     <td class="text-center">
-                        @*<a href="javascript:void(0);"
-                           style="color:white"
-                           class="anchorModifica" id_dip="@item.idDipendente">
-                            <span class="text-uppercase"><img alt="Modifica" src="~/Immagini/edit.png" width="17" height="17" /></span>
-                        </a>*@
-                        <a href="#"  onclick="ModificaModal_0(@item.idDipendente);"><img alt="Elimina" src="~/Immagini/edit.png" width="17" height="17" /></a>
+                        <a href="#"  onclick="VisualizzaModificaStatoDipendentePOPUP(@item.idDipendente);"><img alt="Elimina" src="~/Immagini/edit.png" width="17" height="17" /></a>
                     </td>
                 </tr>
                 if (@rowColor.Equals("#ffffff"))
@@ -176,7 +166,7 @@
                     //Blocca();
                 },
                 success: function (result) {
-                    // debugger;
+                     debugger;
                     $("#viewDocumentoModifica").empty();
                     $("#viewDocumentoModifica").html(result);
                     // debugger;
@@ -196,38 +186,38 @@
             // });
         }
 
-        function DocumentoModal() {
-            $(".anchorDetail").click(function () {
-               //debugger;
-                var rotta = "/UtenzeDipendenti/ElencoEmailSecondarioDip";
-                var $buttonClicked = $(this);
-             //   var idf = $buttonClicked.attr('id_fe');
-                var idd = $buttonClicked.attr('id_dip');
-                $.ajax({
-                    url: rotta,
-                    type: "POST", //Le info testuali saranno passate in POST
-                    data: {"idd": idd },
-                    dataType: 'html',
-                    async: false,
-                    beforeSend: function () {
-                        // debugger;
-                        $('#inviaUtenzeModal').modal('show');
-                        //Blocca();
-                    },
-                    success: function (result) {
-                       // debugger;
-                        $("#viewDocumentoDettagli").empty();
-                        $("#viewDocumentoDettagli").html(result);
-                    },
-                    error: function (error) {
-                        //debugger;
-                        //Sblocca();
-                        var msg = error.responseText;
-                        ErroreElaborazioneAjax(msg);
-                    }
-                });
-            });
-        }
+        //function DocumentoModal() {
+        //    $(".anchorDetail").click(function () {
+        //       //debugger;
+        //        var rotta = "/UtenzeDipendenti/ElencoEmailSecondarioDip";
+        //        var $buttonClicked = $(this);
+        //     //   var idf = $buttonClicked.attr('id_fe');
+        //        var idd = $buttonClicked.attr('id_dip');
+        //        $.ajax({
+        //            url: rotta,
+        //            type: "POST", //Le info testuali saranno passate in POST
+        //            data: {"idd": idd },
+        //            dataType: 'html',
+        //            async: false,
+        //            beforeSend: function () {
+        //                // debugger;
+        //                $('#inviaUtenzeModal').modal('show');
+        //                //Blocca();
+        //            },
+        //            success: function (result) {
+        //               // debugger;
+        //                $("#viewDocumentoDettagli").empty();
+        //                $("#viewDocumentoDettagli").html(result);
+        //            },
+        //            error: function (error) {
+        //                //debugger;
+        //                //Sblocca();
+        //                var msg = error.responseText;
+        //                ErroreElaborazioneAjax(msg);
+        //            }
+        //        });
+        //    });
+        //}
 
         function ModificaModal(id) {
             // debugger;
@@ -290,8 +280,8 @@
 
         }
 
-        function ModificaModal_0(id) {
-         //  debugger;
+        function VisualizzaModificaStatoDipendentePOPUP(id) {
+          // debugger;
            // $(".anchorModifica").click(function () {
 
                 var rotta = "/UtenzeDipendenti/VisualizzaEmail";
@@ -306,7 +296,7 @@
                     async: false,
                     beforeSend: function () {
                         // debugger;
-                          $('#inviaModificaModal').modal('show');
+                        $('#inviaModificaModal').modal('show');
                        // $('#dialog-confirm-Utenze').modal('show');
                         //Blocca();
                     },
@@ -338,6 +328,46 @@
         function Modifica(id)
         {
             alert(id);
+        }
+
+        
+        function ViewElencoEmailSecondarie(id) {
+            //  debugger;
+
+            var rotta = "/UtenzeDipendenti/ElencoEmailSecondarioDip";
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                type: "POST",
+                data: {"idd": id },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPanelUtenzeDip").empty();
+                    $("#divPanelUtenzeDip").html(result);
+                    //RicercaDocumenti();
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
         }
 
 </script>

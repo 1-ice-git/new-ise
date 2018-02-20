@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj
@@ -67,41 +68,33 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="v"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static ValidationResult EmailUnivoca(string v, ValidationContext context)
+        public static ValidationResult EmailSecondariaGiaEsistente(string v, ValidationContext context)
         {
-            var dNew = context.ObjectInstance as DipendentiModel;
+            var dNew = context.ObjectInstance as EmailSecondarieDipModel;
+            if(string.IsNullOrEmpty(dNew.Email))
+            {
+                return new ValidationResult("L'E-mail inserita è vuota");
+            }
             using (ModelDBISE db = new ModelDBISE())
             {
-                //Prelevo il record interessato dalla verifica.
-                var vli = db.DIPENDENTI.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
+                var vli = db.EMAILSECONDARIEDIP.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
+                bool found = false;
+                
                 if (vli != null && vli.Count() > 0)
                 {
-                    //Se il record interessato ha la stessa matricola, vuol dire che la modifica
-                    //effettuata non ha bisogno di verificare l'univocità della matricola.
-                    if (vli.First().EMAIL == dNew.email)
+                    foreach (EMAILSECONDARIEDIP x in vli)
                     {
-                        return ValidationResult.Success;
+                        if (x.EMAIL.ToUpper().Trim() == dNew.Email.ToUpper().Trim())
+                        {
+                            found = true; break;
+                        }
+                    }
+                    if (found == true)
+                    {
+                        return new ValidationResult("L'E-mail inserita è già presente, inserirne un'altra.");
                     }
                 }
-
-                var li = db.DIPENDENTI.Where(a => a.EMAIL == dNew.email);
-                if (li != null && li.Count() > 0)
-                {
-                    var i = li.First();
-
-                    if (i.EMAIL == dNew.email)
-                    {
-                        return new ValidationResult("L'E-mail inserita è già presente, inserirne un altra.");
-                    }
-                    else
-                    {
-                        return ValidationResult.Success;
-                    }
-                }
-                else
-                {
-                    return ValidationResult.Success;
-                }
+                return ValidationResult.Success;
             }
         }
 
@@ -189,7 +182,26 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return ldm;
         }
+       
+        public EmailSecondarieDipModel GetDatiEmailSecondaria(decimal idEmailSec)
+        {
+            EmailSecondarieDipModel ldm = new EmailSecondarieDipModel();
 
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var ld = db.EMAILSECONDARIEDIP.Where(b => b.IDEMAILSECONDARIA == idEmailSec).ToList();
+
+                ldm = (from e in ld
+                       select new EmailSecondarieDipModel()
+                       {
+                           idEmailSecDip = e.IDEMAILSECONDARIA,
+                            idDipendente=e.IDDIPENDENTE,
+                             Attiva=e.ATTIVA,
+                              Email=e.EMAIL
+                       }).ToList().First();
+            }
+            return ldm;
+        }
         public void EditStatoDipendente(bool abilitato, decimal idDipendente)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -198,6 +210,26 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
                     d.ABILITATO = abilitato;
+                    db.Database.BeginTransaction();
+                    db.SaveChanges();
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+        //
+        public void EditStatoEmailSecondaria(bool attiva, decimal idEmailSec)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                try
+                {
+                    EMAILSECONDARIEDIP d = db.EMAILSECONDARIEDIP.Find(idEmailSec);
+                    d.ATTIVA = attiva;
                     db.Database.BeginTransaction();
                     db.SaveChanges();
                     db.Database.CurrentTransaction.Commit();
@@ -279,6 +311,36 @@ namespace NewISE.Models.DBModel.dtObj
                     db.Database.CurrentTransaction.Rollback();
                     throw ex;
                 }
+            }
+        }
+        public bool EmailSecondariaGiaInserita(decimal idDipendente, string email)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var vli = db.EMAILSECONDARIEDIP.Where(a => a.IDDIPENDENTE == idDipendente && a.EMAIL.ToUpper().Trim() == email.ToUpper().Trim());
+                if (vli != null && vli.Count() > 0)
+                    return true;
+            }
+            return false;
+        }
+        public  bool emailIsValid(string email)
+        {
+            string expresion;
+            expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(email, expresion))
+            {
+                if (Regex.Replace(email, expresion, string.Empty).Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
     }

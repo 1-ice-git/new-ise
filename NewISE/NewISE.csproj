@@ -3267,6 +3267,8 @@
     <Content Include="Views\UtenzeDipendenti\ElencoUtenzeDipendenti.cshtml" />
     <Content Include="Views\UtenzeDipendenti\ElencoEmailSecondarioDip.cshtml" />
     <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

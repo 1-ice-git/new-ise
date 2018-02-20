@@ -21,12 +21,9 @@
 @*<input type="radio"  name="abilitare" value='1' @stato> Abilitato
 <input type="radio"  name="abilitare" value='0' @stato2> Disabilitato<br><br>*@                   
 
-
 <div id="divElencoTrasferimento" style="margin-top: 70px;">
 
 </div>                    
- 
-
     <script type="text/javascript">
 
         function ModificaStatoDipendente(id)
@@ -50,7 +47,7 @@
                 dataType: 'html',
                 beforeSend: function () {
                     //debugger;
-                    $('#inviaModificaModal').modal('hide');
+                   
                 },
                 success: function (result) {
                     //debugger;
