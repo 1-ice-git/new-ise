@@ -44,6 +44,10 @@ namespace NewISE
                name: "UtenzeDipendenti",
                url: "UtenzeDipendenti/index"
            );
+            routes.MapRoute(
+               name: "Notifiche",
+               url: "Notifiche/index"
+           );
         }
     }
 }

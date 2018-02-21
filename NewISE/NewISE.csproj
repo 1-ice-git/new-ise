@@ -2611,6 +2611,7 @@
     <Compile Include="Controllers\FunzioniEventiController.cs" />
     <Compile Include="Controllers\MaggiorazioneAbitazioneController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
+    <Compile Include="Controllers\NotificheController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\RichiamoController.cs" />
@@ -3269,6 +3270,7 @@
     <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
     <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
     <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
+    <Content Include="Views\Notifiche\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
