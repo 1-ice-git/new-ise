@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Ricalcoli;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -167,10 +169,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<INDENNITASISTEMAZIONE> libNew = new List<INDENNITASISTEMAZIONE>();
 
-            INDENNITASISTEMAZIONE ibPrecedente = new INDENNITASISTEMAZIONE();
+            //INDENNITASISTEMAZIONE ibPrecedente = new INDENNITASISTEMAZIONE();
             INDENNITASISTEMAZIONE ibNew1 = new INDENNITASISTEMAZIONE();
             INDENNITASISTEMAZIONE ibNew2 = new INDENNITASISTEMAZIONE();
-            List<INDENNITASISTEMAZIONE> lArchivioIB = new List<INDENNITASISTEMAZIONE>();
+            //List<INDENNITASISTEMAZIONE> lArchivioIB = new List<INDENNITASISTEMAZIONE>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -187,7 +189,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
+                            //decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new INDENNITASISTEMAZIONE()
                             {
@@ -220,6 +222,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.INDENNITASISTEMAZIONE.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                            {
+                                rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -277,6 +284,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+
+                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                {
+                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -336,6 +350,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+
+                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                {
+                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -359,6 +380,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.INDENNITASISTEMAZIONE.Add(ibNew1);
                                 db.SaveChanges();
+
+
+                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                {
+                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -367,7 +395,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
-                               
+
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
@@ -387,6 +415,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITASISTEMAZIONE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    {
+                                        rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -414,6 +448,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITASISTEMAZIONE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    {
+                                        rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -466,7 +506,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        
+
         public bool EsistonoMovimentiPrimaUguale(IndennitaSistemazioneModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())

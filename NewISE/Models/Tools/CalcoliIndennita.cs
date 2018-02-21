@@ -362,17 +362,19 @@ namespace NewISE.Models.Tools
 
                                 var primaSistemazione = trasferimento.PRIMASITEMAZIONE;
 
-                                var lis =
-                                    primaSistemazione.INDENNITASISTEMAZIONE.Where(
-                                        a =>
-                                            a.ANNULLATO == false &&
-                                            a.IDTIPOTRASFERIMENTO == trasferimento.IDTIPOTRASFERIMENTO &&
-                                            dtDatiParametri >= a.DATAINIZIOVALIDITA &&
-                                            dtDatiParametri <= a.DATAFINEVALIDITA)
-                                        .OrderByDescending(a => a.DATAINIZIOVALIDITA);
-                                if (lis?.Any() ?? false)
+                                var lis = primaSistemazione.INDENNITASISTEMAZIONE;
+
+                                var lisCond = lis.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        a.IDTIPOTRASFERIMENTO == trasferimento.IDTIPOTRASFERIMENTO &&
+                                        dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                        dtDatiParametri <= a.DATAFINEVALIDITA)
+                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                                if (lisCond?.Any() ?? false)
                                 {
-                                    var indSist = lis.First();
+                                    var indSist = lisCond.First();
 
                                     //switch ((EnumTipoTrasferimento)trasferimento.IDTIPOTRASFERIMENTO)
                                     //{
