@@ -523,9 +523,7 @@ namespace NewISE.Controllers
 
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
                             {
-
                                 var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
-
                                 trm.idFKM = fkm.idFKM;
                             }
 
