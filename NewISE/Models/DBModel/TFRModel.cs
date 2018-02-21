@@ -14,8 +14,8 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La valuta è richiesta.")]
         public decimal idValuta { get; set; }
         [Required(ErrorMessage = "Il tasso di cambio è richiesto")]
-       // [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         [Display(Name = "Tasso di cambio")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal tassoCambio { get; set; } = 0;
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data ini. validità")]

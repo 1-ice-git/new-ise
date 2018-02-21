@@ -26,7 +26,7 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
-        @Html.HiddenFor(model => model.idTipologiaFiglio) 
+        @Html.HiddenFor(model => model.idTipologiaFiglio)
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
         <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         <div class="form-group">
@@ -57,12 +57,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.percentualeFigli, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -89,11 +89,12 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#percentualeFiglio").autoNumeric('init',
+    $("#percentualeFigli").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: ''
+	    aSign: '',
+	    mDec: 8,
 	});
 
     //$("#valoreResponsabile").autoNumeric('init',

@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
         [Key]
         [Display(Name = "ID")]
         public decimal idRiduzioni { get; set; }
-       // [Required(ErrorMessage = "La regola è richiesta.")]
+        // [Required(ErrorMessage = "La regola è richiesta.")]
         public decimal idRegola { get; set; }
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data inizio validità")]
@@ -26,9 +26,11 @@ namespace NewISE.Models.DBModel
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataFineValidita { get; set; }
+
+        //[CustomValidation(typeof(dtRiduzioni), "VerificaPercentualeRiduzione")]
+        [Display(Name = "Percentuale")]
         [Required(ErrorMessage = "La percentuale è richiesta.")]
-        [CustomValidation(typeof(dtRiduzioni), "VerificaPercentualeRiduzione")]
-        [Display(Name = "Percentuale")]        
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N3}")]
         public decimal percentuale { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

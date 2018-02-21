@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <div class="form-group ">
             @Html.LabelFor(model => model.percentuale, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -84,12 +84,13 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    //$("#percentuale").autoNumeric('init',
-    //{
-    //    aSep: '.',
-    //    aDec: ',',
-    //    aSign: ''
-    //});
+    $("#percentuale").autoNumeric('init',
+    {
+        aSep: '.',
+        aDec: ',',
+        aSign: '',
+        mDec: 3,
+    });
 
 
     $('form').submit(function () {
@@ -144,7 +145,7 @@
         rotta = "/Parametri/ParamRiduzioni/RiduzioniLivello";
 
         var idFunzioneRiduzione = parseFloat('@idFunzioneRiduzione');
-        
+
         if (isNaN(idFunzioneRiduzione)) {
             $("#divPViewParametri").empty();
             return false;

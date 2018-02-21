@@ -41,18 +41,19 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.tassoCambio, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.tassoCambio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.tassoCambio, "", new { @class = "text-danger" })
+            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-xs-2" })
+            <div class="col-xs-3">
+                @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
+
         </div>
 
         <div class="form-group">
-            @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-5">
-                @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
+            @Html.LabelFor(model => model.tassoCambio, htmlAttributes: new { @class = "control-label col-xs-2" })
+            <div class="col-xs-5">
+                @Html.EditorFor(model => model.tassoCambio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.tassoCambio, "", new { @class = "text-danger" })
             </div>
             <div id="divChkAgg" class="col-xs-5">
                 <div style="display:inline-block;">
@@ -64,7 +65,7 @@
             </div>
         </div>
 
-        
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -83,11 +84,12 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-    $("#tassocambio").autoNumeric('init',
+    $("#tassoCambio").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: ''
+	    aSign: '',
+	    mDec: 8,
 	});
 
     $('form').submit(function () {
@@ -141,14 +143,14 @@
         rotta = "/Parametri/ParamTFR/TfrLivello";
 
         var idValuta = parseFloat('@idValuta');
-      
+
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-       var chk = false;
+        var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }

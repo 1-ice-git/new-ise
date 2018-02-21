@@ -42,7 +42,8 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Percentuale Figli")]
         //[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
         //[RegularExpression(@"[0-9]+(\.[0-9][0-9]?)?$")]
-        [CustomValidation(typeof(dtMaggFigli), "VerificaPercentualeFiglio")]
+        //[CustomValidation(typeof(dtMaggFigli), "VerificaPercentualeFiglio")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal percentualeFigli { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
@@ -58,6 +59,6 @@ namespace NewISE.Models.DBModel
         public bool annullato { get; set; } = false;
 
         public TipologiaFiglioModel Figlio { get; set; }
-        
+
     }
 }

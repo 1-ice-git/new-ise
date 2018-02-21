@@ -8,7 +8,7 @@ using NewISE.Areas.Parametri.Models.dtObj;
 
 namespace NewISE.Models.DBModel
 {
-    
+
     public enum EnumTipologiaConiuge
     {
         Residente = 1,
@@ -20,7 +20,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "ID")]
         public decimal idPercentualeConiuge { get; set; }
         [Required(ErrorMessage = "La tipologia coniuge è richiesta.")]
-        
+
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
@@ -37,12 +37,13 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La percentuale è richiesta.")]
         [Display(Name = "Percentuale Coniuge")]
         //   [DisplayFormat(DataFormatString = "{0:P2}")]
-        [CustomValidation(typeof(dtParMaggConiuge), "VerificaPercentualeConiuge")]
+        //[CustomValidation(typeof(dtParMaggConiuge), "VerificaPercentualeConiuge")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal percentualeConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]
-        
+
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Data Aggiornamento")]
         public DateTime dataAggiornamento { get; set; }
@@ -54,7 +55,7 @@ namespace NewISE.Models.DBModel
 
         public TipologiaConiugeModel Coniuge { get; set; }
 
-        
+
         public bool HasValue()
         {
             return idPercentualeConiuge > 0 ? true : false;
