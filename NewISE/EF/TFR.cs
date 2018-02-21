@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TFR()
         {
-            this.CANOMEMAB = new HashSet<CANOMEMAB>();
+            this.CANONEMAB = new HashSet<CANONEMAB>();
             this.INDENNITA = new HashSet<INDENNITA>();
         }
     
@@ -31,7 +31,7 @@ namespace NewISE.EF
     
         public virtual VALUTE VALUTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
+        public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<INDENNITA> INDENNITA { get; set; }
     }

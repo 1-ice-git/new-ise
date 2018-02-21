@@ -44,15 +44,15 @@
         <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
         <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
         @*<div class="form-group">
-            <div class="col-xs-2 text-right">
-                <label>Aliquota Contributiva </label>
-            </div>
-            <div class="col-xs-10">
-                <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione.ToString()</label>
+                <div class="col-xs-2 text-right">
+                    <label>Aliquota Contributiva </label>
                 </div>
-            </div>
-        </div>*@
+                <div class="col-xs-10">
+                    <div class="panel panel-default">
+                        <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizione.ToString()</label>
+                    </div>
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.Label("Data Variazione", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -71,12 +71,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.coefficiente, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -107,7 +107,8 @@
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: ''
+	    aSign: '',
+	    mDec: 8,
 	});
 
     $('form').submit(function () {

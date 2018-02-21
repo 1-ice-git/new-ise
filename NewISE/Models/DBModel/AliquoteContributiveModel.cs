@@ -33,6 +33,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il valore per l'aliquota è richiesta")]
         [Display(Name = "Aliquota")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal aliquota { get; set; }
 
         //[Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

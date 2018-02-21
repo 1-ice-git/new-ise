@@ -18,17 +18,6 @@
 <p>
     <a id="btnInsNuovaValutazioneUfficio" href="#" onclick="NuovaValutaUfficio()">Inserisci Nuova Valuta Ufficio</a>
 </p>
-
-<p>
-    <div class="form-group">
-        @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
-        <div id="divCombo">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
-            </div>
-        </div>
-    </div>
-</p>
 <p>
     <div class="form-group">
         @Html.Label("lblUfficio0", "Seleziona Ufficio", new { @class = "control-label" })
@@ -39,6 +28,17 @@
         </div>
     </div>
 </p>
+<p>
+    <div class="form-group">
+        @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
+            </div>
+        </div>
+    </div>
+</p>
+
 <table id="tbParValutaUfficio" class="display" cellspacing="0">
     <thead>
         <tr>
@@ -52,11 +52,11 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.percentuale)
-            </th>
-            <th class="text-center">
-                @Html.DisplayNameFor(model => model.percentualeResponsabile)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.percentuale)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.percentualeResponsabile)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
@@ -87,11 +87,11 @@
                     <td></td>
                 }
                 @*<td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentuale)
-                </td>
-                <td style="text-align:right;">
-                    @Html.DisplayFor(modelItem => item.percentualeResponsabile)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.percentuale)
+                    </td>
+                    <td style="text-align:right;">
+                        @Html.DisplayFor(modelItem => item.percentualeResponsabile)
+                    </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
@@ -103,17 +103,17 @@
                     {
                         if (dtib.ParValutaUfficioAnnullato(item))
                         {
-                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
                             if (item.idValutaUfficio == idMinimoNonAnnullato)
                             {
-                                 <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
                             else
                             {
-                                 <a href="#" onclick="EliminaValutaUfficio(@item.idValutaUfficio)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                <a href="#" onclick="EliminaValutaUfficio(@item.idValutaUfficio)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
@@ -172,10 +172,10 @@
 
     $("#btnInsNuovaValutazioneUfficio").button();
 
-   
+
     function PrelevaPValutaUfficio() {
-         //  debugger;
-           rotta = "/Parametri/ParamValutaUfficio/ValutaUfficioLivello";
+        //  debugger;
+        rotta = "/Parametri/ParamValutaUfficio/ValutaUfficioLivello";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
         $("#hiTipoContributo").val(idValuta);
@@ -295,7 +295,7 @@
         //debugger;
         var rotta = "/Parametri/ParamValutaUfficio/EliminaValutaUfficio";
 
-    
+
         var idValuta = parseInt($("#idValuta").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
 
@@ -320,7 +320,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idValuta: idValuta, idValutaUfficio: id ,idUfficio: idUfficio}, 
+                            data: { escludiAnnullati: chk, idValuta: idValuta, idValutaUfficio: id ,idUfficio: idUfficio},
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

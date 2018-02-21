@@ -17,7 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MAGGIORAZIONEABITAZIONE()
         {
-            this.CANOMEMAB = new HashSet<CANOMEMAB>();
+            this.CANONEMAB = new HashSet<CANONEMAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
             this.PERCENTUALEMAB = new HashSet<PERCENTUALEMAB>();
@@ -34,7 +34,7 @@ namespace NewISE.EF
     
         public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CANOMEMAB> CANOMEMAB { get; set; }
+        public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }

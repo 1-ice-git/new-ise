@@ -32,6 +32,7 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? dataFineValidita { get; set; }
         [Required(ErrorMessage = "L'Indennità è richiesta.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal indennita { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

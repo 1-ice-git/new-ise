@@ -38,7 +38,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                    var aml =t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
+                    var aml = t.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
 
                     if (aml?.Any() ?? false)
                     {
@@ -131,11 +131,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var am = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB);
 
-                    var docl = am.DOCUMENTI.Where(a => a.MODIFICATO== false).ToList();
+                    var docl = am.DOCUMENTI.Where(a => a.MODIFICATO == false).ToList();
 
                     if (docl?.Any() ?? false)
                     {
-                        foreach(var doc in docl)
+                        foreach (var doc in docl)
                         {
                             switch ((EnumTipoDoc)doc.IDTIPODOCUMENTO)
                             {
@@ -168,7 +168,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -187,9 +187,9 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var cml = db.MAGGIORAZIONEABITAZIONE.Find(mam.idMAB)
-                                .CANOMEMAB.Where(X => X.ANNULLATO == false && 
-                                                 X.DATAINIZIOVALIDITA>=mam.dataInizioMAB && 
-                                                 X.DATAFINEVALIDITA<=mam.dataFineMAB)
+                                .CANONEMAB.Where(X => X.ANNULLATO == false &&
+                                                 X.DATAINIZIOVALIDITA >= mam.dataInizioMAB &&
+                                                 X.DATAFINEVALIDITA <= mam.dataFineMAB)
                                 .ToList();
 
                     if (cml?.Any() ?? false)
@@ -243,7 +243,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             else
             {
-               // Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione maggiorazione abitazione.", "ATTIVITAZIONAMAB", db, new_am.IDTRASFERIMENTO, new_am.IDATTIVAZIONEMAB);
+                // Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuova attivazione maggiorazione abitazione.", "ATTIVITAZIONAMAB", db, new_am.IDTRASFERIMENTO, new_am.IDATTIVAZIONEMAB);
             }
 
             return new_am;
@@ -311,11 +311,11 @@ namespace NewISE.Models.DBModel.dtObj
                             idMAB = ma.IDATTIVAZIONEMAB,
                             idTrasferimento = ma.IDTRASFERIMENTO,
                             idAttivazioneMAB = ma.IDATTIVAZIONEMAB,
-                            dataInizioMAB=ma.DATAINIZIOMAB,
-                            dataFineMAB=ma.DATAFINEMAB,
-                            AnticipoAnnuale=ma.ANTICIPOANNUALE,
-                            dataAggiornamento=ma.DATAAGGIORNAMENTO,
-                            Annullato=ma.ANNULLATO
+                            dataInizioMAB = ma.DATAINIZIOMAB,
+                            dataFineMAB = ma.DATAFINEMAB,
+                            AnticipoAnnuale = ma.ANTICIPOANNUALE,
+                            dataAggiornamento = ma.DATAAGGIORNAMENTO,
+                            Annullato = ma.ANNULLATO
                         };
 
                     }

@@ -14,11 +14,11 @@
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idLivello = lm.idLivello;
 
-  //  var errori = ViewData.ModelState;
+    //  var errori = ViewData.ModelState;
 
 }
 
-@using (Ajax.BeginForm("InserisciIndennitaBase", "ParamIndennitaBase", new { idLivello= idLivello, escludiAnnullati = @escludiAnnullati }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formIndennitaBase" }))
+@using (Ajax.BeginForm("InserisciIndennitaBase", "ParamIndennitaBase", new { idLivello = idLivello, escludiAnnullati = @escludiAnnullati }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPViewParametri", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formIndennitaBase" }))
 {
     @Html.AntiForgeryToken()
 
@@ -61,12 +61,12 @@
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.dataFineValidita, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.dataFineValidita, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group ">
             @Html.LabelFor(model => model.valore, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -120,8 +120,8 @@
 </div>
 
 <script type="text/javascript">
-  
-   // debugger;
+
+    // debugger;
      @*@foreach(var e in errori)
     {
         if(e.Value.Errors.Count>0)
@@ -152,14 +152,16 @@
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: ''
+	    aSign: '',
+	    mDec: 8,
 	});
 
     $("#valoreResponsabile").autoNumeric('init',
 	{
 	    aSep: '.',
 	    aDec: ',',
-	    aSign: ''
+	    aSign: '',
+	    mDec: 8,
 	});
 
     function AggiornaTutto() {
@@ -208,18 +210,18 @@
         changeMonth: true,
         changeYear: true,
     });
-      
+
 
     function TornaElencoIb() {
         rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
 
         var idLivello = parseFloat('@idLivello');
-       
+
         if (isNaN(idLivello)) {
             $("#divPViewParametri").empty();
             return false;
         }
-        
+
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;

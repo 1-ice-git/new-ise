@@ -18,7 +18,7 @@ namespace NewISE.Models.DBModel
         public string descrizioneValuta { get; set; }
 
         [Required(ErrorMessage = "Il campo valuta è richiesto.")]
-        [Display(Name = "Valuta")]
+        [Display(Name = "Valuta di sistema")]
         public bool valutaUfficiale { get; set; }
 
 

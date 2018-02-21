@@ -12,10 +12,10 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CANOMEMAB
+    public partial class CANONEMAB
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CANOMEMAB()
+        public CANONEMAB()
         {
             this.TFR = new HashSet<TFR>();
         }

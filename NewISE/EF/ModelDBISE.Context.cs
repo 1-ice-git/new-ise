@@ -40,7 +40,7 @@ namespace NewISE.EF
         public virtual DbSet<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
         public virtual DbSet<ATTIVITATERIENTRO> ATTIVITATERIENTRO { get; set; }
         public virtual DbSet<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
-        public virtual DbSet<CANOMEMAB> CANOMEMAB { get; set; }
+        public virtual DbSet<CANONEMAB> CANONEMAB { get; set; }
         public virtual DbSet<CDCGEPE> CDCGEPE { get; set; }
         public virtual DbSet<COEFFICIENTEINDRICHIAMO> COEFFICIENTEINDRICHIAMO { get; set; }
         public virtual DbSet<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }
@@ -48,6 +48,7 @@ namespace NewISE.EF
         public virtual DbSet<CONIUGEPASSAPORTO> CONIUGEPASSAPORTO { get; set; }
         public virtual DbSet<CONIUGETITOLIVIAGGIO> CONIUGETITOLIVIAGGIO { get; set; }
         public virtual DbSet<CONTABILITA> CONTABILITA { get; set; }
+        public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
         public virtual DbSet<DIPENDENTI> DIPENDENTI { get; set; }
         public virtual DbSet<DOCUMENTI> DOCUMENTI { get; set; }
         public virtual DbSet<EMAILSECONDARIEDIP> EMAILSECONDARIEDIP { get; set; }
@@ -71,6 +72,7 @@ namespace NewISE.EF
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
         public virtual DbSet<MAGGIORAZIONIFAMILIARI> MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual DbSet<NORMACALCOLO> NORMACALCOLO { get; set; }
+        public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
         public virtual DbSet<OA> OA { get; set; }
         public virtual DbSet<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         public virtual DbSet<PASSAPORTI> PASSAPORTI { get; set; }
@@ -121,7 +123,5 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
-        public virtual DbSet<DESTINATARI> DESTINATARI { get; set; }
-        public virtual DbSet<NOTIFICHE> NOTIFICHE { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:d}")]
         [CustomValidation(typeof(dtIndennitaBase), "VerificaDataInizio")]
         public DateTime dataInizioValidita { get; set; }
-        
+
         [Display(Name = "Data fine validità")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:d}")]
@@ -33,11 +33,11 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name = "Valore")]
-      //  [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:P2}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Valore resp.")]
-       // [DisplayFormat(DataFormatString = "{0:P2}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
