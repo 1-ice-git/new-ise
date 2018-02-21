@@ -12,8 +12,8 @@
         <div class="panel-heading"><b>Spese Avvicendamento</b></div>
         <div class="panel-body">
 
-            <div class="form-horizontal">
-                <div class="form-group">
+        <div class="form-horizontal">
+             <div class="form-group">
                     
 
                     <div class="col-md-2">
@@ -28,25 +28,27 @@
                         @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
                     </div>
 
+                    <div class="col-md-2">
+                        @*<a href="#" target="_blank" onclick="invia()">Stampa il Consuntivo Spese di Avvicendamento </a>*@
+                        @*<a href="#" id="opener">Stampa Spese di Avvicendamento </a>*@
+                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                            <span class="glyphicon glyphicon-print"></span> Stampa
+                        </a>
+
+                    </div>
+
+                 <div class="col-md-2">
+                     @*<a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>*@
+                     @*<a href="#" onclick="callpartialSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>*@
 
                 </div>
+
+                 </div>
                 <br />
-            </div>
+        </div>
 
-            <div class="form-group">
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa il Consuntivo Spese di Avvicendamento </a>*@
-                    <a href="#" id="opener">Stampa Spese di Avvicendamento </a>
-                </div>
-                <div class="col-md-3">
-                    @*<a href="#" onclick="PrelevaSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>*@
-                    <a href="#" onclick="callpartialSpeseAvvicendamento()">Visualizza il Consuntivo Spese di Avvicendamento </a>
-                </div>
-
-            </div>
-            <br /><br />
-
-            <table id="tb_Spese_Avvicendamento" class="display" cellspacing="0">
+          
+            @*<table id="tb_Spese_Avvicendamento" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -107,7 +109,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
         </div>
     </div>
 </div>
@@ -218,7 +220,7 @@
         var data = $("#datepicker").datepicker().val()
         var data1 = $("#datepicker1").datepicker().val()
 
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptSpeseAvvicendamento?V_DATA=" + data + "&V_DATA1=" + data1 + ""
+        window.location.href = "/Statistiche/SpeseAvvicendamento/RptSpeseAvvicendamento?V_DATA=" + data + "&V_DATA1=" + data1 + ""
 
     };
 

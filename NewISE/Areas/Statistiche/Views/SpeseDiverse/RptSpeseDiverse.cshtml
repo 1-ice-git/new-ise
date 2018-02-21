@@ -1,17 +1,19 @@
 ﻿@using ReportViewerForMvc;
 @using Microsoft.Reporting.WebForms;
 
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <title>Storia del Dipendente</title>
+    <title>Spese Diverse</title>
 </head>
 <body>
     @{
-        ViewBag.Title = "Storia del Dipendente";
+        ViewBag.Title = "Spese Diverse";
     }
+
 
     @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
 

@@ -25,24 +25,27 @@
                         @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
                     </div>
 
-                </div>
+                    <div class="col-md-2">
+                        @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
+                        @*<a href="#" id="opener">Stampa Spese Diverse </a>*@
+
+                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                            <span class="glyphicon glyphicon-print"></span> Stampa
+                        </a>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>*@
+                        @*<a href="#" onclick="callpartialSpese()">Visualizza le Spese Diverse </a>*@
+                    </div>
+
+                    </div>
                 <br />
             </div>
 
-            <div class="form-group">
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa le Spese Diverse </a>*@
-                    <a href="#" id="opener">Stampa Spese Diverse </a>
-                </div>
-                <div class="col-md-3">
-                    @*<a href="#" onclick="Visualizza()">Visualizza le Spese Diverse </a>*@
-                    <a href="#" onclick="callpartialSpese()">Visualizza le Spese Diverse </a>
-                </div>
-
-            </div>
-            <br /><br />
-
-            <table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
+            
+            @*<table id="tb_Stp_Spese_Diverse" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -103,7 +106,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
         </div>
     </div>
 </div>
@@ -216,7 +219,7 @@
         var data = $("#datepicker").datepicker().val()
         var data1 = $("#datepicker1").datepicker().val()
 
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptSpeseDiverse?V_DATA=" + data + "&V_DATA1=" + data1 + ""
+        window.location.href = "/Statistiche/SpeseDiverse/RptSpeseDiverse?V_DATA=" + data + "&V_DATA1=" + data1 + ""
 
     };
 

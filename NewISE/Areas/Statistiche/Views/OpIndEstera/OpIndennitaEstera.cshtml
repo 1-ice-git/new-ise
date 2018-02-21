@@ -24,27 +24,31 @@
                         @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
                     </div>
 
-                </div>
+                    <div class="col-md-2">
+                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#">
+                            <span class="glyphicon glyphicon-print"></span>Stampa
+                        </a>*@
+                        
+                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                            <span class="glyphicon glyphicon-print"></span> Stampa
+                        </a>
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#" onclick="callpartialOpIndEstera();">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera</a>*@
+                    </div>
+
+                   </div>
+                
                 <br />
 
             </div>
 
-            <div class="form-group">
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
-                    <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>
-                </div>
-                <div class="col-md-3">
-                    @*<a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
-                    <a href="#" onclick="callpartialOpIndEstera();">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera</a>
-                </div>
-
-            </div>
-            <br /><br />
-
-
-
-            <table id="tb_Op_Indennita_Estera" class="display" cellspacing="0">
+           
+            @*<table id="tb_Op_Indennita_Estera" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -91,7 +95,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
-            {
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.matricola)
@@ -135,7 +139,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
         
     </div>
 </div>
@@ -190,7 +194,7 @@
             close: function (event, ui) {
                 //location.reload(true);
                 $('.container').removeClass("NoOverflow");
-
+              
             },
             height: windowHeight, width: windowWidth
 
@@ -223,9 +227,9 @@
 
                 },
                 success: function (result) {
-                    debugger;
+                    //debugger;
                     $("#dialog").html(result);
-                    $("#dialog").close();
+                    
 
                 },
                 complete: function () {
@@ -248,10 +252,8 @@
         var DATA = $("#datepicker").datepicker().val()
         var DATA1 = $("#datepicker1").datepicker().val()
 
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
+        window.location.href = "/Statistiche/OpIndEstera/RptOpIndennitaEstera?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
     };
-
-
 
     /* Custom filtering function which will search data in column four between two values */
     $.fn.dataTable.ext.search.push(
@@ -439,9 +441,6 @@
             }
         });
     }
-
-
-  
 
 
 </script>

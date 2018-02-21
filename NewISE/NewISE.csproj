@@ -2193,6 +2193,7 @@
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\RptStoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\DislocazioneDipEstero\DislocazioneDipEstero1.cshtml" />
+    <Content Include="Areas\Statistiche\Views\SpeseDiverse\RptSpeseDiverse.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
@@ -3372,6 +3373,10 @@
       <LastGenOutput>TitoliViaggioColori.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report30.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
@@ -3386,7 +3391,6 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\Views\SpeseDiverse\RptSpeseDiverse.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

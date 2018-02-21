@@ -12,35 +12,39 @@
         <div class="panel-heading"><b>Presenze dei Livelli in servizio all'Estero</b></div>
         <div class="panel-body">
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                   
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
-                    </div>
-                    <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
-                    </div>
-                </div>
-            </div>
-            <br />
-
+        <div class="form-horizontal">
             <div class="form-group">
+                   
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
+                            <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })</td>
+                            <td>@Html.DropDownList("COD_QUALIFICA", ViewBag.ListaDipendentiEsteroLivello as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                            <td>@*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
+                                @*<a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
 
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa Presenze dei Livelli in Servizio all'Estero </a>*@
-                    <a href="#" id="opener">Stampa Presenze dei Livelli in Servizio all'Estero </a>
-                </div>
-                <div class="col-md-3">
-                    @*<a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>*@
-                    <a href="#" onclick="callpartialPresenze()">Visualizza Presenze dei Livelli all'Estero </a>
-                </div>
-            </div>
-            <br /><br />
-            <table id="tbDipEsteroLivello" class="display" cellspacing="0">
+                                <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                    <span class="glyphicon glyphicon-print"></span> Stampa
+                                </a>
+                            </td>
+                            <td>
+                                @*<a href="#" onclick="PresenzeLivelli()">Visualizza Presenze dei Livelli all'Estero </a>*@
+                                @*<a href="#" onclick="callpartialPresenze()">Visualizza Presenze dei Livelli all'Estero </a>*@
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+
+                  
+
+             </div>
+        </div>
+            
+            @*<table id="tbDipEsteroLivello" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -112,7 +116,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
 
         </div>
     </div>
@@ -228,10 +232,7 @@
         var data = $("#datepicker").datepicker().val()
         var data1 = $("#datepicker1").datepicker().val()
 
-        //window.location.href = "/Statistiche/ArchivioVecchioISE/RptPresenzeLivelli?codicequalifica=" + codicequalifica + "&V_DATA=" + data + "&V_DATA1=" + data1 + ""
-
         window.location.href = "/Statistiche/PresenzeLivelliEstero/RptPresenzeLivelli?codicequalifica=" + codicequalifica + "&V_DATA=" + data + "&V_DATA1=" + data1 + ""
-
 
     };
 

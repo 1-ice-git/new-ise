@@ -26,23 +26,26 @@
                         @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
                     </div>
 
-                </div>
-                <br />
+                    <div class="col-md-2">
+                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
+                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
 
+                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                            <span class="glyphicon glyphicon-print"></span> Stampa
+                        </a>
+
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<a href="#" onclick="OpCanoneAnticipato()">Visualizza il Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
+                    </div>
+
+                    </div>
+                
             </div>
 
-            <div class="form-group">
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>*@
-                    <a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Canone Anticipato </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="#" onclick="OpCanoneAnticipato()">Visualizza il Riepilogo delle Operazioni effettuate - Canone Anticipato </a>
-
-                </div>
-            </div>
-            <br /><br />
-            <table id="tb_Stp_Op_Canone_Anticipato" class="display" cellspacing="0">
+            
+            @*<table id="tb_Stp_Op_Canone_Anticipato" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -114,7 +117,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
         </div>
     </div>
 </div>
@@ -223,7 +226,7 @@
         var DATA = $("#datepicker").datepicker().val()
         var DATA1 = $("#datepicker1").datepicker().val()
 
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptOpCanoneAnticipato?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
+        window.location.href = "/Statistiche/OpCanoneAnticipato/RptOpCanoneAnticipato?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
     };
 
     /* Custom filtering function which will search data in column four between two values */

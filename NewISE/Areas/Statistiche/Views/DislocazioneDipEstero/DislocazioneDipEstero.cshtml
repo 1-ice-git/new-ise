@@ -15,38 +15,33 @@
         <div class="panel-body">
 
             <div class="form-horizontal">
-                <div class="form-group">
-                    
+               <div class="form-group">
 
-                    <div class="col-md-2">
-                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data" })
-                    </div>
+                   <table class="table">
+                       <tbody>
+                           <tr>
+                               <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data" })</td>
+                               <td>@Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                               <td>
+                                    @*<a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>*@
+                                    @*<a href="#" id="opener">Stampa Dipendenti all' Estero per Livello </a>*@
 
-                    <div class="select2-container select2-container--classic">
-                        @Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
-                    </div>
+                                   <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                       <span class="glyphicon glyphicon-print"></span> Stampa
+                                   </a>
+                               </td>
+                               <td>@*<a href="#" onclick="Dislocazione()">Visualizza Dipendenti all' Estero per Livello </a>*@
+                                   @*<a href="#" onclick="callpartialDislocazione()">Visualizza Dipendenti all' Estero per Livello </a>*@
+                               </td>
+                           </tr>
 
-                </div>
-                <br />
-
+                       </tbody>
+                   </table>
+ 
             </div>
-            <div class="form-group">
-                <div class="col-md-3">
-                    @*<a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>*@
-                    <a href="#" id="opener">Stampa Dipendenti all' Estero per Livello </a>
-                </div>
+            
 
-                <div class="col-md-3">
-                    @*<a href="#" onclick="Dislocazione()">Visualizza Dipendenti all' Estero per Livello </a>*@
-                    <a href="#" onclick="callpartialDislocazione()">Visualizza Dipendenti all' Estero per Livello </a>
-                    
-                </div>
-
-
-            </div>
-            <br /><br />
-
-            <table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
+            @*<table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -132,7 +127,7 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>*@
         </div>
     </div>
 </div>
@@ -247,9 +242,8 @@
         var data = $("#datepicker").datepicker().val()
 
         // Con parametri
-        window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?codicesede=" + codicesede + "&V_DATA=" + data + ""
+        window.location.href = "/Statistiche/DislocazioneDipEstero/RptDislocazione?codicesede=" + codicesede + "&V_DATA=" + data + ""
 
-        //window.location.href = "/Statistiche/ArchivioVecchioISE/RptDislocazione?V_DATA=" + data + ""
     };
 
     // Calendario con possibilità di cambiare mese e anno
@@ -319,7 +313,7 @@
 
     // Dislocazione Dipendenti Estero
     function callpartialDislocazione() {
-        debugger;
+        //debugger;
 
         rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
 
