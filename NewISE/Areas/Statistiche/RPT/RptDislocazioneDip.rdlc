@@ -9,13 +9,13 @@
               <Width>1.44167cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.95299cm</Width>
+              <Width>1.50319cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>1.99729cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.57938cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.5cm</Width>
@@ -24,16 +24,22 @@
               <Width>1.91792cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>0.96542cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>1.09771cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>1.9725cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>2.52646cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.55833cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.8175cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -55,7 +61,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox1</rd:DefaultName>
@@ -87,7 +95,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
@@ -119,7 +129,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox5</rd:DefaultName>
@@ -151,7 +163,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox7</rd:DefaultName>
@@ -183,7 +197,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox9</rd:DefaultName>
@@ -215,7 +231,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox16</rd:DefaultName>
@@ -247,7 +265,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox18</rd:DefaultName>
@@ -279,7 +299,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox20</rd:DefaultName>
@@ -305,13 +327,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Ind. Pers. Lorda</Value>
+                              <Value>Ind. Pers.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox23</rd:DefaultName>
@@ -337,16 +361,86 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Contr. Abitaz. Lordo</Value>
+                              <Value>Contr. Abitaz.</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox31</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox37">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Uso Abitaz</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox37</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox39">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Totale</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox39</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -380,7 +474,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>SEDE</rd:DefaultName>
@@ -412,7 +508,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>VALUTA</rd:DefaultName>
@@ -444,7 +542,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>MATRICOLA</rd:DefaultName>
@@ -476,7 +576,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>NOMINATIVO</rd:DefaultName>
@@ -508,7 +610,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>DT_TRASFERIMENTO</rd:DefaultName>
@@ -540,7 +644,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>QUALIFICA</rd:DefaultName>
@@ -572,7 +678,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>CONIUGE</rd:DefaultName>
@@ -604,7 +712,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>FIGLI</rd:DefaultName>
@@ -636,7 +746,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ISEP</rd:DefaultName>
@@ -655,23 +767,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox32">
+                    <Textbox Name="CONTRIBUTO">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=Fields!CONTRIBUTO.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox32</rd:DefaultName>
+                      <rd:DefaultName>CONTRIBUTO</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -685,12 +799,84 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="USO">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!USO.Value</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>USO</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="TOTALE">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!TOTALE.Value</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                                <Format>'€'#,0.00;('€'#,0.00)</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>TOTALE</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                        <rd:FormatSymbolCulture>it-IT</rd:FormatSymbolCulture>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -717,7 +903,7 @@
         <Top>4.89162cm</Top>
         <Left>0.40014cm</Left>
         <Height>1.2cm</Height>
-        <Width>22.81257cm</Width>
+        <Width>24.87736cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -807,7 +993,7 @@
         <Top>2.90146cm</Top>
         <Left>21.71912cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.24088cm</Width>
+        <Width>3.55838cm</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -851,11 +1037,11 @@
         <Top>0.34078cm</Top>
         <Left>0.40014cm</Left>
         <Height>1.49958cm</Height>
-        <Width>24.55986cm</Width>
+        <Width>24.87736cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -867,7 +1053,7 @@
     <Height>3.0625in</Height>
     <Style />
   </Body>
-  <Width>10.07552in</Width>
+  <Width>10.23236in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -881,7 +1067,7 @@
           <Top>0.24094cm</Top>
           <Left>0.40014cm</Left>
           <Height>2.05811cm</Height>
-          <Width>24.55986cm</Width>
+          <Width>24.87736cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -897,7 +1083,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>3.175cm</Height>
+      <Height>2.75167cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -930,8 +1116,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox22</rd:DefaultName>
           <Top>0.81125cm</Top>
+          <Left>0.40014cm</Left>
           <Height>0.6cm</Height>
-          <Width>24.96cm</Width>
+          <Width>24.87736cm</Width>
           <Style>
             <Border>
               <Style>None</Style>

@@ -850,11 +850,12 @@ Pers</Value>
                               <Value>=Fields!SISTEMAZIONE_RIENTRO.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
+                                <Format>n2</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
