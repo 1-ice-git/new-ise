@@ -3379,6 +3379,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDislocazioneDip.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpIndEstera.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc" />

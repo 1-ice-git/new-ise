@@ -201,7 +201,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 //adp.Fill(ds15, ds15.V_ISE_STP_ELENCO_TRASF.TableName);
                 adp.Fill(ds15, ds15.DataTable15.TableName);
 
-                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc";
+                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptDislocazioneDip.rdlc";
                 reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet15", ds15.Tables[0]));
 
                 ReportParameter[] parameterValues = new ReportParameter[]
