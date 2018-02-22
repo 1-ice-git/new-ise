@@ -8,24 +8,29 @@
     string hiddenAnnullaRichiesta = Convert.ToString(ViewData["hiddenAnnullaRichiesta"]);
     string hiddenAttivaRichiesta = Convert.ToString(ViewData["hiddenAttivaRichiesta"]);
     string hiddenNotificaRichiesta = Convert.ToString(ViewData["hiddenNotificaRichiesta"]);
+    bool admin = Convert.ToBoolean(ViewData["amministratore"]);
 }
 
 
 <div style="padding-right: 10px;">
     <hr />
     <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
-        <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaAnticipi" onclick="ModalNotificaRichiestaAnticipi();">
+        <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaAnticipi" onclick=" ModalNotificaRichiestaAnticipi(); ">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
         </button>
-        <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaAnticipi" onclick="ModalAttivaRichiestaAnticipi();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Attiva richiesta
-        </button>
-        <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaAnticipi" onclick="ModalAnnullaRichiestaAnticipi();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Annulla richiesta
-        </button>
+        @if (admin)
+        {
+            <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaAnticipi" onclick="ModalAttivaRichiestaAnticipi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Attiva richiesta
+            </button>
+            <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaAnticipi" onclick="ModalAnnullaRichiestaAnticipi();">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Annulla richiesta
+            </button>
+        }
+
     </div>
 </div>
 

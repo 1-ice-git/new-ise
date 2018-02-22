@@ -140,7 +140,7 @@ namespace NewISE.Models.DBModel.dtObj
                 db.CALENDARIOEVENTI.Where(
                     a =>
                         a.IDTRASFERIMENTO == idTrasferimento && a.IDFUNZIONIEVENTI == funzEv && a.COMPLETATO == false &&
-                        a.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI);
+                        a.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI).ToList();
 
             if (lce?.Any() ?? false)
             {

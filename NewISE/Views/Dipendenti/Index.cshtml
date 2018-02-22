@@ -295,10 +295,16 @@
         }
     }
 
-    function InfoTrasferimento() {
+    function InfoTrasferimento(idTrasf) {
         //debugger;
+        var idTrasferimento = 0;
 
-        var idTrasferimento = $("#hidTrasferimento").val();
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+
 
         var rotta = "/Trasferimento/InfoTrasferimento";
 

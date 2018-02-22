@@ -36,16 +36,16 @@ namespace NewISE.Controllers
             return PartialView(psm);
         }
 
-        public JsonResult CalcolaAnticipo (decimal idAttivitaAnticipi, decimal percRichiesta)
+        public JsonResult CalcolaAnticipo(decimal idAttivitaAnticipi, decimal percRichiesta)
         {
             string errore = "";
-            decimal importoPercepito=0;
+            decimal importoPercepito = 0;
 
             try
             {
                 using (dtAnticipi dta = new dtAnticipi())
                 {
-                    importoPercepito = dta.CalcolaImportoPercepito(idAttivitaAnticipi,percRichiesta);
+                    importoPercepito = dta.CalcolaImportoPercepito(idAttivitaAnticipi, percRichiesta);
                 }
 
             }
@@ -61,7 +61,7 @@ namespace NewISE.Controllers
                         importoPercepito = importoPercepito,
                         err = errore
                     });
-    
+
 
         }
 
@@ -106,19 +106,19 @@ namespace NewISE.Controllers
         {
             AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
 
-           
+
 
 
             try
             {
                 bool amministratore = Utility.Amministratore();
 
-                string disabledNotificaRichiesta="disabled";
-                string hiddenNotificaRichiesta="";
+                string disabledNotificaRichiesta = "disabled";
+                string hiddenNotificaRichiesta = "";
                 string disabledAttivaRichiesta = "disabled";
-                string hiddenAttivaRichiesta = "hidden"; 
+                string hiddenAttivaRichiesta = "hidden";
                 string disabledAnnullaRichiesta = "disabled";
-                string hiddenAnnullaRichiesta = "hidden"; 
+                string hiddenAnnullaRichiesta = "hidden";
 
                 using (dtAnticipi dta = new dtAnticipi())
                 {
@@ -135,13 +135,13 @@ namespace NewISE.Controllers
                 //se amministratore vedo i pulsanti altrimenti solo notifica
                 if (amministratore)
                 {
-                    hiddenAttivaRichiesta="";
-                    hiddenAnnullaRichiesta="";
+                    hiddenAttivaRichiesta = "";
+                    hiddenAnnullaRichiesta = "";
 
                     if (notificaRichiesta && attivaRichiesta == false)
                     {
-                        disabledAttivaRichiesta="";
-                        disabledAnnullaRichiesta="";
+                        disabledAttivaRichiesta = "";
+                        disabledAnnullaRichiesta = "";
                     }
                 }
 
@@ -171,7 +171,7 @@ namespace NewISE.Controllers
                 using (dtAnticipi dta = new dtAnticipi())
                 {
 
-                    dta.NotificaRichiestaAnticipi(idAttivitaAnticipi,percentualeRichiesta);
+                    dta.NotificaRichiestaAnticipi(idAttivitaAnticipi, percentualeRichiesta);
                 }
             }
             catch (Exception ex)

@@ -611,7 +611,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     "ATTIVITATEPARTENZA", db, atep_Old.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO,
                                     atep_Old.IDATEPARTENZA);
 
-                                var idTrasferimento = atep_Old.IDATEPARTENZA;
+                                var idTrasferimento = atep_Old.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO;
 
                                 ATTIVITATEPARTENZA atep_New = new ATTIVITATEPARTENZA()
                                 {

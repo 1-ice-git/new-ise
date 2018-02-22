@@ -48,7 +48,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    throw new Exception("Non risulta nessun ruolo dipendente per il trasferimento verso " + t.UFFICI.DESCRIZIONEUFFICIO + " del " + t.DATAPARTENZA.Date );
+                    throw new Exception("Non risulta nessun ruolo dipendente per il trasferimento verso " + t.UFFICI.DESCRIZIONEUFFICIO + " del " + t.DATAPARTENZA.Date);
                 }
 
             }
@@ -172,6 +172,16 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
+                if (dt.Date < t.DATAPARTENZA)
+                {
+                    dt = t.DATAPARTENZA;
+                }
+
+                if (dt.Date > t.DATARIENTRO)
+                {
+                    dt = t.DATARIENTRO.Value;
+                }
+
                 if (t != null && t.IDTRASFERIMENTO > 0)
                 {
                     var lrd =
@@ -290,7 +300,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             decimal idRuoloDip = rdm.idRuoloDipendente;
 
-            var  rd = db.RUOLODIPENDENTE.Find(idRuoloDip);
+            var rd = db.RUOLODIPENDENTE.Find(idRuoloDip);
 
             if (rd != null && rd.IDRUOLODIPENDENTE > 0)
             {

@@ -168,8 +168,15 @@ namespace NewISE.Models.Tools
                                 {
                                     valRidIB = riduzioniIB.PERCENTUALE;
                                 }
+                                if (valRidIB > 0)
+                                {
+                                    indennitaBaseRiduzione = valRespIB * valRidIB / 100;
+                                }
+                                else
+                                {
+                                    indennitaBaseRiduzione = valRespIB;
+                                }
 
-                                indennitaBaseRiduzione = valRespIB * valRidIB / 100;
 
                             }
                             else
@@ -241,9 +248,15 @@ namespace NewISE.Models.Tools
 
                                 var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
 
-                                var attivazioneMF = mf.ATTIVAZIONIMAGFAM.OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).First();
+                                var lattivazioneMF =
+                                    mf.ATTIVAZIONIMAGFAM.Where(
+                                        a =>
+                                            a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
+                                            a.ATTIVAZIONEMAGFAM == true)
+                                        .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
 
-                                if (attivazioneMF.RICHIESTAATTIVAZIONE == true && attivazioneMF.ATTIVAZIONEMAGFAM == true)
+
+                                if (lattivazioneMF?.Any() ?? false)
                                 {
                                     var lc =
                                         mf.CONIUGE.Where(
@@ -259,10 +272,11 @@ namespace NewISE.Models.Tools
                                         var lpmc =
                                             coniuge.PERCENTUALEMAGCONIUGE.Where(
                                                 a =>
-                                                    a.ANNULLATO && a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
+                                                    a.ANNULLATO == false &&
+                                                    a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
                                                     dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                     dtDatiParametri <= a.DATAFINEVALIDITA)
-                                                .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+                                                .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                         if (lpmc?.Any() ?? false)
                                         {
@@ -277,7 +291,10 @@ namespace NewISE.Models.Tools
                                             coniuge.PENSIONE.Where(
                                                 a =>
                                                     a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIO &&
-                                                    dtDatiParametri <= a.DATAFINE).OrderByDescending(a => a.DATAINIZIO);
+                                                    dtDatiParametri <= a.DATAFINE)
+                                                .OrderByDescending(a => a.DATAINIZIO)
+                                                .ToList();
+
                                         if (lpensioni?.Any() ?? false)
                                         {
                                             var pens = lpensioni.First();
@@ -301,7 +318,7 @@ namespace NewISE.Models.Tools
                                             a =>
                                                 a.MODIFICATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                 dtDatiParametri <= a.DATAFINEVALIDITA)
-                                            .OrderBy(a => a.DATAINIZIOVALIDITA);
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                                     if (lf?.Any() ?? false)
                                     {
@@ -312,7 +329,8 @@ namespace NewISE.Models.Tools
                                                     a =>
                                                         a.ANNULLATO == false && dtDatiParametri >= a.DATAINIZIOVALIDITA &&
                                                         dtDatiParametri <= a.DATAFINEVALIDITA)
-                                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA);
+                                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
                                             if (lpmf?.Any() ?? false)
                                             {
                                                 var pmf = lpmf.First();

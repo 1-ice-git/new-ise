@@ -374,7 +374,7 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region MaggiorazioneAbitazione
-                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.ANNULLATO==false).OrderBy(x=>x.IDMAB);
+                var lma = t.MAGGIORAZIONEABITAZIONE.Where(x => x.ANNULLATO == false).OrderBy(x => x.IDMAB);
                 if (lma?.Any() ?? false)
                 {
                     var ma = lma.First();
@@ -1026,7 +1026,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dit.RuoloUfficio = rum;
                         }
 
-                        if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare)
+                        if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare || dit.statoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
                             using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
