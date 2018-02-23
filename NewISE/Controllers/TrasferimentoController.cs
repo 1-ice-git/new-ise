@@ -1073,6 +1073,24 @@ namespace NewISE.Controllers
                 trm.idStatoTrasferimento = EnumStatoTraferimento.Da_Attivare;
                 trm.dataAggiornamento = DateTime.Now;
 
+                if (idTrasferimentoOld > 0)
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        bool ret = false;
+
+                        ret = dtt.VerificaDataInizioTrasferimentoNew(idTrasferimentoOld, trm.dataPartenza);
+
+                        if (ret)
+                        {
+                            ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore e/o uguale alla data di partenza del trasferimento precedente.");
+                        }
+
+                    }
+                }
+
+
+
                 if (ModelState.IsValid)
                 {
                     try

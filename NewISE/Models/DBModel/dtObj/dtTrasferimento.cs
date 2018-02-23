@@ -53,6 +53,29 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idTrasfOld"></param>
+        /// <param name="dtTrasfNew"></param>
+        /// <returns></returns>
+        public bool VerificaDataInizioTrasferimentoNew(decimal idTrasfOld, DateTime dtTrasfNew)
+        {
+            bool ret = false;
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tOld = db.TRASFERIMENTO.Find(idTrasfOld);
+
+                if (tOld.DATAPARTENZA >= dtTrasfNew)
+                {
+                    ret = true;
+                }
+
+            }
+
+            return ret;
+        }
 
 
         public TrasferimentoModel GetTrasferimentoByIdTEPartenza(decimal idTEPartenza)

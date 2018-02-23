@@ -333,7 +333,6 @@
     <Content Include="Content\DataTables-1.10.13\examples\advanced_init\row_grouping.html" />
     <Content Include="Content\DataTables-1.10.13\examples\advanced_init\sort_direction_control.html" />
     <Content Include="Content\DataTables-1.10.13\examples\ajax\custom_data_flat.html" />
-    <Content Include="Content\DataTables-1.10.13\examples\ajax\custom_data_property.html" />
     <Content Include="Content\DataTables-1.10.13\examples\ajax\data\arrays.txt" />
     <Content Include="Content\DataTables-1.10.13\examples\ajax\data\arrays_custom_prop.txt" />
     <Content Include="Content\DataTables-1.10.13\examples\ajax\data\arrays_subobjects.txt" />
@@ -1051,6 +1050,7 @@
     <Content Include="Immagini\IconeDocumenti\PDF-icon-Disable.png" />
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\loader.gif" />
+    <Content Include="Immagini\Logo Rit PNG.PNG" />
     <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\switch3.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
