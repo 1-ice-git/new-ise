@@ -6,7 +6,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.25639cm</Width>
+              <Width>2.87376cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.85952cm</Width>
@@ -18,22 +18,22 @@
               <Width>1.70076cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.25639cm</Width>
+              <Width>1.63902cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.25639cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.25639cm</Width>
+              <Width>1.91243cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.96535cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.25639cm</Width>
+              <Width>2.15056cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.33035cm</Width>
+              <Width>1.78014cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.54743cm</Width>
@@ -504,7 +504,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -539,7 +539,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -574,7 +574,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -609,7 +609,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -644,7 +644,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -679,7 +679,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -714,7 +714,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -749,7 +749,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -784,7 +784,7 @@ Pers</Value>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -812,14 +812,14 @@ Pers</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ISEP.Value</Value>
+                              <Value>=FormatNumber(Fields!ISEP.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -847,10 +847,10 @@ Pers</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!SISTEMAZIONE_RIENTRO.Value</Value>
+                              <Value>=FormatNumber(Fields!SISTEMAZIONE_RIENTRO.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>n2</Format>
+                                <Format>'€'#,0.00;('€'#,0.00)</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -883,14 +883,14 @@ Pers</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ANTICIPO.Value</Value>
+                              <Value>=FormatNumber(Fields!ANTICIPO.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1020,7 +1020,7 @@ Pers</Value>
         <Top>2.36171cm</Top>
         <Left>21.33305cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.56027cm</Width>
+        <Width>3.90423cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>

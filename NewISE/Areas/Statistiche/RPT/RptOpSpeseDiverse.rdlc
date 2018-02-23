@@ -6,28 +6,28 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.76458cm</Width>
+              <Width>4.00208cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>1.99729cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.79104cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.84396cm</Width>
+              <Width>3.8425cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>3.00271cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.5cm</Width>
+              <Width>3.26224cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.35869cm</Width>
+              <Width>2.81561cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>4.17761cm</Width>
+              <Width>2.7224cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -546,7 +546,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!SPD_IMPORTO_LIRE.Value</Value>
+                              <Value>=FormatNumber(Fields!SPD_IMPORTO_LIRE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <Format>'€'#,0.00;('€'#,0.00)</Format>
@@ -554,7 +554,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -572,7 +572,6 @@
                         <rd:FormatSymbolCulture>it-IT</rd:FormatSymbolCulture>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -591,7 +590,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -713,7 +712,7 @@
         <Top>2.63183cm</Top>
         <Left>0.42016cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.59576cm</Width>
+        <Width>4.74507cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>Periodo di riferimento</ToolTip>
         <Style>
@@ -742,9 +741,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>2.63183cm</Top>
-        <Left>4.19231cm</Left>
+        <Left>5.34162cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.72785cm</Width>
+        <Width>2.72243cm</Width>
         <ZIndex>3</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
@@ -773,9 +772,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
         <Top>2.63183cm</Top>
-        <Left>8.09655cm</Left>
+        <Left>8.24044cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.71902cm</Width>
+        <Width>2.62541cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>

@@ -30,13 +30,13 @@
               <Width>1.09771cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.9725cm</Width>
+              <Width>2.26354cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.52646cm</Width>
+              <Width>3.08208cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.55833cm</Width>
+              <Width>2.71165cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.8175cm</Width>
@@ -475,7 +475,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -509,7 +509,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -543,7 +543,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -577,7 +577,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -611,7 +611,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -645,7 +645,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -679,7 +679,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -713,7 +713,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -740,14 +740,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ISEP.Value</Value>
+                              <Value>=FormatNumber(Fields!ISEP.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -774,14 +774,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CONTRIBUTO.Value</Value>
+                              <Value>=FormatNumber(Fields!CONTRIBUTO.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -808,14 +808,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!USO.Value</Value>
+                              <Value>=FormatNumber(Fields!USO.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -842,7 +842,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!TOTALE.Value</Value>
+                              <Value>=FormatNumber(Fields!TOTALE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <Format>'€'#,0.00;('€'#,0.00)</Format>
@@ -850,7 +850,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -918,7 +918,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>="dal  " &amp; Parameters!fromDate.Value</Value>
+                <Value>= Parameters!fromDate.Value</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -927,9 +927,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>2.875cm</Top>
-        <Left>2.46111cm</Left>
+        <Left>2.88444cm</Left>
         <Height>0.6cm</Height>
-        <Width>3.83368cm</Width>
+        <Width>3.41035cm</Width>
         <ZIndex>1</ZIndex>
         <ToolTip>Dal </ToolTip>
         <Style>
@@ -949,7 +949,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Situazione</Value>
+                <Value>Situazione al</Value>
                 <Style>
                   <FontWeight>Bold</FontWeight>
                 </Style>
@@ -962,7 +962,7 @@
         <Top>2.875cm</Top>
         <Left>0.40014cm</Left>
         <Height>0.6cm</Height>
-        <Width>2.02569cm</Width>
+        <Width>2.37847cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>Periodo di riferimento</ToolTip>
         <Style>
@@ -1041,7 +1041,7 @@
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
-            <Style>Solid</Style>
+            <Style>None</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -1071,7 +1071,7 @@
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
           </Style>
         </Image>

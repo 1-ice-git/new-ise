@@ -2192,7 +2192,6 @@
     <Content Include="Areas\Statistiche\Views\OpSpeseDiverse\OpSpeseDiverse.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\RptStoriaDipendente.cshtml" />
     <Content Include="Areas\Statistiche\Views\StoriaDipendente\StoriaDipendente.cshtml" />
-    <Content Include="Areas\Statistiche\Views\DislocazioneDipEstero\DislocazioneDipEstero1.cshtml" />
     <Content Include="Areas\Statistiche\Views\SpeseDiverse\RptSpeseDiverse.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
@@ -3388,7 +3387,7 @@
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseDiverse.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
     <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />

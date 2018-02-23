@@ -6,25 +6,25 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.04387cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.44589cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.86893cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.54631cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.96964cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.62568cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>2.96964cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>2.96964cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>5.28713cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>2.96964cm</Width>
@@ -581,14 +581,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!INDENITA_IN_VALUTA.Value</Value>
+                              <Value>=FormatNumber(Fields!INDENITA_IN_VALUTA.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -637,7 +637,7 @@
         <Top>4.99745cm</Top>
         <Left>0.88129cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.75712cm</Width>
+        <Width>23.75708cm</Width>
         <Style>
           <Border>
             <Style>Solid</Style>
