@@ -71,7 +71,7 @@ namespace NewISE.Controllers
                                 using (dtValute dtv = new dtValute())
                                 {
                                     var v = dtv.GetValutaByIdCanone(cm.IDCANONE);
-                                
+
                                     mavm.descrizioneValuta = v.descrizioneValuta;
                                     mavm.id_Valuta = v.idValuta;
                                 }
@@ -104,7 +104,7 @@ namespace NewISE.Controllers
         {
             try
             {
-                    ViewData.Add("idTrasferimento", idTrasferimento);
+                ViewData.Add("idTrasferimento", idTrasferimento);
             }
             catch (Exception ex)
             {
@@ -144,12 +144,12 @@ namespace NewISE.Controllers
 
                     if (amm != null && amm.idAttivazioneMAB > 0)
                     {
-                        dtma.VerificaDocumentiPartenza(amm, out siDocCopiaContratto, 
+                        dtma.VerificaDocumentiPartenza(amm, out siDocCopiaContratto,
                                                             out siDocCopiaRicevuta,
-                                                            out siDocModulo1, 
-                                                            out siDocModulo2, 
+                                                            out siDocModulo1,
+                                                            out siDocModulo2,
                                                             out siDocModulo3,
-                                                            out siDocModulo4, 
+                                                            out siDocModulo4,
                                                             out siDocModulo5,
                                                             out idDocCopiaContratto,
                                                             out idDocCopiaRicevuta,
@@ -322,7 +322,7 @@ namespace NewISE.Controllers
                         AttivazioneMABModel amm = dtma.GetAttivazioneMAB(idTrasferimento);
 
                         //se non esiste la creo
-                        if ((amm != null && amm.idAttivazioneMAB > 0)==false)
+                        if ((amm != null && amm.idAttivazioneMAB > 0) == false)
                         {
                             ATTIVAZIONEMAB am = dtma.CreaAttivazioneMAB(idTrasferimento, db);
                             amm.idAttivazioneMAB = am.IDATTIVAZIONEMAB;
@@ -536,7 +536,7 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-         
+
         }
 
 
@@ -671,11 +671,11 @@ namespace NewISE.Controllers
                                 if (lv != null && lv.Count > 0)
                                 {
                                     r = (from v in lv
-                                            select new SelectListItem()
-                                            {
-                                                Text = v.DESCRIZIONEVALUTA,
-                                                Value = v.IDVALUTA.ToString()
-                                            }).ToList();
+                                         select new SelectListItem()
+                                         {
+                                             Text = v.DESCRIZIONEVALUTA,
+                                             Value = v.IDVALUTA.ToString()
+                                         }).ToList();
 
                                     r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                                 }
@@ -705,11 +705,11 @@ namespace NewISE.Controllers
                             if (lv != null && lv.Count > 0)
                             {
                                 r = (from v in lv
-                                        select new SelectListItem()
-                                        {
-                                            Text = v.DESCRIZIONEVALUTA,
-                                            Value = v.IDVALUTA.ToString()
-                                        }).ToList();
+                                     select new SelectListItem()
+                                     {
+                                         Text = v.DESCRIZIONEVALUTA,
+                                         Value = v.IDVALUTA.ToString()
+                                     }).ToList();
 
                                 r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                             }
@@ -767,11 +767,11 @@ namespace NewISE.Controllers
                                 if (lv != null && lv.Count > 0)
                                 {
                                     r = (from v in lv
-                                            select new SelectListItem()
-                                            {
-                                                Text = v.DESCRIZIONEVALUTA,
-                                                Value = v.IDVALUTA.ToString()
-                                            }).ToList();
+                                         select new SelectListItem()
+                                         {
+                                             Text = v.DESCRIZIONEVALUTA,
+                                             Value = v.IDVALUTA.ToString()
+                                         }).ToList();
 
                                     r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                                 }
@@ -802,11 +802,11 @@ namespace NewISE.Controllers
                             if (lv != null && lv.Count > 0)
                             {
                                 r = (from v in lv
-                                        select new SelectListItem()
-                                        {
-                                            Text = v.DESCRIZIONEVALUTA,
-                                            Value = v.IDVALUTA.ToString()
-                                        }).ToList();
+                                     select new SelectListItem()
+                                     {
+                                         Text = v.DESCRIZIONEVALUTA,
+                                         Value = v.IDVALUTA.ToString()
+                                     }).ToList();
 
                                 r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                             }
