@@ -308,6 +308,7 @@
     <Content Include="Content\css\cssHome.css" />
     <Content Include="Content\css\GestioneTrasferimento.css" />
     <Content Include="Content\css\login.css" />
+    <Content Include="Content\css\NuovaMAB.css" />
     <Content Include="Content\css\NuovoConiuge.css" />
     <Content Include="Content\css\NuovoFiglio.css" />
     <Content Include="Content\css\OverrideBootstrap.css" />
@@ -2691,7 +2692,7 @@
     <Compile Include="EF\CALENDARIOEVENTI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
-    <Compile Include="EF\CANOMEMAB.cs">
+    <Compile Include="EF\CANONEMAB.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\CDCGEPE.cs">
@@ -2926,9 +2927,6 @@
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOTRASFERIMENTO.cs">
-      <DependentUpon>ModelDBISE.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EF\TIPOTRASPORTO.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\TIPOVOCE.cs">
@@ -3264,6 +3262,10 @@
     <Content Include="Views\MaggiorazioneAbitazione\FormulariMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\GestionePulsantiMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ElencoDocumentiFormularioMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\DocumentoMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\NuovaMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\GestioneMAB.cshtml" />
+    <Content Include="Views\MaggiorazioneAbitazione\ModificaMAB.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

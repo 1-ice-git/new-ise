@@ -15,8 +15,8 @@ namespace NewISE.Models.DBModel
         RichiestaTrasportoEffettiPartenza = 21,
         RichiestaTrasportoEffettiRientro = 22,
         RichiestaAnticipi = 23,
-        Funzione7 = 24,
-        Funzione8 = 25,
+        RichiestaMaggiorazioneAbitazione = 24,
+        AttivaTrasferimento = 25,
         Funzione9 = 26,
         Funzione10 = 27
     }

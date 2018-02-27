@@ -7,6 +7,20 @@ using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
 
+
+using System.Data.Entity;
+using Newtonsoft.Json.Schema;
+using NewISE.Models.ViewModel;
+
+using NewISE.Interfacce;
+using NewISE.Interfacce.Modelli;
+using NewISE.Models.ModelRest;
+using System.Diagnostics;
+using System.IO;
+using NewISE.Models.Config;
+using NewISE.Models.Config.s_admin;
+
+
 namespace NewISE.Models.DBModel.dtObj
 {
     public enum EnumTipologiaCoan
@@ -248,7 +262,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiesteTV, out bool concluseTV,
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
-                                                      out bool richiestaMAB, out bool attivazioneMAB)
+                                                      out bool richiestaMAB, out bool attivazioneMAB, 
+                                                      out bool TrasferimentoAttivo)
         {
             richiestaMF = false;
             attivazioneMF = false;
@@ -268,9 +283,15 @@ namespace NewISE.Models.DBModel.dtObj
             richiestaMAB = false;
             attivazioneMAB = false;
 
+            TrasferimentoAttivo = false;
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
+                {
+                    TrasferimentoAttivo = true;
+                }
 
                 #region MaggiorazioniFamiliari
 
@@ -387,8 +408,8 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var am = lam.First();
 
-                            richiestaAnticipi = am.NOTIFICARICHIESTA;
-                            attivazioneAnticipi = am.ATTIVAZIONE;
+                            richiestaMAB = am.NOTIFICARICHIESTA;
+                            attivazioneMAB = am.ATTIVAZIONE;
                         }
                     }
                 }
@@ -1730,5 +1751,239 @@ namespace NewISE.Models.DBModel.dtObj
 
             return tm;
         }
+
+        public void AttivaTrasf(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    if (t?.IDTRASFERIMENTO > 0)
+                    {
+                        if (t.NOTIFICATRASFERIMENTO == true)
+                        {
+                            t.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Attivo;
+                            t.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore: Impossibile completare l'attivazione del trasferimento.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Attivazione trasferimento.", "TRASFERIMENTO", db,
+                                    t.IDTRASFERIMENTO, t.IDTRASFERIMENTO);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.ModificaInCompletatoCalendarioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
+                                }
+
+                                this.EmailAttivaTrasf(t.IDTRASFERIMENTO, db);
+
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        public void AnnullaTrasf(decimal idTrasferimento)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    var t = db.TRASFERIMENTO.Find(idTrasferimento);
+                    if (t?.IDTRASFERIMENTO > 0)
+                    {
+                        if (t.NOTIFICATRASFERIMENTO == true)
+                        {
+                            t.IDSTATOTRASFERIMENTO = (decimal)EnumStatoTraferimento.Annullato;
+                            t.DATAAGGIORNAMENTO = DateTime.Now;
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore: Impossibile completare l'annullamento del trasferimento.");
+                            }
+                            else
+                            {
+                                Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
+                                    "Annullamento trasferimento.", "TRASFERIMENTO", db,
+                                    t.IDTRASFERIMENTO, t.IDTRASFERIMENTO);
+                                this.EmailAnnullaTrasf(t.IDTRASFERIMENTO, db);
+                                using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                                {
+                                    dtce.AnnullaMessaggioEvento(t.IDTRASFERIMENTO, EnumFunzioniEventi.AttivaTrasferimento, db);
+                                }
+                            }
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+            }
+        }
+
+        private void EmailAttivaTrasf(decimal idTrasferimento, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+            List<UtenteAutorizzatoModel> luam = new List<UtenteAutorizzatoModel>();
+
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t?.IDTRASFERIMENTO > 0)
+                {
+                    DIPENDENTI d = t.DIPENDENTI;
+                    UFFICI u = t.UFFICI;
+
+                    using (dtUtentiAutorizzati dtua = new dtUtentiAutorizzati())
+                    {
+                        using (GestioneEmail gmail = new GestioneEmail())
+                        {
+                            using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                            {
+
+                                cc = new Destinatario()
+                                {
+                                    Nominativo = am.nominativo,
+                                    EmailDestinatario = am.eMail
+                                };
+
+                                msgMail.mittente = mittente;
+                                msgMail.cc.Add(cc);
+
+                                luam.AddRange(dtua.GetUtentiByRuolo(EnumRuoloAccesso.Amministratore).ToList());
+
+                                foreach (var uam in luam)
+                                {
+                                    var amministratore = db.DIPENDENTI.Find(uam.idDipendente);
+                                    if (amministratore != null && amministratore.IDDIPENDENTE > 0)
+                                    {
+                                        to = new Destinatario()
+                                        {
+                                            Nominativo = amministratore.COGNOME + " " + amministratore.NOME,
+                                            EmailDestinatario = amministratore.EMAIL
+                                        };
+
+                                        msgMail.destinatario.Add(to);
+                                    }
+
+
+                                }
+                                msgMail.oggetto = Resources.msgEmail.OggettoAttivaTrasferimento;
+
+                                msgMail.corpoMsg =
+                                        string.Format(
+                                            Resources.msgEmail.MessaggioAttivaTrasferimento,
+                                            d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
+                                            t.DATAPARTENZA.ToLongDateString(),
+                                            u.DESCRIZIONEUFFICIO + " (" + u.CODICEUFFICIO + ")");
+
+                                gmail.sendMail(msgMail);
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void EmailAnnullaTrasf(decimal idTrasferimento, ModelDBISE db)
+        {
+            AccountModel am = new AccountModel();
+            Mittente mittente = new Mittente();
+            Destinatario to = new Destinatario();
+            Destinatario cc = new Destinatario();
+
+            try
+            {
+                am = Utility.UtenteAutorizzato();
+                mittente.Nominativo = am.nominativo;
+                mittente.EmailMittente = am.eMail;
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                if (t?.IDTRASFERIMENTO > 0)
+                {
+                    DIPENDENTI dip = t.DIPENDENTI;
+                    UFFICI uff = t.UFFICI;
+
+                    using (GestioneEmail gmail = new GestioneEmail())
+                    {
+                        using (ModelloMsgMail msgMail = new ModelloMsgMail())
+                        {
+                            cc = new Destinatario()
+                            {
+                                Nominativo = am.nominativo,
+                                EmailDestinatario = am.eMail
+                            };
+
+                            to = new Destinatario()
+                            {
+                                Nominativo = dip.NOME + " " + dip.COGNOME,
+                                EmailDestinatario = dip.EMAIL,
+                            };
+
+                            msgMail.mittente = mittente;
+                            msgMail.cc.Add(cc);
+                            msgMail.destinatario.Add(to);
+
+                            msgMail.oggetto =
+                            Resources.msgEmail.OggettoAnnullamentoTrasferimento;
+                            msgMail.corpoMsg = string.Format(Resources.msgEmail.MessaggioAnnullamentoTrasferimento, uff.DESCRIZIONEUFFICIO + " (" + uff.CODICEUFFICIO + ")", t.DATAPARTENZA.ToLongDateString());
+
+                            gmail.sendMail(msgMail);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
     }
 }

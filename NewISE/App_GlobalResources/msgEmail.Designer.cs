@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullamentoTrasferimento {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullamentoTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
@@ -79,7 +88,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaMaggiorazioneAbitazione", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
             get {
@@ -88,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, sono state annullate.&lt;/p&gt;
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullate.&lt;/p&gt;
         ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
         ///&lt;hr /&gt;
         ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.
@@ -127,7 +145,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermato..
         /// </summary>
         internal static string MessaggioAttivaRichiestaAnticipi {
             get {
@@ -150,6 +168,24 @@ namespace Resources {
         internal static string MessaggioAttivaRichiestaSuccessivaTitoliViaggio {
             get {
                 return ResourceManager.GetString("MessaggioAttivaRichiestaSuccessivaTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il trasferimento del dipendente {0} per la sede di {1} è stato attivato..
+        /// </summary>
+        internal static string MessaggioAttivaTrasferimento {
+            get {
+                return ResourceManager.GetString("MessaggioAttivaTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della Maggiorazione Abitazione per il dipendente {0}, trasferito il {1} nella sede di {2}..
+        /// </summary>
+        internal static string MessaggioAttivazioneMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneMaggiorazioneAbitazione", resourceCulture);
             }
         }
         
@@ -177,6 +213,15 @@ namespace Resources {
         internal static string MessaggioAttivazioneTrasportoEffettiRientro {
             get {
                 return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta maggiorazione abitazione..
+        /// </summary>
+        internal static string MessaggioNotificaMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaMaggiorazioneAbitazione", resourceCulture);
             }
         }
         
@@ -253,7 +298,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} sono concluse..
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} è stata conclusa..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaportoConcluse {
             get {
@@ -267,6 +312,15 @@ namespace Resources {
         internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
             get {
                 return ResourceManager.GetString("MessaggioRimborsoSuccessivoTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica annullamento trasferimento..
+        /// </summary>
+        internal static string OggettoAnnullamentoTrasferimento {
+            get {
+                return ResourceManager.GetString("OggettoAnnullamentoTrasferimento", resourceCulture);
             }
         }
         
@@ -285,6 +339,15 @@ namespace Resources {
         internal static string OggettoAnnullaRichiestaInizialeTitioliViaggio {
             get {
                 return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitioliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di maggiorazione abitazione..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaMaggiorazioneAbitazione", resourceCulture);
             }
         }
         
@@ -361,6 +424,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica attivazione trasferimento..
+        /// </summary>
+        internal static string OggettoAttivaTrasferimento {
+            get {
+                return ResourceManager.GetString("OggettoAttivaTrasferimento", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione della maggiorazione abitazione..
+        /// </summary>
+        internal static string OggettoAttivazioneMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneMaggiorazioneAbitazione", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attivazione delle maggiorazioni familiari..
         /// </summary>
         internal static string OggettoAttivazioneMaggiorazioniFamiliari {
@@ -402,6 +483,15 @@ namespace Resources {
         internal static string OggettoNotificaRichiestaInizialeTitoloViaggio {
             get {
                 return ResourceManager.GetString("OggettoNotificaRichiestaInizialeTitoloViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta maggiorazione abitazione..
+        /// </summary>
+        internal static string OggettoNotificaRichiestaMaggiorazioneAbitazione {
+            get {
+                return ResourceManager.GetString("OggettoNotificaRichiestaMaggiorazioneAbitazione", resourceCulture);
             }
         }
         

@@ -142,6 +142,7 @@ namespace NewISE.Controllers
             bool attivazioneAnticipi = false;
             bool richiestaMAB = false;
             bool attivazioneMAB = false;
+            bool TrasferimentoAttivo = false;
 
             try
             {
@@ -149,7 +150,8 @@ namespace NewISE.Controllers
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
                         out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
-                        out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB);
+                        out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB,
+                        out TrasferimentoAttivo);
                 }
 
             }
@@ -174,7 +176,8 @@ namespace NewISE.Controllers
                         richiestaAnticipi = richiestaAnticipi,
                         attivazioneAnticipi = attivazioneAnticipi,
                         richiestaMAB = richiestaMAB,
-                        attivazioneMAB = attivazioneMAB
+                        attivazioneMAB = attivazioneMAB,
+                        TrasferimentoAttivo=TrasferimentoAttivo
                     });
 
         }
@@ -1893,6 +1896,57 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        public JsonResult ConfermaAttivaTrasf(decimal idTrasferimento)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+
+
+                    dtt.AttivaTrasf(idTrasferimento);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
+
+        public JsonResult ConfermaAnnullaTrasf(decimal idTrasferimento)
+        {
+            string errore = "";
+
+            try
+            {
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    dtt.AnnullaTrasf(idTrasferimento);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                errore = ex.Message;
+            }
+
+            return
+                Json(
+                    new
+                    {
+                        err = errore
+                    });
+        }
 
     }
 }

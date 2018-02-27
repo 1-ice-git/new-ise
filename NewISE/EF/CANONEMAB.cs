@@ -12,10 +12,10 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class CANOMEMAB
+    public partial class CANONEMAB
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CANOMEMAB()
+        public CANONEMAB()
         {
             this.TFR = new HashSet<TFR>();
         }
@@ -29,9 +29,9 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
+        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TFR> TFR { get; set; }
-        public virtual MAGGIORAZIONEABITAZIONE MAGGIORAZIONEABITAZIONE { get; set; }
-        public virtual ATTIVAZIONEMAB ATTIVAZIONEMAB { get; set; }
     }
 }

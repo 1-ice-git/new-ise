@@ -42,7 +42,6 @@
         <EntityTypeShape EntityType="DBISEPRO.TIPOREGOLACALCOLO" Width="1.5" PointX="18" PointY="74.25" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOSOSPENSIONE" Width="1.5" PointX="9" PointY="32.75" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOTRASFERIMENTO" Width="1.5" PointX="3.75" PointY="35.375" />
-        <EntityTypeShape EntityType="DBISEPRO.TIPOTRASPORTO" Width="1.5" PointX="16.75" PointY="68.25" />
         <EntityTypeShape EntityType="DBISEPRO.TIPOVOCE" Width="1.5" PointX="9.75" PointY="27.625" />
         <EntityTypeShape EntityType="DBISEPRO.UTENTIAUTORIZZATI" Width="1.5" PointX="3" PointY="42.375" />
         <EntityTypeShape EntityType="DBISEPRO.VOCI" Width="1.5" PointX="12" PointY="28.5" />
@@ -157,8 +156,6 @@
         <AssociationConnector Association="DBISEPRO.R_AA_A" />
         <AssociationConnector Association="DBISEPRO.R_TA_A" />
         <AssociationConnector Association="DBISEPRO.R_PS_AA" />
-        <EntityTypeShape EntityType="DBISEPRO.CANOMEMAB" Width="1.5" PointX="19" PointY="44" />
-        <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
         <EntityTypeShape EntityType="DBISEPRO.ATTIVAZIONIVIAGGICONGEDO" Width="1.5" PointX="11" PointY="71.875" />
         <EntityTypeShape EntityType="DBISEPRO.TITOLIVIAGGIORICHIEDENTE" Width="1.5" PointX="39.25" PointY="62.25" />
         <EntityTypeShape EntityType="DBISEPRO.VIAGGICONGEDO" Width="1.5" PointX="8.75" PointY="72.75" />
@@ -214,10 +211,7 @@
         <AssociationConnector Association="DBISEPRO.R_TEP_TEPFK" />
         <AssociationConnector Association="DBISEPRO.R_TER_TERFK" />
         <AssociationConnector Association="DBISEPRO.PS_PFKM" />
-        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="43.5" PointY="53.375" />
         <EntityTypeShape EntityType="DBISEPRO.MAGGIORAZIONEABITAZIONE" Width="1.5" PointX="43.5" PointY="57.375" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
-        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.MAB_MA" />
         <AssociationConnector Association="DBISEPRO.MAB_PMAB" />
         <EntityTypeShape EntityType="DBISEPRO.RUOLODIPENDENTE" Width="1.5" PointX="43.5" PointY="49.375" />
@@ -229,9 +223,7 @@
         <EntityTypeShape EntityType="DBISEPRO.FUNZIONEEMAILUFF" Width="1.5" PointX="3.375" PointY="1" />
         <EntityTypeShape EntityType="DBISEPRO.NOTIFICHE" Width="1.5" PointX="3" PointY="62" />
         <EntityTypeShape EntityType="DBISEPRO.TRASFERIMENTO" Width="1.5" PointX="41.25" PointY="52.125" />
-        <AssociationConnector Association="DBISEPRO.R_AMAB_CMAB" />
         <AssociationConnector Association="DBISEPRO.R_AMAB_MAB" />
-        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_T_AMAB" />
         <AssociationConnector Association="DBISEPRO.R_T_CE" />
         <AssociationConnector Association="DBISEPRO.R_DIP_CDCG" />
@@ -246,7 +238,6 @@
         <AssociationConnector Association="DBISEPRO.R_T_LA" />
         <AssociationConnector Association="DBISEPRO.R_T_MAB" />
         <AssociationConnector Association="DBISEPRO.R_T_MF" />
-        <AssociationConnector Association="DBISEPRO.R_T_PCMAB" />
         <AssociationConnector Association="DBISEPRO.R_T_P" />
         <AssociationConnector Association="DBISEPRO.R_TRASF_PRIMASIST" />
         <AssociationConnector Association="DBISEPRO.R_T_R" />
@@ -264,6 +255,13 @@
         <AssociationConnector Association="DBISEPRO.AMAB_DOC" />
         <AssociationConnector Association="DBISEPRO.T_RC" />
         <AssociationConnector Association="DBISEPRO.TRASF_DOC" />
+        <EntityTypeShape EntityType="DBISEPRO.CANONEMAB" Width="1.5" PointX="45.75" PointY="60" />
+        <AssociationConnector Association="DBISEPRO.R_AMAB_CMAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_CMAB" />
+        <AssociationConnector Association="DBISEPRO.CMAB_TFR" />
+        <EntityTypeShape EntityType="DBISEPRO.PAGATOCONDIVISOMAB" Width="1.5" PointX="45.75" PointY="64" />
+        <AssociationConnector Association="DBISEPRO.R_AMAB_PCMAB" />
+        <AssociationConnector Association="DBISEPRO.R_MAB_PCMAB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

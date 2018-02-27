@@ -307,14 +307,8 @@ namespace NewISE.Controllers
                 case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                     titoloPagina = "Prima rata";
                     break;
-                case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                    titoloPagina = "Costo locazione";
-                    break;
                 case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
                     titoloPagina = "Spese abitazione - Collaboratore";
-                    break;
-                case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
-                    titoloPagina = "Spese abitazione - Dirigente";
                     break;
                 case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     titoloPagina = "Clausole alloggio";
@@ -439,10 +433,6 @@ namespace NewISE.Controllers
                                                 }
                                                 break;
                                             case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                                                break;
-                                            case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                                                break;
-                                            case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
                                                 break;
                                             case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
                                                 break;

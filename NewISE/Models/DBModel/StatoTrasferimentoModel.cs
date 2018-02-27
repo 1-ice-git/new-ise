@@ -12,7 +12,8 @@ namespace NewISE.Models.DBModel
         Attivo = 1,
         Da_Attivare = 2,
         Non_Trasferito = 3,
-        Terminato = 4
+        Terminato = 4,
+        Annullato=21
     }
 
     public class StatoTrasferimentoModel
