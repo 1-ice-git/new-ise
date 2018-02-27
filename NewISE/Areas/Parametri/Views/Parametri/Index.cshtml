@@ -15,7 +15,7 @@
         @Html.Label("lblParametro", "Seleziona Tabella", new { @class = "control-label col-xs-2" })
         <div id="divCombo" class="col-xs-3 ">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();", @onclick = "prelevaPartiaViewParametri();"  })
+                @Html.DropDownList("idParametro", ViewBag.ParametriList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "prelevaPartiaViewParametri();", @onclick = "prelevaPartiaViewParametri();" })
             </div>
             @Html.ValidationMessage("idParametro", "", new { @class = "text-danger" })
         </div>
@@ -23,9 +23,10 @@
             <div style="display:inline-block;">
                 <input type="checkbox" id="escludiAnnullati" checked="checked" value="Escludi" onclick="prelevaPartiaViewParametri();" />
             </div>
-        <div style="vertical-align:middle; display:inline-block;">
+            <div style="vertical-align:middle; display:inline-block;">
                 <label>Escludi annullati</label>
-            </div></div>
+            </div>
+        </div>
 
     </div>
 
@@ -58,17 +59,17 @@
         });
 
         function prelevaPartiaViewParametri() {
-         //  debugger;
+            //  debugger;
             var rotta = "";
-            
+
             var tabParam = parseInt($("#idParametro").select2('val'));
             var chk = false;
             if ($("#escludiAnnullati").is(":checked")) {
                 chk = true;
             }
-            
+
             var idLivello = parseInt($("#idLivello").val());
-            
+
 
             if (isNaN(tabParam)) {
                 //AlertDialog("Selezionare una tabella dei parametri.");
@@ -78,7 +79,7 @@
 
             idLivello = parseInt($("#hiTipoContributo").val());
             var idUfficio = $("#hiIdUfficio").val();
-          //  debugger;
+            //  debugger;
             switch (tabParam) {
                 //case 0:// Indennita di base
                 //    rotta = "/Parametri/ParamIndennitaBase/IndennitaBase";
@@ -126,7 +127,7 @@
                 //    rotta = "/Parametri/ParamMaggAnnuali/MaggiorazioniAnnuali";
                 //    break;
                 //default:
-          
+
                 case 0:// Aliquote Contributive
                     rotta = "/Parametri/ParamAliquoteContr/AliquoteContributive";
                     break;
@@ -135,7 +136,7 @@
                     idLivello = parseInt($("#idFKm").select2('val'));
                     //$("#hiTipoContributo").val(idLivello);
                     idUfficio = parseInt($("#idGruppoFKm").select2('val'));
-                  //  $("#hiIdUfficio").val(idUfficio);
+                    //  $("#hiIdUfficio").val(idUfficio);
                     break;
                 case 2:// Coefficiente di Richiamo
                     rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamo";
@@ -176,42 +177,45 @@
                 case 14:// ValutaUfficio
                     rotta = "/Parametri/ParamValutaUfficio/ValutaUfficio";
                     break;
+                case 15:// PercentualeDisagio
+                    rotta = "/Parametri/ParamPercDisagio/PercentualeDisagio";
+                    break;
                 default:
             }
-           
-                $.ajax({
-                    type: "POST",
-                    url: rotta,                   
-                    data: { escludiAnnullati: chk, idLivello: idLivello, idUfficio: idUfficio },
-                    dataType: 'html',
-                    beforeSend: function () {
-                        //debugger;
-                        //VerificaAutenticazione();
-                        //$("#DialogNewDoc").dialog("destroy");
-                        //$("#divEffettoLoadAutNoDoc").show("slow");
-                    },
-                    success: function (result) {
-                        //debugger;
-                        //$("#divEffettoLoadAutNoDoc").hide("slow");
-                        $("#divPViewParametri").empty();
-                        $("#divPViewParametri").html(result);
 
-                        //RicercaDocumenti();
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { escludiAnnullati: chk, idLivello: idLivello, idUfficio: idUfficio },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#divPViewParametri").empty();
+                    $("#divPViewParametri").html(result);
 
-                    },
-                    complete: function () {
-                        //$("#divEffettoLoadAutNoDoc").hide("slow");
-                        //                $("#Centro").getNiceScroll().resize();
-                    },
-                    error: function (jqXHR, textStatus, errorThrow) {
-                        //debugger;
-                        var msg = errorThrow.err;
-                        AlertDialog(msg);
-                    }
+                    //RicercaDocumenti();
 
-                });
-            
-           
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+
 
         }
 
