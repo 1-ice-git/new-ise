@@ -6,33 +6,39 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.09254cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.96566cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>1.82921cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.17192cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>3.23025cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.33067cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>2.70108cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.96964cm</Width>
+              <Width>1.77504cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.75084cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.09254cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.6cm</Height>
+              <Height>1.02333cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -50,7 +56,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -86,7 +92,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -115,14 +121,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Livello</Value>
+                              <Value>Sede</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -151,14 +157,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Cod. Sede</Value>
+                              <Value>Valuta</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -180,25 +186,26 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox9">
+                    <Textbox Name="Textbox6">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Descr.</Value>
+                              <Value>Data
+Decorrenza</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox9</rd:DefaultName>
+                      <rd:DefaultName>Textbox6</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -216,25 +223,26 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox11">
+                    <Textbox Name="Textbox10">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Data</Value>
+                              <Value>Data
+Lettera</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox11</rd:DefaultName>
+                      <rd:DefaultName>Textbox10</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -252,25 +260,26 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox13">
+                    <Textbox Name="Textbox12">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Spesa</Value>
+                              <Value>Data
+Operazione</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox13</rd:DefaultName>
+                      <rd:DefaultName>Textbox12</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -288,25 +297,98 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox15">
+                    <Textbox Name="Textbox14">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Ind. in Valuta</Value>
+                              <Value>Canone</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox15</rd:DefaultName>
+                      <rd:DefaultName>Textbox14</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox16">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Rata
+Inviata</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox16</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>WhiteSmoke</BackgroundColor>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox18">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>% Applicata</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox18</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -343,7 +425,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -378,7 +460,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -399,25 +481,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="LIVELLO">
+                    <Textbox Name="SEDE">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!LIVELLO.Value</Value>
+                              <Value>=Fields!SEDE.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>LIVELLO</rd:DefaultName>
+                      <rd:DefaultName>SEDE</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -434,25 +516,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="CODICE_SEDE">
+                    <Textbox Name="VALUTA">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CODICE_SEDE.Value</Value>
+                              <Value>=Fields!VALUTA.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>CODICE_SEDE</rd:DefaultName>
+                      <rd:DefaultName>VALUTA</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -469,25 +551,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="DESCRIZIONE_SEDE">
+                    <Textbox Name="DATADECORRENZA">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!DESCRIZIONE_SEDE.Value</Value>
+                              <Value>=FormatDateTime(Fields!DATADECORRENZA.Value, DateFormat.ShortDate)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>DESCRIZIONE_SEDE</rd:DefaultName>
+                      <rd:DefaultName>DATADECORRENZA</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -504,25 +586,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="DATA">
+                    <Textbox Name="DATALETTERA">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatDateTime(Fields!DATA.Value, DateFormat.ShortDate)</Value>
+                              <Value>=FormatDateTime(Fields!DATALETTERA.Value, DateFormat.ShortDate)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>DATA</rd:DefaultName>
+                      <rd:DefaultName>DATALETTERA</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -539,25 +621,25 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="SPESA">
+                    <Textbox Name="DATAOPERAZIONE">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!SPESA.Value</Value>
+                              <Value>=FormatDateTime(Fields!DATAOPERAZIONE.Value, DateFormat.ShortDate)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>SPESA</rd:DefaultName>
+                      <rd:DefaultName>DATAOPERAZIONE</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -574,25 +656,95 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="INDENITA_IN_VALUTA">
+                    <Textbox Name="CANONE">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!INDENITA_IN_VALUTA.Value</Value>
+                              <Value>=FormatNumber(Fields!CANONE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Center</TextAlign>
+                            <TextAlign>Right</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>INDENITA_IN_VALUTA</rd:DefaultName>
+                      <rd:DefaultName>CANONE</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="RATAINVIATA">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!RATAINVIATA.Value,2)</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>RATAINVIATA</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <VerticalAlign>Middle</VerticalAlign>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="PERCENTUALE">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNumber(Fields!PERCENTUALE.Value,2)</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>PERCENTUALE</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -621,6 +773,8 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -633,11 +787,11 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSet12</DataSetName>
-        <Top>4.99745cm</Top>
-        <Left>0.88129cm</Left>
-        <Height>1.2cm</Height>
-        <Width>23.75712cm</Width>
+        <DataSetName>DataSet3</DataSetName>
+        <Top>4.5212cm</Top>
+        <Left>0.50271cm</Left>
+        <Height>1.62333cm</Height>
+        <Width>23.93975cm</Width>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -645,7 +799,7 @@
           </Border>
         </Style>
       </Tablix>
-      <Textbox Name="Textbox17">
+      <Textbox Name="Textbox25">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -653,7 +807,12 @@
             <TextRuns>
               <TextRun>
                 <Value />
-                <Style />
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontSize>12pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style />
@@ -661,10 +820,12 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>CONSUNTIVO SPESE DI AVVICENDAMENTO</Value>
+                <Value>RIEPILOGO DELLE OPERAZIONI EFFETTUATE - MAGGIORAZIONE ABITAZIONE</Value>
                 <Style>
+                  <FontStyle>Normal</FontStyle>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
+                  <TextDecoration>None</TextDecoration>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -673,11 +834,11 @@
             </Style>
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox17</rd:DefaultName>
-        <Top>0.14111cm</Top>
-        <Left>0.88129cm</Left>
-        <Height>1.8288cm</Height>
-        <Width>23.75708cm</Width>
+        <rd:DefaultName>Textbox25</rd:DefaultName>
+        <Top>0.10583cm</Top>
+        <Left>0.31686cm</Left>
+        <Height>1.49958cm</Height>
+        <Width>24.12561cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -704,10 +865,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox24</rd:DefaultName>
-        <Top>3.0999cm</Top>
-        <Left>20.58198cm</Left>
+        <Top>2.47813cm</Top>
+        <Left>20.67711cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.0564cm</Width>
+        <Width>3.76536cm</Width>
         <ZIndex>2</ZIndex>
         <ToolTip>="Roma " &amp; DateAdd("d",1,Today())
 ="Domani è " &amp; DateAdd(DateInterval.Day,1,Today())</ToolTip>
@@ -738,8 +899,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
-        <Top>3.0999cm</Top>
-        <Left>0.88129cm</Left>
+        <Top>2.47813cm</Top>
+        <Left>0.50271cm</Left>
         <Height>0.6cm</Height>
         <Width>3.85132cm</Width>
         <ZIndex>3</ZIndex>
@@ -769,8 +930,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
-        <Top>3.0999cm</Top>
-        <Left>4.80317cm</Left>
+        <Top>2.47813cm</Top>
+        <Left>4.42459cm</Left>
         <Height>0.6cm</Height>
         <Width>3.83368cm</Width>
         <ZIndex>4</ZIndex>
@@ -785,7 +946,7 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox6">
+      <Textbox Name="Textbox8">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
@@ -800,8 +961,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>3.0999cm</Top>
-        <Left>8.71622cm</Left>
+        <Top>2.47813cm</Top>
+        <Left>8.33764cm</Left>
         <Height>0.6cm</Height>
         <Width>3.81604cm</Width>
         <ZIndex>5</ZIndex>
@@ -831,9 +992,9 @@
           <Value>logo_ITA_rgb1</Value>
           <Sizing>FitProportional</Sizing>
           <Top>0.24094cm</Top>
-          <Left>0.88129cm</Left>
+          <Left>0.31686cm</Left>
           <Height>2.05811cm</Height>
-          <Width>23.75708cm</Width>
+          <Width>24.12561cm</Width>
           <ToolTip>ICE - Agenzia</ToolTip>
           <Style>
             <Border>
@@ -849,7 +1010,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.59292cm</Height>
+      <Height>2.54cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -881,10 +1042,10 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox22</rd:DefaultName>
-          <Top>1.04938cm</Top>
-          <Left>0.88129cm</Left>
+          <Top>0.86417cm</Top>
+          <Left>0.50271cm</Left>
           <Height>0.6cm</Height>
-          <Width>23.75708cm</Width>
+          <Width>23.93976cm</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -913,18 +1074,18 @@
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSet12">
+    <DataSource Name="DataSet3">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>6ed50396-a31f-41a0-aa0d-fed0a0dbf81f</rd:DataSourceID>
+      <rd:DataSourceID>328f2f7e-3b03-4758-b0da-e650af7250c6</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet12">
+    <DataSet Name="DataSet3">
       <Query>
-        <DataSourceName>DataSet12</DataSourceName>
+        <DataSourceName>DataSet3</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -936,38 +1097,54 @@
           <DataField>NOMINATIVO</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="LIVELLO">
-          <DataField>LIVELLO</DataField>
+        <Field Name="CODSEDE">
+          <DataField>CODSEDE</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="CODICE_SEDE">
-          <DataField>CODICE_SEDE</DataField>
+        <Field Name="SEDE">
+          <DataField>SEDE</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="DESCRIZIONE_SEDE">
-          <DataField>DESCRIZIONE_SEDE</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="VALUTA">
+          <DataField>VALUTA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="DATA">
-          <DataField>DATA</DataField>
+        <Field Name="DATADECORRENZA">
+          <DataField>DATADECORRENZA</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="SPESA">
-          <DataField>SPESA</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="DATALETTERA">
+          <DataField>DATALETTERA</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="INDENITA_IN_VALUTA">
-          <DataField>INDENITA_IN_VALUTA</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="DATAOPERAZIONE">
+          <DataField>DATAOPERAZIONE</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="CANONE">
+          <DataField>CANONE</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="RATAINVIATA">
+          <DataField>RATAINVIATA</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="PERCENTUALE">
+          <DataField>PERCENTUALE</DataField>
+          <rd:TypeName>System.Single</rd:TypeName>
+        </Field>
+        <Field Name="IES_PROG_TRASFERIMENTO">
+          <DataField>IES_PROG_TRASFERIMENTO</DataField>
+          <rd:TypeName>System.Int16</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>DataSet12</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSet12.xsd</rd:SchemaPath>
-        <rd:TableName>V_ISE_STP_CONS_SPESE_AVVICE</rd:TableName>
-        <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
-        <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>
-        <rd:TableAdapterName>V_ISE_STP_CONS_SPESE_AVVICETableAdapter</rd:TableAdapterName>
+        <rd:DataSetName>DataSet3</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSet3.xsd</rd:SchemaPath>
+        <rd:TableName>V_OP_EFFETTUATE_MAGG_ABITAZ</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -1009,5 +1186,5 @@ k+knx+DOzXkxblLestrlOWueGaodjqdSaKsMkkY69/ZTrUL9Co0SjQAceEvybbCeZlpzYtNGVseI4hHU
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>5f08799f-b295-4e56-b19f-5e7e5c13349b</rd:ReportID>
+  <rd:ReportID>5f399ed4-5a29-4311-9b15-976eb53341af</rd:ReportID>
 </Report>

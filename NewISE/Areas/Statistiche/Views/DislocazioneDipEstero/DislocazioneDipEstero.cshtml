@@ -1,0 +1,363 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Dislocazione_dipendenti>
+
+<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Dislocazione dei Dipendenti all'Estero per Livello"></div>
+
+@*<button id="opener">xx</button>*@
+<br /><br />
+
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Dislocazione dei Dipendenti all'Estero per Livello</b></div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+               <div class="form-group">
+
+                   <table class="table">
+                       <tbody>
+                           <tr>
+                               <td>@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data" })</td>
+                               <td>@Html.DropDownList("codicesede", ViewBag.ListaDislocazioneDipEstero as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                               <td>
+                                    @*<a href="#" target="_blank" onclick="invia()">Stampa Dipendenti all' Estero per Livello </a>*@
+                                    @*<a href="#" id="opener">Stampa Dipendenti all' Estero per Livello </a>*@
+
+                                   <a href="#" target="_blank" id="" class="btn btn-success btn-sm" onclick="invia()">
+                                       <span class="glyphicon glyphicon-print"></span> Stampa
+                                    </a>
+                               </td>
+                               <td>@*<a href="#" onclick="Dislocazione()">Visualizza Dipendenti all' Estero per Livello </a>*@
+                                   @*<a href="#" onclick="callpartialDislocazione()">Visualizza Dipendenti all' Estero per Livello </a>*@
+                               </td>
+                           </tr>
+
+                       </tbody>
+                   </table>
+ 
+            </div>
+            
+
+            @*<table id="tbDislocazioneDipEstero" class="display" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sede)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.valuta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.matricola)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.nominativo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.dataTrasferimento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.qualifica)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.coniuge)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.figli)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.isep)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.contributo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.uso)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.totale)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.sede)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.valuta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.matricola)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nominativo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.dataTrasferimento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.qualifica)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.coniuge)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.figli)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.isep)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contributo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.uso)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.totale)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $('#tbDislocazioneDipEstero').DataTable({
+        "order": [],
+        "scrollY": 220,
+        "scrollX": true,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        }
+    });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptDislocazione";
+
+            var codicesede = $("#codicesede").select2('val');
+            var data = $("#datepicker").datepicker().val();
+            var V_UTENTE = "fantomas";
+            //var V_UTENTE = V_UTENTE;
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    codicesede: codicesede,
+                    V_DATA: data,
+                    V_UTENTE: 'fantomas'
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function invia() {
+        //debugger
+
+        var codicesede = $("#codicesede").select2('val');
+        var data = $("#datepicker").datepicker().val()
+
+        // Con parametri
+        window.location.href = "/Statistiche/DislocazioneDipEstero/RptDislocazione?codicesede=" + codicesede + "&V_DATA=" + data + ""
+        //window.open("/Statistiche/DislocazioneDipEstero/RptDislocazione?codicesede=" + codicesede + "&V_DATA=" + data, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=1400,height=1400") 
+    };
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    function Dislocazione(codicesede) {
+        //debugger;
+
+        //rotta = "/Statistiche/ArchivioVecchioISE/Dislocazione";
+        rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
+
+        var codicesede = $("#codicesede").select2('val');
+        var data = $("#datepicker").val();
+
+        var chk = true;
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                codicesede: codicesede,
+                V_UTENTE: 'fantomas',
+                V_DATA: data
+                //V_UFFICIO: descr_ufficio
+                //V_DATA: '15/09/2017',
+                //data: DataDislocazione,
+                //V_UFFICIO: 'ACCRA'
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    // Dislocazione Dipendenti Estero
+    function callpartialDislocazione() {
+        //debugger;
+
+        rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
+
+        var codicesede = $("#codicesede").select2('val');
+        var data = $("#datepicker").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                codicesede: codicesede,
+                V_UTENTE: 'fantomas',
+                V_DATA: data
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+
+
+    $("#codicesede").select2({
+        placeholder: "Seleziona una sede",
+        allowClear: true,
+        language: "it",
+        width: '350'
+
+    });
+
+</script>
+
+

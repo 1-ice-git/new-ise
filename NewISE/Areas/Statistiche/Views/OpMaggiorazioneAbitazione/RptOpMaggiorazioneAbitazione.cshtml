@@ -1,0 +1,21 @@
+﻿@using ReportViewerForMvc;
+@using Microsoft.Reporting.WebForms;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione</title>
+</head>
+<body>
+    @{
+        ViewBag.Title = "Riepilogo delle Operazioni effettuate - Maggiorazione Abitazione";
+    }
+
+
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+
+
+</body>
+</html>

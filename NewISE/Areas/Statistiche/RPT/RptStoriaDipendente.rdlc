@@ -506,7 +506,9 @@ Coniuge</Value>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>LIVELLO</rd:DefaultName>
@@ -538,7 +540,9 @@ Coniuge</Value>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>TIPO_MOVIMENTO</rd:DefaultName>
@@ -570,7 +574,9 @@ Coniuge</Value>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>DATA_DECORRENZA</rd:DefaultName>
@@ -602,7 +608,9 @@ Coniuge</Value>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>DATA_LETTERA</rd:DefaultName>
@@ -628,13 +636,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!COEF_SEDE.Value</Value>
+                              <Value>=FormatNumber(Fields!COEF_SEDE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>COEF_SEDE</rd:DefaultName>
@@ -660,13 +670,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PERC_DISAGIO.Value</Value>
+                              <Value>=FormatNumber(Fields!PERC_DISAGIO.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PERC_DISAGIO</rd:DefaultName>
@@ -692,13 +704,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PERC_SPETTANTE.Value</Value>
+                              <Value>=FormatNumber(Fields!PERC_SPETTANTE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PERC_SPETTANTE</rd:DefaultName>
@@ -724,13 +738,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PERC_CONIUGE.Value</Value>
+                              <Value>=FormatNumber(Fields!PERC_CONIUGE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PERC_CONIUGE</rd:DefaultName>
@@ -756,13 +772,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PENSIONE.Value</Value>
+                              <Value>=FormatNumber(Fields!PENSIONE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PENSIONE</rd:DefaultName>
@@ -788,13 +806,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PENSIONE.Value</Value>
+                              <Value>=FormatNumber(Fields!PENSIONE.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PENSIONE1</rd:DefaultName>
@@ -820,13 +840,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!N_FIGLI.Value</Value>
+                              <Value>=FormatNumber(Fields!N_FIGLI.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>N_FIGLI</rd:DefaultName>
@@ -858,7 +880,9 @@ Coniuge</Value>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>DESCR</rd:DefaultName>
@@ -884,13 +908,15 @@ Coniuge</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!INDENNITA.Value</Value>
+                              <Value>=FormatNumber(Fields!INDENNITA.Value,2)</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>INDENNITA</rd:DefaultName>
@@ -990,7 +1016,7 @@ Coniuge</Value>
               <TextRun>
                 <Value>=First(Fields!NOMINATIVO.Value, "DataSet6")</Value>
                 <Style>
-                  <FontWeight>Bold</FontWeight>
+                  <FontWeight>Normal</FontWeight>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -1055,7 +1081,7 @@ Coniuge</Value>
               <TextRun>
                 <Value>=First(Fields!MATRICOLA.Value, "DataSet6")</Value>
                 <Style>
-                  <FontWeight>Bold</FontWeight>
+                  <FontWeight>Normal</FontWeight>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -1125,7 +1151,7 @@ Coniuge</Value>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
-            <Style>Solid</Style>
+            <Style>None</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -1217,7 +1243,7 @@ Coniuge</Value>
           <Width>23.84984cm</Width>
           <Style>
             <Border>
-              <Style>None</Style>
+              <Style>Solid</Style>
             </Border>
           </Style>
         </Image>

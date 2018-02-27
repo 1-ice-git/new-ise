@@ -17,7 +17,6 @@
             @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
         </div>
 
-
     </div>
     <br />
 
@@ -55,6 +54,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.anticipo_euro)
             </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.data_decorrenza)
             </th>
@@ -88,6 +88,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.anticipo_euro)
                 </td>
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.data_decorrenza)
                 </td>

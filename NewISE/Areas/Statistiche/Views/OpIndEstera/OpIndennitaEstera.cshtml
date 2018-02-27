@@ -1,0 +1,449 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Op_Indennita_Estera>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Riepilogo delle Operazioni Effettuate - Indennità Estera"></div>
+
+@*<button id="opener">xx</button>*@
+
+<br /><br />
+
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><b>Riepilogo delle Operazioni Effettuate - Indennità Estera</b></div>
+        <div class="panel-body">
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                   
+                    <div class="col-md-2">
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
+
+                    <div class="col-md-2">
+                        @Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker1", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<a href="#" target="_blank" onclick="invia()">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#" id="opener">Stampa Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#">
+                            <span class="glyphicon glyphicon-print"></span>Stampa
+                        </a>*@
+                        
+                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                            <span class="glyphicon glyphicon-print"></span> Stampa
+                        </a>
+                    </div>
+
+                    <div class="col-md-2">
+                        @*<a href="#" onclick="OpIndennitaEstera()">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera </a>*@
+                        @*<a href="#" onclick="callpartialOpIndEstera();">Visualizza il Riepilogo delle Operazioni effettuate - Indennità di Sede Estera</a>*@
+                    </div>
+
+                   </div>
+                
+                <br />
+
+            </div>
+
+           
+            @*<table id="tb_Op_Indennita_Estera" class="display" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.matricola)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.nominativo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.qualifica)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sede)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.valuta)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.tipo_movimento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.codice_tipo_movimento)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.data_decorrenza)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.data_lettera)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.data_operazione)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.indennita_personale)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.sist_rientro_lorda)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.anticipo)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.matricola)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.nominativo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.qualifica)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.sede)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.valuta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.tipo_movimento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.codice_tipo_movimento)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.data_decorrenza)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.data_lettera)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.data_operazione)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.indennita_personale)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.sist_rientro_lorda)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.anticipo)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+        
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+
+    $('#tb_Op_Indennita_Estera').DataTable({
+        "order": [],
+        "scrollY": 220,
+        "scrollX": true,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        }
+    });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                //location.reload(true);
+                $('.container').removeClass("NoOverflow");
+              
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+
+            var data = $("#datepicker").datepicker().val()
+            var data1 = $("#datepicker1").datepicker().val()
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    V_DATA: data,
+                    V_DATA1: data1
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+                    
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function invia() {
+        //debugger
+        var DATA = $("#datepicker").datepicker().val()
+        var DATA1 = $("#datepicker1").datepicker().val()
+
+        window.location.href = "/Statistiche/OpIndEstera/RptOpIndennitaEstera?V_DATA=" + DATA + "&V_DATA1=" + DATA1;
+        //window.open("/Statistiche/OpIndEstera/RptOpIndennitaEstera?V_DATA=" + DATA + "&V_DATA1=" + DATA1, "", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=1400,height=1400")
+    };
+
+    /* Custom filtering function which will search data in column four between two values */
+    $.fn.dataTable.ext.search.push(
+        function (settings, data_operazione, dataIndex) {
+            var min = parseInt($('#min').val(), 10);
+            var max = parseInt($('#max').val(), 10);
+            var data_operazione = parseFloat(data_operazione[8]) || 0; // use data for the age column
+
+            if ((isNaN(min) && isNaN(max)) ||
+                 (isNaN(min) && data_operazione <= max) ||
+                 (min <= data_operazione && isNaN(max)) ||
+                 (min <= data_operazione && data_operazione <= max)) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $(document).ready(function () {
+        var table = $('#tb_Op_Indennita_Estera').DataTable();
+
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup(function () {
+            table.draw();
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '2001:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker1").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '1920:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+
+    function OpIndennitaEstera() {
+        debugger;
+
+        //rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
+        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera1";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function RptOpIndennitaEstera() {
+        //debugger;
+
+        //rotta = "/Statistiche/ArchivioVecchioISE/RptOpIndennitaEstera";
+        rotta = "/Statistiche/OpIndEstera/RptOpIndennitaEstera";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        var chk = true;
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //$("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    // Operazioni Effettuate - Indennità di Sede Estera
+    function callpartialOpIndEstera() {
+        //debugger;
+
+        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+
+</script>
+
+

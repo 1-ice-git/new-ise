@@ -1,7 +1,5 @@
 ﻿<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
 
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
 
 @model IEnumerable<NewISE.Models.LogAttivitaModel>
 
@@ -11,102 +9,57 @@
 
 }
 
-
-@*<table class="table table-hover">
-        <thead>
-            <tr>
-                <th><a href="#" onclick="callpartial();">LOG Attivita</a></th>
-                <th><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></th>
-                <th>ISE</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th></th>
-                <td>Consuntivo dei Costi</td>
-                <td>ISE Mensile</td>
-
-            </tr>
-            <tr>
-                <th></th>
-                <td>Consuntivo dei Costi per codice Coan</td>
-                <td>Maggiorazione Abitazione</td>
-
-            </tr>
-            <tr>
-                <th scope="row"></th>
-                <td>Presenze dei livelli in servizio all'estero</td>
-                <td>Altre Spese</td>
-            </tr>
-            <tr>
-                <th></th>
-                <td>Spese Diverse</td>
-                <td>Altre Indennità</td>
-            </tr>
-            <tr>
-                <th scope="row"></th>
-                <td>Spese di avvicendamento</td>
-
-            <tr>
-                <th scope="row"></th>
-                <td>Storia del dipendente</td>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni effettuate - Indennità di Sede Estera</td>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni Effettuate - Contributo Abitazione</td>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni Effettuate - Uso Abitazione</td>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni Effettuate - Canone Anticipato</td>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni Effettuate - Spese Diverse</td>
-            </tr>
-            <tr>
-                <th scope="row"></th>
-
-                <td>Operazioni Effettuate - Maggiorazione Abitazione</td>
-            </tr>
-        </tbody>
-    </table>*@
-
-
-
 <div style="margin: 15px"></div>
 <div class="row">
 
-    <div class="col-xs-3">
+    <div class="col-xs-5">
+
         <div id="divMsgUtente" class="DivSfondoBordo border_radius">
             <br /><br />
             <ul>
                 <li><a href="#" onclick="callpartial();">LOG Attivita</a></li>
             </ul>
             <ul>
-                <li><a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a></li>
+                <li>Archivio Vecchio ISE
+                @*<a href="#" onclick="callpartial3();">Archivio Vecchio ISE </a>*@
+                    <ul class="no-bullets">
+                        <li>Consuntivo dei Costi * </li>
+                        @*<li><a href="#">Consuntivo dei Costi * </a></li>*@
+                        <li>Consuntivo dei Costi per codice CoAn * </li>
+                        @*<li><a href="#">Consuntivo dei Costi per codice CoAn * </a></li>*@
+                        <li><a href="#" onclick="callpartialDislocazione();">Dislocazione dei dipendenti all'estero</a></li>
+                        <li><a href="#" onclick="callpartialPresenze();">Presenze dei livelli in servizio all'estero</a></li>
+                        <li><a href="#" onclick="callpartialSpese();">Spese diverse</a></li>
+                        <li><a href="#" onclick="callpartialSpeseAvvicendamento();">Spese avvicendamento</a></li>
+                        <li><a href="#" onclick="callpartialStoria();">Storia del dipendente</a></li>
+                        <li><a href="#" onclick="callpartialOpIndEstera();">Operazioni effettuate - Indennità di Sede Estera</a></li>
+                        <li><a href="#" onclick="callpartialOpContributoAbitazione();">Operazioni Effettuate - Contributo Abitazione</a></li>
+                        <li><a href="#" onclick="callpartialOpUsoAbitazione();">Operazioni Effettuate - Uso Abitazione</a></li>
+                        <li><a href="#" onclick="callpartialOpCanoneAnticipato();">Operazioni Effettuate - Canone Anticipato</a></li>
+                        <li><a href="#" onclick="callpartialOpSpeseDiverse();">Operazioni Effettuate - Spese Diverse</a></li>
+                        <li><a href="#" onclick="callpartialOpMaggAbitazione();">Operazioni Effettuate - Maggiorazione Abitazione</a></li>
+                    </ul>
+                
+                </li>
+
             </ul>
             <ul>
-                <li>
-                    <a href="#" onclick="callpartial();">ISE</a>
+                <li>ISE
+                    @*<a href="#" onclick="callpartial();">ISE</a>*@
                     <ul class="no-bullets">
-                        <li><a href="#">Interrogazione dipendente</a></li>
-                        <li><a href="#" onclick="callpartial5();">Riepiloghi</a></li>
-                        <li><a href="#">Altre Statistiche</a></li>
+                        <li>Interrogazione dipendente * </li>
+                        @*<li><a href="#">Interrogazione dipendente * </a></li>*@
+                        <li>Riepiloghi * </li>
+                        @*<li><a href="#" onclick="callpartial5();">Riepiloghi * </a></li>*@
+                        <li>Altre Statistiche * </li>
+                        @*<li><a href="#">Altre Statistiche * </a></li>*@
                     </ul>
 
                 </li>
             </ul>
         </div>
 
-
+        
 
     </div>
 
@@ -116,23 +69,8 @@
 
 </div>
 
-
-
-
-
-@*<div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            Dropdown Example
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#" onclick="callpartial7();">HTML</a></li>
-            <li><a href="#">CSS</a></li>
-            <li><a href="#">JavaScript</a></li>
-        </ul>
-    </div>*@
-
 <script type="text/javascript">
+
     function callpartial() {
         //debugger;
         var rotta = "/Statistiche/LogAttivita/LogAttivita2";
@@ -272,7 +210,7 @@
     //ISE Mensile
     function callpartial6() {
         debugger;
-
+        
         rotta = "/Statistiche/RiepiloghiIseMensile/Index";
         $.ajax({
             type: "POST",
@@ -298,11 +236,10 @@
         });
     }
 
-
     function callpartial7() {
         //debugger;
 
-        rotta = "/Statistiche/ArchivioVecchioISE/OpIndennitaEstera";
+        rotta = "/Statistiche/ArchivioVecchioISE/OpCanoneAnticipato";
         $.ajax({
             type: "POST",
             url: rotta,
@@ -326,4 +263,428 @@
             }
         });
     }
+
+    function callpartial8() {
+        //debugger;
+
+        rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    function callpartial9() {
+        //debugger;
+
+        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Dislocazione Dipendenti Estero
+    function callpartialDislocazione() {
+        //debugger;
+
+        rotta = "/Statistiche/DislocazioneDipEstero/Dislocazione";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Presenze Livelli Estero
+    function callpartialPresenze() {
+        //debugger;
+
+        rotta = "/Statistiche/PresenzeLivelliEstero/PresenzeLivelli";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+    // Spese Diverse
+    function callpartialSpese() {
+        //debugger;
+
+        rotta = "/Statistiche/SpeseDiverse/SpeseDiverse";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+    // Spese Avvicendamento 
+    function callpartialSpeseAvvicendamento() {
+        //debugger;
+
+        rotta = "/Statistiche/SpeseAvvicendamento/SpeseAvvicendamento";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+    // Storia del Dipendente
+    function callpartialStoria() {
+        //debugger;
+
+        rotta = "/Statistiche/StoriaDipendente/StoriaDipendente";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {},
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Operazioni Effettuate - Indennità di Sede Estera
+    function callpartialOpIndEstera() {
+        //debugger;
+
+        rotta = "/Statistiche/OpIndEstera/OpIndennitaEstera";
+        //rotta = "/Statistiche/OpIndEstera/Index";
+        
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+        
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                //V_DATA: data,
+                //V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Operazioni Effettuate - Canone Anticipato
+    function callpartialOpCanoneAnticipato() {
+        //debugger;
+
+        rotta = "/Statistiche/OpCanoneAnticipato/OpCanoneAnticipato";
+
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                //V_DATA: data,
+                //V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Operazioni Effettuate - Uso Abitazione
+    function callpartialOpUsoAbitazione() {
+        //debugger;
+
+        rotta = "/Statistiche/OpUsoAbitazione/OpUsoAbitazione";
+
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                //V_DATA: data,
+                //V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Operazioni Effettuate - Contributo Abitazione
+    function callpartialOpContributoAbitazione() {
+        //debugger;
+
+        rotta = "/Statistiche/OpContributoAbitazione/OpContributoAbitazione";
+
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                //V_DATA: data,
+                //V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+    // Operazioni Effettuate - Spese diverse
+    function callpartialOpSpeseDiverse() {
+        //debugger;
+
+        rotta = "/Statistiche/OpSpeseDiverse/OpSpeseDiverse";
+
+        //var data = $("#datepicker").datepicker().val()
+        //var data1 = $("#datepicker1").datepicker().val()
+
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                //V_DATA: data,
+                //V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+
+    // Operazioni Effettuate - Maggiorazione Abitazione
+    function callpartialOpMaggAbitazione() {
+        //debugger;
+
+        rotta = "/Statistiche/OpMaggiorazioneAbitazione/OpMaggiorazioneAbitazione";
+
+        var data = $("#datepicker").datepicker().val()
+        var data1 = $("#datepicker1").datepicker().val()
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                V_DATA: data,
+                V_DATA1: data1
+            },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divPartialView").empty();
+                $("#divPartialView").html(result);
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    
+
 </script>
