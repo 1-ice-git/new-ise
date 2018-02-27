@@ -20,7 +20,7 @@ namespace NewISE.Controllers
             try
             {
                 admin = Utility.Amministratore();
-                ViewBag.Amministratore = admin;               
+                ViewBag.Amministratore = admin;
             }
             catch (Exception)
             {
@@ -30,13 +30,13 @@ namespace NewISE.Controllers
         }
         public ActionResult ListaNotifiche()
         {
-            decimal idMittenteLogato =  Utility.UtenteAutorizzato().idDipendente;
+            decimal idMittenteLogato = Utility.UtenteAutorizzato().idDipendente;
             List<NotificheModel> nm = new List<NotificheModel>();
             using (dtNotifiche dn = new dtNotifiche())
             {
                 nm = dn.GetNotifiche(idMittenteLogato).ToList();
             }
-            
+
             return PartialView(nm);
         }
         public ActionResult NuovaNotifica()
@@ -69,12 +69,12 @@ namespace NewISE.Controllers
             using (dtNotifiche dn = new dtNotifiche())
             {
                 nm = dn.GetNotifiche(idMittenteLogato).ToList();
-                if(nm.Count()>0)
+                if (nm.Count() > 0)
                 {
                     elem = nm.First();
                 }
             }
-            return PartialView(elem);           
+            return PartialView(elem);
         }
     }
 }
