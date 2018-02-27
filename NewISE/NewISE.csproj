@@ -1059,6 +1059,7 @@
     <Content Include="Immagini\IconeDocumenti\PDF-icon.png" />
     <Content Include="Immagini\Loading\loader.gif" />
     <Content Include="Immagini\Logo Rit PNG.PNG" />
+    <Content Include="Immagini\piu.png" />
     <Content Include="Immagini\switch.png" />
     <Content Include="Immagini\switch3.png" />
     <Content Include="Immagini\Loading\ajax-loader %281%29.gif" />
@@ -2686,6 +2687,7 @@
     <Compile Include="Controllers\FunzioniEventiController.cs" />
     <Compile Include="Controllers\MaggiorazioneAbitazioneController.cs" />
     <Compile Include="Controllers\MaggiorazioniFamiliariController.cs" />
+    <Compile Include="Controllers\NotificheController.cs" />
     <Compile Include="Controllers\PensioneConiugeController.cs" />
     <Compile Include="Controllers\PratichePassaportoController.cs" />
     <Compile Include="Controllers\RichiamoController.cs" />
@@ -2693,6 +2695,7 @@
     <Compile Include="Controllers\TrasportoEffettiController.cs" />
     <Compile Include="Controllers\TitoliViaggioController.cs" />
     <Compile Include="Controllers\TrasferimentoController.cs" />
+    <Compile Include="Controllers\UtenzeDipendentiController.cs" />
     <Compile Include="Controllers\VariazioneMaggiorazioniFamiliariController.cs" />
     <Compile Include="DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -3033,6 +3036,8 @@
     <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\AttivitaAnticipiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtNotifiche.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtUtenzeDipendenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
     <Compile Include="Models\DBModel\dtObj\dtFasciaKm.cs" />
@@ -3041,11 +3046,14 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
+    <Compile Include="Models\DBModel\NotificheModel.cs" />
+    <Compile Include="Models\DBModel\UtentiAutorizzatiModel.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
     <Compile Include="Models\DBModel\FunzioneRiduzioneModel.cs" />
     <Compile Include="Models\DBModel\GruppoFKMModel.cs" />
     <Compile Include="Models\DBModel\MaggiorazioniAbitazioneModel.cs" />
     <Compile Include="Models\DBModel\PercentualeFasciaKMModel.cs" />
+    <Compile Include="Models\DBModel\EmailSecondarieDipModel.cs" />
     <Compile Include="Models\DBModel\RichiamoModel.cs" />
     <Compile Include="Models\DBModel\TipologiaAnticipiModel.cs" />
     <Compile Include="Models\DBModel\TipologiaSospensioneModel.cs" />
@@ -3332,6 +3340,16 @@
     <Content Include="Views\MaggiorazioneAbitazione\NuovaMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\GestioneMAB.cshtml" />
     <Content Include="Views\MaggiorazioneAbitazione\ModificaMAB.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\Index.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\ElencoUtenzeDipendenti.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\ElencoEmailSecondarioDip.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\VisualizzaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
+    <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
+    <Content Include="Views\Notifiche\Index.cshtml" />
+    <Content Include="Views\Notifiche\ListaNotifiche.cshtml" />
+    <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
+    <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
