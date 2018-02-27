@@ -269,8 +269,7 @@
                     var attivazioneAnticipi = result.attivazioneAnticipi;
                     var richiestaMAB = result.richiestaMAB;
                     var attivazioneMAB = result.attivazioneMAB;
-                    var TrasferimentoAttivo = result.TrasferimentoAttivo;
-
+                    var solaLettura = result.solaLettura;
 
                     if (richiestaMF == true) {
                         $("#chkMagFamiliariR").each(function () { this.checked = true; });
@@ -361,7 +360,7 @@
                     // attivazione
                     if( attivazioneMF && conclusePP && concluseTV
                             && attivazioneTE && attivazioneAnticipi
-                            && attivazioneMAB && TrasferimentoAttivo==false)
+                            && attivazioneMAB && solaLettura==false)
                     {
                         $("#btAttivaTrsf").removeAttr("disabled");
                         $("#btAttivaTrsf").removeClass("disableLink");
@@ -373,7 +372,7 @@
                     }
 
                     // annullamento
-                    if (TrasferimentoAttivo) {
+                    if (solaLettura) {
                         $("#btAnnullaTrasf").attr("disabled", "disabled");
                         $("#btAnnullaTrasf").addClass("disableLink");
                     }
@@ -463,7 +462,8 @@
                 //debugger;
                 if (result.err == "") {
                     InfoElaborazioneAjax(result.msg);
-                    GestioneAttivitaTrasferimento();
+                    //GestioneAttivitaTrasferimento();
+                    GestioneTrasferimento();
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }

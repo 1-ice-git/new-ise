@@ -43,13 +43,14 @@ namespace NewISE.Controllers
                 bool siDocConiuge = false;
                 bool siDocFigli = false;
                 bool docFormulario = false;
+                bool TrasfSolaLettura = false;
 
 
                 dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                    out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out TrasfSolaLettura);
 
-                if (richiestaAttivazione == true || attivazione == true)
+                if (richiestaAttivazione == true || attivazione == true || TrasfSolaLettura ==true)
                 {
                     solaLettura = true;
                 }
@@ -252,6 +253,7 @@ namespace NewISE.Controllers
             bool siDocConiuge = false;
             bool siDocFigli = false;
             bool docFormulario = false;
+            bool solaLettura = false;
 
 
 
@@ -270,7 +272,8 @@ namespace NewISE.Controllers
                 {
                     dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                         out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                        out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario,
+                        out solaLettura);
                 }
 
             }
@@ -295,6 +298,7 @@ namespace NewISE.Controllers
                         siDocConiuge = siDocConiuge,
                         siDocFigli = siDocFigli,
                         docFormulario = docFormulario,
+                        solaLettura = solaLettura,
                         err = errore
                     });
 

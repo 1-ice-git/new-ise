@@ -9,6 +9,7 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     var errori = ViewData.ModelState;
     var dataFine = Convert.ToDateTime(Model.dataFineMAB);
+    bool anticipoAnnuale = Convert.ToBoolean(Model.AnticipoAnnuale);
 }
 
 <style>
@@ -57,36 +58,38 @@
                                     if (Model.AnticipoAnnuale)
                                     {
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false") Semestrale</label>
+                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false") Semestrale</label>
                                         </div>
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
+                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
+                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
                                         </div>
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true") Annuale</label>
+                                            <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "true") Annuale</label>
                                         </div>
                                     }
                                 }
                                 else
                                 {
                                     <div class="col-xs-2">
-                                        <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true, disabled = "disabled" }) Semestrale</label>
+                                        <label>@Html.RadioButton("chk",true,new { @checked = true, disabled = "disabled" }) Semestrale</label>
                                     </div>
                                     <div class="col-xs-2">
-                                        <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>
+                                        <label>@Html.RadioButton("chk",false, new { disabled = "disabled" }) Annuale</label>
+                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
+@*                                        <label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
                                     </div>
                                 }
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(Model => Model.importo_canone, htmlAttributes: new { @class = "control-label col-xs-3" })
+                        @Html.LabelFor(model => model.importo_canone, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-3">
                             @{ decimal canone = Convert.ToDecimal(Model.importo_canone);}
                             @Html.TextBox("imp_canone",canone, new {@class = "form-control col-xs-2" })
@@ -172,7 +175,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-                break;
+                    break;
         }
     }
 
@@ -234,7 +237,7 @@
 
     $('#imp_canone').autoNumeric('init',
     {
-       aSep: '.',
+        aSep: '.',
        aDec: ',',
        nSep: true
     });

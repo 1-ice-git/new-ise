@@ -59,10 +59,12 @@
                                 else
                                 {
                                     <div class="col-xs-2">
-                                        <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true, disabled = "disabled" }) Semestrale</label>
+                                        <label>@Html.RadioButton("chk", true, new { @checked = true, disabled = "disabled" }) Semestrale</label>
                                     </div>
                                     <div class="col-xs-2">
-                                        <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>
+                                        <label>@Html.RadioButton("chk", false, new { disabled = "disabled" }) Annuale</label>
+                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
+                                        @*<label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
                                     </div>
                                 }
                             </div>

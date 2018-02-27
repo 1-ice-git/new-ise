@@ -302,6 +302,7 @@ function ConfermaNotificaRichiestaMAB() {
             if (result.err == "") {
                 InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
+                FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
@@ -339,6 +340,7 @@ function ConfermaAnnullaRichiestaMAB() {
             if (result.err == "") {
                 InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
+                FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {
@@ -376,6 +378,7 @@ function ConfermaAttivaRichiestaMAB() {
             if (result.err == "") {
                 InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
+                FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
                 GestioneAttivitaTrasferimento();
             } else {

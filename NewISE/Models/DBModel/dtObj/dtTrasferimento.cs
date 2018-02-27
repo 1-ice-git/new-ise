@@ -286,7 +286,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                       out bool richiestaTE, out bool attivazioneTE,
                                                       out bool richiestaAnticipi, out bool attivazioneAnticipi,
                                                       out bool richiestaMAB, out bool attivazioneMAB, 
-                                                      out bool TrasferimentoAttivo)
+                                                      out bool solaLettura)
         {
             richiestaMF = false;
             attivazioneMF = false;
@@ -306,14 +306,15 @@ namespace NewISE.Models.DBModel.dtObj
             richiestaMAB = false;
             attivazioneMAB = false;
 
-            TrasferimentoAttivo = false;
+            solaLettura = false;
 
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
+                if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || 
+                    t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Annullato)
                 {
-                    TrasferimentoAttivo = true;
+                    solaLettura = true;
                 }
 
                 #region MaggiorazioniFamiliari

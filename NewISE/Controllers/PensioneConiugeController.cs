@@ -43,12 +43,13 @@ namespace NewISE.Controllers
                         bool docFormulario = false;
 
                         bool solaLettura = false;
+                        bool trasfSolaLettura = false;
 
                         dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                             out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                            out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out trasfSolaLettura);
 
-                        if (richiestaAttivazione == true)
+                        if (richiestaAttivazione == true || trasfSolaLettura == true)
                         {
                             solaLettura = true;
                         }

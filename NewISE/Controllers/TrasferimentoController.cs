@@ -142,7 +142,7 @@ namespace NewISE.Controllers
             bool attivazioneAnticipi = false;
             bool richiestaMAB = false;
             bool attivazioneMAB = false;
-            bool TrasferimentoAttivo = false;
+            bool solaLettura = false;
 
             try
             {
@@ -151,7 +151,7 @@ namespace NewISE.Controllers
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
                         out richiestaPP, out conclusePP, out richiesteTV, out concluseTV, out richiestaTE, out attivazioneTE,
                         out richiestaAnticipi, out attivazioneAnticipi, out richiestaMAB, out attivazioneMAB,
-                        out TrasferimentoAttivo);
+                        out solaLettura);
                 }
 
             }
@@ -177,7 +177,7 @@ namespace NewISE.Controllers
                         attivazioneAnticipi = attivazioneAnticipi,
                         richiestaMAB = richiestaMAB,
                         attivazioneMAB = attivazioneMAB,
-                        TrasferimentoAttivo=TrasferimentoAttivo
+                        solaLettura = solaLettura
                     });
 
         }
@@ -588,6 +588,7 @@ namespace NewISE.Controllers
                             return PartialView();
 
                         case EnumStatoTraferimento.Terminato:
+                        case EnumStatoTraferimento.Annullato:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
@@ -616,6 +617,7 @@ namespace NewISE.Controllers
                                 }
                             }
                             return PartialView(trm);
+
 
                         default:
 

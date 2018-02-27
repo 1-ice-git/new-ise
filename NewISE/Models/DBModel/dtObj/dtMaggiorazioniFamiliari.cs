@@ -110,12 +110,13 @@ namespace NewISE.Models.DBModel.dtObj
             bool siDocConiuge = false;
             bool siDocFigli = false;
             bool docFormulario = false;
+            bool trasfSolaLettura = false;
 
             int i = 0;
 
             this.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out trasfSolaLettura);
 
             try
             {
@@ -991,11 +992,12 @@ namespace NewISE.Models.DBModel.dtObj
             bool siDocConiuge = false;
             bool siDocFigli = false;
             bool docFormulario = false;
+            bool trasfSolaLEttura = false;
             int i = 0;
 
             this.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                 out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
-                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario);
+                out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli, out docFormulario, out trasfSolaLEttura);
 
             try
             {
@@ -1114,7 +1116,7 @@ namespace NewISE.Models.DBModel.dtObj
                                        out bool datiConiuge, out bool datiParzialiConiuge,
                                        out bool datiFigli, out bool datiParzialiFigli,
                                        out bool siDocConiuge, out bool siDocFigli,
-                                       out bool docFormulario)
+                                       out bool docFormulario, out bool trasfSolaLettura)
         {
             rinunciaMagFam = false;
             richiestaAttivazione = false;
@@ -1126,6 +1128,7 @@ namespace NewISE.Models.DBModel.dtObj
             siDocConiuge = false;
             siDocFigli = false;
             docFormulario = false;
+            trasfSolaLettura = false;
 
 
             using (ModelDBISE db = new ModelDBISE())
@@ -1138,6 +1141,12 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
+                    decimal IDstatoTrasf = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
+                    if(IDstatoTrasf==(decimal)EnumStatoTraferimento.Attivo|| IDstatoTrasf == (decimal)EnumStatoTraferimento.Annullato)
+                    {
+                        trasfSolaLettura = true;
+                    }
+
                     var mf = amf.MAGGIORAZIONIFAMILIARI;
 
                     if (mf?.IDMAGGIORAZIONIFAMILIARI > 0)
