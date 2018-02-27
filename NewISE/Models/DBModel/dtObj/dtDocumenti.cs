@@ -364,11 +364,7 @@ namespace NewISE.Models.DBModel.dtObj
                         break;
                     case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
                         break;
-                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                        break;
                     case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
-                        break;
-                    case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
                         break;
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                         break;
@@ -702,8 +698,6 @@ namespace NewISE.Models.DBModel.dtObj
                         //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                    case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
                     case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     case EnumTipoDoc.Copia_Contratto_Locazione:
@@ -1042,9 +1036,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                             break;
                         case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                        case EnumTipoDoc.Dichiarazione_Costo_Locazione:
                         case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
-                        case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
                         case EnumTipoDoc.Clausole_Contratto_Alloggio:
                         case EnumTipoDoc.Copia_Contratto_Locazione:
                             //t = d.MAGGIORAZIONEABITAZIONE.OrderByDescending(a => a.IDMAB).First().TRASFERIMENTO;
@@ -1148,8 +1140,6 @@ namespace NewISE.Models.DBModel.dtObj
                         //t = d.TITOLIVIAGGIO.OrderByDescending(a => a.IDTITOLOVIAGGIO).First().TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                    case EnumTipoDoc.Dichiarazione_Costo_Locazione:
-                    case EnumTipoDoc.Attestazione_Spese_Abitazione_Dirigente:
                     case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
                     case EnumTipoDoc.Clausole_Contratto_Alloggio:
                     case EnumTipoDoc.Copia_Contratto_Locazione:

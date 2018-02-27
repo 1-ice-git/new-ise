@@ -21,6 +21,71 @@
     </div>
 </div>
 
+<div class="modal fade" id="ModalNotificaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaAnticipiLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaAnticipi">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaAnticipi();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaAnticipiLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaAnticipi">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaAnticipi();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaAnticipiLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaAnticipi">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaAnticipi();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -95,11 +160,11 @@
         });
     }
 
-    function ConfermaNotificaRichiestaAnticipi(idAttivitaAnticipi) {
+    function ConfermaNotificaRichiestaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/ConfermaNotificaRichiestaAnticipi";
-        //var percentualeRichiesta = document.getElementById("PercentualeAnticipoRichiesto").value;
         var percentualeRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
+        var idAttivitaAnticipi = parseInt($('#hiIdAttivitaAnticipi').val());
 
 
         $.ajax({
@@ -132,9 +197,10 @@
         });
     }
 
-    function ConfermaAnnullaRichiestaAnticipi(idAttivitaAnticipi) {
+    function ConfermaAnnullaRichiestaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/ConfermaAnnullaRichiestaAnticipi";
+        var idAttivitaAnticipi = parseInt($('#hiIdAttivitaAnticipi').val());
 
         $.ajax({
             type: "POST",
@@ -164,9 +230,10 @@
         });
     }
 
-    function ConfermaAttivaRichiestaAnticipi(idAttivitaAnticipi) {
+    function ConfermaAttivaRichiestaAnticipi() {
         //debugger;
         var rotta = "/Anticipi/ConfermaAttivaRichiestaAnticipi";
+        var idAttivitaAnticipi = parseInt($('#hiIdAttivitaAnticipi').val());
 
         $.ajax({
             type: "POST",

@@ -1,6 +1,7 @@
 ﻿@model NewISE.Models.DBModel.AttivazioneMABModel
 
 @{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal idAttivazioneMAB = Convert.ToDecimal(ViewData["idAttivazioneMAB"]);
     string disabledAnnullaRichiesta = Convert.ToString(ViewData["disabledAnnullaRichiesta"]);
     string disabledAttivaRichiesta = Convert.ToString(ViewData["disabledAttivaRichiesta"]);
@@ -10,107 +11,42 @@
     string hiddenNotificaRichiesta = Convert.ToString(ViewData["hiddenNotificaRichiesta"]);
 }
 
+@Html.Hidden("hi_idTrasferimento", idTrasferimento)
+@Html.Hidden("hi_idAttivazioneMAB", idAttivazioneMAB)
 
-<div style="padding-right: 10px;">
-    <hr />
+<div style="padding-right: 10px">
     <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
-        <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaAnticipi" onclick="ModalNotificaRichiestaAnticipi();">
+        <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaMAB" onclick="ModalNotificaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Notifica richiesta
         </button>
-        <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaAnticipi" onclick="ModalAttivaRichiestaAnticipi();">
+        <button class="btn btn-default btn-sm" @hiddenAttivaRichiesta @disabledAttivaRichiesta id="btAttivaRichiestaMAB" onclick="ModalAttivaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Attiva richiesta
         </button>
-        <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaAnticipi" onclick="ModalAnnullaRichiestaAnticipi();">
+        <button class="btn btn-default btn-sm" @hiddenAnnullaRichiesta @disabledAnnullaRichiesta id="btAnnullaRichiestaMAB" onclick="ModalAnnullaRichiestaMAB();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
             Annulla richiesta
         </button>
     </div>
 </div>
 
-<div class="modal fade" id="ModalNotificaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaAnticipiLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewNotificaRichiestaAnticipi">
-                    <label>Procedere con la notifica della richiesta?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btConfermaNotificaRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaRichiestaAnticipi(@idAttivazioneMAB );">Procedi</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="ModalAttivaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaRichiestaAnticipiLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewAttivaRichiestaAnticipi">
-                    <label>Procedere con l'attivazione della richiesta?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btConfermaAttivazioneRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaAnticipi(@idAttivazioneMAB );">Procedi</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="ModalAnnullaRichiestaAnticipi" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaAnticipiLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewAnnullaRichiestaAnticipi">
-                    <label>Procedere con l'annullamento della richiesta?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btConfermaAnnullaRichiestaAnticipi" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaAnticipi(@idAttivazioneMAB);">Procedi</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
     GestioneAttivitaTrasferimento();
 
-    function ModalNotificaRichiestaAnticipi() {
+    function ModalNotificaRichiestaMAB() {
         //debugger;
-        $('#ModalNotificaRichiestaAnticipi').modal().show();
+        $('#ModalNotificaRichiestaMAB').modal().show();
     }
 
-    function ModalAnnullaRichiestaAnticipi() {
+    function ModalAnnullaRichiestaMAB() {
         //debugger;
-        $('#ModalAnnullaRichiestaAnticipi').modal().show();
+        $('#ModalAnnullaRichiestaMAB').modal().show();
     }
 
-    function ModalAttivaRichiestaAnticipi() {
+    function ModalAttivaRichiestaMAB() {
         //debugger;
-        $('#ModalAttivaRichiestaAnticipi').modal().show();
+        $('#ModalAttivaRichiestaMAB').modal().show();
     }
 
 

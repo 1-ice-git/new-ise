@@ -247,5 +247,50 @@ namespace NewISE.Models.DBModel.dtObj
 
             return tfrm;
         }
+
+        public List<TFRModel> GetListaTfrByValuta_RangeDate(decimal idUfficio,decimal idValuta, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        {
+            List<TFRModel> ltfrm = new List<TFRModel>();
+
+            using (dtUffici dtu = new dtUffici())
+            {
+                UfficiModel ufm = dtu.GetUffici(idUfficio, db);
+
+                if (ufm.pagatoValutaUfficio == false)
+                {
+                    using (dtValute dtv = new dtValute())
+                    {
+                        var ltfr = db.TFR.Where(a => a.ANNULLATO == false &&
+                                                a.IDVALUTA == idValuta &&
+                                                dtIni >= a.DATAINIZIOVALIDITA &&
+                                                dtFin <= a.DATAFINEVALIDITA)
+                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                             .ToList();
+
+                        if (ltfr != null && ltfr.Count > 0)
+                        {
+                            foreach(var tfr in ltfr)
+                            {
+                                TFRModel tfrm = new TFRModel()
+                                {
+                                    idTFR = tfr.IDTFR,
+                                    idValuta = tfr.IDVALUTA,
+                                    dataInizioValidita = tfr.DATAINIZIOVALIDITA,
+                                    dataFineValidita = tfr.DATAFINEVALIDITA, //== Utility.DataFineStop() ? new DateTime?() : tfr.DATAFINEVALIDITA,
+                                    dataAggiornamento = tfr.DATAAGGIORNAMENTO,
+                                    tassoCambio = tfr.TASSOCAMBIO,
+                                    Annullato = tfr.ANNULLATO
+                                };
+                                ltfrm.Add(tfrm);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return ltfrm;
+        }
+
+
     }
 }

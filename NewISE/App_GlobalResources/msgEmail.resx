@@ -117,17 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="MessaggioAnnullamentoTrasferimento" xml:space="preserve">
+    <value>Si informa che il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
   <data name="MessaggioAnnullaRichiestaAnticipi" xml:space="preserve">
     <value>Si notifica che la richiesta di anticipo è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
+  <data name="MessaggioAnnullaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
+  </data>
   <data name="MessaggioAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
-    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, sono state annullate. Contattare l'amministratore per maggiori dettagli.</value>
+    <value>Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento {0} del {1}, è stata annullata. Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAnnullaRichiestaPassaporto" xml:space="preserve">
-    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, sono state annullate.&lt;/p&gt;
+    <value>&lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento &lt;strong&gt;{0}&lt;/strong&gt; del {1}, è stata annullate.&lt;/p&gt;
 &lt;p&gt;Contattare l'amministratore per maggiori dettagli.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;</value>
@@ -142,13 +148,19 @@
     <value>Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l'amministratore per maggiori dettagli.</value>
   </data>
   <data name="MessaggioAttivaRichiestaAnticipi" xml:space="preserve">
-    <value>Si notifica che l'anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermata.</value>
+    <value>Si notifica che l'anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermato.</value>
   </data>
   <data name="MessaggioAttivaRichiestaInizialeTitoliViaggio" xml:space="preserve">
     <value>Si notifica che la richiesta dei titoli di viaggio è stata confermata.</value>
   </data>
   <data name="MessaggioAttivaRichiestaSuccessivaTitoliViaggio" xml:space="preserve">
     <value>Si notifica che l'ulteriore documentazione relativa ai titoli di viaggio richiesti è stata confermata.</value>
+  </data>
+  <data name="MessaggioAttivaTrasferimento" xml:space="preserve">
+    <value>Si informa che il trasferimento del dipendente {0} per la sede di {1} è stato attivato.</value>
+  </data>
+  <data name="MessaggioAttivazioneMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Notifica della Maggiorazione Abitazione per il dipendente {0}, trasferito il {1} nella sede di {2}.</value>
   </data>
   <data name="MessaggioAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
     <value>Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate.</value>
@@ -158,6 +170,9 @@
   </data>
   <data name="MessaggioAttivazioneTrasportoEffettiRientro" xml:space="preserve">
     <value>Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata.</value>
+  </data>
+  <data name="MessaggioNotificaMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Si informa che il dipendente {0} ha effettuato la richiesta maggiorazione abitazione.</value>
   </data>
   <data name="MessaggioNotificaRichiestaAnticipi" xml:space="preserve">
     <value>Si informa che il dipendente {0} ha effettuato la richiesta di anticipo.</value>
@@ -184,16 +199,22 @@
     <value>Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l'ufficio {1} dal {2}.</value>
   </data>
   <data name="MessaggioRichiestaPratichePassaportoConcluse" xml:space="preserve">
-    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} sono concluse.</value>
+    <value>Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} è stata conclusa.</value>
   </data>
   <data name="MessaggioRimborsoSuccessivoTitoliViaggio" xml:space="preserve">
     <value>Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}.</value>
+  </data>
+  <data name="OggettoAnnullamentoTrasferimento" xml:space="preserve">
+    <value>Notifica annullamento trasferimento.</value>
   </data>
   <data name="OggettoAnnullaRichiestaAnticipi" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta di anticipo.</value>
   </data>
   <data name="OggettoAnnullaRichiestaInizialeTitioliViaggio" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta dei titoli di viaggio.</value>
+  </data>
+  <data name="OggettoAnnullaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Notifica dell'annullamento della richiesta di maggiorazione abitazione.</value>
   </data>
   <data name="OggettoAnnullaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica dell'annullamento della richiesta per le Maggiorazioni Familiari.</value>
@@ -219,6 +240,12 @@
   <data name="OggettoAttivaRichiestaSuccessivaTitoloViaggio" xml:space="preserve">
     <value>Attivazione ulteriori titoli di viaggio.</value>
   </data>
+  <data name="OggettoAttivaTrasferimento" xml:space="preserve">
+    <value>Notifica attivazione trasferimento.</value>
+  </data>
+  <data name="OggettoAttivazioneMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Attivazione della maggiorazione abitazione.</value>
+  </data>
   <data name="OggettoAttivazioneMaggiorazioniFamiliari" xml:space="preserve">
     <value>Attivazione delle maggiorazioni familiari.</value>
   </data>
@@ -233,6 +260,9 @@
   </data>
   <data name="OggettoNotificaRichiestaInizialeTitoloViaggio" xml:space="preserve">
     <value>Notifica della richiesta per i titoli di viaggio.</value>
+  </data>
+  <data name="OggettoNotificaRichiestaMaggiorazioneAbitazione" xml:space="preserve">
+    <value>Notifica richiesta maggiorazione abitazione.</value>
   </data>
   <data name="OggettoNotificaRichiestaMaggiorazioniFamiliari" xml:space="preserve">
     <value>Notifica della richiesta per le Maggiorazioni Familiari.</value>

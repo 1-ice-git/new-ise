@@ -1,0 +1,43 @@
+﻿<body>
+    @{
+        decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    }
+
+    <h4>Maggiorazione Abitazione</h4>
+    <div class="row">
+        <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
+            <div class="nav nav-justified nav-tabs">
+                <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaMAB">
+                    <li id="mnAttivitaMAB">
+                        <a data-toggle="tab" href="#tabAttivitaMAB" id="lkAttivitaMAB" onclick="AttivitaMAB(@idTrasferimento);">Importo</a>
+                    </li>
+                    <li id="mnFormulariMAB">
+                        <a data-toggle="tab" href="#tabFormulariMAB" id="lkFormulariMAB" onclick="FormulariMAB(@idTrasferimento);">Formulari</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" id="tabContenutiMAB" style="border:1px;border-color:red">
+                <div class="active tab-pane" id="tabAttivitaMAB"></div>
+                <div class="tab-pane" id="tabFormulariMAB"></div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="divAttivazioneMAB">
+            </div>
+        </div>
+    </div>
+</body>    
+
+
+<script type="text/javascript">
+    //debugger;
+    AttivitaMAB(@idTrasferimento);
+
+    GestionePulsantiNotificaAttivaAnnullaMAB(@idTrasferimento);
+
+</script>
+
+
