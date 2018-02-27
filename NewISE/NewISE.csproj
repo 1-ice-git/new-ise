@@ -2972,6 +2972,7 @@
     <Compile Include="Models\DBModel\AttivazioneTitoliViaggioModel.cs" />
     <Compile Include="Models\DBModel\AttivazioniMagFamModel.cs" />
     <Compile Include="Models\DBModel\AttivitaAnticipiModel.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtNotifiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtUtenzeDipendenti.cs" />
     <Compile Include="Models\DBModel\dtObj\dtMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtConiugePassaporto.cs" />
@@ -2981,6 +2982,7 @@
     <Compile Include="Models\DBModel\dtObj\dtAnticipi.cs" />
     <Compile Include="Models\DBModel\dtObj\dtRichiamo.cs" />
     <Compile Include="Models\DBModel\dtObj\dtSospensione.cs" />
+    <Compile Include="Models\DBModel\NotificheModel.cs" />
     <Compile Include="Models\DBModel\UtentiAutorizzatiModel.cs" />
     <Compile Include="Models\DBModel\Fascia_KMModel.cs" />
     <Compile Include="Models\DBModel\FunzioneRiduzioneModel.cs" />
@@ -3271,6 +3273,9 @@
     <Content Include="Views\UtenzeDipendenti\NuovaEmail.cshtml" />
     <Content Include="Views\UtenzeDipendenti\VisualizzaEmailSecondaria.cshtml" />
     <Content Include="Views\Notifiche\Index.cshtml" />
+    <Content Include="Views\Notifiche\ListaNotifiche.cshtml" />
+    <Content Include="Views\Notifiche\NuovaNotifica.cshtml" />
+    <Content Include="Views\Notifiche\VisualizzaCorpoMessaggio.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

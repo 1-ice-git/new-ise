@@ -1,2 +1,18 @@
-﻿
-Notifiche
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.UtentiAutorizzatiModel>
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+}
+@{
+    ViewBag.Title = "Notifiche";
+}
+
+<link href="~/Content/css/cssHome.css" rel="stylesheet" />
+<input type="hidden" id="hAmministratore" value="@admin.ToString()" />
+
+<div class="row">
+    <div id="divPanelNotifiche" class="col-xs-12">
+        @Html.Action("ListaNotifiche", "Notifiche")
+    </div>
+</div>

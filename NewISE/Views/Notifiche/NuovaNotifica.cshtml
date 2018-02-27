@@ -1,0 +1,173 @@
+﻿@model NewISE.Models.DBModel.NotificheModel
+@using NewISE.Models.DBModel;
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+@{
+    
+    var errori = ViewData.ModelState;
+}
+
+@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovaNotifica" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            <select class="form-control js-example-tokenizer" multiple="multiple" id="=idDestinatari">
+                <option selected="selected">orange</option>
+                <option>white</option>
+                <option selected="selected">purple</option>
+            </select>
+        </div>*@
+        <p>
+            <div class="form-group">
+                <div id="divCombo1" ass="col-md-10">
+                    @Html.Label("lblListDestinatari", "Destinatari : ", new { @class = "control-label" })
+                    <div>
+                        @Html.DropDownList("idDestinatari", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
+               , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaDestinatari();", @onClick = "PrelevaPVListaDestinatari();" })
+                    </div>
+                </div>
+            @*</div>
+            <div class="form-group">*@
+                <div id="divCombo2" ass="col-md-10">
+                    @Html.Label("lblListDestinatari", "Cc : ", new { @class = "control-label" })
+                    <div>
+                        @Html.DropDownList("idDestinatari2", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
+               , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaDestinatari();", @onClick = "PrelevaPVListaDestinatari();" })
+                    </div>
+                </div>
+                @Html.Label("lblLivelloDestinatari", "Oggetto : ", new { @class = "control-label" })
+                    <div>
+                        @Html.Editor("Oggetto", "Oggetto", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+            </div>
+
+        </p>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.corpoMessaggio, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div ass="col-md-10">
+                @Html.TextAreaFor(model => model.corpoMessaggio, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
+                <script>
+                    CKEDITOR.replace("FullDescription");
+                    CKEDITOR.config.readOnly = false;
+                </script> @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Invia" class="btn btn-default" />
+               <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle Notifiche</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
+            </div>
+            <div class="modal-body alert alert-warning text-warning">
+                <p id="msgModalWarning" class="text-warning">
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function TornaElencoIb() {
+        var rotta = "/Notifiche/ListaNotifiche";
+        
+        $.ajax({
+            type: "POST",
+            url: rotta,
+          //  data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPanelNotifiche").empty();
+                $("#divPanelNotifiche").html(result);
+                //RicercaDocumenti();
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+        });
+    }
+    //$("#idDestinatari").select2({
+    //    placeholder: "Seleziona tipo trasferimento",
+    //    allowClear: true,
+    //    language: "it",
+    //    width: '150',
+    //    tags: true
+    //});
+    $(".js-example-tokenizer").select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    })
+
+    function PrelevaPVListaDestinatari()
+    {
+        var listaDest1 = $("#idDestinatari").select2('val');
+        var listaDest2 = $("#idDestinatari2").select2('val');
+        // alert("1:"+listaDest1 +'\n\n2:'+listaDest2 );
+
+        if (listaDest1 != null && listaDest1.indexOf("'") == -1)
+            listaDest1 = listaDest1.toString() + "'";
+        if (listaDest2 != null && listaDest2.indexOf("'") == -1)
+            listaDest2 = listaDest2.toString() + "'";
+
+        var l1 = listaDest1.split(',');
+
+        if (listaDest2 != null) {
+            for (j = 0; j < l1.length; j++) {
+                if (listaDest2.indexOf(l1[j])!=-1) {
+                    alert('Attenzione: '+l1[j]+' presente nel settore Cc');
+                    return;
+                }
+            }
+        }
+        var l2 = listaDest1.split(',');
+        if (listaDest1 != null) {
+            for (k = 0; k < l1.length; k++) {
+                if (listaDest1.indexOf(l2[k]) != -1) {
+                    alert('Attenzione: ' + l2[k] + ' presente nel settore Destinatari');
+                    return;
+                }
+            }
+        }
+    }
+</script>
