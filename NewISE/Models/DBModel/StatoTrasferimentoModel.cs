@@ -13,7 +13,7 @@ namespace NewISE.Models.DBModel
         Da_Attivare = 2,
         Non_Trasferito = 3,
         Terminato = 4,
-        Annullato=21
+        Annullato = 21
     }
 
     public class StatoTrasferimentoModel
@@ -44,6 +44,10 @@ namespace NewISE.Models.DBModel
             else if (v.idStatoTrasferimento == 4)
             {
                 return EnumStatoTraferimento.Terminato;
+            }
+            else if (v.idStatoTrasferimento == 21)
+            {
+                return EnumStatoTraferimento.Annullato;
             }
             else
             {

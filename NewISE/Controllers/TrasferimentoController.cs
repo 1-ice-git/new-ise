@@ -177,7 +177,7 @@ namespace NewISE.Controllers
                         attivazioneAnticipi = attivazioneAnticipi,
                         richiestaMAB = richiestaMAB,
                         attivazioneMAB = attivazioneMAB,
-                        solaLettura=solaLettura
+                        solaLettura = solaLettura
                     });
 
         }
@@ -588,6 +588,7 @@ namespace NewISE.Controllers
                             return PartialView();
 
                         case EnumStatoTraferimento.Terminato:
+                        case EnumStatoTraferimento.Annullato:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == "" || a.Value == ((decimal)EnumTipoTrasferimento.SedeEstero).ToString());
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
@@ -616,6 +617,7 @@ namespace NewISE.Controllers
                                 }
                             }
                             return PartialView(trm);
+
 
                         default:
 
