@@ -1,0 +1,144 @@
+﻿@model NewISE.Models.DBModel.EmailSecondarieDipModel
+
+@{
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+    var errori = ViewData.ModelState;
+    decimal idDipendente = (decimal)ViewBag.idDipendente;
+}
+<input type="hidden" id="Amministratore" value="@admin.ToString()" />
+
+@using (Ajax.BeginForm("InserisciEmailSecondaria", "UtenzeDipendenti", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelUtenzeDip", OnFailure = "ErroreElaborazioneAjax", OnSuccess = "$('#inviaUtenzeModalNewMail').modal('hide');"}, new { id = "formNuovaEmail" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <input type="hidden" id="idDipendente" , name="idDipendente" value="@idDipendente.ToString()" />
+        <hr />
+        <div class="row">
+            <div class="col-xs-offset-2 col-xs-10">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })   
+                <div id="vai" style="display:none; " class= "text-danger">
+                    @Html.Label("Email_vuota", "Inserisci una email valida")
+                    <label id="nascosto1" value="Email_" />
+                </div> 
+                <div id="nonesistente" style="display:none; " class="text-danger">
+                    @Html.Label("Email_exist", "Email già inserita")
+                    <label id="nascosto2" value="Email___" />
+                </div>            
+                <div id="emailvalida" style="display:none; " class="text-danger">
+                    @Html.Label("Email_exist", "Email di formato non valido")
+                    <label id="nascosto3" value="Ema___il_" />
+                </div> 
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Inserisci" class="btn btn-default"/>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+            //$('#formNuovaEmail').submit(function (e)
+            //{
+            //    $('#vai').hide();
+            //    if ($('#Email').val() == '')
+            //    {
+            //        $('#vai').show();
+            //        return false;
+            //    }
+        //})
+        $('#formNuovaEmail').submit(function (e) {
+            $('#vai').hide();
+            if ($('#Email').val() == '') {
+                $('#vai').show();
+                $('#nonesistente').hide();
+                $('#emailvalida').hide();
+                return false;
+            }
+         //  debugger;
+            var idDipendente=@idDipendente;
+            var email=$('#Email').val().toUpperCase();
+
+            var flag0=false;
+            $.ajax({
+                type: 'POST',
+                url: "/UtenzeDipendenti/EmailValida",
+                data: {
+                    email:email
+                },
+                dataType: 'json',
+                async:false,
+                success: function (result) {
+                  //   debugger;
+                    if(result.success==false)
+                    {
+                        $('#vai').hide();
+                        $('#nonesistente').hide();
+                        $('#emailvalida').show();
+                        e.preventDefault();                        
+                        flag0 = true;
+                    }
+                },
+                failure: function(response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    debugger;
+                    alert(response.responseText);
+                }
+            });
+            if(flag0) 
+            { return false;}
+
+           
+            var flag=false;
+            $.ajax({
+                type: 'POST',
+                url: "/UtenzeDipendenti/EsisteEmailSecondarie",
+                data: {
+                    idDipendente: idDipendente,
+                    email:email
+                },
+                dataType: 'json',
+                async:false,
+                success: function (result) {
+                   // debugger;
+                    if(result.success==false)
+                    {
+                        $('#vai').hide();
+                        $('#emailvalida').hide();
+                        $('#nonesistente').show();
+                        e.preventDefault();                        
+                        flag = true;
+                    }
+                },
+                failure: function(response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    debugger;
+                    alert(response.responseText);
+                }
+            });
+            if(flag) 
+            { return false;}
+        })
+
+       
+    </script>
+}
+
+
+
+
+

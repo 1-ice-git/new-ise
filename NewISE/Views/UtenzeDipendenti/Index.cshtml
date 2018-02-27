@@ -1,0 +1,99 @@
+﻿@using NewISE.Models.DBModel
+@model IEnumerable<NewISE.Models.DBModel.UtentiAutorizzatiModel>
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+}
+@{
+    ViewBag.Title = "Home";
+}
+
+<link href="~/Content/css/cssHome.css" rel="stylesheet" />
+<input type="hidden" id="hAmministratore" value="@admin.ToString()" />
+
+<div class="row">
+    <div id="divPanelUtenzeDip" class="col-xs-12">
+        @Html.Action("ElencoUtenzeDipendenti", "UtenzeDipendenti")
+    </div>
+</div>
+
+<div class="modal fade" id="inviaUtenzeModalNewMail" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                    <div id="viewUtenzeMail">
+                        <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                    </div>
+                </div>
+                <div class="modal-footer" style="background-color:white;text-align:center">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                </div>
+             </div>
+        </div>
+</div>
+
+
+<div class="modal fade" id="inviaModificaModal" tabindex="-1" role="dialog" aria-labelledby="inviaModificaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoModifica">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:white;text-align:center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inviaModificaModalEmail" tabindex="-1" role="dialog" aria-labelledby="inviaModificaModalLabelEmail" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div id="viewDocumentoModificaEmail">
+                    <img src="~/Immagini/Loading/ajax-loader (1).gif" />
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color:white;text-align:center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function RicaricaDip()
+    {
+            //debugger;
+        var rotta = "/UtenzeDipendenti/ElencoUtenzeDipendenti";
+           
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                //data: { "idd": idd },
+                dataType: 'html',
+                async: false,
+                beforeSend: function () {
+                    // debugger;
+                  //  $('#inviaDocModal').modal('show');
+                    //Blocca();
+                },
+                success: function (result) {
+                    // debugger;
+                    $("#divPanelUtenzeDip").empty();
+                    $("#divPanelUtenzeDip").html(result);
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    //ErroreElaborazioneAjax(msg);
+                }
+            });
+        
+    }
+   
+</script>
