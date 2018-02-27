@@ -672,6 +672,7 @@ namespace NewISE.Controllers
                             bool siDocConiuge = false;
                             bool siDocFigli = false;
                             bool docFormulario = false;
+                            bool trasfSolaLettura = false;
 
 
                             if ((parentela == EnumParentela.Coniuge || parentela == EnumParentela.Figlio) && idMaggiorazioniFamiliari > 0)
@@ -679,9 +680,9 @@ namespace NewISE.Controllers
                                 dtmf.SituazioneMagFamPartenza(idAttivazioneMagFam, out rinunciaMagFam,
                                     out richiestaAttivazione, out attivazione, out datiConiuge, out datiParzialiConiuge,
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
-                                    out docFormulario);
+                                    out docFormulario, out trasfSolaLettura);
 
-                                if (richiestaAttivazione == true)
+                                if (richiestaAttivazione == true || trasfSolaLettura==true)
                                 {
                                     solaLettura = true;
                                 }

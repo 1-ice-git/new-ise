@@ -922,6 +922,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                                                 }
                                                 #endregion
+
+                                                #region documenti
+                                                var ld=this.GetDocumentiMAB(idAttivazioneMAB, db);
+                                                if (ld?.Any() ?? false)
+                                                {
+                                                    foreach (var d in ld)
+                                                    {
+                                                        this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
+                                                    }
+                                                }
+                                                #endregion
                                             }
                                         }
 
@@ -1762,7 +1773,57 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public List<DOCUMENTI> GetDocumentiMAB(decimal idAttivazioneMAB, ModelDBISE db)
+        {
+            try
+            {
 
+
+                DOCUMENTI d = new DOCUMENTI();
+                List<DOCUMENTI> dl = new List<DOCUMENTI>();
+
+                var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+
+                dl = a.DOCUMENTI.Where(x => x.MODIFICATO == false &&
+                                        (x.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                                        x.IDTIPODOCUMENTO==(decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                                        x.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione)
+                                        ).ToList();
+                return dl;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Associa_Documenti_Attivazione(decimal idDocumento, decimal idAttivazioneMAB, ModelDBISE db)
+        {
+            try
+            {
+                var a = db.ATTIVAZIONEMAB.Find(idAttivazioneMAB);
+                var item = db.Entry<ATTIVAZIONEMAB>(a);
+                item.State = System.Data.Entity.EntityState.Modified;
+                //item.Collection(a => a.DOCUMENTI).Load();
+                var d = db.DOCUMENTI.Find(idDocumento);
+                a.DOCUMENTI.Add(d);
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare i documenti all'attivazione MAB."));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
 
 
