@@ -588,7 +588,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                                                     "Inserimento record Coniuge Titoli Viaggio.", "CONIUGETITOLIVIAGGIO", db,
                                                     ctv_new.TITOLIVIAGGIO.TRASFERIMENTO.IDTRASFERIMENTO, ctv_new.IDATTIVAZIONETITOLIVIAGGIO);
-                                            }else
+                                            }
+                                            else
                                             {
                                                 throw new Exception("Errore in fase di inserimento titolo viaggio coniuge.");
                                             }

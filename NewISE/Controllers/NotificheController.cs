@@ -53,7 +53,7 @@ namespace NewISE.Controllers
                          select new SelectListItem()
                          {
                              Text = t.email,
-                             Value = t.email
+                             Value = t.email,
                          }).ToList();
                     //r.Where(a => a.Value == idTipoContributo.ToString()).First().Selected = true;
                 }
@@ -75,6 +75,12 @@ namespace NewISE.Controllers
                 }
             }
             return PartialView(elem);
+        }
+
+        public ActionResult InserisciNuovaNotifica(NotificheModel nm)
+        {
+
+            return PartialView();
         }
     }
 }

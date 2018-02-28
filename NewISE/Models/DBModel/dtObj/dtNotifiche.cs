@@ -34,5 +34,25 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return lnot;
         }
+        public void AssociaDipendentiNotifiche(decimal? idDipendente, decimal idNotifiche, ModelDBISE db)
+        {
+            try
+            {
+                var f = db.DIPENDENTI.Find(idDipendente);
+                var item = db.Entry<DIPENDENTI>(f);
+                item.State = System.Data.Entity.EntityState.Modified;
+                var adf = db.NOTIFICHE.Find(idNotifiche);
+                f.NOTIFICHE.Add(adf);
+                int i = db.SaveChanges();
+                if (i <= 0)
+                {
+                    throw new Exception(string.Format("Impossibile associare altri dati Notifiche per il dipendente. {0}", f.COGNOME + " " + f.NOME));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

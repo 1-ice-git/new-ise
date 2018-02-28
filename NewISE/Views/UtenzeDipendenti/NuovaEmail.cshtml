@@ -27,7 +27,6 @@
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })   
                 <div id="vai" style="display:none; " class= "text-danger">
                     @Html.Label("Email_vuota", "Inserisci una email valida")
-                    <label id="nascosto1" value="Email_" />
                 </div> 
                 <div id="nonesistente" style="display:none; " class="text-danger">
                     @Html.Label("Email_exist", "Email già inserita")
@@ -35,7 +34,6 @@
                 </div>            
                 <div id="emailvalida" style="display:none; " class="text-danger">
                     @Html.Label("Email_exist", "Email di formato non valido")
-                    <label id="nascosto3" value="Ema___il_" />
                 </div> 
             </div>
         </div>
