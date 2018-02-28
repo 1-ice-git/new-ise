@@ -3395,26 +3395,66 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>TitoliViaggioColori.Designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report30.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDislocazioneDip.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpIndEstera.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpUsoAbitazione.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpMaggAbitaz.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseDiverse.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc" />
-    <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc" />
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report12.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report19.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report30.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report7.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report9.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCosti.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptConsuntivoCostiCoAn.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptDislocazioneDip.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptPresenzeLivelli.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpIndEstera.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContrAbitaz.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpUsoAbitazione.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpMaggAbitaz.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseAvvicendamento.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpSpeseDiverse.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptSpeseDiverse.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpCanoneAnticipato.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\Report36.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptOpContributoAbitazione.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\Statistiche\RPT\RptStoriaDipendente.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
