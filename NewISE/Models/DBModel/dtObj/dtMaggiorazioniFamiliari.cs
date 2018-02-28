@@ -925,7 +925,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                 FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
                                             };
 
-                                            amfNew.DOCUMENTI.Add(d);
+                                            amfNew.DOCUMENTI.Add(dNew);
 
                                             //dtamf.AssociaFormulario(amfNew.IDATTIVAZIONEMAGFAM, d.IDDOCUMENTO, db);
                                         }

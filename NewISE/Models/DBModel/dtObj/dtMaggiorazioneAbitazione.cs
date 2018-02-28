@@ -924,14 +924,30 @@ namespace NewISE.Models.DBModel.dtObj
                                                 #endregion
 
                                                 #region documenti
-                                                var ld=this.GetDocumentiMAB(idAttivazioneMAB, db);
-                                                if (ld?.Any() ?? false)
+                                                var ld_old=this.GetDocumentiMAB(idAttivazioneMAB, db);
+                                                foreach (var d in ld_old)
                                                 {
-                                                    foreach (var d in ld)
+                                                    DOCUMENTI dNew = new DOCUMENTI()
                                                     {
-                                                        this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
-                                                    }
+                                                        IDTIPODOCUMENTO = d.IDTIPODOCUMENTO,
+                                                        NOMEDOCUMENTO = d.NOMEDOCUMENTO,
+                                                        ESTENSIONE = d.ESTENSIONE,
+                                                        FILEDOCUMENTO = d.FILEDOCUMENTO,
+                                                        DATAINSERIMENTO = d.DATAINSERIMENTO,
+                                                        MODIFICATO = d.MODIFICATO,
+                                                        FK_IDDOCUMENTO = d.FK_IDDOCUMENTO
+                                                    };
+
+                                                    am_New.DOCUMENTI.Add(dNew);
+                                                    //this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
                                                 }
+                                                //if (ld?.Any() ?? false)
+                                                //{
+                                                //    foreach (var d in ld)
+                                                //    {
+                                                //        this.Associa_Documenti_Attivazione(d.IDDOCUMENTO, am_New.IDATTIVAZIONEMAB, db);
+                                                //    }
+                                                //}
                                                 #endregion
                                             }
                                         }
