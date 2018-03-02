@@ -2925,7 +2925,13 @@
     <Compile Include="EF\RIDUZIONI.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
+    <Compile Include="EF\RINUNCIAANTICIPI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
     <Compile Include="EF\RINUNCIAMAGGIORAZIONIFAMILIARI.cs">
+      <DependentUpon>ModelDBISE.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EF\RINUNCIA_TE.cs">
       <DependentUpon>ModelDBISE.tt</DependentUpon>
     </Compile>
     <Compile Include="EF\RUOLOACCESSO.cs">
