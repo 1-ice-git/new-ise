@@ -1,7 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.PercentualeDisagioModel>
 @using NewISE.Areas.Parametri.Models.dtObj;
+@using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
 <p>
@@ -24,7 +26,7 @@
 
         <tr>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.Ufficio.DescUfficio)
+                @Html.DisplayNameFor(model => model.Ufficio.descUfficio)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -48,36 +50,50 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(model => item.Ufficio.DescUfficio)
+                <td class="text-center">
+                    @Html.DisplayFor(model => item.Ufficio.descUfficio)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.percentuale) %
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.percentuale)
-                </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    @using (dtPercentualeDisagio dtib = new dtPercentualeDisagio())
+                    @using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                     {
-                        if (dtib.EsistonoMovimentiPrima(item))
-                        {
-                            <a href="#" onclick="EliminaPercdisagio(@item.idPercentualeDisagio );"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                        }
-                        else
+                        if (dtib.PercentualeDisaggioAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
-                    }
+                        else
+                        {
+                            if (item.idPercentualeDisagio == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaPercdisagio(@item.idPercentualeDisagio);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                }
+                            }
+                        }
                   
                 </td>
             </tr>
@@ -131,17 +147,20 @@
         rotta = "/Parametri/ParamPercDisagio/PercentualeDisagioLivello";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+
+        $("#hiTipoContributo").val(idUfficio);
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
-
+        
         $.ajax({
             type: "POST",
             url: rotta,
@@ -177,21 +196,21 @@
     }
 
     function NuovaPercentualeDisagio() {
-        debugger;
+       // debugger;
 
         var rotta = "/Parametri/ParamPercDisagio/NuovaPercentualeDisagio";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
         var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         if (isNaN(idUfficio)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un ufficio per procedere.");
             return false;
         }
-
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+                
 
         $.ajax({
             type: "POST",
@@ -232,16 +251,17 @@
         var rotta = "/Parametri/ParamPercDisagio/EliminaPercentualeDisagio";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
-        var chk = true;
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         if (isNaN(idUfficio)) {
             $("#divPViewParametri").empty();
             return false;
         }
 
-        if ('@escludiAnnullati' == 'true') {
-            chk = false;
-        }
+       
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

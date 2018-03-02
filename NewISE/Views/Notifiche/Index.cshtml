@@ -11,8 +11,78 @@
 <link href="~/Content/css/cssHome.css" rel="stylesheet" />
 <input type="hidden" id="hAmministratore" value="@admin.ToString()" />
 
+@*<div class="row">
+    <div class="col-xs-12"><h4 style="text-align:center; color:darkblue">Elenco Notifiche Email</h4></div>
+</div>*@
 <div class="row">
-    <div id="divPanelNotifiche" class="col-xs-12">
+    <div id="map" style="height:650px;"  class="col-xs-2 text-center">
+        <br /><br /><br />
+       <input id="idScrivi" type="button"  class="btn btn-success" style="width:150px" 
+              value="Scrivi  Notifica" onclick="ScriviNuovaMail();"/><br /> <br />
+
+        <input id="idRicevute" type="button" style="width:150px" class="btn btn-danger"
+               value="Notifiche ricevute" onclick="EmailRicevute();" /><br /> <br />
+
+        <input id="idInviate" type="button" class="btn btn-primary" style="width:150px" 
+               value="Notifiche inviate" onclick="EmailInviate();" /><br /> <br />
+
+        
+    </div>
+    <div id="divPanelNotifiche" class="col-xs-10">
         @Html.Action("ListaNotifiche", "Notifiche")
     </div>
 </div>
+<script type="text/javascript">
+    function ScriviNuovaMail()
+    {
+        var rotta = "/Notifiche/NuovaNotifica";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            //  data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                
+            },
+            success: function (result) {
+                $("#divPanelNotifiche").empty();
+                $("#divPanelNotifiche").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function EmailInviate() {
+        var rotta = "/Notifiche/ListaNotifiche";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            //  data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                $("#divPanelNotifiche").empty();
+                $("#divPanelNotifiche").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+</script>

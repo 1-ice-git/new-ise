@@ -284,9 +284,8 @@ namespace NewISE.Areas.Parametri.Controllers
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoefficientiSedeNonAnnullato(idUfficio);
                     libm = dtib.getListCoefficientiSede(idUfficio, escludiAnnullati).OrderBy(a => a.idUfficio).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
-                AggiornaLivelliList(idUfficio);
-                
-                return PartialView("CoefficientiSede", libm);
+                AggiornaLivelliList(idUfficio);                
+                return PartialView("PercentualeDisagio", libm);
             }
             catch (Exception ex)
             {
