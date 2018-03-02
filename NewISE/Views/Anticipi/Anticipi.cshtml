@@ -179,7 +179,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     AttivitaAnticipi();
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -214,7 +214,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     AttivitaAnticipi();
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -249,7 +249,7 @@
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     AttivitaAnticipi();
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -266,15 +266,14 @@
         });
     }
 
-    function CalcolaAnticipo(idAttivitaAnticipi,ValsoloLettura) {
+    function CalcolaAnticipo(idAttivitaAnticipi, ValsoloLettura) {
 
         //debugger;
         var rotta = "/Anticipi/CalcolaAnticipo";
 
         var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
 
-        if (!isNaN(percRichiesta))
-        {
+        if (!isNaN(percRichiesta)) {
             $.ajax({
                 type: "POST",
                 url: rotta,
@@ -290,16 +289,15 @@
                 success: function (result) {
                     //debugger;
                     if (result.err == "") {
-                       
+
                         $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
 
                         var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
 
-                        if (ValsoloLettura==0 && percRichiesta_old != percRichiesta && percRichiesta>0) {
+                        if (ValsoloLettura == 0 && percRichiesta_old != percRichiesta && percRichiesta > 0) {
                             $("#btNotificaRichiestaAnticipi").removeAttr("disabled");
                             $("#btNotificaRichiestaAnticipi").removeClass("disabled");
-                        } else
-                        {
+                        } else {
                             $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
                             $("#btNotificaRichiestaAnticipi").addClass("disabled");
                         }
@@ -320,8 +318,7 @@
                 }
 
             });
-        } else
-        {
+        } else {
             $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
             $("#btNotificaRichiestaAnticipi").addClass("disabled");
         }

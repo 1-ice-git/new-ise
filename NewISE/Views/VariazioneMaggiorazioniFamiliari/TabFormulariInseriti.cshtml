@@ -7,11 +7,11 @@
     EnumChiamante enChiamante = EnumChiamante.VariazioneMaggiorazioniFamiliari;
 }
 
-<table class="table"  id="tabElencoFormulariInseriti_Var">
+<table class="table" id="tabElencoFormulariInseriti_Var">
     <thead>
         <tr>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.progressivo )
+                @Html.DisplayNameFor(model => model.progressivo)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.nomeDocumento)
@@ -33,13 +33,13 @@
                 @if (item.Modificabile)
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
-                        (@Html.DisplayFor(modelItem => item.progressivo ))
+                        (@Html.DisplayFor(modelItem => item.progressivo))
                     </td>
                 }
                 else
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto;font-weight:bold">
-                        (@Html.DisplayFor(modelItem => item.progressivo ))
+                        (@Html.DisplayFor(modelItem => item.progressivo))
                     </td>
                 }
 
@@ -95,7 +95,7 @@
                     }
                     else
                     {
-                    <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
                     }
                 </td>
             </tr>
@@ -149,7 +149,7 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        
+
         },
         "info": false,
         "lengthChange": false,
@@ -158,7 +158,7 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "order": [[0,"desc"],[3, "desc"]]
+        "order": [[0, "desc"], [3, "desc"]]
     });
 
     function EliminaFormulario(idDoc) {
@@ -191,7 +191,7 @@
                     ErroreElaborazioneAjax(result.err);
                 }
                 else {
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     PulsantiNotificaAttivaMagFam();
                 }
             },

@@ -84,7 +84,7 @@
                 //debugger;
                 if (result.err == "") {
                     $("#divOperazioniAttivitaTrasf").empty();
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
                     //GestioneTrasferimento();
                 } else {
@@ -97,8 +97,8 @@
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
-                }
-            });
+            }
+        });
     }
 
     function ConfermaNotificaAttivaTrasf() {
@@ -118,11 +118,11 @@
                 //debugger;
                 if (result.err == "") {
                     $("#divOperazioniAttivitaTrasf").empty();
-                    InfoElaborazioneAjax(result.msg);
+                    //InfoElaborazioneAjax(result.msg);
                     GestioneAttivitaTrasferimento();
                 } else {
                     ErroreElaborazioneAjax(result.err);
-                }   
+                }
             },
             complete: function () {
             },

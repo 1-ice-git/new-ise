@@ -283,7 +283,7 @@
     @if (ricaricaTrasferimenti)
     {
          @:ElencoTrasferimento();
-                                                                    }
+                                                                            }
 
 
 
@@ -547,8 +547,17 @@
 
     function DialogInfo(response) {
         $("#msgModalInfo").text(response);
-        $('#myModalInfo').modal('toggle');
+        $('#myModalInfo').modal().show();
     }
+
+    $("#msgModalInfo").on('hide.bs.modal', function() {
+        //debugger;
+        //$('.modal-backdrop').hide();
+        //$(this).data('bs.modal', null);
+        $(this).remove();
+        $('.modal-backdrop').remove();
+    });
+
 
     function AbilitaDisabilitaCoan() {
         //debugger;
@@ -587,7 +596,7 @@
 
                 if (result.msg != "" && typeof result.msg !== "undefined") {
                     $('#habilitaNotifica').val(false);
-                    DialogInfo(result.msg);
+                    //DialogInfo(result.msg);
 
                     LetturaParametriGestioneTrasferimento();
 

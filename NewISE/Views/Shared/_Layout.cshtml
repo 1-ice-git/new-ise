@@ -360,7 +360,7 @@
             }
 
             $("#msgModalError").text(msg);
-            $('#myModalError').modal('toggle');
+            $('#myModalError').modal().show();
         }
 
         function InfoElaborazioneAjax(messaggio) {
@@ -376,18 +376,22 @@
             }
 
             $("#msgModalInfoGenerale").text(msg);
-            $('#myModalInfoGenerale').modal('toggle');
+            $('#myModalInfoGenerale').modal().show();
 
         }
 
         $("#msgModalInfoGenerale").on('hide.bs.modal', function () {
             //debugger;
-            $('.modal-backdrop').hide();
+            //$('.modal-backdrop').hide();
+            //$(this).data('bs.modal', null);
+            $(this).remove();
+            $('.modal-backdrop').remove();
         });
 
         $("#msgModalError").on('hide.bs.modal', function () {
             //debugger;
-            $('.modal-backdrop').hide();
+            //$('.modal-backdrop').hide();
+            $(this).data('bs.modal', null);
         });
 
         function number_format(number, decimals, dec_point, thousands_sep) {

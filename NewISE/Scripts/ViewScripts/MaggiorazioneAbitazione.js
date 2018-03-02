@@ -133,7 +133,7 @@ function UploadDocumentoMABModal(idTipoDocumento, idTrasferimento) {
     $.ajax({
         url: rotta,
         type: "POST", //Le info testuali saranno passate in POST
-        data: { idTrasferimento: idTrasferimento, idTipoDocumento:idTipoDocumento },
+        data: { idTrasferimento: idTrasferimento, idTipoDocumento: idTipoDocumento },
         dataType: 'html',
         async: false,
         beforeSend: function () {
@@ -208,7 +208,7 @@ function ValidazioneMAB(idTrasferimento) {
     return ret;
 }
 
-function SalvaDocumentoMAB(idTrasferimento,idTipoDocumento) {
+function SalvaDocumentoMAB(idTrasferimento, idTipoDocumento) {
 
     //debugger;
     var datiForm = new FormData();
@@ -302,7 +302,7 @@ function ConfermaNotificaRichiestaMAB() {
         success: function (result) {
             //debugger;
             if (result.err == "") {
-                InfoElaborazioneAjax(result.msg);
+                //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
@@ -340,7 +340,7 @@ function ConfermaAnnullaRichiestaMAB() {
         success: function (result) {
             //debugger;
             if (result.err == "") {
-                InfoElaborazioneAjax(result.msg);
+                //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
@@ -378,7 +378,7 @@ function ConfermaAttivaRichiestaMAB() {
         success: function (result) {
             //debugger;
             if (result.err == "") {
-                InfoElaborazioneAjax(result.msg);
+                //InfoElaborazioneAjax(result.msg);
                 AttivitaMAB(idTrasferimento);
                 FormulariMAB(idTrasferimento);
                 GestionePulsantiNotificaAttivaAnnullaMAB(idTrasferimento);
