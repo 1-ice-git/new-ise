@@ -41,12 +41,13 @@ namespace NewISE.Controllers
                 bool DocContributo = false;
                 bool DocAttestazione = false;
                 decimal NumAttivazioni = 0;
+                bool trasfAnnullato = false;
 
                 TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
                 dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
                                out richiestaTE, out attivazioneTE,
-                               out DocContributo, out DocAttestazione, out NumAttivazioni);
+                               out DocContributo, out DocAttestazione, out NumAttivazioni, out trasfAnnullato);
 
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -199,6 +200,7 @@ namespace NewISE.Controllers
             bool DocContributo = false;
             bool DocAttestazione = false;
             decimal NumAttivazioni = 0;
+            bool trasfAnnullato = false;
 
 
             try
@@ -213,7 +215,8 @@ namespace NewISE.Controllers
                                             out attivazioneTE,
                                             out DocContributo,
                                             out DocAttestazione,
-                                            out NumAttivazioni);
+                                            out NumAttivazioni,
+                                            out trasfAnnullato);
                 }
 
             }
@@ -232,6 +235,7 @@ namespace NewISE.Controllers
                         DocContributo = DocContributo,
                         DocAttestazione = DocAttestazione,
                         NumAttivazioni = NumAttivazioni,
+                        trasfAnnullato = trasfAnnullato,
                         err = errore
                     });
 

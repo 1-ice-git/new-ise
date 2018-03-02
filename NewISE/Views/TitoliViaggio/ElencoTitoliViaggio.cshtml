@@ -5,6 +5,7 @@
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
     decimal idAttivazioneTitoliViaggio = Convert.ToDecimal(ViewData["idAttivazioneTitoliViaggio"]);
     bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
+    EnumStatoTraferimento statoTrasferimento =(EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
 }
 
 
@@ -99,7 +100,7 @@
                         </td>
                     }
                     <td style="text-align: center;">
-                        @if(richiestaEseguita)
+                        @if(richiestaEseguita || statoTrasferimento==EnumStatoTraferimento.Attivo || statoTrasferimento==EnumStatoTraferimento.Annullato)
                         {
                             if (item.RichiediTitoloViaggio)
                             {

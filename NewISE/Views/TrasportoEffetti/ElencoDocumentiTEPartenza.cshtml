@@ -38,38 +38,40 @@
                 @if (
                         (
                             (
-                                NumAttivazioniTEPartenza == 0 
+                                NumAttivazioniTEPartenza == 0
                                 &&
-                                richiestaTEPartenza == false 
+                                richiestaTEPartenza == false
                                 &&
-                                attivazioneTEPartenza == false 
+                                attivazioneTEPartenza == false
                                 &&
                                 idTipoDocumento == (decimal)EnumTipoDoc.Contributo_Fisso_Omnicomprensivo
                             )
                             ||
                             (
-                                NumAttivazioniTEPartenza == 1 
+                                NumAttivazioniTEPartenza == 1
                                 &&
                                 (
                                     (
-                                        richiestaTEPartenza == false 
-                                        && 
+                                        richiestaTEPartenza == false
+                                        &&
                                         attivazioneTEPartenza == false
                                     )
-                                    || 
+                                    ||
                                     (
-                                        richiestaTEPartenza 
-                                        && 
+                                        richiestaTEPartenza
+                                        &&
                                         attivazioneTEPartenza
                                     )
                             )
-                            && 
+                            &&
                             idTipoDocumento == (decimal)EnumTipoDoc.Attestazione_Trasloco
                         )
-                        
-                    ) 
-                    && 
+
+                    )
+                    &&
                     idStatoTrasferimento!=(decimal)EnumStatoTraferimento.Terminato
+                    &&
+                    idStatoTrasferimento != (decimal)EnumStatoTraferimento.Annullato
                 )
                 {
                     <button class="btn btn-default btn-sm" onclick="NuovoDocumentoTE();">

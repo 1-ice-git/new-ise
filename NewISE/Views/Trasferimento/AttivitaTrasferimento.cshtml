@@ -139,49 +139,6 @@
     </button>
 </div>
 
-<div class="modal fade" id="ModalNotificaAnnullaTrasf" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaAnnullaTrasfLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewNotificaAnnullaTrasf">
-                    <label>Procedere con l'annullamento del trasferimento?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btConfermaNotificaAnnullaTrasf" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaAnnullaTrasf();">Procedi</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="ModalNotificaAttivaTrasf" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaAttivaTrasfLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewNotificaAnnullaTrasf">
-                    <label>Procedere con l'attivazione del trasferimento?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btConfermaNotificaAttivaTrasf" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaAttivaTrasf();">Procedi</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <script type="text/javascript">
@@ -445,71 +402,6 @@
         }
     }
 
-    function ConfermaNotificaAnnullaTrasf() {
-        //debugger;
-        var rotta = "/Trasferimento/ConfermaAnnullaTrasf";
-        var idTrasferimento = parseInt('@idTrasferimento');
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTrasferimento: idTrasferimento },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
-                    //GestioneAttivitaTrasferimento();
-                    GestioneTrasferimento();
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
-    function ConfermaNotificaAttivaTrasf() {
-        //debugger;
-        var rotta = "/Trasferimento/ConfermaAttivaTrasf";
-        var idTrasferimento = parseInt('@idTrasferimento');
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: { idTrasferimento: idTrasferimento },
-            dataType: 'json',
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err == "") {
-                    InfoElaborazioneAjax(result.msg);
-                    GestioneAttivitaTrasferimento();
-                } else {
-                    ErroreElaborazioneAjax(result.err);
-                }
-            },
-            complete: function () {
-
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
 
 
 

@@ -85,6 +85,15 @@ namespace NewISE.Controllers
                     }
                     avm = dta.GetAnticipi(idAttivitaAnticipi);
 
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+                        if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato || t.idStatoTrasferimento == EnumStatoTraferimento.Attivo)
+                        {
+                            soloLettura = true;
+                        }
+                    }
+
                     decimal NumAttivazioni = dta.GetNumAttivazioniAnticipi(idPrimaSistemazione);
 
                     ViewData.Add("NumAttivazioni", NumAttivazioni);
@@ -126,7 +135,12 @@ namespace NewISE.Controllers
                     var idAttivitaAnticipi = aam.idAttivitaAnticipi;
                 }
 
-
+                EnumStatoTraferimento statoTrasferimento = 0;
+                using (dtTrasferimento dtt = new dtTrasferimento())
+                {
+                    var t = dtt.GetTrasferimentoByIdPrimaSistemazione(idPrimaSistemazione);
+                    statoTrasferimento = t.idStatoTrasferimento;
+                }
 
                 bool notificaRichiesta = aam.notificaRichiestaAnticipi;
                 bool attivaRichiesta = aam.attivaRichiestaAnticipi;
@@ -138,7 +152,7 @@ namespace NewISE.Controllers
                     hiddenAttivaRichiesta = "";
                     hiddenAnnullaRichiesta = "";
 
-                    if (notificaRichiesta && attivaRichiesta == false)
+                    if (notificaRichiesta && attivaRichiesta == false && statoTrasferimento!=EnumStatoTraferimento.Attivo && statoTrasferimento!=EnumStatoTraferimento.Annullato )
                     {
                         disabledAttivaRichiesta = "";
                         disabledAnnullaRichiesta = "";
