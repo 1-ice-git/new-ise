@@ -12,27 +12,22 @@ namespace NewISE.EF
     using System;
     using System.Collections.Generic;
     
-    public partial class PRIMASITEMAZIONE
+    public partial class RINUNCIAANTICIPI
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PRIMASITEMAZIONE()
+        public RINUNCIAANTICIPI()
         {
             this.ATTIVITAANTICIPI = new HashSet<ATTIVITAANTICIPI>();
-            this.INDENNITASISTEMAZIONE = new HashSet<INDENNITASISTEMAZIONE>();
-            this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
-            this.RINUNCIAANTICIPI = new HashSet<RINUNCIAANTICIPI>();
         }
     
+        public decimal IDRINUNCIAANTICIPI { get; set; }
         public decimal IDPRIMASISTEMAZIONE { get; set; }
+        public bool RINUNCIAANTICIPI1 { get; set; }
+        public System.DateTime DATAAGGIORNAMENTO { get; set; }
+        public bool ANNULLATO { get; set; }
     
+        public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITAANTICIPI> ATTIVITAANTICIPI { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
     }
 }

@@ -123,5 +123,7 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+        public virtual DbSet<RINUNCIA_TE> RINUNCIA_TE { get; set; }
+        public virtual DbSet<RINUNCIAANTICIPI> RINUNCIAANTICIPI { get; set; }
     }
 }
