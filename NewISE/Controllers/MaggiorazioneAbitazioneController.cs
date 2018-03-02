@@ -60,9 +60,11 @@ namespace NewISE.Controllers
 
                         if (mam != null && mam.idMAB > 0)
                         {
+                            mavm.idAttivazioneMAB= mam.idAttivazioneMAB;
+                            mavm.idMAB= mam.idMAB;
+
                             CANONEMAB cm = dtma.GetCanoneMAB(mam);
 
-                            //mavm.CanoneMAB = cmm;
                             mavm.importo_canone = cm.IMPORTOCANONE;
                             mavm.dataInizioMAB = mam.dataInizioMAB;
                             mavm.dataFineMAB = mam.dataFineMAB;
@@ -79,6 +81,14 @@ namespace NewISE.Controllers
                                 }
                             }
 
+                            var lpc = dtma.GetListPagatoCondivisoMAB(mavm);
+
+                            if (lpc.Count() > 0)
+                            {
+                                var pc = lpc.First();
+                                mavm.canone_pagato = pc.PAGATO;
+                                mavm.canone_condiviso = pc.CONDIVISO;
+                            }
 
                             mavml.Add(mavm);
 

@@ -18,25 +18,25 @@
 
 </p>
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
-    <table id="tabElencoFigli" class="table">
+    <table id="tabElencoFigli" class="table table-striped">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Nominativo)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.CodiceFiscale)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizio)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.idAltriDati)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.Documenti)
                 </th>
 
@@ -50,25 +50,25 @@
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
                     @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataFine)
                         </td>
                     }
                     else
                     {
-                        <td style="text-align: center;"></td>
+                        <td class="text-center"></td>
                     }
                     @if (item.idAltriDati > 0)
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
                                 <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati Familiari" />
                             </a>
@@ -76,7 +76,7 @@
                     }
                     else
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); ">
                                 <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati Familiari" />
                             </a>
@@ -84,7 +84,7 @@
                     }
                     @if (item.Documenti.Any())
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
@@ -92,7 +92,7 @@
                     }
                     else
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti" />
                             </a>

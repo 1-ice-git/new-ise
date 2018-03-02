@@ -143,9 +143,12 @@ namespace NewISE.Controllers
             bool richiestaMAB = false;
             bool attivazioneMAB = false;
             bool solaLettura = false;
+            bool amministratore = false;           
 
             try
             {
+                amministratore = Utility.Amministratore();
+
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     dtt.GestioneAttivitaTrasferimento(idTrasferimento, out richiestaMF, out attivazioneMF,
@@ -164,6 +167,7 @@ namespace NewISE.Controllers
                 Json(
                     new
                     {
+                        admin=amministratore,
                         err = errore,
                         richiestaMF = richiestaMF,
                         attivazioneMF = attivazioneMF,

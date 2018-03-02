@@ -37,28 +37,28 @@
 </p>
 <div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
 
-    <table id="tabElencoConiuge" cellspacing="0">
+    <table id="tabElencoConiuge" cellspacing="0" class="table-striped">
         <thead>
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Nominativo)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.CodiceFiscale)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizio)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFine)
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     Pens.
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     Alt. dati
                 </th>
-                <th style="text-align: center;">
+                <th class="text-center">
                     Doc.
                 </th>
             </tr>
@@ -71,50 +71,50 @@
                     <td>
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
                     </td>
-                    <td>
+                    <td class="text-center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
                     </td>
-                    <td style="text-align: center;">
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
                     @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataFine)
                         </td>
                     }
                     else
                     {
-                        <td style="text-align: center;"></td>
+                        <td class="text-center"></td>
                     }
                     @if (item.HasPensione)
                     {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkPensione">
+                        <td class="text-center">
+                            <a href="#" onclick="Pensione(@item.idFamiliare, @idAttivazioneMagFam); " id="linkPensione">
                                 <img src='~/Immagini/Simbolo semplice Euro Green.png' width="17" title="Pensione" />
                             </a>
                         </td>
                     }
                     else
                     {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" Pensione(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkPensione">
+                        <td class="text-center">
+                            <a href="#" onclick="Pensione(@item.idFamiliare, @idAttivazioneMagFam); " id="linkPensione">
                                 <img src="~/Immagini/Simbolo semplice Euro Red.png" width="17" title="Pensione" />
                             </a>
                         </td>
                     }
                     @if (item.idAltriDati > 0)
                     {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam );" id="linkAltriDatiFam">
+                        <td class="text-center">
+                            <a href="#" onclick="AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam);" id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati Familiari" />
                             </a>
                         </td>
                     }
                     else
                     {
-                        <td style="text-align: center;">
-                            <a href="#" onclick=" AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkAltriDatiFam">
+                        <td class="text-center">
+                            <a href="#" onclick="AltriDatiFamiliari(@item.idFamiliare, @idAttivazioneMagFam ); " id="linkAltriDatiFam">
                                 <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati Familiari" />
                             </a>
                         </td>
@@ -122,7 +122,7 @@
 
                     @if (item.Documenti.Any())
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
@@ -130,7 +130,7 @@
                     }
                     else
                     {
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari), @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti" />
                             </a>

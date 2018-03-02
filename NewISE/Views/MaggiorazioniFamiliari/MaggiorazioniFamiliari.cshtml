@@ -12,18 +12,20 @@
 @Html.Hidden("idAttivitaMagFam", idAttivazioneMagFam)
 
 <div class="row">
-    <div class="col-md-12" style="margin-top: 10px; margin-bottom: 10px;margin-right:20px ">
-        <div style="padding-bottom:10px;margin-right:20px;  border-bottom:solid;border-width:1px;border-color:limegreen">
+    <div class="col-md-12">
+        <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            <h4>Richiesta Maggiorazioni Familiari</h4>
+            <hr />
             <div class="nav nav-justified nav-tabs">
                 <ul class="nav nav-tabs tabs-destro" id="tabsMaggiorazioniFamiliari">
                     <li id="mnConiuge">
-                        <a data-toggle="tab" href="#tabConiuge" id="lkConiuge" onclick=" ElencoConiuge(); ">Coniuge</a>
+                        <a data-toggle="tab" href="#tabConiuge" id="lkConiuge" onclick="ElencoConiuge();">Coniuge</a>
                     </li>
                     <li id="mnFigli">
-                        <a data-toggle="tab" href="#tabFigli" id="lkFigli" onclick=" ElencoFigli(); ">Figli</a>
+                        <a data-toggle="tab" href="#tabFigli" id="lkFigli" onclick="ElencoFigli();">Figli</a>
                     </li>
                     <li id="mnFormulari">
-                        <a data-toggle="tab" href="#tabFormulari" id="lkFormulari" onclick=" ElencoFormulariInseriti(); ">Formulari</a>
+                        <a data-toggle="tab" href="#tabFormulari" id="lkFormulari" onclick="ElencoFormulariInseriti();">Formulari</a>
                     </li>
                 </ul>
             </div>
@@ -264,13 +266,10 @@
 
     }
 
-
-
     function ModalAttivaRichiesta() {
         //debugger;
         $('#ModalAttivaRichiesta').modal().show();
     }
-
 
     function ConfermaAnnullaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AnnullaRichiesta";
@@ -454,14 +453,12 @@
                     $('#lkFormulari').stop().fadeIn();
 
                     $("#btNotificaRichiestaMagFam").html(' <i aria-hidden="true" class="fa fa-2x fa-envelope"></i> Notifica richiesta');
-                    if (trasfSolaLettura == false) {
-                        if (admin == false) {
-                            $("#btAttivaMagFam").hide();
-                            $("#btAnnullaMagFam").hide();
-                        } else {
-                            $("#btAttivaMagFam").show();
-                            $("#btAnnullaMagFam").show();
-                        }
+                    if (admin == false) {
+                        $("#btAttivaMagFam").hide();
+                        $("#btAnnullaMagFam").hide();
+                    } else {
+                        $("#btAttivaMagFam").show();
+                        $("#btAnnullaMagFam").show();
                     }
 
                     //debugger;
@@ -553,44 +550,6 @@
                             $('#lkFormulari').stop().fadeIn();
                         }
                     }
-
-
-
-                    /////////////////////////// LOGICA ERRATA ////////////////////
-                    //else if (rinuncia == false && richiesta == false && attivazione == false && (datiConiuge == true || datiFigli == true)) {
-                    //    ///Se per il coniuge o per il figlio l'inserimento risulta parziale allora disabilito tutti i pulsanti.
-                    //    if (datiParzialiConiuge == true || datiParzialiFigli == true) {
-                    //        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                    //        $("#btNotificaRichiestaMagFam").addClass("disabled");
-
-                    //        if (datiParzialiConiuge) {
-                    //            blink('#lkConiuge');
-                    //        }
-                    //        else if (datiParzialiFigli) {
-                    //            blink('#lkFigli');
-                    //        }
-
-                    //    } else {
-                    //        ///Se non esistono dati parziali per il coniuge o per i figli vado a verificare se esiste il documento per il coniuge e/o figli
-                    //        ///e se è stato inserito almeno un formulario.
-                    //        if (((siDocConiuge == true && datiConiuge == true) || (siDocFigli == true && datiFigli == true)) == true && docFormulario == true) {
-
-                    //            $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                    //            $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                    //        } else {
-                    //            if (siDocConiuge == false && datiConiuge == true) {
-                    //                blink('#lkConiuge');
-                    //            }
-                    //            else if (siDocFigli == false && datiFigli == true) {
-                    //                blink('#lkFigli');
-                    //            }
-                    //            else if (docFormulario == false) {
-                    //                blink('#lkFormulari');
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    /////////////////////////////////////////////////////////////////
 
                     if (trasfSolaLettura == false) {
                         if (rinuncia == true && richiesta == true && attivazione == false && admin == true) {

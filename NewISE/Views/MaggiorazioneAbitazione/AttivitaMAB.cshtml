@@ -12,8 +12,8 @@
 }
 
 
-<div style="padding-right: 10px">
-    <div style="padding-top: 10px;padding-bottom:10px">
+<div >
+    <div style="padding-top: 10px;padding-bottom:10px;padding-left:5px">
         @if (soloLettura == false)
         {
             if (idMAB > 0)
@@ -32,18 +32,23 @@
                 <th>
                     Tipo Anticipo
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.descrizioneValuta )
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.importo_canone)
-@*                    @Html.DisplayNameFor(model => model.CanoneMAB.ImportoCanone)*@
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataInizioMAB )
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.dataFineMAB)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.canone_condiviso)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.canone_pagato)
                 </th>
             </tr>
         </thead>
@@ -68,21 +73,26 @@
                             <span class="text-uppercase"></span>
                         }
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.importo_canone)</span>
-@*                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CanoneMAB.ImportoCanone)</span>*@
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         @if (item.dataFineMAB != Utility.DataFineStop())
                         {
                             <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
                         }
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_condiviso)</span>
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.canone_pagato)</span>
                     </td>
                 </tr>
             }
